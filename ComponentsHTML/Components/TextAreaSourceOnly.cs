@@ -37,8 +37,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the TextAreaSourceOnly display component.
+    /// Displays the model rendered as a string using the HTML &lt;textarea&gt; tag. The model is assumed to already be HTML encoded.
     /// </summary>
+    /// <example>
+    /// [Caption("Message"), Description("The feedback message")]
+    /// [UIHint("TextAreaSourceOnly"), ReadOnly]
+    /// public string Comment { get; set; }
+    /// </example>
     public class TextAreaSourceOnlyDisplayComponent : TextAreaSourceOnlyComponentBase, IYetaWFComponent<object> {
 
         /// <summary>
@@ -104,8 +109,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the TextAreaSourceOnly edit component.
+    /// Allows entry of a formatted HTML encoded string using the HTML &lt;textarea&gt; tag. The model is assumed to already be HTML encoded.
     /// </summary>
+    /// <remarks>
+    /// If the StringLengthAttribute is specified for the model, the textarea element is limited to the specified number of characters.
+    /// 
+    /// To render a more advanced text editor using CKEditor, use the TextArea Component instead.
+    /// </remarks>
+    /// <example>
+    /// [Caption("Comment"), Description("Enter your comment about this blog entry for others to view")]
+    /// [UIHint("TextAreaSourceOnly"), StringLength(BlogComment.MaxComment)]
+    /// public string Comment { get; set; }
+    /// </example>
     public class TextAreaSourceOnlyEditComponent : TextAreaSourceOnlyComponentBase, IYetaWFComponent<object> {
 
         /// <summary>

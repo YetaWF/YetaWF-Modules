@@ -3,6 +3,7 @@
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 
@@ -32,8 +33,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the StringWithToolTip display component.
+    /// Displays the model as an HTML encoded string with a tooltip.
     /// </summary>
+    /// <example>
+    /// [Caption("Repositories, Projects and Tags Explorer"), Description("")]
+    /// [UIHint("StringWithToolTip"), ReadOnly]
+    /// public string Text { get; set; }
+    /// public string Text_ToolTip { get; set; }
+    /// </example>
+    [UsesSibling("_ToolTip", "string", "Defines the tooltip to be shown. Can be null.")]
     public class StringWithToolTipDisplayComponent : StringWithToolTipComponentBase, IYetaWFComponent<string> {
 
         /// <summary>

@@ -11,7 +11,7 @@ using YetaWF.Modules.ComponentsHTML.Controllers;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Implementation of the TreeData display component.
+    /// Renders partial tree data. This component is used by the tree component and is not directly used by an application.
     /// </summary>
     public class TreeDataContainer : YetaWFComponent, IYetaWFContainer<TreePartialData> {
 

@@ -34,7 +34,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the SkinNamePopup display component.
+    /// Internal component used by the PageSkin and PopupSkins components. Not intended for application use.
     /// </summary>
     public class SkinNamePopupDisplayComponent : SkinNamePopupComponentBase, IYetaWFComponent<string> {
 
@@ -66,7 +66,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the SkinNamePopup edit component.
+    /// Internal component used by the PageSkin and PopupSkins components. Not intended for application use.
     /// </summary>
     public class SkinNamePopupEditComponent : SkinNamePopupComponentBase, IYetaWFComponent<string> {
 

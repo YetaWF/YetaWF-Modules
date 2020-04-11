@@ -7,7 +7,6 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
-using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -37,7 +36,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the UrlDesignedPage edit component.
+    /// Internal component used by the Url component. Not intended for application use.
     /// </summary>
     public class UrlDesignedPageEditComponent : UrlDesignedPageComponentBase, IYetaWFComponent<string> {
 

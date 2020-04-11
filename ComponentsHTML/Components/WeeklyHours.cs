@@ -45,8 +45,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     //}
 
     /// <summary>
-    /// Implementation of the WeeklyHours edit component.
+    /// Allows entry of time ranges for an entire week, two time ranges for each day (typically AM and PM), such as office opening hours, optionally "Closed". The model specifies the selected weekly daytime ranges.
     /// </summary>
+    /// <example>
+    /// [Category("Hours"), Caption(""), Description("")]
+    /// [UIHint("WeeklyHours")]
+    /// public WeeklyHours OpeningHours { get; set; }
+    /// </example>
     public class WeeklyHoursEditComponent : WeeklyHoursComponentBase, IYetaWFComponent<WeeklyHours> {
 
         internal class WeeklyHoursUI {

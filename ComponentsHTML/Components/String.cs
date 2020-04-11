@@ -8,8 +8,13 @@ using YetaWF.Core.Support;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Implementation of the String display component.
+    /// Displays the model as an HTML encoded string. If the model value is null, nothing is rendered.
     /// </summary>
+    /// <example>
+    /// [Caption("Email Address"), Description("The user's email address")]
+    /// [UIHint("String"), ReadOnly]
+    /// public string Email { get; set; }
+    /// </example>
     public class StringDisplayComponent : YetaWFComponent, IYetaWFComponent<string> {
 
         internal const string TemplateName = "String";

@@ -35,8 +35,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the TimeSpan display component.
+    /// Displays the model rendered as a timespan showing days, hours, minutes and seconds. If the timespan extends less than one day, the number of days is not shown. If the model is null, nothing is rendered.
     /// </summary>
+    /// <example>
+    /// [Caption("RunTime"), Description("The duration of the last run of this scheduler item (hh:mm:ss)")]
+    /// [UIHint("TimeSpan"), ReadOnly]
+    /// public TimeSpan RunTime { get; set; }
+    /// </example>
     public class TimeSpanDisplayComponent : TimeSpanComponentBase, IYetaWFComponent<TimeSpan?> {
 
         /// <summary>
@@ -73,8 +78,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the TimeSpan edit component.
+    /// Allows entry of a timespan using days, hours, minutes and seconds.
     /// </summary>
+    /// <example>
+    /// [Caption("Expiration"), Description("The time a cookie will remain valid from the point it is created")]
+    /// [UIHint("TimeSpan"), Required]
+    /// public TimeSpan ExpireTimeSpan { get; set; }
+    /// </example>
     public class TimeSpanEditComponent : TimeSpanComponentBase, IYetaWFComponent<TimeSpan>, IYetaWFComponent<TimeSpan?> {
 
         internal class TimeSpanUI {

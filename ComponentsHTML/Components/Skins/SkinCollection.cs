@@ -7,7 +7,6 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
-using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -37,7 +36,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the SkinCollection display component.
+    /// Internal component used by the PageSkin and PopupSkins components. Not intended for application use.
     /// </summary>
     public class SkinCollectionDisplayComponent : SkinCollectionComponentBase, IYetaWFComponent<string> {
 
@@ -70,7 +69,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the SkinCollection edit component.
+    /// Internal component used by the PageSkin and PopupSkins components. Not intended for application use.
     /// </summary>
     public class SkinCollectionEditComponent : SkinCollectionComponentBase, IYetaWFComponent<string> {
 

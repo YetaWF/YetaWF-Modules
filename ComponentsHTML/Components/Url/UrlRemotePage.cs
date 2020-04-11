@@ -32,7 +32,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the UrlRemotePage edit component.
+    /// Internal component used by the Url component. Not intended for application use.
     /// </summary>
     public class UrlRemotePageEditComponent : UrlRemotePageComponentBase, IYetaWFComponent<string> {
 

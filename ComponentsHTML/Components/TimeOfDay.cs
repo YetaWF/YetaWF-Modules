@@ -34,8 +34,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the TimeOfDay display component.
+    /// Displays a time of day (between 00:00:00 hours and 23:59:59). If the model is null, nothing is rendered.
     /// </summary>
+    /// <example>
+    /// [Caption("Due Time, Morning Tasks"), Description("")]
+    /// [UIHint("TimeOfDay"), Required]
+    /// public TimeOfDay MorningTaskDueTime { get; set; }
+    /// </example>
     public class TimeOfDayDisplayComponent : TimeOfDayComponentBase, IYetaWFComponent<TimeOfDay> {
 
         /// <summary>
@@ -65,8 +70,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the TimeOfDay edit component.
+    /// Allows entry of a time of day (between 00:00:00 hours and 23:59:59). 
     /// </summary>
+    /// <example>
+    /// [Caption("Due Time, Morning Tasks"), Description("")]
+    /// [UIHint("TimeOfDay"), Required]
+    /// public TimeOfDay MorningTaskDueTime { get; set; }
+    /// </example>
     public class TimeOfDayEditComponent : TimeOfDayComponentBase, IYetaWFComponent<TimeOfDay> {
 
         /// <summary>

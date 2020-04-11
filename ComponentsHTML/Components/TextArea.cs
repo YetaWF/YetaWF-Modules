@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Components;
 using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 
@@ -34,8 +35,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the TextArea display component.
+    /// Displays the model as a string or as a read/only CKEditor. If a MultiString is provided, only the text in the user's defined language is shown (see User > Settings, standard YetaWF site).
     /// </summary>
+    /// <example>
+    /// [Caption("Message"), Description("The feedback message")]
+    /// [UIHint("TextArea"), ReadOnly]
+    /// [AdditionalMetadata("SourceOnly", true)]
+    /// </example>
+    [UsesAdditional("SourceOnly", "bool", "false", "Defines whether the text area is rendered using a read/only CKEditor in source mode only. Otherwise, the model is rendered as a string.")]
+    [UsesAdditional("Full", "bool", "false", "Defines whether the text area is rendered using a read/only CKEditor, otherwise the model is rendered as a string.")]
+    [UsesAdditional("EmHeight", "int", "10", "Defines whether the text area is rendered using a read/only CKEditor in source mode only. Otherwise, the model is rendered as a string.")]
+    [UsesAdditional("SourceOnly", "bool", "false", "Defines the approximate height of the CKEditor in line heights based on the page font. The defined height can only be approximated and is by no means meant to be exact. This setting is ignored if the model is rendered as a string.")]
+    [UsesAdditional("Encode", "bool", "true", "Defines whether \"\r\n\" and \"\r\" are preserved as new lines using <br/> and the model is encoded when rendered as a string. Otherwise the string is not encoded. This is ignored if a read/only CKEditor is used to render the model.")]
     public class TextAreaDisplayComponent : TextAreaComponentBase, IYetaWFComponent<object> {
 
         /// <summary>
@@ -120,8 +131,28 @@ CKEDITOR.replace('{ControlId}', {{
     }
 
     /// <summary>
-    /// Implementation of the TextArea edit component.
+    /// Allows entry of a formatted HTML encoded string and returns the entered text as an HTML encoded string. If a MultiString is provided, only the text in the user's defined language can be modified (see User > Settings, standard YetaWF site).
     /// </summary>
+    /// <remarks>
+    /// If the StringLengthAttribute is specified for the model, the TextArea box is limited to the specified number of characters.
+    /// 
+    /// To render a regular TextArea HTML tag (without CKEditor), use the TextAreaSimple Component instead.
+    /// </remarks>
+    /// <example>
+    /// [Caption("Comment"), Description("Enter your comment about this blog entry for others to view")]
+    /// [UIHint("TextArea"), AdditionalMetadata("EmHeight", 10), StringLength(BlogComment.MaxComment)]
+    /// [AdditionalMetadata("TextAreaSave", false), AdditionalMetadata("RestrictedHtml", true)]
+    /// public string Comment { get; set; }
+    /// </example>
+    [UsesAdditional("SourceOnly", "bool", "false", "Defines whether the text area is rendered using a CKEditor in source mode only. Otherwise, the full CKEditor feature set is available to create HTML formatted text.")]
+    [UsesAdditional("TextAreaSave", "bool", "false", "Defines whether the CKEditor toolbar offers a Save button. Otherwise, the Save button is not shown. This is not currently working (apologies).")]
+    [UsesAdditional("ImageBrowse", "bool", "false", "Defines whether image support is available to browse, upload and save images. Otherwise, image support is not available.")]
+    [UsesAdditional("FlashBrowse", "bool", "false", "Defines whether Flash support is available to browse, upload and save Flash images. Otherwise, Flash support is not available.")]
+    [UsesAdditional("PageBrowse", "bool", "false", "Defines whether page selection support is available when adding links. Otherwise, page selection support is not available.")]
+    [UsesAdditional("RestrictedHtml", "bool", "false", "Defines whether only an HTML subset is available when creating text. Otherwise, all HTML formatting is available. Restricting HTML tags does not work well with YetaWF and should not be used.")]
+    [UsesAdditional("EmHeight", "int", "10", "Defines whether the text area is rendered using a read/only CKEditor in source mode only. Otherwise, the model is rendered as a string.")]
+    [UsesSibling("_Folder", "string", "Used for image and Flash support to identify the module owning the images. If this property is not found, the current module is used as the image and Flash file owner.")]
+    [UsesSibling("_SubFolder", "string", "Used for image and Flash support to identify the module owning the images. If this property is not found, the current module is used as the image and Flash file owner.")]
     public class TextAreaEditComponent : TextAreaComponentBase, IYetaWFComponent<object> {
 
         /// <summary>

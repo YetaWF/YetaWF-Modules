@@ -8,8 +8,13 @@ using YetaWF.Core.Support;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Implementation of the String display component.
+    /// Displays the model as an HTML encoded string in an alert box (a div with the yDivAlert CSS class). If the model value is null, nothing is rendered.
     /// </summary>
+    /// <example>
+    /// [Caption("Warning"), Description("Shows a warning")]
+    /// [UIHint("StringAlert"), ReadOnly]
+    /// public string Warning { get; set; }
+    /// </example>
     public class StringAlertDisplayComponent : YetaWFComponent, IYetaWFComponent<string> {
 
         internal const string TemplateName = "StringAlert";

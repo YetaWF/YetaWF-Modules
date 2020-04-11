@@ -10,6 +10,7 @@ using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 #if MVC6
@@ -90,8 +91,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Tree display component.
+    /// Displays a tree component. The model defines the tree entries.
     /// </summary>
+    /// <example>
+    /// [UIHint("Tree"), ReadOnly]
+    /// public List&lt;EntryElement&gt; Entries { get; set; }
+    /// </example>
+    [UsesSibling("_TreeDefinition", "YetaWF.Core.Models.TreeDefinition", "Defines the attributes of the tree component.")]
     public partial class TreeDisplayComponent : TreeComponentBase, IYetaWFComponent<object> {
 
         /// <summary>

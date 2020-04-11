@@ -33,8 +33,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the SMTPServer edit component.
+    /// Displays email server information based on the model. The model defines an SMTP server used to send emails.
     /// </summary>
+    /// <example>
+    /// [Category("Email"), Caption("Email Server"), Description("The email server used to send emails from this site")]
+    /// [UIHint("SMTPServer"), ReadOnly]
+    /// public SMTPServer SMTP { get; set; }
+    /// </example>
     public class SMTPServerComponentDisplay : SMTPServerComponentBase, IYetaWFComponent<SMTPServer> {
 
         /// <summary>
@@ -50,16 +55,22 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(SMTPServer model) {
 
-                HtmlBuilder hb = new HtmlBuilder();
+            HtmlBuilder hb = new HtmlBuilder();
             hb.Append(HE(model.Server));
 
-                return Task.FromResult(hb.ToString());
+            return Task.FromResult(hb.ToString());
         }
     }
 
     /// <summary>
-    /// Implementation of the SMTPServer edit component.
+    /// Allows entry of email server information. The model defines an SMTP server used to send emails.
+    /// Supports sending a test email before the data is saved.
     /// </summary>
+    /// <example>
+    /// [Category("Email"), Caption("Email Server"), Description("The email server used to send emails from this site")]
+    /// [UIHint("SMTPServer")]
+    /// public SMTPServer SMTP { get; set; }
+    /// </example>
     public class SMTPServerComponentEdit : SMTPServerComponentBase, IYetaWFComponent<SMTPServer> {
 
         /// <summary>

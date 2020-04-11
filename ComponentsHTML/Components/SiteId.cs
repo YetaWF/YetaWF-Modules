@@ -7,7 +7,6 @@ using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Site;
-using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -39,8 +38,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the SiteId display component.
+    /// Displays a site ID based on the model, with a tooltip showing the site's domain name.
     /// </summary>
+    /// <example>
+    /// [Caption("Site"), Description("The site that was changed")]
+    /// [UIHint("SiteId"), ReadOnly]
+    /// </example>
     public class SiteIdDisplayComponent : SiteIdComponentBase, IYetaWFComponent<int> {
 
         /// <summary>

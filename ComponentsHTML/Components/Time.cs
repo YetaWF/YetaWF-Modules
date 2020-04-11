@@ -34,8 +34,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Time display component.
+    /// Displays the model formatted as a time localized using the user's selected time zone (see User Settings Module).
     /// </summary>
+    /// <remarks>All date/time values in YetaWF are internally stored and processed using UTC.
+    /// 
+    /// The model value must be specified as UTC. If the model value is null or equal to DateTime.MinValue or DateTime.MaxValue, nothing is rendered.
+    /// </remarks>
+    /// <example>
+    /// [Category("Rss"), Caption("Feed Publish Time"), Description("The time this feed was published")]
+    /// [UIHint("Time"), ReadOnly]
+    /// public DateTime? FeedPublishTime { get; set; }
+    /// </example>
     public class TimeDisplayComponent : TimeComponentBase, IYetaWFComponent<DateTime?> {
 
         /// <summary>
@@ -72,8 +81,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Time edit component.
+    /// Allows entry of a time using local time.
     /// </summary>
+    /// <remarks>
+    /// All date/time values in YetaWF are internally stored and processed using UTC.
+    /// </remarks>
+    /// <example>
+    /// [Category("Rss"), Caption("Feed Publish Time"), Description("The time this feed was published")]
+    /// [UIHint("Time")]
+    /// public DateTime? FeedPublishTime { get; set; }
+    /// </example>
     public class TimeEditComponent : TimeComponentBase, IYetaWFComponent<DateTime>, IYetaWFComponent<DateTime?> {
 
         /// <summary>

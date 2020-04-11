@@ -11,7 +11,7 @@ using YetaWF.Core.Support;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Implementation of the UrlType edit component.
+    /// Internal component used by the Url component. Not intended for application use.
     /// </summary>
     public class UrlTypeComponent : YetaWFComponent, IYetaWFComponent<UrlTypeEnum> {
 

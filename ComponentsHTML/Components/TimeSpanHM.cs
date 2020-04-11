@@ -35,46 +35,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the TimeSpan display component.
+    /// Allows entry of a timespan using hours and minutes.
     /// </summary>
-    public class TimeSpanHMDisplayComponent : TimeSpanHMComponentBase, IYetaWFComponent<TimeSpan?> {
-
-        /// <summary>
-        /// Returns the component type (edit/display).
-        /// </summary>
-        /// <returns>Returns the component type.</returns>
-        public override ComponentType GetComponentType() { return ComponentType.Display; }
-
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
-        public async Task<string> RenderAsync(TimeSpan model) {
-            return await RenderAsync((TimeSpan?)model);
-        }
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
-        public Task<string> RenderAsync(TimeSpan? model) {
-            HtmlBuilder hb = new HtmlBuilder();
-            if (model != null) {
-                YTagBuilder tag = new YTagBuilder("div");
-                tag.AddCssClass("yt_timespan");
-                tag.AddCssClass("t_display");
-                FieldSetup(tag, FieldType.Anonymous);
-                tag.SetInnerText(Formatting.FormatTimeSpanHM(model));
-                hb.Append(tag.ToString(YTagRenderMode.Normal));
-            }
-            return Task.FromResult(hb.ToString());
-        }
-    }
-
-    /// <summary>
-    /// Implementation of the TimeSpan edit component.
-    /// </summary>
+    /// <example>
+    /// [Caption("Expiration"), Description("The time a cookie will remain valid from the point it is created")]
+    /// [UIHint("TimeSpanHM"), Required]
+    /// public TimeSpan ExpireTimeSpan { get; set; }
+    /// </example>
     public class TimeSpanHMEditComponent : TimeSpanHMComponentBase, IYetaWFComponent<TimeSpan>, IYetaWFComponent<TimeSpan?> {
 
         internal class TimeSpanUI {

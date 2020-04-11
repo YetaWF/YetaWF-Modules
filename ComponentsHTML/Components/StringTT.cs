@@ -32,8 +32,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the StringTT display component.
+    /// Displays the model as an HTML encoded string with a tooltip.
     /// </summary>
+    /// <example>
+    /// [Caption("Role"), Description("Role Description")]
+    /// [UIHint("StringTT"), ReadOnly]
+    /// public StringTT RoleName { get; set; }
+    /// 
+    /// RoleName = new StringTT {
+    ///     Text = "Hello",
+    ///     Tooltip = "I am a tooltip",
+    /// };
+    /// </example>
     public class StringTTDisplayComponent : StringTTComponentBase, IYetaWFComponent<StringTT> {
 
         /// <summary>

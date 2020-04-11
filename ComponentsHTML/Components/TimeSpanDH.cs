@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
-using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -35,46 +34,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the TimeSpan display component.
+    /// Allows entry of a timespan using days and hours.
     /// </summary>
-    public class TimeSpanDHDisplayComponent : TimeSpanDHComponentBase, IYetaWFComponent<TimeSpan?> {
-
-        /// <summary>
-        /// Returns the component type (edit/display).
-        /// </summary>
-        /// <returns>Returns the component type.</returns>
-        public override ComponentType GetComponentType() { return ComponentType.Display; }
-
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
-        public async Task<string> RenderAsync(TimeSpan model) {
-            return await RenderAsync((TimeSpan?)model);
-        }
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
-        public Task<string> RenderAsync(TimeSpan? model) {
-            HtmlBuilder hb = new HtmlBuilder();
-            if (model != null) {
-                YTagBuilder tag = new YTagBuilder("div");
-                tag.AddCssClass("yt_timespan");
-                tag.AddCssClass("t_display");
-                FieldSetup(tag, FieldType.Anonymous);
-                tag.SetInnerText(Formatting.FormatTimeSpan(model));
-                hb.Append(tag.ToString(YTagRenderMode.Normal));
-            }
-            return Task.FromResult(hb.ToString());
-        }
-    }
-
-    /// <summary>
-    /// Implementation of the TimeSpan edit component.
-    /// </summary>
+    /// <example>
+    /// [Caption("Expiration"), Description("The time a cookie will remain valid from the point it is created")]
+    /// [UIHint("TimeSpanDH"), Required]
+    /// public TimeSpan ExpireTimeSpan { get; set; }
+    /// </example>
     public class TimeSpanDHEditComponent : TimeSpanDHComponentBase, IYetaWFComponent<TimeSpan>, IYetaWFComponent<TimeSpan?> {
 
         internal class TimeSpanUI {

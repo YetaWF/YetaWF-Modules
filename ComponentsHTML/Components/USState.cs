@@ -5,8 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -36,8 +36,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the USState display component.
+    /// Displays the full state name of a US state given an abbreviation. If the model is null or the abbreviation is not found, nothing is rendered.
     /// </summary>
+    /// <remarks>
+    /// All states and their abbreviations are defined in ./CoreComponents/Core/Addons/_Templates/USState/USStates.txt.
+    /// </remarks>
+    /// <example>
+    /// [Category("General"), Caption("State"), Description("The state of the mailing address")]
+    /// [UIHint("USState"), ReadOnly]
+    /// public string StateUS { get; set; }
+    /// </example>
     public class USStateDisplayComponent : USStateComponentBase, IYetaWFComponent<string> {
 
         /// <summary>
@@ -60,8 +68,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the USState edit component.
+    /// Allows selection of a US state from a dropdown list. The model returns a 2 character abbreviation for the selected state.
     /// </summary>
+    /// <remarks>
+    /// All states and their abbreviations are defined in ./CoreComponents/Core/Addons/_Templates/USState/USStates.txt.
+    /// </remarks>
+    /// <example>
+    /// [Caption("State"), Description("The state of the billing address")]
+    /// [UIHint("USState"), StringLength(Invoice.MaxState), Trim]
+    /// public string BillStateUS { get; set; }
+    /// </example>
+    [UsesAdditional("NoDefault", "bool", "false", "Defines whether a \"(select)\" entry is automatically added as the first entry, with a value of null")]
     public class USStateEditComponent : USStateComponentBase, IYetaWFComponent<string> {
 
         /// <summary>

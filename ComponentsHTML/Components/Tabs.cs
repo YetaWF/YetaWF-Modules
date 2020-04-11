@@ -50,8 +50,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Tabs display component.
+    /// Displays a tab component. The model defines various attributes of the tab component.
     /// </summary>
+    /// <example>
+    /// [UIHint("Tabs")]
+    /// public TabsDefinition TabsDef { get; set; }
+    /// </example>
     public partial class TabsDisplayComponent : TabsComponentBase, IYetaWFComponent<TabsDefinition> {
 
         /// <summary>

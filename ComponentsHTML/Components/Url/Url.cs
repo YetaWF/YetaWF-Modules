@@ -37,8 +37,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Url display component.
+    /// Displays the model as a URL with a link to visit the URL in a new window. If the model is null or empty, nothing is rendered.
     /// </summary>
+    /// <example>
+    /// [Caption("URL"), Description("The requested URL")]
+    /// [UIHint("Url"), ReadOnly]
+    /// public string RequestedUrl { get; set; }
+    /// 
+    /// [Caption("Product")]
+    /// [UIHint("Url"), ReadOnly]
+    /// public string Description { get; set; }
+    /// public string Description_Url { get; set; }
+    /// </example>
+    [UsesAdditional("CssClass", "string", null, "Defines an optional CSS class added to the URL link.")]
+    [UsesSibling("_Url", "string", "If this property is specified, the model is used as the link text and this property is used as the actual URL.")]
     public class UrlDisplayComponent : UrlComponentBase, IYetaWFComponent<string> {
 
         /// <summary>
@@ -109,8 +121,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Url edit component.
+    /// Allows selection of a designed page URL or entering a local or remote URL.
     /// </summary>
+    /// <example>
+    /// [Category("Urls"), Caption("Redirect To Page"), Description("If this page is accessed, it is redirected to the Url defined here - Redirection is not active in Site Edit Mode")]
+    /// [UIHint("Url"), AdditionalMetadata("UrlType", UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlHelperEx.UrlTypeEnum.Local | UrlHelperEx.UrlTypeEnum.Remote)]
+    /// [StringLength(Globals.MaxUrl), Trim]
+    /// public string RedirectToPageUrl { get; set; }
+    /// </example>
+    [UsesAdditional("UrlType", "YetaWF.Core.Models.Attributes.UrlHelperEx.UrlTypeEnum", "UrlHelperEx.UrlTypeEnum.Remote", "Defines the type of URL that can be entered. UrlHelperEx.UrlTypeEnum is used as a flag so multiple types can be entered.")]
     public class UrlEditComponent : UrlComponentBase, IYetaWFComponent<string> {
 
         /// <summary>

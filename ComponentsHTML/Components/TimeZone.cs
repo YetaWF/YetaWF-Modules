@@ -9,6 +9,7 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
+using YetaWF.Core.Models.Attributes;
 #if MVC6
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 #else
@@ -43,8 +44,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the TimeZone display component.
+    /// Displays the model (a time zone ID) rendered using time zone information.
     /// </summary>
+    /// <example>
+    /// [Caption("Time Zone"), Description("The time zone in which the domain is located ")]
+    /// [UIHint("TimeZone"), ReadOnly]
+    /// public string ScanTimeZone { get; set; }
+    /// </example>
     public class TimeZoneDisplayComponent : TimeZoneComponentBase, IYetaWFComponent<string> {
 
         /// <summary>
@@ -87,8 +93,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the TimeZone edit component.
+    /// Allows selection of a time zone.
     /// </summary>
+    /// <example>
+    /// [Caption("Time Zone"), Description("Your time zone - all dates/times within this web site will be adjusted for the specified time zone")]
+    /// [UIHint("TimeZone"), StringLength(UserData.MaxTimeZone), Required]
+    /// public string TimeZone { get; set; }
+    /// </example>
+    [UsesAdditional("ShowDefault", "bool", "true", "Defines whether the server's time zone is added to the dropdown list as the default, if the model is null. Otherwise, the server's time zone is not added.")]
     public class TimeZoneEditComponent : TimeZoneComponentBase, IYetaWFComponent<string> {
 
         /// <summary>

@@ -11,8 +11,17 @@ using YetaWF.Modules.ComponentsHTML.Addons;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Implementation of the Text10 display component.
+    /// Displays the model using a disabled Text box.
+    /// Should be used for text up to 10 characters in width.
+    /// In most cases the use of the String Component is preferred over the Text Component for display purposes.
     /// </summary>
+    /// <example>
+    /// [Caption("Category"), Description("The name of this blog category")]
+    /// [UIHint("Text10"), ReadOnly]
+    /// public string Category { get; set; }
+    /// </example>
+    [UsesAdditional("Copy", "bool", "true", "Defines whether a copy icon is displayed to allow the user to copy the contents to the clipboard and the text box is rendered read/only as opposed to disabled. If false is specified, no copy icon is shown.")]
+    [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the text box is rendered read/only as opposed to disabled.")]
     public class Text10DisplayComponent : TextDisplayComponentBase {
         /// <summary>
         /// Constructor.
@@ -20,8 +29,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public Text10DisplayComponent() : base("Text10", "yt_text10") { }
     }
     /// <summary>
-    /// Implementation of the Text10 edit component.
+    /// Allows entry of a string. Renders a text box.
+    /// Should be used for text up to 10 characters in width.
     /// </summary>
+    /// <remarks>
+    /// If the StringLengthAttribute is specified for the model, the Text box is limited to the specified number of characters.
+    /// </remarks>
+    /// <example>
+    /// [Caption("Title"), Description("The title for this blog entry")]
+    /// [UIHint("Text10"), StringLength(BlogEntry.MaxTitle), Required, Trim]
+    /// public string Title { get; set; }
+    /// </example>
+    [UsesAdditional("Copy", "bool", "true", "Defines whether a copy icon is displayed to allow the user to copy the contents to the clipboard and the text box is rendered read/only as opposed to disabled. If false is specified, no copy icon is shown.")]
+    [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the text box is rendered read/only as opposed to disabled.")]
     public class Text10EditComponent : TextEditComponentBase {
         /// <summary>
         /// Constructor.
@@ -29,8 +49,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public Text10EditComponent() : base("Text10", "yt_text10") { }
     }
     /// <summary>
-    /// Implementation of the Text20 display component.
+    /// Displays the model using a disabled Text box.
+    /// Should be used for text up to 20 characters in width.
+    /// In most cases the use of the String Component is preferred over the Text Component for display purposes.
     /// </summary>
+    /// <example>
+    /// [Caption("Category"), Description("The name of this blog category")]
+    /// [UIHint("Text20"), ReadOnly]
+    /// public string Category { get; set; }
+    /// </example>
+    [UsesAdditional("Copy", "bool", "true", "Defines whether a copy icon is displayed to allow the user to copy the contents to the clipboard and the text box is rendered read/only as opposed to disabled. If false is specified, no copy icon is shown.")]
+    [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the text box is rendered read/only as opposed to disabled.")]
     public class Text20DisplayComponent : TextDisplayComponentBase {
         /// <summary>
         /// Constructor.
@@ -38,8 +67,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public Text20DisplayComponent() : base("Text20", "yt_text20") { }
     }
     /// <summary>
-    /// Implementation of the Text20 edit component.
+    /// Allows entry of a string. Renders a text box.
+    /// Should be used for text up to 20 characters in width.
     /// </summary>
+    /// <remarks>
+    /// If the StringLengthAttribute is specified for the model, the Text box is limited to the specified number of characters.
+    /// </remarks>
+    /// <example>
+    /// [Caption("Title"), Description("The title for this blog entry")]
+    /// [UIHint("Text20"), StringLength(BlogEntry.MaxTitle), Required, Trim]
+    /// public string Title { get; set; }
+    /// </example>
+    [UsesAdditional("Copy", "bool", "true", "Defines whether a copy icon is displayed to allow the user to copy the contents to the clipboard and the text box is rendered read/only as opposed to disabled. If false is specified, no copy icon is shown.")]
+    [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the text box is rendered read/only as opposed to disabled.")]
     public class Text20EditComponent : TextEditComponentBase {
         /// <summary>
         /// Constructor.
@@ -47,8 +87,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public Text20EditComponent() : base("Text20", "yt_text20") { }
     }
     /// <summary>
-    /// Implementation of the Text40 display component.
+    /// Displays the model using a disabled Text box.
+    /// Should be used for text up to 40 characters in width.
+    /// In most cases the use of the String Component is preferred over the Text Component for display purposes.
     /// </summary>
+    /// <example>
+    /// [Caption("Category"), Description("The name of this blog category")]
+    /// [UIHint("Text40"), ReadOnly]
+    /// public string Category { get; set; }
+    /// </example>
+    [UsesAdditional("Copy", "bool", "true", "Defines whether a copy icon is displayed to allow the user to copy the contents to the clipboard and the text box is rendered read/only as opposed to disabled. If false is specified, no copy icon is shown.")]
+    [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the text box is rendered read/only as opposed to disabled.")]
     public class Text40DisplayComponent : TextDisplayComponentBase {
         /// <summary>
         /// Constructor.
@@ -56,8 +105,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public Text40DisplayComponent() : base("Text40", "yt_text40") { }
     }
     /// <summary>
-    /// Implementation of the Text40 edit component.
+    /// Allows entry of a string. Renders a text box.
+    /// Should be used for text up to 40 characters in width.
     /// </summary>
+    /// <remarks>
+    /// If the StringLengthAttribute is specified for the model, the Text box is limited to the specified number of characters.
+    /// </remarks>
+    /// <example>
+    /// [Caption("Title"), Description("The title for this blog entry")]
+    /// [UIHint("Text40"), StringLength(BlogEntry.MaxTitle), Required, Trim]
+    /// public string Title { get; set; }
+    /// </example>
+    [UsesAdditional("Copy", "bool", "true", "Defines whether a copy icon is displayed to allow the user to copy the contents to the clipboard and the text box is rendered read/only as opposed to disabled. If false is specified, no copy icon is shown.")]
+    [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the text box is rendered read/only as opposed to disabled.")]
     public class Text40EditComponent : TextEditComponentBase {
         /// <summary>
         /// Constructor.
@@ -65,8 +125,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public Text40EditComponent() : base("Text40", "yt_text40") { }
     }
     /// <summary>
-    /// Implementation of the Text80 display component.
+    /// Displays the model using a disabled Text box.
+    /// Should be used for text up to 80 characters in width.
+    /// In most cases the use of the String Component is preferred over the Text Component for display purposes.
     /// </summary>
+    /// <example>
+    /// [Caption("Category"), Description("The name of this blog category")]
+    /// [UIHint("Text80"), ReadOnly]
+    /// public string Category { get; set; }
+    /// </example>
+    [UsesAdditional("Copy", "bool", "true", "Defines whether a copy icon is displayed to allow the user to copy the contents to the clipboard and the text box is rendered read/only as opposed to disabled. If false is specified, no copy icon is shown.")]
+    [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the text box is rendered read/only as opposed to disabled.")]
     public class Text80DisplayComponent : TextDisplayComponentBase {
         /// <summary>
         /// Constructor.
@@ -74,8 +143,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public Text80DisplayComponent() : base("Text80", "yt_text80") { }
     }
     /// <summary>
-    /// Implementation of the Text80 edit component.
+    /// Allows entry of a string. Renders a text box.
+    /// Should be used for text up to 80 characters in width.
     /// </summary>
+    /// <remarks>
+    /// If the StringLengthAttribute is specified for the model, the Text box is limited to the specified number of characters.
+    /// </remarks>
+    /// <example>
+    /// [Caption("Title"), Description("The title for this blog entry")]
+    /// [UIHint("Text80"), StringLength(BlogEntry.MaxTitle), Required, Trim]
+    /// public string Title { get; set; }
+    /// </example>
+    [UsesAdditional("Copy", "bool", "true", "Defines whether a copy icon is displayed to allow the user to copy the contents to the clipboard and the text box is rendered read/only as opposed to disabled. If false is specified, no copy icon is shown.")]
+    [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the text box is rendered read/only as opposed to disabled.")]
     public class Text80EditComponent : TextEditComponentBase {
         /// <summary>
         /// Constructor.
@@ -83,8 +163,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public Text80EditComponent() : base("Text80", "yt_text80") { }
     }
     /// <summary>
-    /// Implementation of the Text display component.
+    /// Displays the model using a disabled Text box.
+    /// In most cases the use of the String Component is preferred over the Text Component for display purposes.
     /// </summary>
+    /// <example>
+    /// [Caption("Category"), Description("The name of this blog category")]
+    /// [UIHint("Text"), ReadOnly]
+    /// public string Category { get; set; }
+    /// </example>
+    [UsesAdditional("Copy", "bool", "true", "Defines whether a copy icon is displayed to allow the user to copy the contents to the clipboard and the text box is rendered read/only as opposed to disabled. If false is specified, no copy icon is shown.")]
+    [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the text box is rendered read/only as opposed to disabled.")]
     public class TextDisplayComponent : TextDisplayComponentBase {
         /// <summary>
         /// Constructor.
@@ -92,8 +180,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public TextDisplayComponent() : base("Text", "yt_text") { }
     }
     /// <summary>
-    /// Implementation of the Text edit component.
+    /// Allows entry of a string. Renders a text box.
     /// </summary>
+    /// <remarks>
+    /// If the StringLengthAttribute is specified for the model, the Text box is limited to the specified number of characters.
+    /// </remarks>
+    /// <example>
+    /// [Caption("Title"), Description("The title for this blog entry")]
+    /// [UIHint("Text"), StringLength(BlogEntry.MaxTitle), Required, Trim]
+    /// public string Title { get; set; }
+    /// </example>
+    [UsesAdditional("Copy", "bool", "true", "Defines whether a copy icon is displayed to allow the user to copy the contents to the clipboard and the text box is rendered read/only as opposed to disabled. If false is specified, no copy icon is shown.")]
+    [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the text box is rendered read/only as opposed to disabled.")]
     public class TextEditComponent : TextEditComponentBase {
         /// <summary>
         /// Constructor.
