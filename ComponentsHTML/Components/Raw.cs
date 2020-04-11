@@ -30,7 +30,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Raw display component.
+    /// Displays the model as a string without HTML encoding. This can be used to render HTML directly.
     /// </summary>
     public class RawDisplayComponent : RawComponentBase, IYetaWFComponent<string> {
 

@@ -3,6 +3,7 @@
 using System.Collections;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 
@@ -32,8 +33,26 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the Scroller display component.
+    /// Renders a list of items in a horizontal or vertical display. This is typically used for a product scroller or to provide a scrollable rendering of objects.
     /// </summary>
+    /// <remarks>
+    /// The Scroller component is provided with a list of objects, each is rendered with the specified component (similar to how Property Lists are rendered), as each object is rendered using its own properties and the respective UIHint() definition.
+    /// 
+    /// A sample scroller implementation is available at Tests > Templates > Scroller (standard YetaWF site).
+    /// </remarks>
+    /// <example>
+    /// [UIHint("Scroller"), ReadOnly, AdditionalMetadata("Component", "Softelvdm_StoreCatalog_ScrollerProduct")]
+    /// public List&lt;Item&gt; Items { get; set; }
+    /// 
+    /// public class Item {
+    ///     [UIHint("Image"), AdditionalMetadata("ImageType", ProductImageSupport.ImageType), AdditionalMetadata("Width", 100), AdditionalMetadata("Height", 100)]
+    ///     [AdditionalMetadata("ShowMissing", false)]
+    ///     public string Logo { get; set; }
+    ///     [UIHint("String")]
+    ///     public string Product Name { get; set; }
+    /// }
+    /// </example>
+    [UsesAdditional("Component", "string", null, "Defines the component used to render each object within the specified model ({i}objects{/i}). This attribute is required.")]
     public class ScrollerDisplayComponent : ScrollerComponentBase, IYetaWFComponent<IEnumerable> {
 
         /// <summary>

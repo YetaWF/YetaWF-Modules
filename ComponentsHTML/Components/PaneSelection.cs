@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Implementation of the PaneSelection edit component.
+    /// Allows selection of a string value from a list of string values using a dropdown list. 
+    /// This is used internally for pane selection and is not intended for use by applications.
     /// </summary>
     public class PaneSelectionComponent : YetaWFComponent, IYetaWFComponent<string> {
 

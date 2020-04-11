@@ -3,13 +3,20 @@
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Implementation of the Password edit component.
+    /// Allows entry of a password. The password is masked so it cannot be read.
     /// </summary>
+    /// <remarks>
+    /// Visually the text box used for the password allows approximately 20 characters to be displayed. The user can enter longer passwords.
+    /// </remarks>
+    /// <example>
+    /// [Caption("Password"), Description("Enter your password")]
+    /// [UIHint("Password20"), StringLength(Globals.MaxPswd), Trim]
+    /// public string Password { get; set; }
+    /// </example>
     public class Password20Component : YetaWFComponent, IYetaWFComponent<string> {
 
         internal const string TemplateName = "Password20";

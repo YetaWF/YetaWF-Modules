@@ -41,8 +41,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the ReferencedModules display component.
+    /// Displays all modules contained in the model as a grid listing details about each module.
     /// </summary>
+    /// <example>
+    /// [Caption("Referenced Modules"), Description("Referenced Modules")]
+    /// [UIHint("ReferencedModules"), ReadOnly]
+    /// public SerializableList&lt;ModuleDefinition.ReferencedModule&gt; ReferencedModules { get; set; }
+    /// </example>
+    [UsesAdditional("Header", "bool", "true", "Defines whether the grid header is shown.")]
     public class ReferencedModulesDisplayComponent : ReferencedModulesComponentBase, IYetaWFComponent<SerializableList<ModuleDefinition.ReferencedModule>> {
 
         /// <summary>
@@ -131,8 +137,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the ReferencedModules edit component.
+    /// Displays all unique modules available as a grid listing details about each module, allowing the user to select 0, 1 or multiple modules with the grid using the check box displayed. Modules contained within the model are selected.
     /// </summary>
+    /// <example>
+    /// [Caption("Referenced Modules"), Description("Referenced Modules")]
+    /// [UIHint("ReferencedModules")]
+    /// public SerializableList&lt;ModuleDefinition.ReferencedModule&gt; ReferencedModules { get; set; }
+    /// </example>
+    [UsesAdditional("Header", "bool", "true", "Defines whether the grid header is shown.")]
     public class ReferencedModulesEditComponent : ReferencedModulesComponentBase, IYetaWFComponent<SerializableList<ModuleDefinition.ReferencedModule>> {
 
         /// <summary>

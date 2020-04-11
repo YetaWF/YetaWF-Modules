@@ -38,8 +38,21 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the PageDefinitions display component.
+    /// Displays the model as a grid listing all the pages with detail information. The model cannot be null. If the model is an empty list, an empty grid is rendered.
     /// </summary>
+    /// <example>
+    /// [Category("Pages"), Caption("Pages"), Description("The pages where this module is used")]
+    /// [UIHint("PageDefinitions"), ReadOnly]
+    /// public List&lt;PageDefinition&gt; Pages {
+    ///     get {
+    ///         if (_pages == null)
+    ///             _pages = PageDefinition.GetPagesFromModule(ModuleGuid);
+    ///         return _pages;
+    ///     }
+    /// }
+    /// private List&lt;PageDefinition&gt; _pages;
+    /// </example>
+    [UsesAdditional("Header", "bool", "true", "Defines whether the grid header is shown.")]
     public class PageDefinitionsDisplayComponent : PageDefinitionsComponentBase, IYetaWFComponent<List<PageDefinition>> {
 
         /// <summary>

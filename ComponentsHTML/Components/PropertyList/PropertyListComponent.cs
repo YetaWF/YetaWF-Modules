@@ -15,8 +15,17 @@ using YetaWF.Modules.ComponentsHTML.Controllers;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Implementation of the PropertyList display component.
+    /// Displays the model and all its contained properties with labels, tooltips and all property values, rendered using their respective UIHint() definitions.
     /// </summary>
+    /// <remarks>
+    /// This is typically used within forms to display large amounts of information. This is the main component used throughout YetaWF to display information to the user.
+    /// 
+    /// For more information see Property Lists.
+    /// </remarks>
+    /// <example>
+    /// [UIHint("PropertyList"), ReadOnly]
+    /// public ModuleDefinition Module { get; set; }
+    /// </example>
     public partial class PropertyListDisplayComponent : PropertyListComponentBase, IYetaWFContainer<object>, IYetaWFComponent<object> {
 
         /// <summary>
@@ -46,8 +55,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the PropertyList edit component.
+    /// Allows editing the model and all its contained properties with labels, tooltips and all property values, rendered and edited using their respective UIHint() definitions. 
     /// </summary>
+    /// <remarks>
+    /// This is typically used within forms to display large amounts of information.  This is the main component used throughout YetaWF to display information to the user.
+    /// </remarks>
+    /// <example>
+    /// [UIHint("PropertyList")]
+    /// public SiteDefinition Site { get; set; }
+    /// </example>
     public partial class PropertyListEditComponent : PropertyListComponentBase, IYetaWFContainer<object>, IYetaWFComponent<object> {
 
         /// <summary>

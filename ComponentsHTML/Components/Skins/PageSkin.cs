@@ -35,8 +35,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the PageSkin display component.
+    /// Displays the selected page skin information. The model defines the skin definition and cannot be null.
     /// </summary>
+    /// <example>
+    /// [Category("Skin"), Caption("Page Skin"), Description("The skin used to display the page")]
+    /// [UIHint("PageSkin"), ReadOnly]
+    /// public SkinDefinition SelectedSkin { get; set; }
+    /// </example>
     public class PageSkinDisplayComponent : PageSkinComponentBase, IYetaWFComponent<SkinDefinition> {
 
         /// <summary>
@@ -90,8 +95,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the PageSkin edit component.
+    /// Allows selection of a page skin from all the available skin collections.
     /// </summary>
+    /// <example>
+    /// [Category("Skin"), Caption("Page Skin"), Description("The skin used to display the page")]
+    /// [UIHint("PageSkin"), Trim]
+    /// public SkinDefinition SelectedSkin { get; set; }
+    /// </example>
+    [UsesAdditional("NoDefault", "bool", "false", "Defines whether a \"(Site Default)\" entry is automatically added as the first entry, with a value of null")]
     public class PageSkinEditComponent : PageSkinComponentBase, IYetaWFComponent<SkinDefinition> {
 
         /// <summary>

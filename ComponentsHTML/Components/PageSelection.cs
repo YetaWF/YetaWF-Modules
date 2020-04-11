@@ -40,8 +40,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the PageSelection display component.
+    /// Displays the page name based on the model's page Guid.
     /// </summary>
+    /// <example>
+    /// [Caption("Master Page"), Description("Defines the master page for the Unified Page Set that defines the skin, referenced modules, authorization and all other page attributes")]
+    /// [UIHint("PageSelection"), ReadOnly]
+    /// public Guid MasterPageGuid { get; set; }
+    /// </example>
     public class PageSelectionComponentDisplay : PageSelectionComponentBase, IYetaWFComponent<Guid>, IYetaWFComponent<Guid?> {
 
         /// <summary>
@@ -78,8 +83,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the PageSelection edit component.
+    /// Allows selection of a designed page using a dropdown list. The model contains the page Guid.
     /// </summary>
+    /// <remarks>
+    /// When a page is selected, a link is shown to open the selected page in a new window.
+    /// </remarks>
+    /// <example>
+    /// [Category("Skin"), Caption("Template"), Description("The local designed page used as a template for this page - All modules from the template are copied and rendered on this page in their defined pane - Modules in panes that are not available are not shown - Any page can be used as a template")]
+    /// [UIHint("PageSelection"), Trim]
+    /// public Guid? TemplateGuid { get; set; }
+    /// </example>
     public class PageSelectionComponentEdit : PageSelectionComponentBase, IYetaWFComponent<Guid>, IYetaWFComponent<Guid?> {
 
         /// <summary>

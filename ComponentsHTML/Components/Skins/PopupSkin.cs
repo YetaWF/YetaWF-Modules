@@ -35,8 +35,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the PopupSkin display component.
+    /// Displays the selected page skin information. The model defines the skin definition and cannot be null.
     /// </summary>
+    /// <example>
+    /// [Category("Skin"), Caption("Popup Skin"), Description("The skin used when the page is displayed in a popup window")]
+    /// [UIHint("PopupSkin"), ReadOnly]
+    /// public SkinDefinition SelectedPopupSkin { get; set; }
+    /// </example>
     public class PopupSkinDisplayComponent : PopupSkinComponentBase, IYetaWFComponent<SkinDefinition> {
 
         /// <summary>
@@ -90,8 +95,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Implementation of the PopupSkin edit component.
+    /// Allows selection of a popup skin from all the available skin collections.
     /// </summary>
+    /// <example>
+    /// [Category("Skin"), Caption("Popup Skin"), Description("The skin used when the page is displayed in a popup window")]
+    /// [UIHint("PopupSkin"), Trim]
+    /// public SkinDefinition SelectedPopupSkin { get; set; }
+    /// </example>
+    [UsesAdditional("NoDefault", "bool", "false", "Defines whether a \"(Site Default)\" entry is automatically added as the first entry, with a value of null")]
     public class PopupSkinEditComponent : PopupSkinComponentBase, IYetaWFComponent<SkinDefinition> {
 
         /// <summary>

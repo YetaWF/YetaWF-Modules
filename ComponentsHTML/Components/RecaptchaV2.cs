@@ -8,8 +8,13 @@ using YetaWF.Core.Support;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Implementation of the RecaptchaV2 edit component.
+    /// Shows a captcha which prompts the user to confirm the he/she is not a robot by clicking on a checkbox.
     /// </summary>
+    /// <example>
+    /// [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
+    /// [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot")]
+    /// public RecaptchaV2Data Captcha { get; set; }
+    /// </example>
     public class RecaptchaV2EditComponent : YetaWFComponent, IYetaWFComponent<RecaptchaV2Data> {
 
         internal const string TemplateName = "RecaptchaV2";
