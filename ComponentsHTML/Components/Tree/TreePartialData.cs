@@ -3,6 +3,7 @@
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.ResponseFilter;
 using YetaWF.Core.Support;
@@ -13,6 +14,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// <summary>
     /// Renders partial tree data. This component is used by the tree component and is not directly used by an application.
     /// </summary>
+    [PrivateComponent]
     public class TreeDataContainer : YetaWFComponent, IYetaWFContainer<TreePartialData> {
 
         internal const string TemplateName = "TreePartialData";

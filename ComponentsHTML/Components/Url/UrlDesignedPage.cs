@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 
@@ -38,6 +39,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// <summary>
     /// Internal component used by the Url component. Not intended for application use.
     /// </summary>
+    [PrivateComponent]
     public class UrlDesignedPageEditComponent : UrlDesignedPageComponentBase, IYetaWFComponent<string> {
 
         /// <summary>

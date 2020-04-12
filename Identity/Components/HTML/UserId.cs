@@ -43,6 +43,14 @@ namespace YetaWF.Modules.Identity.Components {
         }
     }
 
+    /// <summary>
+    /// Displays the model's user ID as a formatted user name. For authorized users, icons are rendered to login as the user shown and to display user information.
+    /// </summary>
+    /// <example>
+    /// [Caption("User Id"), Description("The user's name or email address (if available)")]
+    /// [UIHint("YetaWF_Identity_UserId"), ReadOnly]
+    /// public int UserId { get; set; }
+    /// </example>
     public class UserIdDisplayComponent : UserIdComponentBase, IYetaWFComponent<int?> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
@@ -86,6 +94,22 @@ namespace YetaWF.Modules.Identity.Components {
             return hb.ToString();
         }
     }
+
+    /// <summary>
+    /// Allows selection of a user name from a dropdown list or grid. The model represents the user ID.
+    /// </summary>
+    /// <remarks>
+    /// If a site has more than 50 users, a grid is used to show all users, otherwise a dropdown list is used for selection.
+    /// 
+    /// A sample page for this component is available at Tests > Components > UserId (standard YetaWF site).
+    /// </remarks>
+    /// <example>
+    /// [Caption("User"), Description("Defines the user")]
+    /// [UIHint("YetaWF_Identity_UserId"), AdditionalMetadata("Force", "Grid"), Trim]
+    /// public int SelectedUser { get; set; }
+    /// </example>
+    [UsesAdditional("Header", "bool", "true", "Defines whether the grid header is shown.")]
+    [UsesAdditional("Force", "string", "null", "Used to override the default grid or dropdownlist show. Specify \"Grid\" to force using a grid, or \"DropDown\" to force a dropdown list.")]
     public class UserIdEditComponent : UserIdComponentBase, IYetaWFComponent<int> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }

@@ -55,7 +55,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [UIHint("Enum"), AdditionalMetadata("ShowEnumValue", false), ReadOnly]
     /// public LevelEnum Level { get; set; }
     /// </example>
-    [UsesAdditionalAttribute("ShowEnumValue", "bool", "true", "If true, the enum value is displayed along with the descriptive text for the enum. Otherwise, the value of the enum is not displayed. In either case, enum values are only shown if the user's User Settings (see User > Edit Settings, standard YetaWF site) has the ShowEnumValue property set to true. AdditionalMetadata(\"ShowEnumValue\", false) is normally used in grids to explicitly suppress the enum value so only the descriptive text is shown.")]
+    [UsesAdditionalAttribute("ShowEnumValue", "bool", "true", "If true, the enum value is displayed along with the descriptive text for the enum. Otherwise, the value of the enum is not displayed. In either case, enum values are only shown if the user's User Settings (see User > Settings, standard YetaWF site) has the ShowEnumValue property set to true. AdditionalMetadata(\"ShowEnumValue\", false) is normally used in grids to explicitly suppress the enum value so only the descriptive text is shown.")]
     public class EnumDisplayComponent : EnumComponentBase, IYetaWFComponent<object> {
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// Allows selection of an enum value using a dropdown list which is created based on the enum type and the EnumDescription attributes (if present).
     /// </summary>
     /// <remarks>
-    /// Enum values are only shown if the user's User Settings (see User > Edit Settings, standard YetaWF site) has the ShowEnumValue property set to true.
+    /// Enum values are only shown if the user's User Settings (see User > Settings, standard YetaWF site) has the ShowEnumValue property set to true.
     /// </remarks>
     /// <example>
     /// public enum TabStyleEnum {

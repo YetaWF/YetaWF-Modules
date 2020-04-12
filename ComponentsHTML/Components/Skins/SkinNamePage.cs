@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
@@ -36,6 +37,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// <summary>
     /// Internal component used by the PageSkin and PopupSkins components. Not intended for application use.
     /// </summary>
+    [PrivateComponent]
     public class SkinNamePageDisplayComponent : SkinNamePageComponentBase, IYetaWFComponent<string> {
 
         /// <summary>
@@ -68,6 +70,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// <summary>
     /// Internal component used by the PageSkin and PopupSkins components. Not intended for application use.
     /// </summary>
+    [PrivateComponent]
     public class SkinNamePageEditComponent : SkinNamePageComponentBase, IYetaWFComponent<string> {
 
         /// <summary>

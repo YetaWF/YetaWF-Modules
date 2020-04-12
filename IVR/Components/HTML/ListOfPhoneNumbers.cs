@@ -29,6 +29,17 @@ namespace Softelvdm.Modules.IVR.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
+    /// <summary>
+    /// Displays the model's list of phone numbers in a grid.
+    /// </summary>
+    /// <example>
+    /// [Caption("Phone Numbers / SMS"), Description("Shows the phone numbers to call when this extension is entered and the text messaging selection")]
+    /// [UIHint("Softelvdm_IVR_ListOfPhoneNumbers"), AdditionalMetadata("UseSkinFormatting", false), AdditionalMetadata("Header", false), AdditionalMetadata("Pager", false), ReadOnly]
+    /// public SerializableList&lt;ExtensionPhoneNumber&gt; PhoneNumbers { get; set; }
+    /// </example>
+    [UsesAdditional("Header", "bool", "true", "Defines whether the grid header is shown.")]
+    [UsesAdditional("Pages", "bool", "true", "Defines whether the grid pager is shown.")]
+    [UsesAdditional("UseSkinFormatting", "bool", "true", "Defines whether the grid uses skin-based rendering using the defined page skin.")]
     public class ListOfPhoneNumbersDisplayComponent : ListOfPhoneNumbersComponentBase, IYetaWFComponent<SerializableList<ExtensionPhoneNumber>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
@@ -100,6 +111,14 @@ namespace Softelvdm.Modules.IVR.Components {
         }
     }
 
+    /// <summary>
+    /// Allows entering/adding phone numbers to a list of phone numbers in a grid.
+    /// </summary>
+    /// <example>
+    /// [Category("Notifications"), Caption("SMS Numbers"), Description("Defines the phone numbers that receive a text message whenever a call is received")]
+    /// [UIHint("Softelvdm_IVR_ListOfPhoneNumbers")]
+    /// public SerializableList&lt;ExtensionPhoneNumber&gt; PhoneNumbers { get; set; }
+    /// </example>
     public class ListOfPhoneNumbersEditComponent : ListOfPhoneNumbersComponentBase, IYetaWFComponent<SerializableList<ExtensionPhoneNumber>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }

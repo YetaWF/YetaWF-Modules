@@ -30,6 +30,10 @@ namespace YetaWF.Modules.Identity.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
+    /// <summary>
+    /// This component is used by the YetaWF.Identity package and is not intended for use by an application.
+    /// </summary>
+    [PrivateComponent]
     public class ResourceUsersDisplayComponent : ResourceUsersComponentBase, IYetaWFComponent<List<User>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
@@ -92,6 +96,10 @@ namespace YetaWF.Modules.Identity.Components {
             return hb.ToString();
         }
     }
+    /// <summary>
+    /// This component is used by the YetaWF.Identity package and is not intended for use by an application.
+    /// </summary>
+    [PrivateComponent]
     public class ResourceUsersEditComponent : ResourceUsersComponentBase, IYetaWFComponent<List<User>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }

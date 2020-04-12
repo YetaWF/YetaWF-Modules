@@ -13,6 +13,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// <summary>
     /// Internal component used by the Url component. Not intended for application use.
     /// </summary>
+    [PrivateComponent]
     public class UrlTypeComponent : YetaWFComponent, IYetaWFComponent<UrlTypeEnum> {
 
         internal const string TemplateName = "UrlType";

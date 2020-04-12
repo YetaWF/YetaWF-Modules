@@ -23,6 +23,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
+    /// <summary>
+    /// Shows a list of roles in a grid. The model contains the list of roles. 
+    /// </summary>
+    /// <remarks>
+    /// For information about roles in YetaWF, see the Authorization topic.
+    /// </remarks>
+    /// <example>
+    /// [Caption("Two-Step Authentication"), Description("Shows which roles require mandatory two-step authentication")]
+    /// [UIHint("YetaWF_Identity_RolesSelector"), ReadOnly]
+    /// public SerializableList&lt;Role&gt; TwoStepAuth { get; set; }
+    /// </example>
     public class RolesSelectorDisplayComponent : RolesSelectorComponentBase, IYetaWFComponent<SerializableList<Role>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
@@ -97,6 +108,21 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return hb.ToString();
         }
     }
+
+    /// <summary>
+    /// Shows a list of all roles in a grid. Individual roles can be selected/deselected. The model contains the list of selected roles. 
+    /// </summary>
+    /// <remarks>
+    /// For information about roles in YetaWF, see the Authorization topic.
+    /// </remarks>
+    /// <example>
+    /// [Caption("Two-Step Authentication"), Description("Defines which roles require mandatory two-step authentication")]
+    /// [UIHint("YetaWF_Identity_RolesSelector"), AdditionalMetadata("ExcludeUser2FA", true)]
+    /// public SerializableList&lt;Role&gt; TwoStepAuth { get; set; }
+    /// </example>
+    [UsesAdditional("Header", "bool", "true", "Defines whether the grid header is shown.")]
+    [UsesAdditional("ShowFilter", "bool", "false", "Defines whether the grid filters are shown.")]
+    [UsesAdditional("ExcludeUser2FA", "bool?", "null", "Defines whether the role \"User (two-step authentication setup required)\" is excluded from the list.")]
     public class RolesSelectorEditComponent : RolesSelectorComponentBase, IYetaWFComponent<SerializableList<Role>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }

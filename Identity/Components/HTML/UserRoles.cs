@@ -23,6 +23,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override string GetTemplateName() { return TemplateName; }
 
     }
+    /// <summary>
+    /// This component is used by the YetaWF.Identity package and is not intended for use by an application.
+    /// </summary>
+    [PrivateComponent]
     public class UserRolesDisplayComponent : UserRolesComponentBase, IYetaWFComponent<SerializableList<YetaWF.Core.Identity.Role>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
@@ -103,6 +107,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
     }
 
+    /// <summary>
+    /// This component is used by the YetaWF.Identity package and is not intended for use by an application.
+    /// </summary>
+    [PrivateComponent]
     public class UserRolesEditComponent : UserRolesComponentBase, IYetaWFComponent<SerializableList<YetaWF.Core.Identity.Role>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }

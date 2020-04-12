@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 
@@ -14,6 +15,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// <summary>
     /// Internal component used by the ModuleSelection component. Not intended for application use.
     /// </summary>
+    [PrivateComponent]
     public class ModuleSelectionPackageNewEditComponent : YetaWFComponent, IYetaWFComponent<Guid?> {
 
         internal const string TemplateName = "ModuleSelectionPackageNew";

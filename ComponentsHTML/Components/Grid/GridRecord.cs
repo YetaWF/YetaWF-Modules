@@ -3,6 +3,7 @@
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Controllers;
@@ -12,6 +13,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// <summary>
     /// Renders a grid record. This component is used by the grid component and is not directly used by an application.
     /// </summary>
+    [PrivateComponent]
     public class GridRecordContainer : YetaWFComponent, IYetaWFContainer<GridRecordData> {
 
         internal const string TemplateName = "GridRecord";

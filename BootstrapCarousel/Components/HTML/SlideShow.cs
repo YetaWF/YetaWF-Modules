@@ -23,6 +23,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
     /// <summary>
     /// This component is used by the YetaWF.BootstrapCarousel package and is not intended for use by an application.
     /// </summary>
+    [PrivateComponent]
     public class SlideShowDisplayComponent : SlideShowComponent, IYetaWFComponent<CarouselInfo> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
@@ -101,6 +102,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
     /// <summary>
     /// This component is used by the YetaWF.BootstrapCarousel package and is not intended for use by an application.
     /// </summary>
+    [PrivateComponent]
     public class SlideShowEditComponent : SlideShowComponent, IYetaWFComponent<CarouselInfo> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }

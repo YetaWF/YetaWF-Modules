@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
-using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
@@ -30,6 +29,17 @@ namespace YetaWF.Modules.Identity.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
+    /// <summary>
+    /// Shows a list of user accounts in a grid. The model contains the list of user accounts. 
+    /// </summary>
+    /// <example>
+    /// [Caption("Users"), Description("Shows the users that can access voice mails for this extension")]
+    /// [UIHint("YetaWF_Identity_ListOfUserNames"), ReadOnly]
+    /// public SerializableList&lt;User&gt; Users { get; set; }
+    /// </example>
+    [UsesAdditional("Header", "bool", "true", "Defines whether the grid header is shown.")]
+    [UsesAdditional("Pager", "bool", "true", "Defines whether the grid pager is shown.")]
+    [UsesAdditional("UseSkinFormatting", "bool", "true", "Defines whether the grid uses skin-based rendering using the defined page skin.")]
     public class ListOfUserNamesDisplayComponent : ListOfUserNamesComponentBase, IYetaWFComponent<SerializableList<User>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
@@ -105,6 +115,15 @@ namespace YetaWF.Modules.Identity.Components {
         }
     }
 
+    /// <summary>
+    /// Allows adding/removing users from a list of user accounts in a grid. The model contains the list of user accounts. 
+    /// </summary>
+    /// <example>
+    /// [Caption("Users"), Description("Defines the users that can access voice mails for this extension")]
+    /// [UIHint("YetaWF_Identity_ListOfUserNames")]
+    /// public SerializableList&lt;User&gt; Users { get; set; }
+    /// </example>
+    [UsesAdditional("Header", "bool", "true", "Defines whether the grid header is shown.")]
     public class ListOfUserNamesEditComponent : ListOfUserNamesComponentBase, IYetaWFComponent<SerializableList<User>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
