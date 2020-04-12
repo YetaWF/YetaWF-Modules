@@ -20,6 +20,10 @@ namespace YetaWF.Modules.Panels.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
+    /// <summary>
+    /// This component is used by the YetaWF.Panels package and is not intended for use by an application.
+    /// </summary>
+    [PrivateComponent]
     public class ModuleStepInfoDisplayComponent : StepInfoComponentBase, IYetaWFComponent<StepInfo> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
@@ -59,6 +63,11 @@ namespace YetaWF.Modules.Panels.Components {
             return Task.FromResult(hb.ToString());
         }
     }
+
+    /// <summary>
+    /// This component is used by the YetaWF.Panels package and is not intended for use by an application.
+    /// </summary>
+    [PrivateComponent]
     public class ModuleStepInfoEditComponent : StepInfoComponentBase, IYetaWFComponent<StepInfo> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }

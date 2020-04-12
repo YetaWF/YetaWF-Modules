@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
@@ -19,6 +20,11 @@ namespace YetaWF.Modules.SyntaxHighlighter.Components {
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
     }
+
+    /// <summary>
+    /// This component is used by the YetaWF.SyntaxHighlighter package and is not intended for use by an application.
+    /// </summary>
+    [PrivateComponent]
     public class HighlightJSDisplayComponent : HighlightJSComponent, IYetaWFComponent<string> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
@@ -40,6 +46,11 @@ namespace YetaWF.Modules.SyntaxHighlighter.Components {
             return Task.FromResult(hb.ToString());
         }
     }
+
+    /// <summary>
+    /// This component is used by the YetaWF.SyntaxHighlighter package and is not intended for use by an application.
+    /// </summary>
+    [PrivateComponent]
     public class HighlightJSEditComponent : HighlightJSComponent, IYetaWFComponent<string> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }

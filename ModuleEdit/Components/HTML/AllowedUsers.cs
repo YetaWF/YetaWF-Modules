@@ -31,6 +31,10 @@ namespace YetaWF.Modules.ModuleEdit.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
+    /// <summary>
+    /// This component is used by the YetaWF.ModuleEdit package and is not intended for use by an application.
+    /// </summary>
+    [PrivateComponent]
     public class AllowedUsersEditComponent : AllowedUsersComponentBase, IYetaWFComponent<SerializableList<ModuleDefinition.AllowedUser>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }

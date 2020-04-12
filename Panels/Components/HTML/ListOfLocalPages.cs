@@ -5,20 +5,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Components;
+using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Pages;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Modules.Panels.Controllers;
-using YetaWF.Core.Skins;
-using YetaWF.Core.Pages;
-using YetaWF.Modules.Panels.Models;
-using YetaWF.Core.DataProvider;
 using YetaWF.Modules.Pages.DataProvider;
-using YetaWF.Core.Controllers;
+using YetaWF.Modules.Panels.Controllers;
+using YetaWF.Modules.Panels.Models;
 #if MVC6
 #else
 using System.Web.Mvc;
@@ -36,6 +35,10 @@ namespace YetaWF.Modules.Panels.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
+    /// <summary>
+    /// This component is used by the YetaWF.Panels package and is not intended for use by an application.
+    /// </summary>
+    [PrivateComponent]
     public class ListOfLocalPagesEditComponent : ListOfLocalPagesComponentBase, IYetaWFComponent<List<LocalPage>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }

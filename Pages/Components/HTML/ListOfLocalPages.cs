@@ -34,6 +34,10 @@ namespace YetaWF.Modules.Pages.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
+    /// <summary>
+    /// This component is used by the YetaWF.Pages package and is not intended for use by an application.
+    /// </summary>
+    [PrivateComponent]
     public class ListOfLocalPagesDisplayComponent : ListOfLocalPagesComponentBase, IYetaWFComponent<List<string>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
@@ -91,6 +95,10 @@ namespace YetaWF.Modules.Pages.Components {
         }
     }
 
+    /// <summary>
+    /// This component is used by the YetaWF.Pages package and is not intended for use by an application.
+    /// </summary>
+    [PrivateComponent]
     public class ListOfLocalPagesEditComponent : ListOfLocalPagesComponentBase, IYetaWFComponent<List<string>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }

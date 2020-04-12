@@ -3,6 +3,7 @@
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Scheduler;
 using YetaWF.Core.Support;
@@ -19,6 +20,11 @@ namespace YetaWF.Modules.Scheduler.Components {
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
     }
+
+    /// <summary>
+    /// This component is used by the YetaWF.Scheduler package and is not intended for use by an application.
+    /// </summary>
+    [PrivateComponent]
     public class FrequencyDisplayComponent : FrequencyComponentBase, IYetaWFComponent<SchedulerFrequency> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
@@ -38,6 +44,11 @@ namespace YetaWF.Modules.Scheduler.Components {
             return hb.ToString();
         }
     }
+
+    /// <summary>
+    /// This component is used by the YetaWF.Scheduler package and is not intended for use by an application.
+    /// </summary>
+    [PrivateComponent]
     public class FrequencyEditComponent : FrequencyComponentBase, IYetaWFComponent<SchedulerFrequency> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }

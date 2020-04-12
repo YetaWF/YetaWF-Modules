@@ -7,6 +7,7 @@ using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
@@ -23,6 +24,10 @@ namespace YetaWF.Modules.ModuleEdit.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
+    /// <summary>
+    /// This component is used by the YetaWF.ModuleEdit package and is not intended for use by an application.
+    /// </summary>
+    [PrivateComponent]
     public class AllowedRolesEditComponent : AllowedRolesComponentBase, IYetaWFComponent<SerializableList<ModuleDefinition.AllowedRole>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
@@ -20,6 +21,10 @@ namespace YetaWF.Modules.Panels.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
+    /// <summary>
+    /// This component is used by the YetaWF.Panels package and is not intended for use by an application.
+    /// </summary>
+    [PrivateComponent]
     public class PagePanelInfoDisplayComponent : PagePanelInfoComponentBase, IYetaWFComponent<PagePanelInfo> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }

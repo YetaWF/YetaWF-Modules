@@ -1,6 +1,5 @@
 ﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
 
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
@@ -21,6 +20,11 @@ namespace YetaWF.Modules.Panels.Components {
         public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
     }
+
+    /// <summary>
+    /// This component is used by the YetaWF.Panels package and is not intended for use by an application.
+    /// </summary>
+    [PrivateComponent]
     public class ModulePanelInfoDisplayComponent : PanelInfoComponentBase, IYetaWFComponent<PanelInfo> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
@@ -173,6 +177,11 @@ $panelBar.select();");
             return hb.ToString();
         }
     }
+
+    /// <summary>
+    /// This component is used by the YetaWF.Panels package and is not intended for use by an application.
+    /// </summary>
+    [PrivateComponent]
     public class ModulePanelInfoEditComponent : PanelInfoComponentBase, IYetaWFComponent<PanelInfo> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }

@@ -21,6 +21,10 @@ namespace YetaWF.Modules.Languages.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
+    /// <summary>
+    /// This component is used by the YetaWF.Languages package and is not intended for use by an application.
+    /// </summary>
+    [PrivateComponent]
     public class LocalizeClassesEditComponent : LocalizeClassesComponentBase, IYetaWFComponent<SerializableList<LocalizationData.ClassData>> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
