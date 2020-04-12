@@ -56,7 +56,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         /// <summary>
-        /// Loads the grid column definitions for a grid based.
+        /// Loads the grid column definitions for a grid.
         /// </summary>
         /// <param name="recordType">The record type for which grid column definitions are to be loaded.</param>
         /// <returns>A GridDictionaryInfo.ReadGridDictionaryInfo object describing the grid.</returns>
