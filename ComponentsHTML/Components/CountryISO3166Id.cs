@@ -25,10 +25,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// public string CountryId { get; set; }
     /// </example>
     [UsesAdditional("SiteCountry", "bool", "true", "Defines whether the site's defined country is shown in the list of countries. If shown, it will always be shown as the first entry.")]
-    /// <summary>
-    /// Implementation of the CountryISO3166Id edit component.
-    /// Allows selection by country name and uses as model value.
-    /// </summary>
     public class CountryISO3166IdEditComponent : YetaWFComponent, IYetaWFComponent<string> {
 
         internal const string TemplateName = "CountryISO3166Id";
