@@ -6,7 +6,7 @@ using YetaWF.Core.Packages;
 using YetaWF.PackageAttributes;
 
 [assembly: AssemblyTitle("TwilioProcessorDataProvider")]
-[assembly: AssemblyDescription("Twilio - Build apps that communicate with everyone in the world. Voice & Video, Messaging, and Authentication APIs for every application.")]
+[assembly: AssemblyDescription("Data provider for the Softelvdm.TwilioProcessor package.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Softel vdm, Inc.")]
 [assembly: AssemblyProduct("TwilioProcessorDataProvider")]
