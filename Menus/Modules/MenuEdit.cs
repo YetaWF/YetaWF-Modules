@@ -7,13 +7,8 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
-using YetaWF.DataProvider;
-using System.Collections.Generic;
 using YetaWF.Core.Support;
-#if MVC6
-using Microsoft.AspNetCore.Routing;
-#else
-#endif
+using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Menus.Modules {
 
