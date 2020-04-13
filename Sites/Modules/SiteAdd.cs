@@ -18,7 +18,7 @@ namespace YetaWF.Modules.Sites.Modules {
         public SiteAddModule() {
             Title = this.__ResStr("modTitle", "Add New Site");
             Name = this.__ResStr("modName", "Add New Site");
-            Description = this.__ResStr("modSummary", "Creates a new web site. It is used by the Sites Module. It is recommended to add the new site domain to your hosts file {b}before{/b} adding a new site, so IIS can resolve the site when it is requested the first time.");
+            Description = this.__ResStr("modSummary", "Creates a new web site. It is used by the Sites Module. It is recommended to add the new site domain to your hosts file BEFORE adding a new site, so IIS can resolve the site when it is requested the first time.");
             DefaultViewName = StandardViews.Add;
         }
 

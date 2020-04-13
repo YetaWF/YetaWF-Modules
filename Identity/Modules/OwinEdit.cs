@@ -21,8 +21,7 @@ namespace YetaWF.Modules.Identity.Modules {
         public OwinEditModule() : base() {
             Title = this.__ResStr("modTitle", "Login Provider Settings");
             Name = this.__ResStr("modName", "Login Provider Settings");
-            Description = this.__ResStr("modSummary", "Used to edit local and external login provider settings like Google, Facebook, etc. " +
-                "The Login Provider Settings Module can be accessed using Admin > Identity Settings > Login Providers(standard YetaWF site).");
+            Description = this.__ResStr("modSummary", "Used to edit local and external login provider settings like Google, Facebook, etc. The Login Provider Settings Module can be accessed using Admin > Identity Settings > Login Providers(standard YetaWF site).");
             UsePartialFormCss = false;
         }
 

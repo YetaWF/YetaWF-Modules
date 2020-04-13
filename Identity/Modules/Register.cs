@@ -42,7 +42,7 @@ namespace YetaWF.Modules.Identity.Modules {
         public RegisterModule() {
             Title = this.__ResStr("title", "New User Registration");
             Name = this.__ResStr("title", "New User Registration");
-            Description = this.__ResStr("modSummary", "Used by new users to register a new account on the current site. The User Login Settings Module can be used to disable new user registration. The New User Registration can be accessed using User > Register(standard YetaWF site).");
+            Description = this.__ResStr("modSummary", "Used by new users to register a new account on the current site. The User Login Settings Module can be used to disable new user registration. The New User Registration can be accessed using User > Register (standard YetaWF site).");
             ShowHelp = true;
         }
 

@@ -25,7 +25,7 @@ namespace YetaWF.Modules.UserProfile.Modules {
         public ProfileEditModule() {
             Title = this.__ResStr("modTitle", "User Profile");
             Name = this.__ResStr("modName", "Edit User Profile");
-            Description = this.__ResStr("modSummary", "Edits the logged on user's profile (name, address). This is accessible using User > Profile (standard YetaWF site).");
+            Description = this.__ResStr("modSummary", "Edits the logged on user's profile (name, address). This is accessible using User > My Profile (standard YetaWF site).");
             DefaultViewName = StandardViews.Edit;
         }
 

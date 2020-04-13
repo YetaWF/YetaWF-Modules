@@ -21,8 +21,7 @@ namespace YetaWF.Modules.Identity.Modules {
         public UserAccountModule() : base() {
             Title = this.__ResStr("modTitle", "User Account");
             Name = this.__ResStr("modName", "User Account");
-            Description = this.__ResStr("modSummary", "Used to edit the current user's account user name or email address and displays additional information. " +
-                "The User Account Module can be accessed using User > Account (standard YetaWF site).");
+            Description = this.__ResStr("modSummary", "Used to edit the current user's account user name or email address and displays additional information. The User Account Module can be accessed using User > Account (standard YetaWF site).");
             DefaultViewName = StandardViews.EditApply;
         }
 
