@@ -1,10 +1,10 @@
 ﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Addons;
@@ -44,6 +44,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [UIHint("TextAreaSourceOnly"), ReadOnly]
     /// public string Comment { get; set; }
     /// </example>
+    [UsesAdditional("EmHeight", "int", "10", "Defines the height of the component in lines of text.")]
+    [UsesAdditional("Copy", "bool", "true", "Defines whether a copy icon is displayed to allow the user to copy the contents to the clipboard. If false is specified, no copy icon is shown.")]
     public class TextAreaSourceOnlyDisplayComponent : TextAreaSourceOnlyComponentBase, IYetaWFComponent<object> {
 
         /// <summary>
@@ -121,6 +123,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [UIHint("TextAreaSourceOnly"), StringLength(BlogComment.MaxComment)]
     /// public string Comment { get; set; }
     /// </example>
+    [UsesAdditional("EmHeight", "int", "10", "Defines the height of the component in lines of text.")]
     public class TextAreaSourceOnlyEditComponent : TextAreaSourceOnlyComponentBase, IYetaWFComponent<object> {
 
         /// <summary>

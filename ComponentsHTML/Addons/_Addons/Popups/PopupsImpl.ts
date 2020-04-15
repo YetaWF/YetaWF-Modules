@@ -79,12 +79,22 @@ namespace YetaWF_ComponentsHTML {
                     acts.push("Maximize");
                 acts.push("Close");
 
+                let width = YVolatile.Skin.PopupWidth;
+                let height: string|number = "auto";
+                let maxHeight = YVolatile.Skin.PopupHeight;
+                let maximize = false;
+                if (width > window.innerWidth || maxHeight > window.innerHeight) {
+                    // full screen popup window
+                    maximize = true;
+                    maxHeight = Infinity;
+                }
+
                 // Create the window
                 $popupwin.kendoWindow({
                     actions: acts,
-                    width: YVolatile.Skin.PopupWidth,
-                    height: "auto",
-                    maxHeight: YVolatile.Skin.PopupHeight,
+                    width: width,
+                    height: height,
+                    maxHeight: maxHeight,
                     draggable: true,
                     iframe: false,
                     modal: true,
@@ -106,13 +116,16 @@ namespace YetaWF_ComponentsHTML {
 
                 // show and center the window
                 popup = $popupwin.data("kendoWindow");
-                popup.center().open();
+                if (maximize) 
+                    popup.maximize().open();
+                else
+                    popup.center().open();
 
                 // mark that a popup is active
                 (document as any).expando = true;
                 document.YPopupWindowActive = popup;
 
-                $YetaWF.setCondense($popupwin[0], YVolatile.Skin.PopupWidth);
+                $YetaWF.setCondense($popupwin[0], width);
 
                 done($popupwin[0]);
             });

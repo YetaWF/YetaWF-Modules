@@ -1,7 +1,9 @@
 ﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Models;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -41,13 +43,30 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
 
             string actionName = (string)HtmlHelper.RouteData.Values["action"];
 
+            string submit = null, submitTT = null; bool submitShown; ButtonTypeEnum submitType = ButtonTypeEnum.Submit; string submitName = null;
+            if (ObjectSupport.TryGetPropertyValue<bool>(model, "__submitShown", out submitShown, true) && submitShown) {
+                ObjectSupport.TryGetPropertyValue<string>(model, "__submitTT", out submitTT);
+                ObjectSupport.TryGetPropertyValue<string>(model, "__submit", out submit);
+                ObjectSupport.TryGetPropertyValue<ButtonTypeEnum>(model, "__submitType", out submitType);
+                ObjectSupport.TryGetPropertyValue<string>(model, "__submitName", out submitName);
+            }
+            string cancel = null, cancelTT = null; bool cancelShown; ButtonTypeEnum cancelType = ButtonTypeEnum.Cancel;
+            if (ObjectSupport.TryGetPropertyValue<bool>(model, "__cancelShown", out cancelShown, true) && cancelShown) {
+                ObjectSupport.TryGetPropertyValue<string>(model, "__cancelTT", out cancelTT);
+                ObjectSupport.TryGetPropertyValue<string>(model, "__cancel", out cancel);
+                ObjectSupport.TryGetPropertyValue<ButtonTypeEnum>(model, "__cancelType", out cancelType);
+            }
+
+            List<FormButton> buttons = new List<FormButton>();
+            if (submitShown)
+                buttons.Add(new FormButton() { ButtonType = submitType, Text = submit, Title = submitTT, Name = submitName });
+            if (cancelShown)
+                buttons.Add(new FormButton() { ButtonType = cancelType, Text = cancel, Title = cancelTT });
+
             hb.Append($@"
 {await RenderBeginFormAsync(ActionName: actionName)}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
-    {await FormButtonsAsync(new FormButton[] {
-        new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
-        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
-    })}
+    {await FormButtonsAsync(buttons)}
 {await RenderEndFormAsync()}");
             return hb.ToString();
         }
