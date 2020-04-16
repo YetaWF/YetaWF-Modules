@@ -196,3 +196,5 @@ var YetaWF_ComponentsHTML;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 // tslint:disable-next-line:variable-name
 var YetaWF_PopupsImpl = new YetaWF_ComponentsHTML.PopupsImpl();
+
+//# sourceMappingURL=PopupsImpl.js.map

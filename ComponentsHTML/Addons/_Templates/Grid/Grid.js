@@ -1023,15 +1023,16 @@ var YetaWF_ComponentsHTML;
             if (index < 0 || index >= this.Setup.StaticData.length)
                 throw "Index " + index + " out of bounds";
             var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
-            // append the new tr (easier to do that and then move it)
-            $YetaWF.appendMixedHTML(this.TBody, tr, true);
-            // move new entry and remove the existing row element
+            // insert the new tr
             var indexTr = trs[index];
-            this.TBody.insertBefore(this.TBody.lastChild, indexTr);
-            this.TBody.removeChild(this.TBody.lastChild);
+            $YetaWF.insertMixedHTML(indexTr, tr, true);
+            // remove the existing row element
             this.TBody.removeChild(indexTr);
             // renumber
-            this.renumberFields(trs[index], 0, index);
+            trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
+            indexTr = trs[index];
+            this.renumberFields(indexTr, 0, index);
+            $YetaWF.setAttribute(indexTr, "data-origin", index.toString());
             // replace the static data record
             this.Setup.StaticData[index] = staticData;
             this.updatePage();
@@ -1219,3 +1220,5 @@ var YetaWF_ComponentsHTML;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.Grid = Grid;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+
+//# sourceMappingURL=Grid.js.map

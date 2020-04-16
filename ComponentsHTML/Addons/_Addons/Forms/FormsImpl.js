@@ -159,3 +159,5 @@ var YetaWF_ComponentsHTML;
 var YetaWF_FormsImpl = new YetaWF_ComponentsHTML.FormsImpl();
 /* Page load */
 $YetaWF.addWhenReady(YetaWF_FormsImpl.initForm);
+
+//# sourceMappingURL=FormsImpl.js.map

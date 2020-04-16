@@ -46,7 +46,7 @@ namespace YetaWF_ComponentsHTML {
                     var event = document.createEvent("Event");
                     event.initEvent("currency_change", true, true);
                     this.Control.dispatchEvent(event);
-                    FormsSupport.validateElement(this.Control);
+                    FormsSupport.validateElement(this.Currency);
                 }
             });
             this.kendoNumericTextBox = $(this.Currency).data("kendoNumericTextBox");

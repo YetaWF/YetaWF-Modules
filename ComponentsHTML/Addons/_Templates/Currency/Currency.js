@@ -42,7 +42,7 @@ var YetaWF_ComponentsHTML;
                     var event = document.createEvent("Event");
                     event.initEvent("currency_change", true, true);
                     _this.Control.dispatchEvent(event);
-                    FormsSupport.validateElement(_this.Control);
+                    FormsSupport.validateElement(_this.Currency);
                 }
             });
             _this.kendoNumericTextBox = $(_this.Currency).data("kendoNumericTextBox");
@@ -67,3 +67,5 @@ var YetaWF_ComponentsHTML;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.CurrencyEditComponent = CurrencyEditComponent;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+
+//# sourceMappingURL=Currency.js.map

@@ -68,3 +68,5 @@ var YetaWF_ComponentsHTML;
     }(YetaWF.ComponentBaseNoDataImpl));
     YetaWF_ComponentsHTML.MarkdownEditComponent = MarkdownEditComponent;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+
+//# sourceMappingURL=MarkdownEdit.js.map

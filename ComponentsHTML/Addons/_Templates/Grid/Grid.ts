@@ -1056,15 +1056,16 @@ namespace YetaWF_ComponentsHTML {
             if (!this.Setup.StaticData) throw "Static grids only";
             if (index < 0 || index >= this.Setup.StaticData.length) throw `Index ${index} out of bounds`;
             let trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]) as HTMLTableRowElement[];
-            // append the new tr (easier to do that and then move it)
-            $YetaWF.appendMixedHTML(this.TBody, tr, true);
-            // move new entry and remove the existing row element
+            // insert the new tr
             let indexTr = trs[index];
-            this.TBody.insertBefore(this.TBody.lastChild as HTMLTableRowElement, indexTr);
-            this.TBody.removeChild(this.TBody.lastChild as HTMLTableRowElement);
+            $YetaWF.insertMixedHTML(indexTr, tr, true);
+            // remove the existing row element
             this.TBody.removeChild(indexTr);
             // renumber
-            this.renumberFields(trs[index], 0, index);
+            trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]) as HTMLTableRowElement[];
+            indexTr = trs[index];
+            this.renumberFields(indexTr, 0, index);
+            $YetaWF.setAttribute(indexTr, "data-origin", index.toString());
             // replace the static data record
             this.Setup.StaticData[index] = staticData;
             this.updatePage();
