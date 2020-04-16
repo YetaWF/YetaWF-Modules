@@ -1017,6 +1017,27 @@ var YetaWF_ComponentsHTML;
             this.reload(Math.max(0, this.Setup.Pages - 1));
             this.updateStatus();
         };
+        Grid.prototype.ReplaceRecord = function (index, tr, staticData) {
+            if (!this.Setup.StaticData)
+                throw "Static grids only";
+            if (index < 0 || index >= this.Setup.StaticData.length)
+                throw "Index " + index + " out of bounds";
+            var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
+            // append the new tr (easier to do that and then move it)
+            $YetaWF.appendMixedHTML(this.TBody, tr, true);
+            // move new entry and remove the existing row element
+            var indexTr = trs[index];
+            this.TBody.insertBefore(this.TBody.lastChild, indexTr);
+            this.TBody.removeChild(this.TBody.lastChild);
+            this.TBody.removeChild(indexTr);
+            // renumber
+            this.renumberFields(trs[index], 0, index);
+            // replace the static data record
+            this.Setup.StaticData[index] = staticData;
+            this.updatePage();
+            this.reload(Math.max(0, this.Setup.Pages - 1));
+            this.updateStatus();
+        };
         Grid.prototype.RemoveRecord = function (index) {
             if (!this.Setup.StaticData)
                 throw "Static grids only";
@@ -1198,5 +1219,3 @@ var YetaWF_ComponentsHTML;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.Grid = Grid;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=Grid.js.map

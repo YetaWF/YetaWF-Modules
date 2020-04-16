@@ -1052,6 +1052,25 @@ namespace YetaWF_ComponentsHTML {
             this.reload(Math.max(0, this.Setup.Pages - 1));
             this.updateStatus();
         }
+        public ReplaceRecord(index: number, tr: string, staticData: any): void {
+            if (!this.Setup.StaticData) throw "Static grids only";
+            if (index < 0 || index >= this.Setup.StaticData.length) throw `Index ${index} out of bounds`;
+            let trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]) as HTMLTableRowElement[];
+            // append the new tr (easier to do that and then move it)
+            $YetaWF.appendMixedHTML(this.TBody, tr, true);
+            // move new entry and remove the existing row element
+            let indexTr = trs[index];
+            this.TBody.insertBefore(this.TBody.lastChild as HTMLTableRowElement, indexTr);
+            this.TBody.removeChild(this.TBody.lastChild as HTMLTableRowElement);
+            this.TBody.removeChild(indexTr);
+            // renumber
+            this.renumberFields(trs[index], 0, index);
+            // replace the static data record
+            this.Setup.StaticData[index] = staticData;
+            this.updatePage();
+            this.reload(Math.max(0, this.Setup.Pages - 1));
+            this.updateStatus();
+        }
         public RemoveRecord(index: number): void {
             if (!this.Setup.StaticData) throw "Static grids only";
             if (index < 0 || index >= this.Setup.StaticData.length) throw `Index ${index} out of bounds`;

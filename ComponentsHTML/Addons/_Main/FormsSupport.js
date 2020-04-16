@@ -42,5 +42,3 @@ var YetaWF_ComponentsHTML;
     YetaWF_ComponentsHTML.FormsSupportClass = FormsSupportClass;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 var FormsSupport = new YetaWF_ComponentsHTML.FormsSupportClass();
-
-//# sourceMappingURL=FormsSupport.js.map

@@ -61,15 +61,18 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
                 ObjectSupport.TryGetPropertyValue<string>(model, "__applyTT", out applyTT);
                 ObjectSupport.TryGetPropertyValue<string>(model, "__apply", out apply);
             }
-            string submit = null, submitTT = null; bool submitShown;
+            string submit = null, submitTT = null; bool submitShown;  ButtonTypeEnum submitType = ButtonTypeEnum.Submit; string submitName = null;
             if (ObjectSupport.TryGetPropertyValue<bool>(model, "__submitShown", out submitShown, true) && submitShown) {
                 ObjectSupport.TryGetPropertyValue<string>(model, "__submitTT", out submitTT);
                 ObjectSupport.TryGetPropertyValue<string>(model, "__submit", out submit);
+                ObjectSupport.TryGetPropertyValue<ButtonTypeEnum>(model, "__submitType", out submitType, ButtonTypeEnum.Submit);
+                ObjectSupport.TryGetPropertyValue<string>(model, "__submitName", out submitName);
             }
-            string cancel = null, cancelTT = null; bool cancelShown;
+            string cancel = null, cancelTT = null; bool cancelShown; ButtonTypeEnum cancelType = ButtonTypeEnum.Cancel;
             if (ObjectSupport.TryGetPropertyValue<bool>(model, "__cancelShown", out cancelShown, true) && cancelShown) {
                 ObjectSupport.TryGetPropertyValue<string>(model, "__cancelTT", out cancelTT);
                 ObjectSupport.TryGetPropertyValue<string>(model, "__cancel", out cancel);
+                ObjectSupport.TryGetPropertyValue<ButtonTypeEnum>(model, "__cancelType", out cancelType, ButtonTypeEnum.Cancel);
             }
 
             string actionName = (string)HtmlHelper.RouteData.Values["action"];
@@ -78,9 +81,9 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
             if (applyShown)
                 buttons.Add(new FormButton() { ButtonType = ButtonTypeEnum.Apply, Text = apply, Title = applyTT,  });
             if (submitShown)
-                buttons.Add(new FormButton() { ButtonType = ButtonTypeEnum.Submit, Text = submit, Title = submitTT });
+                buttons.Add(new FormButton() { ButtonType = submitType, Text = submit, Title = submitTT, Name = submitName });
             if (cancelShown)
-                buttons.Add(new FormButton() { ButtonType = ButtonTypeEnum.Cancel, Text = cancel, Title = cancelTT });
+                buttons.Add(new FormButton() { ButtonType = cancelType, Text = cancel, Title = cancelTT });
 
             hb.Append($@"
 {await RenderBeginFormAsync(ActionName: actionName)}

@@ -47,14 +47,14 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
             if (ObjectSupport.TryGetPropertyValue<bool>(model, "__submitShown", out submitShown, true) && submitShown) {
                 ObjectSupport.TryGetPropertyValue<string>(model, "__submitTT", out submitTT);
                 ObjectSupport.TryGetPropertyValue<string>(model, "__submit", out submit);
-                ObjectSupport.TryGetPropertyValue<ButtonTypeEnum>(model, "__submitType", out submitType);
+                ObjectSupport.TryGetPropertyValue<ButtonTypeEnum>(model, "__submitType", out submitType, ButtonTypeEnum.Submit);
                 ObjectSupport.TryGetPropertyValue<string>(model, "__submitName", out submitName);
             }
             string cancel = null, cancelTT = null; bool cancelShown; ButtonTypeEnum cancelType = ButtonTypeEnum.Cancel;
             if (ObjectSupport.TryGetPropertyValue<bool>(model, "__cancelShown", out cancelShown, true) && cancelShown) {
                 ObjectSupport.TryGetPropertyValue<string>(model, "__cancelTT", out cancelTT);
                 ObjectSupport.TryGetPropertyValue<string>(model, "__cancel", out cancel);
-                ObjectSupport.TryGetPropertyValue<ButtonTypeEnum>(model, "__cancelType", out cancelType);
+                ObjectSupport.TryGetPropertyValue<ButtonTypeEnum>(model, "__cancelType", out cancelType, ButtonTypeEnum.Cancel);
             }
 
             List<FormButton> buttons = new List<FormButton>();

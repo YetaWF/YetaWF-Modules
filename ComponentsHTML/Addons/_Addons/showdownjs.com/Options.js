@@ -8,5 +8,3 @@ showdown.setOption("tables", true);
 showdown.setOption("tasklists", true);
 showdown.setOption("ghMentions", true);
 showdown.setOption("openLinksInNewWindow", true);
-
-//# sourceMappingURL=Options.js.map
