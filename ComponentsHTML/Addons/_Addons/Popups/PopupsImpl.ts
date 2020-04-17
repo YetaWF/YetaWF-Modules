@@ -116,7 +116,7 @@ namespace YetaWF_ComponentsHTML {
 
                 // show and center the window
                 popup = $popupwin.data("kendoWindow");
-                if (maximize) 
+                if (maximize)
                     popup.maximize().open();
                 else
                     popup.center().open();
