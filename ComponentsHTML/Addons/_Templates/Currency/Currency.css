@@ -1,2 +1,5 @@
 @charset "UTF-8";
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+.yt_currency.t_edit input {
+  text-align: right;
+  padding-right: 0.5ch; }
