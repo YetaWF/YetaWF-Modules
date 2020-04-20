@@ -15,6 +15,7 @@ namespace YetaWF_ComponentsHTML {
 
         public static readonly TEMPLATE: string = "yt_currency";
         public static readonly SELECTOR: string = ".yt_currency.t_edit";
+        public static readonly EVENT: string = "currency_change";
 
         kendoNumericTextBox: kendo.ui.NumericTextBox;
         Currency: HTMLInputElement;
@@ -22,7 +23,7 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string, setup: CurrencyEditSetup) {
             super(controlId, CurrencyEditComponent.TEMPLATE, CurrencyEditComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
-                ChangeEvent: "currency_change",
+                ChangeEvent: CurrencyEditComponent.EVENT,
                 GetValue: (control: CurrencyEditComponent): string | null => {
                     return control.value ? control.value.toString() : null;
                 },
@@ -44,7 +45,7 @@ namespace YetaWF_ComponentsHTML {
                 change: (e: kendo.ui.NumericTextBoxChangeEvent): void => {
                     $(this.Control).trigger("change");
                     var event = document.createEvent("Event");
-                    event.initEvent("currency_change", true, true);
+                    event.initEvent(CurrencyEditComponent.EVENT, true, true);
                     this.Control.dispatchEvent(event);
                     FormsSupport.validateElement(this.Currency);
                 }
@@ -52,7 +53,7 @@ namespace YetaWF_ComponentsHTML {
             this.kendoNumericTextBox = $(this.Currency).data("kendoNumericTextBox");
         }
 
-        get value(): number | null {
+        public get value(): number {
             return this.kendoNumericTextBox.value();
         }
         public enable(enable: boolean): void {

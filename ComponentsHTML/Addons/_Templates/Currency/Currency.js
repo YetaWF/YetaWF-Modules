@@ -20,7 +20,7 @@ var YetaWF_ComponentsHTML;
         function CurrencyEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId, CurrencyEditComponent.TEMPLATE, CurrencyEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "currency_change",
+                ChangeEvent: CurrencyEditComponent.EVENT,
                 GetValue: function (control) {
                     return control.value ? control.value.toString() : null;
                 },
@@ -40,7 +40,7 @@ var YetaWF_ComponentsHTML;
                 change: function (e) {
                     $(_this.Control).trigger("change");
                     var event = document.createEvent("Event");
-                    event.initEvent("currency_change", true, true);
+                    event.initEvent(CurrencyEditComponent.EVENT, true, true);
                     _this.Control.dispatchEvent(event);
                     FormsSupport.validateElement(_this.Currency);
                 }
@@ -63,6 +63,7 @@ var YetaWF_ComponentsHTML;
         };
         CurrencyEditComponent.TEMPLATE = "yt_currency";
         CurrencyEditComponent.SELECTOR = ".yt_currency.t_edit";
+        CurrencyEditComponent.EVENT = "currency_change";
         return CurrencyEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.CurrencyEditComponent = CurrencyEditComponent;
