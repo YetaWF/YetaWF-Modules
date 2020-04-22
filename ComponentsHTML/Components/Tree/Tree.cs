@@ -162,9 +162,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 PropertyData prop = ObjectSupport.GetPropertyData(treeModel.RecordType, nameof(TreeEntry.Text));
                 // Caption
-                string caption = prop.GetCaption(null);
+                string caption = treeModel.Header.ToString();
+                if (string.IsNullOrWhiteSpace(caption))
+                    caption = prop.GetCaption(null);
                 // Description
-                string description = prop.GetDescription(null);
+                string description = treeModel.HeaderTooltip.ToString();
+                if (string.IsNullOrWhiteSpace(description))
+                    description = prop.GetDescription(null);
 
                 string alignCss = "tg_left";
 
