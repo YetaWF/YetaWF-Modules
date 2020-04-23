@@ -20,7 +20,7 @@ var YetaWF_ComponentsHTML;
         function IntValueEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId, IntValueEditComponent.TEMPLATE, IntValueEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "intvalue_change",
+                ChangeEvent: IntValueEditComponent.EVENT,
                 GetValue: function (control) {
                     var v = control.value;
                     if (!v)
@@ -39,7 +39,8 @@ var YetaWF_ComponentsHTML;
             _this.kendoNumericTextBox = null;
             _this.InputControl = _this.Control;
             $(_this.InputControl).kendoNumericTextBox({
-                decimals: 0, format: "n0",
+                decimals: 0, format: "#",
+                restrictDecimals: true,
                 min: setup.Min, max: setup.Max,
                 placeholder: setup.NoEntryText,
                 step: setup.Step,
@@ -48,7 +49,7 @@ var YetaWF_ComponentsHTML;
                 change: function (e) {
                     $(_this.Control).trigger("change");
                     var event = document.createEvent("Event");
-                    event.initEvent("intvalue_change", true, true);
+                    event.initEvent(IntValueEditComponent.EVENT, true, true);
                     _this.Control.dispatchEvent(event);
                     FormsSupport.validateElement(_this.Control);
                 }
@@ -94,6 +95,7 @@ var YetaWF_ComponentsHTML;
         };
         IntValueEditComponent.TEMPLATE = "yt_intvalue_base";
         IntValueEditComponent.SELECTOR = "input.yt_intvalue_base.t_edit.k-input[name]";
+        IntValueEditComponent.EVENT = "intvalue_change";
         return IntValueEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.IntValueEditComponent = IntValueEditComponent;

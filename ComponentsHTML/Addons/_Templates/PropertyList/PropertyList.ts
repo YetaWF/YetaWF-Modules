@@ -162,19 +162,19 @@ namespace YetaWF_ComponentsHTML {
                         case ControlTypeEnum.Input:
                             $YetaWF.registerMultipleEventHandlers([(item.Template as HTMLInputElement)], ["change", "input"], null, (ev: Event): boolean => {
                                 this.update();
-                                return false;
+                                return true;
                             });
                             break;
                         case ControlTypeEnum.Select:
                             $YetaWF.registerEventHandler((item.Template as HTMLSelectElement), "change", null, (ev: Event): boolean => {
                                 this.update();
-                                return false;
+                                return true;
                             });
                             break;
                         case ControlTypeEnum.TextArea:
                             $YetaWF.registerMultipleEventHandlers([(item.Template as HTMLTextAreaElement)], ["change", "input"], null, (ev: Event): boolean => {
                                 this.update();
-                                return false;
+                                return true;
                             });
                             break;
                         case ControlTypeEnum.Div:

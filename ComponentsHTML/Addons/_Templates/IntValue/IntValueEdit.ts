@@ -13,6 +13,7 @@ namespace YetaWF_ComponentsHTML {
 
         public static readonly TEMPLATE: string = "yt_intvalue_base";
         public static readonly SELECTOR: string = "input.yt_intvalue_base.t_edit.k-input[name]";
+        public static readonly EVENT: string = "intvalue_change";
 
         private InputControl: HTMLInputElement;
 
@@ -21,7 +22,7 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string, setup: IntValueSetup) {
             super(controlId, IntValueEditComponent.TEMPLATE, IntValueEditComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
-                ChangeEvent: "intvalue_change",
+                ChangeEvent: IntValueEditComponent.EVENT,
                 GetValue: (control: IntValueEditComponent): string | null => {
                     let v = control.value;
                     if (!v)
@@ -41,7 +42,8 @@ namespace YetaWF_ComponentsHTML {
             this.InputControl = this.Control as HTMLInputElement;
 
             $(this.InputControl).kendoNumericTextBox({
-                decimals: 0, format: "n0",
+                decimals: 0, format: "#",
+                restrictDecimals: true,
                 min: setup.Min, max: setup.Max,
                 placeholder: setup.NoEntryText,
                 step: setup.Step,
@@ -50,7 +52,7 @@ namespace YetaWF_ComponentsHTML {
                 change: (e: kendo.ui.NumericTextBoxChangeEvent): void => {
                     $(this.Control).trigger("change");
                     var event = document.createEvent("Event");
-                    event.initEvent("intvalue_change", true, true);
+                    event.initEvent(IntValueEditComponent.EVENT, true, true);
                     this.Control.dispatchEvent(event);
                     FormsSupport.validateElement(this.Control);
                 }

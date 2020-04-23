@@ -15,7 +15,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [Caption("Average Char. Width"), Description("The average character width, calculated using the current skin")]
     /// [UIHint("IntValue2"), ReadOnly]
     /// public int Width { get; set; }
-    /// </example>    
+    /// </example>
     public class IntValue2DisplayComponent : IntValueDisplayComponentBase {
         /// <summary>
         /// Constructor.
@@ -27,7 +27,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     /// <remarks>
     /// The RangeAttribute can be used to define the lowest and highest allowable values.
-    /// 
+    ///
     /// </remarks>
     /// <example>
     /// [Caption("Days"), Description("The number of days a backup is saved - once a backup has been saved for the specified number of days, it is deleted")]
@@ -47,7 +47,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [Caption("Average Char. Width"), Description("The average character width, calculated using the current skin")]
     /// [UIHint("IntValue4"), ReadOnly]
     /// public int Width { get; set; }
-    /// </example>    
+    /// </example>
     public class IntValue4DisplayComponent : IntValueDisplayComponentBase {
         /// <summary>
         /// Constructor.
@@ -59,7 +59,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     /// <remarks>
     /// The RangeAttribute can be used to define the lowest and highest allowable values.
-    /// 
+    ///
     /// </remarks>
     /// <example>
     /// [Caption("Days"), Description("The number of days a backup is saved - once a backup has been saved for the specified number of days, it is deleted")]
@@ -79,7 +79,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [Caption("Average Char. Width"), Description("The average character width, calculated using the current skin")]
     /// [UIHint("IntValue4"), ReadOnly]
     /// public int Width { get; set; }
-    /// </example>    
+    /// </example>
     public class IntValue6DisplayComponent : IntValueDisplayComponentBase {
         /// <summary>
         /// Constructor.
@@ -91,7 +91,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     /// <remarks>
     /// The RangeAttribute can be used to define the lowest and highest allowable values.
-    /// 
+    ///
     /// </remarks>
     /// <example>
     /// [Caption("Days"), Description("The number of days a backup is saved - once a backup has been saved for the specified number of days, it is deleted")]
@@ -111,7 +111,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [Caption("Average Char. Width"), Description("The average character width, calculated using the current skin")]
     /// [UIHint("IntValue"), ReadOnly]
     /// public int Width { get; set; }
-    /// </example>    
+    /// </example>
     public class IntValueDisplayComponent : IntValueDisplayComponentBase {
         /// <summary>
         /// Constructor.
@@ -123,7 +123,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     /// <remarks>
     /// The RangeAttribute can be used to define the lowest and highest allowable values.
-    /// 
+    ///
     /// </remarks>
     /// <example>
     /// [Caption("Days"), Description("The number of days a backup is saved - once a backup has been saved for the specified number of days, it is deleted")]

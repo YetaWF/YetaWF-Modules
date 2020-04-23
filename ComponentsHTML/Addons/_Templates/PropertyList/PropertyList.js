@@ -85,19 +85,19 @@ var YetaWF_ComponentsHTML;
                         case YetaWF_ComponentsHTML.ControlTypeEnum.Input:
                             $YetaWF.registerMultipleEventHandlers([item.Template], ["change", "input"], null, function (ev) {
                                 _this.update();
-                                return false;
+                                return true;
                             });
                             break;
                         case YetaWF_ComponentsHTML.ControlTypeEnum.Select:
                             $YetaWF.registerEventHandler(item.Template, "change", null, function (ev) {
                                 _this.update();
-                                return false;
+                                return true;
                             });
                             break;
                         case YetaWF_ComponentsHTML.ControlTypeEnum.TextArea:
                             $YetaWF.registerMultipleEventHandlers([item.Template], ["change", "input"], null, function (ev) {
                                 _this.update();
-                                return false;
+                                return true;
                             });
                             break;
                         case YetaWF_ComponentsHTML.ControlTypeEnum.Div:
