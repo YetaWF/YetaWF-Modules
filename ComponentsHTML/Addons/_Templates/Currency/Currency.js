@@ -46,11 +46,16 @@ var YetaWF_ComponentsHTML;
                 }
             });
             _this.kendoNumericTextBox = $(_this.Currency).data("kendoNumericTextBox");
+            if (setup.ReadOnly)
+                _this.kendoNumericTextBox.readonly(true);
             return _this;
         }
         Object.defineProperty(CurrencyEditComponent.prototype, "value", {
             get: function () {
                 return this.kendoNumericTextBox.value();
+            },
+            set: function (value) {
+                this.kendoNumericTextBox.value(value);
             },
             enumerable: true,
             configurable: true

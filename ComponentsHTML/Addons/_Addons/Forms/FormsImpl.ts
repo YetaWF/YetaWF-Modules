@@ -97,8 +97,8 @@ namespace YetaWF_ComponentsHTML {
             for (let elem of elems) {
                 let name = $YetaWF.getAttributeCond(elem, "name");
                 if (!name ||
-                    $YetaWF.getAttributeCond(elem, "disabled") || // don't submit disabled fields
-                    $YetaWF.getAttributeCond(elem, "readonly") || // don't submit readonly fields
+                    ($YetaWF.getAttributeCond(elem, "disabled") && !$YetaWF.getAttributeCond(elem, "disabled-submit")) || // don't submit disabled fields
+                    ($YetaWF.getAttributeCond(elem, "readonly") && !$YetaWF.getAttributeCond(elem, "readonly-submit")) || // don't submit readonly fields
                     $YetaWF.elementHasClass(elem, YConfigs.Forms.CssFormNoSubmit) || // don't submit nosubmit fields
                     $YetaWF.elementClosestCond(elem, `.${YConfigs.Forms.CssFormNoSubmitContents}`)) // don't submit input fields in containers (usually grids)
                     continue;

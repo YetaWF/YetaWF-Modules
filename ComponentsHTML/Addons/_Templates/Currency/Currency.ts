@@ -9,6 +9,7 @@ namespace YetaWF_ComponentsHTML {
     interface CurrencyEditSetup {
         Min: number;
         Max: number;
+        ReadOnly: boolean;
     }
 
     export class CurrencyEditComponent extends YetaWF.ComponentBaseDataImpl {
@@ -51,10 +52,14 @@ namespace YetaWF_ComponentsHTML {
                 }
             });
             this.kendoNumericTextBox = $(this.Currency).data("kendoNumericTextBox");
+            if (setup.ReadOnly) this.kendoNumericTextBox.readonly(true);
         }
 
         public get value(): number {
             return this.kendoNumericTextBox.value();
+        }
+        public set value(value:number) {
+            this.kendoNumericTextBox.value(value);
         }
         public enable(enable: boolean): void {
             this.kendoNumericTextBox.enable(enable);

@@ -253,6 +253,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             await KendoUICore.UseAsync();// needed for css
             //await KendoUICore.AddFileAsync("kendo.maskedtextbox.min.js");
             await Manager.AddOnManager.AddTemplateAsync(Controllers.AreaRegistration.CurrentPackage.AreaName, "Text");
+            await base.IncludeAsync();
         }
         /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.

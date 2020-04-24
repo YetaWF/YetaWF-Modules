@@ -79,7 +79,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     /// <remarks>
     /// The currency is based on the site's defined default currency. The default currency can be found at Admin > Settings > Site Settings, Site tab, Currency, Currency Format and Currency Rounding fields.
-    /// 
+    ///
     /// The RangeAttribute attribute can be used to set upper and/or lower amount limits.
     /// </remarks>
     /// <example>
@@ -87,6 +87,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [UIHint("Currency"), Range(0.0, 999999.0), Required]
     /// public decimal DefaultHourlyRate { get; set; }
     /// </example>
+    [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the control is rendered read/only.")]
+    [UsesAdditional("Disabled", "bool", "false", "Defines whether the control is disabled.")]
     public class CurrencyEditComponent : CurrencyComponentBase, IYetaWFComponent<Decimal>, IYetaWFComponent<Decimal?> {
 
         /// <summary>
@@ -98,6 +100,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         internal class CurrencySetup {
             public double Min { get; set; }
             public double Max { get; set; }
+            public Boolean ReadOnly { get; set; }
         }
 
         /// <summary>
@@ -129,9 +132,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             YTagBuilder tag = new YTagBuilder("input");
             FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Normal);
 
+            bool rdonly = PropData.GetAdditionalAttributeValue<bool>("ReadOnly", false);
+            bool disabled = PropData.GetAdditionalAttributeValue<bool>("Disabled", false);
+            if (disabled)
+                tag.Attributes.Add("disabled", "disabled");
+
             CurrencySetup setup = new CurrencySetup {
                 Min = 0,
-                Max = 99999999.99,
+                Max = 999999999.99,
+                ReadOnly = rdonly,
             };
             // handle min/max
             RangeAttribute rangeAttr = PropData.TryGetAttribute<RangeAttribute>();
