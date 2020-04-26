@@ -1,5 +1,7 @@
 /* Copyright �2020 Softel vdm, Inc.. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core;
@@ -12,17 +14,8 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.DataProvider;
-using YetaWF.Modules.Identity.Models;
 using YetaWF.Modules.Identity.Modules;
 using YetaWF.Modules.Identity.Support;
-using System.Linq;
-#if MVC6
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-#else
-using Microsoft.AspNet.Identity;
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
     public class UsersAddModuleController : ControllerImpl<YetaWF.Modules.Identity.Modules.UsersAddModule> {
@@ -32,11 +25,14 @@ namespace YetaWF.Modules.Identity.Controllers {
         [Trim]
         public class AddModel {
             [Caption("Name"), Description("The name of the user")]
-            [UIHint("Text40"), SuppressIf("RegistrationType", RegistrationTypeEnum.EmailOnly), StringLength(Globals.MaxUser), UserNameValidation, Required, Trim]
+            [UIHint("Text40"), StringLength(Globals.MaxUser), UserNameValidation, Trim]
+            [SuppressIf(nameof(RegistrationType), RegistrationTypeEnum.EmailOnly)]
+            [RequiredIfNot(nameof(RegistrationType), RegistrationTypeEnum.EmailOnly)]
             public string UserName { get; set; }
 
             [Caption("Email Address"), Description("The email address of this user")]
-            [UIHint("Email"), SuppressIf("RegistrationType", RegistrationTypeEnum.NameOnly), StringLength(Globals.MaxEmail), EmailValidation, Required, Trim]
+            [UIHint("Email"), SuppressIf("RegistrationType", RegistrationTypeEnum.NameOnly), StringLength(Globals.MaxEmail), EmailValidation, Trim]
+            [RequiredIfNot(nameof(RegistrationType), RegistrationTypeEnum.NameOnly)]
             public string Email { get; set; }
 
             [Caption("Password"), Description("The password for this user")]
