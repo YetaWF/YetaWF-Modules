@@ -11,6 +11,8 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider.PostgreSQL;
 
+// TODO: $$$$$ Can't use this and SQL at the same time even though only one is active.
+
 namespace YetaWF.Modules.LoggingDataProvider.DataProvider.PostgreSQL {
 
     public class PostgreSQLDataProvider : IExternalDataProvider {

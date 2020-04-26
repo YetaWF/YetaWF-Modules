@@ -35,6 +35,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\PostgreSQLDataProvider.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.1" />
   </ItemGroup>
 
