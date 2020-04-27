@@ -179,18 +179,14 @@ namespace YetaWF.Modules.Identity.Controllers {
                 throw new InternalError("Hidden field tampering detected");
 
             if (!ModelState.IsValid && config.RegistrationType == RegistrationTypeEnum.EmailOnly) {
-                if (ModelState[nameof(model.Email)] != null &&
-#if MVC6
-                    ModelState[nameof(model.Email)].ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid)
-#else
-                    ModelState[nameof(model.Email)].Errors.Count > 0)
-#endif
-                {
+                if (ModelState[nameof(model.Email)] != null && ModelState[nameof(model.Email)].ValidationState == Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Invalid) {
                     // we allow the superuser name as login in case we use email registration and the superuser name is not a valid email address
                     if (string.Compare(model.Email, SuperuserDefinitionDataProvider.SuperUserName, true) == 0)
                         ModelState.Remove(nameof(model.Email));
                 }
             }
+            if (!model.ShowCaptcha)
+                ModelState[nameof(model.Captcha)].ValidationState = Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid;
 
             if (!ModelState.IsValid)
                 return PartialView(model);

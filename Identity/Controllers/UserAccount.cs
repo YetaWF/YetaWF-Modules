@@ -32,11 +32,15 @@ namespace YetaWF.Modules.Identity.Controllers {
         public class EditModel {
 
             [Caption("Name"), Description("Your user name")]
-            [UIHint("Text40"), SuppressIf(nameof(RegistrationType), RegistrationTypeEnum.EmailOnly), StringLength(Globals.MaxUser), UserNameValidation, Required, Trim]
+            [UIHint("Text40"), StringLength(Globals.MaxUser), UserNameValidation, Trim]
+            [SuppressIf(nameof(RegistrationType), RegistrationTypeEnum.EmailOnly)]
+            [RequiredIfNot(nameof(RegistrationType), RegistrationTypeEnum.EmailOnly)]
             public string UserName { get; set; }
 
             [Caption("Email Address"), Description("Your email address this site uses to communicate with you")]
-            [UIHint("Email"), SuppressIf(nameof(RegistrationType), RegistrationTypeEnum.NameOnly), StringLength(Globals.MaxEmail), EmailValidation, Required, Trim]
+            [UIHint("Email"), StringLength(Globals.MaxEmail), EmailValidation, Trim]
+            [SuppressIf(nameof(RegistrationType), RegistrationTypeEnum.NameOnly)]
+            [RequiredIfNot(nameof(RegistrationType), RegistrationTypeEnum.NameOnly)]
             public string Email { get; set; }
 
             [Caption("Last Login"), Description("The last time you logged into your account")]

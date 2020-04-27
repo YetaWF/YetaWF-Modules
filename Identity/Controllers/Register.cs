@@ -38,11 +38,15 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
 
             [Caption("User Name"), Description("Enter your user name to register")]
-            [UIHint("Text40"), SuppressIf("RegistrationType", RegistrationTypeEnum.EmailOnly), StringLength(Globals.MaxUser), UserNameValidation, Required, Trim]
+            [UIHint("Text40"), StringLength(Globals.MaxUser), UserNameValidation, Trim]
+            [SuppressIf(nameof(RegistrationType), RegistrationTypeEnum.EmailOnly)]
+            [RequiredIfNot(nameof(RegistrationType), RegistrationTypeEnum.EmailOnly)]
             public string UserName { get; set; }
 
             [Caption("Email Address"), Description("Enter your email address to register - This is the email address used by this site to communicate with you")]
-            [UIHint("Email"), SuppressIf("RegistrationType", RegistrationTypeEnum.NameOnly), StringLength(Globals.MaxEmail), EmailValidation, Required, Trim]
+            [UIHint("Email"), StringLength(Globals.MaxEmail), EmailValidation, Trim]
+            [SuppressIf(nameof(RegistrationType), RegistrationTypeEnum.NameOnly)]
+            [RequiredIfNot(nameof(RegistrationType), RegistrationTypeEnum.NameOnly)]
             public string Email { get; set; }
 
             [Caption("Password"), Description("Enter your desired password")]
@@ -118,6 +122,8 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             if (model.ShowCaptcha != config.Captcha && !Manager.IsLocalHost)
                 throw new InternalError("Hidden field tampering detected");
+            if (!model.ShowCaptcha)
+                ModelState[nameof(model.Captcha)].ValidationState = Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid;
 
             model.RegistrationType = config.RegistrationType;// don't trust what we get from user
 
@@ -152,7 +158,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                     };
                     UserDefinition userExists = await dataProvider.GetItemAsync(filters);
                     if (userExists != null && user.UserName != userExists.Email) {
-                        ModelState.AddModelError("Email", this.__ResStr("emailUsed", "An account with email address {0} already exists.", user.Email));
+                        ModelState.AddModelError(nameof(model.Email), this.__ResStr("emailUsed", "An account with email address {0} already exists.", user.Email));
                         return PartialView(model);
                     }
                 }
@@ -171,11 +177,9 @@ namespace YetaWF.Modules.Identity.Controllers {
             var result = await Managers.GetUserManager().CreateAsync(user, model.Password);
             if (!result.Succeeded) {
                 foreach (var error in result.Errors) {
-#if MVC6
-                    ModelState.AddModelError("UserName", error.Description);
-#else
-                    ModelState.AddModelError("UserName", error);
-#endif
+                    ModelState.AddModelError(nameof(model.UserName), error.Description);
+                    ModelState.AddModelError(nameof(model.Email), error.Description);
+                    ModelState.AddModelError(nameof(model.Password), error.Description);
                 }
                 return PartialView(model);
             }
