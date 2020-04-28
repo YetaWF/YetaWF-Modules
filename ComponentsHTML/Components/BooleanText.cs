@@ -135,11 +135,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             //Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.BooleanTextEditComponent('{ControlId}');");
 
+            string tooltip;
+            if (TryGetSiblingProperty($"{PropertyName}_Tooltip", out tooltip))
+                tag.Attributes.Add("data-tooltip", tooltip);
+
             string text;
             if (TryGetSiblingProperty($"{PropertyName}_Text", out text))
                 return Task.FromResult(tag.ToString(YTagRenderMode.StartTag) + tagHidden.ToString(YTagRenderMode.StartTag) + HE(text));
-            else
-                return Task.FromResult(tag.ToString(YTagRenderMode.StartTag) + tagHidden.ToString(YTagRenderMode.StartTag));
+
+            return Task.FromResult(tag.ToString(YTagRenderMode.StartTag) + tagHidden.ToString(YTagRenderMode.StartTag));
         }
     }
 }
