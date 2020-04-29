@@ -137,6 +137,49 @@ var YetaWF_ComponentsHTML;
                 }
             }
         };
+        /**
+         * Resequences array indexes in forms fields.
+         * This is very much a work in progress and doesn't handle all controls.
+         * All fields prefix[index].name are resequenced based on their position within the tags array.
+         * This is typically used after adding/reordering entries.
+         * @param rows Array of tags containing input fields to resequence.
+         * @param prefix The name prefix used in input fields.
+         */
+        FormsImpl.prototype.resequenceFields = function (rows, prefix) {
+            var index = 0;
+            var re1 = new RegExp("\\" + prefix + "[[0-9]+\\]", "gim");
+            for (var _i = 0, rows_1 = rows; _i < rows_1.length; _i++) {
+                var row = rows_1[_i];
+                // input fields
+                var fields = $YetaWF.getElementsBySelector("[name^='" + prefix + "[']", [row]);
+                for (var _a = 0, fields_1 = fields; _a < fields_1.length; _a++) {
+                    var field = fields_1[_a];
+                    var name_2 = $YetaWF.getAttribute(field, "name");
+                    name_2 = name_2.replace(re1, prefix + "[" + index.toString() + "]");
+                    $YetaWF.setAttribute(field, "name", name_2);
+                    var v = $YetaWF.getAttributeCond(field, "data-v");
+                    if (v) {
+                        v = v.replace(re1, prefix + "[" + index.toString() + "]");
+                        $YetaWF.setAttribute(field, "data-v", v);
+                    }
+                }
+                // validation fields
+                fields = $YetaWF.getElementsBySelector("[data-v-for^='" + prefix + "[']", [row]);
+                for (var _b = 0, fields_2 = fields; _b < fields_2.length; _b++) {
+                    var field = fields_2[_b];
+                    var name_3 = $YetaWF.getAttribute(field, "data-v-for");
+                    name_3 = name_3.replace(re1, prefix + "[" + index.toString() + "]");
+                    $YetaWF.setAttribute(field, "data-v-for", name_3);
+                    var img = $YetaWF.getElement1BySelectorCond("img", [field]);
+                    if (img) {
+                        name_3 = $YetaWF.getAttribute(img, "name");
+                        name_3 = name_3.replace(re1, prefix + "[" + index.toString() + "]");
+                        $YetaWF.setAttribute(field, "name", name_3);
+                    }
+                }
+                ++index;
+            }
+        };
         // Forms initialization
         /**
          * Initialize the form when page/content is ready.

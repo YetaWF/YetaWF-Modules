@@ -20,7 +20,7 @@ var YetaWF_ComponentsHTML;
         function DateEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId, DateEditComponent.TEMPLATE, DateEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "date_change",
+                ChangeEvent: DateEditComponent.EVENT,
                 GetValue: function (control) {
                     return control.valueText;
                 },
@@ -49,7 +49,7 @@ var YetaWF_ComponentsHTML;
                         _this.setHidden(val);
                     FormsSupport.validateElement(_this.Hidden);
                     var event = document.createEvent("Event");
-                    event.initEvent("date_change", true, true);
+                    event.initEvent(DateEditComponent.EVENT, true, true);
                     _this.Control.dispatchEvent(event);
                 }
             });
@@ -93,6 +93,7 @@ var YetaWF_ComponentsHTML;
         };
         DateEditComponent.TEMPLATE = "yt_date";
         DateEditComponent.SELECTOR = ".yt_date.t_edit";
+        DateEditComponent.EVENT = "date_change";
         return DateEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.DateEditComponent = DateEditComponent;

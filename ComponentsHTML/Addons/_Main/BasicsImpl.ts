@@ -322,6 +322,15 @@ namespace YetaWF_ComponentsHTML {
                 if (!enable)
                     elem.setAttribute("disabled", "disabled");
                 $(elem).button(enable ? "enable" : "disable");
+            } else if (elem.tagName == "A" && $YetaWF.elementHasClass(elem, "btn")) {
+                // bootstrap button (using a tag)
+                elem.removeAttribute("aria-disabled");
+                if (enable) {
+                    $YetaWF.elementRemoveClass(elem, "disabled");
+                } else {
+                    $YetaWF.elementAddClass(elem, "disabled");
+                    $YetaWF.setAttribute(elem, "aria-disabled", "true");
+                }
             } else if (TextEditComponent && $YetaWF.elementHasClass(elem, TextEditComponent.TEMPLATE)) { // using template name as class name
                 // Handle text/input
                 elem.removeAttribute("disabled");

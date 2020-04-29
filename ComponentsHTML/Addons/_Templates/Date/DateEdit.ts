@@ -15,6 +15,7 @@ namespace YetaWF_ComponentsHTML {
 
         public static readonly TEMPLATE: string = "yt_date";
         public static readonly SELECTOR: string = ".yt_date.t_edit";
+        public static readonly EVENT: string = "date_change";
 
         Hidden: HTMLInputElement;
         Date: HTMLInputElement;
@@ -23,7 +24,7 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string, setup: DateEditSetup) {
             super(controlId, DateEditComponent.TEMPLATE, DateEditComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
-                ChangeEvent: "date_change",
+                ChangeEvent: DateEditComponent.EVENT,
                 GetValue: (control: DateEditComponent): string | null => {
                     return control.valueText;
                 },
@@ -54,7 +55,7 @@ namespace YetaWF_ComponentsHTML {
                         this.setHidden(val);
                     FormsSupport.validateElement(this.Hidden);
                     var event = document.createEvent("Event");
-                    event.initEvent("date_change", true, true);
+                    event.initEvent(DateEditComponent.EVENT, true, true);
                     this.Control.dispatchEvent(event);
                 }
             });

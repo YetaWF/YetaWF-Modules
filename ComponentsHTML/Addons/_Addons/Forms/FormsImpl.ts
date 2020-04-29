@@ -140,6 +140,48 @@ namespace YetaWF_ComponentsHTML {
             }
         }
 
+        /**
+         * Resequences array indexes in forms fields.
+         * This is very much a work in progress and doesn't handle all controls.
+         * All fields prefix[index].name are resequenced based on their position within the tags array.
+         * This is typically used after adding/reordering entries.
+         * @param rows Array of tags containing input fields to resequence.
+         * @param prefix The name prefix used in input fields.
+         */
+        public resequenceFields(rows: HTMLElement[], prefix: string): void {
+
+            let index = 0;
+            let re1 = new RegExp(`\\${prefix}[[0-9]+\\]`, "gim");
+            for (let row of rows) {
+                // input fields
+                let fields = $YetaWF.getElementsBySelector(`[name^='${prefix}[']`, [row]);
+                for (let field of fields) {
+                    let name = $YetaWF.getAttribute(field, "name");
+                    name = name.replace(re1, `${prefix}[${index.toString()}]`);
+                    $YetaWF.setAttribute(field, "name", name);
+                    let v = $YetaWF.getAttributeCond(field, "data-v");
+                    if (v) {
+                        v = v.replace(re1, `${prefix}[${index.toString()}]`);
+                        $YetaWF.setAttribute(field, "data-v", v);
+                    }
+                }
+                // validation fields
+                fields = $YetaWF.getElementsBySelector(`[data-v-for^='${prefix}[']`, [row]);
+                for (let field of fields) {
+                    let name = $YetaWF.getAttribute(field, "data-v-for");
+                    name = name.replace(re1, `${prefix}[${index.toString()}]`);
+                    $YetaWF.setAttribute(field, "data-v-for", name);
+                    let img = $YetaWF.getElement1BySelectorCond("img", [field]);
+                    if (img) {
+                        name = $YetaWF.getAttribute(img, "name");
+                        name = name.replace(re1, `${prefix}[${index.toString()}]`);
+                        $YetaWF.setAttribute(field, "name", name);
+                    }
+                }
+                ++index;
+            }
+        }
+
         // Forms initialization
 
         /**
