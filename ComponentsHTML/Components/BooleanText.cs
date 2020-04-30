@@ -93,6 +93,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// public bool ShowHelp_Text { get { ShowHelp ? "Yes" : "No" } }
     /// </example>
     [UsesSibling("_Text", "string", "Defines the additional text shown next to the checkbox.")]
+    [UsesSibling("_Tooltip", "string", "Defines the tooltip shown for the checkbox.")]
     public class BooleanTextEditComponent : BooleanTextComponentBase, IYetaWFComponent<bool>, IYetaWFComponent<bool?> {
 
         /// <summary>
