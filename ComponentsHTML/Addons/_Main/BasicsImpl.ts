@@ -322,7 +322,7 @@ namespace YetaWF_ComponentsHTML {
                 if (!enable)
                     elem.setAttribute("disabled", "disabled");
                 $(elem).button(enable ? "enable" : "disable");
-            } else if (elem.tagName == "A" && $YetaWF.elementHasClass(elem, "btn")) {
+            } else if (elem.tagName === "A" && $YetaWF.elementHasClass(elem, "btn")) {
                 // bootstrap button (using a tag)
                 elem.removeAttribute("aria-disabled");
                 if (enable) {
