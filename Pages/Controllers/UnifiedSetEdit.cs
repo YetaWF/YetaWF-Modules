@@ -119,7 +119,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             using (UnifiedSetDataProvider unifiedSetDP = new UnifiedSetDataProvider()) {
                 UnifiedSetData unifiedSet = await unifiedSetDP.GetItemAsync(model.UnifiedSetGuid);// get the original item
                 if (unifiedSet == null)
-                    ModelState.AddModelError("UnifiedSetGuid", this.__ResStr("alreadyDeleted", "The unified page set with id {0} has been removed and can no longer be updated", model.UnifiedSetGuid));
+                    throw new Error(this.__ResStr("alreadyDeleted", "The unified page set with id {0} has been removed and can no longer be updated", model.UnifiedSetGuid));
 
                 ObjectSupport.CopyData(unifiedSet, model, ReadOnly: true); // update read only properties in model in case there is an error
                 if (!ModelState.IsValid)
@@ -131,10 +131,9 @@ namespace YetaWF.Modules.Pages.Controllers {
                 switch (await unifiedSetDP.UpdateItemAsync(unifiedSet)) {
                     default:
                     case UpdateStatusEnum.RecordDeleted:
-                        ModelState.AddModelError("Name", this.__ResStr("alreadyDeleted", "The unified page set with id {0} has been removed and can no longer be updated", model.UnifiedSetGuid));
-                        return PartialView(model);
+                        throw new Error(this.__ResStr("alreadyDeleted", "The unified page set with id {0} has been removed and can no longer be updated", model.UnifiedSetGuid));
                     case UpdateStatusEnum.NewKeyExists:
-                        ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "An unified page set named \"{0}\" already exists", model.Name));
+                        ModelState.AddModelError(nameof(model.Name), this.__ResStr("alreadyExists", "An unified page set named \"{0}\" already exists", model.Name));
                         return PartialView(model);
                     case UpdateStatusEnum.OK:
                         break;

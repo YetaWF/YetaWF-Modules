@@ -78,7 +78,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
                 if (!await dataProvider.AddItemAsync(model.GetData())) {
-                    ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "A blog category named \"{0}\" already exists.", model.Category));
+                    ModelState.AddModelError(nameof(model.Category), this.__ResStr("alreadyExists", "A blog category named \"{0}\" already exists.", model.Category));
                     return PartialView(model);
                 }
                 return FormProcessed(model, this.__ResStr("okSaved", "New blog category saved"), OnPopupClose: OnPopupCloseEnum.ReloadModule);

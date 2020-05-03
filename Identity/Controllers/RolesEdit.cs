@@ -72,7 +72,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 string originalRole = model.OriginalName;
                 RoleDefinition role = await dataProvider.GetItemAsync(originalRole);// get the original item
                 if (role == null)
-                    ModelState.AddModelError("Name", this.__ResStr("alreadyDeleted", "The role named \"{0}\" has been removed and can no longer be updated.", originalRole));
+                    throw new Error(this.__ResStr("alreadyDeleted", "The role named \"{0}\" has been removed and can no longer be updated.", originalRole));
 
                 if (!ModelState.IsValid)
                     return PartialView(model);
@@ -83,10 +83,9 @@ namespace YetaWF.Modules.Identity.Controllers {
                 switch (await dataProvider.UpdateItemAsync(originalRole, role)) {
                     default:
                     case UpdateStatusEnum.RecordDeleted:
-                        ModelState.AddModelError("Name", this.__ResStr("alreadyDeleted", "The role named \"{0}\" has been removed and can no longer be updated.", originalRole));
-                        return PartialView(model);
+                        throw new Error(this.__ResStr("alreadyDeleted", "The role named \"{0}\" has been removed and can no longer be updated.", originalRole));
                     case UpdateStatusEnum.NewKeyExists:
-                        ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "A role named \"{0}\" already exists.", model.Name));
+                        ModelState.AddModelError(nameof(model.Name), this.__ResStr("alreadyExists", "A role named \"{0}\" already exists.", model.Name));
                         return PartialView(model);
                     case UpdateStatusEnum.OK:
                         break;

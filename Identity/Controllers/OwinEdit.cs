@@ -180,11 +180,11 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
             if (model.ExpireTimeSpan < new TimeSpan(0, 10, 0)) {
-                ModelState.AddModelError("ExpireTimeSpan", this.__ResStr("timeSpan", "The minimum expiration timespan should be at least 10 minutes"));
+                ModelState.AddModelError(nameof(model.ExpireTimeSpan), this.__ResStr("timeSpan", "The minimum expiration timespan should be at least 10 minutes"));
                 return PartialView(model);
             }
             if (model.SecurityStampValidationInterval < new TimeSpan(0, 1, 0)) {
-                ModelState.AddModelError("SecurityStampValidationInterval", this.__ResStr("securityInterval", "The minimum validation interval should be at least 1 minute"));
+                ModelState.AddModelError(nameof(model.SecurityStampValidationInterval), this.__ResStr("securityInterval", "The minimum validation interval should be at least 1 minute"));
                 return PartialView(model);
             }
 

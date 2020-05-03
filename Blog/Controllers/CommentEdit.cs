@@ -111,7 +111,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             using (BlogCommentDataProvider dataProvider = new BlogCommentDataProvider(model.EntryIdentity)) {
                 BlogComment data = await dataProvider.GetItemAsync(model.Identity);
                 if (data == null)
-                    ModelState.AddModelError("", this.__ResStr("alreadyDeleted", "The comment entry with id {0} has been removed and can no longer be updated", model.Identity));
+                    throw new Error(this.__ResStr("alreadyDeleted", "The comment entry with id {0} has been removed and can no longer be updated", model.Identity));
                 if (!ModelState.IsValid)
                     return PartialView(model);
 
@@ -122,11 +122,9 @@ namespace YetaWF.Modules.Blog.Controllers {
                 switch (await dataProvider.UpdateItemAsync(data)) {
                     default:
                     case UpdateStatusEnum.RecordDeleted:
-                        ModelState.AddModelError("Name", this.__ResStr("alreadyDeleted", "The comment entry with id {0} has been removed and can no longer be updated", model.Identity));
-                        return PartialView(model);
+                        throw new Error(this.__ResStr("alreadyDeleted", "The comment entry with id {0} has been removed and can no longer be updated", model.Identity));
                     case UpdateStatusEnum.NewKeyExists:
-                        ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "A comment with id {0} already exists.", model.Identity));
-                        return PartialView(model);
+                        throw new Error(this.__ResStr("alreadyExists", "A comment with id {0} already exists.", model.Identity));
                     case UpdateStatusEnum.OK:
                         break;
                 }

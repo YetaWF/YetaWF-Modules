@@ -9,6 +9,7 @@ using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
 using System.Threading.Tasks;
 using YetaWF.Core;
+using System.Linq;
 #if MVC6
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -120,11 +121,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 #endif
             if (!result.Succeeded) {
                 foreach (var err in result.Errors) {
-#if MVC6
-                    ModelState.AddModelError("NewPassword", err.Description);
-#else
-                    ModelState.AddModelError("NewPassword", err);
-#endif
+                    ModelState.AddModelError(nameof(model.NewPassword), err.Description);
                 }
                 return PartialView(model);
             }
@@ -135,11 +132,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 #endif
             if (!result.Succeeded) {
                 foreach (var err in result.Errors) {
-#if MVC6
-                    ModelState.AddModelError("OldPassword", err.Description);
-#else
-                    ModelState.AddModelError("OldPassword", err);
-#endif
+                    ModelState.AddModelError(nameof(model.OldPassword), err.Description);
                 }
                 return PartialView(model);
             }
@@ -163,21 +156,9 @@ namespace YetaWF.Modules.Identity.Controllers {
             user.ResetValidUntil = null;
 
             // finally update the user definition
-#if MVC6
             result = await userManager.UpdateAsync(user);
-#else
-            result = userManager.Update(user);
-#endif
-            if (!result.Succeeded) {
-                foreach (var err in result.Errors) {
-#if MVC6
-                    ModelState.AddModelError("", err.Description);
-#else
-                    ModelState.AddModelError("", err);
-#endif
-                }
-                return PartialView(model);
-            }
+            if (!result.Succeeded)
+                throw new Error(string.Join(" - ", (from e in result.Errors select e.Description)));
 
             // logoff/logon for any side effects in identity (like SecurityStamp update/cookies)
             await LoginModuleController.UserLoginAsync(user);

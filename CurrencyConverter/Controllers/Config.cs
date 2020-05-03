@@ -73,7 +73,7 @@ namespace YetaWF.Modules.CurrencyConverter.Controllers {
             using (ConfigDataProvider configDP = new ConfigDataProvider()) {
                 ConfigData data = await configDP.GetItemAsync();// get the original item
                 if (data == null)
-                    ModelState.AddModelError("Key", this.__ResStr("alreadyDeleted", "The currency converter configuration has been removed and can no longer be updated."));
+                    throw new Error(this.__ResStr("alreadyDeleted", "The currency converter configuration has been removed and can no longer be updated."));
 
                 if (!ModelState.IsValid)
                     return PartialView(model);

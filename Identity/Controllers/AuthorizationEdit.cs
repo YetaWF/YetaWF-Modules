@@ -80,7 +80,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             using (AuthorizationDataProvider dataProvider = new AuthorizationDataProvider()) {
                 Authorization data = await dataProvider.GetItemAsync(originalName);// get the original resource
                 if (data == null)
-                    ModelState.AddModelError("Key", this.__ResStr("alreadyDeleted", "The resource named \"{0}\" has been removed and can no longer be updated.", originalName));
+                    throw new Error(this.__ResStr("alreadyDeleted", "The resource named \"{0}\" has been removed and can no longer be updated.", originalName));
 
                 if (!ModelState.IsValid)
                     return PartialView(model);
@@ -91,10 +91,9 @@ namespace YetaWF.Modules.Identity.Controllers {
                 switch (await dataProvider.UpdateItemAsync(data)) {
                     default:
                     case UpdateStatusEnum.RecordDeleted:
-                        ModelState.AddModelError("Name", this.__ResStr("alreadyDeleted", "The resource named \"{0}\" has been removed and can no longer be updated.", originalName));
-                        return PartialView(model);
+                        throw new Error(this.__ResStr("alreadyDeleted", "The resource named \"{0}\" has been removed and can no longer be updated.", originalName));
                     case UpdateStatusEnum.NewKeyExists:
-                        ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "A resource named \"{0}\" already exists.", model.ResourceName));
+                        ModelState.AddModelError(nameof(model.ResourceName), this.__ResStr("alreadyExists", "A resource named \"{0}\" already exists.", model.ResourceName));
                         return PartialView(model);
                     case UpdateStatusEnum.OK:
                         break;

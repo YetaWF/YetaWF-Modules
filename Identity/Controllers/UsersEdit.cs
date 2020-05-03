@@ -138,7 +138,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 string originalUserName = model.OriginalUserName;
                 UserDefinition user = await dataProvider.GetItemAsync(originalUserName);
                 if (user == null)
-                    ModelState.AddModelError("UserName", this.__ResStr("alreadyDeleted", "The user named \"{0}\" has been removed and can no longer be updated.", originalUserName));
+                    throw new Error(this.__ResStr("alreadyDeleted", "The user named \"{0}\" has been removed and can no longer be updated.", originalUserName));
                 if (!ModelState.IsValid)
                     return PartialView(model);
 
@@ -167,10 +167,9 @@ namespace YetaWF.Modules.Identity.Controllers {
                 switch (await dataProvider.UpdateItemAsync(originalUserName, user)) {
                     default:
                     case UpdateStatusEnum.RecordDeleted:
-                        ModelState.AddModelError("Name", this.__ResStr("alreadyDeleted", "The user named \"{0}\" has been removed and can no longer be updated.", originalUserName));
-                        return PartialView(model);
+                        throw new Error(this.__ResStr("alreadyDeleted", "The user named \"{0}\" has been removed and can no longer be updated.", originalUserName));
                     case UpdateStatusEnum.NewKeyExists:
-                        ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "A user named \"{0}\" already exists.", model.UserName));
+                        ModelState.AddModelError(nameof(model.UserName), this.__ResStr("alreadyExists", "A user named \"{0}\" already exists.", model.UserName));
                         return PartialView(model);
                     case UpdateStatusEnum.OK:
                         break;

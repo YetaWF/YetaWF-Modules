@@ -295,7 +295,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         public async Task<ActionResult> PageEdit_Partial(EditModel model) {
             PageDefinition page = await PageDefinition.LoadAsync(model.PageGuid);
             if (page == null)
-                ModelState.AddModelError("Key", this.__ResStr("alreadyDeleted", "This page has been removed and can no longer be updated."));
+                throw new Error(this.__ResStr("alreadyDeleted", "This page has been removed and can no longer be updated."));
 
             model.UpdateData(page);
             ObjectSupport.CopyData(page, model.Page, ReadOnly: true); // update read only properties in model in case there is an error

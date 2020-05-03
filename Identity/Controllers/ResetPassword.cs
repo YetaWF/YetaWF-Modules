@@ -118,11 +118,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 #endif
             if (!result.Succeeded) {
                 foreach (var err in result.Errors) {
-#if MVC6
-                    ModelState.AddModelError("NewPassword", err.Description);
-#else
-                    ModelState.AddModelError("NewPassword", err);
-#endif
+                    ModelState.AddModelError(nameof(model.NewPassword), err.Description);
                 }
                 return PartialView(model);
             }

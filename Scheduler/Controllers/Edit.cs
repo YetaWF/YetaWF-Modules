@@ -104,10 +104,9 @@ namespace YetaWF.Modules.Scheduler.Controllers {
                 switch (await dataProvider.UpdateItemAsync(model.OriginalName, model.GetEvent())) {
                     default:
                     case UpdateStatusEnum.RecordDeleted:
-                        ModelState.AddModelError("Name", this.__ResStr("alreadyDeleted", "The scheduler item named \"{0}\" has been removed and can no longer be updated.", model.Name));
-                        return PartialView(model);
+                        throw new Error(this.__ResStr("alreadyDeleted", "The scheduler item named \"{0}\" has been removed and can no longer be updated.", model.Name));
                     case UpdateStatusEnum.NewKeyExists:
-                        ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "A scheduler item named \"{0}\" already exists.", model.Name));
+                        ModelState.AddModelError(nameof(model.Name), this.__ResStr("alreadyExists", "A scheduler item named \"{0}\" already exists.", model.Name));
                         return PartialView(model);
                     case UpdateStatusEnum.OK:
                         break;

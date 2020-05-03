@@ -96,10 +96,8 @@ namespace YetaWF.Modules.Blog.Controllers {
                 return PartialView(model);
 
             using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {
-                if (!await dataProvider.AddItemAsync(model.GetData())) {
-                    ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "An error occurred adding this new blog entry"));
-                    return PartialView(model);
-                }
+                if (!await dataProvider.AddItemAsync(model.GetData()))
+                    throw new Error(this.__ResStr("alreadyExists", "An error occurred adding this new blog entry"));
                 return FormProcessed(model, this.__ResStr("okSaved", "New blog entry saved"), OnPopupClose: OnPopupCloseEnum.ReloadModule);
             }
         }

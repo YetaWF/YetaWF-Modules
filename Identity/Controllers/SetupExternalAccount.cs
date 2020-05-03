@@ -15,6 +15,7 @@ using YetaWF.Modules.Identity.Models;
 using YetaWF.Modules.Identity.Modules;
 using YetaWF.Modules.Identity.Support;
 using YetaWF.Core.Identity;
+using System.Linq;
 #if MVC6
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -180,7 +181,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                         };
                         UserDefinition userExists = await dataProvider.GetItemAsync(filters);
                         if (userExists != null && user.UserName != userExists.Email) {
-                            ModelState.AddModelError("Email", this.__ResStr("emailUsed", "An account with email address {0} already exists.", user.Email));
+                            ModelState.AddModelError(nameof(model.Email), this.__ResStr("emailUsed", "An account with email address {0} already exists.", user.Email));
                             return PartialView(model);
                         }
                     }
@@ -188,16 +189,8 @@ namespace YetaWF.Modules.Identity.Controllers {
 
                 // create account
                 var createResult = await Managers.GetUserManager().CreateAsync(user);
-                if (!createResult.Succeeded) {
-                    foreach (var error in createResult.Errors) {
-#if MVC6
-                        ModelState.AddModelError("", error.Description);
-#else
-                        ModelState.AddModelError("", error);
-#endif
-                    }
-                    return PartialView(model);
-                }
+                if (!createResult.Succeeded)
+                    throw new Error(string.Join(" - ", (from e in createResult.Errors select e.Description)));
 
             } else {
 
@@ -218,21 +211,9 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
 
             // add login provider info
-#if MVC6
             var result = await Managers.GetUserManager().AddLoginAsync(user, loginInfo);
-#else
-            var result = await Managers.GetUserManager().AddLoginAsync(user.Id, loginInfo.Login);
-#endif
-            if (!result.Succeeded) {
-                foreach (var error in result.Errors) {
-#if MVC6
-                    ModelState.AddModelError("", error.Description);
-#else
-                    ModelState.AddModelError("", error);
-#endif
-                }
-                return PartialView(model);
-            }
+            if (!result.Succeeded)
+                throw new Error(string.Join(" - ", (from e in result.Errors select e.Description)));
 
             // send appropriate email based on account status
             Emails emails = new Emails();

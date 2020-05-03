@@ -141,10 +141,9 @@ namespace YetaWF.Modules.Blog.Controllers {
                     return PartialView(model);
                 using (BlogCommentDataProvider blogCommentDP = new BlogCommentDataProvider(model.EntryIdentity)) {
                     BlogComment blogComment = model.GetData();
-                    if (!await blogCommentDP.AddItemAsync(blogComment)) {
-                        ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "An error occurred adding this new comment"));
-                        return PartialView(model);
-                    }
+                    if (!await blogCommentDP.AddItemAsync(blogComment))
+                        throw new Error(this.__ResStr("alreadyExists", "An error occurred adding this new comment"));
+
                     // send notification email
                     BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
                     if (config.NotifyNewComment) {

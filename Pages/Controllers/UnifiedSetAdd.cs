@@ -99,7 +99,7 @@ namespace YetaWF.Modules.Pages.Controllers {
 
             using (UnifiedSetDataProvider unifiedSetDP = new UnifiedSetDataProvider()) {
                 if (!await unifiedSetDP.AddItemAsync(model.GetData())) {
-                    ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "A Unified Page Set named \"{0}\" already exists", model.Name));
+                    ModelState.AddModelError(nameof(model.Name), this.__ResStr("alreadyExists", "A Unified Page Set named \"{0}\" already exists", model.Name));
                     return PartialView(model);
                 }
                 return FormProcessed(model, this.__ResStr("okSaved", "New Unified Page Set saved"), OnPopupClose: OnPopupCloseEnum.ReloadModule);

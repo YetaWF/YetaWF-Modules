@@ -14,6 +14,7 @@ using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
 using YetaWF.Modules.Identity.Modules;
 using YetaWF.Modules.Identity.Support;
+using System.Linq;
 #if MVC6
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -123,7 +124,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             user = userManager.FindByName(model.OriginalUserName);
 #endif
             if (user == null)
-                ModelState.AddModelError("Key", this.__ResStr("alreadyDeleted", "The user named \"{0}\" has been removed and can no longer be updated.", model.OriginalUserName));
+                throw new Error(this.__ResStr("alreadyDeleted", "The user named \"{0}\" has been removed and can no longer be updated.", model.OriginalUserName));
             if (!ModelState.IsValid)
                 return PartialView(model);
 
@@ -162,10 +163,10 @@ namespace YetaWF.Modules.Identity.Controllers {
                     switch (status) {
                         default:
                         case UpdateStatusEnum.RecordDeleted:
-                            ModelState.AddModelError("Name", this.__ResStr("alreadyDeleted", "The user named \"{0}\" has been removed and can no longer be updated.", model.OriginalUserName));
+                            ModelState.AddModelError(nameof(model.UserName), this.__ResStr("alreadyDeleted", "The user named \"{0}\" has been removed and can no longer be updated.", model.OriginalUserName));
                             return PartialView(model);
                         case UpdateStatusEnum.NewKeyExists:
-                            ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "A user named \"{0}\" already exists.", model.UserName));
+                            ModelState.AddModelError(nameof(model.UserName), this.__ResStr("alreadyExists", "A user named \"{0}\" already exists.", model.UserName));
                             return PartialView(model);
                         case UpdateStatusEnum.OK:
                             break;
@@ -178,21 +179,9 @@ namespace YetaWF.Modules.Identity.Controllers {
                 await LoginModuleController.UserLoginAsync(user);
             } else {
                 IdentityResult result;
-#if MVC6
                 result = await userManager.UpdateAsync(user);
-#else
-                result = userManager.Update(user);
-#endif
-                if (!result.Succeeded) {
-                    foreach (var err in result.Errors) {
-#if MVC6
-                        ModelState.AddModelError("OldPassword", err.Description);
-#else
-                        ModelState.AddModelError("OldPassword", err);
-#endif
-                    }
-                    return PartialView(model);
-                }
+                if (!result.Succeeded)
+                    throw new Error(string.Join(" - ", (from e in result.Errors select e.Description)));
             }
             return FormProcessed(model, this.__ResStr("okSaved", "Your account information has been saved"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage, ForceRedirect:true);// reload for tiny login module to refresh
         }

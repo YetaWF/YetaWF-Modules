@@ -358,7 +358,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             PageDefinition.NewPageInfo newPage = await PageDefinition.CreateNewPageAsync(model.Title, model.Description, model.Url, basePage, model.CopyModules);
             PageDefinition page = newPage.Page;
             if (page == null) {
-                ModelState.AddModelError("Url", newPage.Message);
+                ModelState.AddModelError(nameof(model.Url), newPage.Message);
                 return PartialView(model);
             }
 

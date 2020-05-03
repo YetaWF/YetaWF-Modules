@@ -93,7 +93,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                 // get the original item
                 BlogCategory data = await dataProvider.GetItemAsync(originalCategory);
                 if (data == null)
-                    ModelState.AddModelError("Category", this.__ResStr("alreadyDeletedId", "The blog category with id {0} has been removed and can no longer be updated.", originalCategory));
+                    throw new Error(this.__ResStr("alreadyDeletedId", "The blog category with id {0} has been removed and can no longer be updated.", originalCategory));
 
                 if (!ModelState.IsValid)
                     return PartialView(model);
@@ -105,10 +105,9 @@ namespace YetaWF.Modules.Blog.Controllers {
                 switch (await dataProvider.UpdateItemAsync(data)) {
                     default:
                     case UpdateStatusEnum.RecordDeleted:
-                        ModelState.AddModelError("Name", this.__ResStr("alreadyDeleted", "The blog category named \"{0}\" has been removed and can no longer be updated.", model.Category.ToString()));
-                        return PartialView(model);
+                        throw new Error(this.__ResStr("alreadyDeleted", "The blog category named \"{0}\" has been removed and can no longer be updated.", model.Category.ToString()));
                     case UpdateStatusEnum.NewKeyExists:
-                        ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "An blog category named \"{0}\" already exists.", model.Category.ToString()));
+                        ModelState.AddModelError(nameof(model.Category), this.__ResStr("alreadyExists", "A blog category named \"{0}\" already exists.", model.Category.ToString()));
                         return PartialView(model);
                     case UpdateStatusEnum.OK:
                         break;

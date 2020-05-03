@@ -147,22 +147,16 @@ namespace YetaWF.Modules.Identity.Controllers {
                             return FormProcessed(model, this.__ResStr("okReset", "We just sent an email to your email address to reset your password - Please allow a few minutes for delivery and make sure your spam filters allow emails from {0}", from), OnClose: OnCloseEnum.Nothing, OnPopupClose: OnPopupCloseEnum.ReloadModule);
                         }
                     case UserStatusEnum.NeedApproval:
-                        ModelState.AddModelError("Email", this.__ResStr("needApproval", "This account has not yet been approved and is awaiting approval by the site administrator"));
-                        break;
+                        throw new Error(this.__ResStr("needApproval", "This account has not yet been approved and is awaiting approval by the site administrator"));
                     case UserStatusEnum.NeedValidation:
-                        ModelState.AddModelError("Email", this.__ResStr("needValidation", "This account has not yet been verified - Please check your emails for our verification email"));
-                        break;
+                        throw new Error(this.__ResStr("needValidation", "This account has not yet been verified - Please check your emails for our verification email"));
                     case UserStatusEnum.Rejected:
-                        ModelState.AddModelError("Email", this.__ResStr("rejected", "This account has been rejected and is not accessible"));
-                        break;
+                        throw new Error(this.__ResStr("rejected", "This account has been rejected and is not accessible"));
                     case UserStatusEnum.Suspended:
-                        ModelState.AddModelError("Email", this.__ResStr("suspended", "This account has been suspended and is not accessible"));
-                        break;
+                        throw new Error(this.__ResStr("suspended", "This account has been suspended and is not accessible"));
                     default:
-                        ModelState.AddModelError("Email", this.__ResStr("unknownState", "This account is in an undefined state and is not accessible"));
-                        break;
+                        throw new Error(this.__ResStr("unknownState", "This account is in an undefined state and is not accessible"));
                 }
-                return PartialView(model);
             }
         }
     }

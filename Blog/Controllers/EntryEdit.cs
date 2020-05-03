@@ -133,10 +133,8 @@ namespace YetaWF.Modules.Blog.Controllers {
                 model.SetData(data); // and all the data back into model for final display
 
                 UpdateStatusEnum status = await dataProvider.UpdateItemAsync(data);
-                if (status != UpdateStatusEnum.OK) {
-                    ModelState.AddModelError("Name", this.__ResStr("errSaving", "An unexpected error occurred saving the blog entry - {0}", status));
-                    return PartialView(model);
-                }
+                if (status != UpdateStatusEnum.OK)
+                    throw new Error(this.__ResStr("errSaving", "An unexpected error occurred saving the blog entry - {0}", status));
                 return FormProcessed(model, this.__ResStr("okSaved", "Blog entry saved"));
             }
         }

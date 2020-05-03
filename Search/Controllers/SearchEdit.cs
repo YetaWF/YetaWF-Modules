@@ -90,7 +90,7 @@ namespace YetaWF.Modules.Search.Controllers {
             using (SearchDataProvider dataProvider = new SearchDataProvider()) {
                 SearchData data = await dataProvider.GetItemWithUrlAsync(model.SearchDataId);
                 if (data == null)
-                    ModelState.AddModelError("SearchDataId", this.__ResStr("alreadyDeleted", "The search keyword with id {0} has been removed and can no longer be updated.", model.SearchDataId));
+                    throw new Error(this.__ResStr("alreadyDeleted", "The search keyword with id {0} has been removed and can no longer be updated.", model.SearchDataId));
 
                 if (!ModelState.IsValid)
                     return PartialView(model);
@@ -101,11 +101,9 @@ namespace YetaWF.Modules.Search.Controllers {
                 switch (await dataProvider.UpdateItemAsync(data)) {
                     default:
                     case UpdateStatusEnum.RecordDeleted:
-                        ModelState.AddModelError("Name", this.__ResStr("alreadyDeleted", "The search keyword with id {0} has been removed and can no longer be updated.", model.SearchDataId));
-                        return PartialView(model);
+                        throw new Error(this.__ResStr("alreadyDeleted", "The search keyword with id {0} has been removed and can no longer be updated.", model.SearchDataId));
                     case UpdateStatusEnum.NewKeyExists:
-                        ModelState.AddModelError("Name", this.__ResStr("alreadyExists", "A search keyword with id {0} already exists.", model.SearchDataId));
-                        return PartialView(model);
+                        throw new Error(this.__ResStr("alreadyExists", "A search keyword with id {0} already exists.", model.SearchDataId));
                     case UpdateStatusEnum.OK:
                         break;
                 }
