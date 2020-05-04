@@ -11,7 +11,7 @@ using YetaWF.Core.Packages;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Base class for the UrlType component implementation.
+    /// Base class for the USState component implementation.
     /// </summary>
     public abstract class USStateComponentBase : YetaWFComponent {
 
