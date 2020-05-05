@@ -955,7 +955,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
 
                 HtmlBuilder hb = new HtmlBuilder();
                 hb.Append($@"
-<tr role='row'{originData} class='{lightCss}{(gridModel.UseSkinFormatting ? " ui-widget-content" : "")}'{trStyle}>");
+<tr role='row'{originData} class='{lightCss}{(gridModel.UseSkinFormatting ? " ui-widget-content" : "")}'{trStyle} tabindex='0'>");
 
                 foreach (string colName in dictInfo.ColumnInfo.Keys) {
 

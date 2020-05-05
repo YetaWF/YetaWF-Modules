@@ -340,10 +340,49 @@ var YetaWF_ComponentsHTML;
                         $YetaWF.elementToggleClass(tr, _this.Setup.RowHighlightCss, false);
                     }
                     $YetaWF.elementToggleClass(clickedElem, _this.Setup.RowHighlightCss, true);
-                    var event = document.createEvent("Event");
-                    event.initEvent("grid_selectionchange", true, true);
-                    _this.Control.dispatchEvent(event);
+                    clickedElem.focus();
+                    _this.sendEventSelect();
                     return false;
+                }
+                return true;
+            });
+            $YetaWF.registerEventHandler(_this.Control, "keydown", null, function (ev) {
+                if (_this.Setup.HighlightOnClick) {
+                    var key = ev.key;
+                    if (key === "ArrowDown" || key === "Down") {
+                        var index = _this.SelectedIndex();
+                        _this.SetSelectedIndex(index < 0 ? 0 : ++index);
+                        index = _this.SelectedIndex();
+                        if (index >= 0)
+                            _this.GetTR(index).focus();
+                        _this.sendEventSelect();
+                        return false;
+                    }
+                    else if (key === "ArrowUp" || key === "Up") {
+                        var index = _this.SelectedIndex();
+                        _this.SetSelectedIndex(index < 0 ? _this.GetTotalRecords() - 1 : --index);
+                        index = _this.SelectedIndex();
+                        if (index >= 0)
+                            _this.GetTR(index).focus();
+                        _this.sendEventSelect();
+                        return false;
+                    }
+                    else if (key === "Home") {
+                        _this.SetSelectedIndex(0);
+                        var index = _this.SelectedIndex();
+                        if (index >= 0)
+                            _this.GetTR(index).focus();
+                        _this.sendEventSelect();
+                        return false;
+                    }
+                    else if (key === "End") {
+                        _this.SetSelectedIndex(_this.GetTotalRecords() - 1);
+                        var index = _this.SelectedIndex();
+                        if (index >= 0)
+                            _this.GetTR(index).focus();
+                        _this.sendEventSelect();
+                        return false;
+                    }
                 }
                 return true;
             });
@@ -404,6 +443,21 @@ var YetaWF_ComponentsHTML;
             }
             return _this;
         }
+        Grid.prototype.sendEventSelect = function () {
+            var event = document.createEvent("Event");
+            event.initEvent(Grid.EVENTSELECT, true, true);
+            this.Control.dispatchEvent(event);
+        };
+        Grid.prototype.sendEventDragDropDone = function () {
+            var event = document.createEvent("Event");
+            event.initEvent(Grid.EVENTDRAGDROPDONE, true, true);
+            this.Control.dispatchEvent(event);
+        };
+        Grid.prototype.sendEventDragDropCancel = function () {
+            var event = document.createEvent("Event");
+            event.initEvent(Grid.EVENTDRAGDROPCANCEL, true, true);
+            this.Control.dispatchEvent(event);
+        };
         // Drag&drop
         Grid.prototype.cancelDragDrop = function () {
             if (this.reorderingRowElement) {
@@ -413,9 +467,7 @@ var YetaWF_ComponentsHTML;
             }
             this.reorderingInProgress = false;
             //console.log("Reordering canceled - left boundary")
-            var event = document.createEvent("Event");
-            event.initEvent("grid_dragdropcancel", true, true);
-            this.Control.dispatchEvent(event);
+            this.sendEventDragDropCancel();
         };
         Grid.prototype.doneDragDrop = function () {
             if (this.reorderingRowElement) {
@@ -425,9 +477,7 @@ var YetaWF_ComponentsHTML;
             }
             this.reorderingInProgress = false;
             //console.log("Reordering ended")
-            var event = document.createEvent("Event");
-            event.initEvent("grid_dragdropdone", true, true);
-            this.Control.dispatchEvent(event);
+            this.sendEventDragDropDone();
         };
         // OnlySubmitWhenChecked
         Grid.prototype.setInitialSubmitStatus = function () {
@@ -664,6 +714,7 @@ var YetaWF_ComponentsHTML;
                                 _this.updateStatus();
                                 if (done)
                                     done();
+                                _this.sendEventSelect();
                             });
                         }
                     };
@@ -1091,6 +1142,13 @@ var YetaWF_ComponentsHTML;
             var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
             var rowIndex = Array.prototype.indexOf.call(trs, sel);
             return rowIndex;
+        };
+        Grid.prototype.SetSelectedIndex = function (index) {
+            var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
+            this.ClearSelection();
+            if (index < 0 || index >= trs.length)
+                return;
+            $YetaWF.elementToggleClass(trs[index], this.Setup.RowHighlightCss, true);
         };
         Grid.prototype.ClearSelection = function () {
             var sel = $YetaWF.getElement1BySelectorCond("tr." + this.Setup.RowHighlightCss + ",tr." + this.Setup.RowDragDropHighlightCss, [this.TBody]);
