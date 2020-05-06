@@ -359,15 +359,17 @@ var YetaWF_ComponentsHTML;
                 Name: options.name,
                 EntryDiv: null,
             };
-            var found = this.Toasts.find(function (toast) {
-                return entry.Name === toast.Name;
-            });
-            if (found) {
-                if (entry.Text === found.Text) // same text, leave as is
-                    return;
-                else {
-                    // new text, replace
-                    this.removeToast(found.EntryDiv, found);
+            if (entry.Name) {
+                var found = this.Toasts.find(function (toast) {
+                    return entry.Name === toast.Name;
+                });
+                if (found) {
+                    if (entry.Text === found.Text) // same text, leave as is
+                        return;
+                    else {
+                        // new text, replace
+                        this.removeToast(found.EntryDiv, found);
+                    }
                 }
             }
             if (!entry.Text) // empty text

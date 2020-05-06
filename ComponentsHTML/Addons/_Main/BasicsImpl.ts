@@ -378,15 +378,17 @@ namespace YetaWF_ComponentsHTML {
                 EntryDiv: null,
             };
 
-            let found = this.Toasts.find((toast: ToastEntry):boolean => {
-                return entry.Name === toast.Name;
-            });
-            if (found) {
-                if (entry.Text === found.Text) // same text, leave as is
-                    return;
-                else {
-                    // new text, replace
-                    this.removeToast(found.EntryDiv!, found);
+            if (entry.Name) {
+                let found = this.Toasts.find((toast: ToastEntry): boolean => {
+                    return entry.Name === toast.Name;
+                });
+                if (found) {
+                    if (entry.Text === found.Text) // same text, leave as is
+                        return;
+                    else {
+                        // new text, replace
+                        this.removeToast(found.EntryDiv!, found);
+                    }
                 }
             }
             if (!entry.Text) // empty text
