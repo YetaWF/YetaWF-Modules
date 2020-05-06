@@ -13,7 +13,9 @@ namespace YetaWF_ComponentsHTML {
 
         public static readonly TEMPLATE: string = "yt_intvalue_base";
         public static readonly SELECTOR: string = "input.yt_intvalue_base.t_edit.k-input[name]";
-        public static readonly EVENT: string = "intvalue_change";
+        public static readonly EVENT: string = "intvalue_change";// obsolete
+        public static readonly EVENTCHANGE: string = "intvalue_change";
+        public static readonly EVENTSPIN: string = "intvalue_spin";
 
         private InputControl: HTMLInputElement;
 
@@ -50,14 +52,25 @@ namespace YetaWF_ComponentsHTML {
                 downArrowText: "",
                 upArrowText: "",
                 change: (e: kendo.ui.NumericTextBoxChangeEvent): void => {
-                    $(this.Control).trigger("change");
-                    var event = document.createEvent("Event");
-                    event.initEvent(IntValueEditComponent.EVENT, true, true);
-                    this.Control.dispatchEvent(event);
-                    FormsSupport.validateElement(this.Control);
+                    this.sendChangeEvent();
+                },
+                spin: (e: kendo.ui.NumericTextBoxSpinEvent): void => {
+                    this.sendSpinEvent();
                 }
             });
             this.kendoNumericTextBox = $(this.InputControl).data("kendoNumericTextBox");
+        }
+        private sendChangeEvent(): void {
+            $(this.Control).trigger("change");
+            var event = document.createEvent("Event");
+            event.initEvent(IntValueEditComponent.EVENT, true, true);
+            this.Control.dispatchEvent(event);
+            FormsSupport.validateElement(this.Control);
+        }
+        private sendSpinEvent(): void {
+            var event = document.createEvent("Event");
+            event.initEvent(IntValueEditComponent.EVENT, true, true);
+            this.Control.dispatchEvent(event);
         }
 
         get value(): number {

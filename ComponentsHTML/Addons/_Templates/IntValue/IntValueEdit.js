@@ -47,16 +47,27 @@ var YetaWF_ComponentsHTML;
                 downArrowText: "",
                 upArrowText: "",
                 change: function (e) {
-                    $(_this.Control).trigger("change");
-                    var event = document.createEvent("Event");
-                    event.initEvent(IntValueEditComponent.EVENT, true, true);
-                    _this.Control.dispatchEvent(event);
-                    FormsSupport.validateElement(_this.Control);
+                    _this.sendChangeEvent();
+                },
+                spin: function (e) {
+                    _this.sendSpinEvent();
                 }
             });
             _this.kendoNumericTextBox = $(_this.InputControl).data("kendoNumericTextBox");
             return _this;
         }
+        IntValueEditComponent.prototype.sendChangeEvent = function () {
+            $(this.Control).trigger("change");
+            var event = document.createEvent("Event");
+            event.initEvent(IntValueEditComponent.EVENT, true, true);
+            this.Control.dispatchEvent(event);
+            FormsSupport.validateElement(this.Control);
+        };
+        IntValueEditComponent.prototype.sendSpinEvent = function () {
+            var event = document.createEvent("Event");
+            event.initEvent(IntValueEditComponent.EVENT, true, true);
+            this.Control.dispatchEvent(event);
+        };
         Object.defineProperty(IntValueEditComponent.prototype, "value", {
             get: function () {
                 if (this.kendoNumericTextBox == null) {
@@ -95,7 +106,9 @@ var YetaWF_ComponentsHTML;
         };
         IntValueEditComponent.TEMPLATE = "yt_intvalue_base";
         IntValueEditComponent.SELECTOR = "input.yt_intvalue_base.t_edit.k-input[name]";
-        IntValueEditComponent.EVENT = "intvalue_change";
+        IntValueEditComponent.EVENT = "intvalue_change"; // obsolete
+        IntValueEditComponent.EVENTCHANGE = "intvalue_change";
+        IntValueEditComponent.EVENTSPIN = "intvalue_spin";
         return IntValueEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.IntValueEditComponent = IntValueEditComponent;
