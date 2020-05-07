@@ -159,20 +159,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
             if (disabled) {
                 //$$$$$$ THIS DOESN'T WORK WITH TEMPLATES
-                component.FieldSetup(tag, FieldType.Anonymous);
+                component.FieldSetup(tag, FieldType.Normal);
                 tag.Attributes.Remove("disabled");
                 tag.Attributes.Add("disabled", "disabled");
+                if (list.Count > 0)
+                    tag.AddCssClass("disabled-submit");// submit disabled field
 
-                if (list.Count > 0) {
-                    // disabled fields are not submitted so we dummy up a hidden field with the value
-                    YTagBuilder tagHidden = new YTagBuilder("input");
-                    tagHidden.Attributes.Add("type", "hidden");
-                    tagHidden.MergeAttribute("name", component.FieldName, false);
-                    SelectionItem<TYPE> sel = list.First();
-                    tagHidden.Attributes.Add("value", sel.Value?.ToString());
-                    tagHidden.SetInnerText(sel.Text.ToString());
-                    hb.Append(tagHidden.ToString(YTagRenderMode.StartTag));
-                }
             } else {
                 component.FieldSetup(tag, component.Validation ? FieldType.Validated : FieldType.Normal);
             }

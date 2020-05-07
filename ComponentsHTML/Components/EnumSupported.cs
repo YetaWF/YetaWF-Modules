@@ -1,7 +1,9 @@
-﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright � 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
@@ -14,13 +16,13 @@ using YetaWF.Core.Support;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Base class for the Enum component implementation.
+    /// Base class for the EnumSupported component implementation.
     /// </summary>
-    public abstract class EnumComponentBase : YetaWFComponent {
+    public abstract class EnumSupportedComponentBase : YetaWFComponent {
 
-        internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(EnumComponentBase), name, defaultValue, parms); }
+        internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(EnumSupportedComponentBase), name, defaultValue, parms); }
 
-        internal const string TemplateName = "Enum";
+        internal const string TemplateName = "EnumSupported";
 
         /// <summary>
         /// Returns the package implementing the component.
@@ -43,20 +45,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     /// <remarks>
     /// </remarks>
-    /// <example>
-    /// public enum LevelEnum {
-    ///     [EnumDescription("Info", "Informational")]
-    ///     Info = 0,
-    ///     [EnumDescription("Error", "Error")]
-    ///     Error = 99,
-    /// }
-    ///
-    /// [Caption("Level"), Description("The error level of this log record")]
-    /// [UIHint("Enum"), AdditionalMetadata("ShowEnumValue", false), ReadOnly]
-    /// public LevelEnum Level { get; set; }
-    /// </example>
-    [UsesAdditionalAttribute("ShowEnumValue", "bool", "true", "If true, the enum value is displayed along with the descriptive text for the enum. Otherwise, the value of the enum is not displayed. In either case, enum values are only shown if the user's User Settings (see User > Settings, standard YetaWF site) has the ShowEnumValue property set to true. AdditionalMetadata(\"ShowEnumValue\", false) is normally used in grids to explicitly suppress the enum value so only the descriptive text is shown.")]
-    public class EnumDisplayComponent : EnumComponentBase, IYetaWFComponent<object> {
+    public class EnumSupportedDisplayComponent : EnumSupportedComponentBase, IYetaWFComponent<object> {
 
         /// <summary>
         /// Returns the component type (edit/display).
@@ -93,24 +82,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
     /// Allows selection of an enum value using a dropdown list which is created based on the enum type and the EnumDescription attributes (if present).
+    /// The presented list of enum values only includes values that are listed in the Supported sibling property.
     /// </summary>
     /// <remarks>
     /// Enum values are only shown if the user's User Settings (see User > Settings, standard YetaWF site) has the ShowEnumValue property set to true.
     /// </remarks>
-    /// <example>
-    /// public enum TabStyleEnum {
-    ///     [EnumDescription("JQuery", "JQuery-UI Tab Controls")]
-    ///     JQuery = 0,
-    ///     [EnumDescription("Kendo", "Kendo UI Core Tab Controls")]
-    ///     Kendo = 1,
-    /// }
-    ///
-    /// [Category("Skin"), Caption("Tab Style"), Description("Defines which UI provides the tab control implementation")]
-    /// [UIHint("Enum"), Required]
-    /// public TabStyleEnum TabStyle { get; set; }
-    /// </example>
-    [UsesAdditionalAttribute("ShowSelect", "bool", "false", "If true, an entry showing \"(select)\" with a value of 0 is inserted as the first entry, in addition to all enum values. Otherwise, only the enum values are shown.")]
-    public class EnumEditComponent : EnumComponentBase, IYetaWFComponent<object> {
+    [UsesAdditional("NoDefault", "bool", "false", "Defines whether a \"(select)\" entry is automatically added as the first entry, with a value of null")]
+    [UsesSibling("Supported", "List<object>", "Lists supported enum values. Enum values that are not in this list are suppressed.")]
+    public class EnumSupportedEditComponent : EnumSupportedComponentBase, IYetaWFComponent<object> {
 
         /// <summary>
         /// Returns the component type (edit/display).
@@ -124,23 +103,24 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(object model) {
-            bool showSelect = PropData.GetAdditionalAttributeValue("ShowSelect", false);
-            List<SelectionItem<int>> list = GetEnumSelectionList(model.GetType(), showSelect: showSelect);
-            return await DropDownListIntComponent.RenderDropDownListAsync(this, (int)model, list, "yt_enum");
-        }
 
-        /// <summary>
-        /// Given an enum type, returns a collection suitable for use in a DropDownList component.
-        /// </summary>
-        /// <param name="enumType">The type of the enum.</param>
-        /// <param name="showSelect">Defines whether the first entry "(select)" should be generated.</param>
-        /// <returns>Returns a collection suitable for use in a DropDownList component.</returns>
-        public static List<SelectionItem<int>> GetEnumSelectionList(Type enumType, bool showSelect = false) {
-            List<SelectionItem<int>> list = new List<SelectionItem<int>>();
+            Type enumType = model.GetType();
+
+            // get all enum values in supported list
+            List<int> supported = new List<int>();
+            object obj = GetSiblingProperty<object>($"{PropertyName}_Supported");
+            IEnumerable ienumerable = obj as IEnumerable;
+            IEnumerator ienum = ienumerable.GetEnumerator();
+            while (ienum.MoveNext()) {
+                supported.Add(Convert.ToInt32(ienum.Current));
+            }
+
+            List <SelectionItem<int>> list = new List<SelectionItem<int>>();
 
             EnumData enumData = ObjectSupport.GetEnumData(enumType);
             bool showValues = UserSettings.GetProperty<bool>("ShowEnumValue");
 
+            bool showSelect = PropData.GetAdditionalAttributeValue("ShowSelect", false);
             if (showSelect) {
                 list.Add(new SelectionItem<int> {
                     Text = __ResStr("enumSelect", "(select)"),
@@ -148,22 +128,27 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     Tooltip = __ResStr("enumPlsSelect", "Please select one of the available options"),
                 });
             }
+
             foreach (EnumDataEntry entry in enumData.Entries) {
 
                 int enumVal = Convert.ToInt32(entry.Value);
                 if (enumVal == 0 && showSelect) continue;
 
-                string caption = entry.Caption;
-                if (showValues)
-                    caption = __ResStr("enumFmt", "{0} - {1}", enumVal, caption);
+                if (supported.Contains(enumVal)) {
 
-                list.Add(new SelectionItem<int> {
-                    Text = caption,
-                    Value = enumVal,
-                    Tooltip = entry.Description,
-                });
+                    string caption = entry.Caption;
+                    if (showValues)
+                        caption = __ResStr("enumFmt", "{0} - {1}", enumVal, caption);
+
+                    list.Add(new SelectionItem<int> {
+                        Text = caption,
+                        Value = enumVal,
+                        Tooltip = entry.Description,
+                    });
+                }
             }
-            return list;
+            return await DropDownListIntComponent.RenderDropDownListAsync(this, (int)model, list, "yt_enumsupported");
         }
     }
 }
+
