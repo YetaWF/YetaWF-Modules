@@ -185,7 +185,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                         ModelState.Remove(nameof(model.Email));
                 }
             }
-            if (!model.ShowCaptcha)
+            if (!model.ShowCaptcha && ModelState[nameof(model.Captcha)] != null)
                 ModelState[nameof(model.Captcha)].ValidationState = Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid;
 
             if (!ModelState.IsValid)

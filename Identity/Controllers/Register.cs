@@ -122,7 +122,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             if (model.ShowCaptcha != config.Captcha && !Manager.IsLocalHost)
                 throw new InternalError("Hidden field tampering detected");
-            if (!model.ShowCaptcha)
+            if (!model.ShowCaptcha && ModelState[nameof(model.Captcha)] != null)
                 ModelState[nameof(model.Captcha)].ValidationState = Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid;
 
             model.RegistrationType = config.RegistrationType;// don't trust what we get from user

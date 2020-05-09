@@ -282,6 +282,30 @@ namespace YetaWF.Modules.Identity.DataProvider {
             }
         }
 
+        public async Task<string> GetUserVerificationCodeAsync(int userId) {
+            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
+                if (user == null)
+                    throw new InternalError($"Unknown user (user id {userId})");
+                return user.VerificationCode;
+            }
+        }
+        public async Task<DateTime?> GetUserLastLoginDateAsync(int userId) {
+            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
+                if (user == null)
+                    throw new InternalError($"Unknown user (user id {userId})");
+                return user.LastLoginDate;
+            }
+        }
+        public async Task<string> GetUserPasswordAsync(int userId) {
+            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
+                if (user == null)
+                    throw new InternalError($"Unknown user (user id {userId})");
+                return user.PasswordPlainText;
+            }
+        }
         public int GetSuperuserId() {
             return SuperuserDefinitionDataProvider.SuperUserId;
         }
