@@ -57,6 +57,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
         [ExcludeDemoMode]
         [ResourceAuthorize(CoreInfo.Resource_ModuleSettings)]
         public async Task<ActionResult> ModuleEdit_Partial(ModuleEditModel model) {
+
             if (model.ModuleGuid == Guid.Empty)
                 throw new InternalError("No moduleGuid provided");
 
@@ -64,16 +65,20 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
             ModuleDefinition origModule = await ModuleDefinition.LoadAsync(model.ModuleGuid);
             await ObjectSupport.HandlePropertyAsync<List<PageDefinition>>(nameof(ModuleDefinition.Pages), nameof(ModuleDefinition.__GetPagesAsync), origModule);
 
-            model.Module = (ModuleDefinition)await GetObjectFromModelAsync(origModule.GetType(), nameof(model.Module));
+            ModuleDefinition mod = (ModuleDefinition)await GetObjectFromModelAsync(origModule.GetType(), nameof(model.Module));
+            if (!ModelState.IsValid)
+                return PartialView(model);
+
+            mod.CustomValidation(ModelState, "Module.");
+            if (!ModelState.IsValid)
+                return PartialView(model);
+
+            model.Module = mod;
             await model.UpdateDataAsync();
             Manager.CurrentModuleEdited = model.Module;
 
             ObjectSupport.CopyData(origModule, model.Module, ReadOnly: true); // update read only properties in model in case there is an error
             ObjectSupport.CopyDataFromOriginal(origModule, model.Module);
-            model.Module.CustomValidation(ModelState, "Module.");
-
-            if (!ModelState.IsValid)
-                return PartialView(model);
 
             // copy/save
             model.Module.Temporary = false;
