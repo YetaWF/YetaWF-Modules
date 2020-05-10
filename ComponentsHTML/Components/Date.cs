@@ -38,7 +38,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// Displays the model formatted as a date localized using the user's selected time zone (see User Settings Module).
     /// </summary>
     /// <remarks>All date/time values in YetaWF are internally stored and processed using UTC.
-    /// 
+    ///
     /// The model value must be specified as UTC. If the model value is null or equal to DateTime.MinValue or DateTime.MaxValue, nothing is rendered.
     /// </remarks>
     /// <example>
@@ -86,7 +86,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     /// <remarks>
     /// All date/time values in YetaWF are internally stored and processed using UTC.
-    /// 
+    ///
     /// MinimumDateAttribute and MaximumDateAttribute can be used to define the lowest and highest allowable date/time values.
     /// </remarks>
     /// <example>

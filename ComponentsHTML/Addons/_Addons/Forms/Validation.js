@@ -82,8 +82,8 @@ var YetaWF_ComponentsHTML;
         Validation.prototype.validateFieldFully = function (form, elem, setMessage) {
             if ($YetaWF.getAttributeCond(elem, "disabled") || // don't validate disabled fields
                 $YetaWF.getAttributeCond(elem, "readonly") || // don't validate readonly fields
-                $YetaWF.elementHasClass(elem, ".yform-novalidate") /* || // don't validate novalidate fields
-            $YetaWF.elementClosestCond(elem, `.${YConfigs.Forms.CssFormNoSubmitContents}`) */) { // don't validate input fields in containers (usually grids)
+                $YetaWF.elementHasClass(elem, ".yform-novalidate") || // don't validate novalidate fields
+                $YetaWF.elementClosestCond(elem, "." + YConfigs.Forms.CssFormNoSubmitContents)) { // don't validate input fields in containers (usually grids)
                 return true;
             }
             var data = $YetaWF.getAttributeCond(elem, Validation.DATAATTR);
