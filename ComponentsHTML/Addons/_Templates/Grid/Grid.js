@@ -1273,6 +1273,9 @@ var YetaWF_ComponentsHTML;
         };
         Grid.TEMPLATE = "yt_grid";
         Grid.SELECTOR = ".yt_grid";
+        Grid.EVENTSELECT = "grid_selectionchange";
+        Grid.EVENTDRAGDROPDONE = "grid_dragdropdone";
+        Grid.EVENTDRAGDROPCANCEL = "grid_dragdropcancel";
         Grid.CurrentControl = null; // current control during grid resize
         return Grid;
     }(YetaWF.ComponentBaseDataImpl));

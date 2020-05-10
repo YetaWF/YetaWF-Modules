@@ -94,9 +94,9 @@ namespace YetaWF_ComponentsHTML {
 
         public static readonly TEMPLATE: string = "yt_grid";
         public static readonly SELECTOR: string = ".yt_grid";
-        public static readonly EVENTSELECT: "grid_selectionchange";
-        public static readonly EVENTDRAGDROPDONE: "grid_dragdropdone";
-        public static readonly EVENTDRAGDROPCANCEL: "grid_dragdropcancel";
+        public static readonly EVENTSELECT: string = "grid_selectionchange";
+        public static readonly EVENTDRAGDROPDONE: string = "grid_dragdropdone";
+        public static readonly EVENTDRAGDROPCANCEL: string = "grid_dragdropcancel";
 
         private Setup: GridSetup;
 
