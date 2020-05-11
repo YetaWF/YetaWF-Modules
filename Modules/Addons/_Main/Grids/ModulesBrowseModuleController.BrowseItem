@@ -10,4 +10,5 @@ Administrators      center [Globals.ChBoolean]
 CssClass            sort filter 20
 WantSearch          sort filter center [Globals.ChBoolean]
 WantFocus           sort filter center [Globals.ChBoolean]
+AreaName            25
 ModuleGuid          sort filter [Globals.ChGuid]

@@ -1,6 +1,7 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
 using System;
+using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -27,6 +28,11 @@ namespace YetaWF.Modules.Identity.Modules {
         public override IModuleDefinitionIO GetDataProvider() { return new UserPasswordModuleDataProvider(); }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return UserLevel_DefaultAllowedRoles; } }
+
+        [Category("General"), Caption("Show Password Rules"), Description("Defines whether the password rules are shown")]
+        [UIHint("Boolean")]
+        [Data_NewValue]
+        public bool ShowPasswordRules { get; set; }
 
         public ModuleAction GetAction_UserPassword(string url) {
             return new ModuleAction(this) {

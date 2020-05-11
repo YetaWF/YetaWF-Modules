@@ -1,22 +1,17 @@
 /* Copyright �2020 Softel vdm, Inc.. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Linq;
+using System.Threading.Tasks;
+using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
-using System.Threading.Tasks;
-using YetaWF.Core;
-using System.Linq;
-#if MVC6
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-#else
-using Microsoft.AspNet.Identity;
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
 
@@ -35,6 +30,11 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Password20"), StringLength(Globals.MaxPswd), Required]
             public string NewPassword { get; set; }
 
+            [Caption(" "), Description("")]
+            [UIHint("String"), ReadOnly]
+            [SuppressEmpty]
+            public string PasswordRules { get; set; }
+
             [Caption("New Password Confirmation"), Description("Enter your new password again to confirm")]
             [UIHint("Password20"), StringLength(Globals.MaxPswd), Required, SameAs("NewPassword", "The password confirmation doesn't match the password entered")]
             public string ConfirmPassword { get; set; }
@@ -48,14 +48,10 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [AllowGet]
         public async Task<ActionResult> UserPassword() {
-#if MVC6
+
             if (!Manager.CurrentContext.User.Identity.IsAuthenticated)
-#else
-            if (!Manager.CurrentRequest.IsAuthenticated)
-#endif
-            {
                 throw new Error(this.__ResStr("noUser", "There is no logged on user"));
-            }
+
             string userName = User.Identity.Name;
 
             using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
@@ -63,17 +59,16 @@ namespace YetaWF.Modules.Identity.Controllers {
                     return View("ShowMessage", this.__ResStr("extUser", "This account uses an external login provider - The password (if available) must be set up using the external login provider."), UseAreaViewName: false);
             }
             UserManager<UserDefinition> userManager = Managers.GetUserManager();
-            UserDefinition user;
-#if MVC6
-            user = await userManager.FindByNameAsync(userName);
-#else
-            user = userManager.FindByName(userName);
-#endif
+            UserDefinition user = await userManager.FindByNameAsync(userName);
             if (user == null)
                 throw new Error(this.__ResStr("notFound", "User \"{0}\" not found."), userName);
 
             EditModel model = new EditModel { };
             model.SetData(user);
+
+            using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
+                model.PasswordRules = Module.ShowPasswordRules ? logConfigDP.PasswordRules : null;
+            }
 
             return View(model);
         }
@@ -83,14 +78,9 @@ namespace YetaWF.Modules.Identity.Controllers {
         [ExcludeDemoMode]
         public async Task<ActionResult> UserPassword_Partial(EditModel model) {
             // get current user we're changing
-#if MVC6
             if (!Manager.CurrentContext.User.Identity.IsAuthenticated)
-#else
-            if (!Manager.CurrentRequest.IsAuthenticated)
-#endif
-            {
                 throw new Error(this.__ResStr("noUser", "There is no logged on user"));
-            }
+
             string userName = User.Identity.Name;
 
             using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
@@ -99,49 +89,40 @@ namespace YetaWF.Modules.Identity.Controllers {
             }
 
             UserManager<UserDefinition> userManager = Managers.GetUserManager();
-            UserDefinition user;
-#if MVC6
-            user = await userManager.FindByNameAsync(userName);
-#else
-            user = userManager.FindByName(userName);
-#endif
+            UserDefinition user = await userManager.FindByNameAsync(userName);
             if (user == null)
                 throw new Error(this.__ResStr("notFound", "User \"{0}\" not found."), userName);
 
             model.SetData(user);
+            if (Module.ShowPasswordRules) {
+                using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
+                    model.PasswordRules = logConfigDP.PasswordRules;
+                }
+            }
+
             if (!ModelState.IsValid)
                 return PartialView(model);
+
             // change the password
-            IdentityResult result;
-#if MVC6
             IPasswordValidator<UserDefinition> passVal = (IPasswordValidator<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(IPasswordValidator<UserDefinition>));
-            result = await passVal.ValidateAsync(userManager, user, model.NewPassword);
-#else
-            result = await userManager.PasswordValidator.ValidateAsync(model.NewPassword);
-#endif
+            IdentityResult result = await passVal.ValidateAsync(userManager, user, model.NewPassword);
             if (!result.Succeeded) {
                 foreach (var err in result.Errors) {
                     ModelState.AddModelError(nameof(model.NewPassword), err.Description);
                 }
                 return PartialView(model);
             }
-#if MVC6
+
             result = await userManager.ChangePasswordAsync(user, model.OldPassword ?? "", model.NewPassword);
-#else
-            result = userManager.ChangePassword(user.Id, model.OldPassword ?? "", model.NewPassword);
-#endif
             if (!result.Succeeded) {
                 foreach (var err in result.Errors) {
                     ModelState.AddModelError(nameof(model.OldPassword), err.Description);
                 }
                 return PartialView(model);
             }
-#if MVC6
+
             IPasswordHasher<UserDefinition> passwordHasher = (IPasswordHasher<UserDefinition>) YetaWFManager.ServiceProvider.GetService(typeof(IPasswordHasher<UserDefinition>));
             user.PasswordHash = passwordHasher.HashPassword(user, model.NewPassword);
-#else
-            user.PasswordHash = userManager.PasswordHasher.HashPassword(model.NewPassword);
-#endif
 
             // update user info
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();

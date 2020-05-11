@@ -70,6 +70,11 @@ namespace YetaWF.Modules.Identity.Modules {
         [Data_NewValue]
         public bool PostRegisterQueryString { get; set; }
 
+        [Category("General"), Caption("Show Password Rules"), Description("Defines whether the password rules are shown")]
+        [UIHint("Boolean")]
+        [Data_NewValue]
+        public bool ShowPasswordRules { get; set; }
+
         public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
             MenuList menuList = await base.GetModuleMenuListAsync(renderMode, location);
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();

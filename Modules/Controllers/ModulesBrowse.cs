@@ -16,11 +16,8 @@ using YetaWF.Core.Components;
 using YetaWF.Core.IO;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Identity;
-#if MVC6
+using YetaWF.Core.Pages;
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Modules.Controllers {
 
@@ -100,6 +97,10 @@ namespace YetaWF.Modules.Modules.Controllers {
             [UIHint("Boolean"), ReadOnly]
             public bool WantFocus { get; set; }
 
+            [Caption("Area"), Description("The area implementing this module")]
+            [UIHint("String"), ReadOnly]
+            public string AreaName { get; set; }
+
             [Caption("Module Guid"), Description("The id uniquely identifying this module")]
             [UIHint("Guid"), ReadOnly]
             public Guid ModuleGuid { get; set; }
@@ -114,7 +115,11 @@ namespace YetaWF.Modules.Modules.Controllers {
                 ObjectSupport.CopyData(mod, this);
 
                 ModuleGuid = mod.ModuleGuid;
-                Description = (from d in designedList where d.ModuleGuid == mod.ModuleGuid select d.Description).FirstOrDefault();
+                DesignedModule desMod = (from d in designedList where d.ModuleGuid == mod.ModuleGuid select d).FirstOrDefault();
+                if (desMod != null) {
+                    Description = desMod.Description;
+                    AreaName = desMod.AreaName;
+                }
                 UseCount = useCount;
                 Anonymous = mod.IsAuthorized_View_Anonymous();
                 Users = mod.IsAuthorized_View_AnyUser();

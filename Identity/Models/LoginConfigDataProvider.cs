@@ -16,6 +16,8 @@ using YetaWF.Core.Identity;
 using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Core.Audit;
 using System;
+using YetaWF.Core.Localize;
+using System.Text;
 #if MVC6
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication;
@@ -69,15 +71,15 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public SerializableList<Role> TwoStepAuth { get; set; }
 
         [Data_DontSave]
-        public bool UseFacebook { 
-            get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "FacebookAccount:Enabled") && DefinedFacebook; } 
+        public bool UseFacebook {
+            get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "FacebookAccount:Enabled") && DefinedFacebook; }
 #if MVC6
             [Obsolete] // needed load existing saved settings
 #endif
             set { }
         }
         [Data_DontSave]
-        public bool UseGoogle { 
+        public bool UseGoogle {
             get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "GoogleAccount:Enabled") && DefinedGoogle; }
 #if MVC6
             [Obsolete]
@@ -85,7 +87,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             set { }
         }
         [Data_DontSave]
-        public bool UseMicrosoft { 
+        public bool UseMicrosoft {
             get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "MicrosoftAccount:Enabled") && DefinedMicrosoft; }
 #if MVC6
             [Obsolete]
@@ -93,7 +95,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             set { }
         }
         [Data_DontSave]
-        public bool UseTwitter { 
+        public bool UseTwitter {
             get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "TwitterAccount:Enabled") && DefinedTwitter; }
 #if MVC6
             [Obsolete]
@@ -152,6 +154,46 @@ namespace YetaWF.Modules.Identity.DataProvider {
         // API
         // API
         // API
+
+        public string PasswordRules {
+            get {
+                string areaName = AreaRegistration.CurrentPackage.AreaName;
+
+                bool requireDigit = OwinConfigHelper.GetValue<bool>(areaName, "Password:RequireDigit", false);
+                int requiredLength = OwinConfigHelper.GetValue<int>(areaName, "Password:RequiredLength", 6);
+                bool requireNonAlphanumeric = OwinConfigHelper.GetValue<bool>(areaName, "Password:RequireNonAlphanumeric", false);
+                bool requireUppercase = OwinConfigHelper.GetValue<bool>(areaName, "Password:RequireUppercase", false);
+                bool requireLowercase = OwinConfigHelper.GetValue<bool>(areaName, "Password:RequireLowercase", false);
+
+                StringBuilder sb = new StringBuilder();
+                string delim = this.__ResStr("passwordDelim", ", ");
+                if (requiredLength > 0) {
+                    if (sb.Length > 0) sb.Append(delim);
+                    sb.Append(this.__ResStr("passwordLen", "be at least {0} characters long", requiredLength));
+                }
+                if (requireDigit) {
+                    if (sb.Length > 0) sb.Append(delim);
+                    sb.Append(this.__ResStr("passwordNum", "contain at least one number 0-9"));
+                }
+                if (requireNonAlphanumeric) {
+                    if (sb.Length > 0) sb.Append(delim);
+                    sb.Append(this.__ResStr("passwordNonAlpha", "contain at least one special character (non alphanumeric)"));
+                }
+                if (requireUppercase) {
+                    if (sb.Length > 0) sb.Append(delim);
+                    sb.Append(this.__ResStr("passwordUpper", "contain at least one uppercase character A-Z"));
+                }
+                if (requireLowercase) {
+                    if (sb.Length > 0) sb.Append(delim);
+                    sb.Append(this.__ResStr("passwordLower", "contain at least one lowercase character a-z"));
+                }
+
+                sb.Insert(0, this.__ResStr("passwordStart", "The password must "));
+                sb.Append(this.__ResStr("passwordEnd", "."));
+
+                return sb.ToString();
+            }
+        }
 
         public static async Task<LoginConfigData> GetConfigAsync() {
             using (LoginConfigDataProvider configDP = new LoginConfigDataProvider()) {

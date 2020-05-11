@@ -53,6 +53,11 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Password20"), StringLength(Globals.MaxPswd), Required]
             public string Password { get; set; }
 
+            [Caption(" "), Description("")]
+            [UIHint("String"), ReadOnly]
+            [SuppressEmpty]
+            public string PasswordRules { get; set; }
+
             [Caption("Password Confirmation"), Description("Enter your password again to confirm")]
             [UIHint("Password20"), Required, StringLength(Globals.MaxPswd), SameAs("Password", "The password confirmation doesn't match the password entered")]
             public string ConfirmPassword { get; set; }
@@ -83,15 +88,17 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (!config.AllowUserRegistration)
                 throw new Error(this.__ResStr("cantRegister", "This site does not allow new user registration"));
 
-            RegisterModel model = new RegisterModel {
-                RegistrationType = config.RegistrationType,
-                ShowCaptcha = config.Captcha && !Manager.IsLocalHost,
-                Captcha = new RecaptchaV2Data(),
-                CloseOnLogin = closeOnLogin,
-                QueryString = Manager.RequestQueryString.ToQueryString(),
-            };
-
             using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
+
+                RegisterModel model = new RegisterModel {
+                    RegistrationType = config.RegistrationType,
+                    ShowCaptcha = config.Captcha && !Manager.IsLocalHost,
+                    Captcha = new RecaptchaV2Data(),
+                    CloseOnLogin = closeOnLogin,
+                    QueryString = Manager.RequestQueryString.ToQueryString(),
+                    PasswordRules = Module.ShowPasswordRules ? logConfigDP.PasswordRules : null,
+                };
+
                 List<LoginConfigDataProvider.LoginProviderDescription> loginProviders = await logConfigDP.GetActiveExternalLoginProvidersAsync();
                 if (loginProviders.Count > 0 && Manager.IsInPopup)
                     throw new InternalError("When using external login providers, the Register module cannot be used in a popup window");
@@ -107,9 +114,8 @@ namespace YetaWF.Modules.Identity.Controllers {
                     string url = VersionManager.GetAddOnPackageUrl(package.AreaName);
                     model.Images.Add(Manager.GetCDNUrl(string.Format("{0}Icons/LoginProviders/{1}.png", url, provider.InternalName)));
                 }
+                return View(model);
             }
-
-            return View(model);
         }
 
         [AllowPost]
@@ -126,6 +132,11 @@ namespace YetaWF.Modules.Identity.Controllers {
                 ModelState[nameof(model.Captcha)].ValidationState = Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid;
 
             model.RegistrationType = config.RegistrationType;// don't trust what we get from user
+            if (Module.ShowPasswordRules) {
+                using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
+                    model.PasswordRules = logConfigDP.PasswordRules;
+                }
+            }
 
             if (!ModelState.IsValid)
                 return PartialView(model);
