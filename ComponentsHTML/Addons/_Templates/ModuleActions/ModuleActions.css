@@ -9,6 +9,9 @@
 .yt_moduleactions a.y_act_icon i {
   margin-right: 1ch; }
 
+.yt_moduleactions a.y_act_button {
+  margin-right: .5ch; }
+
 @media print {
   .yt_moduleactions {
     display: none; } }
