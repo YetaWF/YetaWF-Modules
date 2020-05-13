@@ -10,15 +10,11 @@ using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.DataProvider;
-#if MVC6
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-#else
-using Microsoft.AspNet.Identity;
-#endif
 
 namespace YetaWF.Modules.Identity.Models {
 
@@ -26,35 +22,20 @@ namespace YetaWF.Modules.Identity.Models {
     /// There is one UserStore per site, stored using PermanentManager
     /// </summary>
 
-#if MVC6
     public class YetaWFSecurityStampValidator : SecurityStampValidator<UserDefinition> {
         public YetaWFSecurityStampValidator(IOptions<SecurityStampValidatorOptions> options, SignInManager<UserDefinition> signInManager, ISystemClock clock, ILoggerFactory logger) : base(options, signInManager, clock, logger) { }
     }
-#endif
 
     public class UserStore :
             IUserStore<UserDefinition>,
             IUserLoginStore<UserDefinition>,
             IUserPasswordStore<UserDefinition>,
-#if MVC6
             IUserSecurityStampStore<UserDefinition>,
             IUserEmailStore<UserDefinition>,
             ISecurityStampValidator,
-#else
-#endif
-            IUserRoleStore<UserDefinition>
-    {
-
-#if MVC6
-        public UserStore(){
-            CurrentSiteIdentity = YetaWFManager.Manager.CurrentSite.Identity;
-        }
-#else
-        public UserStore(int siteIdentity, float f) { /* THIS float IS TO REMIND ME SO I DON'T ACCIDENTALLY ALLOCATE A NEW ONE */
-            CurrentSiteIdentity = siteIdentity;
-        }
-#endif
-        public int CurrentSiteIdentity { get; private set; }
+            IUserRoleStore<UserDefinition> {
+        public UserStore() { }
+        public int CurrentSiteIdentity { get { return YetaWFManager.Manager.CurrentSite.Identity; } }
 
         public void Dispose() { Dispose(true); }
         protected virtual void Dispose(bool disposing) { }
@@ -64,7 +45,6 @@ namespace YetaWF.Modules.Identity.Models {
         // IUserStore
         // IUserStore
 
-#if MVC6
         public async Task<IdentityResult> CreateAsync(UserDefinition user, CancellationToken cancellationToken) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider(this.CurrentSiteIdentity)) {
                 bool status = await dataProvider.AddItemAsync(user);
@@ -73,16 +53,6 @@ namespace YetaWF.Modules.Identity.Models {
                 return IdentityResult.Success;
             }
         }
-#else
-        public async Task CreateAsync(UserDefinition user) {
-            using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider(this.CurrentSiteIdentity)) {
-                bool status = await dataProvider.AddItemAsync(user);
-                if (!status)
-                    throw new Error(this.__ResStr("userExists", "User {0} already exists.", user.UserName));
-            }
-        }
-#endif
-#if MVC6
         public async Task<IdentityResult> DeleteAsync(UserDefinition user, CancellationToken cancellationToken) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider(this.CurrentSiteIdentity)) {
                 bool status = await dataProvider.RemoveItemAsync(user.UserName);
@@ -91,16 +61,6 @@ namespace YetaWF.Modules.Identity.Models {
                 return IdentityResult.Success;
             }
         }
-#else
-        public async Task DeleteAsync(UserDefinition user) {
-            using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider(this.CurrentSiteIdentity)) {
-                bool status = await dataProvider.RemoveItemAsync(user.UserName);
-                if (!status)
-                    throw new Error(this.__ResStr("userNotFound", "User {0} not found.", user.UserName));
-            }
-        }
-#endif
-#if MVC6
         public async Task<IdentityResult> UpdateAsync(UserDefinition user, CancellationToken cancellationToken) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider(this.CurrentSiteIdentity)) {
                 UpdateStatusEnum status = await dataProvider.UpdateItemAsync(user);
@@ -116,28 +76,7 @@ namespace YetaWF.Modules.Identity.Models {
                 return IdentityResult.Success;
             }
         }
-#else
-        public async Task UpdateAsync(UserDefinition user) {
-            using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider(this.CurrentSiteIdentity)) {
-                UpdateStatusEnum status = await dataProvider.UpdateItemAsync(user);
-                switch (status) {
-                    default:
-                    case UpdateStatusEnum.NewKeyExists:
-                        throw new InternalError("Unexpected update status");
-                    case UpdateStatusEnum.RecordDeleted:
-                        throw new Error(this.__ResStr("userDeleted", "User {0} not found.", user.UserName));
-                    case UpdateStatusEnum.OK:
-                        break;
-                }
-            }
-        }
-#endif
-#if MVC6
-        public async Task<UserDefinition> FindByIdAsync(string userId, CancellationToken cancellationToken)
-#else
-        public async Task<UserDefinition> FindByIdAsync(string userId)
-#endif
-        {
+        public async Task<UserDefinition> FindByIdAsync(string userId, CancellationToken cancellationToken) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider(this.CurrentSiteIdentity)) {
                 UserDefinition user = null;
                 try {
@@ -146,7 +85,6 @@ namespace YetaWF.Modules.Identity.Models {
                 return user;
             }
         }
-#if MVC6
         public Task<string> GetUserIdAsync(UserDefinition user, CancellationToken cancellationToken) {
             return Task.FromResult<string>(user.UserId.ToString());
         }
@@ -163,14 +101,7 @@ namespace YetaWF.Modules.Identity.Models {
         public Task SetNormalizedUserNameAsync(UserDefinition user, string normalizedName, CancellationToken cancellationToken) {
             return Task.CompletedTask;
         }
-#else
-#endif
-#if MVC6
-        public async Task<UserDefinition> FindByNameAsync(string userName, CancellationToken cancellationToken)
-#else
-        public async Task<UserDefinition> FindByNameAsync(string userName)
-#endif
-        {
+        public async Task<UserDefinition> FindByNameAsync(string userName, CancellationToken cancellationToken) {
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider(this.CurrentSiteIdentity)) {
                 UserDefinition user = await dataProvider.GetItemAsync(userName);
                 return user;
@@ -180,12 +111,7 @@ namespace YetaWF.Modules.Identity.Models {
         // IUserLoginStore
         // IUserLoginStore
         // IUserLoginStore
-#if MVC6
-        public async Task AddLoginAsync(UserDefinition user, UserLoginInfo login, CancellationToken cancellationToken)
-#else
-        public async Task AddLoginAsync(UserDefinition user, UserLoginInfo login)
-#endif
-        {
+        public async Task AddLoginAsync(UserDefinition user, UserLoginInfo login, CancellationToken cancellationToken) {
             using (UserLoginInfoDataProvider logInfoDP = new DataProvider.UserLoginInfoDataProvider(CurrentSiteIdentity)) {
                 await logInfoDP.AddItemAsync(user.UserId, login.LoginProvider, login.ProviderKey);
             }
@@ -203,68 +129,31 @@ namespace YetaWF.Modules.Identity.Models {
                 }
             }
         }
-#if MVC6
         public async Task<UserDefinition> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken) {
             using (UserLoginInfoDataProvider logInfoDP = new DataProvider.UserLoginInfoDataProvider(CurrentSiteIdentity)) {
                 UserDefinition user = await logInfoDP.GetItemAsync(loginProvider, providerKey);
                 return user;
             }
         }
-#else
-        public async Task<UserDefinition> FindAsync(UserLoginInfo login) {
-            using (UserLoginInfoDataProvider logInfoDP = new DataProvider.UserLoginInfoDataProvider(CurrentSiteIdentity)) {
-                UserDefinition user = await logInfoDP.GetItemAsync(login.LoginProvider, login.ProviderKey);
-                return user;
-            }
-        }
-#endif
-#if MVC6
-        public Task<IList<UserLoginInfo>> GetLoginsAsync(UserDefinition user, CancellationToken cancellationToken)
-#else
-        public Task<IList<UserLoginInfo>> GetLoginsAsync(UserDefinition user)
-#endif
-        {
+        public Task<IList<UserLoginInfo>> GetLoginsAsync(UserDefinition user, CancellationToken cancellationToken) {
             throw new NotImplementedException();
         }
-#if MVC6
         public async Task RemoveLoginAsync(UserDefinition user, string loginProvider, string providerKey, CancellationToken cancellationToken) {
             using (UserLoginInfoDataProvider logInfoDP = new DataProvider.UserLoginInfoDataProvider(CurrentSiteIdentity)) {
                 await logInfoDP.RemoveItemAsync(loginProvider, providerKey);
             }
         }
-#else
-        public async Task RemoveLoginAsync(UserDefinition user, UserLoginInfo login) {
-            using (UserLoginInfoDataProvider logInfoDP = new DataProvider.UserLoginInfoDataProvider(CurrentSiteIdentity)) {
-                await logInfoDP.RemoveItemAsync(login.LoginProvider, login.ProviderKey);
-            }
-        }
-#endif
 
         // IUserPasswordStore
         // IUserPasswordStore
         // IUserPasswordStore
-#if MVC6
-        public Task<string> GetPasswordHashAsync(UserDefinition user, CancellationToken cancellationToken)
-#else
-        public Task<string> GetPasswordHashAsync(UserDefinition user)
-#endif
-        {
+        public Task<string> GetPasswordHashAsync(UserDefinition user, CancellationToken cancellationToken) {
             return Task.FromResult(user.PasswordHash);
         }
-#if MVC6
-        public Task<bool> HasPasswordAsync(UserDefinition user, CancellationToken cancellationToken)
-#else
-        public Task<bool> HasPasswordAsync(UserDefinition user)
-#endif
-        {
+        public Task<bool> HasPasswordAsync(UserDefinition user, CancellationToken cancellationToken) {
             return Task.FromResult(user.PasswordHash != null);
         }
-#if MVC6
-        public Task SetPasswordHashAsync(UserDefinition user, string passwordHash, CancellationToken cancellationToken)
-#else
-        public Task SetPasswordHashAsync(UserDefinition user, string passwordHash)
-#endif
-        {
+        public Task SetPasswordHashAsync(UserDefinition user, string passwordHash, CancellationToken cancellationToken) {
             user.PasswordHash = passwordHash;
             return Task.CompletedTask;
         }
@@ -273,46 +162,23 @@ namespace YetaWF.Modules.Identity.Models {
         // IUserRoleStore
         // IUserRoleStore
 
-#if MVC6
-        public Task AddToRoleAsync(UserDefinition user, string role, CancellationToken cancellationToken)
-#else
-        public Task AddToRoleAsync(UserDefinition user, string role)
-#endif
-        {
+        public Task AddToRoleAsync(UserDefinition user, string role, CancellationToken cancellationToken) {
             int roleId = Convert.ToInt32(role);
             user.RolesList.Add(new Role() { RoleId = roleId });
             return Task.CompletedTask;
         }
-#if MVC6
-        public Task<IList<string>> GetRolesAsync(UserDefinition user, CancellationToken cancellationToken)
-#else
-        public Task<IList<string>> GetRolesAsync(UserDefinition user)
-#endif
-        {
-            return Task.FromResult((IList<string>) (from Role role in user.RolesList select role.RoleId.ToString()).ToList<string>());
+        public Task<IList<string>> GetRolesAsync(UserDefinition user, CancellationToken cancellationToken) {
+            return Task.FromResult((IList<string>)(from Role role in user.RolesList select role.RoleId.ToString()).ToList<string>());
         }
-#if MVC6
         public Task<IList<UserDefinition>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken) {
             throw new NotImplementedException();
         }
-#else
-#endif
-#if MVC6
-        public Task<bool> IsInRoleAsync(UserDefinition user, string roleString, CancellationToken cancellationToken)
-#else
-        public Task<bool> IsInRoleAsync(UserDefinition user, string roleString)
-#endif
-        {
+        public Task<bool> IsInRoleAsync(UserDefinition user, string roleString, CancellationToken cancellationToken) {
             int roleId = Convert.ToInt32(roleString);
             Role role = (from Role r in user.RolesList where r.RoleId == roleId select r).FirstOrDefault();
             return Task.FromResult<bool>(role != null);
         }
-#if MVC6
-        public Task RemoveFromRoleAsync(UserDefinition user, string roleString, CancellationToken cancellationToken)
-#else
-        public Task RemoveFromRoleAsync(UserDefinition user, string roleString)
-#endif
-        {
+        public Task RemoveFromRoleAsync(UserDefinition user, string roleString, CancellationToken cancellationToken) {
             int roleId = Convert.ToInt32(roleString);
             Role role = (from Role r in user.RolesList where r.RoleId == roleId select r).FirstOrDefault();
             if (role != null)
@@ -320,7 +186,6 @@ namespace YetaWF.Modules.Identity.Models {
             return Task.CompletedTask;
         }
 
-#if MVC6
         // IUserEmailStore
         // IUserEmailStore
         // IUserEmailStore
@@ -374,9 +239,7 @@ namespace YetaWF.Modules.Identity.Models {
 
         public Task<string> GetSecurityStampAsync(UserDefinition user, CancellationToken cancellationToken) {
             // we may not have a security stamp if the user definition was created on mvc5 or before we started using security stamps
-            return Task.FromResult<string>(user.SecurityStamp??"not previously initialized");
+            return Task.FromResult<string>(user.SecurityStamp ?? "not previously initialized");
         }
-#else
-#endif
     }
 }

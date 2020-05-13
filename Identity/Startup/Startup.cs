@@ -1,7 +1,5 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
-#if MVC6
-
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
@@ -10,12 +8,12 @@ using System;
 using System.IO;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Support;
+using YetaWF.Core.Support.Services;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
 
 
-namespace YetaWF.Modules.Identity
-{
+namespace YetaWF.Modules.Identity {
 
     public class Startup : IIdentity {
 
@@ -56,7 +54,7 @@ namespace YetaWF.Modules.Identity
                 long ticks = OwinConfigHelper.GetValue<long>(AREA, "OWin:ExpireTimeSpan", new TimeSpan(10, 0, 0, 0).Ticks);
                 c.Cookie.Name = string.Format(".YetaWF.Cookies.{0}", YetaWFManager.DefaultSiteName);
                 c.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.SameAsRequest;
-                c.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict;
+                c.Cookie.SameSite = OwinConfigHelper.GetValue<Microsoft.AspNetCore.Http.SameSiteMode>(AREA, "OWin:SameSiteMode", Microsoft.AspNetCore.Http.SameSiteMode.Strict);
                 c.ExpireTimeSpan = new TimeSpan(ticks);
                 c.SlidingExpiration = OwinConfigHelper.GetValue<bool>(AREA, "OWin:SlidingExpiration", true);
             });
@@ -64,7 +62,7 @@ namespace YetaWF.Modules.Identity
                 long ticks = OwinConfigHelper.GetValue<long>(AREA, "OWin:ExpireTimeSpan", new TimeSpan(10, 0, 0, 0).Ticks);
                 c.Cookie.Name = string.Format(".YetaWF.Cookies.Ext.{0}", YetaWFManager.DefaultSiteName);
                 c.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.SameAsRequest;
-                c.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict;
+                c.Cookie.SameSite = OwinConfigHelper.GetValue<Microsoft.AspNetCore.Http.SameSiteMode>(AREA, "OWin:SameSiteMode", Microsoft.AspNetCore.Http.SameSiteMode.Strict);
                 c.ExpireTimeSpan = new TimeSpan(ticks);
                 c.SlidingExpiration = OwinConfigHelper.GetValue<bool>(AREA, "OWin:SlidingExpiration", true);
             });
@@ -114,8 +112,8 @@ namespace YetaWF.Modules.Identity
                     });
                 }
             }
+
+            authBuilder.AddDynamicAuthentication();
         }
     }
 }
-#else
-#endif
