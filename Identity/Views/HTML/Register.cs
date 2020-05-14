@@ -52,8 +52,8 @@ namespace YetaWF.Modules.Identity.Views {
                 }
 
                 hb.Append($@"
-    {await RenderBeginFormAsync(Pure: true, ActionName: nameof(LoginExternalController.ExternalLogin_Partial), ControllerName: "LoginExternal", HtmlAttributes: new { ReturnUrl = Manager.ReturnToUrl })}");
-                hb.Append(HtmlHelper.AntiForgeryToken());
+    <form returnurl='{HAE(Manager.ReturnToUrl)}' action='{HAE(Utility.UrlFor(typeof(LoginExternalController), nameof(LoginExternalController.ExternalLogin_Partial)))}' method='post'>
+         {HtmlHelper.AntiForgeryToken()}");
 
                 int index = 0;
                 foreach (FormButton formButton in model.ExternalProviders) {
@@ -65,7 +65,7 @@ namespace YetaWF.Modules.Identity.Views {
                     ++index;
                 }
                 hb.Append($@"
-    {await RenderEndFormAsync()}
+    </form>
 </div>");
             }
 

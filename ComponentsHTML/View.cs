@@ -60,7 +60,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="Pure">TODO: Purpose unclear.</param>
         /// <param name="Method">The method used to submit the form (get/post)</param>
         /// <returns>Returns the HTML with the generated &lt;form&gt; tag.</returns>
-        protected async Task<string> RenderBeginFormAsync(object HtmlAttributes = null, bool SaveReturnUrl = false, bool ValidateImmediately = false, string ActionName = null, string ControllerName = null, bool Pure = false, string Method = "post") {
+        protected async Task<string> RenderBeginFormAsync(object HtmlAttributes = null, bool SaveReturnUrl = false, bool ValidateImmediately = false, string ActionName = null, string ControllerName = null, string Method = "post") {
 
             await YetaWFCoreRendering.Render.AddFormsAddOnsAsync();
             await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Forms");// standard css, validation strings
@@ -80,13 +80,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (SaveReturnUrl)
                 rvd.Add(Basics.CssSaveReturnUrl, "");
 
-            if (!Pure) {
-                string css = null;
-                if (Manager.CurrentSite.FormErrorsImmed)
-                    css = CssManager.CombineCss(css, "yValidateImmediately");
-                css = CssManager.CombineCss(css, Forms.CssFormAjax);
-                rvd.Add("class", css);
-            }
+            string css = null;
+            if (Manager.CurrentSite.FormErrorsImmed)
+                css = CssManager.CombineCss(css, "yValidateImmediately");
+            css = CssManager.CombineCss(css, Forms.CssFormAjax);
+            rvd.Add("class", css);
 
             YTagBuilder tagBuilder = new YTagBuilder("form");
             tagBuilder.MergeAttributes(rvd, true);

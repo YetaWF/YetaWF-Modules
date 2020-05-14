@@ -14,15 +14,8 @@ using YetaWF.Core.Support.UrlHistory;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
 using YetaWF.Core.Identity;
-#if MVC6
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-#else
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using System.Web;
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
 
@@ -36,75 +29,53 @@ namespace YetaWF.Modules.Identity.Controllers {
         public LoginExternalController() { }
 
         [AllowPost]
-        [ConditionalAntiForgeryToken]
-        //[ExcludeDemoMode]
+        [ConditionalAntiForgeryToken] // An error due to antiforgery doesn't show a nice error page, whatevz
         public ActionResult ExternalLogin_Partial(string provider, string returnUrl) {
-            AllowJavascriptResult = false;
-            // Request a redirect to the external login provider
-            if (YetaWFManager.IsDemo)
-                throw new Error("This action is not available in Demo mode.");
-            if (provider == null)
-                throw new InternalError("No provider");
-#if MVC6
-            SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
-            var redirectUrl = Manager.CurrentSite.MakeFullUrl(Utility.UrlFor(typeof(LoginExternalController), nameof(ExternalLoginCallback)));
-            var properties = _signinManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
-            return Challenge(properties, provider);
-#else
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "LoginExternal", new { ReturnUrl = returnUrl }, "https"));
-#endif
+            // we have to handle error messages explicitly as middleware doesn't respond correctly to post/submit on POC when submitted using non-yetawf mechanisms
+            try {
+                if (YetaWFManager.IsDemo)
+                    throw new Error("This action is not available in Demo mode.");
+
+                // Request a redirect to the external login provider
+                if (provider == null)
+                    throw new InternalError("No external login provider found");
+
+                SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
+                var redirectUrl = Manager.CurrentSite.MakeFullUrl(Utility.UrlFor(typeof(LoginExternalController), nameof(ExternalLoginCallback)));
+                var properties = _signinManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+                return Challenge(properties, provider);
+            } catch (Exception exc) {
+                return Redirect(MessageUrl(ErrorHandling.FormatExceptionMessage(exc)));
+            }
         }
 
         [AllowGet]
-#if MVC6
-        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null)
-#else
-        public async Task<ActionResult> ExternalLoginCallback(string returnUrl = null)
-#endif
-        {
-            returnUrl = Helper.GetSafeReturnUrl(returnUrl);
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = null, string remoteError = null) {
 
-            AllowJavascriptResult = false;
-            ExternalLoginInfo loginInfo;
-#if MVC6
             if (remoteError != null)
                 throw new Error(this.__ResStr("extErr", "The external login provider reported this error: {0}", remoteError));
 
             SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
-            loginInfo = await _signinManager.GetExternalLoginInfoAsync();
-#else
-            IAuthenticationManager authManager = HttpContext.GetOwinContext().Authentication;
-            loginInfo = await authManager.GetExternalLoginInfoAsync();
-#endif
+            ExternalLoginInfo loginInfo = await _signinManager.GetExternalLoginInfoAsync();
             if (loginInfo == null) {
                 Logging.AddErrorLog("AuthenticationManager.GetExternalLoginInfoAsync() returned null");
                 return Redirect(Helper.GetSafeReturnUrl(Manager.CurrentSite.LoginUrl));
             }
             using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
                 List<LoginConfigDataProvider.LoginProviderDescription> loginProviders = await logConfigDP.GetActiveExternalLoginProvidersAsync();
-#if MVC6
                 if ((from l in loginProviders where l.InternalName == loginInfo.LoginProvider select l).FirstOrDefault() == null) {
                     Logging.AddErrorLog("Callback from external login provider {0} which is not active", loginInfo.LoginProvider);
                     return Redirect(Helper.GetSafeReturnUrl(Manager.CurrentSite.LoginUrl));
                 }
-#else
-                if ((from l in loginProviders where l.InternalName == loginInfo.Login.LoginProvider select l).FirstOrDefault() == null) {
-                    Logging.AddErrorLog("Callback from external login provider {0} which is not active", loginInfo.Login.LoginProvider);
-                    return Redirect(Helper.GetSafeReturnUrl(Manager.CurrentSite.LoginUrl));
-                }
-#endif
             }
+
+            returnUrl = Helper.GetSafeReturnUrl(returnUrl);
 
             // get our registration defaults
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
 
             // Sign in the user with this external login provider if the user already has a login
-            UserDefinition user;
-#if MVC6
-            user = await Managers.GetUserManager().FindByLoginAsync(loginInfo.LoginProvider, loginInfo.ProviderKey);
-#else
-            user = await Managers.GetUserManager().FindAsync(loginInfo.Login);
-#endif
+            UserDefinition user = await Managers.GetUserManager().FindByLoginAsync(loginInfo.LoginProvider, loginInfo.ProviderKey);
             if (user == null) {
                 // If the user does not have an account, then prompt the user to create an account
                 // we will go to a page where the user can set up a local account
@@ -173,28 +144,5 @@ namespace YetaWF.Modules.Identity.Controllers {
                 return url;
             }
         }
-#if MVC6
-#else
-        private class ChallengeResult : HttpUnauthorizedResult {
-            public ChallengeResult(string provider, string redirectUri)
-                : this(provider, redirectUri, null) {
-            }
-
-            public ChallengeResult(string provider, string redirectUri, string userId) {
-                LoginProvider = provider;
-                RedirectUri = redirectUri;
-                UserId = userId;
-            }
-
-            public string LoginProvider { get; set; }
-            public string RedirectUri { get; set; }
-            public string UserId { get; set; }
-
-            public override void ExecuteResult(ControllerContext context) {
-                var properties = new AuthenticationProperties() { RedirectUri = RedirectUri };
-                context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
-            }
-        }
-#endif
     }
 }
