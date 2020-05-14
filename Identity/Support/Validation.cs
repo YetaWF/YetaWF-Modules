@@ -39,7 +39,7 @@ namespace YetaWF.Modules.Identity.Support {
 
         public UserNameValidationAttribute() : base(@"^\s*\S.*\s*$",
                 __ResStr("valuserName", "The user name can't start with characters like a tab or a space"),
-                __ResStr("valuserName2", "The user name is invalid ('{0}' property) - The user name can't start with characters like a tab or a space"),
+                __ResStr("valuserName2", "The user name is invalid ('{0}' field) - The user name can't start with characters like a tab or a space"),
                 __ResStr("valuserName3", "The user name '{0}' is invalid - The user name can't start with characters like a tab or a space")
             ) { }
     }
