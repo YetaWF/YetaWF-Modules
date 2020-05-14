@@ -161,10 +161,20 @@ namespace YetaWF.Modules.Identity.DataProvider {
         /// <param name="userId"></param>
         /// <returns></returns>
         public async Task<bool> IsExternalUserAsync(int userId) {
+            return await GetExternalLoginProviderAsync(userId) != null;
+        }
+        /// <summary>
+        /// Return the external login provider user for the specified user id.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>The name of the external login provider. null is returned if no external login provider is used.</returns>
+        public async Task<string> GetExternalLoginProviderAsync(int userId) {
             List<DataProviderFilterInfo> filters = null;
             filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(UserDefinition.UserId), Operator = "==", Value = userId });
             DataProviderGetRecords<LoginInfo> logInfo = await GetItemsAsync(0, 0, null, filters);
-            return logInfo.Data.Count > 0;
+            if (logInfo.Data.Count > 0)
+                return logInfo.Data[0].LoginProvider;
+            return null;
         }
         /// <summary>
         /// Removes login provider and key info.

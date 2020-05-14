@@ -38,7 +38,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             [RequiredIfNot(nameof(RegistrationType), RegistrationTypeEnum.EmailOnly)]
             public string UserName { get; set; }
 
-            [Caption("Email Address"), Description("Your email address this site uses to communicate with you")]
+            [Caption("Email Address"), Description("Your email address used by this site  to communicate with you")]
             [UIHint("Email"), StringLength(Globals.MaxEmail), EmailValidation, Trim]
             [SuppressIf(nameof(RegistrationType), RegistrationTypeEnum.NameOnly)]
             [RequiredIfNot(nameof(RegistrationType), RegistrationTypeEnum.NameOnly)]
@@ -54,9 +54,11 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             [Caption("Last Password Change"), Description("The last time you changed your password")]
             [UIHint("DateTime"), ReadOnly]
+            [SuppressEmpty]
             public DateTime? LastPasswordChangedDate { get; set; }
             [Caption("Password Change IP"), Description("The IP address from which the user last changed the password on this site")]
             [UIHint("IPAddress"), StringLength(Globals.MaxIP), ReadOnly]
+            [SuppressEmpty]
             public string PasswordChangeIP { get; set; }
 
             [UIHint("Hidden")]

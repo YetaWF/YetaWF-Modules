@@ -55,8 +55,9 @@ namespace YetaWF.Modules.Identity.Controllers {
             string userName = User.Identity.Name;
 
             using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
-                if (await logInfoDP.IsExternalUserAsync(Manager.UserId))
-                    return View("ShowMessage", this.__ResStr("extUser", "This account uses an external login provider - The password (if available) must be set up using the external login provider."), UseAreaViewName: false);
+                string ext = await logInfoDP.GetExternalLoginProviderAsync(Manager.UserId);
+                if (ext != null)
+                    return View("ShowMessage", this.__ResStr("extUser", "Your account uses a {0} account - The password must be changed using your {0} account.", ext), UseAreaViewName: false);
             }
             UserManager<UserDefinition> userManager = Managers.GetUserManager();
             UserDefinition user = await userManager.FindByNameAsync(userName);
@@ -84,7 +85,8 @@ namespace YetaWF.Modules.Identity.Controllers {
             string userName = User.Identity.Name;
 
             using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
-                if (await logInfoDP.IsExternalUserAsync(Manager.UserId))
+                string ext = await logInfoDP.GetExternalLoginProviderAsync(Manager.UserId);
+                if (ext != null)
                     throw new Error(this.__ResStr("extUserPswd", "This account can only be accessed using an external login provider"));
             }
 

@@ -56,7 +56,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 throw new Error(this.__ResStr("notFound", "User account not found."));
             using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
                 if (await logInfoDP.IsExternalUserAsync(user.UserId))
-                    return View("ShowMessage", this.__ResStr("extUser", "This account uses an external login provider - The password (if available) must be set up using the external login provider."), UseAreaViewName: false);
+                    return View("ShowMessage", this.__ResStr("extUser", "Your account uses an external login provider - The password (if available) must be set up using the external login provider."), UseAreaViewName: false);
             }
             EditModel model = new EditModel {
                 ResetKey = resetKey,
@@ -86,7 +86,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 throw new Error(this.__ResStr("notFound", "User account not found."));
             using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
                 if (await logInfoDP.IsExternalUserAsync(model.UserId))
-                    throw new Error(this.__ResStr("extUser", "This account uses an external login provider - The password (if available) must be set up using the external login provider."));
+                    throw new Error(this.__ResStr("extUser", "Your account uses an external login provider - The password (if available) must be set up using the external login provider."));
             }
 
             if (!ModelState.IsValid)

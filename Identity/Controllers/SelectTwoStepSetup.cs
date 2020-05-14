@@ -10,11 +10,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Core.Support.TwoStepAuthorization;
 using YetaWF.Modules.Identity.DataProvider;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
 
@@ -46,8 +42,9 @@ namespace YetaWF.Modules.Identity.Controllers {
                 if (user == null)
                     throw new InternalError("User with id {0} not found", Manager.UserId);
                 using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
-                    if (await logInfoDP.IsExternalUserAsync(Manager.UserId))
-                        return View("ShowMessage", this.__ResStr("extUser", "This account uses an external login provider - Two-step authentication (if available) must be set up using the external login provider."), UseAreaViewName: false);
+                    string ext = await logInfoDP.GetExternalLoginProviderAsync(Manager.UserId);
+                    if (ext != null)
+                        return View("ShowMessage", this.__ResStr("extUser", "Your account uses a {0} account - Two-step authentication must be set up using your {0} account.", ext), UseAreaViewName: false);
                 }
                 TwoStepAuth twoStep = new TwoStepAuth();
                 List<ITwoStepAuth> list = await twoStep.GetTwoStepAuthProcessorsAsync();

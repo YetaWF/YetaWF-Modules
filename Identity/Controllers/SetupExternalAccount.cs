@@ -16,16 +16,8 @@ using YetaWF.Modules.Identity.Modules;
 using YetaWF.Modules.Identity.Support;
 using YetaWF.Core.Identity;
 using System.Linq;
-#if MVC6
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
 
@@ -77,14 +69,9 @@ namespace YetaWF.Modules.Identity.Controllers {
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             bool allowNewUser = config.AllowUserRegistration;
 
-            ExternalLoginInfo loginInfo;
-#if MVC6
             SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
-            loginInfo = await _signinManager.GetExternalLoginInfoAsync();
-#else
-            IAuthenticationManager authManager = HttpContext.GetOwinContext().Authentication;
-            loginInfo = await authManager.GetExternalLoginInfoAsync();
-#endif
+            ExternalLoginInfo loginInfo = await _signinManager.GetExternalLoginInfoAsync();
+
             if (loginInfo == null) {
                 Logging.AddErrorLog("AuthenticationManager.GetExternalLoginInfoAsync() returned null");
                 throw new Error(this.__ResStr("noExtLogin", "No external login has been processed"));
@@ -92,19 +79,10 @@ namespace YetaWF.Modules.Identity.Controllers {
             string email;
             string name;
             string loginProvider;
-#if MVC6
+
             email = loginInfo.Principal.FindFirstValue(ClaimTypes.Email);
             name = loginInfo.Principal.FindFirstValue(ClaimTypes.Name);
             loginProvider = loginInfo.LoginProvider;
-#else
-            AuthenticateResult authResult = await authManager.AuthenticateAsync(DefaultAuthenticationTypes.ExternalCookie);
-            ClaimsIdentity externalIdentity = authResult.Identity;
-            if (!externalIdentity.IsAuthenticated)
-                throw new InternalError("!IsAuthenticated");
-            name = externalIdentity.FindFirstValue(ClaimTypes.Name);
-            email = externalIdentity.FindFirstValue(ClaimTypes.Email);
-            loginProvider = loginInfo.Login.LoginProvider;
-#endif
 
             SetupExternalAccountModel model;
 
@@ -131,14 +109,9 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
 
-            ExternalLoginInfo loginInfo;
-#if MVC6
             SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
-            loginInfo = await _signinManager.GetExternalLoginInfoAsync();
-#else
-            IAuthenticationManager authManager = HttpContext.GetOwinContext().Authentication;
-            loginInfo = await authManager.GetExternalLoginInfoAsync();
-#endif
+            ExternalLoginInfo loginInfo = await _signinManager.GetExternalLoginInfoAsync();
+
             if (loginInfo == null) {
                 Logging.AddErrorLog("AuthenticationManager.GetExternalLoginInfoAsync() returned null");
                 return Redirect(Manager.CurrentSite.LoginUrl);

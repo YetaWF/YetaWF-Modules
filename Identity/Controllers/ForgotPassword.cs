@@ -119,10 +119,10 @@ namespace YetaWF.Modules.Identity.Controllers {
                 }
 
                 using (UserLoginInfoDataProvider logInfoDP = new UserLoginInfoDataProvider()) {
-                    if (await logInfoDP.IsExternalUserAsync(Manager.UserId)) {
-                        ModelState.AddModelError(nameof(model.Email), this.__ResStr("extUser", "This account can only be accessed using an external login provider"));
-                        ModelState.AddModelError(nameof(model.UserName), this.__ResStr("extUser", "This account can only be accessed using an external login provider"));
-                        ModelState.AddModelError(nameof(model.UserNameOrEmail), this.__ResStr("extUser", "This account can only be accessed using an external login provider"));
+                    if (await logInfoDP.IsExternalUserAsync(userDef.UserId)) {
+                        ModelState.AddModelError(nameof(model.Email), this.__ResStr("extEmail", "According to our records there is no account associated with this email address"));
+                        ModelState.AddModelError(nameof(model.UserName), this.__ResStr("extName", "According to our records there is no account associated with this name"));
+                        ModelState.AddModelError(nameof(model.UserNameOrEmail), this.__ResStr("extUser", "According to our records there is no account associated with this name or email address"));
                         return PartialView(model);
                     }
                 }
