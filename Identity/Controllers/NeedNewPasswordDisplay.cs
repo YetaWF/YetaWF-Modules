@@ -36,7 +36,8 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (modNewPassword == null)
                 throw new InternalError($"nameof(UserPasswordModule) module not found");
 
-            ModuleAction actionNewPassword = modNewPassword.GetAction_UserPassword(null);
+            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
+            ModuleAction actionNewPassword = modNewPassword.GetAction_UserPassword(config.ChangePasswordUrl);
             if (actionNewPassword == null)
                 throw new InternalError("Change password action not found");
 

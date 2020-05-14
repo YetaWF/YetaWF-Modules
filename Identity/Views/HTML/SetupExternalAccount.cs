@@ -42,14 +42,14 @@ namespace YetaWF.Modules.Identity.Views {
 
                 hb.Append($@"
 <p class='t_header'>
-    {this.__ResStr("extAcct", "You have successfully authenticated with <strong>{0}</strong>.<br/>Please enter a user name for this site below and click the Setup External Account button to finish logging in.", HE(model.LoginProvider))}
+    {this.__ResStr("extAcct", "You have successfully authenticated with <strong>{0}</strong>.<br/>Please enter your information below and click the Setup External Account button to finish logging in.", HE(model.LoginProviderDisplay))}
 </p>");
 
             } else {
 
                 hb.Append($@"
 <p class='t_header'>
-    {this.__ResStr("extAcctInvite", "You have successfully authenticated with <strong>{0}</strong>.<br/>Please enter the invitation code below and click the Setup External Account button to finish logging in.", HE(model.LoginProvider))}
+    {this.__ResStr("extAcctInvite", "You have successfully authenticated with <strong>{0}</strong>.<br/>Please enter the invitation code below and click the Setup External Account button to finish logging in.", HE(model.LoginProviderDisplay))}
 </p>");
 
             }

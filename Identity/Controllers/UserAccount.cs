@@ -38,7 +38,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             [RequiredIfNot(nameof(RegistrationType), RegistrationTypeEnum.EmailOnly)]
             public string UserName { get; set; }
 
-            [Caption("Email Address"), Description("Your email address used by this site  to communicate with you")]
+            [Caption("Email Address"), Description("Enter your email address that can be used by this site to communicate with you")]
             [UIHint("Email"), StringLength(Globals.MaxEmail), EmailValidation, Trim]
             [SuppressIf(nameof(RegistrationType), RegistrationTypeEnum.NameOnly)]
             [RequiredIfNot(nameof(RegistrationType), RegistrationTypeEnum.NameOnly)]

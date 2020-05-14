@@ -56,6 +56,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
         [StringLength(Globals.MaxUrl)]
         public string TwoStepAuthUrl { get; set; }
         [StringLength(Globals.MaxUrl)]
+        [Data_NewValue]
+        public string ChangePasswordUrl { get; set; }
+        [StringLength(Globals.MaxUrl)]
         public string ForgotPasswordUrl { get; set; }
         [StringLength(Globals.MaxUrl)]
         public string VerificationPendingUrl { get; set; }

@@ -12,6 +12,7 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Modules;
 using System;
+using YetaWF.Core.DataProvider.Attributes;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -103,6 +104,13 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
             [StringLength(Globals.MaxUrl), Trim]
             public string TwoStepAuthUrl { get; set; }
+
+            [Category("Urls")]
+            [Caption("Change Password Url"), Description("The Url where the user is redirected if the password must be changed")]
+            [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
+            [StringLength(Globals.MaxUrl), Trim]
+            [Data_NewValue]
+            public string ChangePasswordUrl { get; set; }
 
             [Category("Urls")]
             [Caption("Forgotten Password Url"), Description("The Url where the user can retrieve a forgotten password for an existing account")]
