@@ -33,7 +33,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         public ActionResult ExternalLogin_Partial(string provider, string returnUrl) {
             // we have to handle error messages explicitly as middleware doesn't respond correctly to post/submit on POC when submitted using non-yetawf mechanisms
             try {
-                if (YetaWFManager.IsDemo)
+                if (YetaWFManager.IsDemo || Manager.IsDemoUser)
                     throw new Error("This action is not available in Demo mode.");
 
                 // Request a redirect to the external login provider

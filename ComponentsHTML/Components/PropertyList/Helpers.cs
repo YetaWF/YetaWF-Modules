@@ -173,7 +173,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 submitFormOnChangeAttr = prop.TryGetAttribute<SubmitFormOnChangeAttribute>();
 
                 bool restricted = false;
-                if (YetaWFManager.IsDemo) {
+                if (YetaWFManager.IsDemo || Manager.IsDemoUser) {
                     ExcludeDemoModeAttribute exclDemoAttr = prop.TryGetAttribute<ExcludeDemoModeAttribute>();
                     if (exclDemoAttr != null)
                         restricted = true;

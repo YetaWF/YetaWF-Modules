@@ -62,7 +62,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
             if (IsBackDoorWideOpen())
                 return true;
-            if (YetaWFManager.IsDemo)
+            if (YetaWFManager.IsDemo || Manager.IsDemoUser)
                 return true;
 
             // check if this is the superuser
@@ -206,6 +206,11 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public int GetUserRoleId() {
             using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider()) {
                 return roleDP.GetUserRoleId();
+            }
+        }
+        public int GetUserDemoRoleId() {
+            using (RoleDefinitionDataProvider roleDP = new RoleDefinitionDataProvider()) {
+                return roleDP.GetUserDemoRoleId();
             }
         }
         public int GetUser2FARoleId() {

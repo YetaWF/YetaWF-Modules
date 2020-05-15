@@ -20,15 +20,8 @@ using YetaWF.Modules.Identity.Support;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Components;
 using YetaWF.Modules.Identity.Modules;
-#if MVC6
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-#else
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
-using System.Web;
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
 
@@ -82,7 +75,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             public string Email { get; set; }
 
             [Caption("Password"), Description("Enter your password")]
-            [UIHint("Password20"), StringLength(Globals.MaxPswd), Trim]
+            [UIHint("Password20"), StringLength(Globals.MaxPswd), Required, Trim]
             public string Password { get; set; }
 
             [UIHint("Boolean")]
@@ -220,6 +213,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 Manager.CurrentResponse.StatusCode = 401;
             return result;
         }
+
         [AllowGet]
         [ExcludeDemoMode]
         public async Task<ActionResult> LoginDirectGet(string name, string password, Guid security) {
@@ -253,8 +247,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             model.Success = false;
 
             // make sure it's a valid user
-            UserDefinition user = null;
-            user = await Managers.GetUserManager().FindByNameAsync(model.UserName);
+            UserDefinition user = await Managers.GetUserManager().FindByNameAsync(model.UserName);
             if (user == null) {
                 Logging.AddErrorLog("User login failed: {0} - no such user", model.UserName);
                 ModelState.AddModelError(nameof(LoginModel.Email), this.__ResStr("invLogin", "Invalid user name or password"));
@@ -275,45 +268,29 @@ namespace YetaWF.Modules.Identity.Controllers {
                 ModelState.AddModelError(nameof(LoginModel.UserName), this.__ResStr("maxAttemps", "The maximum number of login attempts has been exceeded - Your account has been suspended"));
                 if (user.UserStatus != UserStatusEnum.Suspended) {
                     user.UserStatus = UserStatusEnum.Suspended;
-#if MVC6
                     await Managers.GetUserManager().UpdateAsync(user);
-#else
-                    Managers.GetUserManager().Update(user);
-#endif
                 }
                 return PartialView(model);
             }
 
-            if (user.PasswordHash != null || !string.IsNullOrWhiteSpace(user.PasswordPlainText) || !string.IsNullOrWhiteSpace(model.Password)) {
-                UserDefinition foundUser = user;
-                user = null;
+            UserDefinition foundUser = user;
+            user = null;
 
-                // Handle random super user password (only supported on Core)
-                if (foundUser.UserId == SuperuserDefinitionDataProvider.SuperUserId && SuperuserDefinitionDataProvider.SuperuserAvailable && SuperuserDefinitionDataProvider.SuperUserPasswordRandom &&
-                        model.UserName == SuperuserDefinitionDataProvider.SuperUserName && model.Password == SuperuserDefinitionDataProvider.SuperUserPassword) {
-                    user = foundUser;
-                }
+            // Handle random super user password (only supported on Core)
+            if (foundUser.UserId == SuperuserDefinitionDataProvider.SuperUserId && SuperuserDefinitionDataProvider.SuperuserAvailable && SuperuserDefinitionDataProvider.SuperUserPasswordRandom &&
+                    model.UserName == SuperuserDefinitionDataProvider.SuperUserName && model.Password == SuperuserDefinitionDataProvider.SuperUserPassword) {
+                user = foundUser;
+            }
 
-                if (user == null) {
-#if MVC6
-                    user = await Managers.GetUserManager().FindByNameAsync(model.UserName);
-                    if (string.IsNullOrWhiteSpace(model.Password) || !await Managers.GetUserManager().CheckPasswordAsync(user, model.Password))
-                        user = null;
-#else
-                    if (!string.IsNullOrWhiteSpace(model.Password))
-                        user = await Managers.GetUserManager().FindAsync(model.UserName, model.Password);
-#endif
-                }
-                if (user == null) {
-                    foundUser.LoginFailures = foundUser.LoginFailures + 1;
-#if MVC6
-                    await Managers.GetUserManager().UpdateAsync(foundUser);
-#else
-                    Managers.GetUserManager().Update(foundUser);
-#endif
-                }
+            if (user == null) {
+                user = await Managers.GetUserManager().FindByNameAsync(model.UserName);
+                if (string.IsNullOrWhiteSpace(model.Password) || !await Managers.GetUserManager().CheckPasswordAsync(user, model.Password))
+                    user = null;
             }
             if (user == null) {
+                foundUser.LoginFailures = foundUser.LoginFailures + 1;
+                await Managers.GetUserManager().UpdateAsync(foundUser);
+
                 Logging.AddErrorLog("User login failed: {0}, {1}, {2}", model.UserName, model.Password, model.VerificationCode);
                 ModelState.AddModelError(nameof(LoginModel.Email), this.__ResStr("invLogin", "Invalid user name or password"));
                 ModelState.AddModelError(nameof(LoginModel.UserName), this.__ResStr("invLogin", "Invalid user name or password"));
@@ -329,11 +306,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                     user.UserStatus = UserStatusEnum.NeedApproval;
                     user.LastActivityDate = DateTime.UtcNow;
                     user.LastActivityIP = Manager.UserHostAddress;
-#if MVC6
                     await Managers.GetUserManager().UpdateAsync(user);
-#else
-                    Managers.GetUserManager().Update(user);
-#endif
 
                     Emails emails = new Emails();
                     await emails.SendApprovalNeededAsync(user);
@@ -353,11 +326,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                     Logging.AddErrorLog("User {0} - invalid verification code({1})", model.UserName, model.VerificationCode);
                     ModelState.AddModelError(nameof(LoginModel.VerificationCode), this.__ResStr("invVerification", "The verification code is invalid. Please make sure to copy/paste it from the email to avoid any typos."));
                     user.LoginFailures = user.LoginFailures + 1;
-#if MVC6
                     await Managers.GetUserManager().UpdateAsync(user);
-#else
-                    Managers.GetUserManager().Update(user);
-#endif
                 } else
                     ModelState.AddModelError(nameof(LoginModel.VerificationCode), this.__ResStr("notValidated", "Your account has not yet been verified. You will receive an email with verification information. Please copy and enter the verification code here."));
                 model.ShowVerification = true;
@@ -424,24 +393,13 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         // User logoff
-        internal static
-#if MVC6
-                async
-#endif
-                Task UserLogoffAsync() {
+        internal static async Task UserLogoffAsync() {
             Manager.EditMode = false;
-#if MVC6
+
             SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
             await _signinManager.SignOutAsync();
-#else
-            IAuthenticationManager authManager = Manager.CurrentRequest.GetOwinContext().Authentication;
-            authManager.SignOut(DefaultAuthenticationTypes.ExternalCookie, DefaultAuthenticationTypes.ApplicationCookie, DefaultAuthenticationTypes.ExternalBearer, DefaultAuthenticationTypes.TwoFactorCookie, DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
-#endif
+
             Manager.SessionSettings.ClearAll();
-#if MVC6
-#else
-            return Task.CompletedTask;
-#endif
         }
 
         // User login
@@ -456,14 +414,9 @@ namespace YetaWF.Modules.Identity.Controllers {
             } else {
                 isPersistent = (bool) rememberme;
             }
-#if MVC6
+
             SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
             await _signinManager.SignInAsync(user, isPersistent);
-#else
-            IAuthenticationManager authManager = Manager.CurrentRequest.GetOwinContext().Authentication;
-            var identity = await Managers.GetUserManager().CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
-            authManager.SignIn(new AuthenticationProperties() { IsPersistent = isPersistent }, identity);
-#endif
 
             // superuser
             int superuserRole = Resource.ResourceAccess.GetSuperuserRoleId();
@@ -476,12 +429,9 @@ namespace YetaWF.Modules.Identity.Controllers {
             user.LastActivityDate = DateTime.UtcNow;
             user.LastActivityIP = Manager.UserHostAddress;
             user.LoginFailures = 0;
-#if MVC6
             await Managers.GetUserManager().UpdateAsync(user);
-#else
-            Managers.GetUserManager().Update(user);
-#endif
         }
+
         [AllowPost]
         [ExcludeDemoMode]
         public async Task<ActionResult> ResendVerificationEmail(string userName) {

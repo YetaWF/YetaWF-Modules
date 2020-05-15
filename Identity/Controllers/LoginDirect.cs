@@ -6,6 +6,9 @@ using YetaWF.Core.Identity;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.Addons;
 using YetaWF.Modules.Identity.DataProvider;
+using System.Collections.Generic;
+using YetaWF.Core.Localize;
+using System.Linq;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -25,6 +28,22 @@ namespace YetaWF.Modules.Identity.Controllers {
             string url = Manager.CurrentSite.HomePageUrl;
             url = QueryHelper.AddRando(url); // to defeat client-side caching
             return Redirect(url);
+        }
+
+        [AllowGet]
+        public async Task<ActionResult> LoginDirectDemoUser(string name, string url) {
+
+            url = QueryHelper.AddRando(url ?? Manager.CurrentSite.HomePageUrl); // to defeat client-side caching
+
+            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
+                UserDefinition user = await userDP.GetItemAsync(name);
+                if (user == null || !user.RolesList.Contains(new Role { RoleId = Resource.ResourceAccess.GetUserDemoRoleId() }, new RoleComparer())) {
+                    Manager.CurrentResponse.StatusCode = 401;
+                } else {
+                    await Resource.ResourceAccess.LoginAsAsync(user.UserId);
+                }
+                return Redirect(url);
+            }
         }
 
         /// <summary>

@@ -57,6 +57,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
 
         private static object _lockObject = new object();
 
+        private static int UserDemoIdentity = DataProviderImpl.IDENTITY_SEED - 5;
         private static int User2FAIdentity = DataProviderImpl.IDENTITY_SEED - 4;
         public static int SuperUserId = DataProviderImpl.IDENTITY_SEED - 3;
         private static int UserIdentity = DataProviderImpl.IDENTITY_SEED - 2;
@@ -171,6 +172,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public int GetEditorRoleId() { return GetRoleId(Globals.Role_Editor); }
         public int GetUserRoleId() { return UserIdentity; }
         public int GetUser2FARoleId() { return User2FAIdentity; }
+        public int GetUserDemoRoleId() { return UserDemoIdentity; }
         public int GetAnonymousRoleId() { return AnonymousIdentity; }
         public int GetRoleId(string roleName) {
             if (roleName == Globals.Role_Superuser)
@@ -181,7 +183,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             return role.RoleId;
         }
         public bool IsPredefinedRole(string role) {
-            return (role == Globals.Role_Superuser || role == Globals.Role_User || role == Globals.Role_User2FA || role == Globals.Role_Editor || role == Globals.Role_Anonymous || role == Globals.Role_Administrator);
+            return (role == Globals.Role_Superuser || role == Globals.Role_User || role == Globals.Role_UserDemo || role == Globals.Role_User2FA || role == Globals.Role_Editor || role == Globals.Role_Anonymous || role == Globals.Role_Administrator);
         }
 
         // all user roles, plus User and Anonymous
@@ -189,6 +191,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             List<RoleDefinition> roles = GetAllUserRoles(force);
             roles = (from r in roles select r).ToList();
             roles.Add(MakeUserRole());
+            roles.Add(MakeUserDemoRole());
             roles.Add(MakeUser2FARole());
             roles.Add(MakeAnonymousRole());
             return roles;
@@ -235,6 +238,9 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
         private RoleDefinition MakeUserRole() {
             return new RoleDefinition() { RoleId = UserIdentity, Name = Globals.Role_User, Description = this.__ResStr("userRole", "The {0} role describes every authenticated user (i.e., not an anonymous user)", Globals.Role_User) };
+        }
+        private RoleDefinition MakeUserDemoRole() {
+            return new RoleDefinition() { RoleId = UserDemoIdentity, Name = Globals.Role_UserDemo, Description = this.__ResStr("userDemoRole", "The {0} role describes an authenticated user that is limited to demo functionality", Globals.Role_UserDemo) };
         }
         private RoleDefinition MakeUser2FARole() {
             return new RoleDefinition() { RoleId = User2FAIdentity, Name = Globals.Role_User2FA, Description = this.__ResStr("user2faRole", "The {0} role describes every authenticated user that must set up two-step authentication (i.e., not an anonymous user)", Globals.Role_User2FA) };
