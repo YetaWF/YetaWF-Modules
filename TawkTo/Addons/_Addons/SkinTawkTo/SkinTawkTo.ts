@@ -89,13 +89,13 @@ namespace YetaWF_TawkTo {
             }
         }
     }
-    $YetaWF.registerCustomEventHandlerDocument("print_before", null, (ev: Event): boolean => {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTBEFOREPRINT, null, (ev: Event): boolean => {
         if (Tawk_API) {
             Tawk_API.hideWidget();
         }
         return false;
     });
-    $YetaWF.registerCustomEventHandlerDocument("print_after", null, (ev: Event): boolean => {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTAFTERPRINT, null, (ev: Event): boolean => {
         if (Tawk_API) {
             Tawk_API.showWidget();
         }

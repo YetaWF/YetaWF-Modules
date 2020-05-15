@@ -96,13 +96,13 @@ var YetaWF_TawkTo;
         return SkinTawkToModule;
     }(YetaWF.ModuleBaseNoDataImpl));
     YetaWF_TawkTo.SkinTawkToModule = SkinTawkToModule;
-    $YetaWF.registerCustomEventHandlerDocument("print_before", null, function (ev) {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTBEFOREPRINT, null, function (ev) {
         if (Tawk_API) {
             Tawk_API.hideWidget();
         }
         return false;
     });
-    $YetaWF.registerCustomEventHandlerDocument("print_after", null, function (ev) {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTAFTERPRINT, null, function (ev) {
         if (Tawk_API) {
             Tawk_API.showWidget();
         }

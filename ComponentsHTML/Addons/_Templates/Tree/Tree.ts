@@ -43,7 +43,12 @@ namespace YetaWF_ComponentsHTML {
 
         public static readonly TEMPLATE: string = "yt_tree";
         public static readonly SELECTOR: string = ".yt_tree";
-        public static readonly EVENT: string = "tree_click";
+
+        public static readonly EVENT: string = "tree_click";// obsolete
+        public static readonly EVENTCLICK: string = "tree_click";
+        public static readonly EVENTDBLCLICK: string = "tree_dblclick";
+        public static readonly EVENTSELECT: string = "tree_select";
+        public static readonly EVENTDROP: string = "tree_drop";
 
         private Setup: TreeSetup;
 
@@ -68,6 +73,12 @@ namespace YetaWF_ComponentsHTML {
                 var liElem = $YetaWF.elementClosest(ev.__YetaWFElem, "li") as HTMLLIElement; // get row we're on
                 this.setSelect(liElem);
                 this.sendClickEvent(liElem);
+                return true;
+            });
+            $YetaWF.registerEventHandler(this.Control, "dblclick", "a.t_entry", (ev: MouseEvent): boolean => {
+                var liElem = $YetaWF.elementClosest(ev.__YetaWFElem, "li") as HTMLLIElement; // get row we're on
+                this.setSelect(liElem);
+                this.sendDblClickEvent(liElem);
                 return true;
             });
             $YetaWF.registerEventHandler(this.Control, "dblclick", "a.t_entry", (ev: MouseEvent): boolean => {
@@ -161,26 +172,28 @@ namespace YetaWF_ComponentsHTML {
             let data = this.getElementDataCond(liElem);
             if (!data || (!data.UrlNew && !data.UrlContent)) {
                 setTimeout((): void => {
-                    var event = document.createEvent("Event");
-                    event.initEvent(TreeComponent.EVENT, true, true);
-                    this.Control.dispatchEvent(event);
+                    $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTCLICK);
+                }, 1);
+            }
+        }
+        private sendDblClickEvent(liElem: HTMLLIElement): void {
+            let data = this.getElementDataCond(liElem);
+            if (!data || (!data.UrlNew && !data.UrlContent)) {
+                setTimeout((): void => {
+                    $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTDBLCLICK);
                 }, 1);
             }
         }
 
         private sendSelectEvent(): void {
             setTimeout((): void => {
-                var event = document.createEvent("Event");
-                event.initEvent("tree_select", true, true);
-                this.Control.dispatchEvent(event);
+                $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTSELECT);
             }, 1);
         }
 
         private sendDropEvent(): void {
             setTimeout((): void => {
-                var event = document.createEvent("Event");
-                event.initEvent("tree_drop", true, true);
-                this.Control.dispatchEvent(event);
+                $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTDROP);
             }, 1);
         }
 

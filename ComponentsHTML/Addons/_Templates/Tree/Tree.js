@@ -50,6 +50,12 @@ var YetaWF_ComponentsHTML;
             $YetaWF.registerEventHandler(_this.Control, "dblclick", "a.t_entry", function (ev) {
                 var liElem = $YetaWF.elementClosest(ev.__YetaWFElem, "li"); // get row we're on
                 _this.setSelect(liElem);
+                _this.sendDblClickEvent(liElem);
+                return true;
+            });
+            $YetaWF.registerEventHandler(_this.Control, "dblclick", "a.t_entry", function (ev) {
+                var liElem = $YetaWF.elementClosest(ev.__YetaWFElem, "li"); // get row we're on
+                _this.setSelect(liElem);
                 if (_this.canExpand(liElem))
                     _this.expand(liElem);
                 else if (_this.canCollapse(liElem))
@@ -156,26 +162,29 @@ var YetaWF_ComponentsHTML;
             var data = this.getElementDataCond(liElem);
             if (!data || (!data.UrlNew && !data.UrlContent)) {
                 setTimeout(function () {
-                    var event = document.createEvent("Event");
-                    event.initEvent(TreeComponent.EVENT, true, true);
-                    _this.Control.dispatchEvent(event);
+                    $YetaWF.sendCustomEvent(_this.Control, TreeComponent.EVENTCLICK);
+                }, 1);
+            }
+        };
+        TreeComponent.prototype.sendDblClickEvent = function (liElem) {
+            var _this = this;
+            var data = this.getElementDataCond(liElem);
+            if (!data || (!data.UrlNew && !data.UrlContent)) {
+                setTimeout(function () {
+                    $YetaWF.sendCustomEvent(_this.Control, TreeComponent.EVENTDBLCLICK);
                 }, 1);
             }
         };
         TreeComponent.prototype.sendSelectEvent = function () {
             var _this = this;
             setTimeout(function () {
-                var event = document.createEvent("Event");
-                event.initEvent("tree_select", true, true);
-                _this.Control.dispatchEvent(event);
+                $YetaWF.sendCustomEvent(_this.Control, TreeComponent.EVENTSELECT);
             }, 1);
         };
         TreeComponent.prototype.sendDropEvent = function () {
             var _this = this;
             setTimeout(function () {
-                var event = document.createEvent("Event");
-                event.initEvent("tree_drop", true, true);
-                _this.Control.dispatchEvent(event);
+                $YetaWF.sendCustomEvent(_this.Control, TreeComponent.EVENTDROP);
             }, 1);
         };
         /* Drag & Drop */
@@ -680,7 +689,11 @@ var YetaWF_ComponentsHTML;
         };
         TreeComponent.TEMPLATE = "yt_tree";
         TreeComponent.SELECTOR = ".yt_tree";
-        TreeComponent.EVENT = "tree_click";
+        TreeComponent.EVENT = "tree_click"; // obsolete
+        TreeComponent.EVENTCLICK = "tree_click";
+        TreeComponent.EVENTDBLCLICK = "tree_dblclick";
+        TreeComponent.EVENTSELECT = "tree_select";
+        TreeComponent.EVENTDROP = "tree_drop";
         TreeComponent.DDTree = null;
         return TreeComponent;
     }(YetaWF.ComponentBaseDataImpl));
