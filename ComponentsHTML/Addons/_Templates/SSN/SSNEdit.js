@@ -58,14 +58,14 @@ var YetaWF_ComponentsHTML;
             get: function () {
                 return this.kendoMaskedTextBox.raw();
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(SSNEditComponent.prototype, "valueText", {
             get: function () {
                 return this.kendoMaskedTextBox.value();
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(SSNEditComponent.prototype, "value", {
@@ -73,7 +73,7 @@ var YetaWF_ComponentsHTML;
                 this.setHidden(val);
                 this.kendoMaskedTextBox.value(val);
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         SSNEditComponent.prototype.clear = function () {

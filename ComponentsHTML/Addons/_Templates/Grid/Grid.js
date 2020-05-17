@@ -1044,7 +1044,7 @@ var YetaWF_ComponentsHTML;
             get: function () {
                 return this.Setup.FieldName;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(Grid.prototype, "StaticData", {
@@ -1053,14 +1053,14 @@ var YetaWF_ComponentsHTML;
                     throw "Static grids only";
                 return this.Setup.StaticData;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(Grid.prototype, "ExtraData", {
             get: function () {
                 return this.Setup.ExtraData;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Grid.prototype.AddRecord = function (tr, staticData) {

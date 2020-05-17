@@ -157,7 +157,7 @@ var YetaWF_ComponentsHTML;
                 }
                 this.updateStatus();
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         UrlEditComponent.prototype.clear = function () {

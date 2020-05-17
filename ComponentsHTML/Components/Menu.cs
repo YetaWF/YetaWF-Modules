@@ -238,7 +238,7 @@ $('#{DivId}').kendoMenu({{
 
                         sb.Append($@"
 {BeginDocumentReady(DivId)}
-    YetaWF_Menu.init('#{DivId}');
+    new YetaWF_ComponentsHTML.MenuDisplayComponent('#{DivId}');
 {EndDocumentReady()}");
 
                     }

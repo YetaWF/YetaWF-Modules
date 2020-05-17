@@ -111,7 +111,7 @@ var YetaWF_ComponentsHTML;
             get: function () {
                 return this.InputText.value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(MultiStringEditComponent.prototype, "value", {
@@ -153,7 +153,7 @@ var YetaWF_ComponentsHTML;
                 this.SelectLang.clear();
                 this.updateSelectLang();
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         MultiStringEditComponent.prototype.hasChanged = function (data) {

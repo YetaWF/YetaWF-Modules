@@ -74,14 +74,14 @@ var YetaWF_ComponentsHTML;
                 this.setHidden(val);
                 this.kendoDateTimePicker.value(val);
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(DateTimeEditComponent.prototype, "valueText", {
             get: function () {
                 return this.Hidden.value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         DateTimeEditComponent.prototype.clear = function () {

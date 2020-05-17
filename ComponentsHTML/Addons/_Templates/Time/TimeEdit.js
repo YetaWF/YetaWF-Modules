@@ -73,14 +73,14 @@ var YetaWF_ComponentsHTML;
                 this.setHidden(val);
                 this.kendoTimePicker.value(val);
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(TimeEditComponent.prototype, "valueText", {
             get: function () {
                 return this.Hidden.value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         TimeEditComponent.prototype.clear = function () {

@@ -73,14 +73,14 @@ var YetaWF_ComponentsHTML;
                 var modGuid = this.Hidden.value;
                 return (modGuid !== undefined && modGuid !== null && modGuid.length > 0 && modGuid !== "00000000-0000-0000-0000-000000000000");
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(ModuleSelectionEditComponent.prototype, "value", {
             get: function () {
                 return this.Hidden.value;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         ModuleSelectionEditComponent.prototype.enable = function (enabled) {

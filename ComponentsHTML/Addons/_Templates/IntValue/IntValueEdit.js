@@ -85,7 +85,7 @@ var YetaWF_ComponentsHTML;
                     this.kendoNumericTextBox.value(val);
                 }
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         IntValueEditComponent.prototype.clear = function () {

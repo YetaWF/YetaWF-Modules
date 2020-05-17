@@ -57,7 +57,7 @@ var YetaWF_ComponentsHTML;
             set: function (value) {
                 this.kendoNumericTextBox.value(value);
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         CurrencyEditComponent.prototype.enable = function (enable) {

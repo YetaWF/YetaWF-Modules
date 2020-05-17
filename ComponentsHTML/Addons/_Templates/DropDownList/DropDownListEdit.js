@@ -69,7 +69,7 @@ var YetaWF_ComponentsHTML;
                         this.KendoDropDownList.select(0);
                 }
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(DropDownListEditComponent.prototype, "selectedIndex", {
@@ -78,7 +78,7 @@ var YetaWF_ComponentsHTML;
                     return -1;
                 return this.KendoDropDownList.select();
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         // retrieve the tooltip for the nth item (index) in the dropdown list

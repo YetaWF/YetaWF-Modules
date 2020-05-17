@@ -23,7 +23,7 @@ var YetaWF_ComponentsHTML;
             get: function () {
                 return this.loading;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         BasicsImpl.prototype.setLoading = function (on) {

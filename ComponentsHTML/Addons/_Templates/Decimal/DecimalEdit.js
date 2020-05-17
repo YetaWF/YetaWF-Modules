@@ -59,14 +59,14 @@ var YetaWF_ComponentsHTML;
                 else
                     this.kendoNumericTextBox.value(val);
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Object.defineProperty(DecimalEditComponent.prototype, "valueText", {
             get: function () {
                 return this.value ? this.value.toString() : "";
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         DecimalEditComponent.prototype.clear = function () {

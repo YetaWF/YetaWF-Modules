@@ -138,7 +138,7 @@ var YetaWF_ComponentsHTML;
                 else
                     throw "Unknown tab style " + YVolatile.Forms.TabStyle; /*DEBUG*/
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         TabsComponent.TEMPLATE = "yt_tabs";
