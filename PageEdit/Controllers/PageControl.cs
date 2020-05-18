@@ -1,13 +1,18 @@
 ﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
 
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core;
+using YetaWF.Core.Addons;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
+using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
@@ -21,16 +26,6 @@ using YetaWF.Core.Support.Zip;
 using YetaWF.Core.Upload;
 using YetaWF.Modules.PageEdit.DataProvider;
 using YetaWF.Modules.PageEdit.Modules;
-using YetaWF.Core.IO;
-using YetaWF.Core.Components;
-using YetaWF.Core.Addons;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
-#else
-using System.Web;
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.PageEdit.Controllers {
 
@@ -49,6 +44,10 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [UIHint("Hidden")]
             public Guid CurrentPageGuid { get; set; }
 
+            [Caption("New Module"), Description("The new module to be added")]
+            [UIHint("ModuleSelection"), AdditionalMetadata("New", true), Required]
+            public Guid SelectedModule { get; set; }
+
             [Caption("Name"), Description("The name of the new module to be added - the module name uniquely identifies a module")]
             [UIHint("Text40"), StringLength(ModuleDefinition.MaxName), Required, Trim]
             public string ModuleName { get; set; }
@@ -56,10 +55,6 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [Caption("Title"), Description("The module title, which appears at the top of the module as its title")]
             [UIHint("MultiString40"), StringLength(ModuleDefinition.MaxTitle), Required, Trim]
             public MultiString ModuleTitle { get; set; }
-
-            [Caption("New Module"), Description("The new module to be added")]
-            [UIHint("ModuleSelection"), AdditionalMetadata("New", true), Required]
-            public Guid SelectedModule { get; set; }
 
             [Caption("Pane"), Description("The pane where the new module is added - in Edit Mode, all panes are visible, even empty panes")]
             [UIHint("PaneSelection"), Required]

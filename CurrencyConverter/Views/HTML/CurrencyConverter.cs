@@ -27,7 +27,7 @@ namespace YetaWF.Modules.CurrencyConverter.Views {
 
             await Manager.ScriptManager.AddScriptAsync(Package.AreaName, ExchangeRateDataProvider.JSFile, Bundle: false, Minify: false);
 
-            string wantFocus = module.WantFocus ? " focusonme" : "";
+            string wantFocus = module.WantFocus ? " yFocusOnMe" : "";
             FormButton button = new FormButton() { ButtonType = ButtonTypeEnum.Button, Name = "convert", Text = this.__ResStr("btnGo", "Go") };
 
             hb.Append($@"

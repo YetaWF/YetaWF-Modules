@@ -62,6 +62,7 @@ var YetaWF_Menus;
                     if (!hasErrors) {
                         _this.saveFields();
                         _this.Tree.setSelectText(_this.MenuText.defaultValue);
+                        _this.ActiveNew = false;
                         _this.sendEntireMenu();
                         _this.update();
                     }
@@ -192,13 +193,13 @@ var YetaWF_Menus;
             if (this.ActiveNew) {
                 if (this.ActiveEntry) // restore original selection
                     this.Tree.setSelect(this.ActiveEntry);
-                $YetaWF.alert(YLocs.YetaWF_Menus.NewEntry);
+                $YetaWF.error(YLocs.YetaWF_Menus.NewEntry);
                 return false;
             }
             if (this.hasChanged()) {
                 if (this.ActiveEntry) // restore original selection
                     this.Tree.setSelect(this.ActiveEntry);
-                $YetaWF.alert(YLocs.YetaWF_Menus.ChangedEntry);
+                $YetaWF.error(YLocs.YetaWF_Menus.ChangedEntry);
                 return false;
             }
             // set new selection

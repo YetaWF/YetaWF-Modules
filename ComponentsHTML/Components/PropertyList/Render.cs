@@ -100,7 +100,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         }
                     }
                     if (!readOnly && property.Editable && !property.Restricted) {
-                        string cls = "t_vals" + (!focusSet ? " focusonme" : "");
+                        string cls = "t_vals" + (!focusSet ? " yFocusOnMe" : "");
                         switch (property.SubmitType) {
                             default:
                             case SubmitFormOnChangeAttribute.SubmitTypeEnum.None:

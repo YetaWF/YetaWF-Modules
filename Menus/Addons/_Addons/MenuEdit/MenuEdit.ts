@@ -156,6 +156,7 @@ namespace YetaWF_Menus {
                     if (!hasErrors) {
                         this.saveFields();
                         this.Tree.setSelectText(this.MenuText.defaultValue);
+                        this.ActiveNew = false;
 
                         this.sendEntireMenu();
                         this.update();
@@ -297,13 +298,13 @@ namespace YetaWF_Menus {
             if (this.ActiveNew) {
                 if (this.ActiveEntry)// restore original selection
                     this.Tree.setSelect(this.ActiveEntry);
-                $YetaWF.alert(YLocs.YetaWF_Menus.NewEntry);
+                $YetaWF.error(YLocs.YetaWF_Menus.NewEntry);
                 return false;
             }
             if (this.hasChanged()) {
                 if (this.ActiveEntry)// restore original selection
                     this.Tree.setSelect(this.ActiveEntry);
-                $YetaWF.alert(YLocs.YetaWF_Menus.ChangedEntry);
+                $YetaWF.error(YLocs.YetaWF_Menus.ChangedEntry);
                 return false;
             }
             // set new selection

@@ -681,8 +681,8 @@ namespace YetaWF_ComponentsHTML {
         private getNewEntry(text: string): string {
             let dd = "";
             if (this.Setup.DragDrop)
-                dd = " draggable='true' ondrop='YetaWF_ComponentsHTML.TreeComponent.onDrop(event)' ondragover='YetaWF_ComponentsHTML.TreeComponent.onDragOver(event)' ondragstart='YetaWF_ComponentsHTML.TreeComponent.onDragStart(event)'";
-            var entry = `<li><i class="t_icempty"></i> <i class="t_icfile"></i><a class="t_entry" href="#"${dd}>${text}</a></li>`;
+                dd = " draggable='true' ondrop='YetaWF_ComponentsHTML.TreeComponent.onDrop(event)' ondragend='YetaWF_ComponentsHTML.TreeComponent.onDragEnd(event)' ondragover='YetaWF_ComponentsHTML.TreeComponent.onDragOver(event)' ondragstart='YetaWF_ComponentsHTML.TreeComponent.onDragStart(event)'";
+            let entry = `<li><i class="t_icempty">&nbsp;</i><i class="t_icfile">&nbsp;</i><a class="t_entry" data-nohref='true' href="#"${dd}>${text}</a></li>`;
             return entry;
         }
 
