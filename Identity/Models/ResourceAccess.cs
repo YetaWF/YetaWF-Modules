@@ -412,7 +412,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             UserDefinition user = new UserDefinition {
                 UserName = name,
                 Email = email,
-                PasswordPlainText = config.SavePlainTextPassword ? password : null,
+                PasswordPlainText = config.SavePlainTextPassword || needsNewPassword ? password : null,
                 Comment = comment,
             };
 
