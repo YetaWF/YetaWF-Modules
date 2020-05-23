@@ -46,16 +46,13 @@ namespace YetaWF.Modules.Caching.DataProvider {
             return new StaticSmallObjectLocalDataProvider();
         }
 
-        private YetaWFManager Manager { get { return YetaWFManager.Manager; } }
-        private bool HaveManager { get { return YetaWFManager.HaveManager; } }
-
         private class CachedObject {
             public DateTime Created { get; set; }
             public object Data { get; set; }
         }
 
-        private Dictionary<string, CachedObject> StaticObjects = new Dictionary<string, CachedObject>();
-        private object _lockObject = new object();
+        private static Dictionary<string, CachedObject> StaticObjects = new Dictionary<string, CachedObject>();
+        private static object _lockObject = new object();
 
         private int DurationSeconds { get; set; }
         private bool DontCache { get { return DurationSeconds < 0; } }

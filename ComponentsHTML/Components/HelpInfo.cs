@@ -4,12 +4,11 @@ using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.IO;
+using YetaWF.Core.Models;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
-
-    // TODO: This needs to support localization with language specific folders, with a fallback to the non-locale specific file.
 
     /// <summary>
     /// Base class for the HelpInfo component implementation.
@@ -35,15 +34,29 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Displays the help file identified by the model. The model contains a file name (without path or extension). Help files are located in the specified package's folder ./Addons/_Main/Help and have the extension .html.
-    /// If the model is null or the help file doesn't exist, nothing is rendered.
+    /// Displays the help file identified by the model. The model contains a file name (without path or extension).
     /// </summary>
     /// <example>
     /// [Caption(""), Description("")]
     /// [UIHint("HelpInfo"), ReadOnly]
     /// [SuppressEmpty]
-    /// public string HelpInformation { get { return "some-file-name"; } }
+    /// public HelpInfoDefinition HelpInformation { get { return new HelpInfoDefinition { Package = AreaRegistration.CurrentPackage, Name = typeof(AddBacklinkingDocumentModuleController).FullName }; } }
+    /// </example>
+    /// <remarks>Help files are located in the specified package's folder ./Addons/_Main/Help and have the extension .html.
+    /// If the model is null or the help file doesn't exist, nothing is rendered.
+    ///
+    /// The help information uses language-specific files based on the user's defined language. The custom folders are searched first.
+    /// Help files are cached if the are smaller than 1K of data.
+    ///
+    /// The search path is as follows (in this example, the user's defined language is DE-de):
+    /// ./AddonsCustom/..sitename../..Package.Domain../..Package.Product../_Main/Help/DE-de/..filename...html
+    /// ./AddonsCustom/..sitename../..Package.Domain../..Package.Product../_Main/Help/..filename...html
+    /// ..package../Addons/_Main/Help/DE-de/..filename...html
+    /// ..package../Addons/_Main/Help/..filename...html
+    /// </remarks>
     public class HelpInfoDisplayComponent : HelpInfoComponentBase, IYetaWFComponent<HelpInfoDefinition> {
+
+        internal const int MAXSIZE = 1024;
 
         /// <summary>
         /// Returns the component type (edit/display).
@@ -63,17 +76,70 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return await GetHelpFileContentsAsync(model);
         }
 
-        public static async Task<string> GetHelpFileContentsAsync(HelpInfoDefinition model) {
-            string url = VersionManager.GetAddOnPackageUrl(model.Package.AreaName);
-            url = $"{url}Help/{model.Name}.html";
+        private async Task<string> GetHelpFileContentsAsync(HelpInfoDefinition model) {
+            string urlBase = $"{VersionManager.GetAddOnPackageUrl(model.Package.AreaName)}Help";
+            string urlCustomBase = VersionManager.GetCustomUrlFromUrl(urlBase);
+            string file = $"{model.Name}.html";
+            string lang = MultiString.ActiveLanguage;
+
+            // try custom language specific
+            HelpFileInfo helpCustomLang = await TryHelpFileAsync($"{urlCustomBase}/{lang}/{file}", model.UseCache);
+            if (helpCustomLang.Exists)
+                return helpCustomLang.Contents;
+
+            // try custom
+            HelpFileInfo helpCustom = await TryHelpFileAsync($"{urlCustomBase}/{file}", model.UseCache);
+            if (helpCustom.Exists)
+                return helpCustom.Contents;
+
+            // try fallback language specific
+            HelpFileInfo helpLang = await TryHelpFileAsync($"{urlBase}/{lang}/{file}", model.UseCache);
+            if (helpLang.Exists)
+                return helpLang.Contents;
+
+            // try fallback
+            HelpFileInfo help = await TryHelpFileAsync($"{urlBase}/{file}", model.UseCache);
+            if (help.Exists)
+                return help.Contents;
+
+            return null;
+        }
+
+        private class HelpFileInfo {
+            public bool Exists { get; set; }
+            public string Contents { get; set; }
+        }
+
+        private async Task<HelpFileInfo> TryHelpFileAsync(string url, bool useCache) {
+
             string file = Utility.UrlToPhysical(url);
-            if (!await FileSystem.FileSystemProvider.FileExistsAsync(file)) {
-                url = VersionManager.GetCustomUrlFromUrl(url);
-                file = Utility.UrlToPhysical(url);
-                if (!await FileSystem.FileSystemProvider.FileExistsAsync(file))
-                    return null;
+            using (ICacheDataProvider cacheDP = YetaWF.Core.IO.Caching.GetStaticSmallObjectCacheProvider()) {
+
+                // Check cache first
+                GetObjectInfo<HelpFileInfo> cache = await cacheDP.GetAsync<HelpFileInfo>(file);
+                if (cache.Success)
+                    return cache.Data;
+
+                // read file
+                if (!await FileSystem.FileSystemProvider.FileExistsAsync(file)) {
+                    HelpFileInfo noInfo = new HelpFileInfo {
+                        Contents = null,
+                        Exists = false,
+                    };
+                    await cacheDP.AddAsync<HelpFileInfo>(file, noInfo);// failure also saved in cache
+                    return noInfo;
+                }
+                string contents = await FileSystem.FileSystemProvider.ReadAllTextAsync(file);
+
+                HelpFileInfo info = new HelpFileInfo {
+                    Contents = contents,
+                    Exists = true,
+                };
+                // save in cache
+                if (contents.Length < MAXSIZE && useCache)
+                    await cacheDP.AddAsync<HelpFileInfo>(file, info);
+                return info;
             }
-            return await FileSystem.FileSystemProvider.ReadAllTextAsync(file);
         }
     }
 }
