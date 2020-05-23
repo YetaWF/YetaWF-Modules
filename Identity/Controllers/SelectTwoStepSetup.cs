@@ -34,6 +34,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         }
 
         [AllowGet]
+        [ExcludeDemoMode]
         public async Task<ActionResult> SelectTwoStepSetup() {
             EditModel model = new EditModel();
             Manager.NeedUser();

@@ -9,6 +9,8 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
+    // TODO: This needs to support localization with language specific folders, with a fallback to the non-locale specific file.
+
     /// <summary>
     /// Base class for the HelpInfo component implementation.
     /// </summary>
@@ -63,10 +65,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public static async Task<string> GetHelpFileContentsAsync(HelpInfoDefinition model) {
             string url = VersionManager.GetAddOnPackageUrl(model.Package.AreaName);
-            string file = Utility.UrlToPhysical($"{url}Help/{model.Name}.html");
-            if (await FileSystem.FileSystemProvider.FileExistsAsync(file))
-                return await FileSystem.FileSystemProvider.ReadAllTextAsync(file);
-            return null;
+            url = $"{url}Help/{model.Name}.html";
+            string file = Utility.UrlToPhysical(url);
+            if (!await FileSystem.FileSystemProvider.FileExistsAsync(file)) {
+                url = VersionManager.GetCustomUrlFromUrl(url);
+                file = Utility.UrlToPhysical(url);
+                if (!await FileSystem.FileSystemProvider.FileExistsAsync(file))
+                    return null;
+            }
+            return await FileSystem.FileSystemProvider.ReadAllTextAsync(file);
         }
     }
 }
