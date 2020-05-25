@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         public SelectTwoStepSetupModuleController() { }
 
         [Trim]
-        [Header("Please set up one or multiple two-step authentication methods - These will be available when you log into your account, at which point you must complete one of the enabled two-step authentications.")]
+        [Header("Please set up a two-step authentication method to protect your account from being hijacked.")]
         public class EditModel {
             public class AuthMethod {
                 public ModuleAction Action { get; set; }

@@ -99,7 +99,7 @@ namespace YetaWF.Modules.TinyLogin.Modules {
                 Category = ModuleAction.ActionCategoryEnum.Update,
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
-                SaveReturnUrl = true,
+                SaveReturnUrl = false,
             };
         }
         public async Task<ModuleAction> GetAction_RegisterAsync(string url) {
@@ -115,7 +115,7 @@ namespace YetaWF.Modules.TinyLogin.Modules {
                 Category = ModuleAction.ActionCategoryEnum.Update,
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
-                SaveReturnUrl = true,
+                SaveReturnUrl = false,
             };
         }
         public async Task<ModuleAction> GetAction_LogoffAsync(string url) {

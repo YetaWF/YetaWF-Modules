@@ -103,8 +103,8 @@ namespace YetaWF.Modules.Identity.Modules {
                 Location = ModuleAction.ActionLocationEnum.NoAuto | ModuleAction.ActionLocationEnum.InPopup | ModuleAction.ActionLocationEnum.ModuleLinks,
                 Category = ModuleAction.ActionCategoryEnum.Update,
                 Mode = ModuleAction.ActionModeEnum.Any,
-                SaveReturnUrl = true,
-                AddToOriginList = true,
+                SaveReturnUrl = false,
+                AddToOriginList = false,
             };
         }
         public async Task<ModuleAction> GetAction_ApproveAsync(string userName) {

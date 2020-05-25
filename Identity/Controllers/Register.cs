@@ -16,6 +16,7 @@ using YetaWF.Modules.Identity.Support;
 using YetaWF.Core.Components;
 using YetaWF.Core.Extensions;
 using YetaWF.Core.Identity;
+using System.Linq;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -66,19 +67,22 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf(nameof(ShowCaptcha), false)]
             public RecaptchaV2Data Captcha { get; set; }
 
-            [UIHint("Hidden")]
+            [UIHint("Hidden"), ReadOnly]
             public RegistrationTypeEnum RegistrationType { get; set; }
-            [UIHint("Hidden")]
+            [UIHint("Hidden"), ReadOnly]
             public bool ShowCaptcha { get; set; }
 
-            [UIHint("Hidden")]
+            [UIHint("Hidden"), ReadOnly]
             public bool CloseOnLogin { get; set; }
 
-            [UIHint("Hidden")]
+            [UIHint("Hidden"), ReadOnly]
             public string QueryString { get; set; }
 
             public List<string> Images { get; set; }
             public List<FormButton> ExternalProviders { get; set; }
+
+            [UIHint("Hidden"), ReadOnly]
+            public string ReturnUrl { get; set; } // for external login only
         }
 
         [AllowGet]
@@ -114,6 +118,9 @@ namespace YetaWF.Modules.Identity.Controllers {
                     string url = VersionManager.GetAddOnPackageUrl(package.AreaName);
                     model.Images.Add(Manager.GetCDNUrl(string.Format("{0}Icons/LoginProviders/{1}.png", url, provider.InternalName)));
                 }
+                if (Manager.HaveReturnToUrl)
+                    model.ReturnUrl = Manager.ReturnToUrl;
+
                 return View(model);
             }
         }
@@ -210,24 +217,30 @@ namespace YetaWF.Modules.Identity.Controllers {
                     this.__ResStr("okRegTitle", "Welcome!"),
                     NextPage: nextPage);
             } else if (user.UserStatus == UserStatusEnum.Approved) {
+
                 if (config.NotifyAdminNewUsers)
                     await emails.SendNewUserCreatedAsync(user);
                 await LoginModuleController.UserLoginAsync(user, config.PersistentLogin);
-                string nextUrl;
-                if (string.IsNullOrWhiteSpace(Module.PostRegisterUrl)) {
+
+                string nextUrl = null;
+                if (Manager.HaveReturnToUrl)
                     nextUrl = Manager.ReturnToUrl;
-                } else {
+                if (string.IsNullOrWhiteSpace(nextUrl) && !string.IsNullOrWhiteSpace(Module.PostRegisterUrl)) {
                     nextUrl = Module.PostRegisterUrl;
-                    if (Module.PostRegisterQueryString) {
+                    if (Module.PostRegisterQueryString)
                         nextUrl += model.QueryString.AddQSSeparator() + model.QueryString;
-                    }
                 }
-                if (model.CloseOnLogin)
+                if (string.IsNullOrWhiteSpace(nextUrl))
+                    nextUrl = await Resource.ResourceAccess.GetUserPostLoginUrlAsync((from u in user.RolesList select u.RoleId).ToList());
+                if (string.IsNullOrWhiteSpace(nextUrl))
+                    nextUrl = Manager.CurrentSite.PostLoginUrl;
+
+                if (!string.IsNullOrWhiteSpace(nextUrl)) {
                     return FormProcessed(model, this.__ResStr("okRegText", "Your new account has been successfully registered."), this.__ResStr("okRegTitle", "Welcome!"),
-                        OnClose: OnCloseEnum.CloseWindow, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: nextUrl, ForceRedirect: true);
-                else
-                    return FormProcessed(model, this.__ResStr("okRegText", "Your new account has been successfully registered."), this.__ResStr("okRegTitle", "Welcome!"),
-                        NextPage: nextUrl, ForceRedirect: true);
+                        OnClose: OnCloseEnum.GotoNewPage, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: nextUrl, ForceRedirect: true);
+                }
+                return FormProcessed(model, this.__ResStr("okRegText", "Your new account has been successfully registered."), this.__ResStr("okRegTitle", "Welcome!"), ForceRedirect: true);
+
             } else
                 throw new InternalError("badUserStatus", "Unexpected account status {0}", user.UserStatus);
         }

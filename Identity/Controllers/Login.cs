@@ -1,27 +1,27 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Addons;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Log;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Core.Support.TwoStepAuthorization;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
-using YetaWF.Modules.Identity.Support;
-using YetaWF.Core.Packages;
-using YetaWF.Core.Components;
 using YetaWF.Modules.Identity.Modules;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
+using YetaWF.Modules.Identity.Support;
 
 namespace YetaWF.Modules.Identity.Controllers {
 
@@ -96,11 +96,11 @@ namespace YetaWF.Modules.Identity.Controllers {
             [SuppressIf(nameof(ShowCaptcha), false)]
             public RecaptchaV2Data Captcha { get; set; }
 
-            [UIHint("Hidden")]
+            [UIHint("Hidden"), ReadOnly]
             public bool ShowVerification { get; set; }
-            [UIHint("Hidden")]
+            [UIHint("Hidden"), ReadOnly]
             public bool ShowCaptcha { get; set; }
-            [UIHint("Hidden")]
+            [UIHint("Hidden"), ReadOnly]
             public bool CloseOnLogin { get; set; }
 
             public List<string> Images { get; set; }
@@ -108,10 +108,12 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             public bool Success { get; set; }
 
-            [UIHint("Hidden")]
+            [UIHint("Hidden"), ReadOnly]
             public RegistrationTypeEnum RegistrationType { get; set; }
-            [UIHint("Hidden")]
+            [UIHint("Hidden"), ReadOnly]
             public bool AllowNewUser { get; set; }
+            [UIHint("Hidden"), ReadOnly]
+            public string ReturnUrl { get; set; } // for external login only
         }
 
         [AllowGet]
@@ -136,6 +138,9 @@ namespace YetaWF.Modules.Identity.Controllers {
                 ShowVerification = !string.IsNullOrWhiteSpace(v),
                 ShowCaptcha = config.Captcha && string.IsNullOrWhiteSpace(v) && !Manager.IsLocalHost,
             };
+            if (Manager.HaveReturnToUrl)
+                model.ReturnUrl = Manager.ReturnToUrl;
+
             using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
                 List<LoginConfigDataProvider.LoginProviderDescription> loginProviders = await logConfigDP.GetActiveExternalLoginProvidersAsync();
                 if (loginProviders.Count > 0 && Manager.IsInPopup)
@@ -352,11 +357,20 @@ namespace YetaWF.Modules.Identity.Controllers {
                     this.__ResStr("accountSuspended", "Your account has been suspended."),
                     NextPage: nextPage);
             } else if (user.UserStatus == UserStatusEnum.Approved) {
+
+                string nextUrl = null;
+                if (Manager.HaveReturnToUrl)
+                    nextUrl = Manager.ReturnToUrl;
+                if (string.IsNullOrWhiteSpace(nextUrl))
+                    nextUrl = await Resource.ResourceAccess.GetUserPostLoginUrlAsync((from u in user.RolesList select u.RoleId).ToList());
+                if (string.IsNullOrWhiteSpace(nextUrl))
+                    nextUrl = Manager.CurrentSite.PostLoginUrl;
+
                 if (useTwoStep) {
                     ActionResult actionResult = await TwoStepAuthetication(user);
                     if (actionResult != null) {
                         Manager.SessionSettings.SiteSettings.SetValue<int>(LoginTwoStepController.IDENTITY_TWOSTEP_USERID, user.UserId);// marker that user has entered correct name/password
-                        Manager.SessionSettings.SiteSettings.SetValue<string>(LoginTwoStepController.IDENTITY_TWOSTEP_NEXTURL, Manager.ReturnToUrl);// marker that user has entered correct name/password
+                        Manager.SessionSettings.SiteSettings.SetValue<string>(LoginTwoStepController.IDENTITY_TWOSTEP_NEXTURL, nextUrl);
                         Manager.SessionSettings.SiteSettings.SetValue<bool>(LoginTwoStepController.IDENTITY_TWOSTEP_CLOSEONLOGIN, model.CloseOnLogin);
                         Manager.SessionSettings.SiteSettings.Save();
                         return actionResult;
@@ -366,16 +380,10 @@ namespace YetaWF.Modules.Identity.Controllers {
                 model.Success = true;
                 Logging.AddLog("User {0} - logged on", model.UserName);
 
-                if (model.CloseOnLogin) {
-                    return FormProcessed(model, OnClose: OnCloseEnum.CloseWindow, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: Manager.ReturnToUrl, ForceRedirect: true);
-                } else {
-                    string nextUrl = await Resource.ResourceAccess.GetUserPostLoginUrlAsync(Manager.UserRoles);
-                    if (string.IsNullOrWhiteSpace(nextUrl))
-                        nextUrl = Manager.CurrentSite.PostLoginUrl;
-                    if (!string.IsNullOrWhiteSpace(nextUrl))
-                        return FormProcessed(model, OnClose: OnCloseEnum.GotoNewPage, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: nextUrl, ForceRedirect: true);
-                    return FormProcessed(model, ForceRedirect: true);
-                }
+                if (!string.IsNullOrWhiteSpace(nextUrl))
+                    return FormProcessed(model, OnClose: OnCloseEnum.GotoNewPage, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: nextUrl, ForceRedirect: true);
+                return FormProcessed(model, ForceRedirect: true);
+
             } else
                 throw new InternalError("badUserStatus", "Unexpected account status {0}", user.UserStatus);
         }

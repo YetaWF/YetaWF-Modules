@@ -41,7 +41,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                     throw new InternalError("No external login provider found");
 
                 SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
-                var redirectUrl = Manager.CurrentSite.MakeFullUrl(Utility.UrlFor(typeof(LoginExternalController), nameof(ExternalLoginCallback)));
+                var redirectUrl = Manager.CurrentSite.MakeFullUrl(Utility.UrlFor(typeof(LoginExternalController), nameof(ExternalLoginCallback), new { ReturnUrl = returnUrl }));
                 var properties = _signinManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
                 return Challenge(properties, provider);
             } catch (Exception exc) {
@@ -69,8 +69,6 @@ namespace YetaWF.Modules.Identity.Controllers {
                 }
             }
 
-            returnUrl = Helper.GetSafeReturnUrl(returnUrl);
-
             // get our registration defaults
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
 
@@ -80,10 +78,19 @@ namespace YetaWF.Modules.Identity.Controllers {
                 // If the user does not have an account, then prompt the user to create an account
                 // we will go to a page where the user can set up a local account
                 Manager.OriginList = new List<Origin>();
-                Manager.OriginList.Add(new Origin() { Url = returnUrl });// where to go after setup
+                if (!string.IsNullOrWhiteSpace(returnUrl))
+                    Manager.OriginList.Add(new Origin() { Url = returnUrl });// where to go after setup
                 Manager.OriginList.Add(new Origin() { Url = Helper.GetSafeReturnUrl(Manager.CurrentSite.ExternalAccountSetupUrl) }); // setup
                 return Redirect(Manager.ReturnToUrl);
             }
+
+            if (string.IsNullOrWhiteSpace(returnUrl) && Manager.HaveReturnToUrl)
+                returnUrl = Manager.ReturnToUrl;
+            if (string.IsNullOrWhiteSpace(returnUrl))
+                returnUrl = await Resource.ResourceAccess.GetUserPostLoginUrlAsync((from u in user.RolesList select u.RoleId).ToList());
+            if (string.IsNullOrWhiteSpace(returnUrl))
+                returnUrl = Manager.CurrentSite.PostLoginUrl;
+            returnUrl = Helper.GetSafeReturnUrl(returnUrl);
 
             // determine what to do based on account status
             if (user.UserStatus == UserStatusEnum.Approved) {

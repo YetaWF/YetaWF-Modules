@@ -62,8 +62,11 @@ namespace YetaWF.Modules.Search.DataProvider {
             return this.__ResStr("keyWordAnd", "AND");
         }
         public class SearchResultsInfo {
-            public bool HaveMore{ get; set; }
+            public bool HaveMore { get; set; }
             public List<SearchResult> Data { get; set; }
+            public SearchResultsInfo() {
+                Data = new List<SearchResult>();
+            }
         }
 
         public async Task<SearchResultsInfo> GetSearchResultsAsync(string searchTerms, int maxResults, string languageId, bool haveUser, List<DataProviderFilterInfo> Filters = null) {
