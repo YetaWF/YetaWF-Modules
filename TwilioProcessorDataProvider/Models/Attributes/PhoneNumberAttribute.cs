@@ -34,8 +34,8 @@ namespace Softelvdm.Modules.TwilioProcessorDataProvider.Models.Attributes {
         public PhoneNumberAttribute() { }
 
         protected override ValidationResult IsValid(object value, ValidationContext context) {
-            if (value != null) {
-                string number = (string)value;
+            string number = (string)value;
+            if (!string.IsNullOrWhiteSpace(number)) {
                 if (!PhoneNumberAttribute.Valid(number))
                     return new ValidationResult(__ResStr("inv", "{0} is an invalid phone number", number));
             }
