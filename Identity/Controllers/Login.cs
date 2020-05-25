@@ -365,6 +365,8 @@ namespace YetaWF.Modules.Identity.Controllers {
                     nextUrl = await Resource.ResourceAccess.GetUserPostLoginUrlAsync((from u in user.RolesList select u.RoleId).ToList());
                 if (string.IsNullOrWhiteSpace(nextUrl))
                     nextUrl = Manager.CurrentSite.PostLoginUrl;
+                if (string.IsNullOrWhiteSpace(nextUrl))
+                    nextUrl = YetaWFManager.Manager.CurrentSite.HomePageUrl;
 
                 if (useTwoStep) {
                     ActionResult actionResult = await TwoStepAuthetication(user);
@@ -380,9 +382,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 model.Success = true;
                 Logging.AddLog("User {0} - logged on", model.UserName);
 
-                if (!string.IsNullOrWhiteSpace(nextUrl))
-                    return FormProcessed(model, OnClose: OnCloseEnum.GotoNewPage, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: nextUrl, ForceRedirect: true);
-                return FormProcessed(model, ForceRedirect: true);
+                return FormProcessed(model, OnClose: OnCloseEnum.GotoNewPage, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: nextUrl, ForceRedirect: true);
 
             } else
                 throw new InternalError("badUserStatus", "Unexpected account status {0}", user.UserStatus);
