@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Caching.Controllers;
+using System.Linq;
 
 namespace YetaWF.Modules.Caching.DataProvider {
 
@@ -102,6 +103,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
             lock (_lockObject) { // used to protect StaticObjects - local only
                 StaticObjects.Remove(key);
                 StaticObjects.Add(key, cache);
+                RemoveExpired();
             }
             return Task.CompletedTask;
         }
@@ -117,12 +119,15 @@ namespace YetaWF.Modules.Caching.DataProvider {
                 key = GetKey(key);
                 CachedObject cache;
                 lock (_lockObject) { // used to protect StaticObjects - local only
+                    RemoveExpired();
                     if (StaticObjects.TryGetValue(key, out cache)) {
                         if (!HasExpired(cache)) {
                             return Task.FromResult(new GetObjectInfo<TYPE> {
                                 Success = true,
                                 Data = (TYPE)cache.Data,
                             });
+                        } else {
+                            StaticObjects.Remove(key);
                         }
                     }
                 }
@@ -144,8 +149,14 @@ namespace YetaWF.Modules.Caching.DataProvider {
             key = GetKey(key);
             lock (_lockObject) { // used to protect StaticObjects - local only
                 StaticObjects.Remove(key);
+                RemoveExpired();
             }
             return Task.CompletedTask;
+        }
+
+        private void RemoveExpired() {
+            // already locked
+            StaticObjects = (from s in StaticObjects where DateTime.Now.AddMinutes(-DurationSeconds) < s.Value.Created select s).ToDictionary(x => x.Key, x =>x.Value);
         }
 
         /// <summary>
