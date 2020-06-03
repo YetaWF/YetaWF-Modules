@@ -134,32 +134,16 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider {
                 userName = userName.Truncate(Globals.MaxUser);
                 sessionId = category == YetaWF.Core.Log.Logging.YetaWFEvent ? Manager.CurrentSessionId : "";
             }
-            HttpContext httpContext;
-#if MVC6
-            httpContext = YetaWFManager.HttpContextAccessor.HttpContext;
-#else
-                httpContext = HttpContext.Current;
-#endif
+            HttpContext httpContext = YetaWFManager.HttpContextAccessor.HttpContext;
             if (httpContext != null) {
                 // We don't have a Manager for certain log records (particularly during startup)
                 HttpRequest req = httpContext.Request;
                 if (req != null) {
-#if MVC6
                     requestedUrl = req.GetDisplayUrl();
-                    ipAddress = (string)req.Headers["X-Forwarded-For"] ?? (string)req.Headers["X-Original-For"];
-                    if (string.IsNullOrWhiteSpace(ipAddress)) {
-                        IHttpConnectionFeature connectionFeature = httpContext.Features.Get<IHttpConnectionFeature>();
-                        if (connectionFeature != null)
-                            ipAddress = connectionFeature.RemoteIpAddress.ToString();
-                    }
+                    IHttpConnectionFeature connectionFeature = httpContext.Features.Get<IHttpConnectionFeature>();
+                    if (connectionFeature != null)
+                        ipAddress = connectionFeature.RemoteIpAddress.ToString();
                     referrer = req.Headers["Referer"].ToString();
-#else
-                        requestedUrl = req.Url != null ? req.Url.ToString() : null;
-                        ipAddress = req.Headers["X-Forwarded-For"] ?? req.Headers["X-Original-For"];
-                        if (string.IsNullOrWhiteSpace(ipAddress))
-                            ipAddress = req.UserHostAddress;
-                        referrer = req.UrlReferrer != null ? req.UrlReferrer.ToString() : null;
-#endif
                     requestedUrl = requestedUrl ?? "";
                     requestedUrl = requestedUrl.Truncate(Globals.MaxUrl);
                     referrer = referrer ?? "";
