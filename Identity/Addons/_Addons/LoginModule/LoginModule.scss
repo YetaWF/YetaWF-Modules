@@ -12,4 +12,17 @@
             display:inline-block;
         }
     }
+    .t_detailsbuttons {
+        input[type='submit'] {
+            width:25ch;
+        }
+    }
+    .t_external .t_extentry {
+        display:inline-block;
+        padding-bottom:0.3em;
+        padding-right:3ch;
+        img {
+            margin-right: .5ch;
+        }
+    }
 }

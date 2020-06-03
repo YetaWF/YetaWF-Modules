@@ -60,7 +60,7 @@ namespace YetaWF.Modules.Identity.Views {
                 int index = 0;
                 foreach (FormButton formButton in model.ExternalProviders) {
                     hb.Append($@"
-        <div class='t_ext1'>
+        <div class='t_extentry'>
             <img src='{HAE(model.Images[index])}' alt='{HAE(formButton.Title)}' title='{HAE(formButton.Title)}' />
             {await formButton.RenderAsync()}
         </div>");
