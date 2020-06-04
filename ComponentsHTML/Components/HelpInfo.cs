@@ -71,9 +71,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(HelpInfoDefinition model) {
 
-            if (model == null) return null;
-
-            return await GetHelpFileContentsAsync(model);
+            if (model == null)
+                return null;
+            string contents = await GetHelpFileContentsAsync(model);
+            if (contents == null)
+                return null;
+            HtmlBuilder hb = new HtmlBuilder();
+            hb.Append($@"
+<div class='yt_helpinfo'>
+    {contents}
+</div>
+            ");
+            return hb.ToString();
         }
 
         private async Task<string> GetHelpFileContentsAsync(HelpInfoDefinition model) {

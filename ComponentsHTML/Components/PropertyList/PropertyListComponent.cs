@@ -19,7 +19,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     /// <remarks>
     /// This is typically used within forms to display large amounts of information. This is the main component used throughout YetaWF to display information to the user.
-    /// 
+    ///
     /// For more information see Property Lists.
     /// </remarks>
     /// <example>
@@ -55,7 +55,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Allows editing the model and all its contained properties with labels, tooltips and all property values, rendered and edited using their respective UIHint() definitions. 
+    /// Allows editing the model and all its contained properties with labels, tooltips and all property values, rendered and edited using their respective UIHint() definitions.
     /// </summary>
     /// <remarks>
     /// This is typically used within forms to display large amounts of information.  This is the main component used throughout YetaWF to display information to the user.
@@ -177,16 +177,25 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     {await RenderHiddenAsync(model)}");
 
                     foreach (string category in categories) {
-                        string stat = "";
-                        if (setup.ExpandableList.Contains(category))
-                            stat = (setup.InitialExpanded == category) ? " t_propexpandable t_propexpanded" : " t_propexpandable t_propcollapsed";
-                        hb.Append($"<div class='t_proptable{stat} t_cat t_boxpanel-{GetCategoryNormalized(category)}'>");
-                        hb.Append($"<div class='t_boxlabel'>{category}</div>");
-                        if (setup != null && setup.ExpandableList.Contains(category))
-                            hb.Append($"<div class='t_boxexpcoll t_show'></div>");
-                        hb.Append(await RenderListAsync(model, category, showVariables, readOnly));
-                        hb.Append($@"
+
+                        string contents = await RenderListAsync(model, category, showVariables, readOnly);
+                        if (!string.IsNullOrWhiteSpace(contents)) {
+
+                            string stat = "";
+                            if (setup.ExpandableList.Contains(category))
+                                stat = (setup.InitialExpanded == category) ? " t_propexpandable t_propexpanded" : " t_propexpandable t_propcollapsed";
+
+                            hb.Append($@"
+    <div class='t_proptable{stat} t_cat t_boxpanel-{GetCategoryNormalized(category)}'>
+        <div class='t_boxlabel'>{category}</div>");
+
+                            if (setup.ExpandableList.Contains(category))
+                                hb.Append(@$"<div class='t_boxexpcoll t_show'></div>");
+
+                            hb.Append($@"
+        {contents}
     </div>");
+                        }
                     }
                     hb.Append($@"
 </div>");
@@ -201,16 +210,24 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     {await RenderHiddenAsync(model)}");
 
                     foreach (string category in categories) {
-                        string stat = "";
-                        if (setup.ExpandableList.Contains(category))
-                            stat = (setup.InitialExpanded == category) ? " t_propexpandable t_propexpanded" : " t_propexpandable t_propcollapsed";
-                        hb.Append($@"
+
+                        string contents = await RenderListAsync(model, category, showVariables, readOnly);
+                        if (!string.IsNullOrWhiteSpace(contents)) {
+
+                            string stat = "";
+                            if (setup.ExpandableList.Contains(category))
+                                stat = (setup.InitialExpanded == category) ? " t_propexpandable t_propexpanded" : " t_propexpandable t_propcollapsed";
+
+                            hb.Append($@"
     <div class='t_proptable {stat} t_cat t_boxpanel-{GetCategoryNormalized(category)}'>");
-                        if (setup != null && setup.ExpandableList.Contains(category))
-                            hb.Append($"<div class='t_boxexpcoll t_show'></div>");
-                        hb.Append(await RenderListAsync(model, category, showVariables, readOnly));
-                        hb.Append($@"
+
+                            if (setup.ExpandableList.Contains(category))
+                                hb.Append($"<div class='t_boxexpcoll t_show'></div>");
+
+                            hb.Append($@"
+        {contents}
     </div>");
+                        }
                     }
                     hb.Append($@"
 </div>");

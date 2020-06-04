@@ -12,6 +12,9 @@
 .yt_moduleactions a.y_act_button {
   margin-right: .5ch; }
 
+.yt_moduleactions a {
+  margin-bottom: .5rem; }
+
 @media print {
   .yt_moduleactions {
     display: none; } }
