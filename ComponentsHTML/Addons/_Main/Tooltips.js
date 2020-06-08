@@ -138,6 +138,11 @@ var YetaWF_ComponentsHTML;
                     return;
                 this.removeTooltips();
             }
+            if (!$YetaWF.elementHas(document.body, elem)) {
+                // the element requested is not part of the document body (any longer)
+                this.removeTooltips();
+                return;
+            }
             var title = $YetaWF.getAttributeCond(elem, "title");
             if (title) {
                 $YetaWF.setAttribute(elem, YConfigs.Basics.CssTooltip, title);

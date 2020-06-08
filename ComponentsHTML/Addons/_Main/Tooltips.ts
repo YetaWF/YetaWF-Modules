@@ -145,6 +145,12 @@ namespace YetaWF_ComponentsHTML {
                     return;
                 this.removeTooltips();
             }
+            if (!$YetaWF.elementHas(document.body, elem)) {
+                // the element requested is not part of the document body (any longer)
+                this.removeTooltips();
+                return;
+            }
+
 
             let title = $YetaWF.getAttributeCond(elem, "title");
             if (title) {
