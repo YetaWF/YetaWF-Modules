@@ -100,7 +100,7 @@ namespace YetaWF.Modules.Identity.Components {
     /// </summary>
     /// <remarks>
     /// If a site has more than 50 users, a grid is used to show all users, otherwise a dropdown list is used for selection.
-    /// 
+    ///
     /// A sample page for this component is available at Tests > Components > UserId (standard YetaWF site).
     /// </remarks>
     /// <example>
