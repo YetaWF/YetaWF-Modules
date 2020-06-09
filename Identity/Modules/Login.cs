@@ -34,24 +34,6 @@ namespace YetaWF.Modules.Identity.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
 
-        public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
-            MenuList menuList = await base.GetModuleMenuListAsync(renderMode, location);
-            RegisterModule regMod = (RegisterModule) await ModuleDefinition.CreateUniqueModuleAsync(typeof(RegisterModule));
-            ForgotPasswordModule pswdMod = (ForgotPasswordModule) await ModuleDefinition.CreateUniqueModuleAsync(typeof(ForgotPasswordModule));
-            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
-            bool closeOnLogin;
-            Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
-            ModuleAction pswdAction = await pswdMod.GetAction_ForgotPasswordAsync(config.ForgotPasswordUrl, CloseOnLogin: closeOnLogin);
-            if (pswdAction != null)
-                pswdAction.AddToOriginList = false;
-            menuList.New(pswdAction, location);
-            ModuleAction registerAction = await regMod.GetAction_RegisterAsync(config.RegisterUrl, Force: true, CloseOnLogin: closeOnLogin);
-            if (registerAction != null)
-                registerAction.AddToOriginList = false;
-            menuList.New(registerAction, location);
-            return menuList;
-        }
-
         public async Task<ModuleAction> GetAction_LoginAsync(string url = null, bool Force = false, bool CloseOnLogin = false) {
             if (!Force && Manager.HaveUser) return null; // the login action should not be shown if a user is logged on
             return new ModuleAction(this) {

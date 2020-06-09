@@ -17,6 +17,7 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Extensions;
 using YetaWF.Core.Identity;
 using System.Linq;
+using YetaWF.Core.Modules;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -36,6 +37,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 Captcha = new RecaptchaV2Data();
                 ExternalProviders = new List<FormButton>();
                 Images = new List<string>();
+                Actions = new List<ModuleAction>();
             }
 
             [Caption("User Name"), Description("Enter your user name to register")]
@@ -67,6 +69,11 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf(nameof(ShowCaptcha), false)]
             public RecaptchaV2Data Captcha { get; set; }
 
+            [Caption(""), Description("")]
+            [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.NormalLinks), ReadOnly]
+            [SuppressEmpty]
+            public List<ModuleAction> Actions { get; set; }
+
             [UIHint("Hidden"), ReadOnly]
             public RegistrationTypeEnum RegistrationType { get; set; }
             [UIHint("Hidden"), ReadOnly]
@@ -83,6 +90,17 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             [UIHint("Hidden"), ReadOnly]
             public string ReturnUrl { get; set; } // for external login only
+
+            public async Task UpdateAsync() {
+                LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
+                LoginModule loginMod = (LoginModule)await ModuleDefinition.CreateUniqueModuleAsync(typeof(LoginModule));
+                bool closeOnLogin;
+                Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
+                ModuleAction logAction = await loginMod.GetAction_LoginAsync(config.LoginUrl, Force: true, CloseOnLogin: closeOnLogin);
+                if (logAction != null)
+                    logAction.AddToOriginList = false;
+                Actions.New(logAction);
+            }
         }
 
         [AllowGet]
@@ -121,6 +139,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 if (Manager.HaveReturnToUrl)
                     model.ReturnUrl = Manager.ReturnToUrl;
 
+                await model.UpdateAsync();
                 return View(model);
             }
         }
@@ -145,6 +164,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 }
             }
 
+            await model.UpdateAsync();
             if (!ModelState.IsValid)
                 return PartialView(model);
 

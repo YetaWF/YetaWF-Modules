@@ -2,7 +2,6 @@
 
 using System;
 using System.Threading.Tasks;
-using YetaWF.Core.Components;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -29,25 +28,6 @@ namespace YetaWF.Modules.Identity.Modules {
         public override IModuleDefinitionIO GetDataProvider() { return new ForgotPasswordModuleDataProvider(); }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
-
-        public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
-            MenuList menuList = await base.GetModuleMenuListAsync(renderMode, location);
-            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
-            RegisterModule regMod = (RegisterModule) await ModuleDefinition.CreateUniqueModuleAsync(typeof(RegisterModule));
-            LoginModule loginMod = (LoginModule) await ModuleDefinition.CreateUniqueModuleAsync(typeof(LoginModule));
-            bool closeOnLogin;
-            Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
-
-            ModuleAction logAction = await loginMod.GetAction_LoginAsync(config.LoginUrl, Force: true, CloseOnLogin: closeOnLogin);
-            if (logAction != null)
-                logAction.AddToOriginList = false;
-            menuList.New(logAction, location);
-            ModuleAction regAction = await regMod.GetAction_RegisterAsync(config.RegisterUrl, Force: true, CloseOnLogin: closeOnLogin);
-            if (regAction != null)
-                regAction.AddToOriginList = false;
-            menuList.New(regAction, location);
-            return menuList;
-        }
 
         public async Task<ModuleAction> GetAction_ForgotPasswordAsync(string url, bool CloseOnLogin = false) {
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();

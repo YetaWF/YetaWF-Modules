@@ -1,6 +1,7 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
 using System;
+using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -22,11 +23,17 @@ namespace YetaWF.Modules.Identity.Modules {
             Name = this.__ResStr("modName", "Reset Password");
             Description = this.__ResStr("modSummary", "Allows a user to reset the login password.");
             DefaultViewName = StandardViews.Edit;
+            ShowPasswordRules = true;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new ResetPasswordModuleDataProvider(); }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
+
+        [Category("General"), Caption("Show Password Rules"), Description("Defines whether the password rules are shown")]
+        [UIHint("Boolean")]
+        [Data_NewValue]
+        public bool ShowPasswordRules { get; set; }
 
         public ModuleAction GetAction_ResetPassword(string url, int userId, string resetKey) {
             return new ModuleAction(this) {

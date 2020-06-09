@@ -23,6 +23,7 @@ namespace YetaWF.Modules.Identity.Modules {
             Name = this.__ResStr("modName", "Change Password");
             Description = this.__ResStr("modSummary", "Used to edit the current user's account password. The Change Password Module can be accessed using User > Change Password (standard YetaWF site).");
             DefaultViewName = StandardViews.EditApply;
+            ShowPasswordRules = true;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new UserPasswordModuleDataProvider(); }

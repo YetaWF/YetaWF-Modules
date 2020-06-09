@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.DataProvider;
@@ -13,6 +12,8 @@ using YetaWF.Core.Components;
 using System;
 using YetaWF.Core.Identity;
 using YetaWF.Modules.Identity.Modules;
+using YetaWF.Core.Modules;
+using System.Collections.Generic;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -49,6 +50,11 @@ namespace YetaWF.Modules.Identity.Controllers {
             [RequiredIf(nameof(RegistrationType), RegistrationTypeEnum.NameAndEmail)]
             public string UserNameOrEmail { get; set; }
 
+            [Caption(""), Description("")]
+            [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.NormalLinks), ReadOnly]
+            [SuppressEmpty]
+            public List<ModuleAction> Actions { get; set; }
+
             [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
             [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf("ShowCaptcha", false)]
             public RecaptchaV2Data Captcha { get; set; }
@@ -60,6 +66,24 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             public EditModel() {
                 Captcha = new RecaptchaV2Data();
+                Actions = new List<ModuleAction>();
+            }
+
+            public async Task UpdateAsync() {
+                LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
+                RegisterModule regMod = (RegisterModule)await ModuleDefinition.CreateUniqueModuleAsync(typeof(RegisterModule));
+                LoginModule loginMod = (LoginModule)await ModuleDefinition.CreateUniqueModuleAsync(typeof(LoginModule));
+                bool closeOnLogin;
+                Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
+
+                ModuleAction logAction = await loginMod.GetAction_LoginAsync(config.LoginUrl, Force: true, CloseOnLogin: closeOnLogin);
+                if (logAction != null)
+                    logAction.AddToOriginList = false;
+                Actions.New(logAction);
+                ModuleAction regAction = await regMod.GetAction_RegisterAsync(config.RegisterUrl, Force: true, CloseOnLogin: closeOnLogin);
+                if (regAction != null)
+                    regAction.AddToOriginList = false;
+                Actions.New(regAction);
             }
         }
 
@@ -70,6 +94,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 ShowCaptcha = config.CaptchaForgotPassword,
                 RegistrationType = config.RegistrationType,
             };
+            await model.UpdateAsync();
             return View(model);
         }
 
@@ -81,6 +106,8 @@ namespace YetaWF.Modules.Identity.Controllers {
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             if (model.ShowCaptcha != config.CaptchaForgotPassword)
                 throw new InternalError("Hidden field tampering detected");
+
+            await model.UpdateAsync();
 
             model.ShowCaptcha = config.CaptchaForgotPassword;
             model.RegistrationType = config.RegistrationType;

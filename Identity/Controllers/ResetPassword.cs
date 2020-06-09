@@ -34,6 +34,11 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Password20"), StringLength(Globals.MaxPswd), Required]
             public string NewPassword { get; set; }
 
+            [Caption(" "), Description("")]
+            [UIHint("String"), ReadOnly]
+            [SuppressEmpty]
+            public string PasswordRules { get; set; }
+
             [Caption("New Password Confirmation"), Description("Enter your new password again to confirm")]
             [UIHint("Password20"), StringLength(Globals.MaxPswd), Required, SameAs("NewPassword", "The password confirmation doesn't match the password entered")]
             public string ConfirmPassword { get; set; }
@@ -67,6 +72,11 @@ namespace YetaWF.Modules.Identity.Controllers {
                     ModelState.AddModelError(nameof(model.ResetKey), this.__ResStr("expired", "The reset key has expired and is no longer valid"));
                 }
             }
+
+            using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
+                model.PasswordRules = Module.ShowPasswordRules ? logConfigDP.PasswordRules : null;
+            }
+
             return View(model);
         }
 
@@ -89,6 +99,11 @@ namespace YetaWF.Modules.Identity.Controllers {
                     throw new Error(this.__ResStr("extUser", "Your account uses an external login provider - The password (if available) must be set up using the external login provider."));
             }
 
+            if (Module.ShowPasswordRules) {
+                using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
+                    model.PasswordRules = logConfigDP.PasswordRules;
+                }
+            }
             if (!ModelState.IsValid)
                 return PartialView(model);
 

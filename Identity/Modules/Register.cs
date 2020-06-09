@@ -16,10 +16,6 @@ using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.DataProvider;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Identity.Modules {
 
@@ -44,6 +40,7 @@ namespace YetaWF.Modules.Identity.Modules {
             Name = this.__ResStr("title", "New User Registration");
             Description = this.__ResStr("modSummary", "Used by new users to register a new account on the current site. The User Login Settings Module can be used to disable new user registration. The New User Registration can be accessed using User > Register (standard YetaWF site).");
             ShowHelp = true;
+            ShowPasswordRules = true;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new RegisterModuleDataProvider(); }
@@ -75,18 +72,6 @@ namespace YetaWF.Modules.Identity.Modules {
         [Data_NewValue]
         public bool ShowPasswordRules { get; set; }
 
-        public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
-            MenuList menuList = await base.GetModuleMenuListAsync(renderMode, location);
-            LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
-            LoginModule loginMod = (LoginModule) await ModuleDefinition.CreateUniqueModuleAsync(typeof(LoginModule));
-            bool closeOnLogin;
-            Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
-            ModuleAction logAction = await loginMod.GetAction_LoginAsync(config.LoginUrl, Force: true, CloseOnLogin: closeOnLogin);
-            if (logAction != null)
-                logAction.AddToOriginList = false;
-            menuList.New(logAction, location);
-            return menuList;
-        }
         public async Task<ModuleAction> GetAction_RegisterAsync(string url, bool Force = false, bool CloseOnLogin = false) {
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             if (!config.AllowUserRegistration) return null;

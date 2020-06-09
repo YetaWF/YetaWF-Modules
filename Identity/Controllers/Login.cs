@@ -34,6 +34,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 Captcha = new RecaptchaV2Data();
                 ExternalProviders = new List<FormButton>();
                 Images = new List<string>();
+                Actions = new List<ModuleAction>();
             }
 
             [Caption(""), Description("")]
@@ -91,15 +92,15 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("ModuleAction"), ReadOnly, SuppressEmpty]
             public ModuleAction ResendVerificationCode { get; set; }
 
-            [Caption(""), Description("")]
-            [UIHint("ModuleAction"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.NormalLinks), ReadOnly]
-            [SuppressEmpty]
-            public ModuleAction RegisterAction { get; set; }
-
             [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
             [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot")]
             [SuppressIf(nameof(ShowCaptcha), false)]
             public RecaptchaV2Data Captcha { get; set; }
+
+            [Caption(""), Description("")]
+            [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.NormalLinks), ReadOnly]
+            [SuppressEmpty]
+            public List<ModuleAction> Actions { get; set; }
 
             [UIHint("Hidden"), ReadOnly]
             public bool ShowVerification { get; set; }
@@ -125,9 +126,15 @@ namespace YetaWF.Modules.Identity.Controllers {
                 RegisterModule regMod = (RegisterModule)await ModuleDefinition.CreateUniqueModuleAsync(typeof(RegisterModule));
                 bool closeOnLogin;
                 Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
-                RegisterAction = await regMod.GetAction_RegisterAsync(config.RegisterUrl, Force: true, CloseOnLogin: closeOnLogin);
-                if (RegisterAction != null)
-                    RegisterAction.AddToOriginList = false;
+                ForgotPasswordModule pswdMod = (ForgotPasswordModule)await ModuleDefinition.CreateUniqueModuleAsync(typeof(ForgotPasswordModule));
+                ModuleAction pswdAction = await pswdMod.GetAction_ForgotPasswordAsync(config.ForgotPasswordUrl, CloseOnLogin: closeOnLogin);
+                if (pswdAction != null)
+                    pswdAction.AddToOriginList = false;
+                Actions.New(pswdAction);
+                ModuleAction registerAction = await regMod.GetAction_RegisterAsync(config.RegisterUrl, Force: true, CloseOnLogin: closeOnLogin);
+                if (registerAction != null)
+                    registerAction.AddToOriginList = false;
+                Actions.New(registerAction);
             }
         }
 
