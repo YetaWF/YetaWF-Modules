@@ -3,12 +3,7 @@
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Visitors.DataProvider;
-#if MVC6
-using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Visitors.Controllers {
 
