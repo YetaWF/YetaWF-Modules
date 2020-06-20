@@ -75,7 +75,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
             string imageUrl = model.ImageName_Info.MakeImageUrl(model.ImageName);
             string js = string.Format("window.opener.CKEDITOR.tools.callFunction({0}, '{1}');", model.CKEditorFuncNum, Utility.JserEncode(imageUrl));
 
-            return FormProcessed(model, /*this.__ResStr("okSaved", "Image saved"), */ OnClose: OnCloseEnum.CloseWindow, OnPopupClose: OnPopupCloseEnum.ReloadNothing, ExtraJavaScript: js);
+            return FormProcessed(model, /*this.__ResStr("okSaved", "Image saved"), */ OnClose: OnCloseEnum.CloseWindow, OnPopupClose: OnPopupCloseEnum.ReloadNothing, PreSaveJavaScript: js);
         }
     }
 }
