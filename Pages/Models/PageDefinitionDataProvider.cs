@@ -10,6 +10,7 @@ using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
@@ -118,6 +119,52 @@ namespace YetaWF.Modules.Pages.DataProvider {
             return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }
 
+        // CACHE
+        // CACHE
+        // CACHE
+
+        private string CacheKey(Guid guid) {
+            return string.Format("__Page_{0}_{1}", YetaWFManager.Manager.CurrentSite.Identity, guid);
+        }
+        private class GetCachedPageInfo {
+            public PageDefinition Page { get; set; }
+            public bool Success { get; set; }
+        }
+        private async Task<GetCachedPageInfo> GetCachedPageAsync(Guid guid) {
+            GetCachedPageInfo pageInfo = new GetCachedPageInfo();
+            GetObjectInfo<PageDefinition> objInfo;
+            using (ICacheDataProvider sharedCacheDP = YetaWF.Core.IO.Caching.GetStaticCacheProvider()) {
+                objInfo = await sharedCacheDP.GetAsync<PageDefinition>(CacheKey(guid));
+            }
+            if (!objInfo.Success)
+                return pageInfo;
+
+            if (objInfo.Data != null) {
+                // make a type correct copy of the data, we don't want caller to modify the cached page
+                Type objType = objInfo.Data.GetType();
+                PageDefinition newObj = (PageDefinition)Activator.CreateInstance(objType);
+                ObjectSupport.CopyData(objInfo.Data, newObj);
+                pageInfo.Page = newObj;
+            }
+            pageInfo.Success = true;
+            return pageInfo;
+        }
+        private async Task SetCachedPageAsync(PageDefinition page) {
+            using (ICacheDataProvider sharedCacheDP = YetaWF.Core.IO.Caching.GetStaticCacheProvider()) {
+                await sharedCacheDP.AddAsync(CacheKey(page.PageGuid), page);
+            }
+        }
+        private async Task SetEmptyCachedPageAsync(Guid guid) {
+            using (ICacheDataProvider sharedCacheDP = YetaWF.Core.IO.Caching.GetStaticCacheProvider()) {
+                await sharedCacheDP.AddAsync<PageDefinition>(CacheKey(guid), null);
+            }
+        }
+        private async Task RemoveCachedPageAsync(Guid guid) {
+            using (ICacheDataProvider sharedCacheDP = YetaWF.Core.IO.Caching.GetStaticCacheProvider()) {
+                await sharedCacheDP.RemoveAsync<PageDefinition>(CacheKey(guid));
+            }
+        }
+
         // API PAGE
         // API PAGE
         // API PAGE
@@ -139,6 +186,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
                     throw new Error(this.__ResStr("pageUrlErr", "A page with Url {0} already exists.", desPage.Url));
                 if (!await DataProvider.AddAsync(page))
                     throw new Error(this.__ResStr("pageGuidErr", "A page with Guid {0} already exists.", desPage.PageGuid));
+                await SetCachedPageAsync(page);
                 await AddDesignedPageAsync(designedPagesByUrl, page.Url.ToLower(), desPage);
                 await lockObject.UnlockAsync();
             }
@@ -152,10 +200,17 @@ namespace YetaWF.Modules.Pages.DataProvider {
         }
 
         public async Task<PageDefinition> LoadPageDefinitionAsync(Guid key) {
-            PageDefinition page = await DataProvider.GetAsync(key);
-            if (page == null)
-                return null;
-            page.Temporary = false;
+            GetCachedPageInfo pageInfo = await GetCachedPageAsync(key);
+            PageDefinition page;
+            if (pageInfo.Success) {
+                page = pageInfo.Page;
+            } else {
+                page = await DataProvider.GetAsync(key);
+                if (page != null)
+                    await SetCachedPageAsync(page);
+                else
+                    await SetEmptyCachedPageAsync(key);
+            }
             return page;
         }
         public async Task<PageDefinition> LoadPageDefinitionAsync(string url) {
@@ -205,7 +260,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
                     case UpdateStatusEnum.RecordDeleted:
                         throw new InternalError("Unexpected UpdateStatusEnum.RecordDeleted in SavePageDefinition");
                 }
-
+                await SetCachedPageAsync(page);
                 await Manager.StaticPageManager.RemovePageAsync(page.Url);
 
                 if (newPage == Guid.Empty) {
@@ -242,6 +297,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
                     return false;
                 await Manager.StaticPageManager.RemovePageAsync(page.Url);
                 await DataProvider.RemoveAsync(pageGuid);
+                await RemoveCachedPageAsync(pageGuid);
                 DesignedPagesDictionaryByUrl designedPagesUrl = await GetDesignedPagesWithoutLockAsync();
                 await RemoveDesignedPageAsync(designedPagesUrl, page.Url);
                 await lockObject.UnlockAsync();
