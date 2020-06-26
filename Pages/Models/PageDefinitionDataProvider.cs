@@ -204,6 +204,8 @@ namespace YetaWF.Modules.Pages.DataProvider {
             PageDefinition page;
             if (pageInfo.Success) {
                 page = pageInfo.Page;
+                if (page != null)
+                    page.Temporary = false;
             } else {
                 page = await DataProvider.GetAsync(key);
                 if (page != null) {
