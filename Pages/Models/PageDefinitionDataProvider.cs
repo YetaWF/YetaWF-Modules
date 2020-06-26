@@ -206,9 +206,10 @@ namespace YetaWF.Modules.Pages.DataProvider {
                 page = pageInfo.Page;
             } else {
                 page = await DataProvider.GetAsync(key);
-                if (page != null)
+                if (page != null) {
+                    page.Temporary = false;
                     await SetCachedPageAsync(page);
-                else
+                } else
                     await SetEmptyCachedPageAsync(key);
             }
             return page;
