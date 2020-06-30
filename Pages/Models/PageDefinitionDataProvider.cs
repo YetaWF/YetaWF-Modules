@@ -133,7 +133,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
         private async Task<GetCachedPageInfo> GetCachedPageAsync(Guid guid) {
             GetCachedPageInfo pageInfo = new GetCachedPageInfo();
             GetObjectInfo<PageDefinition> objInfo;
-            using (ICacheDataProvider sharedCacheDP = YetaWF.Core.IO.Caching.GetStaticCacheProvider()) {
+            using (ICacheDataProvider sharedCacheDP = YetaWF.Core.IO.Caching.GetSharedCacheProvider()) {
                 objInfo = await sharedCacheDP.GetAsync<PageDefinition>(CacheKey(guid));
             }
             if (!objInfo.Success)
@@ -150,17 +150,17 @@ namespace YetaWF.Modules.Pages.DataProvider {
             return pageInfo;
         }
         private async Task SetCachedPageAsync(PageDefinition page) {
-            using (ICacheDataProvider sharedCacheDP = YetaWF.Core.IO.Caching.GetStaticCacheProvider()) {
+            using (ICacheDataProvider sharedCacheDP = YetaWF.Core.IO.Caching.GetSharedCacheProvider()) {
                 await sharedCacheDP.AddAsync(CacheKey(page.PageGuid), page);
             }
         }
         private async Task SetEmptyCachedPageAsync(Guid guid) {
-            using (ICacheDataProvider sharedCacheDP = YetaWF.Core.IO.Caching.GetStaticCacheProvider()) {
+            using (ICacheDataProvider sharedCacheDP = YetaWF.Core.IO.Caching.GetSharedCacheProvider()) {
                 await sharedCacheDP.AddAsync<PageDefinition>(CacheKey(guid), null);
             }
         }
         private async Task RemoveCachedPageAsync(Guid guid) {
-            using (ICacheDataProvider sharedCacheDP = YetaWF.Core.IO.Caching.GetStaticCacheProvider()) {
+            using (ICacheDataProvider sharedCacheDP = YetaWF.Core.IO.Caching.GetSharedCacheProvider()) {
                 await sharedCacheDP.RemoveAsync<PageDefinition>(CacheKey(guid));
             }
         }
