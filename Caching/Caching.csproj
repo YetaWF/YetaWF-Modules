@@ -30,7 +30,7 @@
   <Choose>
     <When Condition="Exists('$(SolutionDir)USE_SQLDYN.txt')">
       <ItemGroup>
-        <ProjectReference Include="..\..\..\DataProvider\SQLDyn\SQL.csproj" />
+        <ProjectReference Include="..\..\..\DataProvider\SQLDyn\SQLDyn.csproj" />
       </ItemGroup>
     </When>
     <Otherwise>
