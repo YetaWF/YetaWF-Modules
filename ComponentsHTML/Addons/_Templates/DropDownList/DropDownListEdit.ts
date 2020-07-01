@@ -151,7 +151,6 @@ namespace YetaWF_ComponentsHTML {
                     if (!retVal) {
                         if (onFailure)
                             onFailure(request.responseText);
-                        throw "Unexpected data returned";
                     }
                 }
             };
