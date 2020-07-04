@@ -108,7 +108,7 @@ namespace YetaWF_ComponentsHTML {
                         ComponentsHTMLHelper.cancelFadeInOut(this.CancelObject);
                         this.removeTooltips();
                     } else {
-                        ComponentsHTMLHelper.fadeOut(this.activeTooltip, this.fadeOutTime, () => {
+                        ComponentsHTMLHelper.fadeOut(this.activeTooltip, this.fadeOutTime, () : void => {
                             if (elem === this.activeTooltip)
                                 this.removeTooltips();
                         }, this.CancelObject);

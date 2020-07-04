@@ -60,7 +60,7 @@ namespace YetaWF_DevTests {
                     if (request.readyState === 4 /*DONE*/) {
                         this.ReloadInProgress = false;
                         $YetaWF.setLoading(false);
-                        $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, (result: string) => {
+                        $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, (result: string): void => {
                             var partial: GridRecordResult = JSON.parse(request.responseText);
                             this.ReloadInProgress = false;
                             $YetaWF.setLoading(false);

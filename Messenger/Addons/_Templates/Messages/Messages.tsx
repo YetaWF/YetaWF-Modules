@@ -28,10 +28,10 @@ namespace YetaWF_Messenger {
             //this.fromUser = fromUser;
             this.toUser = toUser;
 
-            $(document).on("YetaWF_Messenger_Messaging_Message", (event: any, o: any) => this.handleMessage(o.key, o.from, o.messageText, o.sent));
-            $(document).on("YetaWF_Messenger_Messaging_MessageSent", (event: any, o: any) => this.handleMessageSent(o.key, o.to, o.messageText, o.sent));
-            $(document).on("YetaWF_Messenger_Messaging_MessageSeen", (event: any, o: any) => this.handleMessageSeen(o.key, o.to));
-            $(document).on("YetaWF_Messenger_Messaging_AllMessagesSeen", (event: any, o: any) => this.handleAllMessagesSeen(o.to));
+            $(document).on("YetaWF_Messenger_Messaging_Message", (event: any, o: any): void => this.handleMessage(o.key, o.from, o.messageText, o.sent));
+            $(document).on("YetaWF_Messenger_Messaging_MessageSent", (event: any, o: any): void => this.handleMessageSent(o.key, o.to, o.messageText, o.sent));
+            $(document).on("YetaWF_Messenger_Messaging_MessageSeen", (event: any, o: any): void => this.handleMessageSeen(o.key, o.to));
+            $(document).on("YetaWF_Messenger_Messaging_AllMessagesSeen", (event: any, o: any): void => this.handleAllMessagesSeen(o.to));
 
             if (this.toUser && this.toUser.length > 0) {
                 YetaWF_Messenger.SkinMessagingModule.singleton.allMessagesSeen(this.toUser);

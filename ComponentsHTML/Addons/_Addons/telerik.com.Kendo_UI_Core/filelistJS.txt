@@ -1,5 +1,5 @@
 # https://docs.telerik.com/kendo-ui/intro/installation/cdn-service
-https://kendo.cdn.telerik.com/2020.1.114/js/kendo.all.min.js,CDN
+https://kendo.cdn.telerik.com/2020.2.617/js/kendo.all.min.js,CDN
 
 Folder /bower_components/kendo-ui/js
 kendo.core.min.js,noCDN

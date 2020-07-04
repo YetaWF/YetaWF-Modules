@@ -445,7 +445,7 @@ namespace YetaWF_ComponentsHTML {
             }
 
             if (options.autoClose) {
-                setTimeout(() => {
+                setTimeout((): void => {
                     this.removeToast(entryDiv, entry);
                 }, options.autoClose);
             }

@@ -25,13 +25,13 @@ namespace YetaWF_Messenger {
             //this.idCancel = idCancel;
 
             //var selToUser: HTMLSelectElement = this.getSelToUserTest();
-            $(`#${this.idForm}`).on("change", "select[name='ToUserId']", () => this.onUserSelect());
+            $(`#${this.idForm}`).on("change", "select[name='ToUserId']", (): void => this.onUserSelect());
 
             var btnSend: HTMLButtonElement = this.getBtnSendTest();
-            btnSend.addEventListener("click", (ev: Event) => this.onClickSend(ev), false);
+            btnSend.addEventListener("click", (ev: Event): void => this.onClickSend(ev), false);
 
-            $(document).on("YetaWF_Messenger_Messaging_UserConnect", (event: any, o: any) => this.handleUserConnect(o.user));
-            $(document).on("YetaWF_Messenger_Messaging_UserDisconnect", (event: any, o: any) => this.handleUserDisconnect(o.user));
+            $(document).on("YetaWF_Messenger_Messaging_UserConnect", (event: any, o: any): void => this.handleUserConnect(o.user));
+            $(document).on("YetaWF_Messenger_Messaging_UserDisconnect", (event: any, o: any): void => this.handleUserDisconnect(o.user));
 
             this.updateButtons();
             this.updateOnlineStatus();
@@ -114,7 +114,7 @@ namespace YetaWF_Messenger {
             }
             btnSend.disabled = !enabled;
 
-            setTimeout(() => this.updateButtons(), 100);
+            setTimeout((): void => this.updateButtons(), 100);
         }
         private updateOnlineStatus(): void {
             var user: string | null = this.getSelToUserValue();

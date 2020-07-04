@@ -17,7 +17,7 @@ namespace YetaWF_Messenger {
             this.tempProxy = this.connection.createHubProxy("YetaWF_Messenger_Messaging");
             this.tempProxy.on("dummy", ():void => { /* empty */ });
 
-            this.connection.start().done(() => this.onConnectionStarted());
+            this.connection.start().done((): void => this.onConnectionStarted());
         }
 
         private onConnectionStarted():void {

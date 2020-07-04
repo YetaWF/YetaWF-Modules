@@ -139,7 +139,7 @@ namespace YetaWF_ComponentsHTML {
                     if (this.ColumnDefIndex >= 0)
                         this.MasonryElem = this.createMasonry();
                 }
-                setInterval(() => {
+                setInterval((): void => {
                     if (this.MasonryElem)
                         this.MasonryElem.layout!();
                 }, 1000);
@@ -196,7 +196,7 @@ namespace YetaWF_ComponentsHTML {
             // Initialize initial form
             this.update();
 
-            $YetaWF.registerEventHandlerWindow("resize", null, (ev: UIEvent) => {
+            $YetaWF.registerEventHandlerWindow("resize", null, (ev: UIEvent): boolean => {
                 if (this.Setup.Style === PropertyListStyleEnum.Boxed || this.Setup.Style === PropertyListStyleEnum.BoxedWithCategories) {
                     if (this.MasonryElem) {
                         this.layout();

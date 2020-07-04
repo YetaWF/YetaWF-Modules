@@ -328,7 +328,7 @@ namespace YetaWF_ComponentsHTML {
                     var menus = $YetaWF.getElementsBySelector(".yt_grid_menus ul.k-menu");
                     for (let menu of menus) {
                         if ($YetaWF.isVisible(menu)) {
-                            setTimeout(() => {
+                            setTimeout((): void => {
                                 $(menu).hide();
                             }, 200);
                         }
@@ -763,7 +763,7 @@ namespace YetaWF_ComponentsHTML {
                     request.onreadystatechange = (ev: Event): any => {
                         if (request.readyState === 4 /*DONE*/) {
                             this.setReloading(false);
-                            $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, (result: string) => {
+                            $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, (result: string): void => {
                                 var partial: GridPartialResult = JSON.parse(request.responseText);
                                 $YetaWF.processClearDiv(this.TBody);
                                 this.TBody.innerHTML = "";
@@ -861,7 +861,7 @@ namespace YetaWF_ComponentsHTML {
                 ColIndex: colIndex,
                 FilterOp: sel
             };
-            this.reload(0, undefined, overrideColFilter, undefined, undefined, () => {
+            this.reload(0, undefined, overrideColFilter, undefined, undefined, (): void => {
                 // clear all highlights
                 var ulElem = $YetaWF.elementClosest(menuElem, "ul");
                 this.clearFilterMenuHighlights(ulElem);

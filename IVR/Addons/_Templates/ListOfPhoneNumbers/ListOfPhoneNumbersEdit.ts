@@ -55,7 +55,7 @@ namespace Softelvdm_IVR {
                 request.onreadystatechange = (ev: Event): any => {
                     if (request.readyState === 4 /*DONE*/) {
                         $YetaWF.setLoading(false);
-                        $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, (result: string) => {
+                        $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, (result: string): void => {
                             var partial: GridRecordResult = JSON.parse(request.responseText);
                             this.Grid.AddRecord(partial.TR, partial.StaticData);
                         });

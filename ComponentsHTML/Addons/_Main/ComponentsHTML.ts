@@ -50,7 +50,7 @@ namespace YetaWF_ComponentsHTML {
                 $YetaWF.ContentHandling.loadAddons([
                     { AreaName: "YetaWF_ComponentsHTML", ShortName: "jqueryui", Argument1: null },
                     { AreaName: "YetaWF_ComponentsHTML", ShortName: "jqueryui-themes", Argument1: YVolatile.YetaWF_ComponentsHTML.jqueryUITheme }
-                ], () => {
+                ], (): void => {
                     run();
                 });
             } else {
@@ -71,7 +71,7 @@ namespace YetaWF_ComponentsHTML {
 
                 $YetaWF.ContentHandling.loadAddons([
                     { AreaName: "YetaWF_ComponentsHTML", ShortName: "telerik.com.Kendo_UI_Core", Argument1: YVolatile.YetaWF_ComponentsHTML.kendoUITheme }
-                ], () => {
+                ], (): void => {
                     run();
                 });
             } else {
@@ -130,7 +130,7 @@ namespace YetaWF_ComponentsHTML {
                 var opacity = 0;
                 elem.style.display = "block";
                 this.processPropertyListVisible(elem);
-                const timer = setInterval(() => {
+                const timer = setInterval(() : void => {
                     if (cancelable && cancelable.Canceled) {
                         this.clearFadeInOut(cancelable);
                         return;
@@ -159,7 +159,7 @@ namespace YetaWF_ComponentsHTML {
 
             if (ms) {
                 var opacity = 1;
-                const timer = setInterval(() => {
+                const timer = setInterval(() : void => {
                     if (cancelable && cancelable.Canceled) {
                         this.clearFadeInOut(cancelable);
                         return;

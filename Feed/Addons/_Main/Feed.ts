@@ -23,7 +23,7 @@ namespace YetaWF_Feed {
 
             this.changeEntry();
             if (setup.Interval)
-                this.EntryTimer = setInterval(() => { this.changeEntry(); }, setup.Interval);
+                this.EntryTimer = setInterval(() : void => { this.changeEntry(); }, setup.Interval);
 
             // change all a tags to open a new window
             var elems = $YetaWF.getElementsBySelector("a", [this.Div]);

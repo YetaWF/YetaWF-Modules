@@ -371,7 +371,7 @@ namespace YetaWF_ComponentsHTML {
                 request.onreadystatechange = (ev: Event): any => {
                     if (request.readyState === 4 /*DONE*/) {
                         $YetaWF.setLoading(false);
-                        $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, (result: string) => {
+                        $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, (result: string): void => {
                             let partial: TreePartialResult = JSON.parse(request.responseText);
 
                             let iElem = $YetaWF.getElement1BySelector("i.t_icright", [liElem]);

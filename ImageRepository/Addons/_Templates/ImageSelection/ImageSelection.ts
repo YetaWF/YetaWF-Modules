@@ -66,7 +66,7 @@ namespace YetaWF_ImageRepository {
                 request.onreadystatechange = (ev: Event): any => {
                     if (request.readyState === 4 /*DONE*/) {
                         $YetaWF.setLoading(false);
-                        $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, (result: string) => {
+                        $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, (result: string): void => {
 
                             $YetaWF.setLoading(false);
 
