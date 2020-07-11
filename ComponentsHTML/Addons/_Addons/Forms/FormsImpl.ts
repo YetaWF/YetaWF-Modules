@@ -151,7 +151,8 @@ namespace YetaWF_ComponentsHTML {
         public resequenceFields(rows: HTMLElement[], prefix: string): void {
 
             let index = 0;
-            let re1 = new RegExp(`\\${prefix}[[0-9]+\\]`, "gim");
+            let prefixEsc = prefix.replace("[", "\\[");
+            let re1 = new RegExp(`${prefixEsc}\[[0-9]+\]`, "gim");
             for (let row of rows) {
                 // input fields
                 let fields = $YetaWF.getElementsBySelector(`[name^='${prefix}[']`, [row]);

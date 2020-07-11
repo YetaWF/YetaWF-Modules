@@ -38,7 +38,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [Category("Skin"), Caption("Show Help"), Description("Defines whether the module help link is shown in Display Mode - The help link is always shown in Edit Mode", Order = -91)]
     /// [UIHint("BooleanText"), ReadOnly]
     /// public bool ShowHelp { get; set; }
-    /// public bool ShowHelp_Text { get { ShowHelp ? "Yes" : "No" } }
+    /// public bool ShowHelp_Text { get { return ShowHelp ? "Yes" : "No"; } }
     /// </example>
     [UsesSibling("_Text", "string", "Defines the additional text shown next to the checkbox.")]
     public class BooleanTextDisplayComponent : BooleanTextComponentBase, IYetaWFComponent<bool?> {

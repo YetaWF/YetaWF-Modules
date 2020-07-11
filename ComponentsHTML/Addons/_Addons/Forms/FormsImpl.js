@@ -147,7 +147,8 @@ var YetaWF_ComponentsHTML;
          */
         FormsImpl.prototype.resequenceFields = function (rows, prefix) {
             var index = 0;
-            var re1 = new RegExp("\\" + prefix + "[[0-9]+\\]", "gim");
+            var prefixEsc = prefix.replace("[", "\\[");
+            var re1 = new RegExp(prefixEsc + "[[0-9]+]", "gim");
             for (var _i = 0, rows_1 = rows; _i < rows_1.length; _i++) {
                 var row = rows_1[_i];
                 // input fields
