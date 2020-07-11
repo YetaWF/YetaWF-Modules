@@ -164,8 +164,16 @@ var YetaWF_ComponentsHTML;
             var winXOffset = window.pageXOffset;
             var winYOffset = window.pageYOffset;
             var elemRect = elem.getBoundingClientRect();
-            var ttTop = elemRect.top + elemRect.height;
-            var ttLeft = elemRect.left + elemRect.width;
+            var ttTop;
+            if ($YetaWF.elementHasClass(elem, "y_ttvcenter"))
+                ttTop = elemRect.top + elemRect.height / 2;
+            else
+                ttTop = elemRect.top + elemRect.height;
+            var ttLeft;
+            if ($YetaWF.elementHasClass(elem, "y_tthcenter"))
+                ttLeft = elemRect.left + elemRect.width / 2;
+            else
+                ttLeft = elemRect.left + elemRect.width;
             // briefly show tooltip so we get the width & height
             tooltip.style.display = "block";
             var tooltipRect = tooltip.getBoundingClientRect();

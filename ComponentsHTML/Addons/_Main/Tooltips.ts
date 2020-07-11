@@ -161,32 +161,40 @@ namespace YetaWF_ComponentsHTML {
             $YetaWF.elementAddClass(elem, this.TOOLTIPACTIVEELEMCLASS);
             this.activeTooltipElem = elem;
 
-            var tooltip = document.createElement("div");
+            let tooltip = document.createElement("div");
             tooltip.className = this.TOOLTIPCLASS;
             tooltip.appendChild(document.createTextNode(text));
             $YetaWF.setAttribute(tooltip, "role", "tooltip");
 
-            var firstChild = document.body.firstChild;
+            let firstChild = document.body.firstChild;
             if (!firstChild) return;
             firstChild.parentElement!.insertBefore(tooltip, firstChild);
 
             this.activeTooltip = tooltip;
 
-            var winHeight = (window.innerHeight || document!.documentElement!.clientHeight);
-            var winWidth = (window.innerWidth || document!.documentElement!.clientWidth);
-            var winXOffset = window.pageXOffset;
-            var winYOffset = window.pageYOffset;
+            let winHeight = (window.innerHeight || document!.documentElement!.clientHeight);
+            let winWidth = (window.innerWidth || document!.documentElement!.clientWidth);
+            let winXOffset = window.pageXOffset;
+            let winYOffset = window.pageYOffset;
 
-            var elemRect = elem.getBoundingClientRect();
-            var ttTop = elemRect.top + elemRect.height;
-            var ttLeft = elemRect.left + elemRect.width;
+            let elemRect = elem.getBoundingClientRect();
+            let ttTop;
+            if ($YetaWF.elementHasClass(elem, "y_ttvcenter"))
+                ttTop = elemRect.top + elemRect.height/2;
+            else
+                ttTop = elemRect.top + elemRect.height;
+            let ttLeft;
+            if ($YetaWF.elementHasClass(elem, "y_tthcenter"))
+                ttLeft = elemRect.left + elemRect.width/2;
+            else
+                ttLeft = elemRect.left + elemRect.width;
 
             // briefly show tooltip so we get the width & height
             tooltip.style.display = "block";
-            var tooltipRect = tooltip.getBoundingClientRect();
+            let tooltipRect = tooltip.getBoundingClientRect();
             tooltip.style.display = "none";
-            var ttWidth = tooltipRect.width;
-            var ttHeight = tooltipRect.height;
+            let ttWidth = tooltipRect.width;
+            let ttHeight = tooltipRect.height;
 
             // check if it fits below
             if (elemRect.bottom + ttHeight <= winHeight) {
