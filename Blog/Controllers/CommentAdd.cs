@@ -159,7 +159,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                             UserWebsite = model.Website,
                         };
                         string subject = this.__ResStr("newComment", "New Blog Comment ({0} - {1})", blogEntry.Title.ToString(), Manager.CurrentSite.SiteDomain);
-                        await sendEmail.PrepareEmailMessageAsync(config.NotifyEmail, subject, await sendEmail.GetEmailFileAsync(Package.GetCurrentPackage(this), "New Comment.txt"), parameters: parms);
+                        await sendEmail.PrepareEmailMessageAsync(config.NotifyEmail, subject, await sendEmail.GetEmailFileAsync(Package.GetCurrentPackage(this), "New Comment.txt"), Parameters: parms);
                         await sendEmail.SendAsync(true);
                     }
 
