@@ -400,6 +400,13 @@ namespace YetaWF.Modules.Caching.DataProvider {
                     Closed = true;
                 }
             }
+            public Task CopyToAsync(MemoryStream memStream) {
+                if (YetaWFManager.IsSync()) {
+                    Stream.CopyTo(memStream);
+                    return Task.CompletedTask;
+                } else
+                    return Stream.CopyToAsync(memStream);
+            }
 
             public void Dispose() { Dispose(true); }
             protected virtual void Dispose(bool disposing) {
