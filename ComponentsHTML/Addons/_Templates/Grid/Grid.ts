@@ -376,6 +376,8 @@ namespace YetaWF_ComponentsHTML {
             });
 
             $YetaWF.registerEventHandler(this.Control, "keydown", null, (ev: KeyboardEvent): boolean => {
+                if (!document.activeElement || document.activeElement.tagName !== "TR")
+                    return true;
                 if (this.Setup.HighlightOnClick) {
                     var key = ev.key;
                     if (key === "ArrowDown" || key === "Down") {

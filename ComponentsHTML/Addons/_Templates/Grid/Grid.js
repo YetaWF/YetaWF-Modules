@@ -316,6 +316,8 @@ var YetaWF_ComponentsHTML;
                 return _this.handleSelect(ev.__YetaWFElem, true);
             });
             $YetaWF.registerEventHandler(_this.Control, "keydown", null, function (ev) {
+                if (!document.activeElement || document.activeElement.tagName !== "TR")
+                    return true;
                 if (_this.Setup.HighlightOnClick) {
                     var key = ev.key;
                     if (key === "ArrowDown" || key === "Down") {
@@ -1291,5 +1293,3 @@ var YetaWF_ComponentsHTML;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.Grid = Grid;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=Grid.js.map
