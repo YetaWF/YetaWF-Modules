@@ -7,7 +7,7 @@ namespace YetaWF_Panels {
         ActiveCss: string;
     }
 
-    export class PageBarInfoComponent extends YetaWF.ComponentBaseNoDataImpl {
+    export class PageBarInfoComponent extends YetaWF.ComponentBaseDataImpl {
 
         public static readonly TEMPLATE: string = "yt_panels_pagebarinfo";
         public static readonly SELECTOR: string = ".yt_panels_pagebarinfo.t_display";
@@ -22,8 +22,7 @@ namespace YetaWF_Panels {
                 Enable: null,
             });
             this.Setup = setup;
-            if (this.Setup.Resize)
-                this.resize();
+            this.resize();
 
             // Link click, activate entry
             $YetaWF.registerEventHandler(this.Control, "click", ".yt_panels_pagebarinfo_list a", (ev: MouseEvent): boolean => {
@@ -36,13 +35,9 @@ namespace YetaWF_Panels {
                 $YetaWF.elementAddClassList(entry, this.Setup.ActiveCss);
                 return true;
             });
-            if (this.Setup.Resize) {
-                ($(window) as any).smartresize((): void => {
-                    this.resize();
-                });
-            }
         }
-        private resize(): void {
+        public resize(): void {
+            if (!this.Setup.Resize) return;
             // Resize the page bar in height so we fill the remaining page height
             // While this is possible in css also, it can't be done without knowing the structure of the page, which we can't assume in this page bar
             // so we just do it at load time (and when the window is resized).
@@ -54,4 +49,12 @@ namespace YetaWF_Panels {
             this.Control.style.height = `${ctrlRect.height - h}px`;
         }
     }
+    ($(window) as any).smartresize((): void => {
+        let ctrlDivs = $YetaWF.getElementsBySelector(PageBarInfoComponent.SELECTOR);
+        for (let ctrlDiv of ctrlDivs) {
+            let mod = PageBarInfoComponent.getControlFromTag<PageBarInfoComponent>(ctrlDiv, PageBarInfoComponent.SELECTOR);
+            mod.resize();
+        }
+    });
+
 }

@@ -25,8 +25,7 @@ var YetaWF_Panels;
                 Enable: null,
             }) || this;
             _this.Setup = setup;
-            if (_this.Setup.Resize)
-                _this.resize();
+            _this.resize();
             // Link click, activate entry
             $YetaWF.registerEventHandler(_this.Control, "click", ".yt_panels_pagebarinfo_list a", function (ev) {
                 var entry = $YetaWF.elementClosestCond(ev.__YetaWFElem, ".yt_panels_pagebarinfo_list .t_entry");
@@ -40,14 +39,11 @@ var YetaWF_Panels;
                 $YetaWF.elementAddClassList(entry, _this.Setup.ActiveCss);
                 return true;
             });
-            if (_this.Setup.Resize) {
-                $(window).smartresize(function () {
-                    _this.resize();
-                });
-            }
             return _this;
         }
         PageBarInfoComponent.prototype.resize = function () {
+            if (!this.Setup.Resize)
+                return;
             // Resize the page bar in height so we fill the remaining page height
             // While this is possible in css also, it can't be done without knowing the structure of the page, which we can't assume in this page bar
             // so we just do it at load time (and when the window is resized).
@@ -60,8 +56,16 @@ var YetaWF_Panels;
         PageBarInfoComponent.TEMPLATE = "yt_panels_pagebarinfo";
         PageBarInfoComponent.SELECTOR = ".yt_panels_pagebarinfo.t_display";
         return PageBarInfoComponent;
-    }(YetaWF.ComponentBaseNoDataImpl));
+    }(YetaWF.ComponentBaseDataImpl));
     YetaWF_Panels.PageBarInfoComponent = PageBarInfoComponent;
+    $(window).smartresize(function () {
+        var ctrlDivs = $YetaWF.getElementsBySelector(PageBarInfoComponent.SELECTOR);
+        for (var _i = 0, ctrlDivs_1 = ctrlDivs; _i < ctrlDivs_1.length; _i++) {
+            var ctrlDiv = ctrlDivs_1[_i];
+            var mod = PageBarInfoComponent.getControlFromTag(ctrlDiv, PageBarInfoComponent.SELECTOR);
+            mod.resize();
+        }
+    });
 })(YetaWF_Panels || (YetaWF_Panels = {}));
 
 //# sourceMappingURL=PageBarInfo.js.map
