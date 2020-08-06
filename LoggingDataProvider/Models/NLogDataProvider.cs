@@ -216,7 +216,7 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.NLogProvider {
             return await DataProvider.IsInstalledAsync();
         }
         public async Task<bool> InstallModelAsync(List<string> errorList) {
-            //if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return true;
+            if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return true;
             if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Installing new models is not possible when distributed caching is enabled");
             bool success = await DataProvider.InstallModelAsync(errorList);
             if (success)
