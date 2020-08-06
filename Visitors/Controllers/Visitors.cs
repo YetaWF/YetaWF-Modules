@@ -13,6 +13,8 @@ using YetaWF.Modules.Visitors.DataProvider;
 using YetaWF.Modules.Visitors.Modules;
 using YetaWF.Modules.Visitors.Scheduler;
 using YetaWF.Core.Components;
+using YetaWF.Core.Support;
+using YetaWF.Core.Localize;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -116,7 +118,8 @@ namespace YetaWF.Modules.Visitors.Controllers {
         [AllowGet]
         public ActionResult Visitors() {
             using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
-                if (!visitorDP.Usable) return View("VisitorsUnavailable");
+                if (!visitorDP.Usable)
+                    throw new Error(this.__ResStr("noInfo", "Visitor information is not available - See https://yetawf.com/Documentation/YetaWF/Visitors"));
             }
             BrowseModel model = new BrowseModel {
                 GridDef = GetGridModel()

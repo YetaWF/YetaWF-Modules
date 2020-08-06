@@ -7,6 +7,7 @@ using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Scheduler;
 using YetaWF.Core.Support;
+using YetaWF.Modules.Logging.DataProvider;
 using YetaWF.Modules.LoggingDataProvider.DataProvider;
 
 namespace YetaWF.Modules.Logging.Scheduler {
@@ -40,7 +41,8 @@ namespace YetaWF.Modules.Logging.Scheduler {
         public RemoveOldLogData() { }
 
         public async Task RemoveAsync(List<string> errorList) {
-            DateTime oldest = DateTime.UtcNow.AddMonths(-1);
+            LoggingConfigData config = await LoggingConfigDataProvider.GetConfigAsync();
+            DateTime oldest = DateTime.UtcNow.AddDays(-config.Days);
             using (LogRecordDataProvider logDP = LogRecordDataProvider.GetLogRecordDataProvider()) {
                 List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = nameof(LogRecord.TimeStamp), Operator = "<", Value = oldest });
                 int removed = await logDP.RemoveItemsAsync(filters);

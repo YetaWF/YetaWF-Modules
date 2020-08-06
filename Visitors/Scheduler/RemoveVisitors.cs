@@ -40,7 +40,8 @@ namespace YetaWF.Modules.Visitors.Scheduler {
         public RemoveOldVisitorData() { }
 
         public async Task RemoveAsync(List<string> errorList) {
-            DateTime oldest = DateTime.UtcNow.AddMonths(-1);
+            VisitorsConfigData config = await VisitorsConfigDataProvider.GetConfigAsync();
+            DateTime oldest = DateTime.UtcNow.AddDays(-config.Days);
             using (VisitorEntryDataProvider visitorEntryDP = new VisitorEntryDataProvider()) {
                 List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = nameof(VisitorEntry.AccessDateTime), Operator = "<", Value = oldest });
                 int removed = await visitorEntryDP.RemoveItemsAsync(filters);

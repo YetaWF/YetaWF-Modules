@@ -7,11 +7,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using System.Threading.Tasks;
 using YetaWF.Modules.Dashboard.DataProvider;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Dashboard.Controllers {
 

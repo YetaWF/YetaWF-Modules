@@ -14,6 +14,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Core.Log;
+using YetaWF.Core.Localize;
 #if MVC6
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -69,6 +70,7 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider {
 
     public abstract class LogRecordDataProvider : IDisposable {
 
+        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(LogRecordDataProvider), name, defaultValue, parms); }
         protected YetaWFManager Manager { get { return YetaWFManager.Manager; } }
 
         // IMPLEMENTATION
@@ -92,7 +94,7 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider {
         // API
 
         public static LogRecordDataProvider GetLogRecordDataProvider() {
-            if (YetaWF.Core.Log.Logging.DefaultLoggerType == null) throw new InternalError("No logging data provider type");
+            if (YetaWF.Core.Log.Logging.DefaultLoggerType == null) throw new Error(__ResStr("noLog", "Logging is not available - See https://yetawf.com/Documentation/YetaWF/Logging"));
             LogRecordDataProvider dp = (LogRecordDataProvider)Activator.CreateInstance(YetaWF.Core.Log.Logging.DefaultLoggerType);
             return dp;
         }
