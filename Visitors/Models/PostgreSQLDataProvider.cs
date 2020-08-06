@@ -12,6 +12,7 @@ namespace YetaWF.Modules.Visitors.DataProvider.PostgreSQL {
 
         public void Register() {
             DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.VisitorEntryDataProvider), typeof(VisitorEntryDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.VisitorsConfigDataProvider), typeof(VisitorsConfigDataProvider));
         }
         class VisitorEntryDataProvider : SQLSimpleObject<int, VisitorEntry>, VisitorEntryDataProviderIOMode {
 
@@ -60,6 +61,9 @@ namespace YetaWF.Modules.Visitors.DataProvider.PostgreSQL {
                     visitorEntry.ContinentCode, visitorEntry.CountryCode, visitorEntry.RegionCode, visitorEntry.City,
                     visitorEntry.IPAddress, VisitorEntry.Unknown);
             }
+        }
+        class VisitorsConfigDataProvider : SQLSimpleObject<int, VisitorsConfigData> {
+            public VisitorsConfigDataProvider(Dictionary<string, object> options) : base(options) { }
         }
     }
 }
