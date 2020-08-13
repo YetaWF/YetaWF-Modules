@@ -99,9 +99,9 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             string blueGreen = "";
             if (await FileSystem.FileSystemProvider.FileExistsAsync(healthCheckFile)) {
                 string contents = await FileSystem.FileSystemProvider.ReadAllTextAsync(healthCheckFile);
-                if (contents.Contains("Blue"))
+                if (contents.Contains("Blue", StringComparison.OrdinalIgnoreCase))
                     blueGreen = "Blue";
-                else if (contents.Contains("Green"))
+                else if (contents.Contains("Green", StringComparison.OrdinalIgnoreCase))
                     blueGreen = "Green";
                 else {
                     if (Startup.RunningInContainer)
