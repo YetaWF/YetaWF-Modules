@@ -317,7 +317,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             else if (!string.IsNullOrWhiteSpace(urlContent))
                 output = $"<a class='t_entry{selectedCss}{extraCss} yaction-link' data-contenttarget='{treeModel.ContentTargetId}' data-contentpane='{treeModel.ContentTargetPane}' href='{HAE(urlContent)}'{dd}>{text}</a>";
             else
-                output = $"<a class='t_entry{selectedCss}{extraCss}' data-nohref='true' href='#'{dd}>{text}</a>";
+                output = $"<a class='t_entry yaction-link{selectedCss}{extraCss}' data-nohref='true' href='#'{dd}>{text}</a>";
 
             string recData = "";
             if (treeModel.JSONData) {
