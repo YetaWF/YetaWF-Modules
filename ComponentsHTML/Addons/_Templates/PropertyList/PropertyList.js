@@ -283,7 +283,7 @@ var YetaWF_ComponentsHTML;
             return index;
         };
         /**
-         * Update all dependent fields (forms).
+         * Update all dependent fields (forms). May be a propertylist embedded in another propertylist.
          */
         PropertyListComponent.prototype.update = function () {
             if (!this.ControlData)
@@ -375,6 +375,34 @@ var YetaWF_ComponentsHTML;
                     }
                 }
             }
+        };
+        /**
+         * Update all dependent fields (forms). Will find the outermost propertylist and update fields.
+         */
+        PropertyListComponent.updatePropertyListsFromTag = function (elem) {
+            var propertyList = this.getTopMostPropertyListFromTagCond(elem);
+            if (!propertyList)
+                return;
+            propertyList.update(); // update all dependent fields of topmost propertylist
+            // and all contained property lists
+            var proplists = $YetaWF.getElementsBySelector(PropertyListComponent.SELECTOR, [propertyList.Control]);
+            for (var _i = 0, proplists_1 = proplists; _i < proplists_1.length; _i++) {
+                var proplist = proplists_1[_i];
+                var list = YetaWF.ComponentBaseDataImpl.getControlFromTag(proplist, PropertyListComponent.SELECTOR);
+                list.update();
+            }
+        };
+        PropertyListComponent.getTopMostPropertyListFromTagCond = function (elem) {
+            var curr = elem;
+            var topMost = null;
+            for (; curr;) {
+                var propertyList = YetaWF.ComponentBaseDataImpl.getControlFromTagCond(curr, PropertyListComponent.SELECTOR);
+                if (!propertyList)
+                    break;
+                topMost = propertyList;
+                curr = propertyList.parentElement;
+            }
+            return topMost;
         };
         PropertyListComponent.prototype.toggle = function (dep, depRow, show, disable, clearOnDisable) {
             // hides/shows rows (doesn't change the status or clear validation if the status is already correct)

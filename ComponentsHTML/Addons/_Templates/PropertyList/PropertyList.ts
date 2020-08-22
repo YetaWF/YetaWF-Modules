@@ -366,7 +366,7 @@ namespace YetaWF_ComponentsHTML {
         }
 
         /**
-         * Update all dependent fields (forms).
+         * Update all dependent fields (forms). May be a propertylist embedded in another propertylist.
          */
         public update(): void {
 
@@ -458,6 +458,34 @@ namespace YetaWF_ComponentsHTML {
                     }
                 }
             }
+        }
+
+        /**
+         * Update all dependent fields (forms). Will find the outermost propertylist and update fields.
+         */
+        public static updatePropertyListsFromTag(elem: HTMLElement): void {
+            let propertyList = this.getTopMostPropertyListFromTagCond(elem);
+            if (!propertyList) return;
+
+            propertyList.update();// update all dependent fields of topmost propertylist
+            // and all contained property lists
+            let proplists = $YetaWF.getElementsBySelector(PropertyListComponent.SELECTOR, [propertyList.Control]);
+            for (let proplist of proplists) {
+                let list = YetaWF.ComponentBaseDataImpl.getControlFromTag<PropertyListComponent>(proplist, PropertyListComponent.SELECTOR);
+                list.update();
+            }
+        }
+
+        private static getTopMostPropertyListFromTagCond(elem: HTMLElement): PropertyListComponent|null {
+            let curr: HTMLElement | null = elem;
+            let topMost: PropertyListComponent | null = null;
+            for (; curr;) {
+                let propertyList = YetaWF.ComponentBaseDataImpl.getControlFromTagCond<PropertyListComponent>(curr, PropertyListComponent.SELECTOR);
+                if (!propertyList) break;
+                topMost = propertyList;
+                curr = propertyList.parentElement;
+            }
+            return topMost;
         }
 
         private toggle(dep: Dependent, depRow: HTMLElement, show: boolean, disable: boolean, clearOnDisable: boolean): void {
