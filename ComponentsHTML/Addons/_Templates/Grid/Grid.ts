@@ -1116,6 +1116,21 @@ namespace YetaWF_ComponentsHTML {
             this.reload(Math.max(0, this.Setup.Pages - 1));
             this.updateStatus();
         }
+        public AddRecords(trs: string[], staticData: any): void {
+            if (!this.Setup.StaticData) throw "Static grids only";
+            for (let tr of trs) {
+                $YetaWF.appendMixedHTML(this.TBody, tr, true);
+                var lastTr = this.TBody.lastChild as HTMLTableRowElement;
+                var origin = this.Setup.StaticData.length;
+                $YetaWF.setAttribute(lastTr, "data-origin", origin.toString());
+                this.renumberFields(lastTr, 0, origin);
+                this.Setup.StaticData.push(staticData);
+                this.Setup.Records++;
+            }
+            this.updatePage();
+            this.reload(Math.max(0, this.Setup.Pages - 1));
+            this.updateStatus();
+        }
         public ReplaceRecord(index: number, tr: string, staticData: any): void {
             if (!this.Setup.StaticData) throw "Static grids only";
             if (index < 0 || index >= this.Setup.StaticData.length) throw `Index ${index} out of bounds`;
@@ -1144,6 +1159,17 @@ namespace YetaWF_ComponentsHTML {
             this.Setup.StaticData.splice(index, 1);
             this.Setup.Records--;
             this.resequenceDelete(index);
+            this.updatePage();
+            this.reload(Math.max(0, this.Setup.Pages - 1));
+            this.updateStatus();
+        }
+        public Clear(): void {
+            if (!this.Setup.StaticData) throw "Static grids only";
+            let trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]) as HTMLTableRowElement[];
+            for (let tr of trs)
+                tr.remove();
+            this.Setup.StaticData = [];
+            this.Setup.Records = 0;
             this.updatePage();
             this.reload(Math.max(0, this.Setup.Pages - 1));
             this.updateStatus();
@@ -1248,6 +1274,22 @@ namespace YetaWF_ComponentsHTML {
         public ReloadAll(overrideExtraData?: any, successful?: () => void): void {
             if (this.Setup.StaticData) throw "Ajax grids only";
             this.reload(0, undefined, undefined, overrideExtraData, false, (): void => {
+                // successful
+                if (overrideExtraData)
+                    this.Setup.ExtraData = overrideExtraData;
+                if (successful)
+                    successful();
+            });
+        }
+        /**
+         * Reloads the grid in its entirety using the provided data, extradata. The extradata is only saved in the grid if reloading is successful.
+         * The callback is called if the grid is successfully reloaded.
+         */
+        public ReloadStatic(data: any, overrideExtraData?: any, successful?: () => void): void {
+            if (!this.Setup.StaticData) throw "Static grids only";
+            this.Clear();
+            this.Setup.StaticData = data;
+            this.reload(0, undefined, undefined, overrideExtraData, true/*sort forced rerendering*/, (): void => {
                 // successful
                 if (overrideExtraData)
                     this.Setup.ExtraData = overrideExtraData;

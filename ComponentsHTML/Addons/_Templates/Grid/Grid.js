@@ -1079,6 +1079,23 @@ var YetaWF_ComponentsHTML;
             this.reload(Math.max(0, this.Setup.Pages - 1));
             this.updateStatus();
         };
+        Grid.prototype.AddRecords = function (trs, staticData) {
+            if (!this.Setup.StaticData)
+                throw "Static grids only";
+            for (var _i = 0, trs_6 = trs; _i < trs_6.length; _i++) {
+                var tr = trs_6[_i];
+                $YetaWF.appendMixedHTML(this.TBody, tr, true);
+                var lastTr = this.TBody.lastChild;
+                var origin = this.Setup.StaticData.length;
+                $YetaWF.setAttribute(lastTr, "data-origin", origin.toString());
+                this.renumberFields(lastTr, 0, origin);
+                this.Setup.StaticData.push(staticData);
+                this.Setup.Records++;
+            }
+            this.updatePage();
+            this.reload(Math.max(0, this.Setup.Pages - 1));
+            this.updateStatus();
+        };
         Grid.prototype.ReplaceRecord = function (index, tr, staticData) {
             if (!this.Setup.StaticData)
                 throw "Static grids only";
@@ -1111,6 +1128,20 @@ var YetaWF_ComponentsHTML;
             this.Setup.StaticData.splice(index, 1);
             this.Setup.Records--;
             this.resequenceDelete(index);
+            this.updatePage();
+            this.reload(Math.max(0, this.Setup.Pages - 1));
+            this.updateStatus();
+        };
+        Grid.prototype.Clear = function () {
+            if (!this.Setup.StaticData)
+                throw "Static grids only";
+            var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
+            for (var _i = 0, trs_7 = trs; _i < trs_7.length; _i++) {
+                var tr = trs_7[_i];
+                tr.remove();
+            }
+            this.Setup.StaticData = [];
+            this.Setup.Records = 0;
             this.updatePage();
             this.reload(Math.max(0, this.Setup.Pages - 1));
             this.updateStatus();
@@ -1190,8 +1221,8 @@ var YetaWF_ComponentsHTML;
                 throw "Static grids only";
             var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
             var index = 0;
-            for (var _i = 0, trs_6 = trs; _i < trs_6.length; _i++) {
-                var tr = trs_6[_i];
+            for (var _i = 0, trs_8 = trs; _i < trs_8.length; _i++) {
+                var tr = trs_8[_i];
                 var rect = tr.getBoundingClientRect();
                 if (x < rect.left || x > rect.left + rect.width)
                     return -1;
@@ -1208,8 +1239,8 @@ var YetaWF_ComponentsHTML;
                 throw "Static grids only";
             var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
             var index = 0;
-            for (var _i = 0, trs_7 = trs; _i < trs_7.length; _i++) {
-                var tr = trs_7[_i];
+            for (var _i = 0, trs_9 = trs; _i < trs_9.length; _i++) {
+                var tr = trs_9[_i];
                 var rect = tr.getBoundingClientRect();
                 if (x < rect.left || x > rect.left + rect.width)
                     return -1;
@@ -1232,6 +1263,24 @@ var YetaWF_ComponentsHTML;
             if (this.Setup.StaticData)
                 throw "Ajax grids only";
             this.reload(0, undefined, undefined, overrideExtraData, false, function () {
+                // successful
+                if (overrideExtraData)
+                    _this.Setup.ExtraData = overrideExtraData;
+                if (successful)
+                    successful();
+            });
+        };
+        /**
+         * Reloads the grid in its entirety using the provided data, extradata. The extradata is only saved in the grid if reloading is successful.
+         * The callback is called if the grid is successfully reloaded.
+         */
+        Grid.prototype.ReloadStatic = function (data, overrideExtraData, successful) {
+            var _this = this;
+            if (!this.Setup.StaticData)
+                throw "Static grids only";
+            this.Clear();
+            this.Setup.StaticData = data;
+            this.reload(0, undefined, undefined, overrideExtraData, true /*sort forced rerendering*/, function () {
                 // successful
                 if (overrideExtraData)
                     _this.Setup.ExtraData = overrideExtraData;
