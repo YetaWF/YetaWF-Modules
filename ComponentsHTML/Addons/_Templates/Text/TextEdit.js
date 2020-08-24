@@ -17,13 +17,44 @@ var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     var TextEditComponent = /** @class */ (function (_super) {
         __extends(TextEditComponent, _super);
-        function TextEditComponent() {
-            return _super !== null && _super.apply(this, arguments) || this;
+        function TextEditComponent(controlId /*, setup: TextEditSetup*/) {
+            var _this = _super.call(this, controlId, TextEditComponent.TEMPLATE, TextEditComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Input,
+                ChangeEvent: null,
+                GetValue: function (control) {
+                    return control.value;
+                },
+                Enable: function (control, enable, clearOnDisable) {
+                    YetaWF_BasicsImpl.elementEnableToggle(control, enable);
+                    if (clearOnDisable)
+                        control.value = "";
+                },
+            }) || this;
+            //this.Setup = setup;
+            if ($YetaWF.getAttributeCond(_this.Control, "placeholder")) {
+                $YetaWF.registerEventHandler(_this.Control, "focus", null, function (ev) {
+                    var ph = $YetaWF.getAttributeCond(_this.Control, "placeholder");
+                    if (ph) {
+                        _this.Control.removeAttribute("placeholder");
+                        $YetaWF.setAttribute(_this.Control, "data-placeholder", ph);
+                    }
+                    return true;
+                });
+                $YetaWF.registerEventHandler(_this.Control, "blur", null, function (ev) {
+                    var ph = $YetaWF.getAttributeCond(_this.Control, "data-placeholder");
+                    if (ph) {
+                        _this.Control.removeAttribute("data-placeholder");
+                        $YetaWF.setAttribute(_this.Control, "placeholder", ph);
+                    }
+                    return true;
+                });
+            }
+            return _this;
         }
         TextEditComponent.TEMPLATE = "yt_text_base";
         TextEditComponent.SELECTOR = ".yt_text_base.t_edit";
         return TextEditComponent;
-    }(YetaWF.ComponentBase));
+    }(YetaWF.ComponentBaseNoDataImpl));
     YetaWF_ComponentsHTML.TextEditComponent = TextEditComponent;
     TextEditComponent.register(TextEditComponent.TEMPLATE, TextEditComponent.SELECTOR, false, {
         ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Input,

@@ -42,6 +42,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </example>
     [UsesAdditional("Copy", "bool", "true", "Defines whether a copy icon is displayed to allow the user to copy the contents to the clipboard and the text box is rendered read/only as opposed to disabled. If false is specified, no copy icon is shown.")]
     [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the text box is rendered read/only as opposed to disabled.")]
+    [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
     public class Text10EditComponent : TextEditComponentBase {
         /// <summary>
         /// Constructor.
@@ -80,6 +81,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </example>
     [UsesAdditional("Copy", "bool", "true", "Defines whether a copy icon is displayed to allow the user to copy the contents to the clipboard and the text box is rendered read/only as opposed to disabled. If false is specified, no copy icon is shown.")]
     [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the text box is rendered read/only as opposed to disabled.")]
+    [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
     public class Text20EditComponent : TextEditComponentBase {
         /// <summary>
         /// Constructor.
@@ -118,6 +120,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </example>
     [UsesAdditional("Copy", "bool", "true", "Defines whether a copy icon is displayed to allow the user to copy the contents to the clipboard and the text box is rendered read/only as opposed to disabled. If false is specified, no copy icon is shown.")]
     [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the text box is rendered read/only as opposed to disabled.")]
+    [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
     public class Text40EditComponent : TextEditComponentBase {
         /// <summary>
         /// Constructor.
@@ -156,6 +159,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </example>
     [UsesAdditional("Copy", "bool", "true", "Defines whether a copy icon is displayed to allow the user to copy the contents to the clipboard and the text box is rendered read/only as opposed to disabled. If false is specified, no copy icon is shown.")]
     [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the text box is rendered read/only as opposed to disabled.")]
+    [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
     public class Text80EditComponent : TextEditComponentBase {
         /// <summary>
         /// Constructor.
@@ -192,6 +196,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </example>
     [UsesAdditional("Copy", "bool", "true", "Defines whether a copy icon is displayed to allow the user to copy the contents to the clipboard and the text box is rendered read/only as opposed to disabled. If false is specified, no copy icon is shown.")]
     [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the text box is rendered read/only as opposed to disabled.")]
+    [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
     public class TextEditComponent : TextEditComponentBase {
         /// <summary>
         /// Constructor.
@@ -382,6 +387,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (lenAttr == null && !tag.Attributes.ContainsKey("maxlength"))
                 throw new InternalError("No max string length given using StringLengthAttribute or maxlength - {0}", component.FieldName);
 #endif
+            string placeHolder;
+            component.TryGetSiblingProperty<string>($"{component.PropertyName}_PlaceHolder", out placeHolder);
+            if (placeHolder != null)
+                tag.Attributes.Add("placeholder", placeHolder);
+
             // text
             tag.MergeAttribute("type", "text");
             tag.MergeAttribute("value", model ?? "");
@@ -400,7 +410,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             //    sb.Append("$('#{0}').kendoMaskedTextBox({{ mask: '{1}' }});\n", id, Utility.JserEncode(mask));
             //    Manager.ScriptManager.AddLastDocumentReady(sb);
             //}
-            //Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.TextEditComponent('{component.ControlId}');");
+            if (placeHolder != null)
+                Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.TextEditComponent('{component.ControlId}');");
 
             return hb.ToString();
         }
