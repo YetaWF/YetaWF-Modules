@@ -27,7 +27,24 @@ namespace YetaWF_ComponentsHTML {
                 },
             });
             //this.Setup = setup;
-
+            if ($YetaWF.getAttributeCond(this.Control, "placeholder")) {
+                $YetaWF.registerEventHandler(this.Control, "focus", null, (ev: FocusEvent): boolean => {
+                    let ph = $YetaWF.getAttributeCond(this.Control, "placeholder");
+                    if (ph) {
+                        this.Control.removeAttribute("placeholder");
+                        $YetaWF.setAttribute(this.Control, "data-placeholder", ph);
+                    }
+                    return true;
+                });
+                $YetaWF.registerEventHandler(this.Control, "blur", null, (ev: FocusEvent): boolean => {
+                    let ph = $YetaWF.getAttributeCond(this.Control, "data-placeholder");
+                    if (ph) {
+                        this.Control.removeAttribute("data-placeholder");
+                        $YetaWF.setAttribute(this.Control, "placeholder", ph);
+                    }
+                    return true;
+                });
+            }
         }
     }
 }

@@ -115,7 +115,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     /// <remarks>
     /// If the StringLengthAttribute is specified for the model, the textarea element is limited to the specified number of characters.
-    /// 
+    ///
     /// To render a more advanced text editor using CKEditor, use the TextArea Component instead.
     /// </remarks>
     /// <example>
@@ -124,6 +124,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// public string Comment { get; set; }
     /// </example>
     [UsesAdditional("EmHeight", "int", "10", "Defines the height of the component in lines of text.")]
+    [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
     public class TextAreaSourceOnlyEditComponent : TextAreaSourceOnlyComponentBase, IYetaWFComponent<object> {
 
         /// <summary>
@@ -147,6 +148,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             int emHeight = PropData.GetAdditionalAttributeValue("EmHeight", 10);
 
+            string placeHolder;
+            TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out placeHolder);
+
             HtmlBuilder hb = new HtmlBuilder();
 
             YTagBuilder tag = new YTagBuilder("textarea");
@@ -156,6 +160,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Normal);
             tag.Attributes.Add("id", ControlId);
             tag.Attributes.Add("rows", emHeight.ToString());
+            if (placeHolder != null)
+                tag.Attributes.Add("placeholder", placeHolder);
 
             // handle StringLengthAttribute as maxlength
             StringLengthAttribute lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();

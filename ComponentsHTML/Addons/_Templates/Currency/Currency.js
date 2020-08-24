@@ -18,6 +18,7 @@ var YetaWF_ComponentsHTML;
     var CurrencyEditComponent = /** @class */ (function (_super) {
         __extends(CurrencyEditComponent, _super);
         function CurrencyEditComponent(controlId, setup) {
+            var _a;
             var _this = _super.call(this, controlId, CurrencyEditComponent.TEMPLATE, CurrencyEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: CurrencyEditComponent.EVENT,
@@ -37,6 +38,7 @@ var YetaWF_ComponentsHTML;
                 format: YVolatile.YetaWF_ComponentsHTML.CurrencyFormat,
                 min: setup.Min, max: setup.Max,
                 culture: YVolatile.Basics.Language,
+                placeholder: (_a = setup.PlaceHolder) !== null && _a !== void 0 ? _a : undefined,
                 change: function (e) {
                     $(_this.Control).trigger("change");
                     var event = document.createEvent("Event");

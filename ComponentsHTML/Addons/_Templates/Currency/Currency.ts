@@ -10,6 +10,7 @@ namespace YetaWF_ComponentsHTML {
         Min: number;
         Max: number;
         ReadOnly: boolean;
+        PlaceHolder: string|null;
     }
 
     export class CurrencyEditComponent extends YetaWF.ComponentBaseDataImpl {
@@ -43,6 +44,7 @@ namespace YetaWF_ComponentsHTML {
                 format: YVolatile.YetaWF_ComponentsHTML.CurrencyFormat,
                 min: setup.Min, max: setup.Max,
                 culture: YVolatile.Basics.Language,
+                placeholder: setup.PlaceHolder??undefined,
                 change: (e: kendo.ui.NumericTextBoxChangeEvent): void => {
                     $(this.Control).trigger("change");
                     var event = document.createEvent("Event");

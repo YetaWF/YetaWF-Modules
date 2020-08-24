@@ -18,7 +18,7 @@ var YetaWF_ComponentsHTML;
     var TextAreaSourceOnlyEditComponent = /** @class */ (function (_super) {
         __extends(TextAreaSourceOnlyEditComponent, _super);
         function TextAreaSourceOnlyEditComponent(controlId /*, setup: TextAreaSourceOnlyEditSetup*/) {
-            return _super.call(this, controlId, TextAreaSourceOnlyEditComponent.TEMPLATE, TextAreaSourceOnlyEditComponent.SELECTOR, {
+            var _this = _super.call(this, controlId, TextAreaSourceOnlyEditComponent.TEMPLATE, TextAreaSourceOnlyEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.TextArea,
                 ChangeEvent: null,
                 GetValue: function (control) {
@@ -31,6 +31,25 @@ var YetaWF_ComponentsHTML;
                 },
             }) || this;
             //this.Setup = setup;
+            if ($YetaWF.getAttributeCond(_this.Control, "placeholder")) {
+                $YetaWF.registerEventHandler(_this.Control, "focus", null, function (ev) {
+                    var ph = $YetaWF.getAttributeCond(_this.Control, "placeholder");
+                    if (ph) {
+                        _this.Control.removeAttribute("placeholder");
+                        $YetaWF.setAttribute(_this.Control, "data-placeholder", ph);
+                    }
+                    return true;
+                });
+                $YetaWF.registerEventHandler(_this.Control, "blur", null, function (ev) {
+                    var ph = $YetaWF.getAttributeCond(_this.Control, "data-placeholder");
+                    if (ph) {
+                        _this.Control.removeAttribute("data-placeholder");
+                        $YetaWF.setAttribute(_this.Control, "placeholder", ph);
+                    }
+                    return true;
+                });
+            }
+            return _this;
         }
         TextAreaSourceOnlyEditComponent.TEMPLATE = "yt_textareasourceonly";
         TextAreaSourceOnlyEditComponent.SELECTOR = ".yt_textareasourceonly.t_edit";

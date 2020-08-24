@@ -89,6 +89,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </example>
     [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the control is rendered read/only.")]
     [UsesAdditional("Disabled", "bool", "false", "Defines whether the control is disabled.")]
+    [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
     public class CurrencyEditComponent : CurrencyComponentBase, IYetaWFComponent<Decimal>, IYetaWFComponent<Decimal?> {
 
         /// <summary>
@@ -101,6 +102,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public double Min { get; set; }
             public double Max { get; set; }
             public Boolean ReadOnly { get; set; }
+            public string PlaceHolder { get; set; }
         }
 
         /// <summary>
@@ -137,10 +139,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (disabled)
                 tag.Attributes.Add("disabled", "disabled");
 
+            string placeHolder;
+            TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out placeHolder);
+
             CurrencySetup setup = new CurrencySetup {
                 Min = 0,
                 Max = 999999999.99,
                 ReadOnly = rdonly,
+                PlaceHolder = placeHolder,
             };
             // handle min/max
             RangeAttribute rangeAttr = PropData.TryGetAttribute<RangeAttribute>();
