@@ -43,7 +43,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [Caption("URL"), Description("The requested URL")]
     /// [UIHint("Url"), ReadOnly]
     /// public string RequestedUrl { get; set; }
-    /// 
+    ///
     /// [Caption("Product")]
     /// [UIHint("Url"), ReadOnly]
     /// public string Description { get; set; }
@@ -76,7 +76,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (!TryGetSiblingProperty($"{PropertyName}_Url", out hrefUrl))
                 hrefUrl = model;
 
-            if (string.IsNullOrWhiteSpace(hrefUrl)) {
+            if (string.IsNullOrWhiteSpace(hrefUrl) || (!hrefUrl.StartsWith("http://") && !hrefUrl.StartsWith("https://") && !hrefUrl.StartsWith("/"))) {
                 // no link
                 YTagBuilder tag = new YTagBuilder("span");
                 FieldSetup(tag, FieldType.Anonymous);
