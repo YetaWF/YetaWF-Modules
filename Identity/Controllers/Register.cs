@@ -55,6 +55,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             [Caption("Password"), Description("Enter your desired password")]
             [UIHint("Password20"), StringLength(Globals.MaxPswd), Required]
             public string Password { get; set; }
+            public string Password_AutoComplete { get { return "new-password"; } }
 
             [Caption(" "), Description("")]
             [UIHint("String"), ReadOnly]
@@ -64,6 +65,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             [Caption("Password Confirmation"), Description("Enter your password again to confirm")]
             [UIHint("Password20"), Required, StringLength(Globals.MaxPswd), SameAs("Password", "The password confirmation doesn't match the password entered")]
             public string ConfirmPassword { get; set; }
+            public string ConfirmPassword_AutoComplete { get { return "new-password"; } }
 
             [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
             [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf(nameof(ShowCaptcha), false)]

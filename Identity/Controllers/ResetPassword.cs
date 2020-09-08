@@ -33,6 +33,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             [Caption("New Password"), Description("Enter your desired new password")]
             [UIHint("Password20"), StringLength(Globals.MaxPswd), Required]
             public string NewPassword { get; set; }
+            public string NewPassword_AutoComplete { get { return "new-password"; } }
 
             [Caption(" "), Description("")]
             [UIHint("String"), ReadOnly]
@@ -42,6 +43,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             [Caption("New Password Confirmation"), Description("Enter your new password again to confirm")]
             [UIHint("Password20"), StringLength(Globals.MaxPswd), Required, SameAs("NewPassword", "The password confirmation doesn't match the password entered")]
             public string ConfirmPassword { get; set; }
+            public string ConfirmPassword_AutoComplete { get { return "new-password"; } }
 
             [UIHint("Hidden"), ReadOnly]
             public int UserId { get; set; }

@@ -91,7 +91,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (ModuleBase.FormAutoComplete)
                 tagBuilder.Attributes.Add("autocomplete", "on");
             else
-                tagBuilder.Attributes.Add("autocomplete", "new-password");
+                tagBuilder.Attributes.Add("autocomplete", "off");
 
             string id = null;
             if (tagBuilder.Attributes.ContainsKey("id")) {
