@@ -12,6 +12,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider.SQL {
         public void Register() {
             DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.SchedulerDataProvider), typeof(SchedulerDataProvider));
             DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.LogDataProvider), typeof(LogDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.SchedulerConfigDataProvider), typeof(LoggingConfigDataProvider));
         }
         class SchedulerDataProvider : SQLSimpleObject<string, SchedulerItemData> {
             public SchedulerDataProvider(Dictionary<string, object> options) : base(options) { }
@@ -37,6 +38,9 @@ namespace YetaWF.Modules.Scheduler.DataProvider.SQL {
             public string GetLogFileName() {
                 return null;
             }
+        }
+        class LoggingConfigDataProvider : SQLSimpleObject<int, SchedulerConfigData> {
+            public LoggingConfigDataProvider(Dictionary<string, object> options) : base(options) { }
         }
     }
 }
