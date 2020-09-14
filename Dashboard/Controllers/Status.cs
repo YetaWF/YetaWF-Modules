@@ -29,10 +29,6 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [HelpLink("https://YetaWF.com")]
             public string CoreVersion{ get; set; }
 
-            [Caption("ASP.NET/MVC Version"), Description("The ASP.NET/MVC version used")]
-            [UIHint("String"), ReadOnly]
-            public string AspNetMvc { get; set; }
-
             [Caption("Operating System"), Description("")]
             [UIHint("String"), ReadOnly]
             public string OSDescription { get; set; }
@@ -93,8 +89,6 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 #else
             model.Build = "Release";
 #endif
-            model.AspNetMvc = Utility.GetAspNetMvcName(Utility.AspNetMvc);
-
             string healthCheckFile = Utility.UrlToPhysical("/_hc.html");
             string blueGreen = "";
             if (await FileSystem.FileSystemProvider.FileExistsAsync(healthCheckFile)) {
