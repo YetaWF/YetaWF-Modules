@@ -70,16 +70,18 @@
         .yt_grid .tg_table table .tg_header th .tg_sorticon {
           position: relative;
           font-size: 12px; }
-          .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortasc, .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortdesc {
+          .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortasc, .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortdesc, .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortboth {
             position: relative;
             display: none;
             padding-left: 5px; }
-            .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortasc.tg_active, .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortdesc.tg_active {
+            .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortasc.tg_active, .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortdesc.tg_active, .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortboth.tg_active {
               display: inline-block; }
           .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortasc {
             top: 3px; }
           .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortdesc {
             top: -3px; }
+          .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortboth {
+            opacity: 0.2; }
       .yt_grid .tg_table table td {
         overflow: hidden;
         padding: 2px 2px 2px 2px; }

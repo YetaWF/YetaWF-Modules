@@ -63,7 +63,7 @@ namespace YetaWF.Modules.Sites.Controllers {
                 SiteData = site;
                 SiteEditModule = siteEditModule;
                 ConfirmModule = confirmModule;
-                ObjectSupport.CopyData(site, this);
+                ObjectSupport.CopyData(site, this, ForceReadOnlyFromCopy: true);
                 Identity = site.Identity;
             }
         }

@@ -462,13 +462,13 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                     setup.CanSort = true;
                     switch (sort) {
                         case GridDefinition.SortBy.NotSpecified:
-                            sortHtml = "<span class='tg_sorticon'><span class='tg_sortasc fas fa-sort-up'></span><span class='tg_sortdesc fas fa-sort-down'></span></span>";
+                            sortHtml = "<span class='tg_sorticon'><span class='tg_sortboth tg_active fas fa-sort'></span><span class='tg_sortasc fas fa-sort-up'></span><span class='tg_sortdesc fas fa-sort-down'></span></span>";
                             break;
                         case GridDefinition.SortBy.Ascending:
-                            sortHtml = "<span class='tg_sorticon'><span class='tg_sortasc tg_active fas fa-sort-up'></span><span class='tg_sortdesc fas fa-sort-down'></span></span>";
+                            sortHtml = "<span class='tg_sorticon'><span class='tg_sortboth fas fa-sort'></span><span class='tg_sortasc tg_active fas fa-sort-up'></span><span class='tg_sortdesc fas fa-sort-down'></span></span>";
                             break;
                         case GridDefinition.SortBy.Descending:
-                            sortHtml = "<span class='tg_sorticon'><span class='tg_sortasc fas fa-sort-up'></span><span class='tg_sortdesc tg_active fas fa-sort-down'></span></span>";
+                            sortHtml = "<span class='tg_sorticon'><span class='tg_sortboth fas fa-sort'></span><span class='tg_sortasc fas fa-sort-up'></span><span class='tg_sortdesc tg_active fas fa-sort-down'></span></span>";
                             break;
                     }
                 }

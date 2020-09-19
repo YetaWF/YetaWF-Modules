@@ -637,8 +637,10 @@ namespace YetaWF_ComponentsHTML {
             let th = ths[colIndex];
             let asc = $YetaWF.getElement1BySelector(".tg_sorticon .tg_sortasc", [th]);
             let desc = $YetaWF.getElement1BySelector(".tg_sorticon .tg_sortdesc", [th]);
+            let both = $YetaWF.getElement1BySelector(".tg_sorticon .tg_sortboth", [th]);
             $YetaWF.elementToggleClass(asc, this.Setup.SortActiveCss, sortBy === SortByEnum.Ascending);
             $YetaWF.elementToggleClass(desc, this.Setup.SortActiveCss, sortBy === SortByEnum.Descending);
+            $YetaWF.elementToggleClass(both, this.Setup.SortActiveCss, sortBy === SortByEnum.NotSpecified);
         }
         private getSortColumn(): GridColumnDefinition | null {
             for (let col of this.Setup.Columns) {

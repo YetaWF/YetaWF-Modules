@@ -575,8 +575,10 @@ var YetaWF_ComponentsHTML;
             var th = ths[colIndex];
             var asc = $YetaWF.getElement1BySelector(".tg_sorticon .tg_sortasc", [th]);
             var desc = $YetaWF.getElement1BySelector(".tg_sorticon .tg_sortdesc", [th]);
+            var both = $YetaWF.getElement1BySelector(".tg_sorticon .tg_sortboth", [th]);
             $YetaWF.elementToggleClass(asc, this.Setup.SortActiveCss, sortBy === SortByEnum.Ascending);
             $YetaWF.elementToggleClass(desc, this.Setup.SortActiveCss, sortBy === SortByEnum.Descending);
+            $YetaWF.elementToggleClass(both, this.Setup.SortActiveCss, sortBy === SortByEnum.NotSpecified);
         };
         Grid.prototype.getSortColumn = function () {
             for (var _i = 0, _a = this.Setup.Columns; _i < _a.length; _i++) {

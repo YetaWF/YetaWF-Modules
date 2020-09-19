@@ -98,7 +98,7 @@ $smbuttonhorzmargin: 2px;
                 .tg_sorticon {
                     position:relative;
                     font-size: $fontsizesort;
-                    .tg_sortasc, .tg_sortdesc {
+                    .tg_sortasc, .tg_sortdesc, .tg_sortboth {
                         position:relative;
                         display:none;
                         padding-left:5px;
@@ -112,6 +112,9 @@ $smbuttonhorzmargin: 2px;
                     .tg_sortdesc {
                         top:-$fontsizesort/4;
                     }
+                     .tg_sortboth {
+                        opacity: 0.2;
+                     }
                 }
                 user-select: none; /* Standard syntax */
             }
