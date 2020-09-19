@@ -7,13 +7,14 @@ using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Site;
+using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
     /// Base class for the SiteId component implementation.
     /// </summary>
-    public abstract class SiteIdComponentBase : YetaWFComponent {
+    public abstract class SiteIdComponentBase : YetaWFComponent, ISelectionListInt {
 
         internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(SiteIdComponentBase), name, defaultValue, parms); }
 
@@ -34,7 +35,37 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
         public override string GetTemplateName() { return TemplateName; }
 
-        internal static Dictionary<int, StringTT> Sites = null;
+        internal static Dictionary<int, string> Sites = null;
+
+        protected async Task<Dictionary<int, string>> GetSitesAsync() {
+            Dictionary<int, string> sites = new Dictionary<int, string>();
+            List<DataProviderSortInfo> sorts = null;
+            sorts = DataProviderSortInfo.Join(sorts, new DataProviderSortInfo { Field = nameof(SiteDefinition.SiteDomain), Order = DataProviderSortInfo.SortDirection.Ascending });
+            DataProviderGetRecords<SiteDefinition> recs = await SiteDefinition.GetSitesAsync(0, 0, null, null);
+            foreach (SiteDefinition site in recs.Data)
+                sites.Add(site.Identity, site.SiteDomain);
+            return sites;
+        }
+
+        public async Task<List<SelectionItem<int>>> GetSelectionListIntAsync(bool showDefault) {
+
+            Sites ??= await GetSitesAsync();
+
+            List<SelectionItem<int>> list = new List<SelectionItem<int>>();
+            foreach (KeyValuePair<int, string> site in Sites) {
+                list.Add(new SelectionItem<int> {
+                    Text = site.Value,
+                    Value = site.Key,
+                });
+            }
+            if (showDefault) {
+                list.Insert(0, new SelectionItem<int> {
+                    Text = __ResStr("select", "(select)"),
+                    Value = 0,
+                });
+            }
+            return list;
+        }
     }
 
     /// <summary>
@@ -59,30 +90,42 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(int model) {
 
-            if (Sites == null) {
-                Dictionary<int, StringTT> sites = new Dictionary<int, StringTT>();
-                DataProviderGetRecords<SiteDefinition> recs = await SiteDefinition.GetSitesAsync(0, 0, null, null);
-                foreach (SiteDefinition site in recs.Data) {
-                    sites.Add(site.Identity,
-                        new StringTT {
-                            Text = site.Identity.ToString(),
-                            Tooltip = site.SiteDomain,
-                        }
-                    );
-                }
-                Sites = sites;
-            }
+            Sites ??= await GetSitesAsync();
 
             StringTT stringTT;
-            if (Sites.ContainsKey(model))
-                stringTT = Sites[model];
-            else {
+            if (Sites.TryGetValue(model, out string name)) {
+                stringTT = new StringTT {
+                    Text = name,
+                    Tooltip = __ResStr("siteId", "Site Id {0}", model),
+                };
+            } else {
                 stringTT = new StringTT {
                     Text = __ResStr("none", "(none)"),
                     Tooltip = __ResStr("noneTT", "")
                 };
             }
             return await StringTTDisplayComponent.RenderStringTTAsync(this, stringTT, "yt_siteid");
+        }
+    }
+
+    /// <summary>
+    /// Allows selection of a site from a dropdown list. The model represents the site ID.
+    /// </summary>
+    public class SiteIdEditComponent : SiteIdComponentBase, IYetaWFComponent<int> {
+
+        public override ComponentType GetComponentType() { return ComponentType.Edit; }
+
+        public async Task<string> RenderAsync(int model) {
+
+            HtmlBuilder hb = new HtmlBuilder();
+
+            List<SelectionItem<int>> list = await GetSelectionListIntAsync(true);
+
+            hb.Append($@"
+<div class='yt_yetawf_identity_siteid t_edit'>
+    {await DropDownListIntComponent.RenderDropDownListAsync(this, model, list, null)}
+</div>");
+            return hb.ToString();
         }
     }
 }
