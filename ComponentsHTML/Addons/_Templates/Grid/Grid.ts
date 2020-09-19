@@ -73,6 +73,13 @@ namespace YetaWF_ComponentsHTML {
         NotEndswith = 12,
         All = 0xFFFF
     }
+
+    interface UserIdFilterData {
+        UIHint: string;
+        FilterOp: string;
+        UserId: number;
+    }
+
     interface OverrideColumnFilter {
         ColIndex: number;
         FilterOp: FilterOptionEnum;
@@ -179,10 +186,12 @@ namespace YetaWF_ComponentsHTML {
             // Show/hide filter bar with search button
             if (this.Setup.CanFilter && this.BtnSearch && this.FilterBar) {
                 $YetaWF.registerEventHandler(this.BtnSearch, "click", null, (ev: MouseEvent): boolean => {
-                    var filterBar = this.FilterBar as HTMLElement;
-                    if ($YetaWF.isVisible(filterBar))
+                    let filterBar = this.FilterBar as HTMLElement;
+                    if ($YetaWF.isVisible(filterBar)) {
                         filterBar.style.display = "none";
-                    else {
+                        this.clearFilters();
+                        this.reload(0);
+                    } else {
                         filterBar.style.display = "";
                         $YetaWF.processActivateDivs([filterBar]);
                     }
@@ -215,7 +224,7 @@ namespace YetaWF_ComponentsHTML {
             if (this.BtnPrev) {
                 $YetaWF.registerEventHandler(this.BtnPrev, "click", null, (ev: MouseEvent): boolean => {
                     if (!$YetaWF.elementHasClass(ev.__YetaWFElem, this.Setup.DisabledCss)) {
-                        var page = this.Setup.Page - 1;
+                        let page = this.Setup.Page - 1;
                         if (page >= 0)
                             this.reload(page);
                     }
@@ -225,7 +234,7 @@ namespace YetaWF_ComponentsHTML {
             if (this.BtnNext) {
                 $YetaWF.registerEventHandler(this.BtnNext, "click", null, (ev: MouseEvent): boolean => {
                     if (!$YetaWF.elementHasClass(ev.__YetaWFElem, this.Setup.DisabledCss)) {
-                        var page = this.Setup.Page + 1;
+                        let page = this.Setup.Page + 1;
                         if (page < this.Setup.Pages)
                             this.reload(page);
                     }
@@ -235,7 +244,7 @@ namespace YetaWF_ComponentsHTML {
             if (this.BtnBottom) {
                 $YetaWF.registerEventHandler(this.BtnBottom, "click", null, (ev: MouseEvent): boolean => {
                     if (!$YetaWF.elementHasClass(ev.__YetaWFElem, this.Setup.DisabledCss)) {
-                        var page = this.Setup.Pages - 1;
+                        let page = this.Setup.Pages - 1;
                         if (page >= 0)
                             this.reload(page);
                     }
@@ -246,7 +255,7 @@ namespace YetaWF_ComponentsHTML {
             if (this.InputPage) {
                 $YetaWF.registerEventHandler(this.InputPage.Control, "keydown", null, (ev: KeyboardEvent): boolean => {
                     if (ev.keyCode === 13 && this.InputPage) { // Return
-                        var page = this.InputPage.value - 1;
+                        let page = this.InputPage.value - 1;
                         this.reload(page);
                         return false;
                     }
@@ -276,9 +285,9 @@ namespace YetaWF_ComponentsHTML {
             if (this.Setup.CanSort) {
                 $YetaWF.registerEventHandler(this.Control, "click", ".tg_header th", (ev: MouseEvent): boolean => {
                     if (!this.reloadInProgress) {
-                        var colIndex = Array.prototype.indexOf.call((ev.__YetaWFElem.parentElement as HTMLElement).children, ev.__YetaWFElem);
+                        let colIndex = Array.prototype.indexOf.call((ev.__YetaWFElem.parentElement as HTMLElement).children, ev.__YetaWFElem);
                         if (colIndex < 0 || colIndex >= this.Setup.Columns.length) throw `Invalid column index ${colIndex} - max is ${this.Setup.Columns.length}`;/*DEBUG*/
-                        var col = this.Setup.Columns[colIndex];
+                        let col = this.Setup.Columns[colIndex];
                         if (col.Sortable) {
                             if (col.Sort === SortByEnum.NotSpecified) {
                                 this.clearSorts();
@@ -297,10 +306,10 @@ namespace YetaWF_ComponentsHTML {
             // Filtering
             if (this.Setup.CanFilter && this.FilterBar) {
                 $YetaWF.registerEventHandler(this.FilterBar, "click", ".tg_fmenu", (ev: MouseEvent): boolean => {
-                    var filter = $YetaWF.elementClosest(ev.__YetaWFElem, ".tg_filter");
-                    var head = $YetaWF.elementClosest(ev.__YetaWFElem, "th");
-                    var colIndex = Array.prototype.indexOf.call(filter.children, head);
-                    var ulElem = $YetaWF.getElementById(this.Setup.Columns[colIndex].MenuId);
+                    let filter = $YetaWF.elementClosest(ev.__YetaWFElem, ".tg_filter");
+                    let head = $YetaWF.elementClosest(ev.__YetaWFElem, "th");
+                    let colIndex = Array.prototype.indexOf.call(filter.children, head);
+                    let ulElem = $YetaWF.getElementById(this.Setup.Columns[colIndex].MenuId);
                     if ($YetaWF.isVisible(ulElem))
                         $(ulElem).hide();
                     else {
@@ -316,16 +325,16 @@ namespace YetaWF_ComponentsHTML {
                     return false;
                 });
                 $YetaWF.registerEventHandler(this.FilterBar, "click", ".tg_fclear", (ev: MouseEvent): boolean => {
-                    var filter = $YetaWF.elementClosest(ev.__YetaWFElem, ".tg_filter");
-                    var head = $YetaWF.elementClosest(ev.__YetaWFElem, "th");
-                    var colIndex = Array.prototype.indexOf.call(filter.children, head);
+                    let filter = $YetaWF.elementClosest(ev.__YetaWFElem, ".tg_filter");
+                    let head = $YetaWF.elementClosest(ev.__YetaWFElem, "th");
+                    let colIndex = Array.prototype.indexOf.call(filter.children, head);
                     this.clearColSortValue(colIndex);
                     this.reload(0);
                     return false;
                 });
                 $YetaWF.registerEventHandlerBody("mousedown", null, (ev: MouseEvent): boolean => {
                     if (ev.which !== 1) return true;
-                    var menus = $YetaWF.getElementsBySelector(".yt_grid_menus ul.k-menu");
+                    let menus = $YetaWF.getElementsBySelector(".yt_grid_menus ul.k-menu");
                     for (let menu of menus) {
                         if ($YetaWF.isVisible(menu)) {
                             setTimeout((): void => {
@@ -349,14 +358,14 @@ namespace YetaWF_ComponentsHTML {
                 $YetaWF.registerEventHandler(this.Control, "click", "[name='DeleteAction']", (ev: MouseEvent): boolean => {
                     if (!this.Setup.StaticData) return true;
                     // find the record number to delete
-                    var trElem = $YetaWF.elementClosest(ev.__YetaWFElem, "tr");
-                    var recNum = Number($YetaWF.getAttribute(trElem, "data-origin"));
+                    let trElem = $YetaWF.elementClosest(ev.__YetaWFElem, "tr");
+                    let recNum = Number($YetaWF.getAttribute(trElem, "data-origin"));
 
-                    var message = this.Setup.DeleteConfirmationMessage;
-                    var colName = this.Setup.DeletedColumnDisplay;
+                    let message = this.Setup.DeleteConfirmationMessage;
+                    let colName = this.Setup.DeletedColumnDisplay;
                     if (message) {
                         if (colName) {
-                            var text = this.Setup.StaticData[recNum][colName];
+                            let text = this.Setup.StaticData[recNum][colName];
                             message = message.format(text);
                         }
                         $YetaWF.alertYesNo(message, undefined, (): void => {
@@ -379,7 +388,7 @@ namespace YetaWF_ComponentsHTML {
                 if (!document.activeElement || document.activeElement.tagName !== "TR")
                     return true;
                 if (this.Setup.HighlightOnClick) {
-                    var key = ev.key;
+                    let key = ev.key;
                     if (key === "ArrowDown" || key === "Down") {
                         let index = this.SelectedIndex();
                         this.SetSelectedIndex(index < 0 ? 0 : ++index);
@@ -417,20 +426,20 @@ namespace YetaWF_ComponentsHTML {
 
                     //console.log("Reordering...")
 
-                    var rect = this.TBody.getBoundingClientRect();
+                    let rect = this.TBody.getBoundingClientRect();
                     if (ev.clientX < rect.left || ev.clientX > rect.left + rect.width ||
                         ev.clientY < rect.top || ev.clientY > rect.top + rect.height) {
 
                         this.cancelDragDrop();
                         return true;
                     }
-                    var sel = this.SelectedIndex();
+                    let sel = this.SelectedIndex();
                     if (sel < 0) {
                         this.cancelDragDrop();
                         return true;
                     }
 
-                    var insert = this.HitTestInsert(ev.clientX, ev.clientY);
+                    let insert = this.HitTestInsert(ev.clientX, ev.clientY);
                     //console.log(`insert = ${insert}  sel = ${sel}`);
                     if (insert === sel || insert === sel + 1)
                         return true;// nothing to move
@@ -455,9 +464,9 @@ namespace YetaWF_ComponentsHTML {
                     // update static data with new checkbox value
                     $YetaWF.registerEventHandler(this.TBody, "change", `tr td:nth-child(${this.SubmitCheckCol + 1}) input[type='checkbox']`, (ev: Event): boolean => {
                         if (!this.Setup.StaticData) return true;
-                        var tr = $YetaWF.elementClosest(ev.__YetaWFElem, "tr");
-                        var recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
-                        var val = (ev.__YetaWFElem as HTMLInputElement).checked;
+                        let tr = $YetaWF.elementClosest(ev.__YetaWFElem, "tr");
+                        let recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
+                        let val = (ev.__YetaWFElem as HTMLInputElement).checked;
                         this.Setup.StaticData[recNum][this.Setup.Columns[this.SubmitCheckCol].Name] = val;
                         //$YetaWF.elementToggleClass(tr, YConfigs.Forms.CssFormNoSubmitContents, !val);
                         return false;
@@ -513,7 +522,7 @@ namespace YetaWF_ComponentsHTML {
                     if (!doubleClick)
                         return true;
                 } else {
-                    var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
+                    let trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
                     for (let tr of trs)
                         $YetaWF.elementToggleClass(tr, this.Setup.RowHighlightCss, false);
                     $YetaWF.elementToggleClass(clickedElem, this.Setup.RowHighlightCss, true);
@@ -556,16 +565,16 @@ namespace YetaWF_ComponentsHTML {
         // OnlySubmitWhenChecked
         private setInitialSubmitStatus(): void {
             if (!this.Setup.StaticData || !this.Setup.NoSubmitContents) return;
-            //var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
+            //let trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
             //for (let tr of trs) {
-            //    var recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
-            //    var val = this.Setup.StaticData[recNum][this.Setup.Columns[this.SubmitCheckCol].Name];
+            //    let recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
+            //    let val = this.Setup.StaticData[recNum][this.Setup.Columns[this.SubmitCheckCol].Name];
             //    $YetaWF.elementToggleClass(tr, YConfigs.Forms.CssFormNoSubmitContents, !val);
             //}
         }
         private getSubmitCheckCol(): number {
-            var colIndex: number = -1;
-            var cols = this.Setup.Columns.filter((col: GridColumnDefinition, index: number, cols: GridColumnDefinition[]): boolean => {
+            let colIndex: number = -1;
+            let cols = this.Setup.Columns.filter((col: GridColumnDefinition, index: number, cols: GridColumnDefinition[]): boolean => {
                 if (!col.OnlySubmitWhenChecked) return false;
                 colIndex = index;
                 return true;
@@ -576,21 +585,21 @@ namespace YetaWF_ComponentsHTML {
         }
         private submitLocalData(entry: YetaWF.SubmitHandlerEntry): void {
             if (!this.Setup.StaticData) return;
-            var div = `<div class='${$YetaWF.Forms.DATACLASS}' style='display:none'>`;
+            let div = `<div class='${$YetaWF.Forms.DATACLASS}' style='display:none'>`;
             // retrieve all rows and add input/select fields to data div, resequence to make mvc serialization of lists work
-            var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
-            var row = 0;
-            var re1 = new RegExp("\\[[0-9]+\\]", "gim");
+            let trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
+            let row = 0;
+            let re1 = new RegExp("\\[[0-9]+\\]", "gim");
             for (let tr of trs) {
-                var recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
-                var val = this.Setup.StaticData[recNum][this.Setup.Columns[this.SubmitCheckCol].Name];
+                let recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
+                let val = this.Setup.StaticData[recNum][this.Setup.Columns[this.SubmitCheckCol].Name];
                 if (val) { // add record if the checkbox is selected
-                    var copied = false;
-                    var inputs = $YetaWF.getElementsBySelector("input,select", [tr]);
+                    let copied = false;
+                    let inputs = $YetaWF.getElementsBySelector("input,select", [tr]);
                     for (let input of inputs) {
-                        var name = $YetaWF.getAttributeCond(input, "name");
+                        let name = $YetaWF.getAttributeCond(input, "name");
                         if (name) {
-                            var copy = input.cloneNode() as HTMLElement;
+                            let copy = input.cloneNode() as HTMLElement;
                             // replace name with serialized name[row] so mvc serialization works
                             name = name.replace(re1, `[${row.toString()}]`);
                             $YetaWF.setAttribute(copy, "name", name);
@@ -608,7 +617,7 @@ namespace YetaWF_ComponentsHTML {
         }
         // sorting
         private clearSorts(): void {
-            var colIndex = 0;
+            let colIndex = 0;
             for (let col of this.Setup.Columns) {
                 if (col.Sortable) {
                     col.Sort = SortByEnum.NotSpecified;
@@ -624,10 +633,10 @@ namespace YetaWF_ComponentsHTML {
             }
             col.Sort = sortBy;
             // turn indicators in header on or off
-            var ths = $YetaWF.getElementsBySelector(".tg_header th", [this.Control]);
-            var th = ths[colIndex];
-            var asc = $YetaWF.getElement1BySelector(".tg_sorticon .tg_sortasc", [th]);
-            var desc = $YetaWF.getElement1BySelector(".tg_sorticon .tg_sortdesc", [th]);
+            let ths = $YetaWF.getElementsBySelector(".tg_header th", [this.Control]);
+            let th = ths[colIndex];
+            let asc = $YetaWF.getElement1BySelector(".tg_sorticon .tg_sortasc", [th]);
+            let desc = $YetaWF.getElement1BySelector(".tg_sorticon .tg_sortdesc", [th]);
             $YetaWF.elementToggleClass(asc, this.Setup.SortActiveCss, sortBy === SortByEnum.Ascending);
             $YetaWF.elementToggleClass(desc, this.Setup.SortActiveCss, sortBy === SortByEnum.Descending);
         }
@@ -640,11 +649,11 @@ namespace YetaWF_ComponentsHTML {
         }
         // Resizing
         private static resizeColumn(ev: MouseEvent): boolean {
-            var currentControl = Grid.CurrentControl;
+            let currentControl = Grid.CurrentControl;
             if (currentControl && currentControl.ColumnResizeHeader) {
-                var rect = currentControl.ColumnResizeHeader.getBoundingClientRect();
+                let rect = currentControl.ColumnResizeHeader.getBoundingClientRect();
                 let actualWidth = rect.width;
-                var newActualWidth = ev.clientX - rect.left;
+                let newActualWidth = ev.clientX - rect.left;
                 let givenWidth = Number(currentControl.ColumnResizeHeader.style.width.replace("px",""));
                 let diff = newActualWidth - actualWidth; // <0 shring, >0 expand
                 let newGivenWidth = givenWidth + diff;
@@ -653,7 +662,7 @@ namespace YetaWF_ComponentsHTML {
             return false;
         }
         private static resizeColumnDone(ev: MouseEvent): boolean {
-            var currentControl = Grid.CurrentControl;
+            let currentControl = Grid.CurrentControl;
             if (currentControl && currentControl.ColumnResizeBar && currentControl.ColumnResizeHeader && currentControl.Setup.SaveSettingsColumnWidthsUrl) {
                 document.body.style.cursor = "default";
                 window.removeEventListener("mousemove", this.resizeColumn, false);
@@ -664,7 +673,7 @@ namespace YetaWF_ComponentsHTML {
                     // send save request, we don't care about the response
                     let uri = $YetaWF.parseUrl(currentControl.Setup.SaveSettingsColumnWidthsUrl);
                     uri.addSearch("SettingsModuleGuid", currentControl.Setup.SettingsModuleGuid);
-                    var colIndex = Array.prototype.indexOf.call((currentControl.ColumnResizeHeader.parentElement as HTMLElement).children, currentControl.ColumnResizeHeader);
+                    let colIndex = Array.prototype.indexOf.call((currentControl.ColumnResizeHeader.parentElement as HTMLElement).children, currentControl.ColumnResizeHeader);
                     uri.addSearch("Columns[0].Key", currentControl.Setup.Columns[colIndex].Name);
                     uri.addSearch("Columns[0].Value", parseInt((currentControl.ColumnResizeHeader.style.width as string).replace("px", ""), 0));
 
@@ -696,13 +705,13 @@ namespace YetaWF_ComponentsHTML {
                 if (this.Setup.StaticData && !sort) {
                     // show/hide selected rows
                     if (this.Setup.PageSize > 0) {
-                        var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
+                        let trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
                         for (let tr of trs) {
                             tr.setAttribute("style", "display:none");
                         }
-                        var len = trs.length;
-                        var count = 0;
-                        for (var i = page * this.Setup.PageSize; i < len; ++i) {
+                        let len = trs.length;
+                        let count = 0;
+                        for (let i = page * this.Setup.PageSize; i < len; ++i) {
                             if (count >= (newPageSize || this.Setup.PageSize))
                                 break;
                             trs[i].removeAttribute("style");
@@ -718,14 +727,14 @@ namespace YetaWF_ComponentsHTML {
                     this.setReloading(false);
                 } else {
                     // fetch data from servers
-                    var uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
+                    let uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
                     uri.addSearch("fieldPrefix", this.Setup.FieldName);
                     uri.addSearch("skip", page * this.Setup.PageSize);
                     uri.addSearch("take", newPageSize || this.Setup.PageSize);
                     if (this.Setup.ExtraData)
                         uri.addSearchSimpleObject(this.Setup.ExtraData);
                     // sort order
-                    var col = this.getSortColumn();
+                    let col = this.getSortColumn();
                     if (col) {
                         uri.addSearch("sort[0].field", col.Name);
                         uri.addSearch("sort[0].order", (col.Sort === SortByEnum.Descending ? 1 : 0));
@@ -734,19 +743,26 @@ namespace YetaWF_ComponentsHTML {
                         uri.addSearch("sorts[0].order", (col.Sort === SortByEnum.Descending ? 1 : 0));
                     }
                     // filters
-                    var colIndex = 0;
-                    var fcount = 0;
+                    let colIndex = 0;
+                    let fcount = 0;
                     for (let col of this.Setup.Columns) {
-                        var val = this.getColSortValue(colIndex);
-                        if (val !== null && val !== "") {
-                            var oper = col.FilterOp;
-                            if (overrideColFilter && overrideColFilter.ColIndex === colIndex)
-                                oper = overrideColFilter.FilterOp;
-                            if (oper != null) {
+                        let val = this.getColSortValue(colIndex);
+                        if (val) {
+                            if (col.FilterType == "complex") {
                                 uri.addSearch(`filters[${fcount}].field`, col.Name);
-                                uri.addSearch(`filters[${fcount}].operator`, this.GetFilterOpString(oper));
+                                uri.addSearch(`filters[${fcount}].operator`, "Complex");
                                 uri.addSearch(`filters[${fcount}].valueAsString`, val);
                                 ++fcount;
+                            } else {
+                                let oper = col.FilterOp;
+                                if (overrideColFilter && overrideColFilter.ColIndex === colIndex)
+                                    oper = overrideColFilter.FilterOp;
+                                if (oper != null) {
+                                    uri.addSearch(`filters[${fcount}].field`, col.Name);
+                                    uri.addSearch(`filters[${fcount}].operator`, this.GetFilterOpString(oper));
+                                    uri.addSearch(`filters[${fcount}].valueAsString`, val);
+                                    ++fcount;
+                                }
                             }
                         }
                         ++colIndex;
@@ -758,7 +774,7 @@ namespace YetaWF_ComponentsHTML {
                     if (this.Setup.StaticData)
                         uri.addSearch("data", JSON.stringify(this.Setup.StaticData));
 
-                    var request: XMLHttpRequest = new XMLHttpRequest();
+                    let request: XMLHttpRequest = new XMLHttpRequest();
                     request.open("POST", this.Setup.AjaxUrl);
                     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
                     request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
@@ -766,7 +782,7 @@ namespace YetaWF_ComponentsHTML {
                         if (request.readyState === 4 /*DONE*/) {
                             this.setReloading(false);
                             $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, (result: string): void => {
-                                var partial: GridPartialResult = JSON.parse(request.responseText);
+                                let partial: GridPartialResult = JSON.parse(request.responseText);
                                 $YetaWF.processClearDiv(this.TBody);
                                 this.TBody.innerHTML = "";
                                 $YetaWF.appendMixedHTML(this.TBody, partial.TBody, true);
@@ -788,7 +804,7 @@ namespace YetaWF_ComponentsHTML {
                             });
                         }
                     };
-                    var data = uri.toFormData();
+                    let data = uri.toFormData();
                     request.send(data);
                 }
             }
@@ -805,20 +821,20 @@ namespace YetaWF_ComponentsHTML {
         }
         private updateStatus(): void {
             if (this.PagerTotals) {
-                var totals: string;
+                let totals: string;
                 if (this.Setup.Records === 0)
                     totals = YLocs.YetaWF_ComponentsHTML.GridTotalNone;
                 else {
                     if (this.Setup.PageSize === 0) {
-                        var first = 1;
-                        last = this.Setup.Records;
+                        let first = 1;
+                        let last = this.Setup.Records;
                         if (first > last)
                             totals = YLocs.YetaWF_ComponentsHTML.GridTotal0.format(this.Setup.Records);
                         else
                             totals = YLocs.YetaWF_ComponentsHTML.GridTotals.format(first, last, this.Setup.Records);
                     } else {
-                        var first = this.Setup.Page * this.Setup.PageSize + 1;
-                        var last = first + this.Setup.PageSize - 1;
+                        let first = this.Setup.Page * this.Setup.PageSize + 1;
+                        let last = first + this.Setup.PageSize - 1;
                         if (first > last)
                             totals = YLocs.YetaWF_ComponentsHTML.GridTotal0.format(this.Setup.Records);
                         else {
@@ -843,6 +859,27 @@ namespace YetaWF_ComponentsHTML {
                     $YetaWF.getElement1BySelector("tr.tg_emptytr", [this.TBody]).style.display = "none";
                 }
             }
+
+            // show hide filter clear buttons
+
+            if (this.Setup.CanFilter && this.FilterBar) {
+                let colIndex = 0;
+                for (let col of this.Setup.Columns) {
+                    if (col.FilterId) {
+                        let val = this.getColSortValue(colIndex);
+                        let elem = $YetaWF.getElementById(col.FilterId) as HTMLInputElement;// the value element
+                        let fentry = $YetaWF.elementClosest(elem, ".tg_fentry");// the container for this filter
+                        let btn = $YetaWF.getElement1BySelectorCond(".tg_fclear", [fentry]);// clear button
+                        if (btn) {
+                            if (val)
+                                btn.style.display = "";
+                            else
+                                btn.style.display = "none";
+                        }
+                    }
+                    ++colIndex;
+                }
+            }
         }
         private updatePage(): void {
             if (this.Setup.PageSize > 0)
@@ -850,30 +887,38 @@ namespace YetaWF_ComponentsHTML {
         }
 
         // Filtering
+        private clearFilters(): void {
+            let colIndex = 0;
+            for (let {} of this.Setup.Columns) {
+                this.clearColSortValue(colIndex);
+                ++colIndex;
+            }
+            this.updateStatus();
+        }
         private clearFilterMenuHighlights(ulElem: HTMLElement): void {
-            var menuLis = $YetaWF.getElementsBySelector(`li.${this.Setup.HighlightCss}`, [ulElem]);
+            let menuLis = $YetaWF.getElementsBySelector(`li.${this.Setup.HighlightCss}`, [ulElem]);
             for (let menuLi of menuLis)
                 $YetaWF.elementRemoveClass(menuLi, this.Setup.HighlightCss);
         }
         public menuSelected(menuElem: HTMLElement, colIndex: number): void {
             // update column structure
-            var sel = Number($YetaWF.getAttribute(menuElem, "data-sel"));
+            let sel = Number($YetaWF.getAttribute(menuElem, "data-sel"));
             // new filter
-            var overrideColFilter: OverrideColumnFilter = {
+            let overrideColFilter: OverrideColumnFilter = {
                 ColIndex: colIndex,
                 FilterOp: sel
             };
             this.reload(0, undefined, overrideColFilter, undefined, undefined, (): void => {
                 // clear all highlights
-                var ulElem = $YetaWF.elementClosest(menuElem, "ul");
+                let ulElem = $YetaWF.elementClosest(menuElem, "ul");
                 this.clearFilterMenuHighlights(ulElem);
                 // highlight new selection
                 $YetaWF.elementToggleClass(menuElem, this.Setup.HighlightCss, true);
                 // update button with new sort icon
                 if (this.FilterBar) {
-                    var icon = $YetaWF.getElement1BySelector(".t_fmenuicon", [menuElem]).innerHTML;
-                    var thsFilter = $YetaWF.getElementsBySelector("th", [this.FilterBar]);
-                    var btn = $YetaWF.getElement1BySelector(".tg_fmenu", [thsFilter[colIndex]]);
+                    let icon = $YetaWF.getElement1BySelector(".t_fmenuicon", [menuElem]).innerHTML;
+                    let thsFilter = $YetaWF.getElementsBySelector("th", [this.FilterBar]);
+                    let btn = $YetaWF.getElement1BySelector(".tg_fmenu", [thsFilter[colIndex]]);
                     btn.innerHTML = icon;
                 }
                 // update column structures
@@ -881,9 +926,9 @@ namespace YetaWF_ComponentsHTML {
             });
         }
         public static menuSelected(menuElem: HTMLElement, colIndex: number): void {
-            var popups = $YetaWF.elementClosest(menuElem, ".yt_grid_menus");
-            var gridId = $YetaWF.getAttribute(popups, "data-grid");
-            var grid: Grid = YetaWF.ComponentBaseDataImpl.getControlById(gridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
+            let popups = $YetaWF.elementClosest(menuElem, ".yt_grid_menus");
+            let gridId = $YetaWF.getAttribute(popups, "data-grid");
+            let grid: Grid = YetaWF.ComponentBaseDataImpl.getControlById(gridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
             grid.menuSelected(menuElem, colIndex);
         }
         private addDirectFilterHandlers(): void {
@@ -905,9 +950,9 @@ namespace YetaWF_ComponentsHTML {
                     case "datetime":
                     case "date":
                     case "text":
-                    case "guid":
+                    case "guid": {
                         // handle return key
-                        var elem = $YetaWF.getElementById(col.FilterId);
+                        let elem = $YetaWF.getElementById(col.FilterId);
                         $YetaWF.registerEventHandler(elem, "keydown", null, (ev: KeyboardEvent): boolean => {
                             if (ev.keyCode === 13) { // Return
                                 this.reload(0);
@@ -915,86 +960,139 @@ namespace YetaWF_ComponentsHTML {
                             }
                             return true;
                         });
+                        break;
+                    }
+                    case "complex": {
+                        // handle invoking popup
+                        let elem = $YetaWF.getElementById(col.FilterId) as HTMLInputElement;// the value element
+                        let fctrls = $YetaWF.elementClosest(elem, ".tg_fctrls");// the container for this filter
+                        let ffilter = $YetaWF.getElement1BySelector(".tg_ffilter", [fctrls]);// the filter button
+                        let urlElem = $YetaWF.getElement1BySelector("input[name='Url']", [fctrls]) as HTMLInputElement;
+                        $YetaWF.registerEventHandler(ffilter, "click", null, (ev: Event): boolean => {
+                            let url = urlElem.value;
+                            // invoke popup passing the data and filterid as arguments
+                            let uri = new YetaWF.Url();
+                            uri.parse(url);
+                            uri.removeSearch("FilterId");
+                            uri.addSearch("FilterId", col.FilterId);
+                            uri.removeSearch("Data");
+                            uri.addSearch("Data", elem.value);
+                            if ($YetaWF.Popups.openPopup(uri.toUrl(), false, true))
+                                return false;
+                            return true;
+                        });
+                        break;
+                    }
                 }
             }
         }
+        public static updateComplexFilter(filterId: string, data: UserIdFilterData | null): void {
+            let elem = $YetaWF.getElementById(filterId) as HTMLInputElement;// the value element
+            if (data) {
+                let fctrls = $YetaWF.elementClosest(elem, ".tg_fctrls");// the container for this filter
+                let uiHint = $YetaWF.getElement1BySelector("input[name='UIHint']", [fctrls]) as HTMLInputElement;// uihint name
+                data.UIHint = uiHint.value;// set the uiHint
+                elem.value = JSON.stringify(data);
+            } else
+                elem.value = "";
+            let grid: Grid = YetaWF.ComponentBaseDataImpl.getControlFromTag(elem, YetaWF_ComponentsHTML.Grid.SELECTOR);
+            grid.reload(0);
+        }
+
         private getColSortValue(colIndex: number): string | null {
-            var col = this.Setup.Columns[colIndex];
+            let col = this.Setup.Columns[colIndex];
             switch (col.FilterType) {
                 case null:
                     return null;
-                case "bool":
-                    var dd: YetaWF_ComponentsHTML.DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DropDownListEditComponent.SELECTOR);
-                    var boolVal: FilterBoolEnum = Number(dd.value);
+                case "bool": {
+                    let dd: YetaWF_ComponentsHTML.DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DropDownListEditComponent.SELECTOR);
+                    let boolVal: FilterBoolEnum = Number(dd.value);
                     switch (boolVal) {
                         default:
                         case FilterBoolEnum.All: return null;
                         case FilterBoolEnum.Yes: return "True";
                         case FilterBoolEnum.No: return "False";
                     }
+                }
                 case "long":
                 case "text":
-                case "guid":
-                    var edit = $YetaWF.getElementById(col.FilterId) as HTMLInputElement;
+                case "guid": {
+                    let edit = $YetaWF.getElementById(col.FilterId) as HTMLInputElement;
                     return edit.value;
-                case "dynenum":
-                    var dd: YetaWF_ComponentsHTML.DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DropDownListEditComponent.SELECTOR);
+                }
+                case "dynenum": {
+                    let dd: YetaWF_ComponentsHTML.DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DropDownListEditComponent.SELECTOR);
                     if (dd.value === "-1")
                         return null;
                     return dd.value;
+                }
                 case "decimal":
-                    var dec: YetaWF_ComponentsHTML.DecimalEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DecimalEditComponent.SELECTOR);
+                    let dec: YetaWF_ComponentsHTML.DecimalEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DecimalEditComponent.SELECTOR);
                     return dec.valueText;
                 case "datetime":
-                    var datetime: YetaWF_ComponentsHTML.DateTimeEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DateTimeEditComponent.SELECTOR);
+                    let datetime: YetaWF_ComponentsHTML.DateTimeEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DateTimeEditComponent.SELECTOR);
                     return datetime.valueText;
                 case "date":
-                    var date: YetaWF_ComponentsHTML.DateEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DateEditComponent.SELECTOR);
+                    let date: YetaWF_ComponentsHTML.DateEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DateEditComponent.SELECTOR);
                     return date.valueText;
-                case "enum":
-                    var dd: YetaWF_ComponentsHTML.DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DropDownListEditComponent.SELECTOR);
+                case "enum": {
+                    let dd: YetaWF_ComponentsHTML.DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DropDownListEditComponent.SELECTOR);
                     if (dd.value === "-1")
                         return null;
                     return dd.value;
+                }
+                case "complex": {
+                    let edit = $YetaWF.getElementById(col.FilterId) as HTMLInputElement;
+                    return edit.value;
+                }
                 default:
                     throw `Unexpected filter type ${col.FilterType} for column ${colIndex}`;
             }
         }
         private clearColSortValue(colIndex: number): void {
-            var col = this.Setup.Columns[colIndex];
+            let col = this.Setup.Columns[colIndex];
             switch (col.FilterType) {
                 case null:
                     break;
-                case "bool":
-                    var dd: YetaWF_ComponentsHTML.DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DropDownListEditComponent.SELECTOR);
+                case "bool": {
+                    let dd: YetaWF_ComponentsHTML.DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DropDownListEditComponent.SELECTOR);
                     dd.clear();
                     break;
+                }
                 case "long":
                 case "text":
-                case "guid":
-                    var edit = $YetaWF.getElementById(col.FilterId) as HTMLInputElement;
+                case "guid": {
+                    let edit = $YetaWF.getElementById(col.FilterId) as HTMLInputElement;
                     edit.value = "";
                     break;
-                case "dynenum":
-                    var dd: YetaWF_ComponentsHTML.DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DropDownListEditComponent.SELECTOR);
+                }
+                case "dynenum": {
+                    let dd: YetaWF_ComponentsHTML.DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DropDownListEditComponent.SELECTOR);
                     dd.value = "-1";
                     break;
+                }
                 case "decimal":
-                    var dec: YetaWF_ComponentsHTML.DecimalEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DecimalEditComponent.SELECTOR);
+                    let dec: YetaWF_ComponentsHTML.DecimalEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DecimalEditComponent.SELECTOR);
                     dec.clear();
                     break;
                 case "datetime":
-                    var datetime: YetaWF_ComponentsHTML.DateTimeEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DateTimeEditComponent.SELECTOR);
+                    let datetime: YetaWF_ComponentsHTML.DateTimeEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DateTimeEditComponent.SELECTOR);
                     datetime.clear();
                     break;
                 case "date":
-                    var date: YetaWF_ComponentsHTML.DateEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DateEditComponent.SELECTOR);
+                    let date: YetaWF_ComponentsHTML.DateEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DateEditComponent.SELECTOR);
                     date.clear();
                     break;
-                case "enum":
-                    var dd: YetaWF_ComponentsHTML.DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DropDownListEditComponent.SELECTOR);
+                case "enum": {
+                    let dd: YetaWF_ComponentsHTML.DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DropDownListEditComponent.SELECTOR);
                     dd.value = "-1";
                     break;
+                }
+                case "complex": {
+                    let edit = $YetaWF.getElementById(col.FilterId) as HTMLInputElement;
+                    edit.value = "";
+                    break;
+                }
                 default:
                     throw `Unexpected filter type ${col.FilterType} for column ${colIndex}`;
             }
@@ -1020,10 +1118,10 @@ namespace YetaWF_ComponentsHTML {
         private removeRecord(trElem: HTMLElement, recNum: number, colName: string) : void {
             if (!this.Setup.StaticData) throw "Static grids only";
             // get the message to display (if any)
-            var message = this.Setup.DeletedMessage;
+            let message = this.Setup.DeletedMessage;
             if(message) {
                 if (colName) {
-                    var text = this.Setup.StaticData[recNum][colName];
+                    let text = this.Setup.StaticData[recNum][colName];
                     message = message.format(text);
                 }
             }
@@ -1037,9 +1135,9 @@ namespace YetaWF_ComponentsHTML {
         }
         private resequenceDelete(recNum: number): void {
             // resequence origin
-            var trs = $YetaWF.getElementsBySelector("tr[data-origin]", [this.TBody]) as HTMLTableRowElement[];
+            let trs = $YetaWF.getElementsBySelector("tr[data-origin]", [this.TBody]) as HTMLTableRowElement[];
             for (let tr of trs) {
-                var orig = Number($YetaWF.getAttribute(tr, "data-origin"));
+                let orig = Number($YetaWF.getAttribute(tr, "data-origin"));
                 if (orig >= recNum) {
                     $YetaWF.setAttribute(tr, "data-origin", (orig-1).toString());
                     // update all indexes for input/select fields to match record origin (TODO: check whether we should only update last index in field)
@@ -1049,10 +1147,10 @@ namespace YetaWF_ComponentsHTML {
         }
         private resequence(): void {
             // resequence origin
-            var trs = $YetaWF.getElementsBySelector("tr[data-origin]", [this.TBody]) as HTMLTableRowElement[];
-            var index = 0;
+            let trs = $YetaWF.getElementsBySelector("tr[data-origin]", [this.TBody]) as HTMLTableRowElement[];
+            let index = 0;
             for (let tr of trs) {
-                var orig = Number($YetaWF.getAttribute(tr, "data-origin"));
+                let orig = Number($YetaWF.getAttribute(tr, "data-origin"));
                 $YetaWF.setAttribute(tr, "data-origin", index.toString());
                 // update all indexes for input/select fields to match record origin (TODO: check whether we should only update last index in field)
                 this.renumberFields(tr, orig, index);
@@ -1060,9 +1158,9 @@ namespace YetaWF_ComponentsHTML {
             }
         }
         private renumberFields(tr: HTMLTableRowElement, origNum: Number, newNum: Number) : void {
-            var inps = $YetaWF.getElementsBySelector("input[name],select[name]", [tr]);
+            let inps = $YetaWF.getElementsBySelector("input[name],select[name]", [tr]);
             for (let inp of inps) {
-                var name = $YetaWF.getAttribute(inp, "name");
+                let name = $YetaWF.getAttribute(inp, "name");
                 name = name.replace(`[${origNum}]`, `[${newNum}]`);
                 $YetaWF.setAttribute(inp, "name", name);
             }
@@ -1071,10 +1169,10 @@ namespace YetaWF_ComponentsHTML {
         public internalDestroy(): void {
             if (this.Setup.CanFilter) {
                 // close all menus
-                var menuDiv = $YetaWF.getElementById(`${this.ControlId}_menus`);
-                var menus = $YetaWF.getElementsBySelector(".tg_fentry .k-menu", [menuDiv]);
+                let menuDiv = $YetaWF.getElementById(`${this.ControlId}_menus`);
+                let menus = $YetaWF.getElementsBySelector(".tg_fentry .k-menu", [menuDiv]);
                 for (let menu of menus) {
-                    var menuData = $(menu).data("kendoMenu");
+                    let menuData = $(menu).data("kendoMenu");
                     menuData.destroy();
                 }
                 // remove all menus
@@ -1106,8 +1204,8 @@ namespace YetaWF_ComponentsHTML {
         public AddRecord(tr: string, staticData: any): void {
             if (!this.Setup.StaticData) throw "Static grids only";
             $YetaWF.appendMixedHTML(this.TBody, tr, true);
-            var lastTr = this.TBody.lastChild as HTMLTableRowElement;
-            var origin = this.Setup.StaticData.length;
+            let lastTr = this.TBody.lastChild as HTMLTableRowElement;
+            let origin = this.Setup.StaticData.length;
             $YetaWF.setAttribute(lastTr, "data-origin", origin.toString());
             this.renumberFields(lastTr, 0, origin);
             this.Setup.StaticData.push(staticData);
@@ -1120,8 +1218,8 @@ namespace YetaWF_ComponentsHTML {
             if (!this.Setup.StaticData) throw "Static grids only";
             for (let tr of trs) {
                 $YetaWF.appendMixedHTML(this.TBody, tr, true);
-                var lastTr = this.TBody.lastChild as HTMLTableRowElement;
-                var origin = this.Setup.StaticData.length;
+                let lastTr = this.TBody.lastChild as HTMLTableRowElement;
+                let origin = this.Setup.StaticData.length;
                 $YetaWF.setAttribute(lastTr, "data-origin", origin.toString());
                 this.renumberFields(lastTr, 0, origin);
                 this.Setup.StaticData.push(staticData);
@@ -1154,7 +1252,7 @@ namespace YetaWF_ComponentsHTML {
         public RemoveRecord(index: number): void {
             if (!this.Setup.StaticData) throw "Static grids only";
             if (index < 0 || index >= this.Setup.StaticData.length) throw `Index ${index} out of bounds`;
-            var tr = $YetaWF.getElement1BySelector(`tr[data-origin='${index.toString()}']`, [this.TBody]);
+            let tr = $YetaWF.getElement1BySelector(`tr[data-origin='${index.toString()}']`, [this.TBody]);
             tr.remove();
             this.Setup.StaticData.splice(index, 1);
             this.Setup.Records--;
@@ -1180,10 +1278,10 @@ namespace YetaWF_ComponentsHTML {
             if (index < 0 || index > this.Setup.StaticData.length) throw `Index index=${index} out of bounds`;
             if (index === sel || index === sel + 1) return;// nothing to move
 
-            var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]) as HTMLTableRowElement[];
-            var selTr = trs[sel];
+            let trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]) as HTMLTableRowElement[];
+            let selTr = trs[sel];
             // remove the static data record
-            var data = this.Setup.StaticData[sel];
+            let data = this.Setup.StaticData[sel];
             this.Setup.StaticData.splice(sel, 1);
             // remove the table row element
             this.TBody.removeChild(selTr);
@@ -1201,20 +1299,20 @@ namespace YetaWF_ComponentsHTML {
             this.updateStatus();
         }
         public SelectedIndex(): number {
-            var sel = $YetaWF.getElement1BySelectorCond(`tr.${this.Setup.RowHighlightCss},tr.${this.Setup.RowDragDropHighlightCss}`, [this.TBody]);
+            let sel = $YetaWF.getElement1BySelectorCond(`tr.${this.Setup.RowHighlightCss},tr.${this.Setup.RowDragDropHighlightCss}`, [this.TBody]);
             if (sel == null) return -1;
-            var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]) as HTMLTableRowElement[];
-            var rowIndex = Array.prototype.indexOf.call(trs, sel);
+            let trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]) as HTMLTableRowElement[];
+            let rowIndex = Array.prototype.indexOf.call(trs, sel);
             return rowIndex;
         }
         public SetSelectedIndex(index: number): void {
-            var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]) as HTMLTableRowElement[];
+            let trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]) as HTMLTableRowElement[];
             this.ClearSelection();
             if (index < 0 || index >= trs.length) return;
             $YetaWF.elementToggleClass(trs[index], this.Setup.RowHighlightCss, true);
         }
         public ClearSelection(): void {
-            var sel = $YetaWF.getElement1BySelectorCond(`tr.${this.Setup.RowHighlightCss},tr.${this.Setup.RowDragDropHighlightCss}`, [this.TBody]);
+            let sel = $YetaWF.getElement1BySelectorCond(`tr.${this.Setup.RowHighlightCss},tr.${this.Setup.RowDragDropHighlightCss}`, [this.TBody]);
             if (sel) {
                 $YetaWF.elementToggleClass(sel, this.Setup.RowHighlightCss, false);
                 $YetaWF.elementToggleClass(sel, this.Setup.RowDragDropHighlightCss, false);
@@ -1235,10 +1333,10 @@ namespace YetaWF_ComponentsHTML {
         }
         public HitTest(x: number, y: number): number {
             if (!this.Setup.StaticData) throw "Static grids only";
-            var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]) as HTMLTableRowElement[];
-            var index = 0;
+            let trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]) as HTMLTableRowElement[];
+            let index = 0;
             for (let tr of trs) {
-                var rect = tr.getBoundingClientRect();
+                let rect = tr.getBoundingClientRect();
                 if (x < rect.left || x > rect.left + rect.width)
                     return -1;
                 if (y < rect.top)
@@ -1251,10 +1349,10 @@ namespace YetaWF_ComponentsHTML {
         }
         public HitTestInsert(x: number, y: number): number {
             if (!this.Setup.StaticData) throw "Static grids only";
-            var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]) as HTMLTableRowElement[];
-            var index = 0;
+            let trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]) as HTMLTableRowElement[];
+            let index = 0;
             for (let tr of trs) {
-                var rect = tr.getBoundingClientRect();
+                let rect = tr.getBoundingClientRect();
                 if (x < rect.left || x > rect.left + rect.width)
                     return -1;
                 if (y < rect.top)
@@ -1309,8 +1407,8 @@ namespace YetaWF_ComponentsHTML {
                     let checks = $YetaWF.getElementsBySelector(`td:nth-child(${this.SubmitCheckCol + 1}) input[type='checkbox']`, [this.Control]) as HTMLInputElement[];
                     for (let check of checks) {
                         if (!check.disabled) {
-                            var tr = $YetaWF.elementClosest(check, "tr");
-                            var recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
+                            let tr = $YetaWF.elementClosest(check, "tr");
+                            let recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
                             this.Setup.StaticData[recNum][this.Setup.Columns[this.SubmitCheckCol].Name] = set;
                             check.checked = set;
                         }
@@ -1326,8 +1424,8 @@ namespace YetaWF_ComponentsHTML {
                     let checks = $YetaWF.getElementsBySelector(`td:nth-child(${this.SubmitCheckCol + 1}) input[type='checkbox']`, [this.Control]) as HTMLInputElement[];
                     for (let check of checks) {
                         if (!check.disabled) {
-                            var tr = $YetaWF.elementClosest(check, "tr");
-                            var recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
+                            let tr = $YetaWF.elementClosest(check, "tr");
+                            let recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
                             let set = this.Setup.StaticData[recNum][this.Setup.Columns[this.SubmitCheckCol].Name];
                             if (!set)
                                 return false;

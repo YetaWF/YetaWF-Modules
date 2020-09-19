@@ -21,6 +21,13 @@
           width: 100%; }
         .yt_grid .tg_table table tr.tg_filter .tg_fctrls select {
           width: 100%; }
+        .yt_grid .tg_table table tr.tg_filter .tg_fctrls .tg_ffilter {
+          display: inline-block;
+          width: 10ch;
+          text-align: center;
+          font-size: 8px;
+          margin: 2px 2px 2px 2px;
+          padding: 2px 2px 2px 2px; }
       .yt_grid .tg_table table tr.tg_filter .tg_fclear, .yt_grid .tg_table table tr.tg_filter .tg_fmenu {
         display: inline-block;
         font-size: 8px;

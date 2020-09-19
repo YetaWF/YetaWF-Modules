@@ -16,6 +16,7 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.DataProvider;
+using YetaWF.Modules.Identity.Modules;
 #if MVC6
 #else
 using System.Web.Mvc;
@@ -24,7 +25,7 @@ using System.Web.Mvc;
 
 namespace YetaWF.Modules.Identity.Components {
 
-    public abstract class UserIdComponentBase : YetaWFComponent {
+    public abstract class UserIdComponentBase : YetaWFComponent, IComplexFilter {
 
         protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(UserIdComponentBase), name, defaultValue, parms); }
 
@@ -40,6 +41,39 @@ namespace YetaWF.Modules.Identity.Components {
                 DataProviderGetRecords<UserDefinition> recs = await userDP.GetItemsAsync(0, 1, null, null);
                 return recs.Total > MAXUSERS;
             }
+        }
+
+        public class UserIdFilterData : ComplexFilterJSONBase {
+            public string FilterOp { get; set; }
+            public int UserId { get; set; }
+
+            public UserIdFilterData() {
+                FilterOp = "==";
+                UserId = 0;
+            }
+        }
+
+        public async Task<ComplexFilter> GetComplexFilterAsync(string uiHint) {
+            UserIdFilterModule filterMod = (UserIdFilterModule)await ModuleDefinition.LoadAsync(ModuleDefinition.GetPermanentGuid(typeof(UserIdFilterModule)));
+            ModuleAction filterAction = filterMod.GetAction_Edit();
+            if (filterAction == null)
+                return null;
+            string url = filterAction.GetCompleteUrl(OnPage: true);
+            if (string.IsNullOrWhiteSpace(url))
+                return null;
+            return new ComplexFilter {
+                Url = url,
+                UIHint = uiHint,
+            };
+        }
+
+        public DataProviderFilterInfo GetDataProviderFilterInfo(string jsonData, string name) {
+            UserIdFilterData filterData = Utility.JsonDeserialize<UserIdFilterData>(jsonData);
+            return new DataProviderFilterInfo {
+                Field = name,
+                Operator = filterData.FilterOp,
+                Value = filterData.UserId,
+            };
         }
     }
 

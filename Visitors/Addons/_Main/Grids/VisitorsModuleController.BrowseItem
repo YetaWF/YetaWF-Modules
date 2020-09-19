@@ -1,7 +1,7 @@
 ﻿Commands            icons 1
 AccessDateTime      sort filter [Globals.ChDateTime] defaultSort desc
 SessionId           sort filter 20
-UserId              sort filter [Globals.ChEmail]
+UserId                   filter [Globals.ChEmail]
 IPAddress           sort filter [Globals.ChIPAddressWithLookup]
 ContinentCode       sort filter 5
 CountryCode         sort filter 5

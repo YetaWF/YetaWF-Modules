@@ -333,6 +333,14 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             [EnumDescription("No", "Select deselected/disabled entries")]
             No = 2,
         }
+        private class FilterComplexUI {
+            [UIHint("Hidden"), ReadOnly]
+            public string Value { get; set; }
+            [UIHint("Hidden"), ReadOnly]
+            public string Url { get; set; }
+            [UIHint("Hidden"), ReadOnly]
+            public string UIHint { get; set; }
+        }
         private class FilterBoolUI {
             [UIHint("Enum"), AdditionalMetadata("AdjustWidth", false)]
             public FilterBoolEnum Value { get; set; }
@@ -509,7 +517,26 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                         filterhb.Append($@"
             <div class='tg_fentry'>");
 
-                        if (prop.PropInfo.PropertyType == typeof(bool) || prop.PropInfo.PropertyType == typeof(bool?)) {
+                        ComplexFilter complexFilter =  await YetaWFComponentExtender.GetComplexFilterFromUIHintAsync(prop.UIHint);
+                        if (complexFilter != null) {
+
+                            filterType = "complex";
+                            FilterComplexUI filterUI = new FilterComplexUI {
+                                Value = filterValue,
+                                Url = complexFilter.Url,
+                                UIHint = complexFilter.UIHint,
+                            };
+
+                            filterhb.Append($@"
+                <div class='tg_fctrls'>
+                    {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.Value), HtmlAttributes: new { id = idFilter })}
+                    {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.Url))}
+                    {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.UIHint))}
+                    <div class='tg_ffilter{buttonCss}'>Filter</div>
+                    <div class='tg_fclear{buttonCss}'><span class='fas fa-times'></span></div>
+                </ div>");
+
+                        } else if (prop.PropInfo.PropertyType == typeof(bool) || prop.PropInfo.PropertyType == typeof(bool?)) {
 
                             filterOpts = new List<GridColumnInfo.FilterOptionEnum>();// none
                             filterType = "bool";
@@ -712,7 +739,8 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 <div class='tg_fclear{buttonCss}'><span class='fas fa-times'></span></div>");
                         }
 
-                        hbFilterMenus.Append(GetFilterMenu(gridDef, filterOpts, filterOp, idMenu, colIndex));
+                        if (filterOp != null)
+                            hbFilterMenus.Append(GetFilterMenu(gridDef, filterOpts, filterOp, idMenu, colIndex));
 
                         filterhb.Append($@"
             </div>");

@@ -47,6 +47,14 @@ $smbuttonhorzmargin: 2px;
                     select {
                         width:100%;
                     }
+                    .tg_ffilter {
+                        display:inline-block;
+                        width:10ch;
+                        text-align:center;
+                        font-size:$buttonfontsize;
+                        margin:$smbuttonvertmargin $smbuttonhorzmargin $smbuttonvertmargin $smbuttonhorzmargin;
+                        padding:$smbuttonvertpadding $smbuttonhorzpadding $smbuttonvertpadding $smbuttonhorzpadding;
+                    }
                 }
                 .tg_fclear, .tg_fmenu {
                     display:inline-block;
