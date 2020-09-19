@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright �2020 Softel vdm, Inc.. - https://yetawf.com/Documentation/YetaWF/Menus#License */
+/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     var MenuDisplayComponent = /** @class */ (function () {

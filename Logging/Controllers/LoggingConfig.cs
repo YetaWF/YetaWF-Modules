@@ -1,4 +1,4 @@
-/* Copyright �2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Logging#License */
+/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Logging#License */
 
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;

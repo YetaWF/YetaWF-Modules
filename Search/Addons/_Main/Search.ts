@@ -1,4 +1,4 @@
-/* Copyright �2020 Softel vdm, Inc.. - https://yetawf.com/Documentation/YetaWF/Search#License */
+/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License */
 
 namespace YetaWF {
     export interface IVolatile {

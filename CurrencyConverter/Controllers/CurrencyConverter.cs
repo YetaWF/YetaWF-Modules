@@ -1,4 +1,4 @@
-/* Copyright �2020 Softel vdm, Inc.. - https://yetawf.com/Documentation/YetaWF/CurrencyConverter#License */
+/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/CurrencyConverter#License */
 
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
