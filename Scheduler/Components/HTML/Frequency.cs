@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Scheduler#License */
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
@@ -57,16 +58,26 @@ namespace YetaWF.Modules.Scheduler.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
+            // Hidden field, only needed so propertylist code can find the template
+            // TODO: Research better way to handle this
+            Dictionary<string, object> hiddenAttributes = new Dictionary<string, object>(HtmlAttributes) {
+                { "__NoTemplate", true }
+            };
+            hb.Append(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, "", "Hidden", HtmlAttributes: hiddenAttributes, Validation: false));
+
             using (Manager.StartNestedComponent(FieldName)) {
 
                 hb.Append($@"
-<div class='yt_yetawf_scheduler_frequency t_edit'>
+<div id='{DivId}' class='yt_yetawf_scheduler_frequency t_edit'>
     {__ResStr("every", "Every ")}
     {await HtmlHelper.ForEditAsync(model, nameof(model.Value))}{ValidationMessage(nameof(model.Value))}
     {await HtmlHelper.ForEditAsync(model, nameof(model.TimeUnits))}{ValidationMessage(nameof(model.TimeUnits))}
     {__ResStr("everyPost", "")}
 </div>");
             }
+
+            Manager.ScriptManager.AddLast($@"new YetaWF_Scheduler.FrequencyEdit('{DivId}');");
+
             return hb.ToString();
         }
     }

@@ -20,11 +20,10 @@ namespace YetaWF.Modules.Scheduler.Support {
         /// <summary>
         /// Install all events for the given package. This is typically used to install scheduler items while installing packages.
         /// </summary>
-        public Task InstallItemsAsync(Package package) {
-            //$$$ List<Type> types = package.GetClassesInPackage<IScheduling>();
-            //$$$ foreach (var type in types)
-            //$$$     await InstallItemsAsync(type);
-            return Task.CompletedTask;
+        public async Task InstallItemsAsync(Package package) {
+            List<Type> types = package.GetClassesInPackage<IScheduling>();
+            foreach (var type in types)
+                await InstallItemsAsync(type);
         }
 
         /// <summary>
@@ -47,6 +46,8 @@ namespace YetaWF.Modules.Scheduler.Support {
                         evnt.Event.Name = item.EventName;
                         evnt.Event.ImplementingAssembly = type.Assembly.GetName().Name;
                         evnt.Event.ImplementingType = type.FullName;
+                        evnt.Enabled = false; // new scheduler items are always disabled when added
+                        evnt.EnableOnStartup = false;
                         await dataProvider.AddItemAsync(evnt);// we ignore whether the add fails - it's OK if it already exists
                     }
                 } catch (Exception exc) {

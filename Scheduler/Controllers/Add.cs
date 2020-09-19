@@ -45,18 +45,26 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
             [Caption("Run Once"), Description("Defines whether the scheduler item is run just once - once it completes, it is disabled")]
             [UIHint("Boolean")]
+            [ProcessIf(nameof(Enabled), true)]
+            [ProcessIf(nameof(EnableOnStartup), true)]
             public bool RunOnce { get; set; }
 
             [Caption("Startup"), Description("Defines whether the scheduler item runs at website startup")]
             [UIHint("Boolean")]
+            [ProcessIf(nameof(Enabled), true)]
+            [ProcessIf(nameof(EnableOnStartup), true)]
             public bool Startup { get; set; }
 
             [Caption("Site Specific"), Description("Defines whether the scheduler item runs for each site")]
             [UIHint("Boolean")]
+            [ProcessIf(nameof(Enabled), true)]
+            [ProcessIf(nameof(EnableOnStartup), true)]
             public bool SiteSpecific { get; set; }
 
             [Caption("Interval"), Description("The scheduler item's frequency")]
             [UIHint("YetaWF_Scheduler_Frequency"), Required]
+            [ProcessIf(nameof(Enabled), true)]
+            [ProcessIf(nameof(EnableOnStartup), true)]
             public SchedulerFrequency Frequency { get; set; }
 
             public SchedulerAddModel() {

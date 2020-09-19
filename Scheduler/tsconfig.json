@@ -25,7 +25,7 @@
     "types": [
       "jquery", "jqueryui", "kendo-ui",
       "YetaWF/HTML/Basics", "YetaWF/HTML/ComponentBase", "YetaWF/HTML/ComponentsHTML", "YetaWF/HTML/Controls", "YetaWF/HTML/Forms", "YetaWF/HTML/Globals", "YetaWF/HTML/ModuleBase", "YetaWF/HTML/Popups", "YetaWF/HTML/Url",
-      "YetaWF/HTML/DropDownList/DropDownListEdit", "YetaWF/HTML/Grid/Grid", "YetaWF/HTML/Tabs/Tabs", "YetaWF/HTML/Tree/Tree"
+      "YetaWF/HTML/DropDownList/IntValueEdit", "YetaWF/HTML/DropDownList/DropDownListEdit", "YetaWF/HTML/Grid/Grid", "YetaWF/HTML/Tabs/Tabs", "YetaWF/HTML/Tree/Tree"
     ]
   },
   "compileOnSave": true,
