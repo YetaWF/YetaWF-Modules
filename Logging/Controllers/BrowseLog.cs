@@ -122,7 +122,6 @@ namespace YetaWF.Modules.Logging.Controllers {
                 AjaxUrl = GetActionUrl(nameof(BrowseLog_GridData)),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
                     FlushLog();
-                    DataProviderSortInfo.UpdateAlternateSortColumn(sort, filters, "UserId", "UserName");
                     using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                         DataProviderGetRecords<LogRecord> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {

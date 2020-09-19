@@ -833,6 +833,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 case "NotEndsWith": return GridColumnInfo.FilterOptionEnum.NotEndswith;
                 case "Contains": return GridColumnInfo.FilterOptionEnum.Contains;
                 case "NotContains": return GridColumnInfo.FilterOptionEnum.NotContains;
+                case "Complex": return null;
             }
             throw new InternalError($"Unexpected filter operator {filterOp}");
         }
