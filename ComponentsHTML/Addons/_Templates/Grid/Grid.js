@@ -687,7 +687,7 @@ var YetaWF_ComponentsHTML;
                         var col_2 = _b[_a];
                         var val = this.getColSortValue(colIndex);
                         if (val) {
-                            if (col_2.FilterType == "complex") {
+                            if (col_2.FilterType === "complex") {
                                 uri.addSearch("filters[" + fcount + "].field", col_2.Name);
                                 uri.addSearch("filters[" + fcount + "].operator", "Complex");
                                 uri.addSearch("filters[" + fcount + "].valueAsString", val);

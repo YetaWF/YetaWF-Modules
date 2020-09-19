@@ -750,7 +750,7 @@ namespace YetaWF_ComponentsHTML {
                     for (let col of this.Setup.Columns) {
                         let val = this.getColSortValue(colIndex);
                         if (val) {
-                            if (col.FilterType == "complex") {
+                            if (col.FilterType === "complex") {
                                 uri.addSearch(`filters[${fcount}].field`, col.Name);
                                 uri.addSearch(`filters[${fcount}].operator`, "Complex");
                                 uri.addSearch(`filters[${fcount}].valueAsString`, val);
