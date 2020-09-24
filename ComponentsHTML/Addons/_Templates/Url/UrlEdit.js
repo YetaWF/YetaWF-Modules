@@ -41,10 +41,10 @@ var YetaWF_ComponentsHTML;
             _this.divRemote = null;
             _this.Setup = setup;
             _this.inputHidden = $YetaWF.getElement1BySelector(".t_hidden", [_this.Control]);
-            _this.selectType = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select.yt_urltype", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
+            _this.selectType = YetaWF.ComponentBaseDataImpl.getControlFromSelector(".yt_urltype", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
             // tslint:disable-next-line:no-bitwise
             if (_this.Setup.Type & UrlTypeEnum.Local) {
-                _this.selectPage = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select.yt_urldesignedpage", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
+                _this.selectPage = YetaWF.ComponentBaseDataImpl.getControlFromSelector(".yt_urldesignedpage", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
                 _this.divLocal = $YetaWF.getElement1BySelector(".t_local", [_this.Control]);
             }
             // tslint:disable-next-line:no-bitwise
