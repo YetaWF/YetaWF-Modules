@@ -38,11 +38,11 @@ var YetaWF_ComponentsHTML;
             _this.DivLink = $YetaWF.getElement1BySelector(".t_link", [_this.Control]);
             _this.ALink = $YetaWF.getElement1BySelector("a", [_this.DivLink]);
             _this.showDescription();
-            _this.SelectPackage.Control.addEventListener("dropdownlist_change", function (evt) {
+            _this.SelectPackage.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, function (evt) {
                 var data = { AreaName: _this.SelectPackage.value };
                 _this.SelectModule.ajaxUpdate(data, _this.Setup.AjaxUrl);
             });
-            _this.SelectModule.Control.addEventListener("dropdownlist_change", function (evt) {
+            _this.SelectModule.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, function (evt) {
                 var modGuid = _this.SelectModule.value;
                 _this.Hidden.value = modGuid;
                 _this.showDescription();

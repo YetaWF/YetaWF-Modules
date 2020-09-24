@@ -291,7 +291,7 @@ var YetaWF_ComponentsHTML;
             // tooltips
             ToolTipsHTMLHelper.removeTooltips();
             // dropdowns
-            YetaWF_ComponentsHTML.DropDown2ListEditComponent.closeDropdowns();
+            YetaWF_ComponentsHTML.DropDownListEditComponent.closeDropdowns();
         };
         /**
          * Enable/disable an element.

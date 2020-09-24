@@ -24,14 +24,14 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public enum ControlStatusEnum { Normal, Disabled, }
 
             [Category("Core"), Caption("DropDownList"), Description("DropDownList (SelectionRequired)")]
-            [UIHint("DropDown2List"), StringLength(20)]
+            [UIHint("DropDownList"), StringLength(20)]
             [SelectionRequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string DropDownList { get; set; }
             public List<SelectionItem<string>> DropDownList_List { get; set; }
 
             [Category("Core"), Caption("DropDownListInt"), Description("DropDownListInt (SelectionRequired)")]
-            [UIHint("DropDown2ListInt")]
+            [UIHint("DropDownListInt")]
             [SelectionRequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public int DropDownListInt { get; set; }
@@ -64,21 +64,21 @@ namespace YetaWF.Modules.DevTests.Controllers {
                     new SelectionItem<string> { Text= "Text1", Value="1", Tooltip = "Tooltip1" },
                     new SelectionItem<string> { Text= "Text2", Value="2", Tooltip = "Tooltip2" },
                     new SelectionItem<string> { Text= "Text3", Value="3", Tooltip = "Tooltip3" },
-                    new SelectionItem<string> { Text= "Text1", Value="1", Tooltip = "Tooltip1" },
-                    new SelectionItem<string> { Text= "Text2", Value="2", Tooltip = "Tooltip2" },
-                    new SelectionItem<string> { Text= "Text3", Value="3", Tooltip = "Tooltip3" },
-                    new SelectionItem<string> { Text= "Text1", Value="1", Tooltip = "Tooltip1" },
-                    new SelectionItem<string> { Text= "Text2", Value="2", Tooltip = "Tooltip2" },
-                    new SelectionItem<string> { Text= "Text3", Value="3", Tooltip = "Tooltip3" },
-                    new SelectionItem<string> { Text= "Text1", Value="1", Tooltip = "Tooltip1" },
-                    new SelectionItem<string> { Text= "Text2", Value="2", Tooltip = "Tooltip2" },
-                    new SelectionItem<string> { Text= "Text3", Value="3", Tooltip = "Tooltip3" },
-                    new SelectionItem<string> { Text= "Text1", Value="1", Tooltip = "Tooltip1" },
-                    new SelectionItem<string> { Text= "Text2", Value="2", Tooltip = "Tooltip2" },
-                    new SelectionItem<string> { Text= "Text3", Value="3", Tooltip = "Tooltip3" },
-                    new SelectionItem<string> { Text= "Text1", Value="1", Tooltip = "Tooltip1" },
-                    new SelectionItem<string> { Text= "Text2", Value="2", Tooltip = "Tooltip2" },
-                    new SelectionItem<string> { Text= "Text3", Value="3", Tooltip = "Tooltip3" },
+                    new SelectionItem<string> { Text= "Text4", Value="4", Tooltip = "Tooltip4" },
+                    new SelectionItem<string> { Text= "Text5", Value="5", Tooltip = "Tooltip5" },
+                    new SelectionItem<string> { Text= "Text6", Value="6", Tooltip = "Tooltip6" },
+                    new SelectionItem<string> { Text= "Text7", Value="7", Tooltip = "Tooltip7" },
+                    new SelectionItem<string> { Text= "Text8", Value="8", Tooltip = "Tooltip8" },
+                    new SelectionItem<string> { Text= "Text9", Value="9", Tooltip = "Tooltip9" },
+                    new SelectionItem<string> { Text= "Text10", Value="10", Tooltip = "Tooltip10" },
+                    new SelectionItem<string> { Text= "Text11", Value="11", Tooltip = "Tooltip11" },
+                    new SelectionItem<string> { Text= "Text12", Value="12", Tooltip = "Tooltip12" },
+                    new SelectionItem<string> { Text= "Text13", Value="13", Tooltip = "Tooltip13" },
+                    new SelectionItem<string> { Text= "Text14", Value="14", Tooltip = "Tooltip14" },
+                    new SelectionItem<string> { Text= "Text15", Value="15", Tooltip = "Tooltip15" },
+                    new SelectionItem<string> { Text= "Text16", Value="16", Tooltip = "Tooltip16" },
+                    new SelectionItem<string> { Text= "Text17", Value="17", Tooltip = "Tooltip17" },
+                    new SelectionItem<string> { Text= "Text18", Value="18", Tooltip = "Tooltip18" },
                 };
                 // DropDownListInt
                 DropDownListInt_List = new List<SelectionItem<int>> {
@@ -86,24 +86,22 @@ namespace YetaWF.Modules.DevTests.Controllers {
                     new SelectionItem<int> { Text= "Item1", Value=1, Tooltip = "Tooltip1" },
                     new SelectionItem<int> { Text= "Item2", Value=2, Tooltip = "Tooltip2" },
                     new SelectionItem<int> { Text= "Item3", Value=3, Tooltip = "Tooltip3" },
-                    new SelectionItem<int> { Text= "Item1", Value=1, Tooltip = "Tooltip1" },
-                    new SelectionItem<int> { Text= "Item2", Value=2, Tooltip = "Tooltip2" },
-                    new SelectionItem<int> { Text= "Item3", Value=3, Tooltip = "Tooltip3" },
-                    new SelectionItem<int> { Text= "Item1", Value=1, Tooltip = "Tooltip1" },
-                    new SelectionItem<int> { Text= "Item2", Value=2, Tooltip = "Tooltip2" },
-                    new SelectionItem<int> { Text= "Item3", Value=3, Tooltip = "Tooltip3" },
-                    new SelectionItem<int> { Text= "Item1", Value=1, Tooltip = "Tooltip1" },
-                    new SelectionItem<int> { Text= "Item2", Value=2, Tooltip = "Tooltip2" },
-                    new SelectionItem<int> { Text= "Item3", Value=3, Tooltip = "Tooltip3" },
-                    new SelectionItem<int> { Text= "Item1", Value=1, Tooltip = "Tooltip1" },
-                    new SelectionItem<int> { Text= "Item2", Value=2, Tooltip = "Tooltip2" },
-                    new SelectionItem<int> { Text= "Item3", Value=3, Tooltip = "Tooltip3" },
-                    new SelectionItem<int> { Text= "Item1", Value=1, Tooltip = "Tooltip1" },
-                    new SelectionItem<int> { Text= "Item2", Value=2, Tooltip = "Tooltip2" },
-                    new SelectionItem<int> { Text= "Item3", Value=3, Tooltip = "Tooltip3" },
-                    new SelectionItem<int> { Text= "Item1", Value=1, Tooltip = "Tooltip1" },
-                    new SelectionItem<int> { Text= "Item2", Value=2, Tooltip = "Tooltip2" },
-                    new SelectionItem<int> { Text= "Item3", Value=3, Tooltip = "Tooltip3" },
+                    new SelectionItem<int> { Text= "Item4", Value=4, Tooltip = "Tooltip4" },
+                    new SelectionItem<int> { Text= "Item5", Value=5, Tooltip = "Tooltip5" },
+                    new SelectionItem<int> { Text= "Item6", Value=6, Tooltip = "Tooltip6" },
+                    new SelectionItem<int> { Text= "Item7", Value=7, Tooltip = "Tooltip7" },
+                    new SelectionItem<int> { Text= "Item8", Value=8, Tooltip = "Tooltip8" },
+                    new SelectionItem<int> { Text= "Item9", Value=9, Tooltip = "Tooltip9" },
+                    new SelectionItem<int> { Text= "Item10", Value=10, Tooltip = "Tooltip10" },
+                    new SelectionItem<int> { Text= "Item11", Value=11, Tooltip = "Tooltip11" },
+                    new SelectionItem<int> { Text= "Item12", Value=12, Tooltip = "Tooltip12" },
+                    new SelectionItem<int> { Text= "Item13", Value=13, Tooltip = "Tooltip13" },
+                    new SelectionItem<int> { Text= "Item14", Value=14, Tooltip = "Tooltip14" },
+                    new SelectionItem<int> { Text= "Item15", Value=15, Tooltip = "Tooltip15" },
+                    new SelectionItem<int> { Text= "Item16", Value=16, Tooltip = "Tooltip16" },
+                    new SelectionItem<int> { Text= "Item17", Value=17, Tooltip = "Tooltip17" },
+                    new SelectionItem<int> { Text= "Item18", Value=18, Tooltip = "Tooltip18" },
+                    new SelectionItem<int> { Text= "Item19", Value=19, Tooltip = "Tooltip19" },
                 };
             }
         }

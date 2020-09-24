@@ -2,49 +2,61 @@
 
 namespace YetaWF_ComponentsHTML {
 
-    //$$$ interface AjaxData {
-    //    data: kendo.data.DataSource;
-    //    tooltips: string[] | null;
-    //}
+    interface DropDownListEditSetup {
+        AdjustWidth: boolean;
+        DropDownWidthFactor: number;
+        DropDownHeightFactor: number;
+    }
 
-    export class DropDown2ListEditComponent extends YetaWF.ComponentBaseDataImpl {
+    interface AjaxData {
+        OptionsHTML: string;
+        ExtraData: string;
+    }
 
-        public static readonly TEMPLATE: string = "yt_dropdown2list_base";
-        public static readonly SELECTOR: string = ".yt_dropdown2list_base.t_edit";
-        public static readonly EVENTCHANGE: string = "dropdown2list_change";
+    export class DropDownListEditComponent extends YetaWF.ComponentBaseDataImpl {
+
+        public static readonly TEMPLATE: string = "yt_dropdownlist_base";
+        public static readonly SELECTOR: string = ".yt_dropdownlist_base.t_edit";
+        public static readonly EVENTCHANGE: string = "dropdownlist_change";
 
         public static readonly POPUPID: string = "yDDPopup";
+        private static readonly DEFAULTHEIGHT: number = 200;
+
+        private Setup: DropDownListEditSetup;
 
         private Input: HTMLDivElement;
         private Select: HTMLSelectElement;
         private Container: HTMLDivElement;
         private Popup: HTMLElement | null = null;
         private Enabled: boolean = true;
+        private DropDownWidth: number = 0;
 
         private Focused: boolean = false;
 
-        constructor(controlId: string) {
-            super(controlId, DropDown2ListEditComponent.TEMPLATE, DropDown2ListEditComponent.SELECTOR, {
+        constructor(controlId: string, setup: DropDownListEditSetup) {
+            super(controlId, DropDownListEditComponent.TEMPLATE, DropDownListEditComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
-                ChangeEvent: DropDown2ListEditComponent.EVENTCHANGE,
-                GetValue: (control: DropDown2ListEditComponent): string | null => {
+                ChangeEvent: DropDownListEditComponent.EVENTCHANGE,
+                GetValue: (control: DropDownListEditComponent): string | null => {
                     return control.value;
                 },
-                Enable: (control: DropDown2ListEditComponent, enable: boolean, clearOnDisable: boolean): void => {
+                Enable: (control: DropDownListEditComponent, enable: boolean, clearOnDisable: boolean): void => {
                     control.enable(enable);
                     if (!enable && clearOnDisable)
                         control.clear();
                 },
-            }, false, (tag: HTMLElement, control: DropDown2ListEditComponent): void => {
+            }, false, (tag: HTMLElement, control: DropDownListEditComponent): void => {
 
             });
+
+            this.Setup = setup;
 
             this.Input = $YetaWF.getElement1BySelector(".t_input", [this.Control]) as HTMLDivElement;
             this.Select = $YetaWF.getElement1BySelector("select", [this.Control]) as HTMLSelectElement;
             this.Container = $YetaWF.getElement1BySelector(".t_container", [this.Control]) as HTMLDivElement;
 
-            let width = this.calcMaxStringLength();
-            this.Control.style.width = `${width}px`;
+            this.optionsUpdated();
+            this.enable($YetaWF.getAttributeCond(this.Select, "disabled") == null);
 
             $YetaWF.registerEventHandler(this.Container, "mouseenter", null, (ev: MouseEvent): boolean => {
                 if (this.Enabled) {
@@ -73,7 +85,6 @@ namespace YetaWF_ComponentsHTML {
                 return true;
             });
             $YetaWF.registerEventHandler(this.Control, "focusout", null, (ev: FocusEvent): boolean => {
-                //$$$ this.closePopup();
                 $YetaWF.elementRemoveClass(this.Container, "k-state-focused");
                 this.Focused = false;
                 return true;
@@ -175,9 +186,18 @@ namespace YetaWF_ComponentsHTML {
         }
         public sendChangeEvent(): void {
             var event = document.createEvent("Event");
-            event.initEvent(DropDown2ListEditComponent.EVENTCHANGE, true, true);
+            event.initEvent(DropDownListEditComponent.EVENTCHANGE, true, true);
             this.Control.dispatchEvent(event);
             FormsSupport.validateElement(this.Select);
+        }
+
+        private optionsUpdated(): void {
+            this.DropDownWidth = this.calcMaxStringLength();
+            if (this.Setup.AdjustWidth) {
+                this.Control.style.width = `${this.DropDownWidth}px`;
+            } else {
+                this.Control.style.minWidth = `${this.DropDownWidth}px`;
+            }
         }
 
         private openPopup(): void {
@@ -185,6 +205,7 @@ namespace YetaWF_ComponentsHTML {
                 this.closePopup();
                 return;
             }
+            DropDownListEditComponent.closeDropdowns();
             this.Popup =
                 <div id="yDDPopup" data-owner={this.ControlId} class="k-animation-container" aria-hidden="false">
                     <div class="k-list-container k-popup k-group k-reset" data-role="popup" aria-hidden="false">
@@ -201,7 +222,14 @@ namespace YetaWF_ComponentsHTML {
             for (let i = 0; i < len; ++i) {
                 ul.append(<li tabindex="-1" role="option" unselectable="on" class="k-item" data-index={i}>{opts[i].innerText}</li>);
             }
-            DropDown2ListEditComponent.positionPopup(this.Popup);
+
+            let style = window.getComputedStyle(this.Control);
+            this.Popup.style.font = style.font;
+            this.Popup.style.fontStyle = style.fontStyle;
+            this.Popup.style.fontWeight = style.fontWeight;
+            this.Popup.style.fontSize = style.fontSize;
+
+            DropDownListEditComponent.positionPopup(this.Popup);
 
             document.body.append(this.Popup);
             this.selectPopupItem();
@@ -234,21 +262,23 @@ namespace YetaWF_ComponentsHTML {
         public static positionPopup(popup: HTMLElement): void {
             if (!popup) return;
             let ownerId = $YetaWF.getAttribute(popup, "data-owner");
-            let dd = $YetaWF.getElementById(ownerId);
-            let rect = dd.getBoundingClientRect();
+            let control = DropDownListEditComponent.getControlById<DropDownListEditComponent>(ownerId, DropDownListEditComponent.SELECTOR);
+
+            // resize
+            let scroller = $YetaWF.getElement1BySelector(".k-list-scroller", [popup]);
+
+            let rect = control.Control.getBoundingClientRect();
             let top = window.pageYOffset + rect.bottom;
             let left = window.pageXOffset + rect.left;
-            let width = rect.width;
+            let width = control.Setup.DropDownWidthFactor * control.DropDownWidth;
 
             // set left, top, width on #yDDPopup
             popup.style.width = `${width}px`;
             popup.style.top = `${top}px`;
             popup.style.left = `${left}px`;
 
-            // resize based on number of entries wanted
-            let scroller = $YetaWF.getElement1BySelector(".k-list-scroller", [popup]);
-
-            scroller.style.height = "200px";//$$$$
+            let height = control.Setup.DropDownHeightFactor * DropDownListEditComponent.DEFAULTHEIGHT;
+            scroller.style.maxHeight = `${height}px`;
         }
 
         private selectPopupItem(): void {
@@ -288,18 +318,23 @@ namespace YetaWF_ComponentsHTML {
         }
 
         public static closeDropdowns(): void {
-            let popup = $YetaWF.getElementByIdCond(DropDown2ListEditComponent.POPUPID);
+            let popup = $YetaWF.getElementByIdCond(DropDownListEditComponent.POPUPID);
             if (!popup) return;
             let ownerId = $YetaWF.getAttribute(popup, "data-owner");
-            let control = DropDown2ListEditComponent.getControlById<DropDown2ListEditComponent>(ownerId, DropDown2ListEditComponent.SELECTOR);
+            let control = DropDownListEditComponent.getControlById<DropDownListEditComponent>(ownerId, DropDownListEditComponent.SELECTOR);
             control.closePopup();
         }
-
 
         private calcMaxStringLength(): number {
 
             let elem = <div style="position:absolute;visibility:hidden;white-space:nowrap"></div> as HTMLElement;
-            this.Control.appendChild(elem);
+            document.body.append(elem);
+            // copy font attributes
+            let style = window.getComputedStyle(this.Control);
+            elem.style.font = style.font;
+            elem.style.fontStyle = style.fontStyle;
+            elem.style.fontWeight = style.fontWeight;
+            elem.style.fontSize = style.fontSize;
 
             let width: number = 0;
 
@@ -322,75 +357,64 @@ namespace YetaWF_ComponentsHTML {
 
         public ajaxUpdate(data: any, ajaxUrl: string, onSuccess?: (data: any) => void, onFailure?: (result: string) => void): void {
 
-            //$YetaWF.setLoading(true);
+            $YetaWF.setLoading(true);
 
-            //var uri = $YetaWF.parseUrl(ajaxUrl);
-            //uri.addSearchSimpleObject(data);
+            var uri = $YetaWF.parseUrl(ajaxUrl);
+            uri.addSearchSimpleObject(data);
 
-            //var request: XMLHttpRequest = new XMLHttpRequest();
-            //request.open("POST", ajaxUrl);
-            //request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-            //request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            //request.onreadystatechange = (ev: Event): any => {
-            //    if (request.readyState === 4 /*DONE*/) {
-            //        $YetaWF.setLoading(false);
-            //        var retVal = $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, this.Control, undefined, undefined, (data: AjaxData): void => {
+            var request: XMLHttpRequest = new XMLHttpRequest();
+            request.open("POST", ajaxUrl);
+            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            request.onreadystatechange = (ev: Event): any => {
+                if (request.readyState === 4 /*DONE*/) {
+                    $YetaWF.setLoading(false);
+                    var retVal = $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, this.Control, undefined, undefined, (data: AjaxData): void => {
 
-            //            // $(this.Control).val(null);
-            //            $(this.Control).kendoDropDown2List({
-            //                dataTextField: "t",
-            //                dataValueField: "v",
-            //                dataSource: data.data,
-            //                autoWidth: true,
-            //                change: (): void => {
-            //                    this.sendChangeEvent();
-            //                }
-            //            });
-            //            this.Setup.ToolTips = data.tooltips;
-            //            this.KendoDropDown2List = $(this.Control).data("kendoDropDown2List");
+                        this.Select.innerHTML = data.OptionsHTML;
+                        this.optionsUpdated();
 
-            //            if (onSuccess) {
-            //                onSuccess(data);
-            //            } else {
-            //                this.value = "";
-            //                this.sendChangeEvent();
-            //            }
-            //        });
-            //        if (!retVal) {
-            //            if (onFailure)
-            //                onFailure(request.responseText);
-            //        }
-            //    }
-            //};
-            //request.send(uri.toFormData());
+                        if (onSuccess) {
+                            onSuccess(data);
+                        } else {
+                            this.selectedIndex = 0;
+                        }
+                    });
+                    if (!retVal) {
+                        if (onFailure)
+                            onFailure(request.responseText);
+                    }
+                }
+            };
+            request.send(uri.toFormData());
         }
     }
 
     // handle submit/apply
-    $YetaWF.registerCustomEventHandlerDocument(DropDown2ListEditComponent.EVENTCHANGE, `.ysubmitonchange ${DropDown2ListEditComponent.SELECTOR}`, (ev: Event): boolean => {
+    $YetaWF.registerCustomEventHandlerDocument(DropDownListEditComponent.EVENTCHANGE, `.ysubmitonchange ${DropDownListEditComponent.SELECTOR}`, (ev: Event): boolean => {
         $YetaWF.Forms.submitOnChange(ev.target as HTMLElement);
         return false;
     });
-    $YetaWF.registerCustomEventHandlerDocument(DropDown2ListEditComponent.EVENTCHANGE, `.yapplyonchange ${DropDown2ListEditComponent.SELECTOR}`, (ev: Event): boolean => {
+    $YetaWF.registerCustomEventHandlerDocument(DropDownListEditComponent.EVENTCHANGE, `.yapplyonchange ${DropDownListEditComponent.SELECTOR}`, (ev: Event): boolean => {
         $YetaWF.Forms.applyOnChange(ev.target as HTMLElement);
         return false;
     });
-    $YetaWF.registerCustomEventHandlerDocument(DropDown2ListEditComponent.EVENTCHANGE, `.yreloadonchange ${DropDown2ListEditComponent.SELECTOR}`, (ev: Event): boolean => {
+    $YetaWF.registerCustomEventHandlerDocument(DropDownListEditComponent.EVENTCHANGE, `.yreloadonchange ${DropDownListEditComponent.SELECTOR}`, (ev: Event): boolean => {
         $YetaWF.Forms.reloadOnChange(ev.target as HTMLElement);
         return false;
     });
 
     // close dropdown when clicking outside
     $YetaWF.registerEventHandlerBody("click", null, (ev: MouseEvent): boolean => {
-        DropDown2ListEditComponent.closeDropdowns();
+        DropDownListEditComponent.closeDropdowns();
         return true;
     });
 
     // reposition dropdown when window size changes
     ($(window) as any).smartresize((): void => {
-        let popup = $YetaWF.getElementByIdCond(DropDown2ListEditComponent.POPUPID);
+        let popup = $YetaWF.getElementByIdCond(DropDownListEditComponent.POPUPID);
         if (popup)
-            DropDown2ListEditComponent.positionPopup(popup);
+            DropDownListEditComponent.positionPopup(popup);
     });
 }
 

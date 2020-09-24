@@ -264,7 +264,7 @@ namespace YetaWF_ComponentsHTML {
             }
             // pagesize selection
             if (this.SelectPageSize) {
-                this.SelectPageSize.Control.addEventListener("dropdownlist_change", (evt: Event): void => {
+                this.SelectPageSize.Control.addEventListener(DropDownListEditComponent.EVENTCHANGE, (evt: Event): void => {
                     if (this.SelectPageSize)
                         this.reload(0, Number(this.SelectPageSize.value));
                 });
@@ -942,7 +942,7 @@ namespace YetaWF_ComponentsHTML {
                     case "enum":
                     case "dynenum":
                         // handle selection change
-                        $YetaWF.registerCustomEventHandlerDocument("dropdownlist_change", `#${col.FilterId}`, (ev: Event): boolean => {
+                        $YetaWF.registerCustomEventHandlerDocument(DropDownListEditComponent.EVENTCHANGE, `#${col.FilterId}`, (ev: Event): boolean => {
                             this.reload(0);
                             return false;
                         });

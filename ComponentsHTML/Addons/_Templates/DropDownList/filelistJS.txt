@@ -1,1 +1,2 @@
-﻿DropDownListEdit.ts
+﻿Uses YetaWF_ComponentsHTML,smartresize
+DropDownListEdit.ts

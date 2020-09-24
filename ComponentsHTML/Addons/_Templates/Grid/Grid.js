@@ -194,7 +194,7 @@ var YetaWF_ComponentsHTML;
             }
             // pagesize selection
             if (_this.SelectPageSize) {
-                _this.SelectPageSize.Control.addEventListener("dropdownlist_change", function (evt) {
+                _this.SelectPageSize.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, function (evt) {
                     if (_this.SelectPageSize)
                         _this.reload(0, Number(_this.SelectPageSize.value));
                 });
@@ -886,7 +886,7 @@ var YetaWF_ComponentsHTML;
                     case "enum":
                     case "dynenum":
                         // handle selection change
-                        $YetaWF.registerCustomEventHandlerDocument("dropdownlist_change", "#" + col.FilterId, function (ev) {
+                        $YetaWF.registerCustomEventHandlerDocument(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, "#" + col.FilterId, function (ev) {
                             _this.reload(0);
                             return false;
                         });

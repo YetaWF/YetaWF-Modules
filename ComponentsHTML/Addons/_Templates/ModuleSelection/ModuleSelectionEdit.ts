@@ -45,11 +45,11 @@ namespace YetaWF_ComponentsHTML {
 
             this.showDescription();
 
-            this.SelectPackage.Control.addEventListener("dropdownlist_change", (evt: Event): void => {
+            this.SelectPackage.Control.addEventListener(DropDownListEditComponent.EVENTCHANGE, (evt: Event): void => {
                 let data = { AreaName: this.SelectPackage.value };
                 this.SelectModule.ajaxUpdate(data, this.Setup.AjaxUrl);
             });
-            this.SelectModule.Control.addEventListener("dropdownlist_change", (evt: Event): void => {
+            this.SelectModule.Control.addEventListener(DropDownListEditComponent.EVENTCHANGE, (evt: Event): void => {
                 let modGuid = this.SelectModule.value;
                 this.Hidden.value = modGuid;
                 this.showDescription();
