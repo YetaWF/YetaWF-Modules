@@ -41,6 +41,8 @@ var YetaWF_ComponentsHTML;
             _this.Input = $YetaWF.getElement1BySelector(".t_input", [_this.Control]);
             _this.Select = $YetaWF.getElement1BySelector("select", [_this.Control]);
             _this.Container = $YetaWF.getElement1BySelector(".t_container", [_this.Control]);
+            var width = _this.calcMaxStringLength();
+            _this.Control.style.width = width + "px";
             $YetaWF.registerEventHandler(_this.Container, "mouseenter", null, function (ev) {
                 if (_this.Enabled) {
                     $YetaWF.elementRemoveClass(_this.Container, "k-state-hover");
@@ -67,7 +69,7 @@ var YetaWF_ComponentsHTML;
                 return true;
             });
             $YetaWF.registerEventHandler(_this.Control, "focusout", null, function (ev) {
-                //$$$$ this.closePopup();
+                //$$$ this.closePopup();
                 $YetaWF.elementRemoveClass(_this.Container, "k-state-focused");
                 _this.Focused = false;
                 return true;
@@ -288,6 +290,32 @@ var YetaWF_ComponentsHTML;
             }
             this.Input.innerText = "";
         };
+        DropDown2ListEditComponent.closeDropdowns = function () {
+            var popup = $YetaWF.getElementByIdCond(DropDown2ListEditComponent.POPUPID);
+            if (!popup)
+                return;
+            var ownerId = $YetaWF.getAttribute(popup, "data-owner");
+            var control = DropDown2ListEditComponent.getControlById(ownerId, DropDown2ListEditComponent.SELECTOR);
+            control.closePopup();
+        };
+        DropDown2ListEditComponent.prototype.calcMaxStringLength = function () {
+            var elem = $YetaWF.createElement("div", { style: "position:absolute;visibility:hidden;white-space:nowrap" });
+            this.Control.appendChild(elem);
+            var width = 0;
+            var opts = this.Select.options;
+            var len = opts.length;
+            for (var i = 0; i < len; ++i) {
+                elem.innerHTML = opts[i].innerHTML;
+                var w = elem.clientWidth;
+                if (w > width)
+                    width = w;
+            }
+            // extra for padding and dropdown selector
+            elem.innerText = "MMMM"; // 4 characters
+            width += elem.clientWidth;
+            elem.remove();
+            return width;
+        };
         DropDown2ListEditComponent.prototype.ajaxUpdate = function (data, ajaxUrl, onSuccess, onFailure) {
             //$YetaWF.setLoading(true);
             //var uri = $YetaWF.parseUrl(ajaxUrl);
@@ -334,15 +362,7 @@ var YetaWF_ComponentsHTML;
         return DropDown2ListEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.DropDown2ListEditComponent = DropDown2ListEditComponent;
-    // We need to delay initialization until divs become visible so we can calculate the dropdown width
-    //$YetaWF.registerActivateDiv((tag: HTMLElement): void => {
-    //    var ctls = $YetaWF.getElementsBySelector(DropDown2ListEditComponent.SELECTOR, [tag]);
-    //    for (let ctl of ctls) {
-    //        var control: DropDown2ListEditComponent = YetaWF.ComponentBaseDataImpl.getControlFromTag(ctl, DropDown2ListEditComponent.SELECTOR);
-    //        control.updateWidth();
-    //    }
-    //});
-    //// handle submit/apply
+    // handle submit/apply
     $YetaWF.registerCustomEventHandlerDocument(DropDown2ListEditComponent.EVENTCHANGE, ".ysubmitonchange " + DropDown2ListEditComponent.SELECTOR, function (ev) {
         $YetaWF.Forms.submitOnChange(ev.target);
         return false;
@@ -355,6 +375,12 @@ var YetaWF_ComponentsHTML;
         $YetaWF.Forms.reloadOnChange(ev.target);
         return false;
     });
+    // close dropdown when clicking outside
+    $YetaWF.registerEventHandlerBody("click", null, function (ev) {
+        DropDown2ListEditComponent.closeDropdowns();
+        return true;
+    });
+    // reposition dropdown when window size changes
     $(window).smartresize(function () {
         var popup = $YetaWF.getElementByIdCond(DropDown2ListEditComponent.POPUPID);
         if (popup)

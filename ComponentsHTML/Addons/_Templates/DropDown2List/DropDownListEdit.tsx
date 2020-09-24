@@ -43,6 +43,9 @@ namespace YetaWF_ComponentsHTML {
             this.Select = $YetaWF.getElement1BySelector("select", [this.Control]) as HTMLSelectElement;
             this.Container = $YetaWF.getElement1BySelector(".t_container", [this.Control]) as HTMLDivElement;
 
+            let width = this.calcMaxStringLength();
+            this.Control.style.width = `${width}px`;
+
             $YetaWF.registerEventHandler(this.Container, "mouseenter", null, (ev: MouseEvent): boolean => {
                 if (this.Enabled) {
                     $YetaWF.elementRemoveClass(this.Container, "k-state-hover");
@@ -70,7 +73,7 @@ namespace YetaWF_ComponentsHTML {
                 return true;
             });
             $YetaWF.registerEventHandler(this.Control, "focusout", null, (ev: FocusEvent): boolean => {
-                //$$$$ this.closePopup();
+                //$$$ this.closePopup();
                 $YetaWF.elementRemoveClass(this.Container, "k-state-focused");
                 this.Focused = false;
                 return true;
@@ -222,7 +225,7 @@ namespace YetaWF_ComponentsHTML {
                 return true;
             });
         }
-        private closePopup(): void {
+        public closePopup(): void {
             if (!this.Popup) return;
             this.Popup.remove();
             this.Popup = null;
@@ -284,6 +287,39 @@ namespace YetaWF_ComponentsHTML {
             this.Input.innerText = "";
         }
 
+        public static closeDropdowns(): void {
+            let popup = $YetaWF.getElementByIdCond(DropDown2ListEditComponent.POPUPID);
+            if (!popup) return;
+            let ownerId = $YetaWF.getAttribute(popup, "data-owner");
+            let control = DropDown2ListEditComponent.getControlById<DropDown2ListEditComponent>(ownerId, DropDown2ListEditComponent.SELECTOR);
+            control.closePopup();
+        }
+
+
+        private calcMaxStringLength(): number {
+
+            let elem = <div style="position:absolute;visibility:hidden;white-space:nowrap"></div> as HTMLElement;
+            this.Control.appendChild(elem);
+
+            let width: number = 0;
+
+            const opts = this.Select.options;
+            const len = opts.length;
+            for (let i = 0; i < len; ++i) {
+                elem.innerHTML = opts[i].innerHTML;
+                let w = elem.clientWidth;
+                if (w > width)
+                    width = w;
+            }
+
+            // extra for padding and dropdown selector
+            elem.innerText = "MMMM";// 4 characters
+            width += elem.clientWidth;
+
+            elem.remove();
+            return width;
+        }
+
         public ajaxUpdate(data: any, ajaxUrl: string, onSuccess?: (data: any) => void, onFailure?: (result: string) => void): void {
 
             //$YetaWF.setLoading(true);
@@ -330,16 +366,7 @@ namespace YetaWF_ComponentsHTML {
         }
     }
 
-    // We need to delay initialization until divs become visible so we can calculate the dropdown width
-    //$YetaWF.registerActivateDiv((tag: HTMLElement): void => {
-    //    var ctls = $YetaWF.getElementsBySelector(DropDown2ListEditComponent.SELECTOR, [tag]);
-    //    for (let ctl of ctls) {
-    //        var control: DropDown2ListEditComponent = YetaWF.ComponentBaseDataImpl.getControlFromTag(ctl, DropDown2ListEditComponent.SELECTOR);
-    //        control.updateWidth();
-    //    }
-    //});
-
-    //// handle submit/apply
+    // handle submit/apply
     $YetaWF.registerCustomEventHandlerDocument(DropDown2ListEditComponent.EVENTCHANGE, `.ysubmitonchange ${DropDown2ListEditComponent.SELECTOR}`, (ev: Event): boolean => {
         $YetaWF.Forms.submitOnChange(ev.target as HTMLElement);
         return false;
@@ -353,6 +380,13 @@ namespace YetaWF_ComponentsHTML {
         return false;
     });
 
+    // close dropdown when clicking outside
+    $YetaWF.registerEventHandlerBody("click", null, (ev: MouseEvent): boolean => {
+        DropDown2ListEditComponent.closeDropdowns();
+        return true;
+    });
+
+    // reposition dropdown when window size changes
     ($(window) as any).smartresize((): void => {
         let popup = $YetaWF.getElementByIdCond(DropDown2ListEditComponent.POPUPID);
         if (popup)

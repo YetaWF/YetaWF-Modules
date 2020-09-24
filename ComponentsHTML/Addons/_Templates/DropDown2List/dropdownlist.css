@@ -9,7 +9,7 @@
     padding-right: 0; }
 
 .yt_dropdown2list_base .t_input {
-  padding: .2em .4em .2em 0.4em;
+  padding: .2em .4em .2em .4em;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden; }
