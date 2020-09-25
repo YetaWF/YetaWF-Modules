@@ -473,11 +473,9 @@ namespace YetaWF_ComponentsHTML {
         return true;
     });
 
-    // reposition dropdown when window size changes
+    // close dropdown when window size changes
     ($(window) as any).smartresize((): void => {
-        let popup = $YetaWF.getElementByIdCond(DropDownListEditComponent.POPUPID);
-        if (popup)
-            DropDownListEditComponent.positionPopup(popup);
+        DropDownListEditComponent.closeDropdowns();
     });
 
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, (ev: Event): boolean => {
