@@ -1116,6 +1116,14 @@ namespace YetaWF_ComponentsHTML {
             }
             throw `Unexpected filter op ${op}`;
         }
+
+        public static closeFilterMenus(): void {
+            let menus = $YetaWF.getElementsBySelector(".yt_grid_menus ul.k-menu");
+            for (let menu of menus) {
+                $(menu).hide();
+            }
+        }
+
         // add/remove (static grid)
         private removeRecord(trElem: HTMLElement, recNum: number, colName: string) : void {
             if (!this.Setup.StaticData) throw "Static grids only";
@@ -1439,4 +1447,14 @@ namespace YetaWF_ComponentsHTML {
             throw "GetAllCheckBoxesSelected not available";
         }
     }
+
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, (ev: Event): boolean => {
+        Grid.closeFilterMenus();
+        return true;
+    });
+    window.addEventListener("scroll", (ev: Event): any => {
+        Grid.closeFilterMenus();
+        return true;
+    });
+
 }

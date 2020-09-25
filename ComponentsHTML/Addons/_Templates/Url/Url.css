@@ -7,8 +7,6 @@ div.yt_url.t_display {
 
 div.yt_url.t_edit {
   display: inline-block; }
-  div.yt_url.t_edit .t_select {
-    margin-right: 1ch; }
   div.yt_url.t_edit .t_link {
     margin-left: .5ch; }
   div.yt_url.t_edit .t_local,

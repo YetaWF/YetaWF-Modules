@@ -1064,6 +1064,13 @@ var YetaWF_ComponentsHTML;
             }
             throw "Unexpected filter op " + op;
         };
+        Grid.closeFilterMenus = function () {
+            var menus = $YetaWF.getElementsBySelector(".yt_grid_menus ul.k-menu");
+            for (var _i = 0, menus_2 = menus; _i < menus_2.length; _i++) {
+                var menu = menus_2[_i];
+                $(menu).hide();
+            }
+        };
         // add/remove (static grid)
         Grid.prototype.removeRecord = function (trElem, recNum, colName) {
             if (!this.Setup.StaticData)
@@ -1122,8 +1129,8 @@ var YetaWF_ComponentsHTML;
                 // close all menus
                 var menuDiv = $YetaWF.getElementById(this.ControlId + "_menus");
                 var menus = $YetaWF.getElementsBySelector(".tg_fentry .k-menu", [menuDiv]);
-                for (var _i = 0, menus_2 = menus; _i < menus_2.length; _i++) {
-                    var menu = menus_2[_i];
+                for (var _i = 0, menus_3 = menus; _i < menus_3.length; _i++) {
+                    var menu = menus_3[_i];
                     var menuData = $(menu).data("kendoMenu");
                     menuData.destroy();
                 }
@@ -1439,6 +1446,14 @@ var YetaWF_ComponentsHTML;
         return Grid;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.Grid = Grid;
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, function (ev) {
+        Grid.closeFilterMenus();
+        return true;
+    });
+    window.addEventListener("scroll", function (ev) {
+        Grid.closeFilterMenus();
+        return true;
+    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=Grid.js.map

@@ -18,8 +18,10 @@ $ddheight: 1em;
             padding-right: 0;// override k-dropdown-wrap's 2em
         }
     }
-
-    .t_input {
+    .k-dropdown-wrap .k-input {
+        text-indent: 0;
+    }
+    .t_container .t_input {
         padding: .2em .4em .2em .4em;
         white-space: nowrap;
         text-overflow: ellipsis;
