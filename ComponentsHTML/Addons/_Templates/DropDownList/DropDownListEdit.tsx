@@ -114,6 +114,9 @@ namespace YetaWF_ComponentsHTML {
                         } else if (key === "Escape") {
                             this.closePopup();
                             return false;
+                        } else if (key === "Tab") {
+                            this.closePopup();
+                            return true;
                         } else if (key.length === 1) {
                             // find an entry starting with the character pressed
                             const opts = this.Select.options;
@@ -122,7 +125,17 @@ namespace YetaWF_ComponentsHTML {
                                 key = key.toLowerCase();
                                 if (opts[i].text.toLowerCase().startsWith(key)) {
                                     this.selectedIndex = i;
-                                    break;
+                                    return true;
+                                }
+                            }
+                            if (this.selectedIndex > 0) {
+                                let end = this.selectedIndex;
+                                for (let i = 0; i < end; ++i) {
+                                    key = key.toLowerCase();
+                                    if (opts[i].text.toLowerCase().startsWith(key)) {
+                                        this.selectedIndex = i;
+                                        return true;
+                                    }
                                 }
                             }
                         }
@@ -300,8 +313,8 @@ namespace YetaWF_ComponentsHTML {
 
                 let rectElem = li.getBoundingClientRect();
                 let rectContainer = scroller.getBoundingClientRect();
-                if (rectElem.bottom > rectContainer.bottom) li.scrollIntoView(false);
-                if (rectElem.top < rectContainer.top) li.scrollIntoView();
+                if (rectElem.bottom > rectContainer.bottom) li.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'end' });
+                if (rectElem.top < rectContainer.top) li.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
             }
         }
 
@@ -415,6 +428,15 @@ namespace YetaWF_ComponentsHTML {
         let popup = $YetaWF.getElementByIdCond(DropDownListEditComponent.POPUPID);
         if (popup)
             DropDownListEditComponent.positionPopup(popup);
+    });
+
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, (ev: Event): boolean => {
+        DropDownListEditComponent.closeDropdowns();
+        return true;
+    });
+    window.addEventListener("scroll", (ev: Event): any => {
+        DropDownListEditComponent.closeDropdowns();
+        return true;
     });
 }
 

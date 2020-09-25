@@ -51,5 +51,9 @@ $ddheight: 1em;
 
 #yDDPopup {
     position: absolute;
-    z-index: 10002;//$$
+    z-index:2000;
+    li {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 }

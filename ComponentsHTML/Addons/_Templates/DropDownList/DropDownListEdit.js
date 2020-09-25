@@ -102,6 +102,10 @@ var YetaWF_ComponentsHTML;
                             _this.closePopup();
                             return false;
                         }
+                        else if (key === "Tab") {
+                            _this.closePopup();
+                            return true;
+                        }
                         else if (key.length === 1) {
                             // find an entry starting with the character pressed
                             var opts = _this.Select.options;
@@ -110,7 +114,17 @@ var YetaWF_ComponentsHTML;
                                 key = key.toLowerCase();
                                 if (opts[i].text.toLowerCase().startsWith(key)) {
                                     _this.selectedIndex = i;
-                                    break;
+                                    return true;
+                                }
+                            }
+                            if (_this.selectedIndex > 0) {
+                                var end = _this.selectedIndex;
+                                for (var i = 0; i < end; ++i) {
+                                    key = key.toLowerCase();
+                                    if (opts[i].text.toLowerCase().startsWith(key)) {
+                                        _this.selectedIndex = i;
+                                        return true;
+                                    }
                                 }
                             }
                         }
@@ -286,9 +300,9 @@ var YetaWF_ComponentsHTML;
                 var rectElem = li.getBoundingClientRect();
                 var rectContainer = scroller.getBoundingClientRect();
                 if (rectElem.bottom > rectContainer.bottom)
-                    li.scrollIntoView(false);
+                    li.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'end' });
                 if (rectElem.top < rectContainer.top)
-                    li.scrollIntoView();
+                    li.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
             }
         };
         DropDownListEditComponent.prototype.clearSelectedPopupItem = function () {
@@ -396,6 +410,14 @@ var YetaWF_ComponentsHTML;
         var popup = $YetaWF.getElementByIdCond(DropDownListEditComponent.POPUPID);
         if (popup)
             DropDownListEditComponent.positionPopup(popup);
+    });
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, function (ev) {
+        DropDownListEditComponent.closeDropdowns();
+        return true;
+    });
+    window.addEventListener("scroll", function (ev) {
+        DropDownListEditComponent.closeDropdowns();
+        return true;
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 

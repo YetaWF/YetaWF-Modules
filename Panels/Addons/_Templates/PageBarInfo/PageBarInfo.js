@@ -39,6 +39,10 @@ var YetaWF_Panels;
                 $YetaWF.elementAddClassList(entry, _this.Setup.ActiveCss);
                 return true;
             });
+            $YetaWF.registerEventHandler($YetaWF.getElement1BySelector(".t_area", [_this.Control]), "scroll", null, function (ev) {
+                $YetaWF.sendContainerScrollEvent();
+                return true;
+            });
             return _this;
         }
         PageBarInfoComponent.prototype.resize = function () {

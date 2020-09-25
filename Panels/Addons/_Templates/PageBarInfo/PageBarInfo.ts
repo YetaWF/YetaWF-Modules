@@ -35,7 +35,12 @@ namespace YetaWF_Panels {
                 $YetaWF.elementAddClassList(entry, this.Setup.ActiveCss);
                 return true;
             });
+            $YetaWF.registerEventHandler($YetaWF.getElement1BySelector(".t_area", [this.Control]), "scroll", null, (ev: Event): boolean => {
+                $YetaWF.sendContainerScrollEvent();
+                return true;
+            });
         }
+
         public resize(): void {
             if (!this.Setup.Resize) return;
             // Resize the page bar in height so we fill the remaining page height
