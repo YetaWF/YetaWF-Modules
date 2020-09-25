@@ -88,6 +88,27 @@ namespace YetaWF_ComponentsHTML {
         public enable(enabled: boolean): void {
             this.kendoDatePicker.enable(enabled);
         }
+        public close(): void {
+            this.kendoDatePicker.close();
+        }
+        public static closeAll(): void {
+            let ctrls = $YetaWF.getElementsBySelector(DateEditComponent.SELECTOR);
+            for (let ctrl of ctrls) {
+                let c = DateEditComponent.getControlFromTag<DateEditComponent>(ctrl, DateEditComponent.SELECTOR);
+                c.close();
+            }
+        }
     }
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, (ev: Event): boolean => {
+        DateEditComponent.closeAll();
+        return true;
+    });
+    ($(window) as any).smartresize((): void => {
+        DateEditComponent.closeAll();
+    });
+    window.addEventListener("scroll", (ev: Event): any => {
+        DateEditComponent.closeAll();
+        return true;
+    });
 }
 

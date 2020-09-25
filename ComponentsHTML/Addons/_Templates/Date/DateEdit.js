@@ -91,12 +91,34 @@ var YetaWF_ComponentsHTML;
         DateEditComponent.prototype.enable = function (enabled) {
             this.kendoDatePicker.enable(enabled);
         };
+        DateEditComponent.prototype.close = function () {
+            this.kendoDatePicker.close();
+        };
+        DateEditComponent.closeAll = function () {
+            var ctrls = $YetaWF.getElementsBySelector(DateEditComponent.SELECTOR);
+            for (var _i = 0, ctrls_1 = ctrls; _i < ctrls_1.length; _i++) {
+                var ctrl = ctrls_1[_i];
+                var c = DateEditComponent.getControlFromTag(ctrl, DateEditComponent.SELECTOR);
+                c.close();
+            }
+        };
         DateEditComponent.TEMPLATE = "yt_date";
         DateEditComponent.SELECTOR = ".yt_date.t_edit";
         DateEditComponent.EVENT = "date_change";
         return DateEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.DateEditComponent = DateEditComponent;
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, function (ev) {
+        DateEditComponent.closeAll();
+        return true;
+    });
+    $(window).smartresize(function () {
+        DateEditComponent.closeAll();
+    });
+    window.addEventListener("scroll", function (ev) {
+        DateEditComponent.closeAll();
+        return true;
+    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=DateEdit.js.map

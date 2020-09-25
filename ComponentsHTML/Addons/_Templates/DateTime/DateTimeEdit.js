@@ -91,11 +91,34 @@ var YetaWF_ComponentsHTML;
         DateTimeEditComponent.prototype.enable = function (enabled) {
             this.kendoDateTimePicker.enable(enabled);
         };
+        DateTimeEditComponent.prototype.close = function () {
+            this.kendoDateTimePicker.close("date");
+            this.kendoDateTimePicker.close("time");
+        };
+        DateTimeEditComponent.closeAll = function () {
+            var ctrls = $YetaWF.getElementsBySelector(DateTimeEditComponent.SELECTOR);
+            for (var _i = 0, ctrls_1 = ctrls; _i < ctrls_1.length; _i++) {
+                var ctrl = ctrls_1[_i];
+                var c = DateTimeEditComponent.getControlFromTag(ctrl, DateTimeEditComponent.SELECTOR);
+                c.close();
+            }
+        };
         DateTimeEditComponent.TEMPLATE = "yt_datetime";
         DateTimeEditComponent.SELECTOR = ".yt_datetime.t_edit";
         return DateTimeEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.DateTimeEditComponent = DateTimeEditComponent;
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, function (ev) {
+        DateTimeEditComponent.closeAll();
+        return true;
+    });
+    $(window).smartresize(function () {
+        DateTimeEditComponent.closeAll();
+    });
+    window.addEventListener("scroll", function (ev) {
+        DateTimeEditComponent.closeAll();
+        return true;
+    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=DateTimeEdit.js.map

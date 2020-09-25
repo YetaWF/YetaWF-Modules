@@ -473,14 +473,12 @@ namespace YetaWF_ComponentsHTML {
         return true;
     });
 
-    // close dropdown when window size changes
-    ($(window) as any).smartresize((): void => {
-        DropDownListEditComponent.closeDropdowns();
-    });
-
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, (ev: Event): boolean => {
         DropDownListEditComponent.closeDropdowns();
         return true;
+    });
+    ($(window) as any).smartresize((): void => {
+        DropDownListEditComponent.closeDropdowns();
     });
     window.addEventListener("scroll", (ev: Event): any => {
         DropDownListEditComponent.closeDropdowns();

@@ -87,6 +87,28 @@ namespace YetaWF_ComponentsHTML {
         public enable(enabled: boolean): void {
             this.kendoDateTimePicker.enable(enabled);
         }
+        public close(): void {
+            this.kendoDateTimePicker.close("date");
+            this.kendoDateTimePicker.close("time");
+        }
+        public static closeAll(): void {
+            let ctrls = $YetaWF.getElementsBySelector(DateTimeEditComponent.SELECTOR);
+            for (let ctrl of ctrls) {
+                let c = DateTimeEditComponent.getControlFromTag<DateTimeEditComponent>(ctrl, DateTimeEditComponent.SELECTOR);
+                c.close();
+            }
+        }
     }
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, (ev: Event): boolean => {
+        DateTimeEditComponent.closeAll();
+        return true;
+    });
+    ($(window) as any).smartresize((): void => {
+        DateTimeEditComponent.closeAll();
+    });
+    window.addEventListener("scroll", (ev: Event): any => {
+        DateTimeEditComponent.closeAll();
+        return true;
+    });
 }
 
