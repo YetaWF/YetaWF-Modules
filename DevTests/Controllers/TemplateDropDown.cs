@@ -37,11 +37,11 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public int DropDownListInt { get; set; }
             public List<SelectionItem<int>> DropDownListInt_List { get; set; }
 
-            //$$$ [Category("Core"), Caption("Enum"), Description("Enum (Required)")]
-            //[UIHint("Enum")]
-            //[RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
-            //[ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            //public SampleEnum Enum { get; set; }
+            [Category("Core"), Caption("Enum"), Description("Enum (Required)")]
+            [UIHint("Enum")]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
+            public SampleEnum Enum { get; set; }
 
             // ENUM
             public enum SampleEnum {
