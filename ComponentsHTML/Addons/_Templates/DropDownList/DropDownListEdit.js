@@ -228,9 +228,17 @@ var YetaWF_ComponentsHTML;
             var ul = $YetaWF.getElement1BySelector("ul", [this.Popup]);
             var opts = this.Select.options;
             var len = opts.length;
+            var html = "";
             for (var i = 0; i < len; ++i) {
-                ul.append($YetaWF.createElement("li", { tabindex: "-1", role: "option", unselectable: "on", class: "k-item", "data-index": i }, opts[i].innerText));
+                var o = opts[i];
+                var tt = o.getAttribute(YConfigs.Basics.CssTooltip);
+                if (tt)
+                    tt = " " + YConfigs.Basics.CssTooltip + "=\"" + tt + "\"";
+                else
+                    tt = "";
+                html += "<li tabindex=\"-1\" role=\"option\" unselectable=\"on\" class=\"k-item\" data-index=\"" + i + "\"" + tt + ">" + o.innerHTML + "</li>";
             }
+            ul.innerHTML = html;
             var style = window.getComputedStyle(this.Control);
             this.Popup.style.font = style.font;
             this.Popup.style.fontStyle = style.fontStyle;
@@ -344,9 +352,9 @@ var YetaWF_ComponentsHTML;
                 var rectElem = li.getBoundingClientRect();
                 var rectContainer = scroller.getBoundingClientRect();
                 if (rectElem.bottom > rectContainer.bottom)
-                    li.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'end' });
+                    li.scrollIntoView({ behavior: "auto", block: "nearest", inline: "end" });
                 if (rectElem.top < rectContainer.top)
-                    li.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
+                    li.scrollIntoView({ behavior: "auto", block: "nearest", inline: "start" });
             }
         };
         DropDownListEditComponent.prototype.clearSelectedPopupItem = function () {
@@ -464,5 +472,3 @@ var YetaWF_ComponentsHTML;
         return true;
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=DropDownListEdit.js.map

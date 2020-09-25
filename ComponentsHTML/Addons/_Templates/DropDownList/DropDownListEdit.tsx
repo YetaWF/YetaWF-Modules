@@ -232,9 +232,17 @@ namespace YetaWF_ComponentsHTML {
             let ul = $YetaWF.getElement1BySelector("ul", [this.Popup]);
             const opts = this.Select.options;
             const len = opts.length;
+            let html = "";
             for (let i = 0; i < len; ++i) {
-                ul.append(<li tabindex="-1" role="option" unselectable="on" class="k-item" data-index={i}>{opts[i].innerText}</li>);
+                let o = opts[i];
+                let tt = o.getAttribute(YConfigs.Basics.CssTooltip);
+                if (tt)
+                    tt = ` ${YConfigs.Basics.CssTooltip}="${tt}"`;
+                else
+                    tt = "";
+                html += `<li tabindex="-1" role="option" unselectable="on" class="k-item" data-index="${i}"${tt}>${o.innerHTML}</li>`;
             }
+            ul.innerHTML = html;
 
             let style = window.getComputedStyle(this.Control);
             this.Popup.style.font = style.font;
@@ -355,8 +363,8 @@ namespace YetaWF_ComponentsHTML {
 
                 let rectElem = li.getBoundingClientRect();
                 let rectContainer = scroller.getBoundingClientRect();
-                if (rectElem.bottom > rectContainer.bottom) li.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'end' });
-                if (rectElem.top < rectContainer.top) li.scrollIntoView({ behavior: 'auto', block: 'nearest', inline: 'start' });
+                if (rectElem.bottom > rectContainer.bottom) li.scrollIntoView({ behavior: "auto", block: "nearest", inline: "end" });
+                if (rectElem.top < rectContainer.top) li.scrollIntoView({ behavior: "auto", block: "nearest", inline: "start" });
             }
         }
 

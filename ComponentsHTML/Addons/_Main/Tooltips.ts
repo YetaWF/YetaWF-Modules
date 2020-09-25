@@ -19,16 +19,15 @@ namespace YetaWF_ComponentsHTML {
 
         public init(): void {
 
-            const a2 = YConfigs.Basics.CssTooltip;
-            const a3 = YConfigs.Basics.CssTooltipSpan;
             const noTooltips = this.getNoTooltipSelectors(YVolatile.Basics.CssNoTooltips);
             const noTTImgSel = this.buildNoTT("img", noTooltips);
             const noTTASel = this.buildNoTT("a", noTooltips);
             const noTTISel = this.buildNoTT("i", noTooltips);
+            const a2 = YConfigs.Basics.CssTooltip;
+            const a3 = YConfigs.Basics.CssTooltipSpan;
             const noTTMisc = `.ui-jqgrid span[${a2}],th[${a2}],span[${a3}],li[${a2}],div[${a2}]`;
 
             const selectors = `label,input:not(.ui-button-disabled),a:not(.ui-button-disabled),${noTTImgSel},${noTTASel},${noTTISel},${noTTMisc}`;
-            const ddsel = ".k-list-container.k-popup li[data-offset-index]";
 
             $YetaWF.registerMultipleEventHandlersBody(["mouseover", "click"], `${selectors}`, (ev: Event): boolean => {
 
@@ -74,31 +73,6 @@ namespace YetaWF_ComponentsHTML {
             });
             $YetaWF.registerEventHandlerBody("mousedown", null, (ev: Event): boolean => {
                 this.removeTooltips();
-                return true;
-            });
-            $YetaWF.registerEventHandlerBody("mouseover", `${ddsel}`, (ev: MouseEvent): boolean => {
-
-                var elem: HTMLElement = ev.__YetaWFElem;
-
-                // dropdown list - find who owns this and get the matching tooltip
-                // this is a bit hairy - we save all the tooltips for a dropdown list in a variable
-                // named ..id.._tooltips. The popup/dropdown is named ..id..-list so we deduce the
-                // variable name from the popup/dropdown. This is going to break at some point...
-                const ttindex = $YetaWF.getAttributeCond(elem, "data-offset-index");
-                if (!ttindex)
-                    return true;
-                const container = $YetaWF.elementClosestCond(elem, ".k-list-container.k-popup");
-                if (!container)
-                    return true;
-                let id = container.id;
-                if (!id)
-                    return true;
-                id = id.replace("-list", "");
-                var dd: DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(id, DropDownListEditComponent.SELECTOR);
-                let tip = dd.getToolTip(Number(ttindex));
-                if (!tip)
-                    return true;
-                this.showTooltip(elem, tip);
                 return true;
             });
             $YetaWF.registerEventHandlerBody("mouseout", `.${this.TOOLTIPACTIVEELEMCLASS}`, (ev: MouseEvent): boolean => {
@@ -150,7 +124,6 @@ namespace YetaWF_ComponentsHTML {
                 this.removeTooltips();
                 return;
             }
-
 
             let title = $YetaWF.getAttributeCond(elem, "title");
             if (title) {
