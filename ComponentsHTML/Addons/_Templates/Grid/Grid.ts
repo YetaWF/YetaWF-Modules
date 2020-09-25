@@ -169,6 +169,11 @@ namespace YetaWF_ComponentsHTML {
 
             this.updateStatus();
 
+            $YetaWF.getElement1BySelector(".tg_table", [this.Control]).addEventListener("scroll", (ev: Event): any => {
+                $YetaWF.sendContainerScrollEvent();
+                return true;
+            });
+
             $YetaWF.registerEventHandler(this.Control, "mouseover", ".tg_header th, .tg_filter .tg_button, .tg_pager .tg_button", (ev: MouseEvent): boolean => {
                 if (!$YetaWF.elementHasClass(ev.__YetaWFElem, this.Setup.HoverCss))
                     $YetaWF.elementAddClass(ev.__YetaWFElem, this.Setup.HoverCss);

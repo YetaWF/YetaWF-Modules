@@ -269,18 +269,62 @@ var YetaWF_ComponentsHTML;
                 return;
             var ownerId = $YetaWF.getAttribute(popup, "data-owner");
             var control = DropDownListEditComponent.getControlById(ownerId, DropDownListEditComponent.SELECTOR);
-            // resize
             var scroller = $YetaWF.getElement1BySelector(".k-list-scroller", [popup]);
-            var rect = control.Control.getBoundingClientRect();
-            var top = window.pageYOffset + rect.bottom;
-            var left = window.pageXOffset + rect.left;
-            var width = control.Setup.DropDownWidthFactor * control.DropDownWidth;
+            // resize to fit
+            var controlRect = control.Control.getBoundingClientRect();
+            var desiredHeight = control.Setup.DropDownHeightFactor * DropDownListEditComponent.DEFAULTHEIGHT;
+            var desiredWidth = control.Setup.DropDownWidthFactor * control.DropDownWidth;
+            var bottomAvailable = window.innerHeight - controlRect.bottom;
+            var topAvailable = controlRect.top;
+            var top = 0, bottom = 0;
+            // Top/bottom position and height calculation
+            var useTop = true;
+            if (bottomAvailable < desiredHeight && topAvailable > bottomAvailable) {
+                useTop = false;
+                bottom = window.innerHeight - controlRect.top;
+                if (topAvailable < desiredHeight)
+                    desiredHeight = topAvailable;
+            }
+            else {
+                top = controlRect.bottom;
+                if (bottomAvailable < desiredHeight)
+                    bottomAvailable = desiredHeight;
+            }
+            // Left/Width calculation
+            var left = 0, right = 0;
+            var useLeft = true;
+            if (desiredWidth > window.innerWidth) {
+                useLeft = false;
+                left = 0;
+                desiredWidth = window.innerWidth;
+            }
+            else {
+                if (controlRect.left + desiredWidth > window.innerWidth) {
+                    useLeft = false;
+                    right = 0;
+                }
+                else if (controlRect.left < 0) {
+                    left = 0;
+                }
+                else {
+                    left = controlRect.left;
+                }
+            }
             // set left, top, width on #yDDPopup
-            popup.style.width = width + "px";
-            popup.style.top = top + "px";
-            popup.style.left = left + "px";
-            var height = control.Setup.DropDownHeightFactor * DropDownListEditComponent.DEFAULTHEIGHT;
-            scroller.style.maxHeight = height + "px";
+            if (useTop) {
+                popup.style.top = top + window.pageYOffset + "px";
+            }
+            else {
+                popup.style.bottom = bottom - window.pageYOffset + "px";
+            }
+            if (useLeft) {
+                popup.style.left = left + window.pageXOffset + "px";
+            }
+            else {
+                popup.style.right = right - window.pageXOffset + "px";
+            }
+            popup.style.width = desiredWidth + "px";
+            scroller.style.maxHeight = desiredHeight + "px";
         };
         DropDownListEditComponent.prototype.selectPopupItem = function () {
             var index = this.Select.selectedIndex;

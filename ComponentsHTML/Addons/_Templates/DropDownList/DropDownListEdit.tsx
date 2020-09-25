@@ -276,22 +276,64 @@ namespace YetaWF_ComponentsHTML {
             if (!popup) return;
             let ownerId = $YetaWF.getAttribute(popup, "data-owner");
             let control = DropDownListEditComponent.getControlById<DropDownListEditComponent>(ownerId, DropDownListEditComponent.SELECTOR);
-
-            // resize
             let scroller = $YetaWF.getElement1BySelector(".k-list-scroller", [popup]);
 
-            let rect = control.Control.getBoundingClientRect();
-            let top = window.pageYOffset + rect.bottom;
-            let left = window.pageXOffset + rect.left;
-            let width = control.Setup.DropDownWidthFactor * control.DropDownWidth;
+            // resize to fit
+
+            let controlRect = control.Control.getBoundingClientRect();
+            let desiredHeight = control.Setup.DropDownHeightFactor * DropDownListEditComponent.DEFAULTHEIGHT;
+            let desiredWidth = control.Setup.DropDownWidthFactor * control.DropDownWidth;
+            let bottomAvailable = window.innerHeight - controlRect.bottom;
+            let topAvailable = controlRect.top;
+
+            let top = 0, bottom = 0;
+
+            // Top/bottom position and height calculation
+            let useTop = true;
+            if (bottomAvailable < desiredHeight && topAvailable > bottomAvailable) {
+                useTop = false;
+                bottom = window.innerHeight - controlRect.top;
+                if (topAvailable < desiredHeight)
+                    desiredHeight = topAvailable;
+            } else {
+                top = controlRect.bottom;
+                if (bottomAvailable < desiredHeight)
+                    bottomAvailable = desiredHeight;
+            }
+
+            // Left/Width calculation
+
+            let left = 0, right = 0;
+            let useLeft = true;
+            if (desiredWidth > window.innerWidth) {
+                useLeft = false;
+                left = 0;
+                desiredWidth = window.innerWidth;
+            } else {
+                if (controlRect.left + desiredWidth > window.innerWidth) {
+                    useLeft = false;
+                    right = 0;
+                } else if (controlRect.left < 0) {
+                    left = 0;
+                } else {
+                    left = controlRect.left;
+                }
+            }
 
             // set left, top, width on #yDDPopup
-            popup.style.width = `${width}px`;
-            popup.style.top = `${top}px`;
-            popup.style.left = `${left}px`;
+            if (useTop) {
+                popup.style.top = `${top + window.pageYOffset}px`;
+            } else {
+                popup.style.bottom = `${bottom - window.pageYOffset}px`;
+            }
+            if (useLeft) {
+                popup.style.left = `${left + window.pageXOffset}px`;
+            } else {
+                popup.style.right = `${right - window.pageXOffset}px`;
+            }
+            popup.style.width = `${desiredWidth}px`;
 
-            let height = control.Setup.DropDownHeightFactor * DropDownListEditComponent.DEFAULTHEIGHT;
-            scroller.style.maxHeight = `${height}px`;
+            scroller.style.maxHeight = `${desiredHeight}px`;
         }
 
         private selectPopupItem(): void {
