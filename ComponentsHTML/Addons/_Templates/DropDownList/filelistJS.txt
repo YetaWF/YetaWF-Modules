@@ -1,2 +1,2 @@
 ﻿Uses YetaWF_ComponentsHTML,smartresize
-DropDownListEdit.ts
+DropDownListEdit.tsx

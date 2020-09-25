@@ -43,6 +43,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     [UsesAdditional("Copy", "bool", "true", "Defines whether a copy icon is displayed to allow the user to copy the contents to the clipboard and the text box is rendered read/only as opposed to disabled. If false is specified, no copy icon is shown.")]
     [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the text box is rendered read/only as opposed to disabled.")]
     [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
+    [UsesAdditional("AutoComplete", "string", "null", "Defines the optional autocomplete attribute.")]
     public class Text10EditComponent : TextEditComponentBase {
         /// <summary>
         /// Constructor.
@@ -82,6 +83,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     [UsesAdditional("Copy", "bool", "true", "Defines whether a copy icon is displayed to allow the user to copy the contents to the clipboard and the text box is rendered read/only as opposed to disabled. If false is specified, no copy icon is shown.")]
     [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the text box is rendered read/only as opposed to disabled.")]
     [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
+    [UsesAdditional("AutoComplete", "string", "null", "Defines the optional autocomplete attribute.")]
     public class Text20EditComponent : TextEditComponentBase {
         /// <summary>
         /// Constructor.
@@ -121,6 +123,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     [UsesAdditional("Copy", "bool", "true", "Defines whether a copy icon is displayed to allow the user to copy the contents to the clipboard and the text box is rendered read/only as opposed to disabled. If false is specified, no copy icon is shown.")]
     [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the text box is rendered read/only as opposed to disabled.")]
     [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
+    [UsesAdditional("AutoComplete", "string", "null", "Defines the optional autocomplete attribute.")]
     public class Text40EditComponent : TextEditComponentBase {
         /// <summary>
         /// Constructor.
@@ -160,6 +163,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     [UsesAdditional("Copy", "bool", "true", "Defines whether a copy icon is displayed to allow the user to copy the contents to the clipboard and the text box is rendered read/only as opposed to disabled. If false is specified, no copy icon is shown.")]
     [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the text box is rendered read/only as opposed to disabled.")]
     [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
+    [UsesAdditional("AutoComplete", "string", "null", "Defines the optional autocomplete attribute.")]
     public class Text80EditComponent : TextEditComponentBase {
         /// <summary>
         /// Constructor.
@@ -197,6 +201,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     [UsesAdditional("Copy", "bool", "true", "Defines whether a copy icon is displayed to allow the user to copy the contents to the clipboard and the text box is rendered read/only as opposed to disabled. If false is specified, no copy icon is shown.")]
     [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the text box is rendered read/only as opposed to disabled.")]
     [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
+    [UsesAdditional("AutoComplete", "string", "null", "Defines the optional autocomplete attribute.")]
     public class TextEditComponent : TextEditComponentBase {
         /// <summary>
         /// Constructor.
@@ -365,11 +370,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             //if (!string.IsNullOrWhiteSpace(mask)) {
             //    id = component.MakeId(tag);
             //}
-            if (Manager.CurrentModule != null && Manager.CurrentModule.FormAutoComplete)
-                tag.MergeAttribute("autocomplete", "on", replaceExisting:false);
-            else
-                tag.MergeAttribute("autocomplete", "off", replaceExisting: false);
-
+            string autoComplete = component.PropData.GetAdditionalAttributeValue<string>("AutoComplete", null);
+            if (autoComplete != null) {
+                tag.MergeAttribute("autocomplete", autoComplete, replaceExisting: false);
+            } else {
+                if (Manager.CurrentModule != null && Manager.CurrentModule.FormAutoComplete)
+                    tag.MergeAttribute("autocomplete", "on", replaceExisting: false);
+                else
+                    tag.MergeAttribute("autocomplete", "off", replaceExisting: false);
+            }
             bool copy = component.PropData.GetAdditionalAttributeValue<bool>("Copy", false);
             //string mask = component.PropData.GetAdditionalAttributeValue<string>("Mask", null);
 
