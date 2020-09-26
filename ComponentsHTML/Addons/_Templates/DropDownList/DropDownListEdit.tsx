@@ -56,7 +56,6 @@ namespace YetaWF_ComponentsHTML {
             this.Container = $YetaWF.getElement1BySelector(".t_container", [this.Control]) as HTMLDivElement;
 
             this.optionsUpdated();
-            this.enable($YetaWF.getAttributeCond(this.Select, "disabled") == null);
 
             $YetaWF.registerEventHandler(this.Container, "mouseenter", null, (ev: MouseEvent): boolean => {
                 if (this.Enabled) {
@@ -218,6 +217,7 @@ namespace YetaWF_ComponentsHTML {
                 this.closePopup();
                 return;
             }
+
             DropDownListEditComponent.closeDropdowns();
             this.Popup =
                 <div id="yDDPopup" data-owner={this.ControlId} class="k-animation-container" aria-hidden="false">
@@ -254,6 +254,7 @@ namespace YetaWF_ComponentsHTML {
 
             document.body.append(this.Popup);
             this.selectPopupItem();
+            this.Control.setAttribute("aria-expanded", "true");
 
             $YetaWF.registerEventHandler(this.Popup, "click", "ul li", (ev: MouseEvent): boolean => {
                 let li = ev.__YetaWFElem as HTMLLIElement;
@@ -278,6 +279,7 @@ namespace YetaWF_ComponentsHTML {
             if (!this.Popup) return;
             this.Popup.remove();
             this.Popup = null;
+            this.Control.setAttribute("aria-expanded", "false");
         }
 
         public static positionPopup(popup: HTMLElement): void {

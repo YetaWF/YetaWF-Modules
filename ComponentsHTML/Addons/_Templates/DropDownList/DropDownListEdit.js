@@ -40,7 +40,6 @@ var YetaWF_ComponentsHTML;
             _this.Select = $YetaWF.getElement1BySelector("select", [_this.Control]);
             _this.Container = $YetaWF.getElement1BySelector(".t_container", [_this.Control]);
             _this.optionsUpdated();
-            _this.enable($YetaWF.getAttributeCond(_this.Select, "disabled") == null);
             $YetaWF.registerEventHandler(_this.Container, "mouseenter", null, function (ev) {
                 if (_this.Enabled) {
                     $YetaWF.elementRemoveClass(_this.Container, "k-state-hover");
@@ -247,6 +246,7 @@ var YetaWF_ComponentsHTML;
             DropDownListEditComponent.positionPopup(this.Popup);
             document.body.append(this.Popup);
             this.selectPopupItem();
+            this.Control.setAttribute("aria-expanded", "true");
             $YetaWF.registerEventHandler(this.Popup, "click", "ul li", function (ev) {
                 var li = ev.__YetaWFElem;
                 var index = Number($YetaWF.getAttribute(li, "data-index"));
@@ -271,6 +271,7 @@ var YetaWF_ComponentsHTML;
                 return;
             this.Popup.remove();
             this.Popup = null;
+            this.Control.setAttribute("aria-expanded", "false");
         };
         DropDownListEditComponent.positionPopup = function (popup) {
             if (!popup)

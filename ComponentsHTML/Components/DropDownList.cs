@@ -196,9 +196,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             tag.InnerHtml = tagHtml.ToString();
 
             hb.Append($@"
-<div id='{component.ControlId}' class='k-widget k-dropdown yt_dropdownlist_base t_edit {cssClass}' tabindex='0' unselectable='on' role='listbox' aria-haspopup='true' aria-expanded='false' aria-owns='{component.ControlId}_list' aria-live='polite' aria-busy='false'
+<div id='{component.ControlId}' class='k-widget k-dropdown yt_dropdownlist_base t_edit {cssClass}' {(disabled ? "aria-disabled='true'" : "tabindex='0' aria-disabled='false'")} unselectable='on' role='listbox' aria-haspopup='true' aria-expanded='false' aria-owns='yDDPopup' aria-live='polite' aria-busy='false'
         aria-activedescendant='{Guid.NewGuid().ToString()}'>
-    <div unselectable='on' class='t_container k-dropdown-wrap k-state-default'>
+    <div unselectable='on' class='t_container k-dropdown-wrap k-state-default {(disabled ? "k-state-disabled" : "")}' {(disabled ? "disabled='disabled'" : "")}>
         <div unselectable='on' class='t_input k-input'>{HAE(text)}</div>
         <div unselectable='on' class='t_select' aria-label='select'>
             <span class='t_dd'>
