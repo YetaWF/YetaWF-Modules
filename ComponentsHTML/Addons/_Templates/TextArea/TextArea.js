@@ -56,9 +56,6 @@ var YetaWF_ComponentsHTML;
                 config.filebrowserImageBrowseUrl = setup.FilebrowserImageBrowseUrl;
                 config.filebrowserImageBrowseLinkUrl = setup.FilebrowserImageBrowseUrl;
             }
-            if (setup.FilebrowserFlashBrowseUrl) {
-                config.filebrowserFlashBrowseUrl = setup.FilebrowserFlashBrowseUrl;
-            }
             if (setup.FilebrowserPageBrowseUrl) {
                 config.filebrowserBrowseUrl = setup.FilebrowserPageBrowseUrl;
             }

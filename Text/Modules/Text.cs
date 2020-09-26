@@ -103,7 +103,7 @@ namespace YetaWF.Modules.Text.Modules {
         public byte[] FeedImage_Data { get; set; }
 
         [Category("General"), Caption("Contents"), Description("The text contents")]
-        [UIHint("TextArea"), AdditionalMetadata("ImageBrowse", true), AdditionalMetadata("FlashBrowse", true), StringLength(MaxContents), AdditionalMetadata("PageBrowse", true)]
+        [UIHint("TextArea"), AdditionalMetadata("ImageBrowse", true), StringLength(MaxContents), AdditionalMetadata("PageBrowse", true)]
         [DontSave]
         [NoModelChange]
         public string Contents {

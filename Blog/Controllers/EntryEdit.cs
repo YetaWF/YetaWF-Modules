@@ -78,12 +78,12 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Summary"), Description("The summary for this blog entry - If no summary is entered, the entire blog text is shown instead of the summary")]
             [UIHint("TextArea"), AdditionalMetadata("EmHeight", 10), StringLength(BlogEntry.MaxSummary)]
-            [AdditionalMetadata("TextAreaSave", false), AdditionalMetadata("ImageBrowse", true), AdditionalMetadata("FlashBrowse", true), AdditionalMetadata("PageBrowse", false)]
+            [AdditionalMetadata("TextAreaSave", false), AdditionalMetadata("ImageBrowse", true), AdditionalMetadata("PageBrowse", false)]
             public string Summary { get; set; }
 
             [Caption("Blog Text"), Description("The complete text for this blog entry")]
             [UIHint("TextArea"), AdditionalMetadata("EmHeight", 20), StringLength(BlogEntry.MaxText)]
-            [AdditionalMetadata("TextAreaSave", false), AdditionalMetadata("ImageBrowse", true), AdditionalMetadata("FlashBrowse", true), AdditionalMetadata("PageBrowse", false)]
+            [AdditionalMetadata("TextAreaSave", false), AdditionalMetadata("ImageBrowse", true), AdditionalMetadata("PageBrowse", false)]
             [RequiredIf("Published", true)]
             public string Text { get; set; }
 

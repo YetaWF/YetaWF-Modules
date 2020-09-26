@@ -218,7 +218,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public string Text80 { get; set; }
 
             [Category("Core"), Caption("TextArea"), Description("TextArea (Required)")]
-            [UIHint("TextArea"), AdditionalMetadata("ImageBrowse", true), AdditionalMetadata("FlashBrowse", true), AdditionalMetadata("PageBrowse", true)]
+            [UIHint("TextArea"), AdditionalMetadata("ImageBrowse", true), AdditionalMetadata("PageBrowse", true)]
             [StringLength(1000)]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]

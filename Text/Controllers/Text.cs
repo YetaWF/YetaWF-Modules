@@ -18,7 +18,7 @@ namespace YetaWF.Modules.Text.Controllers {
 
         public class TextModel {
             [UIHint("TextArea"), AdditionalMetadata("EmHeight", 25)]
-            [AdditionalMetadata("TextAreaSave", true), AdditionalMetadata("ImageBrowse", true), AdditionalMetadata("FlashBrowse", true), AdditionalMetadata("PageBrowse", true)]
+            [AdditionalMetadata("TextAreaSave", true), AdditionalMetadata("ImageBrowse", true), AdditionalMetadata("PageBrowse", true)]
             public string Contents { get; set; }
         }
         public class TextModelDisplay {

@@ -11,7 +11,6 @@ namespace YetaWF_ComponentsHTML {
         RestrictedHtml: boolean;
         FilebrowserImageBrowseUrl: string;
         FilebrowserImageBrowseLinkUrl: string;
-        FilebrowserFlashBrowseUrl: string;
         FilebrowserPageBrowseUrl: string;
         FilebrowserWindowFeatures: string;
     }
@@ -57,9 +56,6 @@ namespace YetaWF_ComponentsHTML {
             if (setup.FilebrowserImageBrowseUrl) {
                 config.filebrowserImageBrowseUrl = setup.FilebrowserImageBrowseUrl;
                 config.filebrowserImageBrowseLinkUrl = setup.FilebrowserImageBrowseUrl;
-            }
-            if (setup.FilebrowserFlashBrowseUrl) {
-                config.filebrowserFlashBrowseUrl = setup.FilebrowserFlashBrowseUrl;
             }
             if (setup.FilebrowserPageBrowseUrl) {
                 config.filebrowserBrowseUrl = setup.FilebrowserPageBrowseUrl;

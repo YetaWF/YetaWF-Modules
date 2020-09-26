@@ -135,7 +135,7 @@ CKEDITOR.replace('{ControlId}', {{
     /// </summary>
     /// <remarks>
     /// If the StringLengthAttribute is specified for the model, the TextArea box is limited to the specified number of characters.
-    /// 
+    ///
     /// To render a regular TextArea HTML tag (without CKEditor), use the TextAreaSimple Component instead.
     /// </remarks>
     /// <example>
@@ -147,12 +147,11 @@ CKEDITOR.replace('{ControlId}', {{
     [UsesAdditional("SourceOnly", "bool", "false", "Defines whether the text area is rendered using a CKEditor in source mode only. Otherwise, the full CKEditor feature set is available to create HTML formatted text.")]
     [UsesAdditional("TextAreaSave", "bool", "false", "Defines whether the CKEditor toolbar offers a Save button. Otherwise, the Save button is not shown. This is not currently working (apologies).")]
     [UsesAdditional("ImageBrowse", "bool", "false", "Defines whether image support is available to browse, upload and save images. Otherwise, image support is not available.")]
-    [UsesAdditional("FlashBrowse", "bool", "false", "Defines whether Flash support is available to browse, upload and save Flash images. Otherwise, Flash support is not available.")]
     [UsesAdditional("PageBrowse", "bool", "false", "Defines whether page selection support is available when adding links. Otherwise, page selection support is not available.")]
     [UsesAdditional("RestrictedHtml", "bool", "false", "Defines whether only an HTML subset is available when creating text. Otherwise, all HTML formatting is available. Restricting HTML tags does not work well with YetaWF and should not be used.")]
     [UsesAdditional("EmHeight", "int", "10", "Defines whether the text area is rendered using a read/only CKEditor in source mode only. Otherwise, the model is rendered as a string.")]
-    [UsesSibling("_Folder", "string", "Used for image and Flash support to identify the module owning the images. If this property is not found, the current module is used as the image and Flash file owner.")]
-    [UsesSibling("_SubFolder", "string", "Used for image and Flash support to identify the module owning the images. If this property is not found, the current module is used as the image and Flash file owner.")]
+    [UsesSibling("_Folder", "string", "Used for image support to identify the module owning the images. If this property is not found, the current module is used as the image file owner.")]
+    [UsesSibling("_SubFolder", "string", "Used for image support to identify the module owning the images. If this property is not found, the current module is used as the image file owner.")]
     public class TextAreaEditComponent : TextAreaComponentBase, IYetaWFComponent<object> {
 
         /// <summary>
@@ -168,7 +167,6 @@ CKEDITOR.replace('{ControlId}', {{
             public bool RestrictedHtml { get; set; }
             public string FilebrowserImageBrowseUrl { get; set; }
             public string FilebrowserImageBrowseLinkUrl { get; set; }
-            public string FilebrowserFlashBrowseUrl { get; set; }
             public string FilebrowserPageBrowseUrl { get; set; }
             public string FilebrowserWindowFeatures { get; set; }
         }
@@ -203,7 +201,6 @@ CKEDITOR.replace('{ControlId}', {{
             bool sourceOnly = PropData.GetAdditionalAttributeValue("SourceOnly", false);
             bool useSave = PropData.GetAdditionalAttributeValue("TextAreaSave", false);
             bool useImageBrowsing = PropData.GetAdditionalAttributeValue("ImageBrowse", false);
-            bool useFlashBrowsing = PropData.GetAdditionalAttributeValue("FlashBrowse", false);
             bool usePageBrowsing = PropData.GetAdditionalAttributeValue("PageBrowse", false);
             bool restrictedHtml = PropData.GetAdditionalAttributeValue("RestrictedHtml", false);
             int emHeight = PropData.GetAdditionalAttributeValue("EmHeight", 10);
@@ -214,11 +211,6 @@ CKEDITOR.replace('{ControlId}', {{
                 filebrowserImageBrowseUrl = string.Format("/__CKEditor/ImageBrowseLinkUrl?__FolderGuid={0}&__SubFolder={1}",
                     owningGuid.ToString(), subFolder.ToString());
                 filebrowserImageBrowseUrl += "&" + Globals.Link_NoEditMode + "=y";
-            }
-            string filebrowserFlashBrowseUrl = null;
-            if (useFlashBrowsing) {
-                filebrowserFlashBrowseUrl = string.Format("/__CKEditor/FlashBrowseLinkUrl?__FolderGuid={0}&__SubFolder={1}", owningGuid.ToString(), subFolder.ToString());
-                filebrowserFlashBrowseUrl += "&" + Globals.Link_NoEditMode + "=y";
             }
             string filebrowserPageBrowseUrl = null;
             if (usePageBrowsing) {
@@ -250,7 +242,6 @@ CKEDITOR.replace('{ControlId}', {{
                 RestrictedHtml = restrictedHtml,
                 FilebrowserImageBrowseUrl = filebrowserImageBrowseUrl,
                 FilebrowserImageBrowseLinkUrl = filebrowserImageBrowseUrl,
-                FilebrowserFlashBrowseUrl = filebrowserFlashBrowseUrl,
                 FilebrowserPageBrowseUrl = filebrowserPageBrowseUrl,
                 FilebrowserWindowFeatures = "modal=yes,location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,alwaysRaised=yes,resizable=yes,scrollbars=yes",
             };

@@ -24,13 +24,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
             [Caption("Image Selection"), Description("Description of image selection")]
             [UIHint("YetaWF_ImageRepository_ImageSelection"), Required, Trim]
             public string ImageName { get; set; }
-
-            [Caption("Flash Image Selection"), Description("Description of Flash image selection")]
-            [UIHint("YetaWF_ImageRepository_FlashSelection"), Required, Trim]
-            public string FlashImageName { get; set; }
-
             public ImageSelectionInfo ImageName_Info { get; set; }
-            public FlashSelectionInfo FlashImageName_Info { get; set; }
 
             public Model() { }
 
@@ -39,10 +33,6 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
                     AllowUpload = true,
                 };
                 await ImageName_Info.InitAsync();
-                FlashImageName_Info = new FlashSelectionInfo(module, module.ModuleGuid, null) {
-                    AllowUpload = true,
-                };
-                await FlashImageName_Info.InitAsync();
             }
         }
 
