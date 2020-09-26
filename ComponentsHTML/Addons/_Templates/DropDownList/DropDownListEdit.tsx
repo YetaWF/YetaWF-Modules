@@ -412,7 +412,7 @@ namespace YetaWF_ComponentsHTML {
                     width = w;
             }
 
-            // extra for padding and dropdown selector
+            // extra for dropdown selector
             elem.innerText = "MMMM";// 4 characters
             width += elem.clientWidth;
 

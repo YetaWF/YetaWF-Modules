@@ -1,8 +1,6 @@
 @charset "UTF-8";
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 .yt_dropdownlist_base .t_container {
-  display: -webkit-box;
-  display: flex;
   overflow: hidden;
   cursor: pointer; }
   .yt_dropdownlist_base .t_container.k-dropdown-wrap {
@@ -11,25 +9,28 @@
 .yt_dropdownlist_base .k-dropdown-wrap .k-input {
   text-indent: 0; }
 
-.yt_dropdownlist_base .t_container .t_input {
-  padding: .2em .4em .2em .4em;
+.yt_dropdownlist_base .t_input.k-input {
+  padding: 0.2em 2em 0.2em 0.4em;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden; }
 
 .yt_dropdownlist_base .t_select {
-  flex-basis: 2em;
-  position: relative;
-  margin-top: -1em; }
-  .yt_dropdownlist_base .t_select .t_dd .t_img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2em;
+  height: 100%; }
+  .yt_dropdownlist_base .t_select .t_img {
     width: 1em;
     height: 1em;
-    top: 50%;
-    left: 0.5em;
     position: absolute;
-    display: inline-block;
+    top: 50%;
+    left: 50%;
+    margin-top: -0.5em;
+    margin-left: -0.5em;
     background: url("image/caret-down-solid.svg") 0px 0px no-repeat;
-    background-position-x: 0px; }
+    background-position-x: center; }
 
 .yt_dropdownlist_base select {
   display: none; }

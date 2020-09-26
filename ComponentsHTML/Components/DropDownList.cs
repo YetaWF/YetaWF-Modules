@@ -201,9 +201,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     <div unselectable='on' class='t_container k-dropdown-wrap k-state-default {(disabled ? "k-state-disabled" : "")}' {(disabled ? "disabled='disabled'" : "")}>
         <div unselectable='on' class='t_input k-input'>{HAE(text)}</div>
         <div unselectable='on' class='t_select' aria-label='select'>
-            <span class='t_dd'>
-                <div class='t_img'></div>
-            </span>
+            <div class='t_img'></div>
         </div>
     </div>
     {tag.ToString(YTagRenderMode.Normal)}

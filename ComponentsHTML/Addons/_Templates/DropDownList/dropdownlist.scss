@@ -9,40 +9,39 @@ $ddheight: 1em;
 .yt_dropdownlist_base {
 
     .t_container {
-        display:flex;
         overflow: hidden;
-
         cursor: pointer;
 
         &.k-dropdown-wrap {
-            padding-right: 0;// override k-dropdown-wrap's 2em
+            padding-right: 0;// override k-dropdown-wrap's 2em ($ddselwidth)
         }
     }
     .k-dropdown-wrap .k-input {
         text-indent: 0;
     }
-    .t_container .t_input {
-        padding: .2em .4em .2em .4em;
+    .t_input.k-input { // k-input for specificity
+        padding: .2em $ddselwidth .2em .4em;
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
     }
     .t_select {
-        flex-basis: $ddselwidth;
-        position:relative;
-        margin-top: - $ddheight;
+        position:absolute;
+        top:0;
+        right:0;
+        width:$ddselwidth;
+        height:100%;
 
-        .t_dd {
-            .t_img {
-                width:$ddwidth;
-                height:$ddheight;
-                top:50%;
-                left: ($ddselwidth - $ddwidth) / 2;
-                position:absolute;
-                display: inline-block;
-                background: url('image/caret-down-solid.svg') 0px 0px no-repeat;
-                background-position-x: 0px;
-            }
+        .t_img {
+            width:$ddwidth;
+            height:$ddheight;
+            position:absolute;
+            top:50%;
+            left:50%;
+            margin-top: - $ddheight / 2;
+            margin-left: - $ddwidth / 2;
+            background: url('image/caret-down-solid.svg') 0px 0px no-repeat;
+            background-position-x: center;
         }
     }
 

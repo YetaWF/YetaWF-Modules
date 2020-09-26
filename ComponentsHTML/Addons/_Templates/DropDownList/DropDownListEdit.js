@@ -396,7 +396,7 @@ var YetaWF_ComponentsHTML;
                 if (w > width)
                     width = w;
             }
-            // extra for padding and dropdown selector
+            // extra for dropdown selector
             elem.innerText = "MMMM"; // 4 characters
             width += elem.clientWidth;
             elem.remove();
@@ -470,5 +470,3 @@ var YetaWF_ComponentsHTML;
         return true;
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=DropDownListEdit.js.map
