@@ -1,2 +1,1 @@
-﻿Uses YetaWF_ComponentsHTML,smartresize
-PageBarInfo.ts
+﻿PageBarInfo.ts

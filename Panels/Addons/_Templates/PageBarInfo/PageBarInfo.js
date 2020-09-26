@@ -62,13 +62,14 @@ var YetaWF_Panels;
         return PageBarInfoComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_Panels.PageBarInfoComponent = PageBarInfoComponent;
-    $(window).smartresize(function () {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, function (ev) {
         var ctrlDivs = $YetaWF.getElementsBySelector(PageBarInfoComponent.SELECTOR);
         for (var _i = 0, ctrlDivs_1 = ctrlDivs; _i < ctrlDivs_1.length; _i++) {
             var ctrlDiv = ctrlDivs_1[_i];
             var mod = PageBarInfoComponent.getControlFromTag(ctrlDiv, PageBarInfoComponent.SELECTOR);
             mod.resize();
         }
+        return true;
     });
 })(YetaWF_Panels || (YetaWF_Panels = {}));
 

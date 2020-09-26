@@ -479,10 +479,7 @@ namespace YetaWF_ComponentsHTML {
         DropDownListEditComponent.closeDropdowns();
         return true;
     });
-    ($(window) as any).smartresize((): void => {
-        DropDownListEditComponent.closeDropdowns();
-    });
-    window.addEventListener("scroll", (ev: Event): any => {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: Event): boolean => {
         DropDownListEditComponent.closeDropdowns();
         return true;
     });

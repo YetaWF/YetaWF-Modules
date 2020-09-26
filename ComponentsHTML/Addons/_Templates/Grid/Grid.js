@@ -1454,10 +1454,6 @@ var YetaWF_ComponentsHTML;
         Grid.closeFilterMenus();
         return true;
     });
-    window.addEventListener("scroll", function (ev) {
-        Grid.closeFilterMenus();
-        return true;
-    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=Grid.js.map

@@ -196,18 +196,6 @@ namespace YetaWF_ComponentsHTML {
             // Initialize initial form
             this.update();
 
-            $YetaWF.registerEventHandlerWindow("resize", null, (ev: UIEvent): boolean => {
-                if (this.Setup.Style === PropertyListStyleEnum.Boxed || this.Setup.Style === PropertyListStyleEnum.BoxedWithCategories) {
-                    if (this.MasonryElem) {
-                        this.layout();
-                    } else {
-                        this.setLayout();
-                    }
-                    return true;
-                } else
-                    return false;
-            });
-
             $YetaWF.registerCustomEventHandler(this, "propertylist_relayout", (ev: Event): boolean => {
                 this.layout();
                 return false;
@@ -580,6 +568,21 @@ namespace YetaWF_ComponentsHTML {
             if (this.MasonryElem)
                 this.MasonryElem.layout!();
         }
+        public resize(): void {
+            if (this.Setup.Style === PropertyListStyleEnum.Boxed || this.Setup.Style === PropertyListStyleEnum.BoxedWithCategories) {
+                this.layout();
+            }
+        }
     }
+
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: Event): boolean => {
+        let proplists = $YetaWF.getElementsBySelector(PropertyListComponent.SELECTOR);
+        for (let proplist of proplists) {
+            let list = YetaWF.ComponentBaseDataImpl.getControlFromTag<PropertyListComponent>(proplist, PropertyListComponent.SELECTOR);
+            list.resize();
+        }
+        return false;
+    });
+
 }
 

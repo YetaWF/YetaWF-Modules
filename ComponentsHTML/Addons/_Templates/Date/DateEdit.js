@@ -112,10 +112,7 @@ var YetaWF_ComponentsHTML;
         DateEditComponent.closeAll();
         return true;
     });
-    $(window).smartresize(function () {
-        DateEditComponent.closeAll();
-    });
-    window.addEventListener("scroll", function (ev) {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, function (ev) {
         DateEditComponent.closeAll();
         return true;
     });

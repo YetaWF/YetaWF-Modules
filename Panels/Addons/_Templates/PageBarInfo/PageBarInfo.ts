@@ -54,12 +54,13 @@ namespace YetaWF_Panels {
             this.Control.style.height = `${ctrlRect.height - h}px`;
         }
     }
-    ($(window) as any).smartresize((): void => {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: Event): boolean => {
         let ctrlDivs = $YetaWF.getElementsBySelector(PageBarInfoComponent.SELECTOR);
         for (let ctrlDiv of ctrlDivs) {
             let mod = PageBarInfoComponent.getControlFromTag<PageBarInfoComponent>(ctrlDiv, PageBarInfoComponent.SELECTOR);
             mod.resize();
         }
+        return true;
     });
 
 }

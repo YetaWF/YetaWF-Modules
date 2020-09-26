@@ -1457,9 +1457,4 @@ namespace YetaWF_ComponentsHTML {
         Grid.closeFilterMenus();
         return true;
     });
-    window.addEventListener("scroll", (ev: Event): any => {
-        Grid.closeFilterMenus();
-        return true;
-    });
-
 }

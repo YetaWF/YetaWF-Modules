@@ -117,19 +117,6 @@ var YetaWF_ComponentsHTML;
             }
             // Initialize initial form
             _this.update();
-            $YetaWF.registerEventHandlerWindow("resize", null, function (ev) {
-                if (_this.Setup.Style === PropertyListStyleEnum.Boxed || _this.Setup.Style === PropertyListStyleEnum.BoxedWithCategories) {
-                    if (_this.MasonryElem) {
-                        _this.layout();
-                    }
-                    else {
-                        _this.setLayout();
-                    }
-                    return true;
-                }
-                else
-                    return false;
-            });
             $YetaWF.registerCustomEventHandler(_this, "propertylist_relayout", function (ev) {
                 _this.layout();
                 return false;
@@ -504,11 +491,25 @@ var YetaWF_ComponentsHTML;
             if (this.MasonryElem)
                 this.MasonryElem.layout();
         };
+        PropertyListComponent.prototype.resize = function () {
+            if (this.Setup.Style === PropertyListStyleEnum.Boxed || this.Setup.Style === PropertyListStyleEnum.BoxedWithCategories) {
+                this.layout();
+            }
+        };
         PropertyListComponent.TEMPLATE = "yt_propertylist";
         PropertyListComponent.SELECTOR = ".yt_propertylist";
         return PropertyListComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.PropertyListComponent = PropertyListComponent;
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, function (ev) {
+        var proplists = $YetaWF.getElementsBySelector(PropertyListComponent.SELECTOR);
+        for (var _i = 0, proplists_2 = proplists; _i < proplists_2.length; _i++) {
+            var proplist = proplists_2[_i];
+            var list = YetaWF.ComponentBaseDataImpl.getControlFromTag(proplist, PropertyListComponent.SELECTOR);
+            list.resize();
+        }
+        return false;
+    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=PropertyList.js.map

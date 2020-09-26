@@ -112,10 +112,7 @@ var YetaWF_ComponentsHTML;
         DateTimeEditComponent.closeAll();
         return true;
     });
-    $(window).smartresize(function () {
-        DateTimeEditComponent.closeAll();
-    });
-    window.addEventListener("scroll", function (ev) {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, function (ev) {
         DateTimeEditComponent.closeAll();
         return true;
     });

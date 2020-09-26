@@ -103,10 +103,7 @@ namespace YetaWF_ComponentsHTML {
         DateTimeEditComponent.closeAll();
         return true;
     });
-    ($(window) as any).smartresize((): void => {
-        DateTimeEditComponent.closeAll();
-    });
-    window.addEventListener("scroll", (ev: Event): any => {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: Event): boolean => {
         DateTimeEditComponent.closeAll();
         return true;
     });

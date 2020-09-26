@@ -462,11 +462,10 @@ var YetaWF_ComponentsHTML;
         DropDownListEditComponent.closeDropdowns();
         return true;
     });
-    $(window).smartresize(function () {
-        DropDownListEditComponent.closeDropdowns();
-    });
-    window.addEventListener("scroll", function (ev) {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, function (ev) {
         DropDownListEditComponent.closeDropdowns();
         return true;
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+
+//# sourceMappingURL=DropDownListEdit.js.map
