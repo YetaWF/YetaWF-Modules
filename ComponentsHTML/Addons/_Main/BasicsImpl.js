@@ -29,11 +29,11 @@ var YetaWF_ComponentsHTML;
         BasicsImpl.prototype.setLoading = function (on) {
             if (on !== false) {
                 this.loading = true;
-                $.prettyLoader.show();
+                LoadingSupport.show();
             }
             else {
                 this.loading = false;
-                $.prettyLoader.hide();
+                LoadingSupport.hide();
             }
         };
         // MESSAGES

@@ -40,10 +40,10 @@ namespace YetaWF_ComponentsHTML {
         public setLoading(on?: boolean): void {
             if (on !== false) {
                 this.loading = true;
-                ($ as any).prettyLoader.show();
+                LoadingSupport.show();
             } else {
                 this.loading = false;
-                ($ as any).prettyLoader.hide();
+                LoadingSupport.hide();
             }
         }
 

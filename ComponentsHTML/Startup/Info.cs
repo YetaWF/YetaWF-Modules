@@ -38,7 +38,7 @@ namespace YetaWF.Modules.ComponentsHTML.Addons {
             Package package = AreaRegistration.CurrentPackage;
             string areaName = AreaRegistration.CurrentPackage.AreaName;
 
-            scripts.AddConfigOption(areaName, "LoaderGif", manager.GetCDNUrl(manager.AddOnManager.GetAddOnNamedUrl(package.AreaName, "no-margin-for-errors.com.prettyLoader") + "images/prettyLoader/ajax-loader.gif"));
+            scripts.AddConfigOption(areaName, "LoaderGif", manager.GetCDNUrl(VersionManager.GetAddOnPackageUrl(package.AreaName) + "images/ajax-loader.gif"));
 
             return Task.CompletedTask;
         }
