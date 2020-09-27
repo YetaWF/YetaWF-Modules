@@ -37,7 +37,7 @@ var YetaWF_ComponentsHTML;
                 //}
             }) || this;
             _this.MenuControl = $YetaWF.getElementById(setup.MenuId);
-            var $btn = $(_this.Control).kendoButton();
+            var $btn = $(_this.Control).kendoButton(); // kendo use
             $btn.on("click", function (ev) {
                 var vis = $YetaWF.isVisible(_this.MenuControl);
                 ActionIconsComponent.closeMenus();
@@ -52,18 +52,32 @@ var YetaWF_ComponentsHTML;
             return _this;
         }
         ActionIconsComponent.prototype.openMenu = function () {
-            ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
             ActionIconsComponent.closeMenus();
             var $idMenu = $(this.MenuControl);
             $idMenu.appendTo($("body"));
             $idMenu.show();
             ++ActionIconsComponent.menusOpen;
-            $idMenu.position({
-                my: "left top",
-                at: "left bottom",
-                of: $(this.Control),
-                collision: "flip"
-            });
+            this.positionMenu();
+        };
+        ActionIconsComponent.prototype.positionMenu = function () {
+            var menuControl = this.MenuControl;
+            // position to fit
+            var controlRect = this.Control.getBoundingClientRect();
+            var menuRect = menuControl.getBoundingClientRect();
+            var bottomAvailable = window.innerHeight - controlRect.bottom;
+            var topAvailable = controlRect.top;
+            // Top/bottom position and height calculation
+            var top = 0, bottom = 0;
+            if (bottomAvailable < menuRect.height && topAvailable > bottomAvailable) {
+                bottom = window.innerHeight - controlRect.top;
+                menuControl.style.bottom = bottom - window.pageYOffset + "px";
+            }
+            else {
+                top = controlRect.bottom;
+                menuControl.style.top = top + window.pageYOffset + "px";
+            }
+            // set left
+            menuControl.style.left = controlRect.left + window.pageXOffset + "px";
         };
         ActionIconsComponent.closeMenus = function () {
             // find all action menus after grid (there really should only be one)
@@ -105,8 +119,16 @@ var YetaWF_ComponentsHTML;
     });
     // Handle Escape key to close any open menus
     $YetaWF.registerEventHandlerBody("keydown", null, function (ev) {
-        if (ev.which !== 27)
+        if (ev.key !== "Escape")
             return true;
+        ActionIconsComponent.closeMenus();
+        return true;
+    });
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, function (ev) {
+        ActionIconsComponent.closeMenus();
+        return true;
+    });
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, function (ev) {
         ActionIconsComponent.closeMenus();
         return true;
     });

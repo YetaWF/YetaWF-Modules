@@ -18,7 +18,7 @@ namespace YetaWF_ComponentsHTML {
 
         public static readonly TEMPLATE: string = "yt_tabs";
         public static readonly SELECTOR: string = ".yt_tabs";
-        public static readonly EVENT: string = "tabs_change";
+        public static readonly EVENTSWITCHED: string = "tabs_switched";
 
         private Setup: TabsSetup;
         private ActiveTabHidden: HTMLInputElement | null = null;
@@ -26,7 +26,7 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string, setup: TabsSetup) {
             super(controlId, TabsComponent.TEMPLATE, TabsComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
-                ChangeEvent: TabsComponent.EVENT,
+                ChangeEvent: TabsComponent.EVENTSWITCHED,
                 GetValue: (control: TabsComponent): string | null => {
                     return control.activePane.toString();
                 },
@@ -85,9 +85,7 @@ namespace YetaWF_ComponentsHTML {
                 throw `Invalid tab style ${this.Setup.TabStyle}`;
         }
         private sendEvent(): void {
-            let event = document.createEvent("Event");
-            event.initEvent(TabsComponent.EVENT, true, true);
-            this.Control.dispatchEvent(event);
+            $YetaWF.sendCustomEvent(this.Control, TabsComponent.EVENTSWITCHED);
         }
 
         public internalDestroy(): void {

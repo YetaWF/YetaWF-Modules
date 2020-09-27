@@ -124,7 +124,7 @@ namespace YetaWF_ComponentsHTML {
             DialogClass.setupDragDrop();
         }
 
-        public static close() {
+        public static close(): void {
             DialogClass.DragDropInProgress = false;
             let dialog = $YetaWF.getElementByIdCond("yDialogContainer");
             if (!dialog) return;
@@ -176,8 +176,8 @@ namespace YetaWF_ComponentsHTML {
 
             // center
             let drect = dialog.getBoundingClientRect();
-            let left = (window.innerWidth - drect.width) / 2
-            let top = (window.innerHeight - drect.height) / 2
+            let left = (window.innerWidth - drect.width) / 2;
+            let top = (window.innerHeight - drect.height) / 2;
             dialog.style.left = `${left}px`;  // or + window.pageXOffset if position:absolute
             dialog.style.top = `${top}px`; //  + window.pageYOffset
         }

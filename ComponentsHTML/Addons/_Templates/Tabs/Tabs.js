@@ -26,7 +26,7 @@ var YetaWF_ComponentsHTML;
         function TabsComponent(controlId, setup) {
             var _this = _super.call(this, controlId, TabsComponent.TEMPLATE, TabsComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: TabsComponent.EVENT,
+                ChangeEvent: TabsComponent.EVENTSWITCHED,
                 GetValue: function (control) {
                     return control.activePane.toString();
                 },
@@ -82,9 +82,7 @@ var YetaWF_ComponentsHTML;
             return _this;
         }
         TabsComponent.prototype.sendEvent = function () {
-            var event = document.createEvent("Event");
-            event.initEvent(TabsComponent.EVENT, true, true);
-            this.Control.dispatchEvent(event);
+            $YetaWF.sendCustomEvent(this.Control, TabsComponent.EVENTSWITCHED);
         };
         TabsComponent.prototype.internalDestroy = function () {
             if (this.Setup.TabStyle === TabStyleEnum.JQuery) {
@@ -143,7 +141,7 @@ var YetaWF_ComponentsHTML;
         });
         TabsComponent.TEMPLATE = "yt_tabs";
         TabsComponent.SELECTOR = ".yt_tabs";
-        TabsComponent.EVENT = "tabs_change";
+        TabsComponent.EVENTSWITCHED = "tabs_switched";
         return TabsComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.TabsComponent = TabsComponent;

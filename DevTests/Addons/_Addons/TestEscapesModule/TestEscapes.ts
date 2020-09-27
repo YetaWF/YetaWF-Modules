@@ -27,7 +27,7 @@ namespace YetaWF_DevTests {
             });
             $YetaWF.registerEventHandler(this.Module, "click", "input[name='alertYesNo']", (ev: MouseEvent): boolean => {
                 $YetaWF.alertYesNo("TEST <A> &amp; & @ {0} TEST TEST <A> &amp; & @ {0} TEST TEST <A> &amp;(+nl)(+nl)(+nl)& @ {0} TEST TEST <A> &amp; & @ {0} TEST TEST <A> &amp; & @ {0} TEST TEST <A> &amp; & @ {0} TEST TEST <A> &amp; & @ {0} TEST TEST <A> &amp; & @ {0} TEST TEST <A> &amp; & @ {0} TEST TEST <A> &amp; & @ {0} TEST ",
-                    "TITLE <A> &amp; & @ {0} TEST", () => { $YetaWF.message("Yes"); }, () => { $YetaWF.message("No"); }, { encoded: false });
+                    "TITLE <A> &amp; & @ {0} TEST", (): void => { $YetaWF.message("Yes"); }, (): void => { $YetaWF.message("No"); }, { encoded: false });
                 return true;
             });
             $YetaWF.registerEventHandler(this.Module, "click", "input[name='pleaseWait']", (ev: MouseEvent): boolean => {

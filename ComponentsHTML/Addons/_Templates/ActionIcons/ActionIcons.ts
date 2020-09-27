@@ -37,7 +37,7 @@ namespace YetaWF_ComponentsHTML {
 
             this.MenuControl = $YetaWF.getElementById(setup.MenuId) as HTMLDivElement;
 
-            var $btn = $(this.Control).kendoButton();
+            var $btn = $(this.Control).kendoButton();// kendo use
             $btn.on("click", (ev: Event): boolean => {
                 var vis = $YetaWF.isVisible(this.MenuControl);
                 ActionIconsComponent.closeMenus();
@@ -53,19 +53,36 @@ namespace YetaWF_ComponentsHTML {
         }
 
         private openMenu(): void {
-            ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
             ActionIconsComponent.closeMenus();
             var $idMenu = $(this.MenuControl);
             $idMenu.appendTo($("body"));
             $idMenu.show();
             ++ActionIconsComponent.menusOpen;
-            $idMenu.position({ //jQuery-ui use
-                my: "left top",
-                at: "left bottom",
-                of: $(this.Control),
-                collision: "flip"
-            });
+            this.positionMenu();
         }
+        private positionMenu(): void {
+
+            let menuControl = this.MenuControl;
+
+            // position to fit
+            let controlRect = this.Control.getBoundingClientRect();
+            let menuRect = menuControl.getBoundingClientRect();
+            let bottomAvailable = window.innerHeight - controlRect.bottom;
+            let topAvailable = controlRect.top;
+
+            // Top/bottom position and height calculation
+            let top = 0, bottom = 0;
+            if (bottomAvailable < menuRect.height && topAvailable > bottomAvailable) {
+                bottom = window.innerHeight - controlRect.top;
+                menuControl.style.bottom = `${bottom - window.pageYOffset}px`;
+            } else {
+                top = controlRect.bottom;
+                menuControl.style.top = `${top + window.pageYOffset}px`;
+            }
+            // set left
+            menuControl.style.left = `${controlRect.left + window.pageXOffset}px`;
+        }
+
         public static closeMenus(): void {
             // find all action menus after grid (there really should only be one)
             var menus = $YetaWF.getElementsBySelector(".yGridActionMenu");
@@ -100,7 +117,15 @@ namespace YetaWF_ComponentsHTML {
     });
     // Handle Escape key to close any open menus
     $YetaWF.registerEventHandlerBody("keydown", null, (ev: KeyboardEvent): boolean => {
-        if (ev.which !== 27) return true;
+        if (ev.key !== "Escape") return true;
+        ActionIconsComponent.closeMenus();
+        return true;
+    });
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, (ev: Event): boolean => {
+        ActionIconsComponent.closeMenus();
+        return true;
+    });
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: Event): boolean => {
         ActionIconsComponent.closeMenus();
         return true;
     });
