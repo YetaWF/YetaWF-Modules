@@ -97,44 +97,37 @@ var YetaWF_ComponentsHTML;
          * Displays an alert message, usually in a popup.
          */
         BasicsImpl.prototype.alert = function (message, title, onOK, options) {
-            var _this = this;
             if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups) {
-                ComponentsHTMLHelper.REQUIRES_JQUERYUI(function () {
-                    // check if we already have a popup (and close it)
-                    _this.closeAlert(onOK);
-                    $("body").prepend("<div id='yalert'></div>");
-                    var $dialog = $("#yalert");
-                    options = options || { encoded: false };
-                    if (!options.encoded) {
-                        // change \n to <br/>
-                        $dialog.text(message);
-                        var s = $dialog.html();
-                        s = s.replace(/\(\+nl\)/g, "<br/>");
-                        $dialog.html(s);
-                    }
-                    else {
-                        $dialog.html(message);
-                    }
-                    if (title === undefined)
-                        title = YLocs.Basics.DefaultAlertTitle;
-                    $dialog.dialog({
-                        autoOpen: true,
-                        modal: true,
-                        width: YConfigs.Basics.DefaultAlertWaitWidth,
-                        height: YConfigs.Basics.DefaultAlertWaitHeight === 0 ? "auto" : YConfigs.Basics.DefaultAlertWaitHeight,
-                        closeOnEscape: true,
-                        closeText: YLocs.Basics.CloseButtonText,
-                        close: function (event, ui) { return _this.closeAlert(onOK); },
-                        draggable: true,
-                        resizable: false,
-                        title: title,
-                        buttons: [{
-                                text: YLocs.Basics.OKButtonText,
-                                click: function (eventObject) {
-                                    $dialog.dialog("close");
-                                }
-                            }]
-                    });
+                // check if we already have a popup (and close it)
+                YetaWF_ComponentsHTML.DialogClass.close();
+                options = options || { encoded: false };
+                if (!options.encoded) {
+                    // change (+nl) to <br/>
+                    var escElement = document.createElement("div");
+                    escElement.innerText = message;
+                    var s = escElement.innerHTML;
+                    escElement.remove();
+                    message = s.replace(/\(\+nl\)/g, "<br/>");
+                }
+                YetaWF_ComponentsHTML.DialogClass.open({
+                    width: YConfigs.Basics.DefaultAlertWaitWidth,
+                    height: YConfigs.Basics.DefaultAlertWaitHeight,
+                    title: title !== null && title !== void 0 ? title : YLocs.Basics.DefaultAlertTitle,
+                    textHTML: message,
+                    closeText: YLocs.Basics.CloseButtonText,
+                    close: function () {
+                        if (onOK)
+                            onOK();
+                    },
+                    buttons: [
+                        {
+                            text: YLocs.Basics.OKButtonText,
+                            click: function () {
+                                if (onOK)
+                                    onOK();
+                            },
+                        },
+                    ],
                 });
             }
             else {
@@ -149,79 +142,42 @@ var YetaWF_ComponentsHTML;
                     onOK();
             }
         };
-        BasicsImpl.prototype.closeAlert = function (onOK) {
-            var $dialog = $("#yalert");
-            if ($dialog.length === 0)
-                return;
-            if ($dialog.attr("data-closing"))
-                return;
-            $dialog.attr("data-closing", 1);
-            var endFunc = onOK;
-            onOK = undefined; // clear this so close function doesn't call onOK handler also
-            $dialog.dialog("close");
-            $dialog.dialog("destroy");
-            $dialog.remove();
-            if (endFunc)
-                endFunc();
-        };
         /**
          * Displays an alert message with Yes/No buttons, usually in a popup.
          */
         BasicsImpl.prototype.alertYesNo = function (message, title, onYes, onNo, options) {
-            ComponentsHTMLHelper.REQUIRES_JQUERYUI(function () {
-                var $body = $("body");
-                $body.prepend("<div id='yalert'></div>");
-                var $dialog = $("#yalert", $body);
-                // change \n to <br/>
-                $dialog.text(message);
-                var s = $dialog.html();
-                s = s.replace(/\(\+nl\)/g, "<br/>");
-                $dialog.html(s);
-                if (title === undefined)
-                    title = YLocs.Basics.DefaultAlertYesNoTitle;
-                $dialog.dialog({
-                    autoOpen: true,
-                    modal: true,
-                    width: YConfigs.Basics.DefaultAlertYesNoWidth,
-                    height: YConfigs.Basics.DefaultAlertYesNoHeight === 0 ? "auto" : YConfigs.Basics.DefaultAlertYesNoHeight,
-                    closeOnEscape: true,
-                    closeText: YLocs.Basics.CloseButtonText,
-                    close: function (event, ui) {
-                        $dialog.dialog("destroy");
-                        $dialog.remove();
-                        if (onNo !== undefined)
-                            onNo();
-                    },
-                    draggable: true,
-                    resizable: false,
-                    title: title,
-                    buttons: [
-                        {
-                            text: YLocs.Basics.YesButtonText,
-                            click: function (eventObject) {
-                                var endFunc = onYes;
-                                onYes = undefined; // clear this so close function doesn't try do call these
-                                onNo = undefined;
-                                $dialog.dialog("destroy");
-                                $dialog.remove();
-                                if (endFunc)
-                                    endFunc();
-                            }
+            // change (+nl) to <br/>
+            var escElement = document.createElement("div");
+            escElement.innerText = message;
+            var s = escElement.innerHTML;
+            escElement.remove();
+            message = s.replace(/\(\+nl\)/g, "<br/>");
+            YetaWF_ComponentsHTML.DialogClass.open({
+                width: YConfigs.Basics.DefaultAlertYesNoWidth,
+                height: YConfigs.Basics.DefaultAlertYesNoHeight,
+                title: title !== null && title !== void 0 ? title : YLocs.Basics.DefaultAlertYesNoTitle,
+                textHTML: message,
+                closeText: YLocs.Basics.CloseButtonText,
+                close: function () {
+                    if (onNo)
+                        onNo();
+                },
+                buttons: [
+                    {
+                        text: YLocs.Basics.YesButtonText,
+                        click: function () {
+                            if (onYes)
+                                onYes();
                         },
-                        {
-                            text: YLocs.Basics.NoButtonText,
-                            click: function (eventObject) {
-                                var endFunc = onNo;
-                                onYes = undefined; // clear this so close function doesn't try do call these
-                                onNo = undefined;
-                                $dialog.dialog("destroy");
-                                $dialog.remove();
-                                if (endFunc)
-                                    endFunc();
-                            }
-                        }
-                    ],
-                });
+                    },
+                    {
+                        text: YLocs.Basics.NoButtonText,
+                        click: function () {
+                            if (onNo)
+                                onNo();
+                        },
+                    }
+                ],
             });
         };
         /**

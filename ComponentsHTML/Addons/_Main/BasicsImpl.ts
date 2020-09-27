@@ -103,49 +103,39 @@ namespace YetaWF_ComponentsHTML {
 
             if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups) {
 
-                ComponentsHTMLHelper.REQUIRES_JQUERYUI((): void => {
+                // check if we already have a popup (and close it)
+                DialogClass.close();
 
-                    // check if we already have a popup (and close it)
-                    this.closeAlert(onOK);
+                options = options || { encoded: false };
+                if (!options.encoded) {
+                    // change (+nl) to <br/>
+                    let escElement: HTMLDivElement = document.createElement("div");
+                    escElement.innerText = message;
+                    let s = escElement.innerHTML;
+                    escElement.remove();
+                    message = s.replace(/\(\+nl\)/g, "<br/>");
+                }
 
-                    $("body").prepend("<div id='yalert'></div>");
-                    const $dialog = $("#yalert");
-
-                    options = options || { encoded: false };
-
-                    if (!options.encoded) {
-                        // change \n to <br/>
-                        $dialog.text(message);
-                        var s = $dialog.html();
-                        s = s.replace(/\(\+nl\)/g, "<br/>");
-                        $dialog.html(s);
-                    } else {
-                        $dialog.html(message);
-                    }
-
-                    if (title === undefined)
-                        title = YLocs.Basics.DefaultAlertTitle;
-
-                    $dialog.dialog({ //jQuery-ui use
-                        autoOpen: true,
-                        modal: true,
-                        width: YConfigs.Basics.DefaultAlertWaitWidth,
-                        height: YConfigs.Basics.DefaultAlertWaitHeight === 0 ? "auto" : YConfigs.Basics.DefaultAlertWaitHeight,
-                        closeOnEscape: true,
-                        closeText: YLocs.Basics.CloseButtonText,
-                        close: (event: Event, ui: JQueryUI.DialogUIParams): void => this.closeAlert(onOK),
-                        draggable: true,
-                        resizable: false,
-                        title: title,
-                        buttons: [{
+                DialogClass.open({
+                    width: YConfigs.Basics.DefaultAlertWaitWidth,
+                    height: YConfigs.Basics.DefaultAlertWaitHeight,
+                    title: title ?? YLocs.Basics.DefaultAlertTitle,
+                    textHTML: message,
+                    closeText: YLocs.Basics.CloseButtonText,
+                    close: (): void => {
+                        if (onOK)
+                            onOK();
+                    },
+                    buttons: [
+                        {
                             text: YLocs.Basics.OKButtonText,
-                            click: (eventObject: JQueryEventObject): any => {
-                                $dialog.dialog("close");
-                            }
-                        }]
-                    });
+                            click: (): void => {
+                                if (onOK)
+                                    onOK();
+                            },
+                        },
+                    ],
                 });
-
             } else {
                 if (!options)
                     options = { encoded: false };
@@ -156,85 +146,47 @@ namespace YetaWF_ComponentsHTML {
             }
         }
 
-        private closeAlert(onOK?: () => void): void {
-            const $dialog = $("#yalert");
-            if ($dialog.length === 0) return;
-            if ($dialog.attr("data-closing")) return;
-            $dialog.attr("data-closing", 1);
-            const endFunc = onOK;
-            onOK = undefined; // clear this so close function doesn't call onOK handler also
-            $dialog.dialog("close");
-            $dialog.dialog("destroy");
-            $dialog.remove();
-            if (endFunc)
-                endFunc();
-        }
-
         /**
          * Displays an alert message with Yes/No buttons, usually in a popup.
          */
         public alertYesNo(message: string, title?: string, onYes?: () => void, onNo?: () => void, options?: YetaWF.MessageOptions): void {
 
-            ComponentsHTMLHelper.REQUIRES_JQUERYUI((): void => {
+            // change (+nl) to <br/>
+            let escElement: HTMLDivElement = document.createElement("div");
+            escElement.innerText = message;
+            let s = escElement.innerHTML;
+            escElement.remove();
+            message = s.replace(/\(\+nl\)/g, "<br/>");
 
-                const $body = $("body");
-                $body.prepend("<div id='yalert'></div>");
-                const $dialog = $("#yalert", $body);
-
-                // change \n to <br/>
-                $dialog.text(message);
-                var s = $dialog.html();
-                s = s.replace(/\(\+nl\)/g, "<br/>");
-                $dialog.html(s);
-
-                if (title === undefined)
-                    title = YLocs.Basics.DefaultAlertYesNoTitle;
-
-                $dialog.dialog({ //jQuery-ui use
-                    autoOpen: true,
-                    modal: true,
-                    width: YConfigs.Basics.DefaultAlertYesNoWidth,
-                    height: YConfigs.Basics.DefaultAlertYesNoHeight === 0 ? "auto" : YConfigs.Basics.DefaultAlertYesNoHeight,
-                    closeOnEscape: true,
-                    closeText: YLocs.Basics.CloseButtonText,
-                    close: (event: Event, ui: JQueryUI.DialogUIParams): void => {
-                        $dialog.dialog("destroy");
-                        $dialog.remove();
-                        if (onNo !== undefined)
-                            onNo();
-                    },
-                    draggable: true,
-                    resizable: false,
-                    title: title,
-                    buttons: [
-                        {
-                            text: YLocs.Basics.YesButtonText,
-                            click: (eventObject: JQueryEventObject): any => {
-                                const endFunc = onYes;
-                                onYes = undefined;// clear this so close function doesn't try do call these
-                                onNo = undefined;
-                                $dialog.dialog("destroy");
-                                $dialog.remove();
-                                if (endFunc)
-                                    endFunc();
-                            }
+            DialogClass.open({
+                width: YConfigs.Basics.DefaultAlertYesNoWidth,
+                height: YConfigs.Basics.DefaultAlertYesNoHeight,
+                title: title ?? YLocs.Basics.DefaultAlertYesNoTitle,
+                textHTML: message,
+                closeText: YLocs.Basics.CloseButtonText,
+                close: ():void => {
+                    if (onNo)
+                        onNo();
+                },
+                buttons: [
+                    {
+                        text: YLocs.Basics.YesButtonText,
+                        click: (): void => {
+                            if (onYes)
+                                onYes();
                         },
-                        {
-                            text: YLocs.Basics.NoButtonText,
-                            click: (eventObject: JQueryEventObject): any => {
-                                const endFunc = onNo;
-                                onYes = undefined;// clear this so close function doesn't try do call these
-                                onNo = undefined;
-                                $dialog.dialog("destroy");
-                                $dialog.remove();
-                                if (endFunc)
-                                    endFunc();
-                            }
-                        }
-                    ],
-                });
+                    },
+                    {
+                        text: YLocs.Basics.NoButtonText,
+                        click: (): void => {
+                            if (onNo)
+                                onNo();
+                        },
+                    }
+                ],
             });
         }
+
         /**
          * Displays a "Please Wait" message
          */

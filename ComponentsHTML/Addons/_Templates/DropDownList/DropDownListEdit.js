@@ -198,9 +198,7 @@ var YetaWF_ComponentsHTML;
             this.Enabled = enabled;
         };
         DropDownListEditComponent.prototype.sendChangeEvent = function () {
-            var event = document.createEvent("Event");
-            event.initEvent(DropDownListEditComponent.EVENTCHANGE, true, true);
-            this.Control.dispatchEvent(event);
+            $YetaWF.sendCustomEvent(this.Control, DropDownListEditComponent.EVENTCHANGE);
             FormsSupport.validateElement(this.Select);
         };
         DropDownListEditComponent.prototype.optionsUpdated = function () {

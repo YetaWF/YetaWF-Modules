@@ -1,0 +1,14 @@
+﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+#yDialogContainer {
+
+    position: fixed;
+    z-index: 3001;
+
+    #yAlert {
+        width: auto;
+        min-height: 2em;
+        max-height: none;
+        height: auto;
+    }
+}

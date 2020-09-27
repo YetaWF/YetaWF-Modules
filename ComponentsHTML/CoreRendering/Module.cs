@@ -69,7 +69,6 @@ namespace YetaWF.Modules.ComponentsHTML {
 
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "ModuleMenu"); // module menu support
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "Modules");// various module support
-                await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "jquery-color");// for color change when entering module edit menu
 
                 // <div class= >
                 YTagBuilder divTag = new YTagBuilder("div");

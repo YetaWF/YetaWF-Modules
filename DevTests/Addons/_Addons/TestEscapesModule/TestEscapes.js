@@ -28,7 +28,7 @@ var YetaWF_DevTests;
                 return true;
             });
             $YetaWF.registerEventHandler(_this.Module, "click", "input[name='alert']", function (ev) {
-                $YetaWF.alert("TEST <A> &amp; & @ {{0}} TEST", "TITLE <A> &amp; & @ {{0}} TEST");
+                $YetaWF.alert("TEST <A> &amp; & @ {{0}} TEST(+nl)(+nl)TEST <A> &amp; & @ {{0}} TEST", "TITLE <A> &amp; & @ {{0}} TEST");
                 return true;
             });
             $YetaWF.registerEventHandler(_this.Module, "click", "input[name='confirm']", function (ev) {
@@ -36,7 +36,7 @@ var YetaWF_DevTests;
                 return true;
             });
             $YetaWF.registerEventHandler(_this.Module, "click", "input[name='alertYesNo']", function (ev) {
-                $YetaWF.alertYesNo("TEST <A> &amp; & @ {{0}} TEST", "TITLE <A> &amp; & @ {{0}} TEST");
+                $YetaWF.alertYesNo("TEST <A> &amp; & @ {{0}} TEST TEST <A> &amp; & @ {{0}} TEST TEST <A> &amp;(+nl)(+nl)(+nl)& @ {{0}} TEST TEST <A> &amp; & @ {{0}} TEST TEST <A> &amp; & @ {{0}} TEST TEST <A> &amp; & @ {{0}} TEST TEST <A> &amp; & @ {{0}} TEST TEST <A> &amp; & @ {{0}} TEST TEST <A> &amp; & @ {{0}} TEST TEST <A> &amp; & @ {{0}} TEST ", "TITLE <A> &amp; & @ {{0}} TEST", function () { $YetaWF.message("Yes"); }, function () { $YetaWF.message("No"); }, { encoded: false });
                 return true;
             });
             $YetaWF.registerEventHandler(_this.Module, "click", "input[name='pleaseWait']", function (ev) {

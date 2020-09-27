@@ -27,7 +27,7 @@ namespace YetaWF_ComponentsHTML {
             const a3 = YConfigs.Basics.CssTooltipSpan;
             const noTTMisc = `.ui-jqgrid span[${a2}],th[${a2}],span[${a3}],li[${a2}],div[${a2}]`;
 
-            const selectors = `label,input:not(.ui-button-disabled),a:not(.ui-button-disabled),${noTTImgSel},${noTTASel},${noTTISel},${noTTMisc}`;
+            const selectors = `label,input:not(.ui-button-disabled),a:not(.ui-button-disabled),button:not(.ui-button-disabled),${noTTImgSel},${noTTASel},${noTTISel},${noTTMisc}`;
 
             $YetaWF.registerMultipleEventHandlersBody(["mouseover", "click"], `${selectors}`, (ev: Event): boolean => {
 

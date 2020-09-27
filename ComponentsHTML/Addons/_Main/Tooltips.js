@@ -24,7 +24,7 @@ var YetaWF_ComponentsHTML;
             var a2 = YConfigs.Basics.CssTooltip;
             var a3 = YConfigs.Basics.CssTooltipSpan;
             var noTTMisc = ".ui-jqgrid span[" + a2 + "],th[" + a2 + "],span[" + a3 + "],li[" + a2 + "],div[" + a2 + "]";
-            var selectors = "label,input:not(.ui-button-disabled),a:not(.ui-button-disabled)," + noTTImgSel + "," + noTTASel + "," + noTTISel + "," + noTTMisc;
+            var selectors = "label,input:not(.ui-button-disabled),a:not(.ui-button-disabled),button:not(.ui-button-disabled)," + noTTImgSel + "," + noTTASel + "," + noTTISel + "," + noTTMisc;
             $YetaWF.registerMultipleEventHandlersBody(["mouseover", "click"], "" + selectors, function (ev) {
                 var elem = ev.__YetaWFElem;
                 for (;;) {

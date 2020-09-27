@@ -6,5 +6,6 @@ Tooltips.ts
 FormsSupport.ts
 Grid.ts
 Loading.tsx
+Dialog.tsx
 
 
