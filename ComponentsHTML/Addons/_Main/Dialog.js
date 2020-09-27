@@ -6,12 +6,13 @@ var YetaWF_ComponentsHTML;
         function DialogClass() {
         }
         DialogClass.open = function (setup) {
+            var _a;
             DialogClass.Setup = setup;
             DialogClass.DragDropInProgress = false;
             var dialog = $YetaWF.createElement("div", { id: "yDialogContainer", tabindex: "-1", role: "dialog", class: "ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-dialog-buttons ui-draggable", "aria-describedby": "yAlert", "aria-labelledby": "yAlertTitle" },
                 $YetaWF.createElement("div", { class: "ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix ui-draggable-handle" },
                     $YetaWF.createElement("span", { id: "yAlertTitle", class: "ui-dialog-title" }, setup.title),
-                    $YetaWF.createElement("button", { type: "button", class: "ui-button ui-corner-all ui-widget ui-button-icon-only ui-dialog-titlebar-close", "data-tooltip": setup.closeText },
+                    $YetaWF.createElement("button", { type: "button", class: "ui-button ui-corner-all ui-widget ui-button-icon-only ui-dialog-titlebar-close", "data-tooltip": (_a = setup.closeText) !== null && _a !== void 0 ? _a : "" },
                         $YetaWF.createElement("span", { class: "ui-button-icon ui-icon ui-icon-closethick" }),
                         $YetaWF.createElement("span", { class: "ui-button-icon-space" }, " "),
                         "Close")),
@@ -21,30 +22,34 @@ var YetaWF_ComponentsHTML;
             $YetaWF.getElement1BySelector("#yAlert", [dialog]).innerHTML = setup.textHTML;
             // handle all buttons
             var buttonSet = $YetaWF.getElement1BySelector(".ui-dialog-buttonset", [dialog]);
-            var _loop_1 = function (buttonDef) {
-                var button = $YetaWF.createElement("button", { type: "button", class: "ui-button ui-corner-all ui-widget" }, buttonDef.text);
-                buttonSet.append(button);
-                $YetaWF.registerEventHandler(button, "click", null, function (ev) {
-                    DialogClass.close();
-                    buttonDef.click();
-                    return false;
-                });
-            };
-            for (var _i = 0, _a = setup.buttons; _i < _a.length; _i++) {
-                var buttonDef = _a[_i];
-                _loop_1(buttonDef);
+            if (setup.buttons) {
+                var _loop_1 = function (buttonDef) {
+                    var button = $YetaWF.createElement("button", { type: "button", class: "ui-button ui-corner-all ui-widget" }, buttonDef.text);
+                    buttonSet.append(button);
+                    $YetaWF.registerEventHandler(button, "click", null, function (ev) {
+                        DialogClass.close();
+                        buttonDef.click();
+                        return false;
+                    });
+                };
+                for (var _i = 0, _b = setup.buttons; _i < _b.length; _i++) {
+                    var buttonDef = _b[_i];
+                    _loop_1(buttonDef);
+                }
             }
             // handle close button
             var closeButton = $YetaWF.getElement1BySelector(".ui-dialog-titlebar button", [dialog]);
             $YetaWF.registerEventHandler(closeButton, "click", null, function (ev) {
                 DialogClass.close();
-                setup.close();
+                if (setup.close)
+                    setup.close();
                 return false;
             });
             $YetaWF.registerEventHandler(dialog, "keydown", null, function (ev) {
                 if (ev.key === "Escape") {
                     DialogClass.close();
-                    setup.close();
+                    if (setup.close)
+                        setup.close();
                     return false;
                 }
                 return true;
@@ -63,12 +68,27 @@ var YetaWF_ComponentsHTML;
             });
             dialog.style.display = "none";
             document.body.append(dialog);
-            var overlay = $YetaWF.createElement("div", { class: "ui-widget-overlay ui-front" });
-            document.body.append(overlay);
+            DialogClass.addOverlay();
             dialog.style.display = "";
             DialogClass.reposition();
             // set focus on first button
             $YetaWF.getElementsBySelector("button", [buttonSet])[0].focus();
+            DialogClass.setupDragDrop();
+        };
+        DialogClass.openSimple = function (setup) {
+            DialogClass.Setup = setup;
+            DialogClass.DragDropInProgress = false;
+            var dialog = $YetaWF.createElement("div", { id: "yDialogContainer", tabindex: "-1", role: "dialog", class: "ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-dialog-buttons ui-draggable", "aria-describedby": "yAlert", "aria-labelledby": "yAlertTitle" },
+                $YetaWF.createElement("div", { class: "ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix ui-draggable-handle" },
+                    $YetaWF.createElement("span", { id: "yAlertTitle", class: "ui-dialog-title" }, setup.title)),
+                $YetaWF.createElement("div", { id: "yAlert", class: "ui-dialog-content ui-widget-content", style: "width: auto; min-height: 25px; max-height: none; height: auto;" }));
+            $YetaWF.getElement1BySelector("#yAlert", [dialog]).innerHTML = setup.textHTML;
+            dialog.style.display = "none";
+            document.body.append(dialog);
+            DialogClass.addOverlay();
+            dialog.style.display = "";
+            DialogClass.reposition();
+            DialogClass.setupDragDrop();
         };
         DialogClass.close = function () {
             DialogClass.DragDropInProgress = false;
@@ -78,6 +98,32 @@ var YetaWF_ComponentsHTML;
             dialog.remove();
             var overlay = $YetaWF.getElement1BySelector(".ui-widget-overlay.ui-front");
             overlay.remove();
+        };
+        Object.defineProperty(DialogClass, "isActive", {
+            get: function () {
+                return $YetaWF.getElementByIdCond("yDialogContainer") != null;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        DialogClass.addOverlay = function () {
+            var overlay = $YetaWF.createElement("div", { class: "ui-widget-overlay ui-front" });
+            document.body.append(overlay);
+        };
+        DialogClass.setupDragDrop = function () {
+            var dialog = $YetaWF.getElementById("yDialogContainer");
+            $YetaWF.registerEventHandler(dialog, "mousedown", ".ui-dialog-titlebar", function (ev) {
+                var dialog = $YetaWF.getElementById("yDialogContainer");
+                var drect = dialog.getBoundingClientRect();
+                DialogClass.XOffsetDD = ev.clientX - drect.left;
+                DialogClass.YOffsetDD = ev.clientY - drect.top;
+                DialogClass.DragDropInProgress = true;
+                return false;
+            });
+            $YetaWF.registerEventHandler(dialog, "mouseup", null, function (ev) {
+                DialogClass.DragDropInProgress = false;
+                return false;
+            });
         };
         DialogClass.reposition = function () {
             DialogClass.DragDropInProgress = false;

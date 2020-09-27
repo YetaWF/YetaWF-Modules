@@ -7,9 +7,9 @@ namespace YetaWF_ComponentsHTML {
         height: number;
         title: string;
         textHTML: string;
-        closeText: string;
-        close: () => void;
-        buttons: ButtonDefinition[];
+        closeText?: string;
+        close?: () => void;
+        buttons?: ButtonDefinition[];
     }
     export interface ButtonDefinition {
         text: string;
@@ -30,7 +30,7 @@ namespace YetaWF_ComponentsHTML {
             let dialog = <div id="yDialogContainer" tabindex="-1" role="dialog" class="ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-dialog-buttons ui-draggable" aria-describedby="yAlert" aria-labelledby="yAlertTitle">
                 <div class="ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix ui-draggable-handle">
                     <span id="yAlertTitle" class="ui-dialog-title">{setup.title}</span>
-                    <button type="button" class="ui-button ui-corner-all ui-widget ui-button-icon-only ui-dialog-titlebar-close" data-tooltip={setup.closeText}>
+                    <button type="button" class="ui-button ui-corner-all ui-widget ui-button-icon-only ui-dialog-titlebar-close" data-tooltip={setup.closeText??""}>
                         <span class="ui-button-icon ui-icon ui-icon-closethick"></span>
                         <span class="ui-button-icon-space"> </span>
                         Close
@@ -47,28 +47,30 @@ namespace YetaWF_ComponentsHTML {
 
             // handle all buttons
             let buttonSet = $YetaWF.getElement1BySelector(".ui-dialog-buttonset", [dialog]);
-            for (let buttonDef of setup.buttons) {
-                let button = <button type="button" class="ui-button ui-corner-all ui-widget">{buttonDef.text}</button> as HTMLButtonElement;
-                buttonSet.append(button);
-                $YetaWF.registerEventHandler(button, "click", null, (ev: MouseEvent): boolean => {
-                    DialogClass.close();
-                    buttonDef.click();
-                    return false;
-                });
+            if (setup.buttons) {
+                for (let buttonDef of setup.buttons) {
+                    let button = <button type="button" class="ui-button ui-corner-all ui-widget">{buttonDef.text}</button> as HTMLButtonElement;
+                    buttonSet.append(button);
+                    $YetaWF.registerEventHandler(button, "click", null, (ev: MouseEvent): boolean => {
+                        DialogClass.close();
+                        buttonDef.click();
+                        return false;
+                    });
+                }
             }
 
             // handle close button
             let closeButton = $YetaWF.getElement1BySelector(".ui-dialog-titlebar button", [dialog]);
             $YetaWF.registerEventHandler(closeButton, "click", null, (ev: MouseEvent): boolean => {
                 DialogClass.close();
-                setup.close();
+                if (setup.close) setup.close();
                 return false;
             });
 
             $YetaWF.registerEventHandler(dialog, "keydown", null, (ev: KeyboardEvent): boolean => {
                 if (ev.key === "Escape") {
                     DialogClass.close();
-                    setup.close();
+                    if (setup.close) setup.close();
                     return false;
                 }
                 return true;
@@ -89,8 +91,7 @@ namespace YetaWF_ComponentsHTML {
             dialog.style.display = "none";
             document.body.append(dialog);
 
-            let overlay = <div class="ui-widget-overlay ui-front"></div> as HTMLDivElement;
-            document.body.append(overlay);
+            DialogClass.addOverlay();
 
             dialog.style.display = "";
             DialogClass.reposition();
@@ -98,7 +99,31 @@ namespace YetaWF_ComponentsHTML {
             // set focus on first button
             $YetaWF.getElementsBySelector("button", [buttonSet])[0].focus();
 
+            DialogClass.setupDragDrop();
         }
+        public static openSimple(setup: DialogSetup): void {
+
+            DialogClass.Setup = setup;
+            DialogClass.DragDropInProgress = false;
+            let dialog = <div id="yDialogContainer" tabindex="-1" role="dialog" class="ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-dialog-buttons ui-draggable" aria-describedby="yAlert" aria-labelledby="yAlertTitle">
+                <div class="ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix ui-draggable-handle">
+                    <span id="yAlertTitle" class="ui-dialog-title">{setup.title}</span>
+                </div>
+                <div id="yAlert" class="ui-dialog-content ui-widget-content" style="width: auto; min-height: 25px; max-height: none; height: auto;"></div>
+            </div> as HTMLDivElement;
+
+            $YetaWF.getElement1BySelector("#yAlert", [dialog]).innerHTML = setup.textHTML;
+
+            dialog.style.display = "none";
+            document.body.append(dialog);
+
+            DialogClass.addOverlay();
+
+            dialog.style.display = "";
+            DialogClass.reposition();
+            DialogClass.setupDragDrop();
+        }
+
         public static close() {
             DialogClass.DragDropInProgress = false;
             let dialog = $YetaWF.getElementByIdCond("yDialogContainer");
@@ -106,6 +131,29 @@ namespace YetaWF_ComponentsHTML {
             dialog.remove();
             let overlay = $YetaWF.getElement1BySelector(".ui-widget-overlay.ui-front");
             overlay.remove();
+        }
+        static get isActive(): boolean {
+            return $YetaWF.getElementByIdCond("yDialogContainer") != null;
+        }
+
+        private static addOverlay(): void {
+            let overlay = <div class="ui-widget-overlay ui-front"></div> as HTMLDivElement;
+            document.body.append(overlay);
+        }
+        private static setupDragDrop(): void {
+            let dialog = $YetaWF.getElementById("yDialogContainer");
+            $YetaWF.registerEventHandler(dialog, "mousedown", ".ui-dialog-titlebar", (ev: MouseEvent): boolean => {
+                let dialog = $YetaWF.getElementById("yDialogContainer");
+                let drect = dialog.getBoundingClientRect();
+                DialogClass.XOffsetDD = ev.clientX - drect.left;
+                DialogClass.YOffsetDD = ev.clientY - drect.top;
+                DialogClass.DragDropInProgress = true;
+                return false;
+            });
+            $YetaWF.registerEventHandler(dialog, "mouseup", null, (ev: MouseEvent): boolean => {
+                DialogClass.DragDropInProgress = false;
+                return false;
+            });
         }
 
         public static reposition(): void {

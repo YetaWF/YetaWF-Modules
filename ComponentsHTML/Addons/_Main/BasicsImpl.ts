@@ -192,52 +192,24 @@ namespace YetaWF_ComponentsHTML {
          */
         public pleaseWait(message?: string, title?: string): void {
 
-            ComponentsHTMLHelper.REQUIRES_KENDOUI((): void => {
+            let escElement: HTMLDivElement = document.createElement("div");
+            escElement.innerText = message ?? YLocs.Basics.PleaseWaitText;
+            message = escElement.innerHTML;
+            escElement.remove();
 
-                // insert <div id="yplwait"></div> at top of page for the window
-                // this is automatically removed when destroy() is called
-                $("body").prepend("<div id='yplwait'></div>");
-                const $popupwin = $("#yplwait");
-                var popup: kendo.ui.Window | null = null;
-
-                if (message === undefined)
-                    message = YLocs.Basics.PleaseWaitText;
-                if (title === undefined)
-                    title = YLocs.Basics.PleaseWaitTitle;
-                $popupwin.text(<string>message);
-
-                // Create the window
-                $popupwin.kendoWindow({
-                    actions: [],
-                    width: YConfigs.Basics.DefaultPleaseWaitWidth,
-                    height: YConfigs.Basics.DefaultPleaseWaitHeight,
-                    draggable: true,
-                    iframe: true,
-                    modal: true,
-                    resizable: false,
-                    title: $YetaWF.htmlEscape(title),
-                    visible: false,
-                    close: (event: kendo.ui.WindowCloseEvent): void => {
-                        var popup: kendo.ui.Window | null = $popupwin.data("kendoWindow");
-                        popup.destroy();
-                        popup = null;
-                    },
-                });
-
-                // show and center the window
-                popup = $popupwin.data("kendoWindow");
-                popup.open().center();
-
+            // show and center the window
+            DialogClass.openSimple({
+                width: YConfigs.Basics.DefaultPleaseWaitWidth,
+                height: YConfigs.Basics.DefaultPleaseWaitHeight,
+                title: title ?? YLocs.Basics.PleaseWaitTitle,
+                textHTML: message,
             });
         }
         /**
          * Closes the "Please Wait" message (if any).
          */
         public pleaseWaitClose(): void {
-            const $popupwin = $("#yplwait");
-            if ($popupwin.length === 0) return;
-            const popup = $popupwin.data("kendoWindow");
-            popup.destroy();
+            DialogClass.close();
         }
         /**
          * Closes any open overlays, menus, dropdownlists, tooltips, etc. (Popup windows are not handled and are explicitly closed using $YetaWF.Popups)
@@ -315,6 +287,13 @@ namespace YetaWF_ComponentsHTML {
                 if (!$YetaWF.elementHasClass(elem, "yform-nosubmit"))
                     $YetaWF.elementAddClasses(elem, ["yform-novalidate", "yform-nosubmit-temp", "yform-nosubmit"]);
             }
+        }
+
+        /**
+         * Returns whether a message popup dialog is currently active.
+         */
+        public messagePopupActive(): boolean {
+            return DialogClass.isActive;
         }
 
         // TOAST

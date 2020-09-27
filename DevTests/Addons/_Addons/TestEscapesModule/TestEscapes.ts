@@ -14,24 +14,24 @@ namespace YetaWF_DevTests {
                 return true;
             });
             $YetaWF.registerEventHandler(this.Module, "click", "input[name='error']", (ev: MouseEvent): boolean => {
-                $YetaWF.error("TEST <A> &amp; & @ {{0}} TEST");
+                $YetaWF.error("TEST <A> &amp; & @ {0} TEST");
                 return true;
             });
             $YetaWF.registerEventHandler(this.Module, "click", "input[name='alert']", (ev: MouseEvent): boolean => {
-                $YetaWF.alert("TEST <A> &amp; & @ {{0}} TEST(+nl)(+nl)TEST <A> &amp; & @ {{0}} TEST", "TITLE <A> &amp; & @ {{0}} TEST");
+                $YetaWF.alert("TEST <A> &amp; & @ {0} TEST(+nl)(+nl)TEST <A> &amp; & @ {0} TEST", "TITLE <A> &amp; & @ {0} TEST");
                 return true;
             });
             $YetaWF.registerEventHandler(this.Module, "click", "input[name='confirm']", (ev: MouseEvent): boolean => {
-                $YetaWF.confirm("TEST <A> &amp; & @ {{0}} TEST");
+                $YetaWF.confirm("TEST <A> &amp; & @ {0} TEST");
                 return true;
             });
             $YetaWF.registerEventHandler(this.Module, "click", "input[name='alertYesNo']", (ev: MouseEvent): boolean => {
-                $YetaWF.alertYesNo("TEST <A> &amp; & @ {{0}} TEST TEST <A> &amp; & @ {{0}} TEST TEST <A> &amp;(+nl)(+nl)(+nl)& @ {{0}} TEST TEST <A> &amp; & @ {{0}} TEST TEST <A> &amp; & @ {{0}} TEST TEST <A> &amp; & @ {{0}} TEST TEST <A> &amp; & @ {{0}} TEST TEST <A> &amp; & @ {{0}} TEST TEST <A> &amp; & @ {{0}} TEST TEST <A> &amp; & @ {{0}} TEST ",
-                    "TITLE <A> &amp; & @ {{0}} TEST", () => { $YetaWF.message("Yes"); }, () => { $YetaWF.message("No"); }, { encoded: false });
+                $YetaWF.alertYesNo("TEST <A> &amp; & @ {0} TEST TEST <A> &amp; & @ {0} TEST TEST <A> &amp;(+nl)(+nl)(+nl)& @ {0} TEST TEST <A> &amp; & @ {0} TEST TEST <A> &amp; & @ {0} TEST TEST <A> &amp; & @ {0} TEST TEST <A> &amp; & @ {0} TEST TEST <A> &amp; & @ {0} TEST TEST <A> &amp; & @ {0} TEST TEST <A> &amp; & @ {0} TEST ",
+                    "TITLE <A> &amp; & @ {0} TEST", () => { $YetaWF.message("Yes"); }, () => { $YetaWF.message("No"); }, { encoded: false });
                 return true;
             });
             $YetaWF.registerEventHandler(this.Module, "click", "input[name='pleaseWait']", (ev: MouseEvent): boolean => {
-                $YetaWF.pleaseWait("Reload page to continue\n\nTEST <A> &amp; & @ {{0}} TEST", "TITLE <A> &amp; & @ {{0}} TEST");
+                $YetaWF.pleaseWait("Reload page to continue\n\nTEST <A> &amp; & @ {0} TEST", "TITLE <A> &amp; & @ {0} TEST");
                 return true;
             });
             $YetaWF.registerEventHandler(this.Module, "click", "input[name='jserror']", (ev: MouseEvent): boolean => {
