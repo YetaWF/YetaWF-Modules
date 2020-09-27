@@ -84,7 +84,7 @@ var YetaWF_ComponentsHTML;
                 }
                 return true;
             });
-            $YetaWF.registerEventHandler(_this.Control, "mousemove", "li", function (ev) {
+            $YetaWF.registerEventHandler(_this.Control, "mousemove", "ul.t_tabstrip li", function (ev) {
                 var curentTab = ev.__YetaWFElem;
                 if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery) {
                     for (var _i = 0, _a = _this.tabs; _i < _a.length; _i++) {
@@ -102,7 +102,7 @@ var YetaWF_ComponentsHTML;
                 }
                 return true;
             });
-            $YetaWF.registerEventHandler(_this.Control, "mouseout", "li", function (ev) {
+            $YetaWF.registerEventHandler(_this.Control, "mouseout", "ul.t_tabstrip li", function (ev) {
                 if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery) {
                     for (var _i = 0, _a = _this.tabs; _i < _a.length; _i++) {
                         var tab = _a[_i];

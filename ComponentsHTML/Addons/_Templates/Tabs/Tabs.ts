@@ -76,7 +76,7 @@ namespace YetaWF_ComponentsHTML {
                 }
                 return true;
             });
-            $YetaWF.registerEventHandler(this.Control, "mousemove", "li", (ev: MouseEvent): boolean => {
+            $YetaWF.registerEventHandler(this.Control, "mousemove", "ul.t_tabstrip li", (ev: MouseEvent): boolean => {
                 let curentTab = ev.__YetaWFElem as HTMLLIElement;
                 if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery) {
                     for (let tab of this.tabs)
@@ -89,7 +89,7 @@ namespace YetaWF_ComponentsHTML {
                 }
                 return true;
             });
-            $YetaWF.registerEventHandler(this.Control, "mouseout", "li", (ev: MouseEvent): boolean => {
+            $YetaWF.registerEventHandler(this.Control, "mouseout", "ul.t_tabstrip li", (ev: MouseEvent): boolean => {
                 if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery) {
                     for (let tab of this.tabs)
                         $YetaWF.elementRemoveClass(tab, "ui-state-hover");
