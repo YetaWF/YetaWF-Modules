@@ -8,12 +8,9 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Site;
 using YetaWF.Core.Support;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -92,22 +89,46 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            TabsSetup setup = GetTabsSetup(model);
-
-            string tabsCss = Manager.CurrentSite.TabStyle == YetaWF.Core.Site.TabStyleEnum.JQuery ? "t_jquery" : "t_kendo";
+            string tabsCss = Manager.CurrentSite.TabStyle == YetaWF.Core.Site.TabStyleEnum.JQuery ? "t_jquery ui-tabs ui-corner-all ui-widget ui-widget-content" : "t_kendo k-widget k-header k-tabstrip k-floatwrap k-tabstrip-top";
+            string stripCss = Manager.CurrentSite.TabStyle == YetaWF.Core.Site.TabStyleEnum.JQuery ? " ui-tabs-nav ui-corner-all ui-helper-reset ui-helper-clearfix ui-widget-header" : "k-tabstrip-items k-reset";
+            string tabIndex = Manager.CurrentSite.TabStyle == YetaWF.Core.Site.TabStyleEnum.JQuery ? "" : " tabindex='0'";
+            string areaDesc = Manager.CurrentSite.TabStyle == YetaWF.Core.Site.TabStyleEnum.JQuery ? "" : $" aria-activedescendant='{model.Id}_tab_active'";
 
             hb.Append($@"
-<div id='{model.Id}' class='yt_tabs t_display {tabsCss}'>
-    <ul class='t_tabstrip'>");
+<div id='{model.Id}'{tabIndex} class='yt_tabs t_display {tabsCss}' data-role='tabstrip' role='tablist'{areaDesc}>
+    <ul class='t_tabstrip {stripCss}' role='tablist'>");
+
             // Render tabs
             int count = 0;
             foreach (TabEntry tabEntry in model.Tabs) {
-                string tabCss = string.IsNullOrWhiteSpace(tabEntry.TabCssClasses) ? "" : $" class='{tabEntry.TabCssClasses}'";
+                bool active = model.ActiveTabIndex == count;
+                string tabId = $"{model.Id}_tab{count}";
+
+                string tabCss = null;
+                tabCss = CssManager.CombineCss(tabCss, tabEntry.TabCssClasses);
+
                 if (Manager.CurrentSite.TabStyle == YetaWF.Core.Site.TabStyleEnum.JQuery) {
-                    string tabId = $"{model.Id}_tab{count}";
-                    hb.Append($"<li data-tab='{count}'{tabCss}><a href='#{tabId}' {Basics.CssTooltip}='{Utility.HtmlAttributeEncode(tabEntry.ToolTip?.ToString())}'>{Utility.HtmlEncode(tabEntry.Caption?.ToString())}</a></li>");
+
+                    tabCss = CssManager.CombineCss(tabCss, active ? "ui-tabs-active ui-state-active" : "");
+
+                    hb.Append($@"
+        <li data-tab='{count}' role='tab' tabindex='{(active ? "0" : "-1")}' class='ui-tabs-tab ui-corner-top ui-tab ui-state-default {tabCss}' aria-controls='{tabId}' aria-labelledby='{tabId}_lb' aria-selected='{(active ? "true" : "false")}' aria-expanded='{(active ? "true" : "false")}'>
+            <a href='#{tabId}' {Basics.CssTooltip}='{Utility.HtmlAttributeEncode(tabEntry.ToolTip?.ToString())}' role='presentation' tabindex='-1' class='ui-tabs-anchor' id='{tabId}_lb'>
+                {Utility.HtmlEncode(tabEntry.Caption?.ToString())}
+            </a>
+        </li>");
+
                 } else {
-                    hb.Append($"<li data-tab='{count}' {Basics.CssTooltip}='{Utility.HtmlAttributeEncode(tabEntry.ToolTip?.ToString())}'{tabCss}>{Utility.HtmlEncode(tabEntry.Caption?.ToString())}</li>");
+
+                    tabCss = CssManager.CombineCss(tabCss, active ? "k-state-active k-tab-on-top" : "");
+                    string id = active ? $" id='{model.Id}_tab_active'" : "";
+
+                    hb.Append(@$"
+        <li{id} data-tab='{count}' class='k-item k-state-default {tabCss}{(count==0 ? " k-first":"")}' {Basics.CssTooltip}='{Utility.HtmlAttributeEncode(tabEntry.ToolTip?.ToString())}'{tabCss} role='tab' aria-selected='{(active ? "true" : "false")}' aria-controls='{tabId}'>
+            <span class='k-loading k-complete'></span>
+            <span unselectable='on' class='k-link'>{Utility.HtmlEncode(tabEntry.Caption?.ToString())}</span>
+        </li>");
+
                 }
                 ++count;
             }
@@ -117,22 +138,35 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // Render panes
             count = 0;
             foreach (TabEntry tabEntry in model.Tabs) {
+                bool active = model.ActiveTabIndex == count;
+                string tabId = $"{model.Id}_tab{count}";
 
-                string cssClass = string.IsNullOrWhiteSpace(tabEntry.PaneCssClasses) ? "" : $" {tabEntry.PaneCssClasses}";
+                string cssClass = tabEntry.PaneCssClasses;
 
-                hb.Append($@"
-     <div class='t_proptable t_cat t_tabpanel{cssClass}' data-tab='{count}' id='{model.Id}_tab{count}'>");
+                if (Manager.CurrentSite.TabStyle == YetaWF.Core.Site.TabStyleEnum.JQuery) {
+
+                    hb.Append($@"
+     <div class='t_proptable t_cat t_tabpanel ui-tabs-panel ui-corner-bottom ui-widget-content {cssClass}' data-tab='{count}' id='{tabId}' aria-labelledby='{tabId}_lb' role='tabpanel' {(active? "" : "style='display:none'")} aria-hidden='{(active ? "false" : "true")}'>");
+
+                } else {
+
+                    cssClass = CssManager.CombineCss(cssClass, "k-content");
+                    cssClass = CssManager.CombineCss(cssClass, active ? "k-state-active" : "");
+
+                    hb.Append($@"
+     <div class='t_proptable t_cat t_tabpanel {cssClass}' data-tab='{count}' id='{tabId}' role='tabpanel' style='display:{(active ? "block" : "none")}' aria-hidden='{(active ? "false" : "true")}' aria-expanded='{(active ? "true" : "false")}'>");
+
+                }
 
                 if (tabEntry.RenderPaneAsync != null)
                     hb.Append(await tabEntry.RenderPaneAsync(count));
-
 
                 hb.Append($@"
      </div>");
                 ++count;
             }
 
-            setup.ActiveTabHiddenId = Manager.UniqueId();
+            TabsSetup setup = GetTabsSetup(model);
             hb.Append($@"
     <input name='_ActiveTab' type='hidden' value='{model.ActiveTabIndex}' id='{setup.ActiveTabHiddenId}'>");
 
@@ -145,12 +179,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return hb.ToString();
         }
 
-        internal static TabsSetup GetTabsSetup(TabsDefinition tabsModel) {
+        private static TabsSetup GetTabsSetup(TabsDefinition tabsModel) {
             TabsSetup setup = new TabsSetup() {
                 TabStyle = Manager.CurrentSite.TabStyle,
                 ActiveTabIndex = tabsModel.ActiveTabIndex,
-                ActiveTabHiddenId = null,
-            };
+                ActiveTabHiddenId = Manager.UniqueId(),
+        };
             return setup;
         }
     }

@@ -13,7 +13,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-// Kendo UI menu use
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     var TabStyleEnum;
@@ -28,75 +27,98 @@ var YetaWF_ComponentsHTML;
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: TabsComponent.EVENTSWITCHED,
                 GetValue: function (control) {
-                    return control.activePane.toString();
+                    return control.activeTab.toString();
                 },
                 Enable: function (control, enable, clearOnDisable) { },
-            }, false, function (tag, control) {
-                control.internalDestroy();
             }) || this;
-            _this.ActiveTabHidden = null;
             _this.Setup = setup;
-            if (_this.Setup.ActiveTabHiddenId)
-                _this.ActiveTabHidden = $YetaWF.getElementById(_this.Setup.ActiveTabHiddenId);
-            if (_this.Setup.TabStyle === TabStyleEnum.JQuery) {
-                ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
-                $(_this.Control).tabs({
-                    active: _this.Setup.ActiveTabIndex,
-                    activate: function (ev, ui) {
-                        if (ui.newPanel !== undefined) {
-                            $YetaWF.processActivateDivs([ui.newPanel[0]]);
-                            $YetaWF.processPanelSwitched(ui.newPanel[0]);
-                            var index = Number((ui.newTab.length > 0) ? (ui.newTab.attr("data-tab") || "-1") : "-1");
-                            if (_this.ActiveTabHidden)
-                                _this.ActiveTabHidden.value = index.toString();
-                            _this.sendEvent();
-                        }
-                    }
-                });
-            }
-            else if (_this.Setup.TabStyle === TabStyleEnum.Kendo) {
-                ComponentsHTMLHelper.MUSTHAVE_KENDOUI();
-                // mark the active tab with .k-state-active before initializing the tabstrip
-                var tabs = $YetaWF.getElementsBySelector("#" + _this.ControlId + ">ul>li");
-                for (var _i = 0, tabs_1 = tabs; _i < tabs_1.length; _i++) {
-                    var tab = tabs_1[_i];
-                    $YetaWF.elementRemoveClass(tab, "k-state-active");
+            _this.ActiveTabHidden = $YetaWF.getElementById(_this.Setup.ActiveTabHiddenId);
+            $YetaWF.registerEventHandler(_this.Control, "click", "li", function (ev) {
+                var li = ev.__YetaWFElem;
+                var index = Number($YetaWF.getAttribute(li, "data-tab"));
+                _this.activatePane(index);
+                return false;
+            });
+            $YetaWF.registerEventHandler(_this.Control, "keydown", null, function (ev) {
+                var index = _this.activeTab;
+                var key = ev.key;
+                if (key === "ArrowDown" || key === "Down" || key === "ArrowRight" || key === "Right") {
+                    ++index;
                 }
-                $YetaWF.elementAddClass(tabs[_this.Setup.ActiveTabIndex], "k-state-active");
-                // init tab control
-                $(_this.Control).kendoTabStrip({
-                    animation: false,
-                    activate: function (ev) {
-                        if (ev.contentElement !== undefined) {
-                            $YetaWF.processActivateDivs([ev.contentElement]);
-                            $YetaWF.processPanelSwitched(ev.contentElement);
-                            if (_this.ActiveTabHidden)
-                                _this.ActiveTabHidden.value = $(ev.item).attr("data-tab");
-                            _this.sendEvent();
-                        }
+                else if (key === "ArrowUp" || key === "Up" || key === "ArrowLeft" || key === "Left") {
+                    --index;
+                }
+                else if (key === "Home") {
+                    index = 0;
+                }
+                else if (key === "End") {
+                    index = _this.tabCount - 1;
+                }
+                else
+                    return true;
+                if (index >= 0 && index < _this.tabCount)
+                    _this.activatePane(index);
+                return false;
+            });
+            $YetaWF.registerEventHandler(_this.Control, "focusin", null, function (ev) {
+                var curentTab = _this.currentTab;
+                if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery) {
+                    for (var _i = 0, _a = _this.tabs; _i < _a.length; _i++) {
+                        var tab = _a[_i];
+                        $YetaWF.elementRemoveClass(tab, "ui-state-focus");
                     }
-                }).data("kendoTabStrip");
-            }
-            else
-                throw "Invalid tab style " + _this.Setup.TabStyle;
+                    $YetaWF.elementAddClass(curentTab, "ui-state-focus");
+                }
+                else {
+                }
+                return true;
+            });
+            $YetaWF.registerEventHandler(_this.Control, "focusout", null, function (ev) {
+                if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery) {
+                    for (var _i = 0, _a = _this.tabs; _i < _a.length; _i++) {
+                        var tab = _a[_i];
+                        $YetaWF.elementRemoveClass(tab, "ui-state-focus");
+                    }
+                }
+                else {
+                }
+                return true;
+            });
+            $YetaWF.registerEventHandler(_this.Control, "mousemove", "li", function (ev) {
+                var curentTab = ev.__YetaWFElem;
+                if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery) {
+                    for (var _i = 0, _a = _this.tabs; _i < _a.length; _i++) {
+                        var tab = _a[_i];
+                        $YetaWF.elementRemoveClass(tab, "ui-state-hover");
+                    }
+                    $YetaWF.elementAddClass(curentTab, "ui-state-hover");
+                }
+                else {
+                    for (var _b = 0, _c = _this.tabs; _b < _c.length; _b++) {
+                        var tab = _c[_b];
+                        $YetaWF.elementRemoveClass(tab, "k-state-hover");
+                    }
+                    $YetaWF.elementAddClass(curentTab, "k-state-hover");
+                }
+                return true;
+            });
+            $YetaWF.registerEventHandler(_this.Control, "mouseout", "li", function (ev) {
+                if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery) {
+                    for (var _i = 0, _a = _this.tabs; _i < _a.length; _i++) {
+                        var tab = _a[_i];
+                        $YetaWF.elementRemoveClass(tab, "ui-state-hover");
+                    }
+                }
+                else {
+                    for (var _b = 0, _c = _this.tabs; _b < _c.length; _b++) {
+                        var tab = _c[_b];
+                        $YetaWF.elementRemoveClass(tab, "k-state-hover");
+                    }
+                }
+                return true;
+            });
             return _this;
         }
-        TabsComponent.prototype.sendEvent = function () {
-            $YetaWF.sendCustomEvent(this.Control, TabsComponent.EVENTSWITCHED);
-        };
-        TabsComponent.prototype.internalDestroy = function () {
-            if (this.Setup.TabStyle === TabStyleEnum.JQuery) {
-                $(this.Control).tabs("destroy");
-            }
-            else if (this.Setup.TabStyle === TabStyleEnum.Kendo) {
-                var tab = $(this.Control).data("kendoTabStrip");
-                if (!tab)
-                    throw "No kendo object found";
-                tab.destroy();
-            }
-            else
-                throw "Invalid tab style " + this.Setup.TabStyle;
-        };
         // API
         /* Activate the pane that contains the specified element. The element does not need to be present. */
         TabsComponent.prototype.activatePaneByTag = function (tag) {
@@ -112,29 +134,96 @@ var YetaWF_ComponentsHTML;
         };
         /* Activate the pane by 0-based index. */
         TabsComponent.prototype.activatePane = function (index) {
-            var panels = $YetaWF.getElementsBySelector("ul.t_tabstrip > li", [this.Control]);
-            if (panels.length === 0)
+            var tabCount = this.tabCount;
+            if (tabCount === 0)
                 throw "No panes found";
-            if (index < 0 || index >= panels.length)
-                throw "tab pane " + index + " requested - " + panels.length + " tabs present";
-            if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery)
-                $(this.Control).tabs("option", "active", index);
+            if (index < 0 || index >= tabCount)
+                throw "tab pane " + index + " requested - " + tabCount + " tabs present";
+            var tabs = this.tabs;
+            var panels = $YetaWF.getElementsBySelector("#" + this.ControlId + " > .t_tabpanel");
+            if (panels.length !== tabCount)
+                throw "Mismatched number of tabs (" + tabCount + ") and panels (" + panels.length + ") ";
+            var activeTab = tabs[index];
+            var activePanel = panels[index];
+            if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery) {
+                for (var _i = 0, tabs_1 = tabs; _i < tabs_1.length; _i++) {
+                    var tab = tabs_1[_i];
+                    $YetaWF.elementRemoveClasses(tab, ["ui-tabs-active", "ui-state-active"]);
+                    $YetaWF.setAttribute(tab, "tabindex", "-1");
+                    $YetaWF.setAttribute(tab, "aria-selected", "false");
+                    $YetaWF.setAttribute(tab, "aria-expanded", "false");
+                }
+                $YetaWF.elementAddClasses(activeTab, ["ui-tabs-active", "ui-state-active"]);
+                $YetaWF.setAttribute(activeTab, "tabindex", "0");
+                $YetaWF.setAttribute(activeTab, "aria-selected", "true");
+                $YetaWF.setAttribute(activeTab, "aria-expanded", "true");
+                for (var _a = 0, panels_1 = panels; _a < panels_1.length; _a++) {
+                    var panel = panels_1[_a];
+                    $YetaWF.setAttribute(panel, "aria-hidden", "true");
+                    panel.style.display = "none";
+                }
+                $YetaWF.setAttribute(activePanel, "aria-hidden", "false");
+                activePanel.style.display = "";
+            }
             else if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.Kendo) {
-                $(this.Control).data("kendoTabStrip").activateTab($(panels[index]));
+                for (var _b = 0, tabs_2 = tabs; _b < tabs_2.length; _b++) {
+                    var tab = tabs_2[_b];
+                    $YetaWF.elementRemoveClasses(tab, ["k-state-active", "k-tab-on-top"]);
+                    $YetaWF.setAttribute(tab, "aria-selected", "false");
+                    tab.removeAttribute("id");
+                }
+                $YetaWF.elementAddClasses(activeTab, ["k-state-active", "k-tab-on-top"]);
+                $YetaWF.setAttribute(activeTab, "aria-selected", "true");
+                var ariaId = this.Control.getAttribute("aria-activedescendant");
+                activeTab.id = ariaId;
+                for (var _c = 0, panels_2 = panels; _c < panels_2.length; _c++) {
+                    var panel = panels_2[_c];
+                    $YetaWF.elementRemoveClasses(panel, ["k-state-active"]);
+                    $YetaWF.setAttribute(panel, "aria-hidden", "true");
+                    $YetaWF.setAttribute(panel, "aria-expanded", "false");
+                    panel.style.display = "none";
+                }
+                $YetaWF.elementAddClass(activePanel, "k-state-active");
+                $YetaWF.setAttribute(activePanel, "aria-hidden", "false");
+                $YetaWF.setAttribute(activePanel, "aria-expanded", "true");
+                activePanel.style.display = "block";
             }
             else
                 throw "Unknown tab style " + YVolatile.Forms.TabStyle; /*DEBUG*/
+            this.ActiveTabHidden.value = index.toString();
+            $YetaWF.processActivateDivs([activePanel]);
+            $YetaWF.processPanelSwitched(activePanel);
+            $YetaWF.sendCustomEvent(this.Control, TabsComponent.EVENTSWITCHED);
         };
-        Object.defineProperty(TabsComponent.prototype, "activePane", {
+        Object.defineProperty(TabsComponent.prototype, "activeTab", {
             get: function () {
-                if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery)
-                    return Number($(this.Control).tabs("option", "active"));
-                else if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.Kendo) {
-                    var ts = $(this.Control).data("kendoTabStrip");
-                    return Number(ts.select().attr("data-tab"));
-                }
-                else
-                    throw "Unknown tab style " + YVolatile.Forms.TabStyle; /*DEBUG*/
+                return Number(this.ActiveTabHidden.value);
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(TabsComponent.prototype, "tabCount", {
+            get: function () {
+                return this.tabs.length;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(TabsComponent.prototype, "tabs", {
+            get: function () {
+                var tabs = $YetaWF.getElementsBySelector("ul.t_tabstrip > li", [this.Control]);
+                return tabs;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(TabsComponent.prototype, "currentTab", {
+            get: function () {
+                var index = this.activeTab;
+                var tabs = this.tabs;
+                if (index < 0 || index >= tabs.length)
+                    throw "tab index " + index + " invalid";
+                return tabs[index];
             },
             enumerable: false,
             configurable: true
@@ -156,7 +245,7 @@ var YetaWF_ComponentsHTML;
         for (var _i = 0, tabsTags_1 = tabsTags; _i < tabsTags_1.length; _i++) {
             var tabTag = tabsTags_1[_i];
             var tab = YetaWF.ComponentBaseDataImpl.getControlFromTag(tabTag, TabsComponent.SELECTOR);
-            var index = tab.activePane;
+            var index = tab.activeTab;
             if (index >= 0) {
                 var panel = $YetaWF.getElement1BySelector("#" + tab.ControlId + "_tab" + index, [tab.Control]);
                 $YetaWF.processActivateDivs([panel]);
