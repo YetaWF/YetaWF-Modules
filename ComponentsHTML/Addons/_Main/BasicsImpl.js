@@ -230,22 +230,26 @@ var YetaWF_ComponentsHTML;
          * Also used to update visual styles to reflect the status.
          */
         BasicsImpl.prototype.elementEnableToggle = function (elem, enable) {
-            if (YVolatile.YetaWF_ComponentsHTML.jqueryUI && $YetaWF.elementHasClass(elem, "ui-button")) {
+            if ($YetaWF.elementHasClass(elem, "ui-button")) {
                 // Handle buttons
                 // jquery-ui button
                 elem.removeAttribute("disabled");
-                if (!enable)
+                $YetaWF.elementRemoveClass(elem, "ui-state-disabled");
+                if (!enable) {
                     elem.setAttribute("disabled", "disabled");
-                $(elem).button(enable ? "enable" : "disable");
+                    $YetaWF.elementAddClass(elem, "ui-state-disabled");
+                }
             }
-            else if (elem.tagName === "A" && $YetaWF.elementHasClass(elem, "btn")) {
+            else if ($YetaWF.elementHasClass(elem, "btn")) {
                 // bootstrap button (using a tag)
+                elem.removeAttribute("disabled");
                 elem.removeAttribute("aria-disabled");
                 if (enable) {
                     $YetaWF.elementRemoveClass(elem, "disabled");
                 }
                 else {
                     $YetaWF.elementAddClass(elem, "disabled");
+                    elem.setAttribute("disabled", "disabled");
                     $YetaWF.setAttribute(elem, "aria-disabled", "true");
                 }
             }

@@ -151,7 +151,7 @@ namespace YetaWF_Panels {
 
         // helper
 
-        private expand(tag: HTMLElement) {
+        private expand(tag: HTMLElement): void {
             let steps = PanelInfoComponent.MAXTIME / PanelInfoComponent.INCRTIME;
             let incr = window.innerHeight / steps;
             let height = incr;
@@ -169,7 +169,7 @@ namespace YetaWF_Panels {
             }, PanelInfoComponent.INCRTIME);
 
         }
-        private collapse(tag: HTMLElement) {
+        private collapse(tag: HTMLElement): void {
             let steps = PanelInfoComponent.MAXTIME / PanelInfoComponent.INCRTIME;
             let rect = tag.getBoundingClientRect();
             let incr = rect.height / steps;

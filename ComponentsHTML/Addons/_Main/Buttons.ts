@@ -7,23 +7,37 @@ namespace YetaWF_ComponentsHTML {
     export class Buttons {
 
         public static init(tag: HTMLElement): void {
-            const $tag = $(tag);
             if (YVolatile.Skin.Bootstrap && YVolatile.Skin.BootstrapButtons) {
                 // bootstrap
-                $("input[type=submit],input[type=button],input[type=reset],input[type=file]", $tag).not(".y_jqueryui,.btn").addClass("btn btn-primary");
-                $("button", $tag).not(".y_jqueryui,.yt_actionicons,.btn").addClass("btn");
-                $("a[" + YConfigs.Basics.CssAttrActionButton + "]", $tag).not(".y_jqueryui,.btn").addClass("btn btn-primary"); // action link as a button
+                let buttons = $YetaWF.getElementsBySelector(`input[type=submit],input[type=button],input[type=reset],input[type=file],a[${YConfigs.Basics.CssAttrActionButton}]`, [tag]);
+                for (let button of buttons) {
+                    if (!$YetaWF.elementHasClass(button, "y_jqueryui") && !$YetaWF.elementHasClass(button, "btn"))
+                        $YetaWF.elementAddClasses(button, ["btn", "btn-primary"]);
+                }
+                buttons = $YetaWF.getElementsBySelector("button", [tag]);
+                for (let button of buttons) {
+                    if (!$YetaWF.elementHasClass(button, "y_jqueryui") && !$YetaWF.elementHasClass(button, "btn") && !$YetaWF.elementHasClass(button, "yt_actionicons"))
+                        $YetaWF.elementAddClasses(button, ["btn"]);
+                }
                 // explicitly marked for jquery
-                $("input[type=submit].y_jqueryui,input[type=button].y_jqueryui,input[type=reset].y_jqueryui,input[type=file].y_jqueryui,button.y_jqueryui", $tag).button();
-                $("a[" + YConfigs.Basics.CssAttrActionButton + "].y_jqueryui", $tag).button(); // action link as a button
+                buttons = $YetaWF.getElementsBySelector(`input[type=submit].y_jqueryui,input[type=button].y_jqueryui,input[type=reset].y_jqueryui,input[type=file].y_jqueryui,button.y_jqueryui,a[${YConfigs.Basics.CssAttrActionButton}].y_jqueryui`, [tag]);
+                for (let button of buttons) {
+                    $YetaWF.elementAddClasses(button, ["ui-button", "ui-corner-all", "ui-widget"]);
+                    $YetaWF.setAttribute(button, "role", "button");
+                }
             } else {
-                ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
-                $("input[type=submit],input[type=button],input[type=reset],input[type=file],button", $tag).not(".y_bootstrap").button(); // beautify all buttons
-                $("a[" + YConfigs.Basics.CssAttrActionButton + "]", $tag).not(".y_bootstrap").button(); // action link as a button
+                let buttons = $YetaWF.getElementsBySelector(`input[type=submit],input[type=button],input[type=reset],input[type=file],button,a[${YConfigs.Basics.CssAttrActionButton}]`, [tag]);
+                for (let button of buttons) {
+                    if (!$YetaWF.elementHasClass(button, "y_bootstrap")) {
+                        $YetaWF.elementAddClasses(button, ["ui-button", "ui-corner-all", "ui-widget"]);
+                        $YetaWF.setAttribute(button, "role", "button");
+                    }
+                }
                 // explicitly marked for bootstrap
-                $("input[type=submit].y_bootstrap,input[type=button].y_bootstrap,input[type=reset].y_bootstrap,input[type=file].y_bootstrap", $tag).addClass("btn btn-primary");
-                $("button.y_bootstrap", $tag).addClass("btn btn-primary");
-                $("a[" + YConfigs.Basics.CssAttrActionButton + "].y_bootstrap", $tag).addClass("btn btn-primary"); // action link as a button
+                buttons = $YetaWF.getElementsBySelector(`input[type=submit].y_bootstrap,input[type=button].y_bootstrap,input[type=reset].y_bootstrap,input[type=file].y_bootstrap,button.y_bootstrap,a[${YConfigs.Basics.CssAttrActionButton}].y_bootstrap`, [tag]);
+                for (let button of buttons) {
+                    $YetaWF.elementAddClasses(button, ["btn", "btn-primary"]);
+                }
             }
         }
     }
