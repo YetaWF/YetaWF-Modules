@@ -80,6 +80,12 @@ var YetaWF_ComponentsHTML;
             enumerable: false,
             configurable: true
         });
+        ProgressBarComponent.prototype.show = function () {
+            this.Control.style.display = "";
+        };
+        ProgressBarComponent.prototype.hide = function () {
+            this.Control.style.display = "none";
+        };
         ProgressBarComponent.TEMPLATE = "yt_progressbar";
         ProgressBarComponent.SELECTOR = ".yt_progressbar.t_display";
         ProgressBarComponent.MAXTIME = 0.5;

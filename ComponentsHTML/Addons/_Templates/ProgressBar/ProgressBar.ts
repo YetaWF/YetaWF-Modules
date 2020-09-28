@@ -78,5 +78,11 @@ namespace YetaWF_ComponentsHTML {
                 val = this.Min;
             this.setValue(val);
         }
+        public show(): void {
+            this.Control.style.display = "";
+        }
+        public hide(): void {
+            this.Control.style.display = "none";
+        }
     }
 }

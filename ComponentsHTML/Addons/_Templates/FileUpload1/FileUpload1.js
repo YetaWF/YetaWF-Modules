@@ -28,22 +28,14 @@ var YetaWF_ComponentsHTML;
                     control.enable(enable);
                 }
             }) || this;
-            _this.$divProgressbar = null;
             _this.SuccessfullUploadCallback = null;
             _this.GetFileNameCallback = null;
             _this.Setup = setup;
-            ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
             _this.uploadButton = $YetaWF.getElement1BySelector(".t_upload", [_this.Control]);
             _this.inputFileName = $YetaWF.getElement1BySelector("input.t_filename", [_this.Control]);
-            _this.divProgressbar = $YetaWF.getElement1BySelectorCond(".t_progressbar", [_this.Control]);
-            if (_this.divProgressbar) {
-                _this.$divProgressbar = $(_this.divProgressbar);
-                _this.$divProgressbar.progressbar({
-                    max: 100,
-                    value: 0,
-                });
-                _this.$divProgressbar.hide();
-            }
+            _this.ProgressBar = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond(YetaWF_ComponentsHTML.ProgressBarComponent.SELECTOR, YetaWF_ComponentsHTML.ProgressBarComponent.SELECTOR, [_this.Control]);
+            if (_this.ProgressBar)
+                _this.ProgressBar.hide();
             _this.$Control = $(_this.Control);
             // trigger upload button
             $YetaWF.registerEventHandler(_this.uploadButton, "click", null, function (ev) {
@@ -79,13 +71,13 @@ var YetaWF_ComponentsHTML;
                     console.log("onNewFile #" + id + " " + file);
                 },
                 onComplete: function () {
-                    if (_this.$divProgressbar)
-                        _this.$divProgressbar.hide();
+                    if (_this.ProgressBar)
+                        _this.ProgressBar.hide();
                 },
                 onUploadProgress: function (id, percent) {
-                    if (_this.$divProgressbar) {
-                        _this.$divProgressbar.show();
-                        _this.$divProgressbar.progressbar("value", percent); //jQuery-ui use
+                    if (_this.ProgressBar) {
+                        _this.ProgressBar.show();
+                        _this.ProgressBar.value = Number(percent);
                     }
                 },
                 onUploadError: function (id, message) {

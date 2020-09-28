@@ -38,8 +38,7 @@ namespace YetaWF_ComponentsHTML {
         private $Control: JQuery<HTMLElement>;
         private uploadButton: HTMLElement;
         private inputFileName: HTMLInputElement;
-        private divProgressbar: HTMLDivElement;
-        private $divProgressbar: JQuery<HTMLElement> | null = null;
+        private ProgressBar: ProgressBarComponent | null;
 
         private SuccessfullUploadCallback: ((data: FileUploadResponse) => void) | null = null;
         private GetFileNameCallback: (() => string) | null = null;
@@ -58,19 +57,11 @@ namespace YetaWF_ComponentsHTML {
 
             this.Setup = setup;
 
-            ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
-
             this.uploadButton = $YetaWF.getElement1BySelector(".t_upload", [this.Control]);
             this.inputFileName = $YetaWF.getElement1BySelector("input.t_filename", [this.Control]) as HTMLInputElement;
-            this.divProgressbar = $YetaWF.getElement1BySelectorCond(".t_progressbar", [this.Control]) as HTMLDivElement;
-            if (this.divProgressbar) {
-                this.$divProgressbar = $(this.divProgressbar);
-                this.$divProgressbar.progressbar({
-                    max: 100,
-                    value: 0,
-                });
-                this.$divProgressbar.hide();
-            }
+            this.ProgressBar = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond(YetaWF_ComponentsHTML.ProgressBarComponent.SELECTOR, YetaWF_ComponentsHTML.ProgressBarComponent.SELECTOR, [this.Control]);
+            if (this.ProgressBar)
+                this.ProgressBar.hide();
 
             this.$Control = $(this.Control);
 
@@ -81,7 +72,7 @@ namespace YetaWF_ComponentsHTML {
             });
 
             // Uploader control
-            (this.$Control as any).dmUploader({
+            (this.$Control as any).dmUploader({//jquery use
                 url: this.Setup.SaveUrl,
                 //dataType: 'json',  //don't use otherwise response is not recognized in case of errors
                 //allowedTypes: '*',
@@ -108,13 +99,13 @@ namespace YetaWF_ComponentsHTML {
                     console.log(`onNewFile #${id} ${file}`);
                 },
                 onComplete: (): void => {
-                    if (this.$divProgressbar)
-                        this.$divProgressbar.hide();
+                    if (this.ProgressBar)
+                        this.ProgressBar.hide();
                 },
                 onUploadProgress: (id: string, percent: string): void => {
-                    if (this.$divProgressbar) {
-                        this.$divProgressbar.show();
-                        this.$divProgressbar.progressbar("value", percent); //jQuery-ui use
+                    if (this.ProgressBar) {
+                        this.ProgressBar.show();
+                        this.ProgressBar.value = Number(percent);
                     }
                 },
                 onUploadError: (id: string, message: string): void => {

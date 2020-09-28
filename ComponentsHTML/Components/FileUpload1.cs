@@ -2,6 +2,7 @@
 
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 
@@ -58,6 +59,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public bool SerializeForm { get; set; }// serialize all form data when uploading a file
         }
 
+        public class UI {
+            [UIHint("ProgressBar"), ReadOnly]
+            public float ProgressBar { get; set; }
+            public float ProgressBar_Min { get { return 0; } }
+            public float ProgressBar_Max { get { return 100; } }
+        }
+
         /// <summary>
         /// Returns the component type (edit/display).
         /// </summary>
@@ -85,7 +93,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<string> RenderContainerAsync(FileUpload1 model) {
+        public async Task<string> RenderContainerAsync(FileUpload1 model) {
 
             UseSuppliedIdAsControlId();
 
@@ -96,12 +104,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 RemoveUrl = model.RemoveURL,
                 SerializeForm = model.SerializeForm,
             };
+            UI ui = new UI();
 
             hb.Append($@"
 <div class='yt_fileupload1' id='{ControlId}' data-saveurl='{HAE(model.SaveURL)}' data-removeurl='{HAE(model.RemoveURL)}'>
     <input type='button' class='t_upload' value='{HAE(model.SelectButtonText)}' title='{HAE(model.SelectButtonTooltip)}' />
     <div class='t_drop'>{HAE(model.DropFilesText)}</div>
-    <div class='t_progressbar'></div>");
+    {await HtmlHelper.ForDisplayAsync(ui, nameof(ui.ProgressBar))}");
 
             if (!IsContainerComponent) {
                 hb.Append($@"
@@ -114,7 +123,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.FileUpload1Component('{ControlId}', {Utility.JsonSerialize(setup)});");
 
-            return Task.FromResult(hb.ToString());
+            return hb.ToString();
         }
     }
 }
