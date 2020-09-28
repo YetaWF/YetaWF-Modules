@@ -174,7 +174,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append($@"
 </div>");
 
-            Manager.ScriptManager.AddLast($"new YetaWF_ComponentsHTML.TabsComponent('{model.Id}', {JsonConvert.SerializeObject(setup)});");
+            Manager.ScriptManager.AddLast($"new YetaWF_ComponentsHTML.TabsComponent('{model.Id}', {Utility.JsonSerialize(setup)});");
 
             return hb.ToString();
         }

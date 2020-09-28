@@ -33,6 +33,11 @@ namespace YetaWF.Modules.Panels.Components {
             [UIHint("Tabs")]
             public TabsDefinition TabsDef { get; set; }
         }
+        internal class Setup {
+            public PanelInfo.PanelStyleEnum Style { get; set; }
+            public int ActiveIndex { get; set; }
+            public Setup() { }
+        }
 
         public async Task<string> RenderAsync(PanelInfo model) {
 
@@ -50,7 +55,7 @@ namespace YetaWF.Modules.Panels.Components {
                 };
 
                 for (int panelIndex = 0; panelIndex < model.Panels.Count; ++panelIndex) {
-                    if (model.Panels[panelIndex].IsAuthorizedAsync().Result) {
+                    if (await model.Panels[panelIndex].IsAuthorizedAsync()) {
                         string caption = model.Panels[panelIndex].Caption;
                         if (string.IsNullOrWhiteSpace(caption)) { caption = this.__ResStr("noCaption", "(no caption)"); }
                         string toolTip = model.Panels[panelIndex].ToolTip;
@@ -84,16 +89,25 @@ namespace YetaWF.Modules.Panels.Components {
             } else if (model.Style == PanelInfo.PanelStyleEnum.AccordionjQuery) {
 
                 hb.Append($@"
-    <div class='t_panels t_accjquery' id='{DivId}'>");
+    <div class='t_panels t_accjquery ui-accordion ui-widget ui-helper-reset' id='{DivId}' role='tablist'>");
 
-                int panelIndex = 0;
+                for (int panelIndex = 0; panelIndex < model.Panels.Count; ++panelIndex) {
 
-                for (panelIndex = 0; panelIndex < model.Panels.Count; ++panelIndex) {
+                    bool active = panelIndex == model._ActiveTab;
+
                     if (await model.Panels[panelIndex].IsAuthorizedAsync()) {
                         string caption = model.Panels[panelIndex].Caption;
                         if (string.IsNullOrWhiteSpace(caption)) { caption = this.__ResStr("noCaption", "(no caption)"); }
-                        hb.Append($@"<h3>{Utility.HtmlEncode(caption)}</h3>");
-                        ModuleDefinition mod = model.Panels[panelIndex].GetModuleAsync().Result;
+                        hb.Append($@"
+        <h3 class='ui-accordion-header ui-corner-top ui-state-default ui-accordion-icons {(active ? "ui-accordion-header-active ui-state-active" : "ui-accordion-header-collapsed ui-corner-all")}' role='tab'
+            id='{DivId}_{panelIndex}_lb' aria-controls='{DivId}_{panelIndex}_pane' aria-selected='{(active ? "true" : "false")}' aria-expanded='{(active ? "true" : "false")}' tabindex='{(active ? "0" : "-1")}'>
+            <span class='ui-accordion-header-icon ui-icon ui-icon-triangle-1-s'></span>
+            {Utility.HtmlEncode(caption)}
+        </h3>
+        <div class='ui-accordion-content ui-corner-bottom ui-helper-reset ui-widget-content {(active ? "ui-accordion-content-active" : "")}' id='{DivId}_{panelIndex}_pane'
+            aria-labelledby='{DivId}_{panelIndex}_lb' role='tabpanel' aria-hidden='{(active ? "false" : "true")}' style='overflow: hidden;{(active ? "" : "display:none")}'>");
+
+                        ModuleDefinition mod = await model.Panels[panelIndex].GetModuleAsync();
                         if (mod != null) {
                             mod.ShowTitle = false;
                             mod.UsePartialFormCss = false;
@@ -101,38 +115,33 @@ namespace YetaWF.Modules.Panels.Components {
                         } else {
                             hb.Append($@"<div>{this.__ResStr("noModule", "(no module defined)")}</div>");
                         }
+                        hb.Append($@"
+        </div>");
                     }
                 }
                 hb.Append($@"
     </div>");
 
-                Manager.ScriptManager.AddLast($@"
-$('#{DivId}').accordion({{
-    collapsible: true,
-    heightStyle: 'content',
-    activate: function (ev, ui) {{
-        if (ui.newPanel[0])
-            $YetaWF.processActivateDivs([ui.newPanel[0]]);
-    }}
-}});");
-
             } else if (model.Style == PanelInfo.PanelStyleEnum.AccordionKendo) {
 
                 hb.Append($@"
-    <ul class='t_panels t_acckendo' id='{DivId}'>");
+    <ul class='t_panels t_acckendo k-widget k-reset k-header k-panelbar' role='menu' tabindex='0'>");
 
-                int panelIndex = 0;
-                int tabIndex = 0;
+                for (int panelIndex = 0; panelIndex < model.Panels.Count; ++panelIndex) {
 
-                for (panelIndex = 0; panelIndex < model.Panels.Count; ++panelIndex) {
-                    if (model.Panels[panelIndex].IsAuthorizedAsync().Result) {
+                    bool active = panelIndex == model._ActiveTab;
+
+                    if (await model.Panels[panelIndex].IsAuthorizedAsync()) {
                         string caption = model.Panels[panelIndex].Caption;
                         if (string.IsNullOrWhiteSpace(caption)) { caption = this.__ResStr("noCaption", "(no caption)"); }
 
                         hb.Append($@"
-        <li class='{(model._ActiveTab == tabIndex ? "k-state-active" : "")}'>
-            <span class='{(model._ActiveTab == tabIndex ? "k-link k-state-selected" : "")}'>{Utility.HtmlEncode(caption)}</span>
-            <div class='t_panel-kendo' style='display:none'>");
+        <li class='k-item{(panelIndex == 0 ? " k-first" : "")}{(panelIndex == model.Panels.Count - 1 ? " k-last" : "")} {(active ? "k-state-active k-state-highlight" : "")}' role='menuitem' aria-expanded='{(active ? "true" : "false")}' aria-selected='{(active ? "true" : "false")}'>
+            <span class='k-link k-header{(active ? " k-state-selected" : "")}'>
+                {Utility.HtmlEncode(caption)}
+                <span class='k-icon {(active ? "k-i-arrow-60-up k-panelbar-collapse" : "k-i-arrow-60-down k-panelbar-expand")}'></span>
+            </span>
+            <div class='t_panel-kendo k-content' style='display:{(active ? "block" : "none")};{(active ? "height='auto';" : "")}overflow: hidden;' role='region' aria-hidden='{(active ? "false" : "true")}'>");
 
                         ModuleDefinition mod = await model.Panels[panelIndex].GetModuleAsync();
                         if (mod != null) {
@@ -145,34 +154,18 @@ $('#{DivId}').accordion({{
                         hb.Append($@"
             </div>
         </li>");
-
-                        ++tabIndex;
                     }
                 }
                 hb.Append($@"
     </ul>
 </div>");
-
-                await KendoUICore.AddFileAsync("kendo.data.min.js");
-                await KendoUICore.AddFileAsync("kendo.panelbar.min.js");
-
-                Manager.ScriptManager.AddLast($@"
-$('#{DivId}').kendoPanelBar({{
-    expandMode: 'single',
-    activate: function(ev) {{
-        if (ev.item[0])
-            $YetaWF.processActivateDivs([ev.item[0]]);
-    }}
-}});
-var $panelBar = $('#{DivId}').kendoPanelBar().data('kendoPanelBar');
-$panelBar.select();");
-
             }
 
-            Manager.ScriptManager.AddLast($@"
-{BeginDocumentReady(ControlId)}
-    $YetaWF.processActivateDivs([$YetaWF.getElementById('{ControlId}')]);
-{EndDocumentReady()} ");
+            Setup setup = new Setup {
+                Style = model.Style,
+                ActiveIndex = model._ActiveTab,
+            };
+            Manager.ScriptManager.AddLast($@"new YetaWF_Panels.PanelInfoComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
             return hb.ToString();
         }

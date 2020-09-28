@@ -1,1 +1,2 @@
 ﻿PanelInfoEdit.ts
+PanelInfo.ts
