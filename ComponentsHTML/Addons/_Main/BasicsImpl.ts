@@ -233,7 +233,8 @@ namespace YetaWF_ComponentsHTML {
             ToolTipsHTMLHelper.removeTooltips();
 
             // dropdowns
-            DropDownListEditComponent.closeDropdowns();
+            if (DropDownListEditComponent)
+                DropDownListEditComponent.closeDropdowns();
         }
         /**
          * Enable/disable an element.
