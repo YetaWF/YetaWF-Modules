@@ -41,7 +41,7 @@ namespace YetaWF_ComponentsHTML {
                 this.activatePane(index);
                 return false;
             });
-            $YetaWF.registerEventHandler(this.Control, "keydown", null, (ev: KeyboardEvent): boolean => {
+            $YetaWF.registerEventHandler(this.Control, "keydown", "ul.t_tabstrip li", (ev: KeyboardEvent): boolean => {
                 let index = this.activeTab;
                 let key = ev.key;
                 if (key === "ArrowDown" || key === "Down" || key === "ArrowRight" || key === "Right") {

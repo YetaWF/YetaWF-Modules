@@ -39,7 +39,7 @@ var YetaWF_ComponentsHTML;
                 _this.activatePane(index);
                 return false;
             });
-            $YetaWF.registerEventHandler(_this.Control, "keydown", null, function (ev) {
+            $YetaWF.registerEventHandler(_this.Control, "keydown", "ul.t_tabstrip li", function (ev) {
                 var index = _this.activeTab;
                 var key = ev.key;
                 if (key === "ArrowDown" || key === "Down" || key === "ArrowRight" || key === "Right") {
