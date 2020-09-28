@@ -15,7 +15,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         private static YetaWFManager Manager { get { return YetaWFManager.Manager; } }
 
         /// <summary>
-        /// Called by components that use jQuery UI to add the basic jQuery UI JavaScript/CSS to the page.
+        /// Called by components that use jQuery UI to add the basic jQuery UI CSS to the page.
+        /// JavaScript files are never loaded and jQuery UI is not used. Only the CSS and the themes are available.
         /// </summary>
         public static async Task UseAsync() {
 
@@ -25,8 +26,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (!cData.JqueryUIUsed) {
                 cData.JqueryUIUsed = true;
 
-                await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.AreaName, "jqueryui");
-
                 // Find the jquery theme+
                 SkinAccess skinAccess = new SkinAccess();
                 string skin = Manager.CurrentPage.jQueryUISkin;
@@ -34,8 +33,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     skin = Manager.CurrentSite.jQueryUISkin;
                 string jqueryUIFolder = await skinAccess.FindJQueryUISkinAsync(skin);
                 await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.AreaName, "jqueryui-themes", jqueryUIFolder);
-
-                Manager.ScriptManager.AddVolatileOption(AreaRegistration.CurrentPackage.AreaName, "jqueryUI", true, Replace: true);
             }
         }
     }

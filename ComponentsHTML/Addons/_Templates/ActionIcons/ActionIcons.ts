@@ -61,26 +61,7 @@ namespace YetaWF_ComponentsHTML {
             this.positionMenu();
         }
         private positionMenu(): void {
-
-            let menuControl = this.MenuControl;
-
-            // position to fit
-            let controlRect = this.Control.getBoundingClientRect();
-            let menuRect = menuControl.getBoundingClientRect();
-            let bottomAvailable = window.innerHeight - controlRect.bottom;
-            let topAvailable = controlRect.top;
-
-            // Top/bottom position and height calculation
-            let top = 0, bottom = 0;
-            if (bottomAvailable < menuRect.height && topAvailable > bottomAvailable) {
-                bottom = window.innerHeight - controlRect.top;
-                menuControl.style.bottom = `${bottom - window.pageYOffset}px`;
-            } else {
-                top = controlRect.bottom;
-                menuControl.style.top = `${top + window.pageYOffset}px`;
-            }
-            // set left
-            menuControl.style.left = `${controlRect.left + window.pageXOffset}px`;
+            $YetaWF.positionLeftAlignedBelow(this.Control, this.MenuControl);
         }
 
         public static closeMenus(): void {

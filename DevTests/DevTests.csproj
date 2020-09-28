@@ -32,4 +32,9 @@
     <None Remove="node_modules\**" /><EmbeddedResource Remove="node_modules\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Controllers\TemplateColorPicker.cs" />
+    <Compile Remove="Modules\TemplateColorPickerModule.cs" />
+  </ItemGroup>
+
 </Project>

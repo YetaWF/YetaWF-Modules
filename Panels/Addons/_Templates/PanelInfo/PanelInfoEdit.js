@@ -23,24 +23,6 @@ var YetaWF_Panels;
                 ChangeEvent: null,
                 GetValue: null,
                 Enable: null,
-            }, false, function (tag, control) {
-                // tabs (jquery, kendo) are automatically destroyed, as they are components
-                // jquery ui accordion
-                var list = $YetaWF.getElementsBySelector(".yt_panels_panelinfo .t_panels.t_accjquery", [control.Control]);
-                for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
-                    var el = list_1[_i];
-                    var accordion = $(el);
-                    if (accordion)
-                        accordion.accordion("destroy"); //jQuery-ui use
-                }
-                // kendo accordion
-                var list = $YetaWF.getElementsBySelector(".yt_panels_panelinfo .t_panels.t_acckendo", [control.Control]);
-                for (var _a = 0, list_2 = list; _a < list_2.length; _a++) {
-                    var el = list_2[_a];
-                    var panelBar = $(el).data("kendoPanelBar");
-                    if (panelBar)
-                        panelBar.destroy();
-                }
             }) || this;
             _this.Up = $YetaWF.getElement1BySelector("input.t_up", [_this.Control]);
             _this.Down = $YetaWF.getElement1BySelector("input.t_down", [_this.Control]);

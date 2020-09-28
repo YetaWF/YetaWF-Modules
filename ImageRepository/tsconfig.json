@@ -23,7 +23,7 @@
     "strictPropertyInitialization": true,
     "strictNullChecks": true,
     "types": [
-      "jquery", "jqueryui", "kendo-ui",
+      "jquery", "kendo-ui",
       "YetaWF/HTML/Globals", "YetaWF/HTML/Basics", "YetaWF/HTML/Forms", "YetaWF/HTML/Popups", "YetaWF/HTML/ComponentsHTML", "YetaWF/HTML/Url", "YetaWF/HTML/ComponentBase",
       "YetaWF/HTML/Grid/Grid", "YetaWF/HTML/FileUpload1/FileUpload1"
     ]

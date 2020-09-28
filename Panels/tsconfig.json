@@ -24,7 +24,6 @@
     "strictNullChecks": true,
     "types": [
       "jquery",
-      "jqueryui",
       "kendo-ui",
 
       "YetaWF/HTML/Basics",

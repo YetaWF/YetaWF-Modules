@@ -81,7 +81,6 @@ var YetaWF_ComponentsHTML;
             _this.reorderingInProgress = false;
             _this.reorderingRowElement = null;
             _this.Setup = setup;
-            ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
             _this.TBody = $YetaWF.getElement1BySelector("tbody", [_this.Control]);
             if (_this.Setup.ShowPager) {
                 _this.BtnReload = $YetaWF.getElement1BySelectorCond(".tg_reload", [_this.Control]);
@@ -243,21 +242,17 @@ var YetaWF_ComponentsHTML;
             // Filtering
             if (_this.Setup.CanFilter && _this.FilterBar) {
                 $YetaWF.registerEventHandler(_this.FilterBar, "click", ".tg_fmenu", function (ev) {
-                    var filter = $YetaWF.elementClosest(ev.__YetaWFElem, ".tg_filter");
-                    var head = $YetaWF.elementClosest(ev.__YetaWFElem, "th");
+                    var button = ev.__YetaWFElem;
+                    var filter = $YetaWF.elementClosest(button, ".tg_filter");
+                    var head = $YetaWF.elementClosest(button, "th");
                     var colIndex = Array.prototype.indexOf.call(filter.children, head);
                     var ulElem = $YetaWF.getElementById(_this.Setup.Columns[colIndex].MenuId);
                     if ($YetaWF.isVisible(ulElem))
-                        $(ulElem).hide();
+                        ulElem.style.display = "none";
                     else {
                         $YetaWF.closeOverlays();
-                        $(ulElem).show();
-                        $(ulElem).position({
-                            my: "left top",
-                            at: "left bottom",
-                            of: $(ev.__YetaWFElem),
-                            collision: "flip"
-                        });
+                        ulElem.style.display = "";
+                        $YetaWF.positionLeftAlignedBelow(button, ulElem);
                     }
                     return false;
                 });

@@ -23,7 +23,7 @@
     "strictPropertyInitialization": true,
     "strictNullChecks": true,
     "types": [
-      "jquery", "jqueryui", "kendo-ui",
+      "jquery", "kendo-ui",
       "YetaWF/HTML/Basics", "YetaWF/HTML/ComponentBase", "YetaWF/HTML/ComponentsHTML", "YetaWF/HTML/Controls", "YetaWF/HTML/Forms", "YetaWF/HTML/Globals", "YetaWF/HTML/ModuleBase", "YetaWF/HTML/Popups", "YetaWF/HTML/Url",
       "YetaWF/HTML/DropDownList/DropDownListEdit", "YetaWF/HTML/Grid/Grid", "YetaWF/HTML/IntValue/IntValueEdit", "YetaWF/HTML/ProgressBar/ProgressBar", "YetaWF/HTML/Tree/Tree"
     ]

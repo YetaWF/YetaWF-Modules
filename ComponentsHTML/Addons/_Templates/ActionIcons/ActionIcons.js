@@ -60,24 +60,7 @@ var YetaWF_ComponentsHTML;
             this.positionMenu();
         };
         ActionIconsComponent.prototype.positionMenu = function () {
-            var menuControl = this.MenuControl;
-            // position to fit
-            var controlRect = this.Control.getBoundingClientRect();
-            var menuRect = menuControl.getBoundingClientRect();
-            var bottomAvailable = window.innerHeight - controlRect.bottom;
-            var topAvailable = controlRect.top;
-            // Top/bottom position and height calculation
-            var top = 0, bottom = 0;
-            if (bottomAvailable < menuRect.height && topAvailable > bottomAvailable) {
-                bottom = window.innerHeight - controlRect.top;
-                menuControl.style.bottom = bottom - window.pageYOffset + "px";
-            }
-            else {
-                top = controlRect.bottom;
-                menuControl.style.top = top + window.pageYOffset + "px";
-            }
-            // set left
-            menuControl.style.left = controlRect.left + window.pageXOffset + "px";
+            $YetaWF.positionLeftAlignedBelow(this.Control, this.MenuControl);
         };
         ActionIconsComponent.closeMenus = function () {
             // find all action menus after grid (there really should only be one)

@@ -148,8 +148,6 @@ namespace YetaWF_ComponentsHTML {
 
             this.Setup = setup;
 
-            ComponentsHTMLHelper.MUSTHAVE_JQUERYUI();
-
             this.TBody = $YetaWF.getElement1BySelector("tbody", [this.Control]);
 
             if (this.Setup.ShowPager) {
@@ -311,21 +309,17 @@ namespace YetaWF_ComponentsHTML {
             // Filtering
             if (this.Setup.CanFilter && this.FilterBar) {
                 $YetaWF.registerEventHandler(this.FilterBar, "click", ".tg_fmenu", (ev: MouseEvent): boolean => {
-                    let filter = $YetaWF.elementClosest(ev.__YetaWFElem, ".tg_filter");
-                    let head = $YetaWF.elementClosest(ev.__YetaWFElem, "th");
+                    let button = ev.__YetaWFElem;
+                    let filter = $YetaWF.elementClosest(button, ".tg_filter");
+                    let head = $YetaWF.elementClosest(button, "th");
                     let colIndex = Array.prototype.indexOf.call(filter.children, head);
                     let ulElem = $YetaWF.getElementById(this.Setup.Columns[colIndex].MenuId);
                     if ($YetaWF.isVisible(ulElem))
-                        $(ulElem).hide();
+                        ulElem.style.display = "none";
                     else {
                         $YetaWF.closeOverlays();
-                        $(ulElem).show();
-                        $(ulElem).position({ //jQuery-ui use
-                            my: "left top",
-                            at: "left bottom",
-                            of: $(ev.__YetaWFElem),
-                            collision: "flip"
-                        });
+                        ulElem.style.display = "";
+                        $YetaWF.positionLeftAlignedBelow(button, ulElem);
                     }
                     return false;
                 });
