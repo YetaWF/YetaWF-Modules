@@ -58,15 +58,13 @@ var YetaWF_ComponentsHTML;
         }
         IntValueEditComponent.prototype.sendChangeEvent = function () {
             $(this.Control).trigger("change");
-            var event = document.createEvent("Event");
-            event.initEvent(IntValueEditComponent.EVENT, true, true);
-            this.Control.dispatchEvent(event);
+            $YetaWF.sendCustomEvent(this.Control, IntValueEditComponent.EVENT);
+            $YetaWF.sendCustomEvent(this.Control, IntValueEditComponent.EVENTCHANGE);
             FormsSupport.validateElement(this.Control);
         };
         IntValueEditComponent.prototype.sendSpinEvent = function () {
-            var event = document.createEvent("Event");
-            event.initEvent(IntValueEditComponent.EVENT, true, true);
-            this.Control.dispatchEvent(event);
+            $YetaWF.sendCustomEvent(this.Control, IntValueEditComponent.EVENT);
+            $YetaWF.sendCustomEvent(this.Control, IntValueEditComponent.EVENTSPIN);
         };
         Object.defineProperty(IntValueEditComponent.prototype, "value", {
             get: function () {
@@ -106,7 +104,7 @@ var YetaWF_ComponentsHTML;
         };
         IntValueEditComponent.TEMPLATE = "yt_intvalue_base";
         IntValueEditComponent.SELECTOR = "input.yt_intvalue_base.t_edit.k-input[name]";
-        IntValueEditComponent.EVENT = "intvalue_change"; // obsolete
+        IntValueEditComponent.EVENT = "intvalue_changespin"; // combines change and spin
         IntValueEditComponent.EVENTCHANGE = "intvalue_change";
         IntValueEditComponent.EVENTSPIN = "intvalue_spin";
         return IntValueEditComponent;

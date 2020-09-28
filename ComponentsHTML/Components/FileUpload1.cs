@@ -42,7 +42,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [Caption("ZIP File"), Description("The ZIP file containing the module to be imported (creates a new module) ")]
     /// [UIHint("FileUpload1"), Required]
     /// public FileUpload1 UploadFile { get; set; }
-    /// 
+    ///
     /// UploadFile = new FileUpload1 {
     ///     SelectButtonText = this.__ResStr("btnImport", "Import Module Data..."),
     ///     SaveURL = YetaWFManager.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.ImportPackage), new { __ModuleGuid = mod.ModuleGuid }),

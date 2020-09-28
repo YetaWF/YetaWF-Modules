@@ -13,7 +13,7 @@ namespace YetaWF_ComponentsHTML {
 
         public static readonly TEMPLATE: string = "yt_intvalue_base";
         public static readonly SELECTOR: string = "input.yt_intvalue_base.t_edit.k-input[name]";
-        public static readonly EVENT: string = "intvalue_change";// obsolete
+        public static readonly EVENT: string = "intvalue_changespin";// combines change and spin
         public static readonly EVENTCHANGE: string = "intvalue_change";
         public static readonly EVENTSPIN: string = "intvalue_spin";
 
@@ -62,15 +62,13 @@ namespace YetaWF_ComponentsHTML {
         }
         private sendChangeEvent(): void {
             $(this.Control).trigger("change");
-            var event = document.createEvent("Event");
-            event.initEvent(IntValueEditComponent.EVENT, true, true);
-            this.Control.dispatchEvent(event);
+            $YetaWF.sendCustomEvent(this.Control, IntValueEditComponent.EVENT);
+            $YetaWF.sendCustomEvent(this.Control, IntValueEditComponent.EVENTCHANGE);
             FormsSupport.validateElement(this.Control);
         }
         private sendSpinEvent(): void {
-            var event = document.createEvent("Event");
-            event.initEvent(IntValueEditComponent.EVENT, true, true);
-            this.Control.dispatchEvent(event);
+            $YetaWF.sendCustomEvent(this.Control, IntValueEditComponent.EVENT);
+            $YetaWF.sendCustomEvent(this.Control, IntValueEditComponent.EVENTSPIN);
         }
 
         get value(): number {
