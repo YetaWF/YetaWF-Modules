@@ -317,6 +317,16 @@ var YetaWF_ComponentsHTML;
             $YetaWF.registerEventHandler(_this.TBody, "dblclick", "tr:not(.tg_emptytr)", function (ev) {
                 return _this.handleSelect(ev.__YetaWFElem, true);
             });
+            $YetaWF.registerEventHandler(_this.TBody, "focusin", "tr:not(.tg_emptytr)", function (ev) {
+                var elem = ev.__YetaWFElem;
+                $YetaWF.elementToggleClass(elem, _this.Setup.RowHighlightCss, true);
+                return true;
+            });
+            $YetaWF.registerEventHandler(_this.TBody, "focusout", "tr:not(.tg_emptytr)", function (ev) {
+                var elem = ev.__YetaWFElem;
+                $YetaWF.elementToggleClass(elem, _this.Setup.RowHighlightCss, false);
+                return true;
+            });
             $YetaWF.registerEventHandler(_this.Control, "keydown", null, function (ev) {
                 if (!document.activeElement || document.activeElement.tagName !== "TR")
                     return true;
@@ -462,12 +472,11 @@ var YetaWF_ComponentsHTML;
                     }
                     $YetaWF.elementToggleClass(clickedElem, this.Setup.RowHighlightCss, true);
                 }
-                clickedElem.focus();
                 if (doubleClick)
                     this.sendEventDblClick();
                 else
                     this.sendEventSelect();
-                return false;
+                return true;
             }
             return true;
         };
@@ -1315,7 +1324,7 @@ var YetaWF_ComponentsHTML;
         };
         Grid.prototype.GetTR = function (index) {
             if (this.Setup.StaticData)
-                throw "Ajax grids only";
+                ++index; // the first row in an <no records> indicator
             if (index < 0 || index >= this.TBody.children.length)
                 throw "Index " + index + " out of bounds";
             return this.TBody.children[index];

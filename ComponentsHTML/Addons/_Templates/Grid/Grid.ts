@@ -382,6 +382,16 @@ namespace YetaWF_ComponentsHTML {
             $YetaWF.registerEventHandler(this.TBody, "dblclick", "tr:not(.tg_emptytr)", (ev: MouseEvent): boolean => {
                 return this.handleSelect(ev.__YetaWFElem, true);
             });
+            $YetaWF.registerEventHandler(this.TBody, "focusin", "tr:not(.tg_emptytr)", (ev: Event): boolean => {
+                let elem = ev.__YetaWFElem;
+                $YetaWF.elementToggleClass(elem, this.Setup.RowHighlightCss, true);
+                return true;
+            });
+            $YetaWF.registerEventHandler(this.TBody, "focusout", "tr:not(.tg_emptytr)", (ev: Event): boolean => {
+                let elem = ev.__YetaWFElem;
+                $YetaWF.elementToggleClass(elem, this.Setup.RowHighlightCss, false);
+                return true;
+            });
 
             $YetaWF.registerEventHandler(this.Control, "keydown", null, (ev: KeyboardEvent): boolean => {
                 if (!document.activeElement || document.activeElement.tagName !== "TR")
@@ -527,13 +537,11 @@ namespace YetaWF_ComponentsHTML {
                     $YetaWF.elementToggleClass(clickedElem, this.Setup.RowHighlightCss, true);
                 }
 
-                clickedElem.focus();
-
                 if (doubleClick)
                     this.sendEventDblClick();
                 else
                     this.sendEventSelect();
-                return false;
+                return true;
             }
             return true;
         }
@@ -1336,7 +1344,8 @@ namespace YetaWF_ComponentsHTML {
             return this.Setup.StaticData[index];
         }
         public GetTR(index: number): HTMLTableRowElement {
-            if (this.Setup.StaticData) throw "Ajax grids only";
+            if (this.Setup.StaticData)
+                ++index;// the first row in an <no records> indicator
             if (index < 0 || index >= this.TBody.children.length) throw `Index ${index} out of bounds`;
             return this.TBody.children[index] as HTMLTableRowElement;
         }

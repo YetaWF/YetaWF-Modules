@@ -78,6 +78,10 @@ var YetaWF_ComponentsHTML;
                             _this.openPopup();
                             return false;
                         }
+                        if (key === "ArrowUp" || key === "Up" || key === "ArrowLeft" || key === "Left") {
+                            _this.closePopup();
+                            return false;
+                        }
                     }
                     else {
                         if (key === "ArrowDown" || key === "Down" || key === "ArrowRight" || key === "Right") {
