@@ -36,7 +36,7 @@ namespace YetaWF_Panels {
                 return true;
             });
             $YetaWF.registerEventHandler($YetaWF.getElement1BySelector(".t_area", [this.Control]), "scroll", null, (ev: Event): boolean => {
-                $YetaWF.sendContainerScrollEvent();
+                $YetaWF.sendContainerScrollEvent(this.Control);
                 return true;
             });
         }
@@ -54,11 +54,13 @@ namespace YetaWF_Panels {
             this.Control.style.height = `${ctrlRect.height - h}px`;
         }
     }
-    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: Event): boolean => {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: CustomEvent<YetaWF.DetailsEventContainerResize>): boolean => {
         let ctrlDivs = $YetaWF.getElementsBySelector(PageBarInfoComponent.SELECTOR);
         for (let ctrlDiv of ctrlDivs) {
-            let mod = PageBarInfoComponent.getControlFromTag<PageBarInfoComponent>(ctrlDiv, PageBarInfoComponent.SELECTOR);
-            mod.resize();
+            if ($YetaWF.elementHas(ev.detail.container, ctrlDiv)) {
+                let mod = PageBarInfoComponent.getControlFromTag<PageBarInfoComponent>(ctrlDiv, PageBarInfoComponent.SELECTOR);
+                mod.resize();
+            }
         }
         return true;
     });

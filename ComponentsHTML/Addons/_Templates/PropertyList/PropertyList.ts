@@ -259,6 +259,8 @@ namespace YetaWF_ComponentsHTML {
             }
             // show apply/save/cancel buttons again
             this.toggleFormButtons(true);
+
+            $YetaWF.sendContainerResizeEvent(box);
         }
         private expandBox(box: HTMLElement): void {
             let boxes = $YetaWF.getElementsBySelector(".t_proptable", [this.Control]);
@@ -275,6 +277,8 @@ namespace YetaWF_ComponentsHTML {
 
             // hide apply/save/cancel buttons while expanded
             this.toggleFormButtons(false);
+
+            $YetaWF.sendContainerResizeEvent(box);
         }
 
         private toggleFormButtons(show: boolean): void {
@@ -575,11 +579,13 @@ namespace YetaWF_ComponentsHTML {
         }
     }
 
-    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: Event): boolean => {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: CustomEvent<YetaWF.DetailsEventContainerResize>): boolean => {
         let proplists = $YetaWF.getElementsBySelector(PropertyListComponent.SELECTOR);
         for (let proplist of proplists) {
-            let list = YetaWF.ComponentBaseDataImpl.getControlFromTag<PropertyListComponent>(proplist, PropertyListComponent.SELECTOR);
-            list.resize();
+            if ($YetaWF.elementHas(ev.detail.container, proplist)) {
+                let list = YetaWF.ComponentBaseDataImpl.getControlFromTag<PropertyListComponent>(proplist, PropertyListComponent.SELECTOR);
+                list.resize();
+            }
         }
         return false;
     });

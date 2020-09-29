@@ -40,7 +40,7 @@ var YetaWF_Panels;
                 return true;
             });
             $YetaWF.registerEventHandler($YetaWF.getElement1BySelector(".t_area", [_this.Control]), "scroll", null, function (ev) {
-                $YetaWF.sendContainerScrollEvent();
+                $YetaWF.sendContainerScrollEvent(_this.Control);
                 return true;
             });
             return _this;
@@ -66,8 +66,10 @@ var YetaWF_Panels;
         var ctrlDivs = $YetaWF.getElementsBySelector(PageBarInfoComponent.SELECTOR);
         for (var _i = 0, ctrlDivs_1 = ctrlDivs; _i < ctrlDivs_1.length; _i++) {
             var ctrlDiv = ctrlDivs_1[_i];
-            var mod = PageBarInfoComponent.getControlFromTag(ctrlDiv, PageBarInfoComponent.SELECTOR);
-            mod.resize();
+            if ($YetaWF.elementHas(ev.detail.container, ctrlDiv)) {
+                var mod = PageBarInfoComponent.getControlFromTag(ctrlDiv, PageBarInfoComponent.SELECTOR);
+                mod.resize();
+            }
         }
         return true;
     });

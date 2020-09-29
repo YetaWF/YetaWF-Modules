@@ -98,7 +98,7 @@ var YetaWF_ComponentsHTML;
             _this.FilterBar = $YetaWF.getElement1BySelectorCond(".tg_filter", [_this.Control]);
             _this.updateStatus();
             $YetaWF.getElement1BySelector(".tg_table", [_this.Control]).addEventListener("scroll", function (ev) {
-                $YetaWF.sendContainerScrollEvent();
+                $YetaWF.sendContainerScrollEvent(_this.Control);
                 return true;
             });
             $YetaWF.registerEventHandler(_this.Control, "mouseover", ".tg_header th, .tg_filter .tg_button, .tg_pager .tg_button", function (ev) {

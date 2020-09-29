@@ -177,6 +177,7 @@ var YetaWF_ComponentsHTML;
             }
             // show apply/save/cancel buttons again
             this.toggleFormButtons(true);
+            $YetaWF.sendContainerResizeEvent(box);
         };
         PropertyListComponent.prototype.expandBox = function (box) {
             var boxes = $YetaWF.getElementsBySelector(".t_proptable", [this.Control]);
@@ -193,6 +194,7 @@ var YetaWF_ComponentsHTML;
             $YetaWF.elementAddClass(expcoll, "t_show");
             // hide apply/save/cancel buttons while expanded
             this.toggleFormButtons(false);
+            $YetaWF.sendContainerResizeEvent(box);
         };
         PropertyListComponent.prototype.toggleFormButtons = function (show) {
             var form = $YetaWF.Forms.getForm(this.Control);
@@ -505,8 +507,10 @@ var YetaWF_ComponentsHTML;
         var proplists = $YetaWF.getElementsBySelector(PropertyListComponent.SELECTOR);
         for (var _i = 0, proplists_2 = proplists; _i < proplists_2.length; _i++) {
             var proplist = proplists_2[_i];
-            var list = YetaWF.ComponentBaseDataImpl.getControlFromTag(proplist, PropertyListComponent.SELECTOR);
-            list.resize();
+            if ($YetaWF.elementHas(ev.detail.container, proplist)) {
+                var list = YetaWF.ComponentBaseDataImpl.getControlFromTag(proplist, PropertyListComponent.SELECTOR);
+                list.resize();
+            }
         }
         return false;
     });

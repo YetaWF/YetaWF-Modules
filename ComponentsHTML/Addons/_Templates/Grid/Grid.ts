@@ -168,7 +168,7 @@ namespace YetaWF_ComponentsHTML {
             this.updateStatus();
 
             $YetaWF.getElement1BySelector(".tg_table", [this.Control]).addEventListener("scroll", (ev: Event): any => {
-                $YetaWF.sendContainerScrollEvent();
+                $YetaWF.sendContainerScrollEvent(this.Control);
                 return true;
             });
 
@@ -1447,7 +1447,7 @@ namespace YetaWF_ComponentsHTML {
         }
     }
 
-    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, (ev: Event): boolean => {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, (ev: CustomEvent<YetaWF.DetailsEventContainerScroll>): boolean => {
         Grid.closeFilterMenus();
         return true;
     });
