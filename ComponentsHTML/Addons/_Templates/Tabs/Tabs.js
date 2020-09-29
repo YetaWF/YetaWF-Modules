@@ -33,7 +33,7 @@ var YetaWF_ComponentsHTML;
             }) || this;
             _this.Setup = setup;
             _this.ActiveTabHidden = $YetaWF.getElementById(_this.Setup.ActiveTabHiddenId);
-            $YetaWF.registerEventHandler(_this.Control, "click", "li", function (ev) {
+            $YetaWF.registerEventHandler(_this.Control, "click", "ul.t_tabstrip li", function (ev) {
                 var li = ev.__YetaWFElem;
                 var index = Number($YetaWF.getAttribute(li, "data-tab"));
                 _this.activatePane(index);

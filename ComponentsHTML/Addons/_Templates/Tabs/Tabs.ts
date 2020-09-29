@@ -35,7 +35,7 @@ namespace YetaWF_ComponentsHTML {
 
             this.ActiveTabHidden = $YetaWF.getElementById(this.Setup.ActiveTabHiddenId) as HTMLInputElement;
 
-            $YetaWF.registerEventHandler(this.Control, "click", "li", (ev: MouseEvent): boolean => {
+            $YetaWF.registerEventHandler(this.Control, "click", "ul.t_tabstrip li", (ev: MouseEvent): boolean => {
                 let li = ev.__YetaWFElem;
                 let index = Number($YetaWF.getAttribute(li, "data-tab"));
                 this.activatePane(index);
