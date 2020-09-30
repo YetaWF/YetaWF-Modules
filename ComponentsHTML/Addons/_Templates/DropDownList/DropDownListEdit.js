@@ -303,7 +303,7 @@ var YetaWF_ComponentsHTML;
         };
         DropDownListEditComponent.prototype.closePopup = function (sendEvent) {
             if (!this.Popup) {
-                if (sendEvent == SendSelectEnum.ChangeSinceOpen && this.IndexOnOpen !== -1 && this.selectedIndex !== this.IndexOnOpen) {
+                if (sendEvent === SendSelectEnum.ChangeSinceOpen && this.IndexOnOpen !== -1 && this.selectedIndex !== this.IndexOnOpen) {
                     this.IndexOnOpen = -1;
                     this.sendChangeEvent();
                 }
@@ -312,11 +312,11 @@ var YetaWF_ComponentsHTML;
                 this.Popup.remove();
                 this.Popup = null;
                 this.Control.setAttribute("aria-expanded", "false");
-                if (sendEvent == SendSelectEnum.Yes) {
+                if (sendEvent === SendSelectEnum.Yes) {
                     this.IndexOnOpen = -1;
                     this.sendChangeEvent();
                 }
-                else if (sendEvent == SendSelectEnum.ChangeSinceOpen && this.IndexOnOpen !== -1 && this.IndexOnOpen !== this.selectedIndex) {
+                else if (sendEvent === SendSelectEnum.ChangeSinceOpen && this.IndexOnOpen !== -1 && this.IndexOnOpen !== this.selectedIndex) {
                     this.IndexOnOpen = -1;
                     this.sendChangeEvent();
                 }
@@ -517,3 +517,5 @@ var YetaWF_ComponentsHTML;
         return true;
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+
+//# sourceMappingURL=DropDownListEdit.js.map
