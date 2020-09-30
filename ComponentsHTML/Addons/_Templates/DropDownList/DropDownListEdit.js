@@ -15,6 +15,12 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
+    var SendSelectEnum;
+    (function (SendSelectEnum) {
+        SendSelectEnum[SendSelectEnum["No"] = 0] = "No";
+        SendSelectEnum[SendSelectEnum["Yes"] = 1] = "Yes";
+        SendSelectEnum[SendSelectEnum["ChangeSinceOpen"] = 2] = "ChangeSinceOpen";
+    })(SendSelectEnum || (SendSelectEnum = {}));
     var DropDownListEditComponent = /** @class */ (function (_super) {
         __extends(DropDownListEditComponent, _super);
         function DropDownListEditComponent(controlId, setup) {
@@ -33,8 +39,10 @@ var YetaWF_ComponentsHTML;
             }) || this;
             _this.Popup = null;
             _this.Enabled = true;
-            _this.DropDownWidth = 0;
             _this.Focused = false;
+            _this.DropDownWidth = 0;
+            _this.IndexOnOpen = -1;
+            _this.MouseSelectedIndex = -1;
             _this.Setup = setup;
             _this.Input = $YetaWF.getElement1BySelector(".t_input", [_this.Control]);
             _this.Select = $YetaWF.getElement1BySelector("select", [_this.Control]);
@@ -68,6 +76,7 @@ var YetaWF_ComponentsHTML;
             $YetaWF.registerEventHandler(_this.Control, "focusout", null, function (ev) {
                 $YetaWF.elementRemoveClass(_this.Container, "k-state-focused");
                 _this.Focused = false;
+                _this.closePopup(SendSelectEnum.ChangeSinceOpen);
                 return true;
             });
             $YetaWF.registerEventHandler(_this.Control, "keydown", null, function (ev) {
@@ -79,7 +88,7 @@ var YetaWF_ComponentsHTML;
                             return false;
                         }
                         if (key === "ArrowUp" || key === "Up" || key === "ArrowLeft" || key === "Left") {
-                            _this.closePopup();
+                            _this.closePopup(SendSelectEnum.Yes);
                             return false;
                         }
                     }
@@ -102,11 +111,15 @@ var YetaWF_ComponentsHTML;
                             return false;
                         }
                         else if (key === "Escape") {
-                            _this.closePopup();
+                            _this.closePopup(SendSelectEnum.No);
                             return false;
                         }
                         else if (key === "Tab") {
-                            _this.closePopup();
+                            _this.closePopup(SendSelectEnum.ChangeSinceOpen);
+                            return true;
+                        }
+                        else if (key === "Enter") {
+                            _this.closePopup(SendSelectEnum.ChangeSinceOpen);
                             return true;
                         }
                         else if (key.length === 1) {
@@ -160,7 +173,8 @@ var YetaWF_ComponentsHTML;
                 this.clearSelectedPopupItem();
                 this.selectPopupItem();
                 this.Input.innerText = this.Select.options[index].text;
-                this.sendChangeEvent();
+                if (!this.isOpen)
+                    this.sendChangeEvent();
             },
             enumerable: false,
             configurable: true
@@ -168,6 +182,13 @@ var YetaWF_ComponentsHTML;
         Object.defineProperty(DropDownListEditComponent.prototype, "totalItems", {
             get: function () {
                 return this.Select.options.length;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(DropDownListEditComponent.prototype, "isOpen", {
+            get: function () {
+                return this.Popup != null;
             },
             enumerable: false,
             configurable: true
@@ -182,11 +203,11 @@ var YetaWF_ComponentsHTML;
             return tt;
         };
         DropDownListEditComponent.prototype.clear = function () {
-            this.closePopup();
+            this.closePopup(SendSelectEnum.No);
             this.selectedIndex = 0;
         };
         DropDownListEditComponent.prototype.enable = function (enabled) {
-            this.closePopup();
+            this.closePopup(SendSelectEnum.No);
             $YetaWF.elementEnableToggle(this.Select, enabled);
             $YetaWF.elementEnableToggle(this.Container, enabled);
             $YetaWF.elementRemoveClass(this.Container, "k-state-disabled");
@@ -217,9 +238,10 @@ var YetaWF_ComponentsHTML;
         DropDownListEditComponent.prototype.openPopup = function () {
             var _this = this;
             if (this.Popup) {
-                this.closePopup();
+                this.closePopup(SendSelectEnum.No);
                 return;
             }
+            this.IndexOnOpen = this.selectedIndex;
             DropDownListEditComponent.closeDropdowns();
             this.Popup =
                 $YetaWF.createElement("div", { id: "yDDPopup", "data-owner": this.ControlId, class: "k-animation-container", "aria-hidden": "false" },
@@ -249,11 +271,22 @@ var YetaWF_ComponentsHTML;
             document.body.append(this.Popup);
             this.selectPopupItem();
             this.Control.setAttribute("aria-expanded", "true");
-            $YetaWF.registerEventHandler(this.Popup, "click", "ul li", function (ev) {
+            $YetaWF.registerEventHandler(this.Popup, "mousedown", "ul li", function (ev) {
                 var li = ev.__YetaWFElem;
                 var index = Number($YetaWF.getAttribute(li, "data-index"));
-                _this.selectedIndex = index;
-                _this.closePopup();
+                _this.MouseSelectedIndex = index;
+                return false;
+            });
+            $YetaWF.registerEventHandler(this.Popup, "mouseup", "ul li", function (ev) {
+                var li = ev.__YetaWFElem;
+                var index = Number($YetaWF.getAttribute(li, "data-index"));
+                if (_this.MouseSelectedIndex === index) {
+                    _this.selectedIndex = index;
+                    _this.closePopup(SendSelectEnum.Yes);
+                }
+                else {
+                    _this.MouseSelectedIndex = -1;
+                }
                 return false;
             });
             $YetaWF.registerEventHandler(this.Popup, "mouseover", "ul li", function (ev) {
@@ -268,12 +301,26 @@ var YetaWF_ComponentsHTML;
                 return true;
             });
         };
-        DropDownListEditComponent.prototype.closePopup = function () {
-            if (!this.Popup)
-                return;
-            this.Popup.remove();
-            this.Popup = null;
-            this.Control.setAttribute("aria-expanded", "false");
+        DropDownListEditComponent.prototype.closePopup = function (sendEvent) {
+            if (!this.Popup) {
+                if (sendEvent == SendSelectEnum.ChangeSinceOpen && this.IndexOnOpen !== -1 && this.selectedIndex !== this.IndexOnOpen) {
+                    this.IndexOnOpen = -1;
+                    this.sendChangeEvent();
+                }
+            }
+            else {
+                this.Popup.remove();
+                this.Popup = null;
+                this.Control.setAttribute("aria-expanded", "false");
+                if (sendEvent == SendSelectEnum.Yes) {
+                    this.IndexOnOpen = -1;
+                    this.sendChangeEvent();
+                }
+                else if (sendEvent == SendSelectEnum.ChangeSinceOpen && this.IndexOnOpen !== -1 && this.IndexOnOpen !== this.selectedIndex) {
+                    this.IndexOnOpen = -1;
+                    this.sendChangeEvent();
+                }
+            }
         };
         DropDownListEditComponent.positionPopup = function (popup) {
             if (!popup)
@@ -378,7 +425,7 @@ var YetaWF_ComponentsHTML;
                 return;
             var ownerId = $YetaWF.getAttribute(popup, "data-owner");
             var control = DropDownListEditComponent.getControlById(ownerId, DropDownListEditComponent.SELECTOR);
-            control.closePopup();
+            control.closePopup(SendSelectEnum.No);
         };
         DropDownListEditComponent.prototype.calcMaxStringLength = function () {
             var elem = $YetaWF.createElement("div", { style: "position:absolute;visibility:hidden;white-space:nowrap" });
@@ -406,6 +453,7 @@ var YetaWF_ComponentsHTML;
         };
         DropDownListEditComponent.prototype.ajaxUpdate = function (data, ajaxUrl, onSuccess, onFailure) {
             var _this = this;
+            this.closePopup(SendSelectEnum.No);
             $YetaWF.setLoading(true);
             var uri = $YetaWF.parseUrl(ajaxUrl);
             uri.addSearchSimpleObject(data);
@@ -469,5 +517,3 @@ var YetaWF_ComponentsHTML;
         return true;
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-
-//# sourceMappingURL=DropDownListEdit.js.map

@@ -13,6 +13,12 @@ namespace YetaWF_ComponentsHTML {
         ExtraData: string;
     }
 
+    enum SendSelectEnum {
+        No = 0,
+        Yes = 1,
+        ChangeSinceOpen = 2, // send change event if open or selection has changed since opened/closed
+    }
+
     export class DropDownListEditComponent extends YetaWF.ComponentBaseDataImpl {
 
         public static readonly TEMPLATE: string = "yt_dropdownlist_base";
@@ -28,10 +34,12 @@ namespace YetaWF_ComponentsHTML {
         private Select: HTMLSelectElement;
         private Container: HTMLDivElement;
         private Popup: HTMLElement | null = null;
-        private Enabled: boolean = true;
-        private DropDownWidth: number = 0;
 
+        private Enabled: boolean = true;
         private Focused: boolean = false;
+        private DropDownWidth: number = 0;
+        private IndexOnOpen: number = -1;
+        private MouseSelectedIndex: number = -1;
 
         constructor(controlId: string, setup: DropDownListEditSetup) {
             super(controlId, DropDownListEditComponent.TEMPLATE, DropDownListEditComponent.SELECTOR, {
@@ -86,6 +94,7 @@ namespace YetaWF_ComponentsHTML {
             $YetaWF.registerEventHandler(this.Control, "focusout", null, (ev: FocusEvent): boolean => {
                 $YetaWF.elementRemoveClass(this.Container, "k-state-focused");
                 this.Focused = false;
+                this.closePopup(SendSelectEnum.ChangeSinceOpen);
                 return true;
             });
             $YetaWF.registerEventHandler(this.Control, "keydown", null, (ev: KeyboardEvent): boolean => {
@@ -97,7 +106,7 @@ namespace YetaWF_ComponentsHTML {
                             return false;
                         }
                         if (key === "ArrowUp" || key === "Up" || key === "ArrowLeft" || key === "Left") {
-                            this.closePopup();
+                            this.closePopup(SendSelectEnum.Yes);
                             return false;
                         }
                     } else {
@@ -115,10 +124,13 @@ namespace YetaWF_ComponentsHTML {
                             this.selectedIndex = total - 1;
                             return false;
                         } else if (key === "Escape") {
-                            this.closePopup();
+                            this.closePopup(SendSelectEnum.No);
                             return false;
                         } else if (key === "Tab") {
-                            this.closePopup();
+                            this.closePopup(SendSelectEnum.ChangeSinceOpen);
+                            return true;
+                        } else if (key === "Enter") {
+                            this.closePopup(SendSelectEnum.ChangeSinceOpen);
                             return true;
                         } else if (key.length === 1) {
                             // find an entry starting with the character pressed
@@ -167,10 +179,16 @@ namespace YetaWF_ComponentsHTML {
             this.clearSelectedPopupItem();
             this.selectPopupItem();
             this.Input.innerText = this.Select.options[index].text;
-            this.sendChangeEvent();
-       }
+
+            if (!this.isOpen)
+                this.sendChangeEvent();
+        }
         get totalItems(): number {
             return this.Select.options.length;
+        }
+
+        get isOpen(): boolean {
+            return this.Popup != null;
         }
 
         // retrieve the tooltip for the nth item (index) in the dropdown list
@@ -182,11 +200,11 @@ namespace YetaWF_ComponentsHTML {
             return tt;
         }
         public clear(): void {
-            this.closePopup();
+            this.closePopup(SendSelectEnum.No);
             this.selectedIndex = 0;
         }
         public enable(enabled: boolean): void {
-            this.closePopup();
+            this.closePopup(SendSelectEnum.No);
             $YetaWF.elementEnableToggle(this.Select, enabled);
             $YetaWF.elementEnableToggle(this.Container, enabled);
             $YetaWF.elementRemoveClass(this.Container, "k-state-disabled");
@@ -216,9 +234,11 @@ namespace YetaWF_ComponentsHTML {
 
         private openPopup(): void {
             if (this.Popup) {
-                this.closePopup();
+                this.closePopup(SendSelectEnum.No);
                 return;
             }
+
+            this.IndexOnOpen = this.selectedIndex;
 
             DropDownListEditComponent.closeDropdowns();
             this.Popup =
@@ -258,11 +278,21 @@ namespace YetaWF_ComponentsHTML {
             this.selectPopupItem();
             this.Control.setAttribute("aria-expanded", "true");
 
-            $YetaWF.registerEventHandler(this.Popup, "click", "ul li", (ev: MouseEvent): boolean => {
+            $YetaWF.registerEventHandler(this.Popup, "mousedown", "ul li", (ev: MouseEvent): boolean => {
                 let li = ev.__YetaWFElem as HTMLLIElement;
                 let index = Number($YetaWF.getAttribute(li, "data-index"));
-                this.selectedIndex = index;
-                this.closePopup();
+                this.MouseSelectedIndex = index;
+                return false;
+            });
+            $YetaWF.registerEventHandler(this.Popup, "mouseup", "ul li", (ev: MouseEvent): boolean => {
+                let li = ev.__YetaWFElem as HTMLLIElement;
+                let index = Number($YetaWF.getAttribute(li, "data-index"));
+                if (this.MouseSelectedIndex === index) {
+                    this.selectedIndex = index;
+                    this.closePopup(SendSelectEnum.Yes);
+                } else {
+                    this.MouseSelectedIndex = -1;
+                }
                 return false;
             });
             $YetaWF.registerEventHandler(this.Popup, "mouseover", "ul li", (ev: MouseEvent): boolean => {
@@ -277,11 +307,25 @@ namespace YetaWF_ComponentsHTML {
                 return true;
             });
         }
-        public closePopup(): void {
-            if (!this.Popup) return;
-            this.Popup.remove();
-            this.Popup = null;
-            this.Control.setAttribute("aria-expanded", "false");
+        public closePopup(sendEvent: SendSelectEnum): void {
+            if (!this.Popup) {
+                if (sendEvent == SendSelectEnum.ChangeSinceOpen && this.IndexOnOpen !== -1 && this.selectedIndex !== this.IndexOnOpen) {
+                    this.IndexOnOpen = -1;
+                    this.sendChangeEvent();
+                }
+            } else {
+                this.Popup.remove();
+                this.Popup = null;
+                this.Control.setAttribute("aria-expanded", "false");
+
+                if (sendEvent == SendSelectEnum.Yes) {
+                    this.IndexOnOpen = -1;
+                    this.sendChangeEvent();
+                } else if (sendEvent == SendSelectEnum.ChangeSinceOpen && this.IndexOnOpen !== -1 && this.IndexOnOpen !== this.selectedIndex) {
+                    this.IndexOnOpen = -1;
+                    this.sendChangeEvent();
+                }
+            }
         }
 
         public static positionPopup(popup: HTMLElement): void {
@@ -389,7 +433,7 @@ namespace YetaWF_ComponentsHTML {
             if (!popup) return;
             let ownerId = $YetaWF.getAttribute(popup, "data-owner");
             let control = DropDownListEditComponent.getControlById<DropDownListEditComponent>(ownerId, DropDownListEditComponent.SELECTOR);
-            control.closePopup();
+            control.closePopup(SendSelectEnum.No);
         }
 
         private calcMaxStringLength(): number {
@@ -423,6 +467,8 @@ namespace YetaWF_ComponentsHTML {
         }
 
         public ajaxUpdate(data: any, ajaxUrl: string, onSuccess?: (data: any) => void, onFailure?: (result: string) => void): void {
+
+            this.closePopup(SendSelectEnum.No);
 
             $YetaWF.setLoading(true);
 
