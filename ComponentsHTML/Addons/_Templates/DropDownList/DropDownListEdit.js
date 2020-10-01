@@ -224,6 +224,7 @@ var YetaWF_ComponentsHTML;
         };
         DropDownListEditComponent.prototype.sendChangeEvent = function () {
             $YetaWF.sendCustomEvent(this.Control, DropDownListEditComponent.EVENTCHANGE);
+            $(this.Select).trigger("change"); // jquery use for legacy code that uses $(elem).on("change")...
             FormsSupport.validateElement(this.Select);
         };
         DropDownListEditComponent.prototype.optionsUpdated = function () {
