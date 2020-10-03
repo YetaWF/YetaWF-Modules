@@ -3,7 +3,7 @@
 #yDialogContainer {
 
     position: fixed;
-    z-index: 3001;
+    z-index: 3001 !important;// override .ui-front !important
 
     #yAlert {
         width: auto;
