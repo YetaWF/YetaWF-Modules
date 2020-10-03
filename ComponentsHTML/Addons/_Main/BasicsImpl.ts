@@ -55,9 +55,9 @@ namespace YetaWF_ComponentsHTML {
          * Displays an informational message, usually in a popup.
          */
         public message(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
-            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups)
+            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups || YVolatile.Basics.ForcePopup) {
                 this.alert(message, title || YLocs.Basics.DefaultSuccessTitle, onOK, options);
-            else {
+            } else {
                 if (!options)
                     options = { encoded: false };
                 if (options.canClose === undefined) options.canClose = true;
@@ -70,9 +70,9 @@ namespace YetaWF_ComponentsHTML {
          * Displays an error message, usually in a popup.
          */
         public error(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
-            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups)
+            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups || YVolatile.Basics.ForcePopup) {
                 this.alert(message, title || YLocs.Basics.DefaultErrorTitle, onOK);
-            else {
+            } else {
                 if (!options)
                     options = { encoded: false };
                 if (options.canClose === undefined) options.canClose = true;
@@ -85,9 +85,9 @@ namespace YetaWF_ComponentsHTML {
          * Displays a confirmation message, usually in a popup.
          */
         public confirm(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
-            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups)
+            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups || YVolatile.Basics.ForcePopup) {
                 this.alert(message, title || YLocs.Basics.DefaultSuccessTitle, onOK);
-            else {
+            } else {
                 if (!options)
                     options = { encoded: false };
                 if (options.canClose === undefined) options.canClose = true;
@@ -101,7 +101,9 @@ namespace YetaWF_ComponentsHTML {
          */
         public alert(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
 
-            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups) {
+            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups || YVolatile.Basics.ForcePopup) {
+
+                YVolatile.Basics.ForcePopup = false;
 
                 // check if we already have a popup (and close it)
                 DialogClass.close();

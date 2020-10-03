@@ -161,7 +161,7 @@ namespace YetaWF.Modules.Packages.Controllers {
                 sb.Append(errorList, LeadingNL: true);
                 throw new Error(sb.ToString());
             }
-            return FormProcessed(null, popupText: this.__ResStr("installed", "Package models successfully installed"), OnClose: OnCloseEnum.Nothing);
+            return FormProcessed(null, popupText: this.__ResStr("installed", "Package models successfully installed"), OnClose: OnCloseEnum.Nothing, ForcePopup: true);
         }
 
         [Permission("Installs")]
@@ -191,7 +191,7 @@ namespace YetaWF.Modules.Packages.Controllers {
                 sb.Append(errorList, LeadingNL: true);
                 throw new Error(sb.ToString());
             }
-            return FormProcessed(null, popupText: this.__ResStr("generated", "Package localization resources successfully generated"), OnClose: OnCloseEnum.Nothing);
+            return FormProcessed(null, popupText: this.__ResStr("generated", "Package localization resources successfully generated"), OnClose: OnCloseEnum.Nothing, ForcePopup: true);
         }
         [Permission("Localize")]
         [ExcludeDemoMode]
@@ -209,7 +209,7 @@ namespace YetaWF.Modules.Packages.Controllers {
                     }
                 }
             }
-            return FormProcessed(null, popupText: this.__ResStr("generatedAll", "Localization resources for all packages have been successfully generated"), OnClose: OnCloseEnum.Nothing);
+            return FormProcessed(null, popupText: this.__ResStr("generatedAll", "Localization resources for all packages have been successfully generated"), OnClose: OnCloseEnum.Nothing, ForcePopup: true);
         }
 
         [Permission("Installs")]

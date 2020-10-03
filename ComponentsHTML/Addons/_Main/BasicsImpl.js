@@ -43,8 +43,9 @@ var YetaWF_ComponentsHTML;
          * Displays an informational message, usually in a popup.
          */
         BasicsImpl.prototype.message = function (message, title, onOK, options) {
-            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups)
+            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups || YVolatile.Basics.ForcePopup) {
                 this.alert(message, title || YLocs.Basics.DefaultSuccessTitle, onOK, options);
+            }
             else {
                 if (!options)
                     options = { encoded: false };
@@ -61,8 +62,9 @@ var YetaWF_ComponentsHTML;
          * Displays an error message, usually in a popup.
          */
         BasicsImpl.prototype.error = function (message, title, onOK, options) {
-            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups)
+            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups || YVolatile.Basics.ForcePopup) {
                 this.alert(message, title || YLocs.Basics.DefaultErrorTitle, onOK);
+            }
             else {
                 if (!options)
                     options = { encoded: false };
@@ -79,8 +81,9 @@ var YetaWF_ComponentsHTML;
          * Displays a confirmation message, usually in a popup.
          */
         BasicsImpl.prototype.confirm = function (message, title, onOK, options) {
-            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups)
+            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups || YVolatile.Basics.ForcePopup) {
                 this.alert(message, title || YLocs.Basics.DefaultSuccessTitle, onOK);
+            }
             else {
                 if (!options)
                     options = { encoded: false };
@@ -97,7 +100,8 @@ var YetaWF_ComponentsHTML;
          * Displays an alert message, usually in a popup.
          */
         BasicsImpl.prototype.alert = function (message, title, onOK, options) {
-            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups) {
+            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups || YVolatile.Basics.ForcePopup) {
+                YVolatile.Basics.ForcePopup = false;
                 // check if we already have a popup (and close it)
                 YetaWF_ComponentsHTML.DialogClass.close();
                 options = options || { encoded: false };
