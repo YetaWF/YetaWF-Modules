@@ -1,3 +1,4 @@
+
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 /* Popups implementation required by YetaWF */
@@ -139,14 +140,13 @@ namespace YetaWF_ComponentsHTML {
             let win = window.parent;
             win.document.YPopupDragDropInProgress = false;
 
-            // with unified page sets there may actually not be a parent, but window.parent returns itself in this case anyway
             let popup = win.document.YPopupWindowActive;
             if (!popup) return;
 
             let content = $YetaWF.getElement1BySelectorCond("#ypopupContent", [popup]);
 
-            let popupWidth: number | undefined = undefined;
-            let popupHeight: number | undefined = undefined;
+            let popupWidth: number | undefined;
+            let popupHeight: number | undefined;
             if (win.document.YPopupWindowStatic) {
                 // only inner window knows popup width/height for a static popup
                 let iframe = $YetaWF.getElement1BySelector("iframe", [popup]) as HTMLIFrameElement;
@@ -280,9 +280,6 @@ namespace YetaWF_ComponentsHTML {
             });
         }
 
-        /**
-         *
-         * */
         public static pageLoad(): void {
 
             if (YVolatile.Basics.IsInPopup) {

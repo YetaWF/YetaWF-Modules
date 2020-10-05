@@ -55,25 +55,6 @@ i.yic.yic_componentshtml_modmenuedit {
   .yTooltip {
     display: none !important; } }
 
-/* Ui overlay leaves horizontal stripe without this fix*/
-.ui-widget-overlay {
-  background: #333; }
-
-/* popups */
-.k-widget.k-window {
-  z-index: 2000 !important; }
-
-.k-overlay {
-  z-index: 1999 !important; }
-
-.ui-dialog {
-  z-index: 2002 !important;
-  /* 2001 for overlay */ }
-
-/* To keep ui dialogs on top of everything */
-.ui-front {
-  z-index: 3000; }
-
 /* Toast */
 #ytoast {
   z-index: 4001;

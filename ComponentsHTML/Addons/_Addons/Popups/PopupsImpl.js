@@ -103,13 +103,12 @@ var YetaWF_ComponentsHTML;
             // with unified page sets there may actually not be a parent, but window.parent returns itself in this case anyway
             var win = window.parent;
             win.document.YPopupDragDropInProgress = false;
-            // with unified page sets there may actually not be a parent, but window.parent returns itself in this case anyway
             var popup = win.document.YPopupWindowActive;
             if (!popup)
                 return;
             var content = $YetaWF.getElement1BySelectorCond("#ypopupContent", [popup]);
-            var popupWidth = undefined;
-            var popupHeight = undefined;
+            var popupWidth;
+            var popupHeight;
             if (win.document.YPopupWindowStatic) {
                 // only inner window knows popup width/height for a static popup
                 var iframe = $YetaWF.getElement1BySelector("iframe", [popup]);
@@ -232,9 +231,6 @@ var YetaWF_ComponentsHTML;
                 return false;
             });
         };
-        /**
-         *
-         * */
         PopupsImpl.pageLoad = function () {
             if (YVolatile.Basics.IsInPopup) {
                 PopupsImpl.reposition();

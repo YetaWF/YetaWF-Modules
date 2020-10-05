@@ -10,10 +10,15 @@
   -webkit-box-direction: normal;
           flex-direction: column;
   overflow: hidden; }
+  #ypopup.ui-dialog {
+    z-index: 2002 !important; }
   #ypopup iframe.ui-dialog-content {
     padding: 0;
     height: 100%;
     max-height: none; }
+
+.ui-widget-overlay.ui-front {
+  z-index: 2001 !important; }
 
 body.yPopup {
   padding: .5em 1em;

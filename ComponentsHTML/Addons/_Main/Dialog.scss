@@ -3,7 +3,7 @@
 #yDialogContainer {
 
     position: fixed;
-    z-index: 3001 !important;// override .ui-front !important
+    z-index: 3001 !important;
 
     #yAlert {
         width: auto;
@@ -11,4 +11,8 @@
         max-height: none;
         height: auto;
     }
+}
+
+.ui-widget-overlay.ui-front {
+    z-index:2001 !important;
 }
