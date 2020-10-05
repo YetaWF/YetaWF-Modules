@@ -53,6 +53,8 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.MSLog {
                         level = Microsoft.Extensions.Logging.LogLevel.Warning; break;
                     case Core.Log.Logging.LevelEnum.Error:
                         level = Microsoft.Extensions.Logging.LogLevel.Error; break;
+                    case Logging.LevelEnum.Always:
+                        level = Microsoft.Extensions.Logging.LogLevel.Error; break;
                 }
                 Logger.Log(level, text);
             }

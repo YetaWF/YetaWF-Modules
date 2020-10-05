@@ -155,6 +155,7 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.NLogProvider {
                 case Core.Log.Logging.LevelEnum.Info: level = NLog.LogLevel.Info; break;
                 case Core.Log.Logging.LevelEnum.Warning: level = NLog.LogLevel.Warn; break;
                 case Core.Log.Logging.LevelEnum.Error: level = NLog.LogLevel.Error; break;
+                case Core.Log.Logging.LevelEnum.Always: level = NLog.LogLevel.Error; break;
             }
             if (level == NLog.LogLevel.Off) return;
 
