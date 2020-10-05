@@ -55,5 +55,3 @@
       border-left: #b1dfbb solid 30px; }
     .yt_panels_stepinfo.t_display .t_step.t_active:after, .yt_panels_stepinfo.t_display .t_step.t_enabled:after {
       border-left: #5cb85c solid 30px; }
-  .yt_panels_stepinfo.t_edit .t_buttons {
-    margin-top: .5em; }

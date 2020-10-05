@@ -58,8 +58,7 @@ namespace YetaWF.Modules.Blog.Views {
         s.src = '//{Utility.JserEncode(model.ShortName)}.disqus.com/embed.js';
         s.setAttribute('data-timestamp', +new Date());
         (d.head || d.body).appendChild(s);
-    }})();
-</script>");
+    }})();");
 
             Manager.ScriptManager.AddLast(sb.ToString());
 

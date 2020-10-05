@@ -1,0 +1,30 @@
+/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Scheduler#License */
+
+/* Scheduler Event Control */
+
+.yt_yetawf_scheduler_event.t_edit {
+    .t_event {
+        padding-bottom:.5em;
+    }
+    .t_info {
+        overflow:hidden;
+    }
+    .t_labels {
+        float:left;
+        width: 20ch;
+    }
+    .t_row {
+        width: auto;
+        clear: both;
+        padding-bottom: 0.5em;
+    }
+    .t_vals {
+        overflow:hidden;
+    }
+}
+
+.yt_yetawf_scheduler_event.t_edit {
+    .yt_dropdownlist_base {
+        max-width:100%;
+    }
+}

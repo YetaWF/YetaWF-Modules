@@ -24,7 +24,7 @@ namespace YetaWF_Panels {
         private Setup: Setup;
 
         constructor(controlId: string, setup: Setup) {
-            super(controlId, PanelInfoEditComponent.TEMPLATE, PanelInfoEditComponent.SELECTOR, {
+            super(controlId, PanelInfoComponent.TEMPLATE, PanelInfoComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: null,
                 GetValue: null,

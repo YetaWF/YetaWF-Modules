@@ -1,15 +1,11 @@
 @charset "UTF-8";
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
-.yt_image img {
+.yt_image.t_display img {
   border: 1px solid #ccc;
   border-radius: 3px;
   padding: 1em; }
 
-.yt_image.t_edit .yt_fileupload1,
-.yt_image.t_edit .t_haveimage {
-  margin-top: .5em; }
-
 /* images in a grid */
-.yt_grid .yt_image img {
+.yt_grid .yt_image.t_display img {
   border: 0;
   padding: 0; }

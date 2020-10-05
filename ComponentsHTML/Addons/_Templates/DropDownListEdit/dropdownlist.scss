@@ -1,0 +1,60 @@
+/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+$bordersize: 1px;
+$ddselwidth: 2em;
+$ddwidth:   1em;
+$ddheight: 1em;
+
+
+.yt_dropdownlist_base.t_edit {
+
+    .t_container {
+        overflow: hidden;
+        cursor: pointer;
+
+        &.k-dropdown-wrap {
+            padding-right: 0;// override k-dropdown-wrap's 2em ($ddselwidth)
+        }
+    }
+    .k-dropdown-wrap .k-input {
+        text-indent: 0;
+    }
+    .t_input.k-input { // k-input for specificity
+        padding: .2em $ddselwidth .2em .4em;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+    .t_select {
+        position:absolute;
+        top:0;
+        right:0;
+        width:$ddselwidth;
+        height:100%;
+
+        .t_img {
+            width:$ddwidth;
+            height:$ddheight;
+            position:absolute;
+            top:50%;
+            left:50%;
+            margin-top: - $ddheight / 2;
+            margin-left: - $ddwidth / 2;
+            background: url('image/caret-down-solid.svg') 0px 0px no-repeat;
+            background-position-x: center;
+        }
+    }
+
+    select {
+        display:none;
+    }
+}
+
+#yDDPopup {
+    position: absolute;
+    z-index:2000;
+    li {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}

@@ -1,0 +1,10 @@
+@charset "UTF-8";
+/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+.yt_moduleskins .t_collection label,
+.yt_moduleskins .t_skin label {
+  display: inline-block;
+  width: 25ch;
+  padding-right: 1ch; }
+
+.yt_moduleskins.t_edit .t_collection .yt_dropdownlist_base {
+  max-width: 100%; }

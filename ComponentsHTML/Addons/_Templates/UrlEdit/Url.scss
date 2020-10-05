@@ -1,0 +1,17 @@
+﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+div.yt_url.t_edit {
+    display:inline-block;
+    .t_link {
+        margin-left:.5ch;
+    }
+    .t_local,
+    .t_remote,
+    .t_link {
+        display: inline-block;
+    }
+    input[type="text"] {
+        width: 50ch;
+    }
+}
+

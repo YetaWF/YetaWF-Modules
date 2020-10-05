@@ -68,7 +68,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Includes required JavaScript, CSS files for this component.
         /// </summary>
         public virtual async Task IncludeAsync() {
-            await Manager.AddOnManager.AddTemplateAsync(Package.AreaName, GetTemplateName());
+            await Manager.AddOnManager.AddTemplateAsync(Package.AreaName, GetTemplateName(), GetComponentType());
         }
 
         /// <summary>

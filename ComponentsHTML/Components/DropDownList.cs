@@ -118,7 +118,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         public static async Task IncludeExplicitAsync() { // this component is reusable so we need to explicitly include all js/css
             await KendoUICore.UseAsync();// needed for css
-            await Manager.AddOnManager.AddTemplateAsync(Controllers.AreaRegistration.CurrentPackage.AreaName, "DropDownList");
+            await Manager.AddOnManager.AddTemplateAsync(Controllers.AreaRegistration.CurrentPackage.AreaName, "DropDownList",  ComponentType.Edit);
         }
         /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.

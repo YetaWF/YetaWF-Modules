@@ -34,7 +34,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             string menuContents = (await RenderMenuAsync(moduleMenu, null, Globals.CssModuleLinks));
             if (!string.IsNullOrWhiteSpace(menuContents)) {
 
-                await Manager.AddOnManager.AddTemplateFromUIHintAsync("ActionIcons"); // action icons
+                await Manager.AddOnManager.AddTemplateFromUIHintAsync("ActionIcons", YetaWFComponentBase.ComponentType.Display); // action icons
 
                 // <div>
                 YTagBuilder div2Tag = new YTagBuilder("div");
@@ -112,7 +112,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             // check if we're in the right mode
             if (!await action.RendersSomethingAsync()) return null;
 
-            await Manager.AddOnManager.AddTemplateFromUIHintAsync("ActionIcons");// this is needed because we're not used by templates
+            await Manager.AddOnManager.AddTemplateFromUIHintAsync("ActionIcons", YetaWFComponentBase.ComponentType.Display);// this is needed because we're not used by templates
 
             if (!string.IsNullOrWhiteSpace(action.ConfirmationText) && (action.Style != ModuleAction.ActionStyleEnum.Post && action.Style != ModuleAction.ActionStyleEnum.Nothing))
                 throw new InternalError("When using ConfirmationText, the Style property must be set to Post");

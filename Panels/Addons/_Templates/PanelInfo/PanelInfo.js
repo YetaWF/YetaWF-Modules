@@ -24,7 +24,7 @@ var YetaWF_Panels;
     var PanelInfoComponent = /** @class */ (function (_super) {
         __extends(PanelInfoComponent, _super);
         function PanelInfoComponent(controlId, setup) {
-            var _this = _super.call(this, controlId, YetaWF_Panels.PanelInfoEditComponent.TEMPLATE, YetaWF_Panels.PanelInfoEditComponent.SELECTOR, {
+            var _this = _super.call(this, controlId, PanelInfoComponent.TEMPLATE, PanelInfoComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: null,
                 GetValue: null,

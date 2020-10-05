@@ -2,12 +2,9 @@
 
 /* Scheduler Event Control */
 
-.yt_yetawf_scheduler_event {
+.yt_yetawf_scheduler_event.t_display {
     .t_event {
         padding-bottom:.5em;
-        select {
-
-        }
     }
     .t_info {
         overflow:hidden;
@@ -23,11 +20,5 @@
     }
     .t_vals {
         overflow:hidden;
-    }
-}
-
-.yt_yetawf_scheduler_event.t_edit {
-    .yt_dropdownlist_base {
-        max-width:100%;
     }
 }

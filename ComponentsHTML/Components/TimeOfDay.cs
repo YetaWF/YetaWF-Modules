@@ -70,7 +70,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Allows entry of a time of day (between 00:00:00 hours and 23:59:59). 
+    /// Allows entry of a time of day (between 00:00:00 hours and 23:59:59).
     /// </summary>
     /// <example>
     /// [Caption("Due Time, Morning Tasks"), Description("")]
@@ -104,7 +104,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public async Task<string> RenderAsync(TimeOfDay model) {
 
             // we're reusing Time component
-            await Manager.AddOnManager.AddTemplateFromUIHintAsync("Time");
+            await Manager.AddOnManager.AddTemplateFromUIHintAsync("Time", GetComponentType());
 
             HtmlBuilder hb = new HtmlBuilder();
 

@@ -1,0 +1,6 @@
+@charset "UTF-8";
+/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
+.yt_panels_stepinfo {
+  margin-top: 2em; }
+  .yt_panels_stepinfo.t_edit .t_buttons {
+    margin-top: .5em; }
