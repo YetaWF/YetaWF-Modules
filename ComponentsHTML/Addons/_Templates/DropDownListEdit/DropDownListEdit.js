@@ -111,8 +111,11 @@ var YetaWF_ComponentsHTML;
                             return false;
                         }
                         else if (key === "Escape") {
-                            _this.closePopup(SendSelectEnum.No);
-                            return false;
+                            if (_this.isOpen) {
+                                _this.closePopup(SendSelectEnum.No);
+                                return false;
+                            }
+                            return true;
                         }
                         else if (key === "Tab") {
                             _this.closePopup(SendSelectEnum.ChangeSinceOpen);

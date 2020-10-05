@@ -111,6 +111,8 @@ namespace YetaWF_ComponentsHTML {
 
             PopupsImpl.setupDragDrop();
 
+            $YetaWF.setLoading(false);
+
             done(popup);
 
             // handle close button

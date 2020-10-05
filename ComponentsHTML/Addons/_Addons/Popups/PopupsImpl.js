@@ -80,6 +80,7 @@ var YetaWF_ComponentsHTML;
             document.body.append(popup);
             PopupsImpl.reposition();
             PopupsImpl.setupDragDrop();
+            $YetaWF.setLoading(false);
             done(popup);
             // handle close button
             var closeButton = $YetaWF.getElement1BySelector(".ui-dialog-titlebar button", [popup]);

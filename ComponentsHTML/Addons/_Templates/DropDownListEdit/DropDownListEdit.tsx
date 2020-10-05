@@ -124,8 +124,11 @@ namespace YetaWF_ComponentsHTML {
                             this.selectedIndex = total - 1;
                             return false;
                         } else if (key === "Escape") {
-                            this.closePopup(SendSelectEnum.No);
-                            return false;
+                            if (this.isOpen) {
+                                this.closePopup(SendSelectEnum.No);
+                                return false;
+                            }
+                            return true;
                         } else if (key === "Tab") {
                             this.closePopup(SendSelectEnum.ChangeSinceOpen);
                             return true;
