@@ -88,6 +88,7 @@ namespace YetaWF.Modules.ComponentsHTML {
         public async Task AddPopupsAddOnsAsync() {
             await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Popups");
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "Popups");
+            await JqueryUICore.UseAsync();//Css for popups
         }
     }
 }

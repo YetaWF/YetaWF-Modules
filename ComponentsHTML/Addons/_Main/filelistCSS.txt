@@ -1,3 +1,4 @@
 ComponentsHTML.scss
 Loading.scss
 Dialog.scss
+Popups.scss

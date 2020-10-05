@@ -1,0 +1,25 @@
+@charset "UTF-8";
+/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* POPUP */
+/* POPUP */
+/* POPUP */
+#ypopup {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
+  overflow: hidden; }
+  #ypopup iframe.ui-dialog-content {
+    padding: 0;
+    height: 100%;
+    max-height: none; }
+
+body.yPopup {
+  padding: .5em 1em;
+  height: 100%; }
+
+@media print {
+  #ypopup {
+    /* Don't show popups for print/print preview */
+    display: none; } }

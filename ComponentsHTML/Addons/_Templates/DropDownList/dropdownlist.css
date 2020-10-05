@@ -37,7 +37,7 @@
 
 #yDDPopup {
   position: absolute;
-  z-index: 2000; }
+  z-index: 2500; }
   #yDDPopup li {
     text-overflow: ellipsis;
     white-space: nowrap; }
