@@ -46,7 +46,7 @@ namespace YetaWF_ComponentsHTML {
             if (overlay)
                 overlay.remove();
 
-            document.body.style.overflow = "";
+            win.document.body.style.overflow = "";
             (win as any).YVolatile.Basics.IsInPopup = false; // we're no longer in a popup
             win.document.YPopupDragDropInProgress = false;
             win.document.YPopupXOffset = 0;

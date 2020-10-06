@@ -6,6 +6,8 @@
 
 #ypopup {
 
+    position: fixed;
+
     &.ui-dialog {
        z-index:2002 !important;
     }
@@ -16,8 +18,13 @@
 
     iframe.ui-dialog-content {
         padding:0;
+        margin:0;
         height:100%;
         max-height:none;
+    }
+    #ypopupContent.ui-dialog-content {
+        margin:0;
+        padding: .5em 1em;
     }
 }
 
@@ -28,6 +35,14 @@
 body.yPopup {
     padding: .5em 1em;
     height:100%;
+
+}
+body.yPopup,
+#ypopup.yPopupDyn {
+    .yPane .yModule {
+        margin:0;
+        padding:0;
+    }
 }
 
 @media print {

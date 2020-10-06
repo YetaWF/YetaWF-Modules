@@ -30,7 +30,7 @@ var YetaWF_ComponentsHTML;
             var overlay = $YetaWF.getElement1BySelectorCond(".ui-widget-overlay.ui-front", [win.document.body]);
             if (overlay)
                 overlay.remove();
-            document.body.style.overflow = "";
+            win.document.body.style.overflow = "";
             win.YVolatile.Basics.IsInPopup = false; // we're no longer in a popup
             win.document.YPopupDragDropInProgress = false;
             win.document.YPopupXOffset = 0;

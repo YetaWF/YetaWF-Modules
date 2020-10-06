@@ -4,6 +4,7 @@
 /* POPUP */
 /* POPUP */
 #ypopup {
+  position: fixed;
   display: -webkit-box;
   display: flex;
   -webkit-box-orient: vertical;
@@ -14,8 +15,12 @@
     z-index: 2002 !important; }
   #ypopup iframe.ui-dialog-content {
     padding: 0;
+    margin: 0;
     height: 100%;
     max-height: none; }
+  #ypopup #ypopupContent.ui-dialog-content {
+    margin: 0;
+    padding: .5em 1em; }
 
 .ui-widget-overlay.ui-front {
   z-index: 2001 !important; }
@@ -23,6 +28,11 @@
 body.yPopup {
   padding: .5em 1em;
   height: 100%; }
+
+body.yPopup .yPane .yModule,
+#ypopup.yPopupDyn .yPane .yModule {
+  margin: 0;
+  padding: 0; }
 
 @media print {
   #ypopup {
