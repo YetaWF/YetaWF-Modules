@@ -6,14 +6,13 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.BootstrapCarousel.Controllers;
-using YetaWF.Modules.BootstrapCarousel.Models;
 
 namespace YetaWF.Modules.BootstrapCarousel.Addons.Templates {
 
     /// <summary>
     /// Template specific config strings.
     /// </summary>
-    public class SlideShow : IAddOnSupport {
+    public class SlideShowEdit : IAddOnSupport {
 
         public Task AddSupportAsync(YetaWFManager manager) {
 

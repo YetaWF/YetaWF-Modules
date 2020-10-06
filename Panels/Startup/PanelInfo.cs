@@ -9,7 +9,7 @@ using YetaWF.Modules.Panels.Controllers;
 
 namespace YetaWF.Modules.Panels.Addons.Templates {
 
-    public class PanelInfo : IAddOnSupport {
+    public class PanelInfoEdit : IAddOnSupport {
 
         public Task AddSupportAsync(YetaWFManager manager) {
 

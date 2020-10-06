@@ -12,7 +12,7 @@ namespace YetaWF.Modules.ComponentsHTML.Addons.Templates {
     /// Implements the YetaWF.Core.Addons.IAddOnSupport interface, which is called when the framework detects the use of the MultiString component type.
     /// The AddSupportAsync method is called so MultiString component specific configuration options and localizations can be added to the page.
     /// </summary>
-    public class MultiString : IAddOnSupport {
+    public class MultiStringEdit : IAddOnSupport {
 
         /// <summary>
         /// Called by the framework so the component can add component specific client-side configuration options and localizations to the page.
