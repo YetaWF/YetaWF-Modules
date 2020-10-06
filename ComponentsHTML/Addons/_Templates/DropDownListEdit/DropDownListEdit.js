@@ -234,9 +234,8 @@ var YetaWF_ComponentsHTML;
             this.DropDownWidth = this.calcMaxStringLength();
             if (this.Setup.AdjustWidth) {
                 this.Control.style.width = this.DropDownWidth + "px";
-            }
-            else {
-                this.Control.style.minWidth = this.DropDownWidth + "px";
+                //} else {
+                //    this.Control.style.minWidth = `${this.DropDownWidth}px`;
             }
         };
         DropDownListEditComponent.prototype.openPopup = function () {

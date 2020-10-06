@@ -8,7 +8,6 @@
   box-sizing: border-box;
   overflow: auto; }
   .yt_tree .tg_header {
-    overflow: hidden;
     white-space: nowrap;
     font-size: 11px;
     border: 0;
