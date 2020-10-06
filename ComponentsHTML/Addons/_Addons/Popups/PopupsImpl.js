@@ -129,7 +129,7 @@ var YetaWF_ComponentsHTML;
             if (popupWidth === undefined || popupHeight === undefined)
                 return; // popup dimensions not yet known. We'll get another call later.
             var width;
-            if (win.innerWidth <= popupWidth) {
+            if (win.innerWidth <= popupWidth || win.innerHeight <= popupHeight) {
                 width = win.innerWidth;
                 popup.style.width = win.innerWidth + "px";
                 popup.style.height = win.innerHeight + "px";

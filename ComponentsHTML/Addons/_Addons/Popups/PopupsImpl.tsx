@@ -168,7 +168,7 @@ namespace YetaWF_ComponentsHTML {
                 return; // popup dimensions not yet known. We'll get another call later.
 
             let width: number;
-            if (win.innerWidth <= popupWidth) {
+            if (win.innerWidth <= popupWidth || win.innerHeight <= popupHeight) {
                 width = win.innerWidth;
                 popup.style.width = `${win.innerWidth}px`;
                 popup.style.height = `${win.innerHeight}px`;
