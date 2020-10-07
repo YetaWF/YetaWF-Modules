@@ -24,15 +24,21 @@ namespace YetaWF.Modules.DevTests.Views {
             hb.Append($@"
 {await RenderBeginFormAsync(HtmlAttributes: new { id = DivId })}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
+    <div class='t_tests'>
+        <input type='button' value='message()' name='message' />
+        <input type='button' value='error()' name='error' />
+        <input type='button' value='alert()' name='alert' />
+        <input type='button' value='alertYesNo()' name='alertYesNo' />
+        <input type='button' value='confirm()' name='confirm' />
+        <input type='button' value='pleaseWait()' name='pleaseWait' />");
 
-    <input type='button' value='message()' name='message' />
-    <input type='button' value='error()' name='error' />
-    <input type='button' value='alert()' name='alert' />
-    <input type='button' value='alertYesNo()' name='alertYesNo' />
-    <input type='button' value='confirm()' name='confirm' />
-    <input type='button' value='pleaseWait()' name='pleaseWait' />
-    <input type='button' value='JavaScript Error' name='jserror' />
+#if DEBUG
+            hb.Append($@"
+        <input type='button' value='JavaScript Error' name='jserror' />");
+#endif
 
+            hb.Append($@"
+    </div>
     {await FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Apply, Text= "Apply (Test <A> &amp; & @ {0})", Title = "Tooltip with special characters <A> &amp; & @ {0}" },
         new FormButton() { ButtonType= ButtonTypeEnum.Submit, },

@@ -43,13 +43,15 @@ var YetaWF_DevTests;
                 $YetaWF.pleaseWait("Reload page to continue\n\nTEST <A> &amp; & @ {0} TEST", "TITLE <A> &amp; & @ {0} TEST");
                 return true;
             });
-            $YetaWF.registerEventHandler(_this.Module, "click", "input[name='jserror']", function (ev) {
-                // generate a javascript error (use eval to prevent build errors)
-                var s = "aaa.bbb.ccc = 10;";
-                // tslint:disable-next-line:no-eval
-                eval(s);
-                return true;
-            });
+            if (YConfigs.Basics.DEBUGBUILD) {
+                $YetaWF.registerEventHandler(_this.Module, "click", "input[name='jserror']", function (ev) {
+                    // generate a javascript error (use eval to prevent build errors)
+                    var s = "aaa.bbb.ccc = 10;";
+                    // tslint:disable-next-line:no-eval
+                    eval(s);
+                    return true;
+                });
+            }
             return _this;
         }
         TestEscapesModule.SELECTOR = ".YetaWF_DevTests_TestEscapes";
