@@ -1,6 +1,7 @@
 ﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
 
 using System.Threading.Tasks;
+using YetaWF.Core;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Identity;
@@ -67,14 +68,14 @@ namespace YetaWF.Modules.PageEdit.Views {
             };
             if (canEdit) {
                 if (canPageAdd) {
-                    ui.TabsDef.Tabs.Add(new TabEntry { 
+                    ui.TabsDef.Tabs.Add(new TabEntry {
                         Caption = this.__ResStr("tabNewPage", "New Page"),
                         ToolTip = this.__ResStr("tabNewPageTT", "Add a new page to the site"),
                         PaneCssClasses = "t_addNewPage",
                         RenderPaneAsync = async (int tabIndex) => {
                             return (await HtmlHelper.ForViewAsync($"{Package.AreaName}_AddNewPage", module, model.AddNewPageModel)).ToString();
                         },
-                    }); 
+                    });
                 }
             }
             if (!Manager.CurrentPage.Temporary) {
@@ -145,14 +146,14 @@ namespace YetaWF.Modules.PageEdit.Views {
             if (ui.TabsDef.Tabs.Count == 0)
                 return "&nbsp;";
 
-
-
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
 {tag.ToString(YTagRenderMode.Normal)}
 <div id='{id}'>
     {await HtmlHelper.ForDisplayAsync(ui, nameof(ui.TabsDef), HtmlAttributes: new { __NoTemplate = true })}
+    {Globals.LazyHTMLOptimization /*Fix Firefox bug, where actions aren't broken into multiple lines, by leaving white space between actions*/}
     {await HtmlHelper.ForDisplayAsync(model, nameof(model.Actions))}
+    {Globals.LazyHTMLOptimizationEnd}
 </div>");
 
             return hb.ToString();

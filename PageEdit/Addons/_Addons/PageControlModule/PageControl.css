@@ -15,5 +15,8 @@
   width: 800px;
   z-index: 1500; }
   #yPageControlMod .yt_moduleactions {
+    line-height: 1em;
     background-color: #e4e3e3;
-    padding: 2px; }
+    padding: 0 .5em .5em .5em; }
+    #yPageControlMod .yt_moduleactions a {
+      margin-bottom: .1rem; }
