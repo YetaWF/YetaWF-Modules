@@ -37,7 +37,7 @@
   </Choose>
 
   <ItemGroup>
-    <PackageReference Include="libphonenumber-csharp" Version="8.12.9" />
+    <PackageReference Include="libphonenumber-csharp" Version="8.12.10" />
     <PackageReference Include="Twilio.AspNet.Core" Version="5.33.1" />
   </ItemGroup>
 
