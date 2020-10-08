@@ -163,7 +163,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
             }
         }
         private ContentResult RejectResult(string reason) {
-            string xmlString = @"<Response><Reject /></Response>";
+            string xmlString = @"<Response><Reject reason=""busy"" /></Response>";
             Logging.AddErrorLog($"{nameof(RejectResult)}: {reason} {xmlString}");
             return this.Content(xmlString, "text/xml");
         }
