@@ -35,13 +35,13 @@ namespace YetaWF_ComponentsHTML {
 
             this.ActiveTabHidden = $YetaWF.getElementById(this.Setup.ActiveTabHiddenId) as HTMLInputElement;
 
-            $YetaWF.registerEventHandler(this.Control, "click", "ul.t_tabstrip li", (ev: MouseEvent): boolean => {
+            $YetaWF.registerEventHandler(this.Control, "click", `#${this.ControlId} > ul.t_tabstrip > li`, (ev: MouseEvent): boolean => {
                 let li = ev.__YetaWFElem;
                 let index = Number($YetaWF.getAttribute(li, "data-tab"));
                 this.activatePane(index);
                 return false;
             });
-            $YetaWF.registerEventHandler(this.Control, "keydown", "ul.t_tabstrip li", (ev: KeyboardEvent): boolean => {
+            $YetaWF.registerEventHandler(this.Control, "keydown", `#${this.ControlId} > ul.t_tabstrip > li`, (ev: KeyboardEvent): boolean => {
                 let index = this.activeTab;
                 let key = ev.key;
                 if (key === "ArrowDown" || key === "Down" || key === "ArrowRight" || key === "Right") {
@@ -76,7 +76,7 @@ namespace YetaWF_ComponentsHTML {
                 }
                 return true;
             });
-            $YetaWF.registerEventHandler(this.Control, "mousemove", "ul.t_tabstrip li", (ev: MouseEvent): boolean => {
+            $YetaWF.registerEventHandler(this.Control, "mousemove", `#${this.ControlId} > ul.t_tabstrip > li`, (ev: MouseEvent): boolean => {
                 let curentTab = ev.__YetaWFElem as HTMLLIElement;
                 if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery) {
                     for (let tab of this.tabs)
@@ -89,7 +89,7 @@ namespace YetaWF_ComponentsHTML {
                 }
                 return true;
             });
-            $YetaWF.registerEventHandler(this.Control, "mouseout", "ul.t_tabstrip li", (ev: MouseEvent): boolean => {
+            $YetaWF.registerEventHandler(this.Control, "mouseout", `#${this.ControlId} > ul.t_tabstrip > li`, (ev: MouseEvent): boolean => {
                 if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery) {
                     for (let tab of this.tabs)
                         $YetaWF.elementRemoveClass(tab, "ui-state-hover");
@@ -192,7 +192,7 @@ namespace YetaWF_ComponentsHTML {
             return this.tabs.length;
         }
         get tabs(): HTMLLIElement[] {
-            let tabs = $YetaWF.getElementsBySelector("ul.t_tabstrip > li", [this.Control]) as HTMLLIElement[];
+            let tabs = $YetaWF.getElementsBySelector(`#${this.ControlId} > ul.t_tabstrip > li`) as HTMLLIElement[];
             return tabs;
         }
         get currentTab(): HTMLLIElement {

@@ -33,13 +33,13 @@ var YetaWF_ComponentsHTML;
             }) || this;
             _this.Setup = setup;
             _this.ActiveTabHidden = $YetaWF.getElementById(_this.Setup.ActiveTabHiddenId);
-            $YetaWF.registerEventHandler(_this.Control, "click", "ul.t_tabstrip li", function (ev) {
+            $YetaWF.registerEventHandler(_this.Control, "click", "#" + _this.ControlId + " > ul.t_tabstrip > li", function (ev) {
                 var li = ev.__YetaWFElem;
                 var index = Number($YetaWF.getAttribute(li, "data-tab"));
                 _this.activatePane(index);
                 return false;
             });
-            $YetaWF.registerEventHandler(_this.Control, "keydown", "ul.t_tabstrip li", function (ev) {
+            $YetaWF.registerEventHandler(_this.Control, "keydown", "#" + _this.ControlId + " > ul.t_tabstrip > li", function (ev) {
                 var index = _this.activeTab;
                 var key = ev.key;
                 if (key === "ArrowDown" || key === "Down" || key === "ArrowRight" || key === "Right") {
@@ -84,7 +84,7 @@ var YetaWF_ComponentsHTML;
                 }
                 return true;
             });
-            $YetaWF.registerEventHandler(_this.Control, "mousemove", "ul.t_tabstrip li", function (ev) {
+            $YetaWF.registerEventHandler(_this.Control, "mousemove", "#" + _this.ControlId + " > ul.t_tabstrip > li", function (ev) {
                 var curentTab = ev.__YetaWFElem;
                 if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery) {
                     for (var _i = 0, _a = _this.tabs; _i < _a.length; _i++) {
@@ -102,7 +102,7 @@ var YetaWF_ComponentsHTML;
                 }
                 return true;
             });
-            $YetaWF.registerEventHandler(_this.Control, "mouseout", "ul.t_tabstrip li", function (ev) {
+            $YetaWF.registerEventHandler(_this.Control, "mouseout", "#" + _this.ControlId + " > ul.t_tabstrip > li", function (ev) {
                 if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery) {
                     for (var _i = 0, _a = _this.tabs; _i < _a.length; _i++) {
                         var tab = _a[_i];
@@ -211,7 +211,7 @@ var YetaWF_ComponentsHTML;
         });
         Object.defineProperty(TabsComponent.prototype, "tabs", {
             get: function () {
-                var tabs = $YetaWF.getElementsBySelector("ul.t_tabstrip > li", [this.Control]);
+                var tabs = $YetaWF.getElementsBySelector("#" + this.ControlId + " > ul.t_tabstrip > li");
                 return tabs;
             },
             enumerable: false,
