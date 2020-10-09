@@ -485,7 +485,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 // Render column header
                 hb.Append($@"
         <th class='{alignCss} tg_c_{propName.ToLower()}{(gridDef.UseSkinFormatting ? " ui-state-default" : "")}'{cssWidth}>
-            {resizeHTML}<span {Basics.CssTooltipSpan}='{HAE(description ?? "")}'>{HE(caption)}</span>{sortHtml}
+            <span {Basics.CssTooltipSpan}='{HAE(description ?? "")}'>{HE(caption)}</span>{sortHtml}{resizeHTML}
         </th>");
 
                 List<GridColumnInfo.FilterOptionEnum> filterOpts = new List<GridColumnInfo.FilterOptionEnum>();
