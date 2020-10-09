@@ -32,8 +32,4 @@
     <None Remove="node_modules\**" /><EmbeddedResource Remove="node_modules\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Addons\_SiteTemplates\5.3.0\" />
-  </ItemGroup>
-
 </Project>
