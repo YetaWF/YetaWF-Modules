@@ -57,7 +57,17 @@ var YetaWF_Panels;
                 }
                 return true;
             });
-            // scrolling
+            // expand/collapse
+            $YetaWF.registerEventHandler(_this.Control, "click", ".t_expcoll", function (ev) {
+                _this.toggleExpandCollapse();
+                return false;
+            });
+            // scrolling page bar
+            $YetaWF.registerEventHandler($YetaWF.getElement1BySelector(".yt_panels_pagebarinfo_list", [_this.Control]), "scroll", null, function (ev) {
+                _this.repositionExpColl();
+                return true;
+            });
+            // scrolling in panel area
             $YetaWF.registerEventHandler($YetaWF.getElement1BySelector(".t_area", [_this.Control]), "scroll", null, function (ev) {
                 $YetaWF.sendContainerScrollEvent(_this.Control);
                 return true;
@@ -74,6 +84,28 @@ var YetaWF_Panels;
                 $YetaWF.elementRemoveClassList(e, this.Setup.ActiveCss);
             }
             $YetaWF.elementAddClassList(entry, this.Setup.ActiveCss);
+        };
+        PageBarInfoComponent.prototype.sendExpandedCollapsed = function (expanded) {
+            var uri = new YetaWF.Url();
+            uri.parse(this.Setup.ExpandCollapseUrl);
+            uri.addSearch("Expanded", expanded ? "true" : "false");
+            var request = new XMLHttpRequest();
+            request.open("POST", uri.toUrl(), true);
+            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            request.send();
+            // we don't care about the result of this request
+        };
+        PageBarInfoComponent.prototype.repositionExpColl = function () {
+            var expColl = $YetaWF.getElement1BySelectorCond(".t_expcoll", [this.Control]);
+            if (!expColl)
+                return;
+            var expRect = expColl.getBoundingClientRect();
+            if (!expRect.width || !expRect.height)
+                return;
+            var list = $YetaWF.getElement1BySelector(".yt_panels_pagebarinfo_list", [this.Control]);
+            var listRect = list.getBoundingClientRect();
+            var top = list.offsetTop + (listRect.height - expRect.height) / 2;
+            expColl.style.top = top + "px";
         };
         Object.defineProperty(PageBarInfoComponent.prototype, "count", {
             get: function () {
@@ -111,6 +143,16 @@ var YetaWF_Panels;
             enumerable: false,
             configurable: true
         });
+        PageBarInfoComponent.prototype.toggleExpandCollapse = function () {
+            if ($YetaWF.elementHasClass(this.Control, "t_expanded")) {
+                $YetaWF.elementRemoveClass(this.Control, "t_expanded");
+                this.sendExpandedCollapsed(false);
+            }
+            else {
+                $YetaWF.elementAddClass(this.Control, "t_expanded");
+                this.sendExpandedCollapsed(true);
+            }
+        };
         PageBarInfoComponent.prototype.resize = function () {
             if (!this.Setup.Resize)
                 return;
@@ -122,6 +164,7 @@ var YetaWF_Panels;
             var h = docRect.height - winHeight;
             var ctrlRect = this.Control.getBoundingClientRect();
             this.Control.style.height = ctrlRect.height - h + "px";
+            this.repositionExpColl();
         };
         PageBarInfoComponent.TEMPLATE = "yt_panels_pagebarinfo";
         PageBarInfoComponent.SELECTOR = ".yt_panels_pagebarinfo.t_display";
@@ -133,10 +176,12 @@ var YetaWF_Panels;
         for (var _i = 0, ctrlDivs_1 = ctrlDivs; _i < ctrlDivs_1.length; _i++) {
             var ctrlDiv = ctrlDivs_1[_i];
             if ($YetaWF.elementHas(ev.detail.container, ctrlDiv)) {
-                var mod = PageBarInfoComponent.getControlFromTag(ctrlDiv, PageBarInfoComponent.SELECTOR);
-                mod.resize();
+                var ctrl = PageBarInfoComponent.getControlFromTag(ctrlDiv, PageBarInfoComponent.SELECTOR);
+                ctrl.resize();
             }
         }
         return true;
     });
 })(YetaWF_Panels || (YetaWF_Panels = {}));
+
+//# sourceMappingURL=PageBarInfo.js.map

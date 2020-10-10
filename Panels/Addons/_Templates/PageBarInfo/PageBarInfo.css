@@ -18,12 +18,6 @@
   padding: 10px 20px 10px 20px;
   width: 100%; }
 
-.yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_link {
-  font-size: .6rem;
-  line-height: 1.2; }
-  .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_link .yaction-link {
-    white-space: normal; }
-
 .yt_panels_pagebarinfo.t_skin .yt_panels_pagebarinfo_list {
   background: transparent; }
 
@@ -33,6 +27,15 @@
     background: #8d8d8d; }
   .yt_panels_pagebarinfo.t_noskin .yt_panels_pagebarinfo_list .t_entry a {
     color: white; }
+
+.yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_expcoll {
+  display: none; }
+
+.yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_link {
+  font-size: .6rem;
+  line-height: 1.2; }
+  .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_link .yaction-link {
+    white-space: normal; }
 
 @media (min-width: 1000px) {
   .yt_panels_pagebarinfo.t_stylesvert {
@@ -61,26 +64,38 @@
       overflow-y: auto; } }
 
 @media (min-width: 1500px) {
-  .yt_panels_pagebarinfo.t_stylesvert .yt_panels_pagebarinfo_list {
+  .yt_panels_pagebarinfo.t_stylesvert.t_expanded .yt_panels_pagebarinfo_list {
     -webkit-box-flex: 0;
             flex: 0 0 250px;
     overflow-x: auto;
     overflow-y: auto;
     text-align: left;
     white-space: nowrap; }
-    .yt_panels_pagebarinfo.t_stylesvert .yt_panels_pagebarinfo_list .t_entry {
+    .yt_panels_pagebarinfo.t_stylesvert.t_expanded .yt_panels_pagebarinfo_list .t_entry {
       text-align: left;
       height: initial;
       width: initial;
       padding: 5px 2px 5px 1em;
       display: block;
       vertical-align: initial; }
-      .yt_panels_pagebarinfo.t_stylesvert .yt_panels_pagebarinfo_list .t_entry .t_image {
+      .yt_panels_pagebarinfo.t_stylesvert.t_expanded .yt_panels_pagebarinfo_list .t_entry .t_image {
         display: inline-block;
         padding-right: .5em; }
-      .yt_panels_pagebarinfo.t_stylesvert .yt_panels_pagebarinfo_list .t_entry .t_link {
+      .yt_panels_pagebarinfo.t_stylesvert.t_expanded .yt_panels_pagebarinfo_list .t_entry .t_link {
         font-size: .8rem;
         display: inline-block;
         padding-bottom: 0; }
-        .yt_panels_pagebarinfo.t_stylesvert .yt_panels_pagebarinfo_list .t_entry .t_link .yaction-link {
-          white-space: nowrap; } }
+        .yt_panels_pagebarinfo.t_stylesvert.t_expanded .yt_panels_pagebarinfo_list .t_entry .t_link .yaction-link {
+          white-space: nowrap; }
+  .yt_panels_pagebarinfo.t_stylesvert .t_expcoll {
+    display: block;
+    position: absolute;
+    right: 0;
+    top: calc(50% - 12px);
+    width: 8px;
+    height: 24px;
+    background-image: url(images/Expand.png); }
+  .yt_panels_pagebarinfo.t_stylesvert .yt_panels_pagebarinfo_list {
+    position: relative; }
+  .yt_panels_pagebarinfo.t_stylesvert.t_expanded .t_expcoll {
+    background-image: url(images/Collapse.png); } }

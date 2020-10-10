@@ -5,6 +5,7 @@ namespace YetaWF_Panels {
     interface Setup {
         Resize: boolean;
         ActiveCss: string;
+        ExpandCollapseUrl: string;
     }
 
     export class PageBarInfoComponent extends YetaWF.ComponentBaseDataImpl {
@@ -50,7 +51,17 @@ namespace YetaWF_Panels {
                 }
                 return true;
             });
-            // scrolling
+            // expand/collapse
+            $YetaWF.registerEventHandler(this.Control, "click", ".t_expcoll", (ev: MouseEvent): boolean => {
+                this.toggleExpandCollapse();
+                return false;
+            });
+            // scrolling page bar
+            $YetaWF.registerEventHandler($YetaWF.getElement1BySelector(".yt_panels_pagebarinfo_list", [this.Control]), "scroll", null, (ev: Event): boolean => {
+                this.repositionExpColl();
+                return true;
+            });
+            // scrolling in panel area
             $YetaWF.registerEventHandler($YetaWF.getElement1BySelector(".t_area", [this.Control]), "scroll", null, (ev: Event): boolean => {
                 $YetaWF.sendContainerScrollEvent(this.Control);
                 return true;
@@ -65,6 +76,31 @@ namespace YetaWF_Panels {
             for (let e of entries)
                 $YetaWF.elementRemoveClassList(e, this.Setup.ActiveCss);
             $YetaWF.elementAddClassList(entry, this.Setup.ActiveCss);
+        }
+        private sendExpandedCollapsed(expanded: boolean): void {
+
+            let uri = new YetaWF.Url();
+            uri.parse(this.Setup.ExpandCollapseUrl);
+            uri.addSearch("Expanded", expanded ? "true":"false");
+
+            var request: XMLHttpRequest = new XMLHttpRequest();
+            request.open("POST", uri.toUrl(), true);
+            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+
+            request.send();
+            // we don't care about the result of this request
+        }
+        private repositionExpColl(): void {
+            let expColl = $YetaWF.getElement1BySelectorCond(".t_expcoll", [this.Control]);
+            if (!expColl) return;
+            let expRect = expColl.getBoundingClientRect();
+            if (!expRect.width || !expRect.height) return;
+
+            let list = $YetaWF.getElement1BySelector(".yt_panels_pagebarinfo_list", [this.Control]);
+
+            let listRect = list.getBoundingClientRect();
+            let top = list.offsetTop + (listRect.height - expRect.height) / 2;
+            expColl.style.top = `${top}px`;
         }
 
         public get count(): number {
@@ -90,6 +126,15 @@ namespace YetaWF_Panels {
             anchor.focus();
             anchor.click();
         }
+        public toggleExpandCollapse(): void {
+            if ($YetaWF.elementHasClass(this.Control, "t_expanded")) {
+                $YetaWF.elementRemoveClass(this.Control, "t_expanded");
+                this.sendExpandedCollapsed(false);
+            } else {
+                $YetaWF.elementAddClass(this.Control, "t_expanded");
+                this.sendExpandedCollapsed(true);
+            }
+        }
 
         public resize(): void {
             if (!this.Setup.Resize) return;
@@ -102,14 +147,16 @@ namespace YetaWF_Panels {
             let h = docRect.height - winHeight;
             let ctrlRect = this.Control.getBoundingClientRect();
             this.Control.style.height = `${ctrlRect.height - h}px`;
+
+            this.repositionExpColl();
         }
     }
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: CustomEvent<YetaWF.DetailsEventContainerResize>): boolean => {
         let ctrlDivs = $YetaWF.getElementsBySelector(PageBarInfoComponent.SELECTOR);
         for (let ctrlDiv of ctrlDivs) {
             if ($YetaWF.elementHas(ev.detail.container, ctrlDiv)) {
-                let mod = PageBarInfoComponent.getControlFromTag<PageBarInfoComponent>(ctrlDiv, PageBarInfoComponent.SELECTOR);
-                mod.resize();
+                let ctrl = PageBarInfoComponent.getControlFromTag<PageBarInfoComponent>(ctrlDiv, PageBarInfoComponent.SELECTOR);
+                ctrl.resize();
             }
         }
         return true;

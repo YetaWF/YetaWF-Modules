@@ -10,6 +10,8 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
+using YetaWF.Modules.Panels.Controllers;
+using YetaWF.Modules.Panels.DataProvider;
 using YetaWF.Modules.Panels.Models;
 using YetaWF.Modules.Panels.Modules;
 
@@ -34,6 +36,7 @@ namespace YetaWF.Modules.Panels.Components {
         public class Setup {
             public bool Resize { get; set; }
             public string ActiveCss { get; set; }
+            public string ExpandCollapseUrl { get; set; }
         }
 
         public async Task<string> RenderAsync(PageBarInfo model) {
@@ -67,13 +70,17 @@ namespace YetaWF.Modules.Panels.Components {
             if (model.ContentPage != null)
                 paneContents = await model.ContentPage.RenderPaneAsync(HtmlHelper, pane == "" ? Globals.MainPane : pane, PaneDiv: false);
 
+            if (PageBarDataProvider.GetExpanded())
+                styleCss += " t_expanded";
+
             string pageUrl = Manager.CurrentPage.EvaluatedCanonicalUrl;
             string pageUrlOnly;
             QueryHelper qh = QueryHelper.FromUrl(pageUrl, out pageUrlOnly);
 
             hb.Append($@"
 <div class='yt_panels_pagebarinfo t_display {styleCss}' id='{ControlId}'>
-    <div class='yt_panels_pagebarinfo_list yNoPrint{styleListCss}'>");
+    <div class='yt_panels_pagebarinfo_list yNoPrint{styleListCss}'>
+        <div class='t_expcoll'></div>");
 
             foreach (PageBarInfo.PanelEntry entry in model.Panels) {
 
@@ -118,6 +125,7 @@ namespace YetaWF.Modules.Panels.Components {
             Setup setup = new Setup {
                 Resize = model.Style == PageBarModule.PanelStyleEnum.Vertical,
                 ActiveCss = activeCss,
+                ExpandCollapseUrl = Utility.UrlFor(typeof(PageBarInfoController), nameof(PageBarInfoController.SaveExpandCollapse)),
             };
 
             Manager.ScriptManager.AddLast($@"new YetaWF_Panels.PageBarInfoComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
