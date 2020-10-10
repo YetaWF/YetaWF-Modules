@@ -127,5 +127,3 @@ var YetaWF_Panels;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_Panels.StepInfoComponent = StepInfoComponent;
 })(YetaWF_Panels || (YetaWF_Panels = {}));
-
-//# sourceMappingURL=StepInfo.js.map

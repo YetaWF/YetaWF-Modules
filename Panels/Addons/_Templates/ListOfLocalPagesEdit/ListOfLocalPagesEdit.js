@@ -89,5 +89,3 @@ var YetaWF_Panels;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_Panels.ListOfLocalPagesEditComponent = ListOfLocalPagesEditComponent;
 })(YetaWF_Panels || (YetaWF_Panels = {}));
-
-//# sourceMappingURL=ListOfLocalPagesEdit.js.map

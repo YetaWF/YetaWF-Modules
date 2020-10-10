@@ -29,7 +29,7 @@ var YetaWF_Panels;
             // Link click, activate entry
             $YetaWF.registerEventHandler(_this.Control, "click", ".yt_panels_pagebarinfo_list a", function (ev) {
                 _this.activateEntry(ev.__YetaWFElem);
-                return true;
+                return true; // allow link click to be processed
             });
             // keyboard
             $YetaWF.registerEventHandler(_this.Control, "keydown", ".yt_panels_pagebarinfo_list", function (ev) {
@@ -74,9 +74,6 @@ var YetaWF_Panels;
                 $YetaWF.elementRemoveClassList(e, this.Setup.ActiveCss);
             }
             $YetaWF.elementAddClassList(entry, this.Setup.ActiveCss);
-            var anchor = $YetaWF.getElement1BySelector(".t_link a", [entry]);
-            anchor.focus();
-            anchor.click();
         };
         Object.defineProperty(PageBarInfoComponent.prototype, "count", {
             get: function () {
@@ -105,7 +102,11 @@ var YetaWF_Panels;
                 var entries = this.entries;
                 if (index < 0 || index >= entries.length)
                     throw "Panel index " + index + " is invalid";
-                this.activateEntry(entries[index]);
+                var entry = entries[index];
+                // and make panel active
+                var anchor = $YetaWF.getElement1BySelector(".t_link a", [entry]);
+                anchor.focus();
+                anchor.click();
             },
             enumerable: false,
             configurable: true
@@ -139,5 +140,3 @@ var YetaWF_Panels;
         return true;
     });
 })(YetaWF_Panels || (YetaWF_Panels = {}));
-
-//# sourceMappingURL=PageBarInfo.js.map

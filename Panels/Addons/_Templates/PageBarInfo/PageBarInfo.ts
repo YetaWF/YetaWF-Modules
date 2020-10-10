@@ -27,7 +27,7 @@ namespace YetaWF_Panels {
             // Link click, activate entry
             $YetaWF.registerEventHandler(this.Control, "click", ".yt_panels_pagebarinfo_list a", (ev: MouseEvent): boolean => {
                 this.activateEntry(ev.__YetaWFElem);
-                return true;
+                return true;// allow link click to be processed
             });
             // keyboard
             $YetaWF.registerEventHandler(this.Control, "keydown", ".yt_panels_pagebarinfo_list", (ev: KeyboardEvent): boolean => {
@@ -65,9 +65,6 @@ namespace YetaWF_Panels {
             for (let e of entries)
                 $YetaWF.elementRemoveClassList(e, this.Setup.ActiveCss);
             $YetaWF.elementAddClassList(entry, this.Setup.ActiveCss);
-            let anchor = $YetaWF.getElement1BySelector(".t_link a", [entry]);
-            anchor.focus();
-            anchor.click();
         }
 
         public get count(): number {
@@ -87,7 +84,11 @@ namespace YetaWF_Panels {
         public set activeEntry(index: number) {
             let entries = this.entries;
             if (index < 0 || index >= entries.length) throw `Panel index ${index} is invalid`;
-            this.activateEntry(entries[index]);
+            let entry = entries[index];
+            // and make panel active
+            let anchor = $YetaWF.getElement1BySelector(".t_link a", [entry]);
+            anchor.focus();
+            anchor.click();
         }
 
         public resize(): void {

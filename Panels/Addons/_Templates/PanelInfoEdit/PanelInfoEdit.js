@@ -94,5 +94,3 @@ var YetaWF_Panels;
         panelInfo.updateButtons();
     });
 })(YetaWF_Panels || (YetaWF_Panels = {}));
-
-//# sourceMappingURL=PanelInfoEdit.js.map

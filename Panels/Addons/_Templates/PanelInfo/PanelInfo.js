@@ -188,5 +188,3 @@ var YetaWF_Panels;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_Panels.PanelInfoComponent = PanelInfoComponent;
 })(YetaWF_Panels || (YetaWF_Panels = {}));
-
-//# sourceMappingURL=PanelInfo.js.map
