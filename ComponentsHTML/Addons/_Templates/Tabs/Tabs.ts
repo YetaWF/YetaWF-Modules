@@ -54,9 +54,11 @@ namespace YetaWF_ComponentsHTML {
                     index = this.tabCount-1;
                 } else
                     return true;
-                if (index >= 0 && index < this.tabCount)
+                if (index >= 0 && index < this.tabCount) {
                     this.activatePane(index);
-                return false;
+                    return false;
+                }
+                return true;
             });
             $YetaWF.registerEventHandler(this.Control, "focusin", null, (ev: FocusEvent): boolean => {
                 let curentTab = this.currentTab;

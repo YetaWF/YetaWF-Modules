@@ -56,9 +56,11 @@ var YetaWF_ComponentsHTML;
                 }
                 else
                     return true;
-                if (index >= 0 && index < _this.tabCount)
+                if (index >= 0 && index < _this.tabCount) {
                     _this.activatePane(index);
-                return false;
+                    return false;
+                }
+                return true;
             });
             $YetaWF.registerEventHandler(_this.Control, "focusin", null, function (ev) {
                 var curentTab = _this.currentTab;

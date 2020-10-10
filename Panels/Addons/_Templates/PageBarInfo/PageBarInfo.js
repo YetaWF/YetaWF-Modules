@@ -28,23 +28,88 @@ var YetaWF_Panels;
             _this.resize();
             // Link click, activate entry
             $YetaWF.registerEventHandler(_this.Control, "click", ".yt_panels_pagebarinfo_list a", function (ev) {
-                var entry = $YetaWF.elementClosestCond(ev.__YetaWFElem, ".yt_panels_pagebarinfo_list .t_entry");
-                if (!entry)
-                    return true;
-                var entries = $YetaWF.getElementsBySelector(".yt_panels_pagebarinfo_list .t_entry", [_this.Control]);
-                for (var _i = 0, entries_1 = entries; _i < entries_1.length; _i++) {
-                    var e = entries_1[_i];
-                    $YetaWF.elementRemoveClassList(e, _this.Setup.ActiveCss);
-                }
-                $YetaWF.elementAddClassList(entry, _this.Setup.ActiveCss);
+                _this.activateEntry(ev.__YetaWFElem);
                 return true;
             });
+            // keyboard
+            $YetaWF.registerEventHandler(_this.Control, "keydown", ".yt_panels_pagebarinfo_list", function (ev) {
+                var index = _this.activeEntry;
+                if (index < 0)
+                    index = 0;
+                var key = ev.key;
+                if (key === "ArrowDown" || key === "Down" || key === "ArrowRight" || key === "Right") {
+                    ++index;
+                }
+                else if (key === "ArrowUp" || key === "Up" || key === "ArrowLeft" || key === "Left") {
+                    --index;
+                }
+                else if (key === "Home") {
+                    index = 0;
+                }
+                else if (key === "End") {
+                    index = _this.count - 1;
+                }
+                else
+                    return true;
+                if (index >= 0 && index < _this.count) {
+                    _this.activeEntry = index;
+                    return false;
+                }
+                return true;
+            });
+            // scrolling
             $YetaWF.registerEventHandler($YetaWF.getElement1BySelector(".t_area", [_this.Control]), "scroll", null, function (ev) {
                 $YetaWF.sendContainerScrollEvent(_this.Control);
                 return true;
             });
             return _this;
         }
+        PageBarInfoComponent.prototype.activateEntry = function (tag) {
+            var entry = $YetaWF.elementClosestCond(tag, ".yt_panels_pagebarinfo_list .t_entry");
+            if (!entry)
+                return;
+            var entries = $YetaWF.getElementsBySelector(".yt_panels_pagebarinfo_list .t_entry", [this.Control]);
+            for (var _i = 0, entries_1 = entries; _i < entries_1.length; _i++) {
+                var e = entries_1[_i];
+                $YetaWF.elementRemoveClassList(e, this.Setup.ActiveCss);
+            }
+            $YetaWF.elementAddClassList(entry, this.Setup.ActiveCss);
+            var anchor = $YetaWF.getElement1BySelector(".t_link a", [entry]);
+            anchor.focus();
+            anchor.click();
+        };
+        Object.defineProperty(PageBarInfoComponent.prototype, "count", {
+            get: function () {
+                return this.entries.length;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(PageBarInfoComponent.prototype, "entries", {
+            get: function () {
+                return $YetaWF.getElementsBySelector(".yt_panels_pagebarinfo_list .t_entry", [this.Control]);
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(PageBarInfoComponent.prototype, "activeEntry", {
+            get: function () {
+                var entries = this.entries;
+                var active = $YetaWF.getElement1BySelectorCond(".yt_panels_pagebarinfo_list .t_entry.t_active", [this.Control]);
+                if (!active)
+                    return -1;
+                var index = entries.indexOf(active);
+                return index;
+            },
+            set: function (index) {
+                var entries = this.entries;
+                if (index < 0 || index >= entries.length)
+                    throw "Panel index " + index + " is invalid";
+                this.activateEntry(entries[index]);
+            },
+            enumerable: false,
+            configurable: true
+        });
         PageBarInfoComponent.prototype.resize = function () {
             if (!this.Setup.Resize)
                 return;

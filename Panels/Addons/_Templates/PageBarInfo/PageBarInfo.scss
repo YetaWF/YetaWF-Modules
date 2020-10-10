@@ -2,11 +2,13 @@
 
 $entry-width: 120px;
 $entry-height: 80px; // horizontal only
+$large-entry-width: 250px;
 $bar-background: silver;
 $bar-color: white;
 $bar-active: darken($bar-background, 20%);
 
 $small-screen: 1000px;
+$large-screen: 1500px;
 
 .yt_panels_pagebarinfo {
     &.t_styleshorz,
@@ -35,11 +37,11 @@ $small-screen: 1000px;
 .yt_panels_pagebarinfo {
     .yt_panels_pagebarinfo_list {
         .t_link {
-            font-size:10px;
+            font-size:.6rem;
             line-height:1.2;
-        }
-        .yaction-link {
-            white-space:normal;
+            .yaction-link {
+                white-space:normal;
+            }
         }
     }
 }
@@ -95,5 +97,42 @@ $small-screen: 1000px;
         }
     }
 
+}
+
+@media (min-width: $large-screen) {
+
+    .yt_panels_pagebarinfo {
+        &.t_stylesvert {
+            .yt_panels_pagebarinfo_list {
+                flex: 0 0  $large-entry-width;
+                overflow-x:auto;
+                overflow-y:auto;
+                text-align:left;
+                white-space: nowrap;
+
+                .t_entry {
+                    text-align:left;
+                    height: initial;
+                    width: initial;
+                    padding:5px 2px 5px 1em;
+                    display:block;
+                    vertical-align:initial;
+                    .t_image {
+                        display:inline-block;
+                        padding-right:.5em;
+                    }
+                    .t_link {
+                        font-size:.8rem;
+                        display:inline-block;
+                        padding-bottom:0;
+                        .yaction-link {
+                            white-space:nowrap;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
 }
 

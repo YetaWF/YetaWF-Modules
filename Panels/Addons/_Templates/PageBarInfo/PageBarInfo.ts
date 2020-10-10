@@ -26,19 +26,68 @@ namespace YetaWF_Panels {
 
             // Link click, activate entry
             $YetaWF.registerEventHandler(this.Control, "click", ".yt_panels_pagebarinfo_list a", (ev: MouseEvent): boolean => {
-                let entry = $YetaWF.elementClosestCond(ev.__YetaWFElem, ".yt_panels_pagebarinfo_list .t_entry");
-                if (!entry)
-                    return true;
-                let entries = $YetaWF.getElementsBySelector(".yt_panels_pagebarinfo_list .t_entry", [this.Control]);
-                for (let e of entries)
-                    $YetaWF.elementRemoveClassList(e, this.Setup.ActiveCss);
-                $YetaWF.elementAddClassList(entry, this.Setup.ActiveCss);
+                this.activateEntry(ev.__YetaWFElem);
                 return true;
             });
+            // keyboard
+            $YetaWF.registerEventHandler(this.Control, "keydown", ".yt_panels_pagebarinfo_list", (ev: KeyboardEvent): boolean => {
+                let index = this.activeEntry;
+                if (index < 0) index = 0;
+                let key = ev.key;
+                if (key === "ArrowDown" || key === "Down" || key === "ArrowRight" || key === "Right") {
+                    ++index;
+                } else if (key === "ArrowUp" || key === "Up" || key === "ArrowLeft" || key === "Left") {
+                    --index;
+                } else if (key === "Home") {
+                    index = 0;
+                } else if (key === "End") {
+                    index = this.count - 1;
+                } else
+                    return true;
+                if (index >= 0 && index < this.count) {
+                    this.activeEntry = index;
+                    return false;
+                }
+                return true;
+            });
+            // scrolling
             $YetaWF.registerEventHandler($YetaWF.getElement1BySelector(".t_area", [this.Control]), "scroll", null, (ev: Event): boolean => {
                 $YetaWF.sendContainerScrollEvent(this.Control);
                 return true;
             });
+        }
+
+        private activateEntry(tag: HTMLElement): void {
+            let entry = $YetaWF.elementClosestCond(tag, ".yt_panels_pagebarinfo_list .t_entry");
+            if (!entry)
+                return;
+            let entries = $YetaWF.getElementsBySelector(".yt_panels_pagebarinfo_list .t_entry", [this.Control]);
+            for (let e of entries)
+                $YetaWF.elementRemoveClassList(e, this.Setup.ActiveCss);
+            $YetaWF.elementAddClassList(entry, this.Setup.ActiveCss);
+            let anchor = $YetaWF.getElement1BySelector(".t_link a", [entry]);
+            anchor.focus();
+            anchor.click();
+        }
+
+        public get count(): number {
+            return this.entries.length;
+        }
+        public get entries(): HTMLElement[] {
+            return $YetaWF.getElementsBySelector(".yt_panels_pagebarinfo_list .t_entry", [this.Control]);
+        }
+        public get activeEntry(): number {
+            let entries = this.entries;
+            let active = $YetaWF.getElement1BySelectorCond(`.yt_panels_pagebarinfo_list .t_entry.t_active`, [this.Control]);
+            if (!active)
+                return -1;
+            let index = entries.indexOf(active);
+            return index;
+        }
+        public set activeEntry(index: number) {
+            let entries = this.entries;
+            if (index < 0 || index >= entries.length) throw `Panel index ${index} is invalid`;
+            this.activateEntry(entries[index]);
         }
 
         public resize(): void {
