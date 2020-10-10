@@ -87,6 +87,8 @@
         padding-bottom: 0; }
         .yt_panels_pagebarinfo.t_stylesvert.t_expanded .yt_panels_pagebarinfo_list .t_entry .t_link .yaction-link {
           white-space: nowrap; }
+  .yt_panels_pagebarinfo.t_stylesvert .yt_panels_pagebarinfo_list {
+    position: relative; }
   .yt_panels_pagebarinfo.t_stylesvert .t_expcoll {
     display: block;
     position: absolute;
@@ -95,7 +97,5 @@
     width: 8px;
     height: 24px;
     background-image: url(images/Expand.png); }
-  .yt_panels_pagebarinfo.t_stylesvert .yt_panels_pagebarinfo_list {
-    position: relative; }
   .yt_panels_pagebarinfo.t_stylesvert.t_expanded .t_expcoll {
     background-image: url(images/Collapse.png); } }
