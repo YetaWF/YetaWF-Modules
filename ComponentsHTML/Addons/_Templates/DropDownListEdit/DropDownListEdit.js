@@ -474,12 +474,9 @@ var YetaWF_ComponentsHTML;
                     var retVal = $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, _this.Control, undefined, undefined, function (data) {
                         _this.Select.innerHTML = data.OptionsHTML;
                         _this.optionsUpdated();
-                        if (onSuccess) {
+                        _this.selectedIndex = 0;
+                        if (onSuccess)
                             onSuccess(data);
-                        }
-                        else {
-                            _this.selectedIndex = 0;
-                        }
                     });
                     if (!retVal) {
                         if (onFailure)

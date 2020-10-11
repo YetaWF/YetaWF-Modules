@@ -496,11 +496,9 @@ namespace YetaWF_ComponentsHTML {
                         this.Select.innerHTML = data.OptionsHTML;
                         this.optionsUpdated();
 
-                        if (onSuccess) {
+                        this.selectedIndex = 0;
+                        if (onSuccess)
                             onSuccess(data);
-                        } else {
-                            this.selectedIndex = 0;
-                        }
                     });
                     if (!retVal) {
                         if (onFailure)
