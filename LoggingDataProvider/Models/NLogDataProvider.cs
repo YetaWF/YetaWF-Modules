@@ -15,7 +15,6 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider.SQL;
-using YetaWF.Modules.LoggingDataProvider.Controllers;
 
 namespace YetaWF.Modules.LoggingDataProvider.DataProvider.NLogProvider {
 
@@ -33,11 +32,7 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.NLogProvider {
         public void Register() {
 
             // Get config file
-#if MVC6
             string configFile = Startup.GetEnvironmentFile(Path.Combine(YetaWFManager.RootFolderWebProject, Globals.DataFolder), "NLog", "config", Optional: true);
-#else
-            string configFile = Path.Combine(YetaWFManager.RootFolder, Globals.DataFolder, NLogSettingsFile);
-#endif
             if (configFile == null)
                 return;
 
