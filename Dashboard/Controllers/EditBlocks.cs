@@ -52,12 +52,12 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             BlockSettingsDefinition settings = BlockRequestMiddleware.GetCurrentSettings();
 
             EditModel model = new EditModel {
-                NotAuthUrlPathContains = ToStringLines(settings.NotAuthorized.UrlPathContains),
-                NotAuthUrlPathEndsWith = ToStringLines(settings.NotAuthorized.UrlPathEndsWith),
-                NotAuthUserAgentContains = ToStringLines(settings.NotAuthorized.UserAgentContains),
-                SuccessUrlPathContains = ToStringLines(settings.Successful.UrlPathContains),
-                SuccessUrlPathEndsWith = ToStringLines(settings.Successful.UrlPathEndsWith),
-                SuccessUserAgentContains = ToStringLines(settings.Successful.UserAgentContains),
+                NotAuthUrlPathContains = ToStringLines(settings?.NotAuthorized.UrlPathContains),
+                NotAuthUrlPathEndsWith = ToStringLines(settings?.NotAuthorized.UrlPathEndsWith),
+                NotAuthUserAgentContains = ToStringLines(settings?.NotAuthorized.UserAgentContains),
+                SuccessUrlPathContains = ToStringLines(settings?.Successful.UrlPathContains),
+                SuccessUrlPathEndsWith = ToStringLines(settings?.Successful.UrlPathEndsWith),
+                SuccessUserAgentContains = ToStringLines(settings?.Successful.UserAgentContains),
             };
 
             return View(model);
@@ -89,6 +89,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         }
 
         private string ToStringLines(List<string> list) {
+            if (list == null) return null;
             return string.Join("\n", list);
         }
         private List<string> ToStringList(string text) {
