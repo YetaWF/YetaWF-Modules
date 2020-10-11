@@ -159,6 +159,10 @@ var YetaWF_ComponentsHTML;
             },
             set: function (val) {
                 this.Select.value = val;
+                this.clearSelectedPopupItem();
+                this.selectPopupItem();
+                if (this.selectedIndex >= 0)
+                    this.Input.innerText = this.Select.options[this.selectedIndex].text;
             },
             enumerable: false,
             configurable: true

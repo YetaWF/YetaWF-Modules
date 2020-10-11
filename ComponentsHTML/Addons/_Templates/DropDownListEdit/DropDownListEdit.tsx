@@ -168,6 +168,11 @@ namespace YetaWF_ComponentsHTML {
         }
         set value(val: string) {
             this.Select.value = val;
+
+            this.clearSelectedPopupItem();
+            this.selectPopupItem();
+            if (this.selectedIndex >= 0)
+                this.Input.innerText = this.Select.options[this.selectedIndex].text;
         }
         get selectedIndex(): number {
             return this.Select.selectedIndex;
