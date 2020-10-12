@@ -72,12 +72,12 @@ var YetaWF_ComponentsHTML;
                 var pane = $YetaWF.createElement("div", { class: "yPane" });
                 $YetaWF.elementAddClass(pane, result.Content[i].Pane);
                 pane.innerHTML = result.Content[i].HTML;
-                content.append(pane);
+                content.appendChild(pane);
             }
             PopupsImpl.addOverlay();
             document.body.style.overflow = "hidden";
             // Create the window
-            document.body.append(popup);
+            document.body.appendChild(popup);
             PopupsImpl.reposition();
             PopupsImpl.setupDragDrop();
             $YetaWF.setLoading(false);
@@ -98,7 +98,7 @@ var YetaWF_ComponentsHTML;
         };
         PopupsImpl.addOverlay = function () {
             var overlay = $YetaWF.createElement("div", { class: "ui-widget-overlay ui-front" });
-            document.body.append(overlay);
+            document.body.appendChild(overlay);
         };
         PopupsImpl.reposition = function () {
             // with unified page sets there may actually not be a parent, but window.parent returns itself in this case anyway
@@ -222,7 +222,7 @@ var YetaWF_ComponentsHTML;
             PopupsImpl.addOverlay();
             document.body.style.overflow = "hidden";
             // Create the window
-            document.body.append(popup);
+            document.body.appendChild(popup);
             PopupsImpl.reposition();
             PopupsImpl.setupDragDrop();
             // handle close button

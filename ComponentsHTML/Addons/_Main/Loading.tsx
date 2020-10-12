@@ -56,7 +56,7 @@ namespace YetaWF_ComponentsHTML {
             if (!this.LoadingDiv) {
                 this.LoadingDiv = <div id="yLoading" style="display:none"><img /></div> as HTMLDivElement;
                 ($YetaWF.getElement1BySelector("img", [this.LoadingDiv]) as HTMLImageElement).src = YConfigs.YetaWF_ComponentsHTML.LoaderGif;
-                document.body.append(this.LoadingDiv);
+                document.body.appendChild(this.LoadingDiv);
             }
         }
         private positionLoading(): void {

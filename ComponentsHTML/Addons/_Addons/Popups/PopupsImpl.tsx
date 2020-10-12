@@ -99,14 +99,14 @@ namespace YetaWF_ComponentsHTML {
                 let pane = <div class="yPane"></div> as HTMLDivElement;
                 $YetaWF.elementAddClass(pane, result.Content[i].Pane);
                 pane.innerHTML = result.Content[i].HTML;
-                content.append(pane);
+                content.appendChild(pane);
             }
 
             PopupsImpl.addOverlay();
             document.body.style.overflow = "hidden";
 
             // Create the window
-            document.body.append(popup);
+            document.body.appendChild(popup);
             PopupsImpl.reposition();
 
             PopupsImpl.setupDragDrop();
@@ -133,7 +133,7 @@ namespace YetaWF_ComponentsHTML {
 
         private static addOverlay(): void {
             let overlay = <div class="ui-widget-overlay ui-front"></div> as HTMLDivElement;
-            document.body.append(overlay);
+            document.body.appendChild(overlay);
         }
 
         public static reposition(): void {
@@ -269,7 +269,7 @@ namespace YetaWF_ComponentsHTML {
             document.body.style.overflow = "hidden";
 
             // Create the window
-            document.body.append(popup);
+            document.body.appendChild(popup);
             PopupsImpl.reposition();
 
             PopupsImpl.setupDragDrop();

@@ -50,7 +50,7 @@ namespace YetaWF_ComponentsHTML {
             if (setup.buttons) {
                 for (let buttonDef of setup.buttons) {
                     let button = <button type="button" class="ui-button ui-corner-all ui-widget">{buttonDef.text}</button> as HTMLButtonElement;
-                    buttonSet.append(button);
+                    buttonSet.appendChild(button);
                     $YetaWF.registerEventHandler(button, "click", null, (ev: MouseEvent): boolean => {
                         DialogClass.close();
                         buttonDef.click();
@@ -89,7 +89,7 @@ namespace YetaWF_ComponentsHTML {
             });
 
             dialog.style.display = "none";
-            document.body.append(dialog);
+            document.body.appendChild(dialog);
 
             DialogClass.addOverlay();
 
@@ -115,7 +115,7 @@ namespace YetaWF_ComponentsHTML {
             $YetaWF.getElement1BySelector("#yAlert", [dialog]).innerHTML = setup.textHTML;
 
             dialog.style.display = "none";
-            document.body.append(dialog);
+            document.body.appendChild(dialog);
 
             DialogClass.addOverlay();
 
@@ -138,7 +138,7 @@ namespace YetaWF_ComponentsHTML {
 
         private static addOverlay(): void {
             let overlay = <div class="ui-widget-overlay ui-front"></div> as HTMLDivElement;
-            document.body.append(overlay);
+            document.body.appendChild(overlay);
         }
         private static setupDragDrop(): void {
             let dialog = $YetaWF.getElementById("yDialogContainer");

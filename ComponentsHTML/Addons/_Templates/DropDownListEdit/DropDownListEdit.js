@@ -275,7 +275,7 @@ var YetaWF_ComponentsHTML;
             this.Popup.style.fontWeight = style.fontWeight;
             this.Popup.style.fontSize = style.fontSize;
             DropDownListEditComponent.positionPopup(this.Popup);
-            document.body.append(this.Popup);
+            document.body.appendChild(this.Popup);
             this.selectPopupItem();
             this.Control.setAttribute("aria-expanded", "true");
             $YetaWF.registerEventHandler(this.Popup, "mousedown", "ul li", function (ev) {
@@ -309,6 +309,7 @@ var YetaWF_ComponentsHTML;
             });
         };
         DropDownListEditComponent.prototype.closePopup = function (sendEvent) {
+            ToolTipsHTMLHelper.removeTooltips();
             if (!this.Popup) {
                 if (sendEvent === SendSelectEnum.ChangeSinceOpen && this.IndexOnOpen !== -1 && this.selectedIndex !== this.IndexOnOpen) {
                     this.IndexOnOpen = -1;
@@ -436,7 +437,7 @@ var YetaWF_ComponentsHTML;
         };
         DropDownListEditComponent.prototype.calcMaxStringLength = function () {
             var elem = $YetaWF.createElement("div", { style: "position:absolute;visibility:hidden;white-space:nowrap" });
-            document.body.append(elem);
+            document.body.appendChild(elem);
             // copy font attributes
             var style = window.getComputedStyle(this.Control);
             elem.style.font = style.font;

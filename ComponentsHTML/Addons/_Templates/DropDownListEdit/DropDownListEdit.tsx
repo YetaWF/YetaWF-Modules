@@ -283,7 +283,7 @@ namespace YetaWF_ComponentsHTML {
 
             DropDownListEditComponent.positionPopup(this.Popup);
 
-            document.body.append(this.Popup);
+            document.body.appendChild(this.Popup);
             this.selectPopupItem();
             this.Control.setAttribute("aria-expanded", "true");
 
@@ -317,6 +317,7 @@ namespace YetaWF_ComponentsHTML {
             });
         }
         public closePopup(sendEvent: SendSelectEnum): void {
+            ToolTipsHTMLHelper.removeTooltips();
             if (!this.Popup) {
                 if (sendEvent === SendSelectEnum.ChangeSinceOpen && this.IndexOnOpen !== -1 && this.selectedIndex !== this.IndexOnOpen) {
                     this.IndexOnOpen = -1;
@@ -448,7 +449,7 @@ namespace YetaWF_ComponentsHTML {
         private calcMaxStringLength(): number {
 
             let elem = <div style="position:absolute;visibility:hidden;white-space:nowrap"></div> as HTMLElement;
-            document.body.append(elem);
+            document.body.appendChild(elem);
             // copy font attributes
             let style = window.getComputedStyle(this.Control);
             elem.style.font = style.font;

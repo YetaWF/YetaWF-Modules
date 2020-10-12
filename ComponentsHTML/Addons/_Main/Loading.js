@@ -37,7 +37,7 @@ var YetaWF_ComponentsHTML;
                 this.LoadingDiv = $YetaWF.createElement("div", { id: "yLoading", style: "display:none" },
                     $YetaWF.createElement("img", null));
                 $YetaWF.getElement1BySelector("img", [this.LoadingDiv]).src = YConfigs.YetaWF_ComponentsHTML.LoaderGif;
-                document.body.append(this.LoadingDiv);
+                document.body.appendChild(this.LoadingDiv);
             }
         };
         LoadingClass.prototype.positionLoading = function () {
