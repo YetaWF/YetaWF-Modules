@@ -46,9 +46,10 @@ var YetaWF_ComponentsHTML;
                     }
                 },
             }) || this;
+            _this.Setup = setup;
             var config = {
                 customConfig: setup.CDNUrl,
-                height: setup.PixHeight + "px",
+                height: setup.EmHeight + "em",
                 allowedContent: setup.RestrictedHtml ? false : true,
                 filebrowserWindowFeatures: setup.FilebrowserWindowFeatures
             };
@@ -106,12 +107,13 @@ var YetaWF_ComponentsHTML;
     // page has completely loaded, so we need to set it again.
     // For other cases (outside float div) this does no harm and resizes to the current size.
     $YetaWF.registerActivateDiv(function (div) {
-        var ckeds = $YetaWF.getElementsBySelector(".yt_textarea.t_edit", [div]);
+        var ckeds = $YetaWF.getElementsBySelector(TextAreaEditComponent.SELECTOR, [div]);
         for (var _i = 0, ckeds_1 = ckeds; _i < ckeds_1.length; _i++) {
             var cked = ckeds_1[_i];
+            var ctrl = TextAreaEditComponent.getControlFromTag(cked, TextAreaEditComponent.SELECTOR);
             var ck = CKEDITOR.instances[cked.id];
             try {
-                ck.resize("100%", $YetaWF.getAttribute(cked, "data-height"), true);
+                ck.resize("100%", ctrl.Setup.EmHeight, true);
             }
             catch (e) { }
         }

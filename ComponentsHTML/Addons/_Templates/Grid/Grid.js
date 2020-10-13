@@ -16,6 +16,12 @@ var __extends = (this && this.__extends) || (function () {
 // Kendo UI menu use
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
+    var SizeStyleEnum;
+    (function (SizeStyleEnum) {
+        SizeStyleEnum[SizeStyleEnum["SizeGiven"] = 0] = "SizeGiven";
+        SizeStyleEnum[SizeStyleEnum["SizeToFit"] = 1] = "SizeToFit";
+        SizeStyleEnum[SizeStyleEnum["SizeAuto"] = 2] = "SizeAuto";
+    })(SizeStyleEnum || (SizeStyleEnum = {}));
     var SortByEnum;
     (function (SortByEnum) {
         SortByEnum[SortByEnum["NotSpecified"] = 0] = "NotSpecified";
@@ -82,6 +88,7 @@ var YetaWF_ComponentsHTML;
             _this.reorderingRowElement = null;
             _this.Setup = setup;
             _this.TBody = $YetaWF.getElement1BySelector("tbody", [_this.Control]);
+            _this.convertToPix();
             if (_this.Setup.ShowPager) {
                 _this.BtnReload = $YetaWF.getElement1BySelectorCond(".tg_reload", [_this.Control]);
                 _this.BtnSearch = $YetaWF.getElement1BySelectorCond(".tg_search", [_this.Control]);
@@ -597,6 +604,45 @@ var YetaWF_ComponentsHTML;
             return null;
         };
         // Resizing
+        // Convert all ch units to pixels in column headers
+        Grid.prototype.convertToPix = function () {
+            var avgChar = this.calcCharWidth();
+            var ths = $YetaWF.getElementsBySelector(".tg_header th", [this.Control]);
+            for (var _i = 0, ths_1 = ths; _i < ths_1.length; _i++) {
+                var th = ths_1[_i];
+                var wstyle = th.style.width;
+                if (wstyle.endsWith("ch")) {
+                    var w = parseFloat(wstyle) + 2; // we'll add some for padding
+                    w *= avgChar;
+                    th.style.width = w + "px";
+                }
+            }
+            if (this.Setup.SizeStyle === SizeStyleEnum.SizeGiven) {
+                var total = 0;
+                for (var _a = 0, ths_2 = ths; _a < ths_2.length; _a++) {
+                    var th = ths_2[_a];
+                    var w = parseFloat(th.style.width);
+                    total += w;
+                }
+                var table = $YetaWF.getElement1BySelector("table", [this.Control]);
+                table.style.width = total + "px";
+            }
+        };
+        Grid.prototype.calcCharWidth = function () {
+            var text = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var elem = $YetaWF.createElement("div", { style: "position:absolute;visibility:hidden;white-space:nowrap" }, text);
+            // copy font settings
+            var td = $YetaWF.getElement1BySelector(".tg_table table td", [this.Control]); // there is always a td element, even if it's empty
+            var style = window.getComputedStyle(td);
+            elem.style.font = style.font;
+            elem.style.fontStyle = style.fontStyle;
+            elem.style.fontWeight = style.fontWeight;
+            elem.style.fontSize = style.fontSize;
+            document.body.appendChild(elem);
+            var width = elem.clientWidth / text.length;
+            elem.remove();
+            return width;
+        };
         Grid.resizeColumn = function (ev) {
             var currentControl = Grid.CurrentControl;
             if (currentControl && currentControl.ColumnResizeHeader) {

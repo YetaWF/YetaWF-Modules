@@ -140,7 +140,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [Category("General"), Caption("Contents"), Description("The text contents")]
     /// [UIHint("Markdown"), AdditionalMetadata("EmHeight", 10)]
     /// public MarkdownString Contents { get; set; }
-    /// 
+    ///
     /// public class MarkdownString : MarkdownStringBase {
     ///     [StringLength(0), AdditionalMetadata("EmHeight", 10)]
     ///     public override string Text { get { return base.Text; } set { base.Text = value; } }
@@ -178,7 +178,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "showdownjs.com");
 
             int emHeight = PropData.GetAdditionalAttributeValue("EmHeight", 10);
-            int pixHeight = Manager.CharHeight * emHeight;
 
             UI ui = new UI {
                 TabsDef = new TabsDefinition {
@@ -206,7 +205,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                 using (Manager.StartNestedComponent(FieldName)) {
                                     hbt.Append($@"
         {await HtmlHelper.ForDisplayComponentAsync(model, nameof(model.HTML), model.HTML, "Hidden", HtmlAttributes: new { __NoTemplate = true, @class = "t_html" })}
-        <div class='t_previewpane' style='min-height:{pixHeight}px'>{model.HTML}</div>");
+        <div class='t_previewpane' style='min-height:{emHeight}em'>{model.HTML}</div>");
                                 }
                                 return hbt.ToString();
                             }

@@ -22,9 +22,9 @@ namespace YetaWF_ComponentsHTML {
         PageSize: number;
         Records: number;
         Pages: number;
+        SizeStyle: SizeStyleEnum;
         Columns: GridColumnDefinition[];
         FilterMenusHTML: string;
-        MinColumnWidth: number;
         SaveSettingsColumnWidthsUrl: string;
         ExtraData: any;
         HoverCss: string;
@@ -41,6 +41,11 @@ namespace YetaWF_ComponentsHTML {
         DeletedColumnDisplay: string;
 
         NoSubmitContents: boolean;
+    }
+    enum SizeStyleEnum {
+        SizeGiven = 0,
+        SizeToFit = 1,
+        SizeAuto = 2,
     }
     interface GridColumnDefinition {
         Name: string;
@@ -145,10 +150,10 @@ namespace YetaWF_ComponentsHTML {
                 control.internalDestroy();
             });
 
-
             this.Setup = setup;
 
             this.TBody = $YetaWF.getElement1BySelector("tbody", [this.Control]);
+            this.convertToPix();
 
             if (this.Setup.ShowPager) {
                 this.BtnReload = $YetaWF.getElement1BySelectorCond(".tg_reload", [this.Control]) as HTMLDivElement | null;
@@ -657,6 +662,47 @@ namespace YetaWF_ComponentsHTML {
             return null;
         }
         // Resizing
+        // Convert all ch units to pixels in column headers
+        private convertToPix(): void {
+            const avgChar = this.calcCharWidth();
+            let ths = $YetaWF.getElementsBySelector(".tg_header th", [this.Control]);
+            for (let th of ths) {
+                let wstyle = th.style.width;
+                if (wstyle.endsWith("ch")) {
+                    let w = parseFloat(wstyle) + 2;// we'll add some for padding
+                    w *= avgChar;
+                    th.style.width = `${w}px`;
+                }
+            }
+            if (this.Setup.SizeStyle === SizeStyleEnum.SizeGiven) {
+                let total = 0;
+                for (let th of ths) {
+                    let w = parseFloat(th.style.width);
+                    total += w;
+                }
+                let table = $YetaWF.getElement1BySelector("table", [this.Control]);
+                table.style.width = `${total}px`;
+            }
+        }
+        private calcCharWidth(): number {
+            const text = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            let elem = <div style="position:absolute;visibility:hidden;white-space:nowrap">{text}</div> as HTMLElement;
+
+            // copy font settings
+            let td = $YetaWF.getElement1BySelector(".tg_table table td", [this.Control]);// there is always a td element, even if it's empty
+            let style = window.getComputedStyle(td);
+            elem.style.font = style.font;
+            elem.style.fontStyle = style.fontStyle;
+            elem.style.fontWeight = style.fontWeight;
+            elem.style.fontSize = style.fontSize;
+
+            document.body.appendChild(elem);
+            let width = elem.clientWidth / text.length;
+            elem.remove();
+            return width;
+        }
+
+
         private static resizeColumn(ev: MouseEvent): boolean {
             let currentControl = Grid.CurrentControl;
             if (currentControl && currentControl.ColumnResizeHeader) {

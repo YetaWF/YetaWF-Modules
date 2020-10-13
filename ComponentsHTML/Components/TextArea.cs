@@ -78,7 +78,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "ckeditor");
 
                 int emHeight = PropData.GetAdditionalAttributeValue("EmHeight", 10);
-                int pixHeight = Manager.CharHeight * emHeight;
 
                 string addonUrl = Manager.AddOnManager.GetAddOnNamedUrl(Package.AreaName, "ckeditor") + "__CUSTOM_FILES/";
                 string url = addonUrl + "full_ro_config.js";
@@ -91,7 +90,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 tag.AddCssClass("t_readonly");
                 FieldSetup(tag, FieldType.Anonymous);
                 tag.Attributes.Add("id", ControlId);
-                tag.Attributes.Add("data-height", pixHeight.ToString());
                 tag.SetInnerText(text);
 
                 hb.Append(tag.ToString(YTagRenderMode.Normal));
@@ -99,7 +97,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 Manager.ScriptManager.AddLast($@"
 CKEDITOR.replace('{ControlId}', {{
     customConfig: '{Utility.JserEncode(Manager.GetCDNUrl(url))}',
-    height: '{pixHeight}px'
+    height: '{emHeight}em'
 }});");
 
             } else {
@@ -163,7 +161,7 @@ CKEDITOR.replace('{ControlId}', {{
         internal class TextAreaSetup {
             public bool InPartialView { get; set; }
             public string CDNUrl { get; set; }
-            public int PixHeight { get; set; }
+            public int EmHeight { get; set; }
             public bool RestrictedHtml { get; set; }
             public string FilebrowserImageBrowseUrl { get; set; }
             public string FilebrowserImageBrowseLinkUrl { get; set; }
@@ -204,7 +202,6 @@ CKEDITOR.replace('{ControlId}', {{
             bool usePageBrowsing = PropData.GetAdditionalAttributeValue("PageBrowse", false);
             bool restrictedHtml = PropData.GetAdditionalAttributeValue("RestrictedHtml", false);
             int emHeight = PropData.GetAdditionalAttributeValue("EmHeight", 10);
-            int pixHeight = Manager.CharHeight * emHeight;
 
             string filebrowserImageBrowseUrl = null;
             if (useImageBrowsing) {
@@ -230,7 +227,6 @@ CKEDITOR.replace('{ControlId}', {{
             tag.AddCssClass("t_edit");
             FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Normal);
             tag.Attributes.Add("id", ControlId);
-            tag.Attributes.Add("data-height", pixHeight.ToString());
 
             tag.SetInnerText(text);
             hb.Append(tag.ToString(YTagRenderMode.Normal));
@@ -238,7 +234,7 @@ CKEDITOR.replace('{ControlId}', {{
             TextAreaSetup setup = new TextAreaSetup {
                 InPartialView = Manager.InPartialView,
                 CDNUrl = Manager.GetCDNUrl(url),
-                PixHeight = pixHeight,
+                EmHeight = emHeight,
                 RestrictedHtml = restrictedHtml,
                 FilebrowserImageBrowseUrl = filebrowserImageBrowseUrl,
                 FilebrowserImageBrowseLinkUrl = filebrowserImageBrowseUrl,

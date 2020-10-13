@@ -16,11 +16,6 @@ using YetaWF.Core.DataProvider;
 using Newtonsoft.Json.Serialization;
 using YetaWF.Modules.ComponentsHTML.Controllers;
 using YetaWF.Modules.ComponentsHTML.Views;
-#if MVC6
-using Microsoft.AspNetCore.Mvc.Rendering;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -29,7 +24,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     public abstract class GridComponentBase : YetaWFComponent {
 
-        internal const int MIN_COL_WIDTH = 12;
+        internal const int MIN_COL_WIDTHPIX = 12;
+        internal const int MIN_COL_WIDTHCH = 2;
 
         internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(GridComponentBase), name, defaultValue, parms); }
 
@@ -64,6 +60,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public int PageSize { get; set; }
         public int Records { get; set; }
         public int Pages { get; set; }
+        public GridDefinition.SizeStyleEnum SizeStyle { get; internal set; }
         public List<GridColumnDefinition> Columns { get; set; }
         public string FilterMenusHTML { get; set; }
         public int MinColumnWidth { get; set; }
@@ -84,8 +81,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public bool NoSubmitContents { get; set; }
 
-        [JsonIgnore]
-        public int TotalWidth { get; set; }
         [JsonIgnore]
         public string HeaderHTML { get; set; }
 
@@ -199,8 +194,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 ShowPager = model.ShowPager,
                 Page = page,
                 PageSize = pageSize,
-                MinColumnWidth = MIN_COL_WIDTH,
                 ExtraData = model.ExtraData,
+                SizeStyle = model.SizeStyle,
                 HoverCss = model.UseSkinFormatting ? "ui-state-hover" : "tg_hover",
                 HighlightCss = model.UseSkinFormatting ? "ui-state-highlight" : "tg_highlight",
                 DisabledCss = model.UseSkinFormatting ? "ui-state-disabled" : "tg_disabled",
@@ -274,7 +269,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string cssTableStyle = "";
             switch (model.SizeStyle) {
                 case GridDefinition.SizeStyleEnum.SizeGiven:
-                    cssTableStyle = $" style='width:{setup.TotalWidth}px'";
+                    cssTableStyle = $" style='width:auto'";// updated client-side
                     break;
                 case GridDefinition.SizeStyleEnum.SizeToFit:
                     cssTableStyle = $" style='width:100%'";
@@ -412,7 +407,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 bool locked = gridCol.Locked;
 
                 // Width
-                int width = 0;
+                int widthPix = 0, widthCh = 0;
                 if (gridCol.Icons != 0) {
                     gridCol.Sortable = false;
                     Grid.GridActionsEnum actionStyle = Grid.GridActionsEnum.Icons;
@@ -420,28 +415,27 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                         actionStyle = UserSettings.GetProperty<Grid.GridActionsEnum>("GridActions");
                     gridCol.ChWidth = gridCol.PixWidth = 0;
                     if (actionStyle == Grid.GridActionsEnum.DropdownMenu) {
-                        width = (gridDef.DropdownActionWidth ?? 12) * Manager.CharWidthAvg;
+                        widthCh = gridDef.DropdownActionWidth ?? 12;
                     } else {
-                        width = 10 + (Math.Abs(gridCol.Icons) * (16 + 4) + 10);
+                        widthPix = 10 + (Math.Abs(gridCol.Icons) * (16 + 4) + 10);
                     }
                 }
-                if (gridCol.ChWidth != 0) {
-                    width = gridCol.ChWidth * Manager.CharWidthAvg;
-                } else if (gridCol.PixWidth != 0)
-                    width = gridCol.PixWidth;
+                if (gridCol.PixWidth != 0)
+                    widthPix = gridCol.PixWidth;
+                else if (gridCol.ChWidth != 0)
+                    widthCh = gridCol.ChWidth;
 
                 GridDefinition.SortBy sort = GridDefinition.SortBy.NotSpecified;
                 if (gridSavedSettings.Columns.ContainsKey(prop.Name)) {
                     GridDefinition.ColumnInfo columnInfo = gridSavedSettings.Columns[prop.Name];
                     if (columnInfo.Width >= 0)
-                        width = columnInfo.Width; // override calculated width
+                        widthPix = columnInfo.Width; // override calculated width
 
                     if (gridCol.Sortable) {
                         if (columnInfo.Sort == GridDefinition.SortBy.Ascending || columnInfo.Sort == GridDefinition.SortBy.Descending)
                             sort = columnInfo.Sort;
                     }
                 }
-                width = (width < MIN_COL_WIDTH) ? MIN_COL_WIDTH : width;
 
                 // Alignment
                 string alignCss = null;
@@ -479,8 +473,15 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 }
 
                 string cssWidth = "";
-                if (gridDef.SizeStyle == GridDefinition.SizeStyleEnum.SizeGiven || gridDef.SizeStyle == GridDefinition.SizeStyleEnum.SizeToFit)
-                    cssWidth = $" style='width:{width}px'";
+                if (gridDef.SizeStyle == GridDefinition.SizeStyleEnum.SizeGiven || gridDef.SizeStyle == GridDefinition.SizeStyleEnum.SizeToFit) {
+                    if (widthPix > 0) {
+                        widthPix = (widthPix < MIN_COL_WIDTHPIX) ? MIN_COL_WIDTHPIX : widthPix;
+                        cssWidth = $" style='width:{widthPix}px'";
+                    } else {
+                        widthCh = (widthCh < MIN_COL_WIDTHCH) ? MIN_COL_WIDTHCH : widthCh;
+                        cssWidth = $" style='width:{widthCh}ch'";
+                    }
+                }
 
                 // Render column header
                 hb.Append($@"
@@ -766,8 +767,6 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                     FilterId = idFilter,
                     MenuId = idMenu,
                 });
-
-                setup.TotalWidth += width;
 
                 ++colIndex;
             }
