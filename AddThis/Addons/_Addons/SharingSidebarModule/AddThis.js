@@ -1,7 +1,9 @@
 "use strict";
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/AddThis#License */
 // Handles events turning the addon on/off (used for dynamic content)
-$YetaWF.registerContentChange(function (addonGuid, on) {
+$YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, function (ev) {
+    var addonGuid = ev.detail.addonGuid;
+    var on = ev.detail.on;
     if (addonGuid === "d790d324-ec41-419d-abba-fdb03652cd9d") {
         var addThis = $YetaWF.getElement1BySelector("div.addthis-smartlayers");
         if (on)
@@ -9,6 +11,7 @@ $YetaWF.registerContentChange(function (addonGuid, on) {
         else
             addThis.style.display = "none";
     }
+    return true;
 });
 
 //# sourceMappingURL=AddThis.js.map

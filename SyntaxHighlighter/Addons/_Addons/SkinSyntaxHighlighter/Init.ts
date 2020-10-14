@@ -81,19 +81,21 @@ namespace YetaWF_SyntaxHighlighter {
             SyntaxHighlighter.config.strings.print = YLocs.YetaWF_SyntaxHighlighter.msg_print;
 
             SyntaxHighlighter.all();
-
-            $YetaWF.registerContentChange((addonGuid: string, on: boolean): void => {
-                if (addonGuid === AlexGorbatchevComHighlighterModule.MODULEGUID) {
-                    AlexGorbatchevComHighlighterModule.on = on;
-                }
-            });
-
-            $YetaWF.addWhenReady((tag: HTMLElement) : void => {
-                if (AlexGorbatchevComHighlighterModule.on)
-                    SyntaxHighlighter.highlight();
-            });
         }
     }
+
+    $YetaWF.addWhenReady((tag: HTMLElement): void => {
+        if (AlexGorbatchevComHighlighterModule.on)
+            SyntaxHighlighter.highlight();
+    });
+   $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, (ev: CustomEvent<YetaWF.DetailsAddonChanged>): boolean => {
+        let addonGuid = ev.detail.addonGuid;
+        let on = ev.detail.on;
+        if (addonGuid === AlexGorbatchevComHighlighterModule.MODULEGUID) {
+            AlexGorbatchevComHighlighterModule.on = on;
+        }
+        return true;
+    });
 
     export var AlexGorbatchevCom: AlexGorbatchevComHighlighterModule = new AlexGorbatchevComHighlighterModule();
 }

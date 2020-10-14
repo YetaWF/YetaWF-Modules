@@ -419,9 +419,12 @@ var _YetaWF_Lighbox_Skin = {};
 _YetaWF_Lighbox_Skin.on = true;
 
 // Handles events turning the addon on/off (used for dynamic content)
-$YetaWF.registerContentChange(function (addonGuid, on) {
+$YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, function (ev) {
+    var addonGuid = ev.detail.addonGuid;
+    var on = ev.detail.on;
     if (addonGuid == '39244dbc-0536-4c85-88d1-b84b504510ac') {
         _YetaWF_Lighbox_Skin.on = on;
     }
+    return true;
 });
 //&&&&&&&&&&&&&&&&&&& END CUSTOMIZATION

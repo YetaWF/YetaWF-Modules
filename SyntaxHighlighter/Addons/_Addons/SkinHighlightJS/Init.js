@@ -5,30 +5,35 @@ var YetaWF_SyntaxHighlighter;
     var HighlightJSModule = /** @class */ (function () {
         function HighlightJSModule() {
         }
-        HighlightJSModule.prototype.init = function () {
-            var _this = this;
-            $YetaWF.registerContentChange(function (addonGuid, on) {
-                if (addonGuid === HighlightJSModule.MODULEGUID) {
-                    HighlightJSModule.on = on;
+        HighlightJSModule.highlight = function (tag) {
+            if (HighlightJSModule.on) {
+                var elems = $YetaWF.getElementsBySelector("pre code,pre", [tag]);
+                for (var _i = 0, elems_1 = elems; _i < elems_1.length; _i++) {
+                    var elem = elems_1[_i];
+                    try {
+                        hljs.highlightBlock(elem);
+                    }
+                    catch (e) { }
                 }
-            });
-            $YetaWF.addWhenReady(function (tag) {
-                if (HighlightJSModule.on)
-                    _this.highlight(tag);
-            });
-        };
-        HighlightJSModule.prototype.highlight = function (tag) {
-            var elems = $YetaWF.getElementsBySelector("pre code,pre", [tag]);
-            for (var _i = 0, elems_1 = elems; _i < elems_1.length; _i++) {
-                var elem = elems_1[_i];
-                hljs.highlightBlock(elem);
             }
         };
-        HighlightJSModule.MODULEGUID = "25068AC6-BA74-4644-8B46-9D7FEC291E45";
+        HighlightJSModule.MODULEGUID = "25068ac6-ba74-4644-8b46-9d7fec291e45";
         HighlightJSModule.on = true;
         return HighlightJSModule;
     }());
-    YetaWF_SyntaxHighlighter.HighlightJS = new HighlightJSModule();
+    // tslint:disable-next-line:no-debugger
+    debugger;
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, function (ev) {
+        var addonGuid = ev.detail.addonGuid;
+        var on = ev.detail.on;
+        if (addonGuid === HighlightJSModule.MODULEGUID) {
+            HighlightJSModule.on = on;
+        }
+        return true;
+    });
+    $YetaWF.addWhenReady(function (tag) {
+        HighlightJSModule.highlight(tag);
+    });
 })(YetaWF_SyntaxHighlighter || (YetaWF_SyntaxHighlighter = {}));
 
 //# sourceMappingURL=Init.js.map

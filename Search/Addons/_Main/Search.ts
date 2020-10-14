@@ -73,10 +73,13 @@ namespace YetaWF_Search {
         Search.highlightSearch();
     });
     // Handles events turning the addon on/off (used for dynamic content)
-    $YetaWF.registerContentChange((addonGuid: string, on: boolean): void => {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, (ev: CustomEvent<YetaWF.DetailsAddonChanged>): boolean => {
+        let addonGuid = ev.detail.addonGuid;
+        let on = ev.detail.on;
         if (addonGuid === "f7202e79-30bc-43ea-8d7a-12218785207b") {
             Search.on = on;
         }
+        return true;
     });
 
     $YetaWF.registerEventHandlerBody("click", ".YetaWF_Search_SearchControl a[data-name='On']", (ev: MouseEvent): boolean => {

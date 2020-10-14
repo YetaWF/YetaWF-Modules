@@ -6,7 +6,7 @@ namespace YetaWF_Messenger {
 
     export class SkinBrowserNotificationsModule {
 
-        static readonly MODULEGUID: string = "7F60ABC1-07A1-49f1-8381-BD4276977FF0";
+        static readonly MODULEGUID: string = "7f60abc1-07a1-49f1-8381-bd4276977ff0";
         static readonly PROXY: string = "YetaWF_Messenger_BrowserNotificationsHub";
 
         static on: boolean = true;
@@ -41,13 +41,6 @@ namespace YetaWF_Messenger {
 
                 connection.start().then((): void => { /*empty*/ });
             }
-
-
-            $YetaWF.registerContentChange((addonGuid: string, on: boolean): void => {
-                if (addonGuid === SkinBrowserNotificationsModule.MODULEGUID) {
-                    SkinBrowserNotificationsModule.on = on;
-                }
-            });
         }
 
         private handleMessage(title: string, text: string, icon?: string, timeout?: number, url?: string): void {
@@ -82,4 +75,13 @@ namespace YetaWF_Messenger {
                 setTimeout(notification.close.bind(notification), timeout);
         }
     }
+
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, (ev: CustomEvent<YetaWF.DetailsAddonChanged>): boolean => {
+        let addonGuid = ev.detail.addonGuid;
+        let on = ev.detail.on;
+        if (addonGuid === SkinBrowserNotificationsModule.MODULEGUID) {
+            SkinBrowserNotificationsModule.on = on;
+        }
+        return true;
+    });
 }

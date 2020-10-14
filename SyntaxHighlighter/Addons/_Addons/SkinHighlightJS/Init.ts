@@ -6,33 +6,35 @@ namespace YetaWF_SyntaxHighlighter {
 
     class HighlightJSModule {
 
-        static readonly MODULEGUID: string = "25068AC6-BA74-4644-8B46-9D7FEC291E45";
+        static readonly MODULEGUID: string = "25068ac6-ba74-4644-8b46-9d7fec291e45";
 
         static on: boolean = true;
 
-        public init(): void {
-
-            $YetaWF.registerContentChange((addonGuid: string, on: boolean): void => {
-                if (addonGuid === HighlightJSModule.MODULEGUID) {
-                    HighlightJSModule.on = on;
+        public static highlight(tag: HTMLElement) : void {
+            if (HighlightJSModule.on) {
+                var elems = $YetaWF.getElementsBySelector("pre code,pre", [tag]);
+                for (var elem of elems) {
+                    try {
+                        hljs.highlightBlock(elem);
+                    } catch (e) { }
                 }
-            });
-
-            $YetaWF.addWhenReady((tag: HTMLElement) : void => {
-                if (HighlightJSModule.on)
-                    this.highlight(tag);
-            });
-        }
-
-        private highlight(tag: HTMLElement) : void {
-            var elems = $YetaWF.getElementsBySelector("pre code,pre", [tag]);
-            for (var elem of elems) {
-                hljs.highlightBlock(elem);
             }
         }
-
     }
 
-    export var HighlightJS: HighlightJSModule = new HighlightJSModule();
+    // tslint:disable-next-line:no-debugger
+    debugger;
+
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, (ev: CustomEvent<YetaWF.DetailsAddonChanged>): boolean => {
+        let addonGuid = ev.detail.addonGuid;
+        let on = ev.detail.on;
+        if (addonGuid === HighlightJSModule.MODULEGUID) {
+            HighlightJSModule.on = on;
+        }
+        return true;
+    });
+    $YetaWF.addWhenReady((tag: HTMLElement): void => {
+        HighlightJSModule.highlight(tag);
+    });
 }
 

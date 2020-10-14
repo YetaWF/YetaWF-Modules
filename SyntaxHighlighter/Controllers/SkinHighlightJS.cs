@@ -27,9 +27,6 @@ namespace YetaWF.Modules.SyntaxHighlighter.Controllers {
             string theme = skinAccess.FindHighlightJSSkin(config.HighlightJSSkin);
             await Manager.AddOnManager.AddAddOnNamedAsync(package.AreaName, "SkinHighlightJS", theme);
 
-            // add client-side init
-            Manager.ScriptManager.AddLast("YetaWF_SyntaxHighlighter_HighlightJS", "YetaWF_SyntaxHighlighter.HighlightJS.init();");
-
             return new EmptyResult();
         }
     }

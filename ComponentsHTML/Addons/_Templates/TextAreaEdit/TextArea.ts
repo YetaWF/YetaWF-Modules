@@ -125,12 +125,13 @@ namespace YetaWF_ComponentsHTML {
     });
 
     // A <div> is being emptied. Destroy all ckeditors the <div> may contain.
-    $YetaWF.registerClearDiv((tag: HTMLElement): void => {
+    $YetaWF.registerClearDiv(false, (tag: HTMLElement): boolean => {
         let list = $YetaWF.getElementsBySelector("textarea.yt_textarea", [tag]);
         for (let el of list) {
             if (CKEDITOR.instances[el.id])
                 CKEDITOR.instances[el.id].destroy();
         }
+        return true;
     });
 }
 

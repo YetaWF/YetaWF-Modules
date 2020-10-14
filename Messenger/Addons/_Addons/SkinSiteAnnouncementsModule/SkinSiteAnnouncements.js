@@ -24,22 +24,25 @@ var YetaWF_Messenger;
                 });
                 connection_1.start().then(function () { });
             }
-            $YetaWF.registerContentChange(function (addonGuid, on) {
-                if (addonGuid === SkinSiteAnnouncementsModule.MODULEGUID) {
-                    SkinSiteAnnouncementsModule.on = on;
-                }
-            });
         }
         SkinSiteAnnouncementsModule.prototype.handleMessage = function (content, title) {
             if (SkinSiteAnnouncementsModule.on)
                 $YetaWF.alert(content, title, undefined, { encoded: true, canClose: true, autoClose: 0 });
         };
-        SkinSiteAnnouncementsModule.MODULEGUID = "54F6B691-B835-4568-90AA-AA9B308D4272";
+        SkinSiteAnnouncementsModule.MODULEGUID = "54f6b691-b835-4568-90aa-aa9b308d4272";
         SkinSiteAnnouncementsModule.PROXY = "YetaWF_Messenger_SiteAnnouncementsHub";
         SkinSiteAnnouncementsModule.on = true;
         return SkinSiteAnnouncementsModule;
     }());
     YetaWF_Messenger.SkinSiteAnnouncementsModule = SkinSiteAnnouncementsModule;
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, function (ev) {
+        var addonGuid = ev.detail.addonGuid;
+        var on = ev.detail.on;
+        if (addonGuid === SkinSiteAnnouncementsModule.MODULEGUID) {
+            SkinSiteAnnouncementsModule.on = on;
+        }
+        return true;
+    });
 })(YetaWF_Messenger || (YetaWF_Messenger = {}));
 
 //# sourceMappingURL=SkinSiteAnnouncements.js.map

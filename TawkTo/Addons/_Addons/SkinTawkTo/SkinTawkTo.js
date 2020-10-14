@@ -22,11 +22,6 @@ var YetaWF_TawkTo;
         __extends(SkinTawkToModule, _super);
         function SkinTawkToModule(id) {
             var _this = _super.call(this, id, SkinTawkToModule.SELECTOR, null) || this;
-            $YetaWF.registerContentChange(function (addonGuid, on) {
-                if (addonGuid === SkinTawkToModule.MODULEGUID) {
-                    SkinTawkToModule.on = on;
-                }
-            });
             $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
                 _this.showInvite(SkinTawkToModule.on);
                 if (SkinTawkToModule.on) {
@@ -97,6 +92,14 @@ var YetaWF_TawkTo;
         return SkinTawkToModule;
     }(YetaWF.ModuleBaseNoDataImpl));
     YetaWF_TawkTo.SkinTawkToModule = SkinTawkToModule;
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, function (ev) {
+        var addonGuid = ev.detail.addonGuid;
+        var on = ev.detail.on;
+        if (addonGuid === SkinTawkToModule.MODULEGUID) {
+            SkinTawkToModule.on = on;
+        }
+        return true;
+    });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTBEFOREPRINT, null, function (ev) {
         if (Tawk_API) {
             Tawk_API.hideWidget();

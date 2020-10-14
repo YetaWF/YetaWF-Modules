@@ -17,16 +17,10 @@ namespace YetaWF_TawkTo {
         public static readonly SELECTOR: string = ".YetaWF_TawkTo_FileDocumentShow";
         public static readonly MODULEGUID: string = "c063e089-aff3-44e4-ac44-063911853579";
 
-        private static on: boolean = true;
+        public static on: boolean = true;
 
         constructor(id: string) {
             super(id, SkinTawkToModule.SELECTOR, null);
-
-            $YetaWF.registerContentChange((addonGuid: string, on: boolean): void => {
-                if (addonGuid === SkinTawkToModule.MODULEGUID) {
-                    SkinTawkToModule.on = on;
-                }
-            });
 
             $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: Event): boolean => {
                 this.showInvite(SkinTawkToModule.on);
@@ -90,6 +84,15 @@ namespace YetaWF_TawkTo {
             }
         }
     }
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, (ev: CustomEvent<YetaWF.DetailsAddonChanged>): boolean => {
+        let addonGuid = ev.detail.addonGuid;
+        let on = ev.detail.on;
+        if (addonGuid === SkinTawkToModule.MODULEGUID) {
+            SkinTawkToModule.on = on;
+        }
+        return true;
+    });
+
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTBEFOREPRINT, null, (ev: Event): boolean => {
         if (Tawk_API) {
             Tawk_API.hideWidget();

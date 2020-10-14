@@ -194,7 +194,7 @@ var YetaWF_ComponentsHTML;
                 throw "Unknown tab style " + YVolatile.Forms.TabStyle; /*DEBUG*/
             this.ActiveTabHidden.value = index.toString();
             $YetaWF.sendActivateDivEvent([activePanel]);
-            $YetaWF.processPanelSwitched(activePanel);
+            $YetaWF.sendPanelSwitchedEvent(activePanel);
             $YetaWF.sendCustomEvent(this.Control, TabsComponent.EVENTSWITCHED);
         };
         Object.defineProperty(TabsComponent.prototype, "activeTab", {
@@ -251,7 +251,7 @@ var YetaWF_ComponentsHTML;
             if (index >= 0) {
                 var panel = $YetaWF.getElement1BySelector("#" + tab.ControlId + "_tab" + index, [tab.Control]);
                 $YetaWF.sendActivateDivEvent([panel]);
-                $YetaWF.processPanelSwitched(panel);
+                $YetaWF.sendPanelSwitchedEvent(panel);
             }
         }
     });

@@ -33,10 +33,13 @@ var YetaWF_Basics;
         }
     });
     // Handles events turning the addon on/off (used for dynamic content)
-    $YetaWF.registerContentChange(function (addonGuid, on) {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, function (ev) {
+        var addonGuid = ev.detail.addonGuid;
+        var on = ev.detail.on;
         if (addonGuid === "749d0ca9-75e5-40b8-82e3-466a11d3b1d2") {
             MailtoObfuscatorSkinModule.on = on;
         }
+        return true;
     });
 })(YetaWF_Basics || (YetaWF_Basics = {}));
 

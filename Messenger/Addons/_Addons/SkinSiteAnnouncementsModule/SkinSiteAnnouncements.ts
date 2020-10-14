@@ -4,7 +4,7 @@ namespace YetaWF_Messenger {
 
     export class SkinSiteAnnouncementsModule {
 
-        static readonly MODULEGUID: string = "54F6B691-B835-4568-90AA-AA9B308D4272";
+        static readonly MODULEGUID: string = "54f6b691-b835-4568-90aa-aa9b308d4272";
         static readonly PROXY: string = "YetaWF_Messenger_SiteAnnouncementsHub";
 
         static on: boolean = true;
@@ -35,15 +35,19 @@ namespace YetaWF_Messenger {
                 connection.start().then((): void => { /*empty*/ });
             }
 
-            $YetaWF.registerContentChange((addonGuid: string, on: boolean): void => {
-                if (addonGuid === SkinSiteAnnouncementsModule.MODULEGUID) {
-                    SkinSiteAnnouncementsModule.on = on;
-                }
-            });
         }
         private handleMessage(content: string, title: string): void {
             if (SkinSiteAnnouncementsModule.on)
                 $YetaWF.alert(content, title, undefined, { encoded: true, canClose: true, autoClose: 0 });
         }
     }
+
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, (ev: CustomEvent<YetaWF.DetailsAddonChanged>): boolean => {
+        let addonGuid = ev.detail.addonGuid;
+        let on = ev.detail.on;
+        if (addonGuid === SkinSiteAnnouncementsModule.MODULEGUID) {
+            SkinSiteAnnouncementsModule.on = on;
+        }
+        return true;
+    });
 }

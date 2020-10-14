@@ -86,11 +86,14 @@ namespace YetaWF_Panels {
         }
     }
 
-    $YetaWF.registerPanelSwitched((panel: HTMLElement): void => {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTPANELSWITCHED, null, (ev: CustomEvent<YetaWF.DetailsPanelSwitched>): boolean => {
+        let panel = ev.detail.panel;
         var panelInfo = YetaWF.ComponentBaseDataImpl.getControlFromTagCond<PanelInfoEditComponent>(panel, PanelInfoEditComponent.SELECTOR);
-        if (!panelInfo) return;
-        var tabActive = $YetaWF.getElement1BySelector("input[name$='_ActiveTab']", [panelInfo.Control]) as HTMLInputElement;
-        tabActive.value = $YetaWF.getAttribute(panel, "data-tab");
-        panelInfo.updateButtons();
+        if (panelInfo) {
+            var tabActive = $YetaWF.getElement1BySelector("input[name$='_ActiveTab']", [panelInfo.Control]) as HTMLInputElement;
+            tabActive.value = $YetaWF.getAttribute(panel, "data-tab");
+            panelInfo.updateButtons();
+        }
+        return true;
     });
 }

@@ -17,18 +17,21 @@ namespace YetaWF_Blog {
          */
         init(): void {
 
-            $YetaWF.registerContentChange((addonGuid: string, on: boolean): void => {
-                if (addonGuid === SkinDisqusLinksModule.MODULEGUID) {
-                    SkinDisqusLinksModule.on = on;
-                }
-            });
-
             $YetaWF.addWhenReady((tag: HTMLElement) : void => {
                 if (SkinDisqusLinksModule.on && DISQUSWIDGETS)
                     DISQUSWIDGETS.getCount({ reset: true });
             });
         }
     }
+
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, (ev: CustomEvent<YetaWF.DetailsAddonChanged>): boolean => {
+        let addonGuid = ev.detail.addonGuid;
+        let on = ev.detail.on;
+        if (addonGuid === SkinDisqusLinksModule.MODULEGUID) {
+            SkinDisqusLinksModule.on = on;
+        }
+        return true;
+    });
 
     var disqusLinks: SkinDisqusLinksModule = new SkinDisqusLinksModule();
     disqusLinks.init();

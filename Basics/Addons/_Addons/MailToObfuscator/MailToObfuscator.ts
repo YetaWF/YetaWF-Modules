@@ -33,9 +33,12 @@ namespace YetaWF_Basics {
     });
 
     // Handles events turning the addon on/off (used for dynamic content)
-    $YetaWF.registerContentChange((addonGuid: string, on: boolean): void => {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, (ev: CustomEvent<YetaWF.DetailsAddonChanged>): boolean => {
+        let addonGuid = ev.detail.addonGuid;
+        let on = ev.detail.on;
         if (addonGuid === "749d0ca9-75e5-40b8-82e3-466a11d3b1d2") {
             MailtoObfuscatorSkinModule.on = on;
         }
+        return true;
     });
 }

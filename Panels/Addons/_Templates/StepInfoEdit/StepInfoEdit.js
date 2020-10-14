@@ -85,13 +85,15 @@ var YetaWF_Panels;
         return StepInfoEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_Panels.StepInfoEditComponent = StepInfoEditComponent;
-    $YetaWF.registerPanelSwitched(function (panel) {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTPANELSWITCHED, null, function (ev) {
+        var panel = ev.detail.panel;
         var panelInfo = YetaWF.ComponentBaseDataImpl.getControlFromTagCond(panel, StepInfoEditComponent.SELECTOR);
-        if (!panelInfo)
-            return;
-        var tabActive = $YetaWF.getElement1BySelector("input[name$='_ActiveTab']", [panelInfo.Control]);
-        tabActive.value = $YetaWF.getAttribute(panel, "data-tab");
-        panelInfo.updateButtons();
+        if (panelInfo) {
+            var tabActive = $YetaWF.getElement1BySelector("input[name$='_ActiveTab']", [panelInfo.Control]);
+            tabActive.value = $YetaWF.getAttribute(panel, "data-tab");
+            panelInfo.updateButtons();
+        }
+        return true;
     });
 })(YetaWF_Panels || (YetaWF_Panels = {}));
 

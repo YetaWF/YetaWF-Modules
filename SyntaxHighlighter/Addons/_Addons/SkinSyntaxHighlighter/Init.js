@@ -54,20 +54,23 @@ var YetaWF_SyntaxHighlighter;
             SyntaxHighlighter.config.strings.copyToClipboardConfirmation = YLocs.YetaWF_SyntaxHighlighter.msg_copyToClipboardConfirmation;
             SyntaxHighlighter.config.strings.print = YLocs.YetaWF_SyntaxHighlighter.msg_print;
             SyntaxHighlighter.all();
-            $YetaWF.registerContentChange(function (addonGuid, on) {
-                if (addonGuid === AlexGorbatchevComHighlighterModule.MODULEGUID) {
-                    AlexGorbatchevComHighlighterModule.on = on;
-                }
-            });
-            $YetaWF.addWhenReady(function (tag) {
-                if (AlexGorbatchevComHighlighterModule.on)
-                    SyntaxHighlighter.highlight();
-            });
         };
         AlexGorbatchevComHighlighterModule.MODULEGUID = "7e3c4322-5bdb-44bf-acff-f62d498705ee";
         AlexGorbatchevComHighlighterModule.on = true;
         return AlexGorbatchevComHighlighterModule;
     }());
+    $YetaWF.addWhenReady(function (tag) {
+        if (AlexGorbatchevComHighlighterModule.on)
+            SyntaxHighlighter.highlight();
+    });
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, function (ev) {
+        var addonGuid = ev.detail.addonGuid;
+        var on = ev.detail.on;
+        if (addonGuid === AlexGorbatchevComHighlighterModule.MODULEGUID) {
+            AlexGorbatchevComHighlighterModule.on = on;
+        }
+        return true;
+    });
     YetaWF_SyntaxHighlighter.AlexGorbatchevCom = new AlexGorbatchevComHighlighterModule();
 })(YetaWF_SyntaxHighlighter || (YetaWF_SyntaxHighlighter = {}));
 

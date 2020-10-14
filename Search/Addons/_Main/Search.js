@@ -61,10 +61,13 @@ var YetaWF_Search;
         Search.highlightSearch();
     });
     // Handles events turning the addon on/off (used for dynamic content)
-    $YetaWF.registerContentChange(function (addonGuid, on) {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, function (ev) {
+        var addonGuid = ev.detail.addonGuid;
+        var on = ev.detail.on;
         if (addonGuid === "f7202e79-30bc-43ea-8d7a-12218785207b") {
             Search.on = on;
         }
+        return true;
     });
     $YetaWF.registerEventHandlerBody("click", ".YetaWF_Search_SearchControl a[data-name='On']", function (ev) {
         var onButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='On']");

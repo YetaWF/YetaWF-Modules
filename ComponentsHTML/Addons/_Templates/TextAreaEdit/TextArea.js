@@ -120,13 +120,14 @@ var YetaWF_ComponentsHTML;
         return true;
     });
     // A <div> is being emptied. Destroy all ckeditors the <div> may contain.
-    $YetaWF.registerClearDiv(function (tag) {
+    $YetaWF.registerClearDiv(false, function (tag) {
         var list = $YetaWF.getElementsBySelector("textarea.yt_textarea", [tag]);
         for (var _i = 0, list_1 = list; _i < list_1.length; _i++) {
             var el = list_1[_i];
             if (CKEDITOR.instances[el.id])
                 CKEDITOR.instances[el.id].destroy();
         }
+        return true;
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 

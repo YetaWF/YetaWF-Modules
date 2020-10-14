@@ -15,11 +15,6 @@ var YetaWF_Basics;
             $YetaWF.addWhenReady(function (section) {
                 alert.initSection(section);
             });
-            $YetaWF.registerContentChange(function (addonGuid, on) {
-                if (addonGuid === AlertDisplayModule.MODULEGUID) {
-                    AlertDisplayModule.on = on;
-                }
-            });
         };
         /**
          * Initializes all alert elements in the specified tag.
@@ -64,6 +59,14 @@ var YetaWF_Basics;
         AlertDisplayModule.on = true;
         return AlertDisplayModule;
     }());
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, function (ev) {
+        var addonGuid = ev.detail.addonGuid;
+        var on = ev.detail.on;
+        if (addonGuid === AlertDisplayModule.MODULEGUID) {
+            AlertDisplayModule.on = on;
+        }
+        return true;
+    });
     var alert = new AlertDisplayModule();
     alert.init();
 })(YetaWF_Basics || (YetaWF_Basics = {}));

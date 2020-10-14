@@ -11,11 +11,6 @@ var YetaWF_Blog;
          * Initializes the module instance.
          */
         SkinDisqusLinksModule.prototype.init = function () {
-            $YetaWF.registerContentChange(function (addonGuid, on) {
-                if (addonGuid === SkinDisqusLinksModule.MODULEGUID) {
-                    SkinDisqusLinksModule.on = on;
-                }
-            });
             $YetaWF.addWhenReady(function (tag) {
                 if (SkinDisqusLinksModule.on && DISQUSWIDGETS)
                     DISQUSWIDGETS.getCount({ reset: true });
@@ -25,6 +20,14 @@ var YetaWF_Blog;
         SkinDisqusLinksModule.on = true;
         return SkinDisqusLinksModule;
     }());
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, function (ev) {
+        var addonGuid = ev.detail.addonGuid;
+        var on = ev.detail.on;
+        if (addonGuid === SkinDisqusLinksModule.MODULEGUID) {
+            SkinDisqusLinksModule.on = on;
+        }
+        return true;
+    });
     var disqusLinks = new SkinDisqusLinksModule();
     disqusLinks.init();
 })(YetaWF_Blog || (YetaWF_Blog = {}));

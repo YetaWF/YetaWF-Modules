@@ -28,11 +28,6 @@ var YetaWF_Messenger;
                 });
                 connection_1.start().then(function () { });
             }
-            $YetaWF.registerContentChange(function (addonGuid, on) {
-                if (addonGuid === SkinBrowserNotificationsModule.MODULEGUID) {
-                    SkinBrowserNotificationsModule.on = on;
-                }
-            });
         }
         SkinBrowserNotificationsModule.prototype.handleMessage = function (title, text, icon, timeout, url) {
             var _this = this;
@@ -63,12 +58,20 @@ var YetaWF_Messenger;
             if (timeout)
                 setTimeout(notification.close.bind(notification), timeout);
         };
-        SkinBrowserNotificationsModule.MODULEGUID = "7F60ABC1-07A1-49f1-8381-BD4276977FF0";
+        SkinBrowserNotificationsModule.MODULEGUID = "7f60abc1-07a1-49f1-8381-bd4276977ff0";
         SkinBrowserNotificationsModule.PROXY = "YetaWF_Messenger_BrowserNotificationsHub";
         SkinBrowserNotificationsModule.on = true;
         return SkinBrowserNotificationsModule;
     }());
     YetaWF_Messenger.SkinBrowserNotificationsModule = SkinBrowserNotificationsModule;
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, function (ev) {
+        var addonGuid = ev.detail.addonGuid;
+        var on = ev.detail.on;
+        if (addonGuid === SkinBrowserNotificationsModule.MODULEGUID) {
+            SkinBrowserNotificationsModule.on = on;
+        }
+        return true;
+    });
 })(YetaWF_Messenger || (YetaWF_Messenger = {}));
 
 //# sourceMappingURL=SkinBrowserNotifications.js.map

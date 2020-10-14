@@ -21,12 +21,6 @@ namespace YetaWF_Basics {
             $YetaWF.addWhenReady((section: HTMLElement): void => {
                 alert.initSection(section);
             });
-
-            $YetaWF.registerContentChange((addonGuid:string, on:boolean):void => {
-                if (addonGuid === AlertDisplayModule.MODULEGUID) {
-                    AlertDisplayModule.on = on;
-                }
-            });
         }
 
         /**
@@ -68,6 +62,15 @@ namespace YetaWF_Basics {
             // we don't care about the result of this request
         }
     }
+
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, (ev: CustomEvent<YetaWF.DetailsAddonChanged>): boolean => {
+        let addonGuid = ev.detail.addonGuid;
+        let on = ev.detail.on;
+        if (addonGuid === AlertDisplayModule.MODULEGUID) {
+            AlertDisplayModule.on = on;
+        }
+        return true;
+    });
 
     var alert: AlertDisplayModule = new AlertDisplayModule();
     alert.init();
