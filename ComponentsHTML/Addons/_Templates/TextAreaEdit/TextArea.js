@@ -106,8 +106,8 @@ var YetaWF_ComponentsHTML;
     // when we're in a float div (property list or tabbed property list) the parent width isn't available until after the
     // page has completely loaded, so we need to set it again.
     // For other cases (outside float div) this does no harm and resizes to the current size.
-    $YetaWF.registerActivateDiv(function (div) {
-        var ckeds = $YetaWF.getElementsBySelector(TextAreaEditComponent.SELECTOR, [div]);
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTACTIVATEDIV, null, function (ev) {
+        var ckeds = $YetaWF.getElementsBySelector(TextAreaEditComponent.SELECTOR, ev.detail.tags);
         for (var _i = 0, ckeds_1 = ckeds; _i < ckeds_1.length; _i++) {
             var cked = ckeds_1[_i];
             var ctrl = TextAreaEditComponent.getControlFromTag(cked, TextAreaEditComponent.SELECTOR);
@@ -117,6 +117,7 @@ var YetaWF_ComponentsHTML;
             }
             catch (e) { }
         }
+        return true;
     });
     // A <div> is being emptied. Destroy all ckeditors the <div> may contain.
     $YetaWF.registerClearDiv(function (tag) {

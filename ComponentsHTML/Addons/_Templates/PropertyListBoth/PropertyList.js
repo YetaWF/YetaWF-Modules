@@ -414,7 +414,7 @@ var YetaWF_ComponentsHTML;
                     }
                 }
                 if (clearVal)
-                    $YetaWF.processActivateDivs([depRow]); // init any controls that just became visible
+                    $YetaWF.sendActivateDivEvent([depRow]); // init any controls that just became visible
             }
             else {
                 if (!$YetaWF.elementHasClass(depRow, "t_hidden")) {

@@ -181,7 +181,7 @@ namespace YetaWF_ComponentsHTML {
 
             this.ActiveTabHidden.value = index.toString();
 
-            $YetaWF.processActivateDivs([activePanel]);
+            $YetaWF.sendActivateDivEvent([activePanel]);
             $YetaWF.processPanelSwitched(activePanel);
 
             $YetaWF.sendCustomEvent(this.Control, TabsComponent.EVENTSWITCHED);
@@ -220,7 +220,7 @@ namespace YetaWF_ComponentsHTML {
             let index = tab.activeTab;
             if (index >= 0) {
                 let panel = $YetaWF.getElement1BySelector(`#${tab.ControlId}_tab${index}`, [tab.Control]);
-                $YetaWF.processActivateDivs([panel]);
+                $YetaWF.sendActivateDivEvent([panel]);
                 $YetaWF.processPanelSwitched(panel);
             }
         }

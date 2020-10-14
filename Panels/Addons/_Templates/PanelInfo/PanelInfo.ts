@@ -164,7 +164,7 @@ namespace YetaWF_Panels {
                 let newRect = tag.getBoundingClientRect();
                 if (rect.height >= newRect.height) {
                     clearInterval(timer);
-                    $YetaWF.processActivateDivs([tag]);
+                    $YetaWF.sendActivateDivEvent([tag]);
                 }
             }, PanelInfoComponent.INCRTIME);
 

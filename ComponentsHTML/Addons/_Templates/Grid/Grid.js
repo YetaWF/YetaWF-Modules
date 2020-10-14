@@ -133,7 +133,7 @@ var YetaWF_ComponentsHTML;
                     }
                     else {
                         filterBar.style.display = "";
-                        $YetaWF.processActivateDivs([filterBar]);
+                        $YetaWF.sendActivateDivEvent([filterBar]);
                     }
                     return false;
                 });
@@ -707,7 +707,7 @@ var YetaWF_ComponentsHTML;
                                 break;
                             trs[i].removeAttribute("style");
                             // init any controls that just became visible
-                            $YetaWF.processActivateDivs([trs[i]]);
+                            $YetaWF.sendActivateDivEvent([trs[i]]);
                             ++count;
                         }
                     }

@@ -152,7 +152,7 @@ var YetaWF_Panels;
                 var newRect = tag.getBoundingClientRect();
                 if (rect.height >= newRect.height) {
                     clearInterval(timer);
-                    $YetaWF.processActivateDivs([tag]);
+                    $YetaWF.sendActivateDivEvent([tag]);
                 }
             }, PanelInfoComponent.INCRTIME);
         };

@@ -2,7 +2,7 @@
 
 namespace YetaWF_ComponentsHTML {
 
-    export class MarkdownEditComponent extends YetaWF.ComponentBaseNoDataImpl {
+    export class MarkdownEditComponent extends YetaWF.ComponentBaseDataImpl {
 
         public static readonly TEMPLATE: string = "yt_markdown";
         public static readonly SELECTOR: string = ".yt_markdown.t_edit";
@@ -25,16 +25,6 @@ namespace YetaWF_ComponentsHTML {
             this.TextArea = $YetaWF.getElement1BySelector("textarea", [this.Control]) as HTMLTextAreaElement;
             this.Preview = $YetaWF.getElement1BySelector(".t_previewpane", [this.Control]);
             this.InputHTML = $YetaWF.getElement1BySelector(".t_html", [this.Control]) as HTMLInputElement;
-
-            // inner tab control switched
-            $YetaWF.registerActivateDiv((div: HTMLElement): void => {
-                let md = $YetaWF.elementClosestCond(div, MarkdownEditComponent.SELECTOR);
-                if (md === this.Control) {
-                    if ($YetaWF.isVisible(this.Preview)) {
-                        this.toHTML();
-                    }
-                }
-            });
 
             // Update rendered html before form submit
             $YetaWF.Forms.addPreSubmitHandler(true, {
@@ -60,5 +50,20 @@ namespace YetaWF_ComponentsHTML {
             this.Preview.innerHTML = html;
             this.InputHTML.value = html;
         }
+        public makeVisible(): void {
+            if ($YetaWF.isVisible(this.Preview)) {
+                this.toHTML();
+            }
+        }
     }
+
+    // inner tab control switched
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTACTIVATEDIV, null, (ev: CustomEvent<YetaWF.DetailsActivateDiv>): boolean => {
+        for (let tag of ev.detail.tags) {
+            let md = MarkdownEditComponent.getControlFromTagCond<MarkdownEditComponent>(tag, MarkdownEditComponent.SELECTOR);
+            if (md)
+                md.makeVisible();
+        }
+        return true;
+    });
 }

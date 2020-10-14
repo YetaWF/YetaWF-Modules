@@ -29,15 +29,6 @@ var YetaWF_ComponentsHTML;
             _this.TextArea = $YetaWF.getElement1BySelector("textarea", [_this.Control]);
             _this.Preview = $YetaWF.getElement1BySelector(".t_previewpane", [_this.Control]);
             _this.InputHTML = $YetaWF.getElement1BySelector(".t_html", [_this.Control]);
-            // inner tab control switched
-            $YetaWF.registerActivateDiv(function (div) {
-                var md = $YetaWF.elementClosestCond(div, MarkdownEditComponent.SELECTOR);
-                if (md === _this.Control) {
-                    if ($YetaWF.isVisible(_this.Preview)) {
-                        _this.toHTML();
-                    }
-                }
-            });
             // Update rendered html before form submit
             $YetaWF.Forms.addPreSubmitHandler(true, {
                 form: $YetaWF.Forms.getForm(_this.Control),
@@ -61,12 +52,27 @@ var YetaWF_ComponentsHTML;
             this.Preview.innerHTML = html;
             this.InputHTML.value = html;
         };
+        MarkdownEditComponent.prototype.makeVisible = function () {
+            if ($YetaWF.isVisible(this.Preview)) {
+                this.toHTML();
+            }
+        };
         MarkdownEditComponent.TEMPLATE = "yt_markdown";
         MarkdownEditComponent.SELECTOR = ".yt_markdown.t_edit";
         MarkdownEditComponent.EVENT = "markdown_change";
         return MarkdownEditComponent;
-    }(YetaWF.ComponentBaseNoDataImpl));
+    }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.MarkdownEditComponent = MarkdownEditComponent;
+    // inner tab control switched
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTACTIVATEDIV, null, function (ev) {
+        for (var _i = 0, _a = ev.detail.tags; _i < _a.length; _i++) {
+            var tag = _a[_i];
+            var md = MarkdownEditComponent.getControlFromTagCond(tag, MarkdownEditComponent.SELECTOR);
+            if (md)
+                md.makeVisible();
+        }
+        return true;
+    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=MarkdownEdit.js.map

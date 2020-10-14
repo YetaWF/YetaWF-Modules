@@ -201,7 +201,7 @@ namespace YetaWF_ComponentsHTML {
                         this.reload(0);
                     } else {
                         filterBar.style.display = "";
-                        $YetaWF.processActivateDivs([filterBar]);
+                        $YetaWF.sendActivateDivEvent([filterBar]);
                     }
                     return false;
                 });
@@ -771,7 +771,7 @@ namespace YetaWF_ComponentsHTML {
                                 break;
                             trs[i].removeAttribute("style");
                             // init any controls that just became visible
-                            $YetaWF.processActivateDivs([trs[i]]);
+                            $YetaWF.sendActivateDivEvent([trs[i]]);
                             ++count;
                         }
                     }

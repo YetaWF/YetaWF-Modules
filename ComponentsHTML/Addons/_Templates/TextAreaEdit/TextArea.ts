@@ -112,8 +112,8 @@ namespace YetaWF_ComponentsHTML {
     // page has completely loaded, so we need to set it again.
     // For other cases (outside float div) this does no harm and resizes to the current size.
 
-    $YetaWF.registerActivateDiv((div: HTMLElement): void => {
-        let ckeds = $YetaWF.getElementsBySelector(TextAreaEditComponent.SELECTOR, [div]);
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTACTIVATEDIV, null, (ev: CustomEvent<YetaWF.DetailsActivateDiv>): boolean => {
+        let ckeds = $YetaWF.getElementsBySelector(TextAreaEditComponent.SELECTOR, ev.detail.tags);
         for (let cked of ckeds) {
             let ctrl = TextAreaEditComponent.getControlFromTag<TextAreaEditComponent>(cked, TextAreaEditComponent.SELECTOR);
             let ck = CKEDITOR.instances[cked.id];
@@ -121,6 +121,7 @@ namespace YetaWF_ComponentsHTML {
                 ck.resize("100%", ctrl.Setup.EmHeight, true);
             } catch (e) {}
         }
+        return true;
     });
 
     // A <div> is being emptied. Destroy all ckeditors the <div> may contain.
