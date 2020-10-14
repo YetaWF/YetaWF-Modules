@@ -1118,7 +1118,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
         }
 
         internal int GetDropdownActionWidthInChars() {
-            string s = __ResStr("dropdownWidth", "11");
+            string s = __ResStr("dropdownWidth", "12");
             return Convert.ToInt32(s);
         }
 
