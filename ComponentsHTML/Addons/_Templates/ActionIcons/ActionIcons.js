@@ -116,8 +116,9 @@ var YetaWF_ComponentsHTML;
         return true;
     });
     // last chance - handle a new page (UPS) and close open menus
-    $YetaWF.registerNewPage(false, function (url) {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
         ActionIconsComponent.closeMenus();
+        return true;
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 

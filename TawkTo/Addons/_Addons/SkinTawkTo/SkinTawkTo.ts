@@ -28,7 +28,7 @@ namespace YetaWF_TawkTo {
                 }
             });
 
-            $YetaWF.registerNewPage(false, (url: string): void => {
+            $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: Event): boolean => {
                 this.showInvite(SkinTawkToModule.on);
                 if (SkinTawkToModule.on) {
                     // Functionality not available in Tawk.to to record a new page
@@ -37,6 +37,7 @@ namespace YetaWF_TawkTo {
                     //        ActivEngage.recordPageView({ "href": url });
                     //}
                 }
+                return true;
             });
         }
         /**
