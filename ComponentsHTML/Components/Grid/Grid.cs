@@ -518,6 +518,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                         filterhb.Append($@"
             <div class='tg_fentry'>");
 
+                        await YetaWFCoreRendering.Render.AddPopupsAddOnsAsync();// using popups
                         ComplexFilter complexFilter =  await YetaWFComponentExtender.GetComplexFilterFromUIHintAsync(prop.UIHint);
                         if (complexFilter != null) {
 
