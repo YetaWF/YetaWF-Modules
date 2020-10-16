@@ -108,7 +108,7 @@ namespace YetaWF_ComponentsHTML {
             this.updateSelectLang();
         }
         public clear(): void {
-            var hids = $YetaWF.getElementsBySelector(`input[name$='.value']`, [this.Control]) as HTMLInputElement[];
+            var hids = $YetaWF.getElementsBySelector("input[name$='.value']", [this.Control]) as HTMLInputElement[];
             for (let hid of hids)
                 hid.value = "";
             this.Hidden.value = "";

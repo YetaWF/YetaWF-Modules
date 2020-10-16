@@ -1194,7 +1194,7 @@ namespace YetaWF_ComponentsHTML {
 
             // show the message
             if(message)
-                    $YetaWF.message(message);
+                $YetaWF.message(message);
         }
         private resequenceDelete(recNum: number): void {
             // resequence origin
@@ -1220,7 +1220,7 @@ namespace YetaWF_ComponentsHTML {
                 ++index;
             }
         }
-        private renumberFields(tr: HTMLTableRowElement, origNum: Number, newNum: Number) : void {
+        private renumberFields(tr: HTMLTableRowElement, origNum: number, newNum: number) : void {
             let inps = $YetaWF.getElementsBySelector("input[name],select[name]", [tr]);
             for (let inp of inps) {
                 let name = $YetaWF.getAttribute(inp, "name");

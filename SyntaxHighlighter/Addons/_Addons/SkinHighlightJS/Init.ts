@@ -22,9 +22,6 @@ namespace YetaWF_SyntaxHighlighter {
         }
     }
 
-    // tslint:disable-next-line:no-debugger
-    debugger;
-
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, (ev: CustomEvent<YetaWF.DetailsAddonChanged>): boolean => {
         let addonGuid = ev.detail.addonGuid;
         let on = ev.detail.on;

@@ -199,7 +199,6 @@ var YetaWF_ComponentsHTML;
     }());
     YetaWF_ComponentsHTML.FormsImpl = FormsImpl;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-// tslint:disable-next-line:variable-name
 var YetaWF_FormsImpl = new YetaWF_ComponentsHTML.FormsImpl();
 /* Page load */
 $YetaWF.addWhenReady(YetaWF_FormsImpl.initForm);

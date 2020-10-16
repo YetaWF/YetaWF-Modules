@@ -38,7 +38,7 @@ namespace YetaWF_DevTests {
                 $YetaWF.registerEventHandler(this.Module, "click", "input[name='jserror']", (ev: MouseEvent): boolean => {
                     // generate a javascript error (use eval to prevent build errors)
                     let s = "aaa.bbb.ccc = 10;";
-                    // tslint:disable-next-line:no-eval
+                    // eslint-disable-next-line no-eval
                     eval(s);
                     return true;
                 });

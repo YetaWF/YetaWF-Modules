@@ -303,7 +303,6 @@ var YetaWF_ComponentsHTML;
     }());
     YetaWF_ComponentsHTML.Validation = Validation;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-// tslint:disable-next-line:variable-name
 var YetaWF_ComponentsHTML_Validation = new YetaWF_ComponentsHTML.Validation();
 
 //# sourceMappingURL=Validation.js.map

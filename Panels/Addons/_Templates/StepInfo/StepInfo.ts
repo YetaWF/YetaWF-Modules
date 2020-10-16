@@ -63,7 +63,7 @@ namespace YetaWF_Panels {
         // API
 
         public clear(): void {
-            var steps = $YetaWF.getElementsBySelector(`a.t_step.t_active,a.t_step.t_enabled`) as HTMLAnchorElement[];
+            var steps = $YetaWF.getElementsBySelector("a.t_step.t_active,a.t_step.t_enabled") as HTMLAnchorElement[];
             for (let step of steps) {
                 $YetaWF.elementRemoveClass(step, "t_active");
                 $YetaWF.elementRemoveClass(step, "t_enabled");

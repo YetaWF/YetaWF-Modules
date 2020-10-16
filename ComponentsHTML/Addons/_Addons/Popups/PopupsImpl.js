@@ -317,7 +317,6 @@ var YetaWF_ComponentsHTML;
         return true;
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-// tslint:disable-next-line:variable-name
 var YetaWF_PopupsImpl = new YetaWF_ComponentsHTML.PopupsImpl();
 // use to resize static popup after full page load, once popup skin is known
 YetaWF_ComponentsHTML.PopupsImpl.pageLoad();

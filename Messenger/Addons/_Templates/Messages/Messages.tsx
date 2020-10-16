@@ -77,7 +77,7 @@ namespace YetaWF_Messenger {
         private markAllMessagesSeen(to: string): void {
             var $msgArea: JQuery<HTMLElement> = $(`#${this.divId}`);
             if ($msgArea.length === 0) throw `Div ${this.divId} not found`;/*DEBUG*/
-            $(`div.t_notseen img`, $msgArea).remove();
+            $("div.t_notseen img", $msgArea).remove();
         }
         private scrollMessageArea(): void {
             var out: HTMLElement | null = document.getElementById(this.divId);

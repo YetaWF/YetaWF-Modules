@@ -135,13 +135,13 @@ namespace YetaWF_ComponentsHTML {
                     if (typeof data === "string") {
                         if (data.startsWith(YConfigs.Basics.AjaxJavascriptReturn)) {
                             var script = data.substring(YConfigs.Basics.AjaxJavascriptReturn.length);
-                            // tslint:disable-next-line:no-eval
+                            // eslint-disable-next-line no-eval
                             eval(script);
                             return;
                         }
                         if (data.startsWith(YConfigs.Basics.AjaxJavascriptErrorReturn)) {
                             var script = data.substring(YConfigs.Basics.AjaxJavascriptErrorReturn.length);
-                            // tslint:disable-next-line:no-eval
+                            // eslint-disable-next-line no-eval
                             eval(script);
                             return;
                         }
@@ -151,7 +151,7 @@ namespace YetaWF_ComponentsHTML {
                     if (this.SuccessfullUploadCallback)
                         this.SuccessfullUploadCallback(data);
 
-                    // tslint:disable-next-line:no-eval
+                    // eslint-disable-next-line no-eval
                     eval(data.Result);
                 },
             });

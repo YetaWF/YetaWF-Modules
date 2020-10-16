@@ -173,7 +173,7 @@ namespace YetaWF_ComponentsHTML {
                 popup.style.width = `${win.innerWidth}px`;
                 popup.style.height = `${win.innerHeight}px`;
                 if (content)
-                    content.style.maxHeight = `none`;
+                    content.style.maxHeight = "none";
                 popup.style.left = "0px";
                 popup.style.top = "0px";
                 popup.style.display = "";
@@ -187,7 +187,7 @@ namespace YetaWF_ComponentsHTML {
                 } else {
                     popup.style.height = `${popupHeight}px`;
                     if (content)
-                        content.style.maxHeight = `none`;
+                        content.style.maxHeight = "none";
                 }
                 // center
                 popup.style.display = "";
@@ -371,7 +371,6 @@ namespace YetaWF_ComponentsHTML {
     });
 }
 
-// tslint:disable-next-line:variable-name
 var YetaWF_PopupsImpl: YetaWF.IPopupsImpl = new YetaWF_ComponentsHTML.PopupsImpl();
 
 // use to resize static popup after full page load, once popup skin is known

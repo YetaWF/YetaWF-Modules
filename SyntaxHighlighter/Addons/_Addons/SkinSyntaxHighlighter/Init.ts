@@ -88,7 +88,7 @@ namespace YetaWF_SyntaxHighlighter {
         if (AlexGorbatchevComHighlighterModule.on)
             SyntaxHighlighter.highlight();
     });
-   $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, (ev: CustomEvent<YetaWF.DetailsAddonChanged>): boolean => {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, (ev: CustomEvent<YetaWF.DetailsAddonChanged>): boolean => {
         let addonGuid = ev.detail.addonGuid;
         let on = ev.detail.on;
         if (addonGuid === AlexGorbatchevComHighlighterModule.MODULEGUID) {

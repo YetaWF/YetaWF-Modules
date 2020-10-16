@@ -343,7 +343,7 @@ namespace YetaWF_ComponentsHTML {
             if (title)
                 html += `<div class='t_title'>${$YetaWF.htmlEscape(title)}</div>`;
             if (options.canClose)
-                html += `<div class='t_close' aria-label='Close'></div>`;
+                html += "<div class='t_close' aria-label='Close'></div>";
             if (message) {
                 if (!options.encoded) {
                     // change \n to <br/>

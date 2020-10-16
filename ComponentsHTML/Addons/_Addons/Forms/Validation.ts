@@ -341,6 +341,5 @@ namespace YetaWF_ComponentsHTML {
     }
 }
 
-// tslint:disable-next-line:variable-name
 var YetaWF_ComponentsHTML_Validation: YetaWF_ComponentsHTML.Validation = new YetaWF_ComponentsHTML.Validation();
 

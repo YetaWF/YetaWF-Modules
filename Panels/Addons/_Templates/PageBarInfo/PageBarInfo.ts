@@ -111,7 +111,7 @@ namespace YetaWF_Panels {
         }
         public get activeEntry(): number {
             let entries = this.entries;
-            let active = $YetaWF.getElement1BySelectorCond(`.yt_panels_pagebarinfo_list .t_entry.t_active`, [this.Control]);
+            let active = $YetaWF.getElement1BySelectorCond(".yt_panels_pagebarinfo_list .t_entry.t_active", [this.Control]);
             if (!active)
                 return -1;
             let index = entries.indexOf(active);

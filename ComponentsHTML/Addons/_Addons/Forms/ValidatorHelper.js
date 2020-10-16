@@ -1,5 +1,6 @@
 "use strict";
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* eslint-disable no-underscore-dangle */
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     var OpEnum;

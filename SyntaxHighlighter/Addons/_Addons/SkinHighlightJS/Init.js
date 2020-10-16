@@ -21,8 +21,6 @@ var YetaWF_SyntaxHighlighter;
         HighlightJSModule.on = true;
         return HighlightJSModule;
     }());
-    // tslint:disable-next-line:no-debugger
-    debugger;
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, function (ev) {
         var addonGuid = ev.detail.addonGuid;
         var on = ev.detail.on;

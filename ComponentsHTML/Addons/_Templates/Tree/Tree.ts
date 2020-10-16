@@ -24,7 +24,7 @@ namespace YetaWF_ComponentsHTML {
         AjaxUrl: string;
     }
     interface TreePartialResult {
-        Records: Number;
+        Records: number;
         HTML: string;
     }
 
@@ -525,7 +525,7 @@ namespace YetaWF_ComponentsHTML {
             entry.innerText = text;
         }
         public clearSelect(): void {
-            let entries = $YetaWF.getElementsBySelector(`li.t_select`, [this.Control]);
+            let entries = $YetaWF.getElementsBySelector("li.t_select", [this.Control]);
             for (let entry of entries)
                 $YetaWF.elementRemoveClass(entry, "t_select");
             entries = $YetaWF.getElementsBySelector(`.t_entry.${this.Setup.SelectedCss}`, [this.Control]);

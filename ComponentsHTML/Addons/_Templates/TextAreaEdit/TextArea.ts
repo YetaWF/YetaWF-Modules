@@ -7,7 +7,7 @@ namespace YetaWF_ComponentsHTML {
     interface TextAreaEditSetup {
         InPartialView: boolean;
         CDNUrl: string;
-        EmHeight: Number;
+        EmHeight: number;
         RestrictedHtml: boolean;
         FilebrowserImageBrowseUrl: string;
         FilebrowserImageBrowseLinkUrl: string;

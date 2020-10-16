@@ -24,7 +24,7 @@ namespace YetaWF_ComponentsHTML {
          */
         public updateValidation(div: HTMLElement): void {
             // apparently not used
-            throw `updateValidation not implemented`;
+            throw "updateValidation not implemented";
         }
         /**
          * Clear any validation errors within the div
@@ -200,7 +200,6 @@ namespace YetaWF_ComponentsHTML {
     }
 }
 
-// tslint:disable-next-line:variable-name
 var YetaWF_FormsImpl: YetaWF.IFormsImpl = new YetaWF_ComponentsHTML.FormsImpl();
 
 /* Page load */

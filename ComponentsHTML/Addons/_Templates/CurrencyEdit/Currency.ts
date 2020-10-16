@@ -35,7 +35,7 @@ namespace YetaWF_ComponentsHTML {
                         control.clear();
                 }
             }, false, (tag: HTMLElement, control: CurrencyEditComponent): void => {
-               control.kendoNumericTextBox.destroy();
+                control.kendoNumericTextBox.destroy();
             });
 
             this.Currency = $YetaWF.getElement1BySelector("input", [this.Control]) as HTMLInputElement;

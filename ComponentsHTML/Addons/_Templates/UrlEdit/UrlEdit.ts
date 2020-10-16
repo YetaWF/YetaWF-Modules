@@ -43,12 +43,12 @@ namespace YetaWF_ComponentsHTML {
             this.inputHidden = $YetaWF.getElement1BySelector(".t_hidden", [this.Control]) as HTMLInputElement;
 
             this.selectType = YetaWF.ComponentBaseDataImpl.getControlFromSelector(".yt_urltype", DropDownListEditComponent.SELECTOR, [this.Control]);
-            // tslint:disable-next-line:no-bitwise
+            // eslint-disable-next-line no-bitwise
             if (this.Setup.Type & UrlTypeEnum.Local) {
                 this.selectPage = YetaWF.ComponentBaseDataImpl.getControlFromSelector<DropDownListEditComponent>(".yt_urldesignedpage", DropDownListEditComponent.SELECTOR, [this.Control]);
                 this.divLocal = $YetaWF.getElement1BySelector(".t_local", [this.Control]) as HTMLDivElement;
             }
-            // tslint:disable-next-line:no-bitwise
+            // eslint-disable-next-line no-bitwise
             if (this.Setup.Type & UrlTypeEnum.Remote) {
                 this.inputUrl = $YetaWF.getElement1BySelector(".yt_urlremotepage", [this.Control]) as HTMLInputElement;
                 this.divRemote = $YetaWF.getElement1BySelector(".t_remote", [this.Control]) as HTMLDivElement;

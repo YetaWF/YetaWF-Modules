@@ -1,5 +1,7 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+/* eslint-disable no-underscore-dangle */
+
 namespace YetaWF_ComponentsHTML {
 
     export enum OpEnum {

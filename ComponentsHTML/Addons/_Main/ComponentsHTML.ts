@@ -38,7 +38,7 @@ namespace YetaWF_ComponentsHTML {
 
         public MUSTHAVE_JQUERYUI(): void {
             if (!YVolatile.YetaWF_ComponentsHTML.jqueryUI)
-                throw `jquery-ui is required but has not been loaded`;
+                throw "jquery-ui is required but has not been loaded";
         }
 
         public REQUIRES_JQUERYUI(run: () => void): void {
@@ -59,7 +59,7 @@ namespace YetaWF_ComponentsHTML {
 
         public MUSTHAVE_KENDOUI(): void {
             if (!YVolatile.YetaWF_ComponentsHTML.kendoUI)
-                throw `Kendo UI is required but has not been loaded`;
+                throw "Kendo UI is required but has not been loaded";
         }
 
         public REQUIRES_KENDOUI(run: () => void): void {
