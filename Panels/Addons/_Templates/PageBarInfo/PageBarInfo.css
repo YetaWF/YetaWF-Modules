@@ -29,6 +29,7 @@
     color: white; }
 
 .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_expcoll {
+  cursor: pointer;
   display: none; }
 
 .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_link {
