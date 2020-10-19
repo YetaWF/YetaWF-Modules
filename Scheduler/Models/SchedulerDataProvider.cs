@@ -164,7 +164,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
 
         public async Task SetRunningAsync(bool running) {
             if (running != GetRunning()) {
-                WebConfigHelper.SetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "Running", running);
+                WebConfigHelper.SetValue<string>(AreaRegistration.CurrentPackage.AreaName, "Running", running ? "Yes" : "No");
                 await WebConfigHelper.SaveAsync();
                 await Auditing.AddAuditAsync($"{nameof(SchedulerDataProvider)}.{nameof(SetRunningAsync)}", "Scheduler", Guid.Empty,
                     $"{nameof(SetRunningAsync)}({running})", RequiresRestart: true
@@ -172,7 +172,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
             }
         }
         public bool GetRunning() {
-            return WebConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "Running");
+            return WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "Running", "No") == "Yes";
         }
 
         // IINSTALLABLEMODEL2
