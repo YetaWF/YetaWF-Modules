@@ -5,10 +5,15 @@
     z-index:1510;
     left:30px;
     top:5px;
-    #yPageControlDiv > a {
-        padding:1px 4px;
+    #yPageControlDiv {
+        line-height:1;
+        > a {
+            line-height:1;
+            padding:4px 4px;
+        }
     }
 }
+
 #yPageControlMod {
     display:none;
     position:absolute;

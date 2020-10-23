@@ -5,8 +5,11 @@
   z-index: 1510;
   left: 30px;
   top: 5px; }
-  .YetaWF_PageEdit_PageControl #yPageControlDiv > a {
-    padding: 1px 4px; }
+  .YetaWF_PageEdit_PageControl #yPageControlDiv {
+    line-height: 1; }
+    .YetaWF_PageEdit_PageControl #yPageControlDiv > a {
+      line-height: 1;
+      padding: 4px 4px; }
 
 #yPageControlMod {
   display: none;
