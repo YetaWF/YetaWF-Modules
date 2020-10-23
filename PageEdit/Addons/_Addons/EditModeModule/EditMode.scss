@@ -16,8 +16,12 @@
     z-index:1510;
     left:2px;
     top:5px;
-    #yEditControlDiv > a {
-        padding:1px 4px;
+    #yEditControlDiv {
+        line-height:1;
+        > a {
+            line-height:1;
+            padding:4px 4px;
+        }
     }
 }
 
