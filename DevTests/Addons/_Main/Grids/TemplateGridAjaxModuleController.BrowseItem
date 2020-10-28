@@ -4,7 +4,7 @@ BoolVal             sort filter 10 center
 Decimal             sort filter 20 right
 SomeDateTime        sort filter 20
 SomeDate            sort filter 20
-SomeEnum            sort filter 20
+SomeEnum            filter 20
 Guid                sort filter 20
 ShortName           sort filter 40 defaultSort asc
 Hidden              hidden
