@@ -472,19 +472,19 @@ namespace YetaWF_ComponentsHTML {
                 return null;
             return $YetaWF.elementClosest(ul, "li") as HTMLLIElement | null;
         }
-        public getElementDataCond(liElem: HTMLLIElement): TreeEntry | null {
+        public getElementDataCond<T = TreeEntry>(liElem: HTMLLIElement): T | null {
             let recData = $YetaWF.getAttributeCond(liElem, "data-record");
             if (!recData)
                 return null;
             return JSON.parse(recData);
         }
-        public getElementData(liElem: HTMLLIElement): TreeEntry {
-            let data = this.getElementDataCond(liElem);
+        public getElementData<T = TreeEntry>(liElem: HTMLLIElement): T {
+            let data = this.getElementDataCond<T>(liElem);
             if (!data)
                 throw `No record data for ${liElem.outerHTML}`;
             return data;
         }
-        public setElementData(liElem: HTMLLIElement, data: TreeEntry): void {
+        public setElementData<T = TreeEntry>(liElem: HTMLLIElement, data: T): void {
             $YetaWF.setAttribute(liElem, "data-record", JSON.stringify(data));
         }
         public getEntryFromTagCond(tag: HTMLElement): HTMLLIElement | null {
@@ -505,12 +505,12 @@ namespace YetaWF_ComponentsHTML {
             if (focus === true)
                 entry.focus();
         }
-        public getSelectData(): TreeEntry | null {
+        public getSelectData<T = TreeEntry>(): T | null {
             var liElem = this.getSelect();
             if (!liElem) return null;
             return this.getElementDataCond(liElem);
         }
-        public setSelectData(data: TreeEntry): void {
+        public setSelectData<T = TreeEntry>(data: T): void {
             var liElem = this.getSelect();
             if (!liElem)
                 return;
@@ -660,7 +660,7 @@ namespace YetaWF_ComponentsHTML {
             }
             return liElem;
         }
-        public addEntry(liElem: HTMLLIElement, text: string, data?: TreeEntry): HTMLLIElement {
+        public addEntry<T = TreeEntry>(liElem: HTMLLIElement, text: string, data?: T): HTMLLIElement {
             var text = $YetaWF.htmlEscape(text);
             var entry = this.getNewEntry(text);
             liElem.insertAdjacentHTML("afterend", entry);
@@ -669,7 +669,7 @@ namespace YetaWF_ComponentsHTML {
                 this.setElementData(newElem, data);
             return newElem;
         }
-        public insertEntry(liElem: HTMLLIElement, text: string, data?: TreeEntry): HTMLLIElement {
+        public insertEntry<T = TreeEntry>(liElem: HTMLLIElement, text: string, data?: T): HTMLLIElement {
             var text = $YetaWF.htmlEscape(text);
             var entry = this.getNewEntry(text);
             liElem.insertAdjacentHTML("beforebegin", entry);

@@ -669,7 +669,7 @@ var YetaWF_ComponentsHTML;
                     uri.addSearch("SettingsModuleGuid", currentControl.Setup.SettingsModuleGuid);
                     var colIndex = Array.prototype.indexOf.call(currentControl.ColumnResizeHeader.parentElement.children, currentControl.ColumnResizeHeader);
                     uri.addSearch("Columns[0].Key", currentControl.Setup.Columns[colIndex].Name);
-                    uri.addSearch("Columns[0].Value", parseInt(currentControl.ColumnResizeHeader.style.width.replace("px", ""), 0));
+                    uri.addSearch("Columns[0].Value", parseInt(currentControl.ColumnResizeHeader.style.width, 10));
                     var request = new XMLHttpRequest();
                     request.open("POST", currentControl.Setup.SaveSettingsColumnWidthsUrl, true);
                     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");

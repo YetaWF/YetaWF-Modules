@@ -730,7 +730,7 @@ namespace YetaWF_ComponentsHTML {
                     uri.addSearch("SettingsModuleGuid", currentControl.Setup.SettingsModuleGuid);
                     let colIndex = Array.prototype.indexOf.call((currentControl.ColumnResizeHeader.parentElement as HTMLElement).children, currentControl.ColumnResizeHeader);
                     uri.addSearch("Columns[0].Key", currentControl.Setup.Columns[colIndex].Name);
-                    uri.addSearch("Columns[0].Value", parseInt((currentControl.ColumnResizeHeader.style.width as string).replace("px", ""), 0));
+                    uri.addSearch("Columns[0].Value", parseInt(currentControl.ColumnResizeHeader.style.width, 10));
 
                     let request: XMLHttpRequest = new XMLHttpRequest();
                     request.open("POST", currentControl.Setup.SaveSettingsColumnWidthsUrl, true);
