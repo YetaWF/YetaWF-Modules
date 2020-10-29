@@ -41,6 +41,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     internal class TabsSetup {
         public TabStyleEnum TabStyle { get; set; }
+        public bool ContextMenu { get; set; }
         public int ActiveTabIndex { get; set; }
         public string ActiveTabHiddenId { get; set; }
         public TabsSetup() { }
@@ -182,6 +183,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         private static TabsSetup GetTabsSetup(TabsDefinition tabsModel) {
             TabsSetup setup = new TabsSetup() {
                 TabStyle = Manager.CurrentSite.TabStyle,
+                ContextMenu = tabsModel.ContextMenu,
                 ActiveTabIndex = tabsModel.ActiveTabIndex,
                 ActiveTabHiddenId = Manager.UniqueId(),
         };

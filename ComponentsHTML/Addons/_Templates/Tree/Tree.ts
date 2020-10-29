@@ -11,6 +11,7 @@ namespace YetaWF_ComponentsHTML {
     interface TreeSetup {
 
         DragDrop: boolean;
+        ContextMenu: boolean;
 
         HoverCss: string;
         HighlightCss: string;
@@ -49,6 +50,7 @@ namespace YetaWF_ComponentsHTML {
         public static readonly EVENTDBLCLICK: string = "tree_dblclick";
         public static readonly EVENTSELECT: string = "tree_select";
         public static readonly EVENTDROP: string = "tree_drop";
+        public static readonly EVENTCONTEXTMENU: string = "tree_contextmenu";
 
         private Setup: TreeSetup;
 
@@ -166,6 +168,15 @@ namespace YetaWF_ComponentsHTML {
                 }
                 return true;
             });
+            if (this.Setup.ContextMenu) {
+                $YetaWF.registerEventHandler(this.Control, "contextmenu", "a.t_entry", (ev: MouseEvent): boolean => {
+                    var liElem = $YetaWF.elementClosest(ev.__YetaWFElem, "li") as HTMLLIElement; // get row we're on
+                    this.setSelect(liElem);
+                    ev.preventDefault();
+                    this.sendContextMenuEvent();
+                    return false;
+                });
+            }
         }
 
         private sendClickEvent(liElem: HTMLLIElement): void {
@@ -184,17 +195,18 @@ namespace YetaWF_ComponentsHTML {
                 }, 1);
             }
         }
-
         private sendSelectEvent(): void {
             setTimeout((): void => {
                 $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTSELECT);
             }, 1);
         }
-
         private sendDropEvent(): void {
             setTimeout((): void => {
                 $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTDROP);
             }, 1);
+        }
+        private sendContextMenuEvent(): void {
+            $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTCONTEXTMENU);
         }
 
         /* Drag & Drop */

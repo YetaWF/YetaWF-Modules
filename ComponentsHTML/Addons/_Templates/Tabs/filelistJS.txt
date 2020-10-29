@@ -1,1 +1,1 @@
-Tabs.ts
+Tabs.tsx

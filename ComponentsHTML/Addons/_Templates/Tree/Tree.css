@@ -5,8 +5,7 @@
   width: 100%;
   height: inherit;
   font-weight: normal;
-  box-sizing: border-box;
-  overflow: auto; }
+  box-sizing: border-box; }
   .yt_tree .tg_header {
     white-space: nowrap;
     font-size: 11px;

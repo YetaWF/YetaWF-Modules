@@ -1,0 +1,115 @@
+/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
+
+$iconwidth: 16px;
+$iconheight: 16px;
+
+$smallscreen: 1200px;
+
+.yt_panels_splitterinfo {
+
+    display: flex;
+    overflow: hidden;
+    position: relative;
+
+    .yt_panels_splitterinfo_title {
+        font-size: 1em;
+        padding: .2em 0.5em .2em .5em;
+        background-color: lightgray;
+    }
+    .yt_panels_splitterinfo_cmds {
+        position: absolute;
+        top: 0;
+        right: 3ch;
+        text-align: right;
+        line-height: 1;
+        padding: 0.2em 0 0 0;
+        // border-bottom: 1px solid lightgray;
+        .yt_panels_splitterinfo_colldesc {
+            color:black;
+            display: inline-block;
+            margin-right: .5ch;
+            font-size: 11px;
+            line-height: 1.5;
+            vertical-align: top;
+        }
+        .yt_panels_splitterinfo_coll {
+            cursor: pointer;
+            display:inline-block;
+            width:$iconwidth;
+            height:$iconheight;
+            background-image: url(images/Collapse.png);
+        }
+    }
+    .yt_panels_splitterinfo_left {
+        display:none;
+    }
+    .yt_panels_splitterinfo_exp {
+        display:block;
+        position: absolute;
+        left:0;
+        top:0;
+        width:$iconwidth;
+        height:$iconheight;
+        background-image: url(images/Expand.png);
+    }
+    .yt_panels_splitterinfo_resize {
+        display:none;
+    }
+
+    &.t_expanded {
+        .yt_panels_splitterinfo_exp {
+            display:none;
+        }
+        .yt_panels_splitterinfo_left {
+            display:block;
+        }
+        @media screen and (max-width: $smallscreen) {
+            .yt_panels_splitterinfo_right {
+                display:none;
+            }
+        }
+        .yt_panels_splitterinfo_resize {
+            display:block;
+        }
+    }
+
+    .yt_panels_splitterinfo_left {
+        flex: 0 1 30%;
+        position: relative;
+        border-right: solid 1px lightgray;//$$$$
+        min-width: 200px;//$$$$
+        .t_area {
+            overflow: auto;
+            height:100%;
+        }
+    }
+
+    @media screen and (max-width: $smallscreen) {
+        .yt_panels_splitterinfo_left {
+            flex: 0 1 100%;
+        }
+    }
+
+    .yt_panels_splitterinfo_right {
+        flex: 1 1;
+        position: relative;
+        min-width: 0;
+        .t_area {
+            overflow: auto;
+            height:100%;
+            .yModule {
+                height:100%;
+            }
+        }
+        .yt_panels_splitterinfo_resize {
+            position: absolute;
+            width:5px;
+            height: 100%;
+            left:0;
+            top:0;
+            cursor: col-resize;
+            user-select: none;
+            overflow: hidden;
+        }
+    }
+}

@@ -155,6 +155,15 @@ var YetaWF_ComponentsHTML;
                 }
                 return true;
             });
+            if (_this.Setup.ContextMenu) {
+                $YetaWF.registerEventHandler(_this.Control, "contextmenu", "a.t_entry", function (ev) {
+                    var liElem = $YetaWF.elementClosest(ev.__YetaWFElem, "li"); // get row we're on
+                    _this.setSelect(liElem);
+                    ev.preventDefault();
+                    _this.sendContextMenuEvent();
+                    return false;
+                });
+            }
             return _this;
         }
         TreeComponent.prototype.sendClickEvent = function (liElem) {
@@ -186,6 +195,9 @@ var YetaWF_ComponentsHTML;
             setTimeout(function () {
                 $YetaWF.sendCustomEvent(_this.Control, TreeComponent.EVENTDROP);
             }, 1);
+        };
+        TreeComponent.prototype.sendContextMenuEvent = function () {
+            $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTCONTEXTMENU);
         };
         /* Drag & Drop */
         TreeComponent.prototype.dragStart = function (ev) {
@@ -694,6 +706,7 @@ var YetaWF_ComponentsHTML;
         TreeComponent.EVENTDBLCLICK = "tree_dblclick";
         TreeComponent.EVENTSELECT = "tree_select";
         TreeComponent.EVENTDROP = "tree_drop";
+        TreeComponent.EVENTCONTEXTMENU = "tree_contextmenu";
         TreeComponent.DDTree = null;
         return TreeComponent;
     }(YetaWF.ComponentBaseDataImpl));

@@ -11,6 +11,7 @@ namespace YetaWF_ComponentsHTML {
         TabStyle: TabStyleEnum;
         ActiveTabIndex: number;
         ActiveTabHiddenId: string;
+        ContextMenu: boolean;
     }
 
     export class TabsComponent extends YetaWF.ComponentBaseDataImpl {
@@ -18,6 +19,7 @@ namespace YetaWF_ComponentsHTML {
         public static readonly TEMPLATE: string = "yt_tabs";
         public static readonly SELECTOR: string = ".yt_tabs";
         public static readonly EVENTSWITCHED: string = "tabs_switched";
+        public static readonly EVENTCONTEXTMENU: string = "tabs_contextmenu";
 
         private Setup: TabsSetup;
         private ActiveTabHidden: HTMLInputElement;
@@ -101,6 +103,16 @@ namespace YetaWF_ComponentsHTML {
                 }
                 return true;
             });
+            if (this.Setup.ContextMenu) {
+                $YetaWF.registerEventHandler(this.Control, "contextmenu", `#${this.ControlId} > ul.t_tabstrip > li`, (ev: MouseEvent): boolean => {
+                    let li = ev.__YetaWFElem;
+                    let index = Number($YetaWF.getAttribute(li, "data-tab"));
+                    this.activatePane(index);
+                    ev.preventDefault();
+                    $YetaWF.sendCustomEvent(this.Control, TabsComponent.EVENTCONTEXTMENU);
+                    return false;
+                });
+            }
         }
 
         // API
@@ -203,6 +215,82 @@ namespace YetaWF_ComponentsHTML {
             if (index < 0 || index >= tabs.length)
                 throw `tab index ${index} invalid`;
             return tabs[index];
+        }
+
+        /**
+         * Adds a tab/pane and returns the DIV that can be used to add contents.
+         */
+        public add(): HTMLDivElement {
+            //$$$jquery only
+            let tabstrip = $YetaWF.getElement1BySelector(`#${this.ControlId} > ul.t_tabstrip`) as HTMLUListElement;
+            let total = this.tabs.length;
+            let caption = "$$$$";
+            let tooltip = "$$$$";
+            let tab =
+                <li role="tab" tabindex="-1" class="ui-tabs-tab ui-corner-top ui-tab ui-state-default" aria-selected="false" aria-expanded="false">
+                    <a data-tooltip={tooltip} role="presentation" tabindex="-1" class="ui-tabs-anchor">
+                        {caption}
+                    </a>
+                </li> as HTMLLIElement;
+            tabstrip.appendChild(tab);
+
+            let pane =
+                 <div class="t_proptable t_cat t_tabpanel ui-tabs-panel ui-corner-bottom ui-widget-content" role="tabpanel" style="display:none" aria-hidden="true">
+                     <div class="t_contents t_loading">Loading...</div>
+                 </div> as HTMLDivElement;
+            this.Control.appendChild(pane);
+
+            this.resequenceTabs();
+
+            this.activatePane(total);
+
+            return $YetaWF.getElement1BySelector(".t_contents", [pane]) as HTMLDivElement;
+        }
+
+        public remove(index: number): void {
+            let tabs = this.tabs;
+            if (index < 0 || index >= tabs.length)
+                throw `tab index ${index} invalid`;
+
+            tabs[index].remove();
+
+            let panes = $YetaWF.getElementsBySelector(`#${this.ControlId} > div.t_tabpanel`) as HTMLDivElement[];
+            panes[index].remove();
+
+            this.resequenceTabs();
+
+            // find a tab to activate
+            tabs = this.tabs
+            if (index >= tabs.length)
+                --index;
+            if (index >= 0 && index < tabs.length)
+                this.activatePane(index);
+        }
+
+        private resequenceTabs(): void {
+            //$$$jquery
+            let count = 0;
+            for (let tab of this.tabs) {
+                let tabId = `${this.ControlId}_tab${count}`;
+                let tabIdLb = `${tabId}_lb`
+                $YetaWF.setAttribute(tab, "data-tab", count.toString());
+                $YetaWF.setAttribute(tab, "aria-controls", tabId);
+                $YetaWF.setAttribute(tab, "aria-labelledby", tabIdLb);
+                let anchor = $YetaWF.getElement1BySelector("a", [tab]) as HTMLAnchorElement;
+                anchor.href = `#${tabId}`;
+                anchor.id = `#${tabIdLb}`;
+                ++count;
+            }
+            count = 0;
+            let panes = $YetaWF.getElementsBySelector(`#${this.ControlId} > div.t_tabpanel`) as HTMLDivElement[];
+            for (let pane of panes) {
+                let tabId = `${this.ControlId}_tab${count}`;
+                let tabIdLb = `${tabId}_lb`
+                $YetaWF.setAttribute(pane, "data-tab", count.toString());
+                pane.id = tabId;
+                $YetaWF.setAttribute(pane, "aria-labelledby", tabIdLb);
+                ++count;
+            }
         }
     }
 
