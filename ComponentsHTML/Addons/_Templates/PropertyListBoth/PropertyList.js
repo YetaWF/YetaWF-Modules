@@ -108,8 +108,9 @@ var YetaWF_ComponentsHTML;
                             if (!item.ChangeEvent)
                                 throw "No ChangeEvent for control type " + item.ControlType;
                             var control_1 = $YetaWF.getObjectData(item.Template);
-                            $YetaWF.registerCustomEventHandler(control_1, item.ChangeEvent, function (evt) {
+                            $YetaWF.registerCustomEventHandler(control_1, item.ChangeEvent, null, function (evt) {
                                 _this.update();
+                                return false;
                             });
                             break;
                     }
@@ -117,14 +118,14 @@ var YetaWF_ComponentsHTML;
             }
             // Initialize initial form
             _this.update();
-            $YetaWF.registerCustomEventHandler(_this, "propertylist_relayout", function (ev) {
+            $YetaWF.registerCustomEventHandler(_this, "propertylist_relayout", null, function (ev) {
                 _this.layout();
                 return false;
             });
             /**
              * Collapse whichever box is expanded
              */
-            $YetaWF.registerCustomEventHandler(_this, "propertylist_collapse", function (ev) {
+            $YetaWF.registerCustomEventHandler(_this, "propertylist_collapse", null, function (ev) {
                 _this.setLayout();
                 var box = $YetaWF.getElement1BySelectorCond(".t_propexpanded", [_this.Control]);
                 if (box) {
@@ -512,7 +513,7 @@ var YetaWF_ComponentsHTML;
                 list.resize();
             }
         }
-        return false;
+        return true;
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 

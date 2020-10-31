@@ -36,11 +36,12 @@ var YetaWF_ComponentsHTML;
             }) || this;
             _this.MenuControl = $YetaWF.getElementById(setup.MenuId);
             _this.ButtonControl = YetaWF_ComponentsHTML.DropDownButtonComponent.getControlFromSelector("button", YetaWF_ComponentsHTML.DropDownButtonComponent.SELECTOR, [_this.Control]);
-            $YetaWF.registerCustomEventHandler(_this.ButtonControl, YetaWF_ComponentsHTML.DropDownButtonComponent.CLICKEDEVENT, function (ev) {
+            $YetaWF.registerCustomEventHandler(_this.ButtonControl, YetaWF_ComponentsHTML.DropDownButtonComponent.CLICKEDEVENT, null, function (ev) {
                 var vis = $YetaWF.isVisible(_this.MenuControl);
                 ActionIconsComponent.closeMenus();
                 if (!vis)
                     _this.openMenu();
+                return false;
             });
             $(_this.MenuControl).kendoMenu({
                 orientation: "vertical"

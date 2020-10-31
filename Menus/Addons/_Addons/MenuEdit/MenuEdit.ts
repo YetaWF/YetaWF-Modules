@@ -269,7 +269,7 @@ namespace YetaWF_Menus {
             this.NeedsModuleContext = $YetaWF.getElement1BySelector("input[name='ModEntry.NeedsModuleContext']", [this.Details]) as HTMLInputElement;
             this.DontFollow = $YetaWF.getElement1BySelector("input[name='ModEntry.DontFollow']", [this.Details]) as HTMLInputElement;
 
-            $YetaWF.registerCustomEventHandler(this.EntryType, "dropdownlist_change", (ev: Event): void => {
+            $YetaWF.registerCustomEventHandler(this.EntryType, "dropdownlist_change", null, (ev: Event): boolean => {
                 if (this.ActiveData) {
                     let data = this.ActiveData;
                     data.EntryType = Number(this.EntryType.value);
@@ -291,6 +291,7 @@ namespace YetaWF_Menus {
                     this.ActiveData = data;
                     this.update();
                 }
+                return false;
             });
         }
 

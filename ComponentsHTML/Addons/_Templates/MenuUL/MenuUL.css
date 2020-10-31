@@ -1,0 +1,10 @@
+@charset "UTF-8";
+/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+.yt_menuul {
+  position: absolute;
+  z-index: 50000;
+  font-size: 11px; }
+
+@media print {
+  .yt_menuul {
+    display: none; } }

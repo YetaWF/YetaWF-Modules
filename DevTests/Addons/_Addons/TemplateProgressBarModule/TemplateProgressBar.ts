@@ -15,8 +15,9 @@ namespace YetaWF_DevTests {
             this.ProgressBar = YetaWF.ComponentBaseDataImpl.getControlFromSelector(`.t_row.t_bar ${YetaWF_ComponentsHTML.ProgressBarComponent.SELECTOR}`, YetaWF_ComponentsHTML.ProgressBarComponent.SELECTOR, [this.Module]);
             this.Value = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='Value']", YetaWF_ComponentsHTML.IntValueEditComponent.SELECTOR, [this.Module]);
 
-            $YetaWF.registerCustomEventHandler(this.Value, YetaWF_ComponentsHTML.IntValueEditComponent.EVENT, (ev: Event): void => {
+            $YetaWF.registerCustomEventHandler(this.Value, YetaWF_ComponentsHTML.IntValueEditComponent.EVENT, null, (ev: Event): boolean => {
                 this.ProgressBar.value = this.Value.value;
+                return false;
             });
         }
     }

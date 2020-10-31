@@ -37,11 +37,12 @@ namespace YetaWF_ComponentsHTML {
             this.MenuControl = $YetaWF.getElementById(setup.MenuId) as HTMLDivElement;
             this.ButtonControl = DropDownButtonComponent.getControlFromSelector("button", DropDownButtonComponent.SELECTOR, [this.Control]);
 
-            $YetaWF.registerCustomEventHandler(this.ButtonControl, DropDownButtonComponent.CLICKEDEVENT, (ev: CustomEvent):void => {
+            $YetaWF.registerCustomEventHandler(this.ButtonControl, DropDownButtonComponent.CLICKEDEVENT, null, (ev: CustomEvent):boolean => {
                 let vis = $YetaWF.isVisible(this.MenuControl);
                 ActionIconsComponent.closeMenus();
                 if (!vis)
                     this.openMenu();
+                return false;
             });
 
             $(this.MenuControl).kendoMenu({

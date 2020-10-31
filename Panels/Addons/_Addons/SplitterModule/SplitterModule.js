@@ -18,7 +18,12 @@ var YetaWF_Panels;
     var SplitterModule = /** @class */ (function (_super) {
         __extends(SplitterModule, _super);
         function SplitterModule(id) {
-            return _super.call(this, id, SplitterModule.SELECTOR, null) || this;
+            var _this = _super.call(this, id, SplitterModule.SELECTOR, null) || this;
+            $YetaWF.registerEventHandler($YetaWF.getElement1BySelector(".yt_panels_splitterinfo_left .t_area", [_this.Module]), "scroll", null, function (ev) {
+                $YetaWF.sendContainerScrollEvent(ev.__YetaWFElem);
+                return true;
+            });
+            return _this;
         }
         SplitterModule.SELECTOR = ".YetaWF_Panels_Splitter";
         return SplitterModule;

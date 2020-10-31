@@ -96,12 +96,12 @@ namespace YetaWF_TawkTo {
         if (Tawk_API) {
             Tawk_API.hideWidget();
         }
-        return false;
+        return true;
     });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTAFTERPRINT, null, (ev: Event): boolean => {
         if (Tawk_API) {
             Tawk_API.showWidget();
         }
-        return false;
+        return true;
     });
 }

@@ -1,0 +1,106 @@
+"use strict";
+/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var YetaWF_ComponentsHTML;
+(function (YetaWF_ComponentsHTML) {
+    var MenuULComponent = /** @class */ (function (_super) {
+        __extends(MenuULComponent, _super);
+        function MenuULComponent(controlId, setup) {
+            var _this = _super.call(this, controlId, MenuULComponent.TEMPLATE, MenuULComponent.SELECTOR, {
+                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
+                ChangeEvent: null,
+                GetValue: null,
+                Enable: null,
+            }, false, function (tag, control) {
+                control.close();
+            }) || this;
+            _this.isOpen = false;
+            _this.Setup = setup;
+            if (!$YetaWF.elementHasClass(_this.Control, "yt_menuul"))
+                $YetaWF.elementAddClass(_this.Control, "yt_menuul");
+            if (_this.Setup.AutoOpen)
+                _this.open();
+            return _this;
+        }
+        MenuULComponent.prototype.open = function () {
+            if (!this.isOpen) {
+                $(this.Control).kendoMenu({
+                    orientation: "vertical"
+                });
+                this.positionMenu();
+                this.isOpen = true;
+            }
+        };
+        MenuULComponent.prototype.positionMenu = function () {
+            $YetaWF.positionLeftAlignedBelow(this.Setup.AttachTo, this.Control);
+        };
+        MenuULComponent.prototype.close = function () {
+            if (this.isOpen) {
+                var $menu = $(this.Control);
+                $menu.hide();
+                var menu = $menu.data("kendoMenu");
+                menu.destroy();
+                this.isOpen = false;
+                if (this.Setup.AutoRemove) {
+                    this.destroy();
+                    $YetaWF.processClearDiv(this.Control);
+                    this.Control.remove();
+                }
+            }
+        };
+        MenuULComponent.closeMenus = function () {
+            var menus = YetaWF.ComponentBaseDataImpl.getControls(MenuULComponent.SELECTOR);
+            for (var _i = 0, menus_1 = menus; _i < menus_1.length; _i++) {
+                var menu = menus_1[_i];
+                menu.close();
+            }
+            return menus.length > 0;
+        };
+        MenuULComponent.TEMPLATE = "yt_menuul";
+        MenuULComponent.SELECTOR = ".yt_menuul";
+        return MenuULComponent;
+    }(YetaWF.ComponentBaseDataImpl));
+    YetaWF_ComponentsHTML.MenuULComponent = MenuULComponent;
+    // Handle clicks elsewhere so we can close the menus
+    $YetaWF.registerMultipleEventHandlersBody(["click", "mousedown"], null, function (e) {
+        // delay closing to handle the event
+        setTimeout(function () {
+            MenuULComponent.closeMenus();
+        }, 300);
+        return true;
+    });
+    // Handle Escape key to close any open menus
+    $YetaWF.registerEventHandlerBody("keydown", null, function (ev) {
+        if (ev.key !== "Escape")
+            return true;
+        MenuULComponent.closeMenus();
+        return true;
+    });
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, function (ev) {
+        MenuULComponent.closeMenus();
+        return true;
+    });
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, function (ev) {
+        MenuULComponent.closeMenus();
+        return true;
+    });
+    // last chance - handle a new page (UPS) and close open menus
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
+        MenuULComponent.closeMenus();
+        return true;
+    });
+})(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+
+//# sourceMappingURL=MenuUL.js.map

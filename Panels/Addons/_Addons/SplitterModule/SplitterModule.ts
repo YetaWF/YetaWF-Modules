@@ -8,6 +8,11 @@ namespace YetaWF_Panels {
 
         constructor(id: string) {
             super(id, SplitterModule.SELECTOR, null);
+
+            $YetaWF.registerEventHandler($YetaWF.getElement1BySelector(".yt_panels_splitterinfo_left .t_area", [this.Module]), "scroll", null, (ev: Event): boolean => {
+                $YetaWF.sendContainerScrollEvent(ev.__YetaWFElem);
+                return true;
+            });
         }
     }
 }
