@@ -24,6 +24,7 @@ var YetaWF_Panels;
                 GetValue: null,
                 Enable: null,
             }) || this;
+            _this.SMALLSCREEN = 1200;
             _this.Setup = setup;
             _this.Left = $YetaWF.getElement1BySelector(".yt_panels_splitterinfo_left", [_this.Control]);
             _this.Collapse = $YetaWF.getElement1BySelector(".yt_panels_splitterinfo_coll", [_this.Control]);
@@ -59,7 +60,7 @@ var YetaWF_Panels;
                     // so we just do it at load time (and when the window is resized).
                     var winHeight = window.innerHeight;
                     var winWidth = window.innerWidth;
-                    if (winWidth >= 1200) {
+                    if (winWidth >= this.SMALLSCREEN) {
                         var ctrlRect = this.Control.getBoundingClientRect();
                         var ctrlHeight = winHeight - ctrlRect.top;
                         if (ctrlHeight < 0)
@@ -82,6 +83,11 @@ var YetaWF_Panels;
             else {
                 $YetaWF.elementAddClass(this.Control, "t_expanded");
             }
+        };
+        SplitterInfoComponent.prototype.collapseSmallScreen = function () {
+            var winWidth = window.innerWidth;
+            if (winWidth <= this.SMALLSCREEN)
+                $YetaWF.elementRemoveClass(this.Control, "t_expanded");
         };
         SplitterInfoComponent.resizeWidth = function (ev) {
             var ctrl = SplitterInfoComponent.ResizeSplitter;

@@ -14,6 +14,8 @@ namespace YetaWF_Panels {
         public static readonly SELECTOR: string = ".yt_panels_splitterinfo.t_display";
         public static TEMPLATENAME: string = "YetaWF_Panels_SplitterInfo";
 
+        private readonly SMALLSCREEN = 1200;
+
         private Setup: Setup;
         private Left: HTMLElement;
         private Collapse: HTMLElement;
@@ -68,7 +70,7 @@ namespace YetaWF_Panels {
                     let winHeight = window.innerHeight;
                     let winWidth = window.innerWidth;
 
-                    if (winWidth >= 1200) {
+                    if (winWidth >= this.SMALLSCREEN) {
 
                         let ctrlRect = this.Control.getBoundingClientRect();
 
@@ -94,6 +96,12 @@ namespace YetaWF_Panels {
             } else {
                 $YetaWF.elementAddClass(this.Control, "t_expanded");
             }
+        }
+
+        public collapseSmallScreen(): void {
+            let winWidth = window.innerWidth;
+            if (winWidth <= this.SMALLSCREEN)
+                $YetaWF.elementRemoveClass(this.Control, "t_expanded");
         }
 
         private static resizeWidth(ev: MouseEvent): boolean {

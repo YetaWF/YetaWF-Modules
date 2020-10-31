@@ -11,6 +11,7 @@
     background-color: lightgray; }
   .yt_panels_splitterinfo .yt_panels_splitterinfo_cmds {
     position: absolute;
+    z-index: 1;
     top: 0;
     right: 3ch;
     text-align: right;

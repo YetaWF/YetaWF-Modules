@@ -220,12 +220,10 @@ namespace YetaWF_ComponentsHTML {
         /**
          * Adds a tab/pane and returns the DIV that can be used to add contents.
          */
-        public add(): HTMLDivElement {
+        public add(caption: string, tooltip?: string): HTMLDivElement {
             //$$$jquery only
             let tabstrip = $YetaWF.getElement1BySelector(`#${this.ControlId} > ul.t_tabstrip`) as HTMLUListElement;
             let total = this.tabs.length;
-            let caption = "$$$$";
-            let tooltip = "$$$$";
             let tab =
                 <li role="tab" tabindex="-1" class="ui-tabs-tab ui-corner-top ui-tab ui-state-default" aria-selected="false" aria-expanded="false">
                     <a data-tooltip={tooltip} role="presentation" tabindex="-1" class="ui-tabs-anchor">
@@ -252,9 +250,11 @@ namespace YetaWF_ComponentsHTML {
             if (index < 0 || index >= tabs.length)
                 throw `tab index ${index} invalid`;
 
+            $YetaWF.processClearDiv(tabs[index]);
             tabs[index].remove();
 
             let panes = $YetaWF.getElementsBySelector(`#${this.ControlId} > div.t_tabpanel`) as HTMLDivElement[];
+            $YetaWF.processClearDiv(panes[index]);
             panes[index].remove();
 
             this.resequenceTabs();
@@ -289,6 +289,11 @@ namespace YetaWF_ComponentsHTML {
                 $YetaWF.setAttribute(pane, "data-tab", count.toString());
                 pane.id = tabId;
                 $YetaWF.setAttribute(pane, "aria-labelledby", tabIdLb);
+
+                let loadingDiv = $YetaWF.getElement1BySelectorCond(".t_contents.t_loading", [pane]);
+                if (loadingDiv)
+                    loadingDiv.id = `${tabId}_content`;
+
                 ++count;
             }
         }

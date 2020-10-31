@@ -243,12 +243,10 @@ var YetaWF_ComponentsHTML;
         /**
          * Adds a tab/pane and returns the DIV that can be used to add contents.
          */
-        TabsComponent.prototype.add = function () {
+        TabsComponent.prototype.add = function (caption, tooltip) {
             //$$$jquery only
             var tabstrip = $YetaWF.getElement1BySelector("#" + this.ControlId + " > ul.t_tabstrip");
             var total = this.tabs.length;
-            var caption = "$$$$";
-            var tooltip = "$$$$";
             var tab = $YetaWF.createElement("li", { role: "tab", tabindex: "-1", class: "ui-tabs-tab ui-corner-top ui-tab ui-state-default", "aria-selected": "false", "aria-expanded": "false" },
                 $YetaWF.createElement("a", { "data-tooltip": tooltip, role: "presentation", tabindex: "-1", class: "ui-tabs-anchor" }, caption));
             tabstrip.appendChild(tab);
@@ -263,8 +261,10 @@ var YetaWF_ComponentsHTML;
             var tabs = this.tabs;
             if (index < 0 || index >= tabs.length)
                 throw "tab index " + index + " invalid";
+            $YetaWF.processClearDiv(tabs[index]);
             tabs[index].remove();
             var panes = $YetaWF.getElementsBySelector("#" + this.ControlId + " > div.t_tabpanel");
+            $YetaWF.processClearDiv(panes[index]);
             panes[index].remove();
             this.resequenceTabs();
             // find a tab to activate
@@ -298,6 +298,9 @@ var YetaWF_ComponentsHTML;
                 $YetaWF.setAttribute(pane, "data-tab", count.toString());
                 pane.id = tabId;
                 $YetaWF.setAttribute(pane, "aria-labelledby", tabIdLb);
+                var loadingDiv = $YetaWF.getElement1BySelectorCond(".t_contents.t_loading", [pane]);
+                if (loadingDiv)
+                    loadingDiv.id = tabId + "_content";
                 ++count;
             }
         };

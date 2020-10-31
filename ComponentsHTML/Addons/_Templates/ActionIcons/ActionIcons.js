@@ -27,8 +27,6 @@ var YetaWF_ComponentsHTML;
                 ActionIconsComponent.closeMenusGiven([control.MenuControl]);
                 var menu = $(control.MenuControl).data("kendoMenu");
                 menu.destroy();
-                var btn = $(control.Control).data("kendoButton");
-                btn.destroy();
                 //var list = $YetaWF.getElementsBySelector("ul.yGridActionMenu", [control.Control]);
                 //for (let el of list) {
                 //    var menu = $(el).data("kendoMenu");
@@ -37,14 +35,12 @@ var YetaWF_ComponentsHTML;
                 //}
             }) || this;
             _this.MenuControl = $YetaWF.getElementById(setup.MenuId);
-            var $btn = $(_this.Control).kendoButton(); // kendo use
-            $btn.on("click", function (ev) {
+            _this.ButtonControl = YetaWF_ComponentsHTML.DropDownButtonComponent.getControlFromSelector("button", YetaWF_ComponentsHTML.DropDownButtonComponent.SELECTOR, [_this.Control]);
+            $YetaWF.registerCustomEventHandler(_this.ButtonControl, YetaWF_ComponentsHTML.DropDownButtonComponent.CLICKEDEVENT, function (ev) {
                 var vis = $YetaWF.isVisible(_this.MenuControl);
                 ActionIconsComponent.closeMenus();
                 if (!vis)
                     _this.openMenu();
-                ev.preventDefault();
-                return false;
             });
             $(_this.MenuControl).kendoMenu({
                 orientation: "vertical"
@@ -60,7 +56,7 @@ var YetaWF_ComponentsHTML;
             this.positionMenu();
         };
         ActionIconsComponent.prototype.positionMenu = function () {
-            $YetaWF.positionLeftAlignedBelow(this.Control, this.MenuControl);
+            $YetaWF.positionLeftAlignedBelow(this.ButtonControl.Control, this.MenuControl);
         };
         ActionIconsComponent.closeMenus = function () {
             // find all action menus after grid (there really should only be one)

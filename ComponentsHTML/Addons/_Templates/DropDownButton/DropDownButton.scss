@@ -1,0 +1,8 @@
+/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+.yt_dropdownbutton.t_mini {
+    &, button.k-button { // for specificity
+        padding:0;
+    }
+}
+

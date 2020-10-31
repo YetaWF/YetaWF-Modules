@@ -16,7 +16,7 @@ namespace YetaWF_ComponentsHTML {
                 }
                 buttons = $YetaWF.getElementsBySelector("button", [tag]);
                 for (let button of buttons) {
-                    if (!$YetaWF.elementHasClass(button, "y_jqueryui") && !$YetaWF.elementHasClass(button, "btn") && !$YetaWF.elementHasClass(button, "yt_actionicons"))
+                    if (!$YetaWF.elementHasClass(button, "y_jqueryui") && !$YetaWF.elementHasClass(button, "btn") && !$YetaWF.elementHasClass(button, "yt_dropdownbutton"))
                         $YetaWF.elementAddClasses(button, ["btn"]);
                 }
                 // explicitly marked for jquery

@@ -22,10 +22,6 @@ ul.yGridActionMenu {
   margin-left: .3ch;
   margin-right: .3ch; }
 
-.yt_actionicons.t_mini,
-.yt_actionicons.t_mini.k-button {
-  padding: 0; }
-
 /* align the module action links and grid action up next to each other */
 .yActionIcons, .yModuleLinks {
   margin: 0;

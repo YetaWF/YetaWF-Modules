@@ -12,6 +12,7 @@ namespace YetaWF_ComponentsHTML {
         public static readonly SELECTOR: string = ".yt_actionicons";
 
         private MenuControl: HTMLDivElement;
+        private ButtonControl: DropDownButtonComponent;
 
         public static menusOpen: number = 0;
 
@@ -25,8 +26,6 @@ namespace YetaWF_ComponentsHTML {
                 ActionIconsComponent.closeMenusGiven([control.MenuControl]);
                 let menu = $(control.MenuControl).data("kendoMenu");
                 menu.destroy();
-                let btn = $(control.Control).data("kendoButton");
-                btn.destroy();
                 //var list = $YetaWF.getElementsBySelector("ul.yGridActionMenu", [control.Control]);
                 //for (let el of list) {
                 //    var menu = $(el).data("kendoMenu");
@@ -36,15 +35,13 @@ namespace YetaWF_ComponentsHTML {
             });
 
             this.MenuControl = $YetaWF.getElementById(setup.MenuId) as HTMLDivElement;
+            this.ButtonControl = DropDownButtonComponent.getControlFromSelector("button", DropDownButtonComponent.SELECTOR, [this.Control]);
 
-            var $btn = $(this.Control).kendoButton();// kendo use
-            $btn.on("click", (ev: Event): boolean => {
-                var vis = $YetaWF.isVisible(this.MenuControl);
+            $YetaWF.registerCustomEventHandler(this.ButtonControl, DropDownButtonComponent.CLICKEDEVENT, (ev: CustomEvent):void => {
+                let vis = $YetaWF.isVisible(this.MenuControl);
                 ActionIconsComponent.closeMenus();
                 if (!vis)
                     this.openMenu();
-                ev.preventDefault();
-                return false;
             });
 
             $(this.MenuControl).kendoMenu({
@@ -61,7 +58,7 @@ namespace YetaWF_ComponentsHTML {
             this.positionMenu();
         }
         private positionMenu(): void {
-            $YetaWF.positionLeftAlignedBelow(this.Control, this.MenuControl);
+            $YetaWF.positionLeftAlignedBelow(this.ButtonControl.Control, this.MenuControl);
         }
 
         public static closeMenus(): void {
