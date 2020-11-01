@@ -398,8 +398,10 @@ var YetaWF_ComponentsHTML;
             if (ul) {
                 var data = this.getElementDataCond(liElem);
                 if (data && data.DynamicSubEntries) {
+                    $YetaWF.setLoading(true);
                     $YetaWF.processClearDiv(ul);
                     ul.remove();
+                    $YetaWF.setLoading(false);
                 }
                 else {
                     ul.style.display = "none";
