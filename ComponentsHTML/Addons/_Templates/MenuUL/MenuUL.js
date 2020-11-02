@@ -74,7 +74,11 @@ var YetaWF_ComponentsHTML;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.MenuULComponent = MenuULComponent;
     // Handle clicks elsewhere so we can close the menus
-    $YetaWF.registerMultipleEventHandlersBody(["click", "mousedown"], null, function (e) {
+    $YetaWF.registerMultipleEventHandlersBody(["mousedown"], MenuULComponent.SELECTOR, function (ev) {
+        // prevent event from reaching body
+        return false;
+    });
+    $YetaWF.registerMultipleEventHandlersBody(["click", "mousedown"], null, function (ev) {
         // delay closing to handle the event
         setTimeout(function () {
             MenuULComponent.closeMenus();

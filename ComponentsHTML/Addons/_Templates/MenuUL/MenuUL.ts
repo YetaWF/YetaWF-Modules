@@ -80,7 +80,11 @@ namespace YetaWF_ComponentsHTML {
     }
 
     // Handle clicks elsewhere so we can close the menus
-    $YetaWF.registerMultipleEventHandlersBody(["click", "mousedown"], null, (e: Event): boolean => {
+    $YetaWF.registerMultipleEventHandlersBody(["mousedown"], MenuULComponent.SELECTOR, (ev: Event): boolean => {
+        // prevent event from reaching body
+        return false;
+    });
+    $YetaWF.registerMultipleEventHandlersBody(["click", "mousedown"], null, (ev: Event): boolean => {
         // delay closing to handle the event
         setTimeout(():void => {
             MenuULComponent.closeMenus();

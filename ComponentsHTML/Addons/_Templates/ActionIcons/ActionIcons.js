@@ -83,10 +83,11 @@ var YetaWF_ComponentsHTML;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.ActionIconsComponent = ActionIconsComponent;
     // Handle clicks elsewhere so we can close the menus
+    $YetaWF.registerMultipleEventHandlersBody(["mousedown"], ".yGridActionMenu", function (ev) {
+        // prevent event from reaching body
+        return false;
+    });
     $YetaWF.registerMultipleEventHandlersBody(["click", "mousedown"], null, function (ev) {
-        var e = ev;
-        if (e.which !== 1)
-            return true;
         if (ActionIconsComponent.menusOpen > 0) {
             var menus = $YetaWF.getElementsBySelector(".yGridActionMenu"); // get all action menus
             menus = $YetaWF.limitToVisibleOnly(menus);
