@@ -5,7 +5,8 @@ namespace YetaWF_ComponentsHTML {
     interface MenuULSetup {
         AutoOpen: boolean;
         AutoRemove: boolean;
-        AttachTo: HTMLElement;
+        AttachTo: HTMLElement | null;
+        Dynamic?: boolean;
     }
 
     export class MenuULComponent extends YetaWF.ComponentBaseDataImpl {
@@ -31,6 +32,8 @@ namespace YetaWF_ComponentsHTML {
 
             if (!$YetaWF.elementHasClass(this.Control, "yt_menuul"))
                 $YetaWF.elementAddClass(this.Control, "yt_menuul")
+            if (this.Setup.Dynamic)
+                $YetaWF.elementAddClass(this.Control, "t_dynamic")
 
             if (this.Setup.AutoOpen)
                 this.open();
@@ -50,7 +53,8 @@ namespace YetaWF_ComponentsHTML {
         }
 
         private positionMenu(): void {
-            $YetaWF.positionLeftAlignedBelow(this.Setup.AttachTo, this.Control);
+            if (this.Setup.AttachTo)
+                $YetaWF.positionLeftAlignedBelow(this.Setup.AttachTo, this.Control);
         }
 
         public close(): void {

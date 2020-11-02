@@ -36,16 +36,10 @@ namespace YetaWF.Modules.ComponentsHTML {
 
                 await Manager.AddOnManager.AddTemplateFromUIHintAsync("ActionIcons", YetaWFComponentBase.ComponentType.Display); // action icons
 
-                // <div>
-                YTagBuilder div2Tag = new YTagBuilder("div");
-                div2Tag.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule(cssClass));
-                hb.Append(div2Tag.ToString(YTagRenderMode.StartTag));
-
-                // <ul><li> menu
-                hb.Append(menuContents);
-
-                // </div>
-                hb.Append(div2Tag.ToString(YTagRenderMode.EndTag));
+                hb.Append($@"
+<div class='{Manager.AddOnManager.CheckInvokedCssModule(cssClass)}'>
+    {menuContents}
+</div>");
             }
             return hb.ToString();
         }
@@ -61,36 +55,22 @@ namespace YetaWF.Modules.ComponentsHTML {
 
             MenuList moduleMenu = await mod.GetModuleMenuListAsync(ModuleAction.RenderModeEnum.NormalMenu, ModuleAction.ActionLocationEnum.ModuleMenu);
 
-            string menuContents = (await RenderMenuAsync(moduleMenu, null, Globals.CssModuleMenu));
+            string id = Manager.UniqueId();
+            string menuContents = (await RenderMenuAsync(moduleMenu, id, Globals.CssModuleMenu));
             if (!string.IsNullOrWhiteSpace(menuContents)) {
 
                 //await Manager.ScriptManager.AddKendoUICoreJsFile("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
                 await KendoUICore.AddFileAsync("kendo.menu.min.js");
 
-                await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "ModuleMenu"); // module menu support
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "Modules");// various module support
 
-                // <div class= >
-                YTagBuilder divTag = new YTagBuilder("div");
-                divTag.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule(Globals.CssModuleMenuEditIcon));
-                divTag.Attributes.Add("style", "display:none");
-                hb.Append(divTag.ToString(YTagRenderMode.StartTag));
-
-                hb.Append(ImageHTML.BuildKnownIcon("#ModuleMenuEdit", sprites: Info.PredefSpriteIcons, title: null /*no tooltip here as it's useless */));
-
-                // <div>
-                YTagBuilder div2Tag = new YTagBuilder("div");
-                div2Tag.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule(Globals.CssModuleMenuContainer));
-                hb.Append(div2Tag.ToString(YTagRenderMode.StartTag));
-
-                // <ul><li> menu
-                hb.Append(menuContents);
-
-                // </div>
-                hb.Append(div2Tag.ToString(YTagRenderMode.EndTag));
-
-                // </div>
-                hb.Append(divTag.ToString(YTagRenderMode.EndTag));
+                hb.Append($@"
+<div class={Manager.AddOnManager.CheckInvokedCssModule(Globals.CssModuleMenuEditIcon)} style='display:none'>
+    {ImageHTML.BuildKnownIcon("#ModuleMenuEdit", sprites: Info.PredefSpriteIcons, title: null /*no tooltip here as it's useless */)}
+    <div class='{Manager.AddOnManager.CheckInvokedCssModule(Globals.CssModuleMenuContainer)}'>
+        {menuContents}
+    </div>
+</div>");
             }
             return hb.ToString();
         }

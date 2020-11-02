@@ -236,7 +236,8 @@ namespace YetaWF_ComponentsHTML {
             const $menus = $(".k-menu");
             $menus.each((index: number, element: HTMLElement): void => {
                 const menu = $(element).data("kendoMenu");
-                menu.close("li.k-item");
+                if (menu)
+                    menu.close("li.k-item");
             });
 
             // Close any open smartmenus

@@ -30,6 +30,8 @@ var YetaWF_ComponentsHTML;
             _this.Setup = setup;
             if (!$YetaWF.elementHasClass(_this.Control, "yt_menuul"))
                 $YetaWF.elementAddClass(_this.Control, "yt_menuul");
+            if (_this.Setup.Dynamic)
+                $YetaWF.elementAddClass(_this.Control, "t_dynamic");
             if (_this.Setup.AutoOpen)
                 _this.open();
             return _this;
@@ -45,7 +47,8 @@ var YetaWF_ComponentsHTML;
             }
         };
         MenuULComponent.prototype.positionMenu = function () {
-            $YetaWF.positionLeftAlignedBelow(this.Setup.AttachTo, this.Control);
+            if (this.Setup.AttachTo)
+                $YetaWF.positionLeftAlignedBelow(this.Setup.AttachTo, this.Control);
         };
         MenuULComponent.prototype.close = function () {
             if (this.isOpen) {

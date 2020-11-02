@@ -224,7 +224,8 @@ var YetaWF_ComponentsHTML;
             var $menus = $(".k-menu");
             $menus.each(function (index, element) {
                 var menu = $(element).data("kendoMenu");
-                menu.close("li.k-item");
+                if (menu)
+                    menu.close("li.k-item");
             });
             // Close any open smartmenus
             try {
