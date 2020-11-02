@@ -212,7 +212,15 @@ var YetaWF_ComponentsHTML;
         BasicsImpl.prototype.closeOverlays = function () {
             // Close open bootstrap nav menus (if any) by clicking on the page
             $("body").trigger("click");
-            // Close any open kendo menus (if any)
+            // all MenuUL menus
+            if (YetaWF_ComponentsHTML.MenuULComponent)
+                YetaWF_ComponentsHTML.MenuULComponent.closeMenus();
+            // tooltips
+            ToolTipsHTMLHelper.removeTooltips();
+            // dropdowns
+            if (YetaWF_ComponentsHTML.DropDownListEditComponent)
+                YetaWF_ComponentsHTML.DropDownListEditComponent.closeDropdowns();
+            // Close any open kendo menus (if any) //TODO: This is sloppy and prob unnecessary
             var $menus = $(".k-menu");
             $menus.each(function (index, element) {
                 var menu = $(element).data("kendoMenu");
@@ -223,11 +231,6 @@ var YetaWF_ComponentsHTML;
                 $(".YetaWF_Menus").collapse("hide");
             }
             catch (e) { }
-            // tooltips
-            ToolTipsHTMLHelper.removeTooltips();
-            // dropdowns
-            if (YetaWF_ComponentsHTML.DropDownListEditComponent)
-                YetaWF_ComponentsHTML.DropDownListEditComponent.closeDropdowns();
         };
         /**
          * Enable/disable an element.

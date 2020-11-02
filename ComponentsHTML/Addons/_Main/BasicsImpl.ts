@@ -220,16 +220,10 @@ namespace YetaWF_ComponentsHTML {
 
             // Close open bootstrap nav menus (if any) by clicking on the page
             $("body").trigger("click");
-            // Close any open kendo menus (if any)
-            const $menus = $(".k-menu");
-            $menus.each((index: number, element: HTMLElement): void => {
-                const menu = $(element).data("kendoMenu");
-                menu.close("li.k-item");
-            });
-            // Close any open smartmenus
-            try {
-                ($(".YetaWF_Menus") as any).collapse("hide");
-            } catch (e) { }
+
+            // all MenuUL menus
+            if (MenuULComponent)
+                MenuULComponent.closeMenus();
 
             // tooltips
             ToolTipsHTMLHelper.removeTooltips();
@@ -237,6 +231,18 @@ namespace YetaWF_ComponentsHTML {
             // dropdowns
             if (DropDownListEditComponent)
                 DropDownListEditComponent.closeDropdowns();
+
+            // Close any open kendo menus (if any) //TODO: This is sloppy and prob unnecessary
+            const $menus = $(".k-menu");
+            $menus.each((index: number, element: HTMLElement): void => {
+                const menu = $(element).data("kendoMenu");
+                menu.close("li.k-item");
+            });
+
+            // Close any open smartmenus
+            try {
+                ($(".YetaWF_Menus") as any).collapse("hide");
+            } catch (e) { }
         }
         /**
          * Enable/disable an element.

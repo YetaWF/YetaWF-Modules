@@ -39,6 +39,7 @@ namespace YetaWF_ComponentsHTML {
         public open(): void {
             if (!this.isOpen) {
 
+                this.Control.style.display = "";
                 $(this.Control).kendoMenu({
                     orientation: "vertical"
                 });
