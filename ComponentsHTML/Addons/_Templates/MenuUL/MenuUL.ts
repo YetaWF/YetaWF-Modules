@@ -7,6 +7,7 @@ namespace YetaWF_ComponentsHTML {
         AutoRemove: boolean;
         AttachTo: HTMLElement | null;
         Dynamic?: boolean;
+        Click?: (liElem: HTMLLIElement) => void;
     }
 
     export class MenuULComponent extends YetaWF.ComponentBaseDataImpl {
@@ -31,9 +32,9 @@ namespace YetaWF_ComponentsHTML {
             this.Setup = setup;
 
             if (!$YetaWF.elementHasClass(this.Control, "yt_menuul"))
-                $YetaWF.elementAddClass(this.Control, "yt_menuul")
+                $YetaWF.elementAddClass(this.Control, "yt_menuul");
             if (this.Setup.Dynamic)
-                $YetaWF.elementAddClass(this.Control, "t_dynamic")
+                $YetaWF.elementAddClass(this.Control, "t_dynamic");
 
             if (this.Setup.AutoOpen)
                 this.open();
@@ -42,10 +43,26 @@ namespace YetaWF_ComponentsHTML {
         public open(): void {
             if (!this.isOpen) {
 
-                this.Control.style.display = "";
-                $(this.Control).kendoMenu({
+                MenuULComponent.closeMenus();
+
+                let $menu = $(this.Control);
+                $menu.kendoMenu({
                     orientation: "vertical"
                 });
+
+                let menu = $menu.data("kendoMenu");
+                if (this.Setup.Click) {
+                    let me = this;
+                    menu.setOptions({
+                        // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+                        select: function(ev: any): void {
+                            MenuULComponent.closeMenus();
+                            me.Setup.Click!(ev.item);
+                        }
+                    });
+                }
+                this.Control.style.display = "";
+
                 this.positionMenu();
 
                 this.isOpen = true;
@@ -100,7 +117,7 @@ namespace YetaWF_ComponentsHTML {
     // Handle Escape key to close any open menus
     $YetaWF.registerEventHandlerBody("keydown", null, (ev: KeyboardEvent): boolean => {
         if (ev.key !== "Escape") return true;
-            MenuULComponent.closeMenus();
+        MenuULComponent.closeMenus();
         return true;
     });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, (ev: CustomEvent<YetaWF.DetailsEventContainerScroll>): boolean => {

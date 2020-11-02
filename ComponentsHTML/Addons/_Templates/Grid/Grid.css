@@ -138,14 +138,13 @@
       -webkit-transform: translateY(-50%);
               transform: translateY(-50%); }
 
-.yt_grid_menus ul.k-menu {
-  position: absolute;
-  z-index: 4000;
-  font-size: 10px; }
-  .yt_grid_menus ul.k-menu .t_fmenuicon {
+ul.yt_grid_menu {
+  font-size: 10px;
+  overflow: auto; }
+  ul.yt_grid_menu .t_fmenuicon {
     display: inline-block;
     width: 4ch; }
-  .yt_grid_menus ul.k-menu .t_fmenutext {
+  ul.yt_grid_menu .t_fmenutext {
     display: inline-block; }
 
 .yt_grid.tg_skin {

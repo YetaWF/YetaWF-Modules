@@ -66,8 +66,6 @@ var YetaWF_ComponentsHTML;
                     control.enable(enable);
                     // clearOnDisable not supported
                 },
-            }, false, function (tag, control) {
-                control.internalDestroy();
             }) || this;
             _this.BtnReload = null;
             _this.BtnSearch = null;
@@ -120,6 +118,9 @@ var YetaWF_ComponentsHTML;
             $YetaWF.registerEventHandler(_this.Control, "mouseover", ".tg_resize", function (ev) {
                 // don't allow mouseover to propagate and close tooltips
                 $YetaWF.closeOverlays();
+                return false;
+            });
+            $YetaWF.registerEventHandler(_this.Control, "click", ".tg_resize", function (ev) {
                 return false;
             });
             // Show/hide filter bar with search button
@@ -254,13 +255,21 @@ var YetaWF_ComponentsHTML;
                     var head = $YetaWF.elementClosest(button, "th");
                     var colIndex = Array.prototype.indexOf.call(filter.children, head);
                     var ulElem = $YetaWF.getElementById(_this.Setup.Columns[colIndex].MenuId);
-                    if ($YetaWF.isVisible(ulElem))
-                        ulElem.style.display = "none";
-                    else {
-                        $YetaWF.closeOverlays();
-                        ulElem.style.display = "";
-                        $YetaWF.positionLeftAlignedBelow(button, ulElem);
+                    if (!YetaWF_ComponentsHTML.MenuULComponent.closeMenus()) {
+                        var menuDiv = ulElem.cloneNode(true);
+                        menuDiv.id = ulElem.id + "_live";
+                        $YetaWF.elementAddClass(menuDiv, "yt_grid_menu");
+                        document.body.appendChild(menuDiv);
+                        new YetaWF_ComponentsHTML.MenuULComponent(menuDiv.id, {
+                            "AutoOpen": true, "AutoRemove": true, "AttachTo": button, "Dynamic": true,
+                            "Click": function (liElem) {
+                                _this.menuSelected(liElem, colIndex);
+                            },
+                        });
                     }
+                    return false;
+                });
+                $YetaWF.registerEventHandler(_this.FilterBar, "mousedown", ".tg_fmenu", function (ev) {
                     return false;
                 });
                 $YetaWF.registerEventHandler(_this.FilterBar, "click", ".tg_fclear", function (ev) {
@@ -271,27 +280,7 @@ var YetaWF_ComponentsHTML;
                     _this.reload(0);
                     return false;
                 });
-                $YetaWF.registerEventHandlerBody("mousedown", null, function (ev) {
-                    if (ev.which !== 1)
-                        return true;
-                    var menus = $YetaWF.getElementsBySelector(".yt_grid_menus ul.k-menu");
-                    var _loop_1 = function (menu) {
-                        if ($YetaWF.isVisible(menu)) {
-                            setTimeout(function () {
-                                $(menu).hide();
-                            }, 200);
-                        }
-                    };
-                    for (var _i = 0, menus_1 = menus; _i < menus_1.length; _i++) {
-                        var menu = menus_1[_i];
-                        _loop_1(menu);
-                    }
-                    return true;
-                });
                 _this.addDirectFilterHandlers();
-                $YetaWF.addWhenReadyOnce(function (tag) {
-                    $YetaWF.appendMixedHTML(document.body, "\n<div id='" + _this.ControlId + "_menus' class='yt_grid_menus' data-grid='" + _this.ControlId + "'>\n    " + _this.Setup.FilterMenusHTML + "\n</div>");
-                });
             }
             // Delete action (static only)
             if (_this.Setup.StaticData) {
@@ -683,6 +672,8 @@ var YetaWF_ComponentsHTML;
                 Grid.CurrentControl.ColumnResizeHeader = null;
             }
             Grid.CurrentControl = null;
+            ev.preventDefault();
+            ev.stopPropagation();
             return false;
         };
         // reloading
@@ -924,15 +915,9 @@ var YetaWF_ComponentsHTML;
                 _this.Setup.Columns[colIndex].FilterOp = sel;
             });
         };
-        Grid.menuSelected = function (menuElem, colIndex) {
-            var popups = $YetaWF.elementClosest(menuElem, ".yt_grid_menus");
-            var gridId = $YetaWF.getAttribute(popups, "data-grid");
-            var grid = YetaWF.ComponentBaseDataImpl.getControlById(gridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
-            grid.menuSelected(menuElem, colIndex);
-        };
         Grid.prototype.addDirectFilterHandlers = function () {
             var _this = this;
-            var _loop_2 = function (col) {
+            var _loop_1 = function (col) {
                 switch (col.FilterType) {
                     default:
                         break;
@@ -987,7 +972,7 @@ var YetaWF_ComponentsHTML;
             };
             for (var _i = 0, _a = this.Setup.Columns; _i < _a.length; _i++) {
                 var col = _a[_i];
-                _loop_2(col);
+                _loop_1(col);
             }
         };
         Grid.updateComplexFilter = function (filterId, data) {
@@ -1118,13 +1103,6 @@ var YetaWF_ComponentsHTML;
             }
             throw "Unexpected filter op " + op;
         };
-        Grid.closeFilterMenus = function () {
-            var menus = $YetaWF.getElementsBySelector(".yt_grid_menus ul.k-menu");
-            for (var _i = 0, menus_2 = menus; _i < menus_2.length; _i++) {
-                var menu = menus_2[_i];
-                $(menu).hide();
-            }
-        };
         // add/remove (static grid)
         Grid.prototype.removeRecord = function (trElem, recNum, colName) {
             if (!this.Setup.StaticData)
@@ -1176,20 +1154,6 @@ var YetaWF_ComponentsHTML;
                 var name_2 = $YetaWF.getAttribute(inp, "name");
                 name_2 = name_2.replace("[" + origNum + "]", "[" + newNum + "]");
                 $YetaWF.setAttribute(inp, "name", name_2);
-            }
-        };
-        Grid.prototype.internalDestroy = function () {
-            if (this.Setup.CanFilter) {
-                // close all menus
-                var menuDiv = $YetaWF.getElementById(this.ControlId + "_menus");
-                var menus = $YetaWF.getElementsBySelector(".tg_fentry .k-menu", [menuDiv]);
-                for (var _i = 0, menus_3 = menus; _i < menus_3.length; _i++) {
-                    var menu = menus_3[_i];
-                    var menuData = $(menu).data("kendoMenu");
-                    menuData.destroy();
-                }
-                // remove all menus
-                menuDiv.remove();
             }
         };
         // API
@@ -1500,10 +1464,6 @@ var YetaWF_ComponentsHTML;
         return Grid;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.Grid = Grid;
-    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, function (ev) {
-        Grid.closeFilterMenus();
-        return true;
-    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=Grid.js.map

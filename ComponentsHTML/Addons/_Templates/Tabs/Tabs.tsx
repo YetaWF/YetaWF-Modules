@@ -260,7 +260,7 @@ namespace YetaWF_ComponentsHTML {
             this.resequenceTabs();
 
             // find a tab to activate
-            tabs = this.tabs
+            tabs = this.tabs;
             if (index >= tabs.length)
                 --index;
             if (index >= 0 && index < tabs.length)
@@ -272,7 +272,7 @@ namespace YetaWF_ComponentsHTML {
             let count = 0;
             for (let tab of this.tabs) {
                 let tabId = `${this.ControlId}_tab${count}`;
-                let tabIdLb = `${tabId}_lb`
+                let tabIdLb = `${tabId}_lb`;
                 $YetaWF.setAttribute(tab, "data-tab", count.toString());
                 $YetaWF.setAttribute(tab, "aria-controls", tabId);
                 $YetaWF.setAttribute(tab, "aria-labelledby", tabIdLb);
@@ -285,7 +285,7 @@ namespace YetaWF_ComponentsHTML {
             let panes = $YetaWF.getElementsBySelector(`#${this.ControlId} > div.t_tabpanel`) as HTMLDivElement[];
             for (let pane of panes) {
                 let tabId = `${this.ControlId}_tab${count}`;
-                let tabIdLb = `${tabId}_lb`
+                let tabIdLb = `${tabId}_lb`;
                 $YetaWF.setAttribute(pane, "data-tab", count.toString());
                 pane.id = tabId;
                 $YetaWF.setAttribute(pane, "aria-labelledby", tabIdLb);

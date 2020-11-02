@@ -187,10 +187,9 @@ $smbuttonhorzmargin: 2px;
         }
     }
 }
-.yt_grid_menus ul.k-menu {
-    position:absolute;
-    z-index: 4000;
+ul.yt_grid_menu {
     font-size:$menufontsize;
+    overflow:auto;
     .t_fmenuicon {
         display:inline-block;
         width:4ch;

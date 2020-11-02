@@ -24,7 +24,6 @@ namespace YetaWF_ComponentsHTML {
         Pages: number;
         SizeStyle: SizeStyleEnum;
         Columns: GridColumnDefinition[];
-        FilterMenusHTML: string;
         SaveSettingsColumnWidthsUrl: string;
         ExtraData: any;
         HoverCss: string;
@@ -146,8 +145,6 @@ namespace YetaWF_ComponentsHTML {
                     control.enable(enable);
                     // clearOnDisable not supported
                 },
-            }, false, (tag: HTMLElement, control: Grid): void => {
-                control.internalDestroy();
             });
 
             this.Setup = setup;
@@ -189,6 +186,9 @@ namespace YetaWF_ComponentsHTML {
             $YetaWF.registerEventHandler(this.Control, "mouseover", ".tg_resize", (ev: MouseEvent): boolean => {
                 // don't allow mouseover to propagate and close tooltips
                 $YetaWF.closeOverlays();
+                return false;
+            });
+            $YetaWF.registerEventHandler(this.Control, "click", ".tg_resize", (ev: MouseEvent): boolean => {
                 return false;
             });
             // Show/hide filter bar with search button
@@ -319,15 +319,25 @@ namespace YetaWF_ComponentsHTML {
                     let head = $YetaWF.elementClosest(button, "th");
                     let colIndex = Array.prototype.indexOf.call(filter.children, head);
                     let ulElem = $YetaWF.getElementById(this.Setup.Columns[colIndex].MenuId);
-                    if ($YetaWF.isVisible(ulElem))
-                        ulElem.style.display = "none";
-                    else {
-                        $YetaWF.closeOverlays();
-                        ulElem.style.display = "";
-                        $YetaWF.positionLeftAlignedBelow(button, ulElem);
+
+                    if (!YetaWF_ComponentsHTML.MenuULComponent.closeMenus()) {
+                        let menuDiv = ulElem.cloneNode(true) as HTMLUListElement;
+                        menuDiv.id = `${ulElem.id}_live`;
+                        $YetaWF.elementAddClass(menuDiv, "yt_grid_menu");
+                        document.body.appendChild(menuDiv);
+                        new YetaWF_ComponentsHTML.MenuULComponent(menuDiv.id, {
+                            "AutoOpen": true, "AutoRemove": true, "AttachTo": button, "Dynamic": true,
+                            "Click": (liElem: HTMLLIElement): void => {
+                                this.menuSelected(liElem, colIndex);
+                            },
+                        });
                     }
                     return false;
                 });
+                $YetaWF.registerEventHandler(this.FilterBar, "mousedown", ".tg_fmenu", (ev: MouseEvent): boolean => {
+                    return false;
+                });
+
                 $YetaWF.registerEventHandler(this.FilterBar, "click", ".tg_fclear", (ev: MouseEvent): boolean => {
                     let filter = $YetaWF.elementClosest(ev.__YetaWFElem, ".tg_filter");
                     let head = $YetaWF.elementClosest(ev.__YetaWFElem, "th");
@@ -336,26 +346,7 @@ namespace YetaWF_ComponentsHTML {
                     this.reload(0);
                     return false;
                 });
-                $YetaWF.registerEventHandlerBody("mousedown", null, (ev: MouseEvent): boolean => {
-                    if (ev.which !== 1) return true;
-                    let menus = $YetaWF.getElementsBySelector(".yt_grid_menus ul.k-menu");
-                    for (let menu of menus) {
-                        if ($YetaWF.isVisible(menu)) {
-                            setTimeout((): void => {
-                                $(menu).hide();
-                            }, 200);
-                        }
-                    }
-                    return true;
-                });
                 this.addDirectFilterHandlers();
-
-                $YetaWF.addWhenReadyOnce((tag: HTMLElement): void => {
-                    $YetaWF.appendMixedHTML(document.body, `
-<div id='${this.ControlId}_menus' class='yt_grid_menus' data-grid='${this.ControlId}'>
-    ${this.Setup.FilterMenusHTML}
-</div>`);
-                });
             }
             // Delete action (static only)
             if (this.Setup.StaticData) {
@@ -745,6 +736,9 @@ namespace YetaWF_ComponentsHTML {
                 Grid.CurrentControl.ColumnResizeHeader = null;
             }
             Grid.CurrentControl = null;
+
+            ev.preventDefault();
+            ev.stopPropagation();
             return false;
         }
 
@@ -980,12 +974,6 @@ namespace YetaWF_ComponentsHTML {
                 this.Setup.Columns[colIndex].FilterOp = sel;
             });
         }
-        public static menuSelected(menuElem: HTMLElement, colIndex: number): void {
-            let popups = $YetaWF.elementClosest(menuElem, ".yt_grid_menus");
-            let gridId = $YetaWF.getAttribute(popups, "data-grid");
-            let grid: Grid = YetaWF.ComponentBaseDataImpl.getControlById(gridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
-            grid.menuSelected(menuElem, colIndex);
-        }
         private addDirectFilterHandlers(): void {
             for (let col of this.Setup.Columns) {
                 switch (col.FilterType) {
@@ -1170,13 +1158,6 @@ namespace YetaWF_ComponentsHTML {
             throw `Unexpected filter op ${op}`;
         }
 
-        public static closeFilterMenus(): void {
-            let menus = $YetaWF.getElementsBySelector(".yt_grid_menus ul.k-menu");
-            for (let menu of menus) {
-                $(menu).hide();
-            }
-        }
-
         // add/remove (static grid)
         private removeRecord(trElem: HTMLElement, recNum: number, colName: string) : void {
             if (!this.Setup.StaticData) throw "Static grids only";
@@ -1226,20 +1207,6 @@ namespace YetaWF_ComponentsHTML {
                 let name = $YetaWF.getAttribute(inp, "name");
                 name = name.replace(`[${origNum}]`, `[${newNum}]`);
                 $YetaWF.setAttribute(inp, "name", name);
-            }
-        }
-
-        public internalDestroy(): void {
-            if (this.Setup.CanFilter) {
-                // close all menus
-                let menuDiv = $YetaWF.getElementById(`${this.ControlId}_menus`);
-                let menus = $YetaWF.getElementsBySelector(".tg_fentry .k-menu", [menuDiv]);
-                for (let menu of menus) {
-                    let menuData = $(menu).data("kendoMenu");
-                    menuData.destroy();
-                }
-                // remove all menus
-                menuDiv.remove();
             }
         }
 
@@ -1501,9 +1468,4 @@ namespace YetaWF_ComponentsHTML {
             throw "GetAllCheckBoxesSelected not available";
         }
     }
-
-    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, (ev: CustomEvent<YetaWF.DetailsEventContainerScroll>): boolean => {
-        Grid.closeFilterMenus();
-        return true;
-    });
 }

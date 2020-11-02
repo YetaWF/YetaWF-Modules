@@ -38,10 +38,23 @@ var YetaWF_ComponentsHTML;
         }
         MenuULComponent.prototype.open = function () {
             if (!this.isOpen) {
-                this.Control.style.display = "";
-                $(this.Control).kendoMenu({
+                MenuULComponent.closeMenus();
+                var $menu = $(this.Control);
+                $menu.kendoMenu({
                     orientation: "vertical"
                 });
+                var menu = $menu.data("kendoMenu");
+                if (this.Setup.Click) {
+                    var me_1 = this;
+                    menu.setOptions({
+                        // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+                        select: function (ev) {
+                            MenuULComponent.closeMenus();
+                            me_1.Setup.Click(ev.item);
+                        }
+                    });
+                }
+                this.Control.style.display = "";
                 this.positionMenu();
                 this.isOpen = true;
             }

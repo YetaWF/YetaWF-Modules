@@ -28,7 +28,6 @@ namespace YetaWF_ComponentsHTML {
                 }
             });
             $YetaWF.registerMultipleEventHandlers([this.Control], ["click", "mousedown"], null, (ev: Event):boolean => {
-                ev.preventDefault();
                 return false;
             });
         }

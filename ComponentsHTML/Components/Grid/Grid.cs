@@ -62,7 +62,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public int Pages { get; set; }
         public GridDefinition.SizeStyleEnum SizeStyle { get; internal set; }
         public List<GridColumnDefinition> Columns { get; set; }
-        public string FilterMenusHTML { get; set; }
         public int MinColumnWidth { get; set; }
         public string SaveSettingsColumnWidthsUrl { get; set; }
         public object ExtraData { get; set; }
@@ -123,7 +122,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override async Task IncludeAsync() {
             await Manager.AddOnManager.AddAddOnNamedAsync(YetaWF.Core.Controllers.AreaRegistration.CurrentPackage.AreaName, "fontawesome.com.fontawesome");
             //await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
+
+            // Add required menu support
             await KendoUICore.AddFileAsync("kendo.menu.min.js");
+            await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.Controllers.AreaRegistration.CurrentPackage.AreaName, "MenuUL", ComponentType.Display);
+
             await JqueryUICore.UseAsync();
             await base.IncludeAsync();
         }
@@ -374,7 +377,6 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
 
             HtmlBuilder hb = new HtmlBuilder();
             HtmlBuilder filterhb = new HtmlBuilder();
-            HtmlBuilder hbFilterMenus = new HtmlBuilder();
 
             string cssHead = "";
             if (!gridDef.ShowHeader)
@@ -741,17 +743,12 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 <div class='tg_fclear{buttonCss}'><span class='fas fa-times'></span></div>");
                         }
 
-                        if (filterOp != null)
-                            hbFilterMenus.Append(GetFilterMenu(gridDef, filterOpts, filterOp, idMenu, colIndex));
-
-                        filterhb.Append($@"
-            </div>");
-
                     } else {
                         filterhb.Append($@"
             &nbsp;");
                     }
                     filterhb.Append($@"
+            {(filterOp != null ? GetFilterMenu(gridDef, filterOpts, filterOp, idMenu, colIndex) : null)}
         </th>");
 
                 }
@@ -793,7 +790,6 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             }
 
             setup.HeaderHTML = hb.ToString();
-            setup.FilterMenusHTML += hbFilterMenus.ToString();
         }
 
         private string GetFilterMenu(GridDefinition gridModel, List<GridColumnInfo.FilterOptionEnum> filterOpts, GridColumnInfo.FilterOptionEnum? filterOp, string idMenu, int colIndex) {
@@ -806,16 +802,6 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 hb.Append($"<li data-sel='{(int)option}'{liCss}><span class='t_fmenuicon'>{HE(icon)}</span><span class='t_fmenutext'>{HE(text)}</span></li>");
             }
             hb.Append("</ul>");
-
-            // The <script> below is sent to client-side code where it is added, do not add to page server-side
-            hb.Append($@"
-<script>
-    $('#{idMenu}').kendoMenu({{
-        orientation: 'vertical',
-        select: function(ev) {{ YetaWF_ComponentsHTML.Grid.menuSelected(ev.item, {colIndex}); }}
-    }});
-</script>");// JQuery/Kendo UI Use
-
             return hb.ToString();
         }
 

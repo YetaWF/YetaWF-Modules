@@ -34,7 +34,6 @@ var YetaWF_ComponentsHTML;
                 }
             });
             $YetaWF.registerMultipleEventHandlers([_this.Control], ["click", "mousedown"], null, function (ev) {
-                ev.preventDefault();
                 return false;
             });
             return _this;

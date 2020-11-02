@@ -14,7 +14,7 @@ namespace YetaWF_Panels {
         public static readonly SELECTOR: string = ".yt_panels_splitterinfo.t_display";
         public static TEMPLATENAME: string = "YetaWF_Panels_SplitterInfo";
 
-        private readonly SMALLSCREEN = 1200;
+        private readonly SMALLSCREEN: number = 1200;
 
         private Setup: Setup;
         private Left: HTMLElement;
