@@ -21,7 +21,7 @@ namespace YetaWF.Modules.Panels.Modules {
         public SplitterModule() {
             Title = this.__ResStr("modTitle", "Splitter");
             Name = this.__ResStr("modName", "Splitter");
-            Description = this.__ResStr("modSummary", "Used to display two modules side by side horizontally.");
+            Description = this.__ResStr("modSummary", "Used to display two modules side by side.");
             Height = 0;
             MinWidth = 100;
             Width = 20;
@@ -35,6 +35,28 @@ namespace YetaWF.Modules.Panels.Modules {
         public override IModuleDefinitionIO GetDataProvider() { return new SplitterModuleDataProvider(); }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
+
+
+        [Category("General"), Caption("Left Title"), Description("Defines the title shown in the left pane")]
+        [UIHint("Text40"), StringLength(100), Trim]
+        [Data_NewValue]
+        public string TitleText { get; set; }
+        [Category("General"), Caption("Left Title Tooltip"), Description("Defines the tooltip shown for the title in the left pane")]
+        [UIHint("Text80"), StringLength(200), Trim]
+        [Data_NewValue]
+        public string TitleTooltip { get; set; }
+        [Category("General"), Caption("Collapse Text"), Description("Defines the text shown next to the collapse icon")]
+        [UIHint("Text40"), StringLength(100), Trim]
+        [Data_NewValue]
+        public string CollapseText { get; set; }
+        [Category("General"), Caption("Collapse Tooltip"), Description("Defines the tooltip shown for the collapse text and icon")]
+        [UIHint("Text40"), StringLength(200), Trim]
+        [Data_NewValue]
+        public string CollapseToolTip { get; set; }
+        [Category("General"), Caption("Expand Tooltip"), Description("Defines the tooltip shown for the expand icon")]
+        [UIHint("Text40"), StringLength(200), Trim]
+        [Data_NewValue]
+        public string ExpandToolTip { get; set; }
 
         [Category("General"), Caption("Height (Pixels)"), Description("Defines the height of the module in pixels - Set to 0 to calculate the height automatically to fill the remainder of the page")]
         [UIHint("IntValue4"), Range(0, 9999), Required]

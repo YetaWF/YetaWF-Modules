@@ -2,7 +2,6 @@
 
 using System;
 using System.Threading.Tasks;
-using YetaWF.Core.Localize;
 using YetaWF.Core.Modules;
 
 namespace YetaWF.Modules.Panels.Models {
@@ -15,19 +14,13 @@ namespace YetaWF.Modules.Panels.Models {
         public int Width { get; set; }// percentage
         public Guid ModuleRight { get; set; }
 
+        public string TitleText { get; set; }
+        public string TitleTooltip { get; set; }
         public string CollapseText { get; set; }
         public string CollapseToolTip { get; set; }
         public string ExpandToolTip { get; set; }
-        public string TitleText { get; set; }
-        public string TitleTooltip { get; set; }
 
-        public SplitterInfo() {
-            TitleText = this.__ResStr("title", "Server Explorer");//$$$$$$
-            TitleTooltip = this.__ResStr("titleTT", "Shows all available database servers");
-            CollapseText = this.__ResStr("collapse", "Hide");
-            CollapseToolTip = this.__ResStr("collapseTT", "Click to hide this navigation panel");
-            ExpandToolTip = this.__ResStr("expandTT", "Click to display the navigation panel");
-        }
+        public SplitterInfo() { }
 
         public async Task<ModuleDefinition> GetModuleLeftAsync() {
             if (_moduleLeftDef == null) {

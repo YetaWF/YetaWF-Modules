@@ -19,6 +19,7 @@ namespace YetaWF_Panels {
         private Setup: Setup;
         private Left: HTMLElement;
         private Collapse: HTMLElement;
+        private CollapseText: HTMLElement;
         private Expand: HTMLElement;
         private Resize: HTMLElement;
         private static ResizeSplitter: SplitterInfoComponent | null = null;
@@ -34,17 +35,14 @@ namespace YetaWF_Panels {
 
             this.Left = $YetaWF.getElement1BySelector(".yt_panels_splitterinfo_left", [this.Control]);
             this.Collapse = $YetaWF.getElement1BySelector(".yt_panels_splitterinfo_coll", [this.Control]);
+            this.CollapseText = $YetaWF.getElement1BySelector(".yt_panels_splitterinfo_colldesc", [this.Control]);
             this.Expand = $YetaWF.getElement1BySelector(".yt_panels_splitterinfo_exp", [this.Control]);
             this.Resize = $YetaWF.getElement1BySelector(".yt_panels_splitterinfo_resize", [this.Control]);
 
             this.resized();
 
             // expand/collapse
-            $YetaWF.registerEventHandler(this.Collapse, "click", null, (ev: MouseEvent): boolean => {
-                this.toggleExpandCollapse();
-                return false;
-            });
-            $YetaWF.registerEventHandler(this.Expand, "click", null, (ev: MouseEvent): boolean => {
+            $YetaWF.registerMultipleEventHandlers([this.Collapse, this.CollapseText, this.Expand], ["click"], null, (ev: Event): boolean => {
                 this.toggleExpandCollapse();
                 return false;
             });

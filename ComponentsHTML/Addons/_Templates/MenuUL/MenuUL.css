@@ -4,9 +4,7 @@
   font-size: 11px; }
   .yt_menuul.t_dynamic {
     position: absolute;
-    z-index: 50000;
-    left: 0;
-    top: 0; }
+    z-index: 50000; }
 
 @media print {
   .yt_menuul {

@@ -28,15 +28,12 @@ var YetaWF_Panels;
             _this.Setup = setup;
             _this.Left = $YetaWF.getElement1BySelector(".yt_panels_splitterinfo_left", [_this.Control]);
             _this.Collapse = $YetaWF.getElement1BySelector(".yt_panels_splitterinfo_coll", [_this.Control]);
+            _this.CollapseText = $YetaWF.getElement1BySelector(".yt_panels_splitterinfo_colldesc", [_this.Control]);
             _this.Expand = $YetaWF.getElement1BySelector(".yt_panels_splitterinfo_exp", [_this.Control]);
             _this.Resize = $YetaWF.getElement1BySelector(".yt_panels_splitterinfo_resize", [_this.Control]);
             _this.resized();
             // expand/collapse
-            $YetaWF.registerEventHandler(_this.Collapse, "click", null, function (ev) {
-                _this.toggleExpandCollapse();
-                return false;
-            });
-            $YetaWF.registerEventHandler(_this.Expand, "click", null, function (ev) {
+            $YetaWF.registerMultipleEventHandlers([_this.Collapse, _this.CollapseText, _this.Expand], ["click"], null, function (ev) {
                 _this.toggleExpandCollapse();
                 return false;
             });

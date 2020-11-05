@@ -1,5 +1,6 @@
 ﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
 
+using System;
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
@@ -41,14 +42,19 @@ namespace YetaWF.Modules.Panels.Components {
         public async Task<string> RenderAsync(SplitterInfo model) {
 
             HtmlBuilder hbLeft = new HtmlBuilder();
+
+            string titleText = model.TitleText;
+            string titleTooltip = model.TitleTooltip;
+
             if (await model.IsAuthorizedLeftAsync()) {
                 ModuleDefinition mod = await model.GetModuleLeftAsync();
                 if (mod != null) {
-                    mod.ShowTitle = false;
-                    mod.UsePartialFormCss = false;
                     hbLeft.Append(await mod.RenderModuleViewAsync(HtmlHelper));
+                    // get title & text from module
+                    try { titleText = ((dynamic)mod).TitleText; } catch (Exception) { }
+                    try { titleTooltip = ((dynamic)mod).TitleTooltip; } catch (Exception) { }
                 } else {
-                    hbLeft.Append($@"<div>{this.__ResStr("noModule", "(no module defined)")}</div>");
+                    hbLeft.Append($@"<div>{__ResStr("noModule", "(no module defined)")}</div>");
                 }
             }
 
@@ -56,11 +62,9 @@ namespace YetaWF.Modules.Panels.Components {
             if (await model.IsAuthorizedRightAsync()) {
                 ModuleDefinition mod = await model.GetModuleRightAsync();
                 if (mod != null) {
-                    mod.ShowTitle = false;
-                    mod.UsePartialFormCss = false;
                     hbRight.Append(await mod.RenderModuleViewAsync(HtmlHelper));
                 } else {
-                    hbRight.Append($@"<div>{this.__ResStr("noModule", "(no module defined)")}</div>");
+                    hbRight.Append($@"<div>{__ResStr("noModule", "(no module defined)")}</div>");
                 }
             }
 
@@ -77,11 +81,17 @@ namespace YetaWF.Modules.Panels.Components {
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
 <div class='yt_panels_splitterinfo t_display t_expanded' id='{ControlId}'{heightStyle}>
-    <div class='yt_panels_splitterinfo_left'{leftStyle}>
-        <div class='t_area'>
-            <div class='yt_panels_splitterinfo_title' {Basics.CssTooltip}='{HAE(model.TitleTooltip)}'>
-                {HE(model.TitleText)}
-            </div>
+    <div class='yt_panels_splitterinfo_left d-print-none yNoPrint'{leftStyle}>
+        <div class='t_area'>");
+
+            if (!string.IsNullOrWhiteSpace(titleText)) {
+                hb.Append($@"
+            <div class='yt_panels_splitterinfo_title' {Basics.CssTooltip}='{HAE(titleTooltip)}'>
+                {HE(titleText)}
+            </div>");
+            }
+
+            hb.Append($@"
             <div class='yt_panels_splitterinfo_cmds'>
                 <div class='yt_panels_splitterinfo_colldesc'>{HE(model.CollapseText)}</div><div class='yt_panels_splitterinfo_coll' {Basics.CssTooltip}='{HAE(model.CollapseToolTip)}'></div>
             </div>
@@ -92,9 +102,9 @@ namespace YetaWF.Modules.Panels.Components {
         <div class='t_area' id='{contentId}'>
             {hbRight.ToString()}
         </div>
-        <div class='yt_panels_splitterinfo_resize'></div>
+        <div class='yt_panels_splitterinfo_resize d-print-none yNoPrint'></div>
     </div>
-    <div class='yt_panels_splitterinfo_exp' {Basics.CssTooltip}='{HAE(model.ExpandToolTip)}'></div>
+    <div class='yt_panels_splitterinfo_exp d-print-none yNoPrint' {Basics.CssTooltip}='{HAE(model.ExpandToolTip)}'></div>
 </div>");
 
             Setup setup = new Setup {

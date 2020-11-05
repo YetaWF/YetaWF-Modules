@@ -19,6 +19,7 @@
     padding: 0.2em 0 0 0; }
     .yt_panels_splitterinfo .yt_panels_splitterinfo_cmds .yt_panels_splitterinfo_colldesc {
       color: black;
+      cursor: pointer;
       display: inline-block;
       margin-right: .5ch;
       font-size: 11px;

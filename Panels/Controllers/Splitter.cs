@@ -22,6 +22,12 @@ namespace YetaWF.Modules.Panels.Controllers {
         public ActionResult Splitter() {
             Model model = new Model {
                 SplitterInfo = new SplitterInfo {
+                    TitleText = Module.TitleText,
+                    TitleTooltip = Module.TitleTooltip,
+                    CollapseText = Module.CollapseText,
+                    CollapseToolTip = Module.CollapseToolTip,
+                    ExpandToolTip = Module.ExpandToolTip,
+
                     Height = Module.Height,
                     ModuleLeft = Module.ModuleLeft,
                     MinWidth = Module.MinWidth,
