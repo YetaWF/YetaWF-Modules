@@ -64,7 +64,7 @@ namespace YetaWF.Modules.Panels.Modules {
         public int Height { get; set; }
 
         [Category("General"), Caption("Module (Left)"), Description("The module rendered on the left side")]
-        [UIHint("ModuleSelection"), AdditionalMetadata("New", false), Required]
+        [UIHint("ModuleSelection"), AdditionalMetadata("New", false), AdditionalMetadata("EditSettings", true), Required]
         public Guid ModuleLeft { get; set; }
 
         [Category("General"), Caption("Minimum Width (Left, Pixels)"), Description("Defines the minimum width in pixels")]
@@ -76,7 +76,7 @@ namespace YetaWF.Modules.Panels.Modules {
         public int Width { get; set; }
 
         [Category("General"), Caption("Module (Right)"), Description("The module rendered on the right side, filling the remainder of the available width")]
-        [UIHint("ModuleSelection"), AdditionalMetadata("New", false), Required]
+        [UIHint("ModuleSelection"), AdditionalMetadata("New", false), AdditionalMetadata("EditSettings", true), Required]
         public Guid ModuleRight { get; set; }
 
     }

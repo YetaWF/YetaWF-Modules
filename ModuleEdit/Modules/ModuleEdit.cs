@@ -36,10 +36,21 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
         public override bool ShowModuleMenu { get { return false; } }
         public override bool ModuleHasSettings { get { return false; } }
 
-        public async Task<ModuleAction> GetAction_SettingsAsync(Guid editGuid) {
+        public Task<ModuleAction> GetAction_SettingsAsync(Guid editGuid) {
+            return GetAction_SettingsAsync(editGuid, false);
+        }
+        public Task<ModuleAction> GetAction_SettingsGenerateAsync(Guid editGuid) {
+            return GetAction_SettingsAsync(editGuid, true);
+        }
+        private async Task<ModuleAction> GetAction_SettingsAsync(Guid editGuid, bool force) {
             ModuleDefinition editMod = await ModuleDefinition.LoadAsync(editGuid, AllowNone: true);
-            if (editMod == null) return null;
-            if (!editMod.ModuleHasSettings) return null;
+            if (editMod == null) {
+                if (!force)
+                    return null;
+                editGuid = Guid.Empty;
+            } else {
+                if (!editMod.ModuleHasSettings) return null;
+            }
             if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_ModuleSettings))
                 return null;
             return new ModuleAction(this) {
