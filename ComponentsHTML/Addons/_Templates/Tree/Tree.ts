@@ -74,14 +74,12 @@ namespace YetaWF_ComponentsHTML {
             $YetaWF.registerEventHandler(this.Control, "click", "a.t_entry", (ev: MouseEvent): boolean => {
                 var liElem = $YetaWF.elementClosest(ev.__YetaWFElem, "li") as HTMLLIElement; // get row we're on
                 this.setSelect(liElem);
-                this.sendClickEvent(liElem);
-                return true;
+                return this.sendClickEvent(liElem);
             });
             $YetaWF.registerEventHandler(this.Control, "dblclick", "a.t_entry", (ev: MouseEvent): boolean => {
                 var liElem = $YetaWF.elementClosest(ev.__YetaWFElem, "li") as HTMLLIElement; // get row we're on
                 this.setSelect(liElem);
-                this.sendDblClickEvent(liElem);
-                return true;
+                return this.sendDblClickEvent(liElem);
             });
             $YetaWF.registerEventHandler(this.Control, "dblclick", "a.t_entry", (ev: MouseEvent): boolean => {
                 var liElem = $YetaWF.elementClosest(ev.__YetaWFElem, "li") as HTMLLIElement; // get row we're on
@@ -94,16 +92,12 @@ namespace YetaWF_ComponentsHTML {
             });
             $YetaWF.registerEventHandler(this.Control, "click", "i.t_icdown", (ev: MouseEvent): boolean => {
                 var li = $YetaWF.elementClosest(ev.__YetaWFElem, "li") as HTMLLIElement; // get row we're on
-                setTimeout((): void => {
-                    this.collapse(li);
-                }, 1);
+                this.collapse(li);
                 return false;
             });
             $YetaWF.registerEventHandler(this.Control, "click", "i.t_icright", (ev: MouseEvent): boolean => {
                 var li = $YetaWF.elementClosest(ev.__YetaWFElem, "li") as HTMLLIElement; // get row we're on
-                setTimeout((): void => {
-                    this.expand(li);
-                }, 1);
+                this.expand(li);
                 return false;
             });
             $YetaWF.registerEventHandler(this.Control, "keydown", null, (ev: KeyboardEvent): boolean => {
@@ -163,8 +157,7 @@ namespace YetaWF_ComponentsHTML {
                 } else if (key === "Enter") {
                     var liElem = this.getSelect();
                     if (!liElem) return false;
-                    this.sendClickEvent(liElem);
-                    return false;
+                    return this.sendClickEvent(liElem);
                 }
                 return true;
             });
@@ -173,40 +166,33 @@ namespace YetaWF_ComponentsHTML {
                     var liElem = $YetaWF.elementClosest(ev.__YetaWFElem, "li") as HTMLLIElement; // get row we're on
                     this.setSelect(liElem);
                     ev.preventDefault();
-                    this.sendContextMenuEvent();
-                    return false;
+                    return this.sendContextMenuEvent();
                 });
             }
         }
 
-        private sendClickEvent(liElem: HTMLLIElement): void {
+        private sendClickEvent(liElem: HTMLLIElement): boolean {
             let data = this.getElementDataCond(liElem);
             if (!data || (!data.UrlNew && !data.UrlContent)) {
-                setTimeout((): void => {
-                    $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTCLICK);
-                }, 1);
+                return $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTCLICK);
             }
+            return true;
         }
-        private sendDblClickEvent(liElem: HTMLLIElement): void {
+        private sendDblClickEvent(liElem: HTMLLIElement): boolean {
             let data = this.getElementDataCond(liElem);
             if (!data || (!data.UrlNew && !data.UrlContent)) {
-                setTimeout((): void => {
-                    $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTDBLCLICK);
-                }, 1);
+                return $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTDBLCLICK);
             }
+            return true;
         }
         private sendSelectEvent(): void {
-            setTimeout((): void => {
-                $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTSELECT);
-            }, 1);
+            $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTSELECT);
         }
         private sendDropEvent(): void {
-            setTimeout((): void => {
-                $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTDROP);
-            }, 1);
+            $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTDROP);
         }
-        private sendContextMenuEvent(): void {
-            $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTCONTEXTMENU);
+        private sendContextMenuEvent(): boolean {
+            return $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTCONTEXTMENU);
         }
 
         /* Drag & Drop */

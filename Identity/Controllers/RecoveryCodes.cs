@@ -56,7 +56,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             [TextBelow("Just like your account password, keep this recovery code a secret.")]
             [Caption("Your Recovery Code"), Description("Displays the available recovery code")]
-            [UIHint("Text20"), ReadOnly]
+            [UIHint("Text20"), AdditionalMetadata("ReadOnly", true), ReadOnly]
             [SuppressIfNot(nameof(ModelProgress), ModelProgressEnum.ShowCodes)]
             public string RecoveryCode { get; set; }
 

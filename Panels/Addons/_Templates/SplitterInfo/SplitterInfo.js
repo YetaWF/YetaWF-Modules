@@ -27,6 +27,7 @@ var YetaWF_Panels;
             _this.SMALLSCREEN = 1200;
             _this.Setup = setup;
             _this.Left = $YetaWF.getElement1BySelector(".yt_panels_splitterinfo_left", [_this.Control]);
+            _this.Right = $YetaWF.getElement1BySelector(".yt_panels_splitterinfo_right", [_this.Control]);
             _this.Collapse = $YetaWF.getElement1BySelector(".yt_panels_splitterinfo_coll", [_this.Control]);
             _this.CollapseText = $YetaWF.getElement1BySelector(".yt_panels_splitterinfo_colldesc", [_this.Control]);
             _this.Expand = $YetaWF.getElement1BySelector(".yt_panels_splitterinfo_exp", [_this.Control]);
@@ -58,6 +59,7 @@ var YetaWF_Panels;
                     var winHeight = window.innerHeight;
                     var winWidth = window.innerWidth;
                     if (winWidth >= this.SMALLSCREEN) {
+                        window.scrollTo(0, 0);
                         var ctrlRect = this.Control.getBoundingClientRect();
                         var ctrlHeight = winHeight - ctrlRect.top;
                         if (ctrlHeight < 0)
@@ -80,11 +82,16 @@ var YetaWF_Panels;
             else {
                 $YetaWF.elementAddClass(this.Control, "t_expanded");
             }
+            $YetaWF.sendContainerResizeEvent(this.Left);
+            $YetaWF.sendContainerResizeEvent(this.Right);
         };
         SplitterInfoComponent.prototype.collapseSmallScreen = function () {
             var winWidth = window.innerWidth;
-            if (winWidth <= this.SMALLSCREEN)
+            if (winWidth <= this.SMALLSCREEN) {
                 $YetaWF.elementRemoveClass(this.Control, "t_expanded");
+                $YetaWF.sendContainerResizeEvent(this.Left);
+                $YetaWF.sendContainerResizeEvent(this.Right);
+            }
         };
         SplitterInfoComponent.resizeWidth = function (ev) {
             var ctrl = SplitterInfoComponent.ResizeSplitter;
@@ -104,6 +111,8 @@ var YetaWF_Panels;
             document.body.style.cursor = "default";
             window.removeEventListener("mousemove", SplitterInfoComponent.resizeWidth, false);
             window.removeEventListener("mouseup", SplitterInfoComponent.resizeWidthDone, false);
+            $YetaWF.sendContainerResizeEvent(ctrl.Left);
+            $YetaWF.sendContainerResizeEvent(ctrl.Right);
             return false;
         };
         SplitterInfoComponent.TEMPLATE = "yt_panels_splitterinfo";
