@@ -139,10 +139,11 @@ var YetaWF_ComponentsHTML;
             return _this;
         }
         PropertyListComponent.prototype.setLayout = function () {
-            if (window.innerWidth < this.MinWidth) {
+            var winRect = this.Control.getBoundingClientRect();
+            if (winRect.width < this.MinWidth) {
                 this.destroyMasonry();
             }
-            else if (!this.MasonryElem || window.innerWidth !== this.CurrWidth) {
+            else if (!this.MasonryElem || winRect.width !== this.CurrWidth) {
                 var newIndex = this.getColumnDefIndex();
                 if (this.ColumnDefIndex !== newIndex) {
                     this.destroyMasonry();
@@ -212,7 +213,8 @@ var YetaWF_ComponentsHTML;
             }
         };
         PropertyListComponent.prototype.createMasonry = function () {
-            this.CurrWidth = window.innerWidth;
+            var winRect = this.Control.getBoundingClientRect();
+            this.CurrWidth = winRect.width;
             this.ColumnDefIndex = this.getColumnDefIndex();
             var cols = this.Setup.ColumnStyles[this.ColumnDefIndex].Columns;
             $YetaWF.elementAddClass(this.Control, "t_col" + cols);
@@ -263,7 +265,8 @@ var YetaWF_ComponentsHTML;
             }
         };
         PropertyListComponent.prototype.getColumnDefIndex = function () {
-            var width = window.innerWidth;
+            var winRect = this.Control.getBoundingClientRect();
+            var width = winRect.width;
             var index = -1;
             for (var _i = 0, _a = this.Setup.ColumnStyles; _i < _a.length; _i++) {
                 var style = _a[_i];

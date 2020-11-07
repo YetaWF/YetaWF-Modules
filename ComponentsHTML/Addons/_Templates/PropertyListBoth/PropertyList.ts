@@ -218,9 +218,10 @@ namespace YetaWF_ComponentsHTML {
         }
 
         private setLayout(): void {
-            if (window.innerWidth < this.MinWidth) {
+            let winRect = this.Control.getBoundingClientRect();
+            if (winRect.width < this.MinWidth) {
                 this.destroyMasonry();
-            } else if (!this.MasonryElem || window.innerWidth !== this.CurrWidth) {
+            } else if (!this.MasonryElem || winRect.width !== this.CurrWidth) {
                 let newIndex = this.getColumnDefIndex();
                 if (this.ColumnDefIndex !== newIndex) {
                     this.destroyMasonry();
@@ -296,7 +297,8 @@ namespace YetaWF_ComponentsHTML {
         }
 
         private createMasonry(): Masonry {
-            this.CurrWidth = window.innerWidth;
+            let winRect = this.Control.getBoundingClientRect();
+            this.CurrWidth = winRect.width;
             this.ColumnDefIndex = this.getColumnDefIndex();
             let cols = this.Setup.ColumnStyles[this.ColumnDefIndex].Columns;
             $YetaWF.elementAddClass(this.Control, `t_col${cols}`);
@@ -349,7 +351,8 @@ namespace YetaWF_ComponentsHTML {
             }
         }
         private getColumnDefIndex(): number {
-            let width = window.innerWidth;
+            let winRect = this.Control.getBoundingClientRect();
+            let width = winRect.width;
             let index = -1;
             for (let style of this.Setup.ColumnStyles) {
                 if (width < style.MinWindowSize)
