@@ -205,9 +205,11 @@ var YetaWF_ComponentsHTML;
             if (!show)
                 $YetaWF.elementAddClass(form, "yform-nosubmit");
             // show/hide buttons
-            // let buttonList = $YetaWF.getElementsBySelector(".t_detailsbuttons", [form]);
-            // for (let buttons of buttonList)
-            //     buttons.style.display = show ? "block" : "none";
+            var buttonList = $YetaWF.getElementsBySelector(".t_detailsbuttons", [form]);
+            for (var _i = 0, buttonList_1 = buttonList; _i < buttonList_1.length; _i++) {
+                var buttons = buttonList_1[_i];
+                buttons.style.display = show ? "block" : "none";
+            }
         };
         PropertyListComponent.prototype.createMasonry = function () {
             this.CurrWidth = window.innerWidth;

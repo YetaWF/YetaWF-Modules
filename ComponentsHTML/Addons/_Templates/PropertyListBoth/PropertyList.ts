@@ -290,9 +290,9 @@ namespace YetaWF_ComponentsHTML {
             if (!show)
                 $YetaWF.elementAddClass(form, "yform-nosubmit");
             // show/hide buttons
-            // let buttonList = $YetaWF.getElementsBySelector(".t_detailsbuttons", [form]);
-            // for (let buttons of buttonList)
-            //     buttons.style.display = show ? "block" : "none";
+            let buttonList = $YetaWF.getElementsBySelector(".t_detailsbuttons", [form]);
+            for (let buttons of buttonList)
+                buttons.style.display = show ? "block" : "none";
         }
 
         private createMasonry(): Masonry {
