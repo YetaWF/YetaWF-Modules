@@ -54,7 +54,7 @@ var YetaWF_ComponentsHTML;
                         }
                     });
                 }
-                this.Control.style.display = "";
+                this.Control.style.display = "block";
                 this.positionMenu();
                 this.isOpen = true;
             }
