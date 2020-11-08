@@ -16,6 +16,7 @@ using YetaWF.Core.DataProvider;
 using Newtonsoft.Json.Serialization;
 using YetaWF.Modules.ComponentsHTML.Controllers;
 using YetaWF.Modules.ComponentsHTML.Views;
+using YetaWF.Core.Pages;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -984,22 +985,26 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                             continue;// we need a caption if we're using resource redirects
 
                         // Alignment
-                        string alignCss = null;
+                        string tdCss = null;
                         switch (gridCol.Alignment) {
                             case GridHAlignmentEnum.Unspecified:
                             case GridHAlignmentEnum.Left:
-                                alignCss = "tg_left";
+                                tdCss = "tg_left";
                                 break;
                             case GridHAlignmentEnum.Center:
-                                alignCss = "tg_center";
+                                tdCss = "tg_center";
                                 break;
                             case GridHAlignmentEnum.Right:
-                                alignCss = "tg_right";
+                                tdCss = "tg_right";
                                 break;
                         }
 
+                        // Truncate
+                        if (gridCol.Truncate)
+                            tdCss = CssManager.CombineCss(tdCss, "tg_truncate");
+
                         hb.Append($@"
-    <td role='gridcell' class='{alignCss} tg_c_{colName.ToLower()}'>");
+    <td role='gridcell' class='{tdCss} tg_c_{colName.ToLower()}'>");
 
                         if (hbHidden.Length > 0) { // add all hidden fields to first cell
                             hb.Append(hbHidden.ToString());

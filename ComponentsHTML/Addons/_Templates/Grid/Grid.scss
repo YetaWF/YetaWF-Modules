@@ -127,6 +127,10 @@ $smbuttonhorzmargin: 2px;
                         padding:0;
                     }
                 }
+                &.tg_truncate {
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
             }
             th, td {
                 &.tg_left {

@@ -89,6 +89,9 @@
           padding: 2em 0 2em 2ch; }
           .yt_grid .yt_grid .tg_table table td .tg_emptydiv {
             padding: 0; }
+        .yt_grid .tg_table table td.tg_truncate {
+          text-overflow: ellipsis;
+          white-space: nowrap; }
       .yt_grid .tg_table table th.tg_left, .yt_grid .tg_table table td.tg_left {
         text-align: left; }
       .yt_grid .tg_table table th.tg_center, .yt_grid .tg_table table td.tg_center {
