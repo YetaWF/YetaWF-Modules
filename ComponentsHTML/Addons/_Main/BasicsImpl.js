@@ -212,22 +212,26 @@ var YetaWF_ComponentsHTML;
         BasicsImpl.prototype.closeOverlays = function () {
             // Close open bootstrap nav menus (if any) by clicking on the page
             $("body").trigger("click");
-            // Close any open kendo menus (if any)
+            // all MenuUL menus
+            if (YetaWF_ComponentsHTML.MenuULComponent)
+                YetaWF_ComponentsHTML.MenuULComponent.closeMenus();
+            // tooltips
+            ToolTipsHTMLHelper.removeTooltips();
+            // dropdowns
+            if (YetaWF_ComponentsHTML.DropDownListEditComponent)
+                YetaWF_ComponentsHTML.DropDownListEditComponent.closeDropdowns();
+            // Close any open kendo menus (if any) //TODO: This is sloppy and prob unnecessary
             var $menus = $(".k-menu");
             $menus.each(function (index, element) {
                 var menu = $(element).data("kendoMenu");
-                menu.close("li.k-item");
+                if (menu)
+                    menu.close("li.k-item");
             });
             // Close any open smartmenus
             try {
                 $(".YetaWF_Menus").collapse("hide");
             }
             catch (e) { }
-            // tooltips
-            ToolTipsHTMLHelper.removeTooltips();
-            // dropdowns
-            if (YetaWF_ComponentsHTML.DropDownListEditComponent)
-                YetaWF_ComponentsHTML.DropDownListEditComponent.closeDropdowns();
         };
         /**
          * Enable/disable an element.
@@ -289,6 +293,13 @@ var YetaWF_ComponentsHTML;
                 if (!$YetaWF.elementHasClass(elem, "yform-nosubmit"))
                     $YetaWF.elementAddClasses(elem, ["yform-novalidate", "yform-nosubmit-temp", "yform-nosubmit"]);
             }
+        };
+        /**
+         * Given an element, returns the owner (typically a module) that owns the element.
+         * The DOM hierarchy may not reflect this ownership, for example with popup menus which are appended to the <body> tag, but are owned by specific modules.
+         */
+        BasicsImpl.prototype.getOwnerFromTag = function (tag) {
+            return YetaWF_ComponentsHTML.MenuULComponent.getOwnerFromTag(tag);
         };
         /**
          * Returns whether a message popup dialog is currently active.

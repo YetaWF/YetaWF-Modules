@@ -33,4 +33,9 @@
     left:0; top: 0;
     z-index:1500;
     text-align:left;/* in case module has a different default */
+    .yModuleMenuContainer {
+        ul.yModuleMenu {
+            display:none;
+        }
+    }
 }

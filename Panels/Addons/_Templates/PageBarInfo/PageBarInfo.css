@@ -50,8 +50,8 @@
       text-align: center;
       white-space: normal; }
       .yt_panels_pagebarinfo.t_stylesvert .yt_panels_pagebarinfo_list .t_entry {
-        height: initial;
-        width: initial;
+        height: auto;
+        width: auto;
         padding: 7px 2px 0px 2px;
         display: block;
         vertical-align: initial; }
@@ -74,8 +74,8 @@
     white-space: nowrap; }
     .yt_panels_pagebarinfo.t_stylesvert.t_expanded .yt_panels_pagebarinfo_list .t_entry {
       text-align: left;
-      height: initial;
-      width: initial;
+      height: auto;
+      width: auto;
       padding: 5px 2px 5px 1em;
       display: block;
       vertical-align: initial; }

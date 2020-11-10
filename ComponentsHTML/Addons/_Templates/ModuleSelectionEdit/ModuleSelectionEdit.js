@@ -35,6 +35,7 @@ var YetaWF_ComponentsHTML;
             _this.SelectPackage = YetaWF.ComponentBaseDataImpl.getControlFromSelector(".t_packages select", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
             _this.SelectModule = YetaWF.ComponentBaseDataImpl.getControlFromSelector(".t_select select", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
             _this.DivDescription = $YetaWF.getElement1BySelector(".t_description", [_this.Control]);
+            _this.DivEditSettings = $YetaWF.getElement1BySelectorCond(".t_editsettings", [_this.Control]);
             _this.DivLink = $YetaWF.getElement1BySelector(".t_link", [_this.Control]);
             _this.ALink = $YetaWF.getElement1BySelector("a", [_this.DivLink]);
             _this.showDescription();
@@ -57,15 +58,31 @@ var YetaWF_ComponentsHTML;
                 this.ALink.style.display = "inline-block";
                 this.DivDescription.textContent = this.getDescriptionText();
                 this.DivDescription.style.display = "block";
+                if (this.DivEditSettings) {
+                    this.updateEditSettings(modGuid);
+                    this.DivEditSettings.style.display = "block";
+                }
             }
             else {
                 this.ALink.style.display = "none";
                 this.DivDescription.style.display = "none";
                 this.DivDescription.textContent = "";
+                if (this.DivEditSettings)
+                    this.DivEditSettings.style.display = "none";
             }
         };
         ModuleSelectionEditComponent.prototype.getDescriptionText = function () {
             return this.SelectModule.getToolTip(this.SelectModule.selectedIndex);
+        };
+        ModuleSelectionEditComponent.prototype.updateEditSettings = function (modGuid) {
+            if (this.DivEditSettings) {
+                var anchor = $YetaWF.getElement1BySelector("a", [this.DivEditSettings]);
+                var uri = new YetaWF.Url();
+                uri.parse(anchor.href);
+                uri.removeSearch("ModuleGuid");
+                uri.addSearch("ModuleGuid", modGuid);
+                anchor.href = uri.toUrl();
+            }
         };
         Object.defineProperty(ModuleSelectionEditComponent.prototype, "hasValue", {
             // API
@@ -90,10 +107,14 @@ var YetaWF_ComponentsHTML;
             if (enabled && this.hasValue) {
                 this.ALink.style.display = "inline-block";
                 this.DivDescription.style.display = "block";
+                if (this.DivEditSettings)
+                    this.DivEditSettings.style.display = "block";
             }
             else {
                 this.ALink.style.display = "none";
                 this.DivDescription.style.display = "none";
+                if (this.DivEditSettings)
+                    this.DivEditSettings.style.display = "none";
             }
         };
         ModuleSelectionEditComponent.prototype.clear = function () {

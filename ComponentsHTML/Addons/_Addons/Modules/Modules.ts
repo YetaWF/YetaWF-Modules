@@ -4,11 +4,10 @@ namespace YetaWF_ComponentsHTML {
 
     export class MenuHandler {
 
-        public static ClearInterval: number = 0;
-
+        private static ClearInterval: number = 0;
         private static readonly ClearTime: number = 1000;
 
-        public static clearMenus(quick: boolean): void {
+        private static clearMenus(quick: boolean): void {
 
             // clear the interval
             if (MenuHandler.ClearInterval)
@@ -23,13 +22,11 @@ namespace YetaWF_ComponentsHTML {
                 }
             }
 
-            var editIcons = $YetaWF.getElementsBySelector(".yModuleMenuEditIcon");
+            // hide all module menus
+            MenuULComponent.closeMenus();
+            // hide all edit icons
+            let editIcons = $YetaWF.getElementsBySelector(".yModuleMenuEditIcon");
             if (editIcons.length) {
-                var menus = $YetaWF.getElementsBySelector(".yModuleMenu");
-                // hide all module menus
-                for (let menu of menus) {
-                    menu.style.display = "none";
-                }
                 // hide all edit icons
                 for (let editIcon of editIcons) {
                     editIcon.style.display = "none";
@@ -37,79 +34,76 @@ namespace YetaWF_ComponentsHTML {
             }
         }
 
-        public static registerMouseEnterHandlers(): void {
-            var mods = $YetaWF.getElementsBySelector(".yModule");
-            for (let mod of mods) {
-                $YetaWF.registerEventHandler(mod, "mouseenter", null, (ev: MouseEvent): boolean => {
-                    return MenuHandler.onHandleModuleMouseEnter(ev);
-                });
-                $YetaWF.registerEventHandler(mod, "mouseleave", null, (ev: MouseEvent): boolean => {
-                    return MenuHandler.onHandleModuleMouseLeave(ev);
-                });
-            }
-            var editIcons = $YetaWF.getElementsBySelector(".yModuleMenuEditIcon");
-            for (let editIcon of editIcons) {
-                $YetaWF.registerEventHandler(editIcon, "mouseenter", null, (ev: MouseEvent): boolean => {
-                    return MenuHandler.onHandleEditIconMouseEnter(ev);
-                });
-            }
-        }
-        private static onHandleModuleMouseEnter(ev: MouseEvent): boolean {
+        private static registerModuleHandlers(modDiv: HTMLDivElement): void {
 
-            //console.log("Entering module");
-
-            if (MenuHandler.ClearInterval)
-                clearInterval(MenuHandler.ClearInterval);
-            MenuHandler.ClearInterval = 0;
-
-            var modDiv = ev.__YetaWFElem as HTMLDivElement;
-
-            // add a class to the module to identify it's the current module
-            $YetaWF.elementRemoveClass(modDiv, "yModule-current");
-            $YetaWF.elementAddClass(modDiv, "yModule-current");
-
-            // find the module's edit icon
-            var editIcon = $YetaWF.getElement1BySelectorCond(".yModuleMenuEditIcon", [modDiv]);
+            let editIcon = $YetaWF.getElement1BySelectorCond(".yModuleMenuEditIcon", [modDiv]);
             if (editIcon) {
 
-                // entered a new module - clear all module menus that may be open
-                MenuHandler.clearMenus(true);
+                $YetaWF.registerEventHandler(modDiv, "mouseenter", null, (ev: MouseEvent): boolean => {
+                    //console.log("Entering module");
 
-                // fade in edit icon
-                ComponentsHTMLHelper.fadeIn(editIcon, 500);
+                    if (MenuHandler.ClearInterval)
+                        clearInterval(MenuHandler.ClearInterval);
+                    MenuHandler.ClearInterval = 0;
+
+                    // add a class to the module to identify it's the current module
+                    $YetaWF.elementRemoveClass(modDiv, "yModule-current");
+                    $YetaWF.elementAddClass(modDiv, "yModule-current");
+
+                    // find the module's edit icon
+                    let editIcon = $YetaWF.getElement1BySelectorCond(".yModuleMenuEditIcon", [modDiv]);
+                    if (editIcon) {
+
+                        // entered a new module - clear all module menus that may be open
+                        MenuHandler.clearMenus(true);
+
+                        // fade in edit icon
+                        ComponentsHTMLHelper.fadeIn(editIcon, 500);
+                    }
+                    MenuHandler.ClearInterval = setInterval((): void => { MenuHandler.clearMenus(false); }, MenuHandler.ClearTime);
+
+                    return true;
+                });
+                $YetaWF.registerEventHandler(modDiv, "mouseleave", null, (ev: MouseEvent): boolean => {
+                    //console.log("Exiting module");
+
+                    if (MenuHandler.ClearInterval)
+                        clearInterval(MenuHandler.ClearInterval);
+                    MenuHandler.ClearInterval = setInterval((): void => { MenuHandler.clearMenus(false); }, MenuHandler.ClearTime);
+
+                    $YetaWF.elementRemoveClass(modDiv, "yModule-current");
+                    return true;
+                });
+
+                $YetaWF.registerEventHandler(editIcon, "mouseenter", null, (ev: MouseEvent): boolean => {
+                    //console.log("Entering edit icon");
+
+                    // find the module's menu
+                    var menuDiv = $YetaWF.getElement1BySelector(".yModuleMenu", [modDiv]);
+                    let menu = YetaWF_ComponentsHTML.MenuULComponent.getControlFromTagCond<YetaWF_ComponentsHTML.MenuULComponent>(menuDiv, YetaWF_ComponentsHTML.MenuULComponent.SELECTOR);
+                    if (!menu)
+                        menu = new YetaWF_ComponentsHTML.MenuULComponent(menuDiv.id, {"Owner": editIcon!, "AutoOpen": false, "AutoRemove": false, "AttachTo": null });
+                    menu.open();
+                    return true;
+                });
             }
-            MenuHandler.ClearInterval = setInterval((): void => { MenuHandler.clearMenus(false); }, MenuHandler.ClearTime);
-
-            return true;
-        }
-        private static onHandleModuleMouseLeave(ev: MouseEvent): boolean {
-
-            //console.log("Exiting module");
-
-            if (MenuHandler.ClearInterval)
-                clearInterval(MenuHandler.ClearInterval);
-            MenuHandler.ClearInterval = setInterval((): void => { MenuHandler.clearMenus(false); }, MenuHandler.ClearTime);
-
-            var modDiv = ev.__YetaWFElem as HTMLDivElement;
-            $YetaWF.elementRemoveClass(modDiv, "yModule-current");
-
-            return true;
         }
 
-        /** Show/hide menu as we're hovering over the edit icon */
-        private static onHandleEditIconMouseEnter(ev: MouseEvent): boolean {
-
-            //console.log("Entering edit icon");
-
-            var modDiv = ev.__YetaWFElem as HTMLDivElement;
-            // find the module's menu
-            var menu = $YetaWF.getElement1BySelector(".yModuleMenu", [modDiv]);
-
-            menu.style.display = "";
-            return true;
+        public static registerModule(modDiv: HTMLDivElement): void {
+            if (!$YetaWF.getAttributeCond(modDiv, "data-modreg")) {
+                MenuHandler.registerModuleHandlers(modDiv);
+                $YetaWF.setAttribute(modDiv, "data-modreg", "1");// registered
+            }
         }
     }
-    $YetaWF.registerDocumentReady((): void => {
-        MenuHandler.registerMouseEnterHandlers();
+
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: Event): boolean => {
+        if (YVolatile.Basics.EditModeActive) {
+            let modDivs = YetaWF.ModuleBase.getModuleDivs(".yModule");
+            for (let modDiv of modDivs) {
+                MenuHandler.registerModule(modDiv);
+            }
+        }
+        return true;
     });
 }

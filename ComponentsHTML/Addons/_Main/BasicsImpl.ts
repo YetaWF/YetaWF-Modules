@@ -220,16 +220,10 @@ namespace YetaWF_ComponentsHTML {
 
             // Close open bootstrap nav menus (if any) by clicking on the page
             $("body").trigger("click");
-            // Close any open kendo menus (if any)
-            const $menus = $(".k-menu");
-            $menus.each((index: number, element: HTMLElement): void => {
-                const menu = $(element).data("kendoMenu");
-                menu.close("li.k-item");
-            });
-            // Close any open smartmenus
-            try {
-                ($(".YetaWF_Menus") as any).collapse("hide");
-            } catch (e) { }
+
+            // all MenuUL menus
+            if (MenuULComponent)
+                MenuULComponent.closeMenus();
 
             // tooltips
             ToolTipsHTMLHelper.removeTooltips();
@@ -237,6 +231,19 @@ namespace YetaWF_ComponentsHTML {
             // dropdowns
             if (DropDownListEditComponent)
                 DropDownListEditComponent.closeDropdowns();
+
+            // Close any open kendo menus (if any) //TODO: This is sloppy and prob unnecessary
+            const $menus = $(".k-menu");
+            $menus.each((index: number, element: HTMLElement): void => {
+                const menu = $(element).data("kendoMenu");
+                if (menu)
+                    menu.close("li.k-item");
+            });
+
+            // Close any open smartmenus
+            try {
+                ($(".YetaWF_Menus") as any).collapse("hide");
+            } catch (e) { }
         }
         /**
          * Enable/disable an element.
@@ -294,6 +301,14 @@ namespace YetaWF_ComponentsHTML {
                 if (!$YetaWF.elementHasClass(elem, "yform-nosubmit"))
                     $YetaWF.elementAddClasses(elem, ["yform-novalidate", "yform-nosubmit-temp", "yform-nosubmit"]);
             }
+        }
+
+        /**
+         * Given an element, returns the owner (typically a module) that owns the element.
+         * The DOM hierarchy may not reflect this ownership, for example with popup menus which are appended to the <body> tag, but are owned by specific modules.
+         */
+        public getOwnerFromTag(tag: HTMLElement): HTMLElement | null {
+            return MenuULComponent.getOwnerFromTag(tag);
         }
 
         /**

@@ -11,6 +11,7 @@ namespace YetaWF_ComponentsHTML {
     interface TreeSetup {
 
         DragDrop: boolean;
+        ContextMenu: boolean;
 
         HoverCss: string;
         HighlightCss: string;
@@ -49,6 +50,7 @@ namespace YetaWF_ComponentsHTML {
         public static readonly EVENTDBLCLICK: string = "tree_dblclick";
         public static readonly EVENTSELECT: string = "tree_select";
         public static readonly EVENTDROP: string = "tree_drop";
+        public static readonly EVENTCONTEXTMENU: string = "tree_contextmenu";
 
         private Setup: TreeSetup;
 
@@ -72,14 +74,12 @@ namespace YetaWF_ComponentsHTML {
             $YetaWF.registerEventHandler(this.Control, "click", "a.t_entry", (ev: MouseEvent): boolean => {
                 var liElem = $YetaWF.elementClosest(ev.__YetaWFElem, "li") as HTMLLIElement; // get row we're on
                 this.setSelect(liElem);
-                this.sendClickEvent(liElem);
-                return true;
+                return this.sendClickEvent(liElem);
             });
             $YetaWF.registerEventHandler(this.Control, "dblclick", "a.t_entry", (ev: MouseEvent): boolean => {
                 var liElem = $YetaWF.elementClosest(ev.__YetaWFElem, "li") as HTMLLIElement; // get row we're on
                 this.setSelect(liElem);
-                this.sendDblClickEvent(liElem);
-                return true;
+                return this.sendDblClickEvent(liElem);
             });
             $YetaWF.registerEventHandler(this.Control, "dblclick", "a.t_entry", (ev: MouseEvent): boolean => {
                 var liElem = $YetaWF.elementClosest(ev.__YetaWFElem, "li") as HTMLLIElement; // get row we're on
@@ -92,16 +92,12 @@ namespace YetaWF_ComponentsHTML {
             });
             $YetaWF.registerEventHandler(this.Control, "click", "i.t_icdown", (ev: MouseEvent): boolean => {
                 var li = $YetaWF.elementClosest(ev.__YetaWFElem, "li") as HTMLLIElement; // get row we're on
-                setTimeout((): void => {
-                    this.collapse(li);
-                }, 1);
+                this.collapse(li);
                 return false;
             });
             $YetaWF.registerEventHandler(this.Control, "click", "i.t_icright", (ev: MouseEvent): boolean => {
                 var li = $YetaWF.elementClosest(ev.__YetaWFElem, "li") as HTMLLIElement; // get row we're on
-                setTimeout((): void => {
-                    this.expand(li);
-                }, 1);
+                this.expand(li);
                 return false;
             });
             $YetaWF.registerEventHandler(this.Control, "keydown", null, (ev: KeyboardEvent): boolean => {
@@ -161,40 +157,42 @@ namespace YetaWF_ComponentsHTML {
                 } else if (key === "Enter") {
                     var liElem = this.getSelect();
                     if (!liElem) return false;
-                    this.sendClickEvent(liElem);
-                    return false;
+                    return this.sendClickEvent(liElem);
                 }
                 return true;
             });
-        }
-
-        private sendClickEvent(liElem: HTMLLIElement): void {
-            let data = this.getElementDataCond(liElem);
-            if (!data || (!data.UrlNew && !data.UrlContent)) {
-                setTimeout((): void => {
-                    $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTCLICK);
-                }, 1);
-            }
-        }
-        private sendDblClickEvent(liElem: HTMLLIElement): void {
-            let data = this.getElementDataCond(liElem);
-            if (!data || (!data.UrlNew && !data.UrlContent)) {
-                setTimeout((): void => {
-                    $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTDBLCLICK);
-                }, 1);
+            if (this.Setup.ContextMenu) {
+                $YetaWF.registerEventHandler(this.Control, "contextmenu", "a.t_entry", (ev: MouseEvent): boolean => {
+                    var liElem = $YetaWF.elementClosest(ev.__YetaWFElem, "li") as HTMLLIElement; // get row we're on
+                    this.setSelect(liElem);
+                    ev.preventDefault();
+                    return this.sendContextMenuEvent();
+                });
             }
         }
 
+        private sendClickEvent(liElem: HTMLLIElement): boolean {
+            let data = this.getElementDataCond(liElem);
+            if (!data || (!data.UrlNew && !data.UrlContent)) {
+                return $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTCLICK);
+            }
+            return true;
+        }
+        private sendDblClickEvent(liElem: HTMLLIElement): boolean {
+            let data = this.getElementDataCond(liElem);
+            if (!data || (!data.UrlNew && !data.UrlContent)) {
+                return $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTDBLCLICK);
+            }
+            return true;
+        }
         private sendSelectEvent(): void {
-            setTimeout((): void => {
-                $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTSELECT);
-            }, 1);
+            $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTSELECT);
         }
-
         private sendDropEvent(): void {
-            setTimeout((): void => {
-                $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTDROP);
-            }, 1);
+            $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTDROP);
+        }
+        private sendContextMenuEvent(): boolean {
+            return $YetaWF.sendCustomEvent(this.Control, TreeComponent.EVENTCONTEXTMENU);
         }
 
         /* Drag & Drop */
@@ -405,8 +403,10 @@ namespace YetaWF_ComponentsHTML {
             if (ul) {
                 let data = this.getElementDataCond(liElem);
                 if (data && data.DynamicSubEntries) {
+                    $YetaWF.setLoading(true);
                     $YetaWF.processClearDiv(ul);
                     ul.remove();
+                    $YetaWF.setLoading(false);
                 } else {
                     ul.style.display = "none";
                 }
@@ -472,19 +472,19 @@ namespace YetaWF_ComponentsHTML {
                 return null;
             return $YetaWF.elementClosest(ul, "li") as HTMLLIElement | null;
         }
-        public getElementDataCond(liElem: HTMLLIElement): TreeEntry | null {
+        public getElementDataCond<T = TreeEntry>(liElem: HTMLLIElement): T | null {
             let recData = $YetaWF.getAttributeCond(liElem, "data-record");
             if (!recData)
                 return null;
             return JSON.parse(recData);
         }
-        public getElementData(liElem: HTMLLIElement): TreeEntry {
-            let data = this.getElementDataCond(liElem);
+        public getElementData<T = TreeEntry>(liElem: HTMLLIElement): T {
+            let data = this.getElementDataCond<T>(liElem);
             if (!data)
                 throw `No record data for ${liElem.outerHTML}`;
             return data;
         }
-        public setElementData(liElem: HTMLLIElement, data: TreeEntry): void {
+        public setElementData<T = TreeEntry>(liElem: HTMLLIElement, data: T): void {
             $YetaWF.setAttribute(liElem, "data-record", JSON.stringify(data));
         }
         public getEntryFromTagCond(tag: HTMLElement): HTMLLIElement | null {
@@ -505,12 +505,12 @@ namespace YetaWF_ComponentsHTML {
             if (focus === true)
                 entry.focus();
         }
-        public getSelectData(): TreeEntry | null {
+        public getSelectData<T = TreeEntry>(): T | null {
             var liElem = this.getSelect();
             if (!liElem) return null;
             return this.getElementDataCond(liElem);
         }
-        public setSelectData(data: TreeEntry): void {
+        public setSelectData<T = TreeEntry>(data: T): void {
             var liElem = this.getSelect();
             if (!liElem)
                 return;
@@ -660,7 +660,7 @@ namespace YetaWF_ComponentsHTML {
             }
             return liElem;
         }
-        public addEntry(liElem: HTMLLIElement, text: string, data?: TreeEntry): HTMLLIElement {
+        public addEntry<T = TreeEntry>(liElem: HTMLLIElement, text: string, data?: T): HTMLLIElement {
             var text = $YetaWF.htmlEscape(text);
             var entry = this.getNewEntry(text);
             liElem.insertAdjacentHTML("afterend", entry);
@@ -669,7 +669,7 @@ namespace YetaWF_ComponentsHTML {
                 this.setElementData(newElem, data);
             return newElem;
         }
-        public insertEntry(liElem: HTMLLIElement, text: string, data?: TreeEntry): HTMLLIElement {
+        public insertEntry<T = TreeEntry>(liElem: HTMLLIElement, text: string, data?: T): HTMLLIElement {
             var text = $YetaWF.htmlEscape(text);
             var entry = this.getNewEntry(text);
             liElem.insertAdjacentHTML("beforebegin", entry);

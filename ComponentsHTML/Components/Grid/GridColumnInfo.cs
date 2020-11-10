@@ -31,6 +31,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public int PixWidth { get; set; }
         public bool Sortable { get; set; }
         public bool Locked { get; set; }
+        public bool Truncate { get; set; }
         public bool Hidden { get; set; }
         public bool OnlySubmitWhenChecked { get; set; }
         public GridHAlignmentEnum Alignment { get; set; }

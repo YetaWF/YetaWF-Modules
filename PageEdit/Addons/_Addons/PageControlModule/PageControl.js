@@ -31,64 +31,6 @@ var YetaWF_PageEdit;
                 _this.PageControlMod.style.display = "block";
                 ComponentsHTMLHelper.processPropertyListVisible(_this.PageControlMod);
             }
-            // handle Page Settings, Remove Current Page, W3C Validation - this is needed in case we're in a unified page set
-            // in which case the original pageguid and url in the module actions have changed
-            // when a new page becomes active, update the module actions reflecting the new page/url
-            // also update all hidden fields with the new current page guid
-            $YetaWF.addWhenReady(function (tag) {
-                if ($YetaWF.isInPopup()) {
-                    if (YVolatile.Basics.PageControlVisible) {
-                        YVolatile.Basics.PageControlVisible = false;
-                        _this.toggleControlPanel();
-                    }
-                    return;
-                }
-                var pagebutton = $YetaWF.getElementByIdCond("tid_pagecontrolbutton");
-                if (pagebutton) {
-                    if (YVolatile.Basics.TemporaryPage) {
-                        if (YVolatile.Basics.PageControlVisible) {
-                            YVolatile.Basics.PageControlVisible = false;
-                            _this.toggleControlPanel();
-                        }
-                        pagebutton.style.display = "none";
-                    }
-                    else {
-                        pagebutton.style.display = "block";
-                    }
-                }
-                var ps = $YetaWF.getElement1BySelectorCond(".YetaWF_PageEdit_PageControl a[data-name='PageSettings']");
-                if (ps) {
-                    var uri = $YetaWF.parseUrl(ps.href);
-                    uri.removeSearch("PageGuid");
-                    uri.addSearch("PageGuid", YVolatile.Basics.PageGuid);
-                    ps.href = uri.toUrl();
-                }
-                // Export Page
-                var ep = $YetaWF.getElement1BySelectorCond(".YetaWF_PageEdit_PageControl a[data-name='ExportPage']");
-                if (ep) {
-                    var uri = $YetaWF.parseUrl(ep.href);
-                    uri.removeSearch("PageGuid");
-                    uri.addSearch("PageGuid", YVolatile.Basics.PageGuid);
-                    ep.href = uri.toUrl();
-                }
-                // Remove Page
-                var rp = $YetaWF.getElement1BySelectorCond(".YetaWF_PageEdit_PageControl a[data-name='RemovePage']");
-                if (rp) {
-                    var uri = $YetaWF.parseUrl(rp.href);
-                    uri.removeSearch("PageGuid");
-                    uri.addSearch("PageGuid", YVolatile.Basics.PageGuid);
-                    rp.href = uri.toUrl();
-                }
-                // W3C validation
-                var w3c = $YetaWF.getElement1BySelectorCond(".YetaWF_PageEdit_PageControl a[data-name='W3CValidate']");
-                if (w3c)
-                    w3c.href = YConfigs.YetaWF_PageEdit.W3CUrl.format(window.location);
-                var hidden = $YetaWF.getElementsBySelector(".YetaWF_PageEdit_PageControl input[name='CurrentPageGuid'][type='hidden']");
-                for (var _i = 0, hidden_1 = hidden; _i < hidden_1.length; _i++) {
-                    var h = hidden_1[_i];
-                    h.value = YVolatile.Basics.PageGuid;
-                }
-            });
             return _this;
         }
         PageControlModule.prototype.toggleControlPanel = function () {
@@ -104,10 +46,72 @@ var YetaWF_PageEdit;
                 ComponentsHTMLHelper.processPropertyListVisible(this.Module);
             }
         };
+        PageControlModule.prototype.updateControlPanel = function () {
+            if ($YetaWF.isInPopup()) {
+                if (YVolatile.Basics.PageControlVisible) {
+                    YVolatile.Basics.PageControlVisible = false;
+                    this.toggleControlPanel();
+                }
+                return;
+            }
+            var pagebutton = $YetaWF.getElementByIdCond("tid_pagecontrolbutton");
+            if (pagebutton) {
+                if (YVolatile.Basics.TemporaryPage) {
+                    if (YVolatile.Basics.PageControlVisible) {
+                        YVolatile.Basics.PageControlVisible = false;
+                        this.toggleControlPanel();
+                    }
+                    pagebutton.style.display = "none";
+                }
+                else {
+                    pagebutton.style.display = "block";
+                }
+            }
+            var ps = $YetaWF.getElement1BySelectorCond("a[data-name='PageSettings']", [this.Module]);
+            if (ps) {
+                var uri = $YetaWF.parseUrl(ps.href);
+                uri.removeSearch("PageGuid");
+                uri.addSearch("PageGuid", YVolatile.Basics.PageGuid);
+                ps.href = uri.toUrl();
+            }
+            // Export Page
+            var ep = $YetaWF.getElement1BySelectorCond("a[data-name='ExportPage']", [this.Module]);
+            if (ep) {
+                var uri = $YetaWF.parseUrl(ep.href);
+                uri.removeSearch("PageGuid");
+                uri.addSearch("PageGuid", YVolatile.Basics.PageGuid);
+                ep.href = uri.toUrl();
+            }
+            // Remove Page
+            var rp = $YetaWF.getElement1BySelectorCond("a[data-name='RemovePage']", [this.Module]);
+            if (rp) {
+                var uri = $YetaWF.parseUrl(rp.href);
+                uri.removeSearch("PageGuid");
+                uri.addSearch("PageGuid", YVolatile.Basics.PageGuid);
+                rp.href = uri.toUrl();
+            }
+            // W3C validation
+            var w3c = $YetaWF.getElement1BySelectorCond("a[data-name='W3CValidate']", [this.Module]);
+            if (w3c)
+                w3c.href = YConfigs.YetaWF_PageEdit.W3CUrl.format(window.location);
+            var hidden = $YetaWF.getElementsBySelector("input[name='CurrentPageGuid'][type='hidden']", [this.Module]);
+            for (var _i = 0, hidden_1 = hidden; _i < hidden_1.length; _i++) {
+                var h = hidden_1[_i];
+                h.value = YVolatile.Basics.PageGuid;
+            }
+        };
         PageControlModule.SELECTOR = ".YetaWF_PageEdit_PageControl";
         return PageControlModule;
-    }(YetaWF.ModuleBaseNoDataImpl));
+    }(YetaWF.ModuleBaseDataImpl));
     YetaWF_PageEdit.PageControlModule = PageControlModule;
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
+        var mods = YetaWF.ModuleBaseDataImpl.getModules(PageControlModule.SELECTOR);
+        for (var _i = 0, mods_1 = mods; _i < mods_1.length; _i++) {
+            var mod = mods_1[_i];
+            mod.updateControlPanel();
+        }
+        return true;
+    });
 })(YetaWF_PageEdit || (YetaWF_PageEdit = {}));
 
 //# sourceMappingURL=PageControl.js.map

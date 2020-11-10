@@ -17,6 +17,7 @@ namespace YetaWF_ComponentsHTML {
         private SelectPackage: YetaWF_ComponentsHTML.DropDownListEditComponent;
         private SelectModule: YetaWF_ComponentsHTML.DropDownListEditComponent;
         private DivDescription: HTMLDivElement;
+        private DivEditSettings: HTMLDivElement | null;
         private DivLink: HTMLDivElement;
         private ALink: HTMLAnchorElement;
 
@@ -40,6 +41,7 @@ namespace YetaWF_ComponentsHTML {
             this.SelectPackage = YetaWF.ComponentBaseDataImpl.getControlFromSelector(".t_packages select", DropDownListEditComponent.SELECTOR, [this.Control]);
             this.SelectModule = YetaWF.ComponentBaseDataImpl.getControlFromSelector(".t_select select", DropDownListEditComponent.SELECTOR, [this.Control]);
             this.DivDescription = $YetaWF.getElement1BySelector(".t_description", [this.Control]) as HTMLDivElement;
+            this.DivEditSettings = $YetaWF.getElement1BySelectorCond(".t_editsettings", [this.Control]) as HTMLDivElement;
             this.DivLink = $YetaWF.getElement1BySelector(".t_link", [this.Control]) as HTMLDivElement;
             this.ALink = $YetaWF.getElement1BySelector("a", [this.DivLink ]) as HTMLAnchorElement;
 
@@ -64,14 +66,30 @@ namespace YetaWF_ComponentsHTML {
                 this.ALink.style.display = "inline-block";
                 this.DivDescription.textContent = this.getDescriptionText();
                 this.DivDescription.style.display = "block";
+                if (this.DivEditSettings) {
+                    this.updateEditSettings(modGuid);
+                    this.DivEditSettings.style.display = "block";
+                }
             } else {
                 this.ALink.style.display = "none";
                 this.DivDescription.style.display = "none";
                 this.DivDescription.textContent = "";
+                if (this.DivEditSettings)
+                    this.DivEditSettings.style.display = "none";
             }
         }
         private getDescriptionText(): string | null {
             return this.SelectModule.getToolTip(this.SelectModule.selectedIndex);
+        }
+        private updateEditSettings(modGuid: string): void {
+            if (this.DivEditSettings) {
+                let anchor = $YetaWF.getElement1BySelector("a", [this.DivEditSettings]) as HTMLAnchorElement;
+                let uri = new YetaWF.Url();
+                uri.parse(anchor.href);
+                uri.removeSearch("ModuleGuid");
+                uri.addSearch("ModuleGuid", modGuid);
+                anchor.href = uri.toUrl();
+            }
         }
 
         // API
@@ -90,9 +108,13 @@ namespace YetaWF_ComponentsHTML {
             if (enabled && this.hasValue) {
                 this.ALink.style.display = "inline-block";
                 this.DivDescription.style.display = "block";
+                if (this.DivEditSettings)
+                    this.DivEditSettings.style.display = "block";
             } else {
                 this.ALink.style.display = "none";
                 this.DivDescription.style.display = "none";
+                if (this.DivEditSettings)
+                    this.DivEditSettings.style.display = "none";
             }
         }
         public clear(): void {

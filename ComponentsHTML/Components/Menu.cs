@@ -93,19 +93,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             Vertical = 1,
         }
 
-        //public enum AnimationEnum {
-        //    [EnumDescription("Slides up")]
-        //    SlideUp = 0,
-        //    [EnumDescription("Slides down")]
-        //    SlideDown = 1,
-        //    [EnumDescription("Fades in")]
-        //    FadeIn = 2,
-        //    [EnumDescription("Expands up")]
-        //    ExpandsUp = 3,
-        //    [EnumDescription("Expands down")]
-        //    ExpandsDown = 4,
-        //}
-
         /// <summary>
         /// An instance of this class is used as data model for the Menu component.
         /// </summary>
@@ -136,39 +123,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// This is not currently implemented.
             /// </summary>
             public bool ShowPath { get; set; }
-
-            internal string GetDirection() {
-                switch (Direction) {
-                    default: return "default";
-                    case DirectionEnum.Top: return "top";
-                    case DirectionEnum.Bottom: return "bottom";
-                    case DirectionEnum.Left: return "left";
-                    case DirectionEnum.Right: return "right";
-                }
-            }
-            internal string GetOrientation() {
-                switch (Orientation) {
-                    default:
-                    case OrientationEnum.Horizontal: return "horizontal";
-                    case OrientationEnum.Vertical: return "vertical";
-                }
-            }
-            //internal string GetOpenEffects() {
-            //    return GetEffects(OpenAnimation);
-            //}
-            //internal string GetCloseEffects() {
-            //    return GetEffects(CloseAnimation);
-            //}
-            //internal string GetEffects(AnimationEnum anim) {
-            //    switch (anim) {
-            //        default:
-            //        case AnimationEnum.SlideUp: return "slideIn:up";
-            //        case AnimationEnum.SlideDown: return "slideIn:down";
-            //        case AnimationEnum.FadeIn: return "fadeIn";
-            //        case AnimationEnum.ExpandsDown: return "expand:down";
-            //        case AnimationEnum.ExpandsUp: return "expand:up";
-            //    }
-            //}
         }
     }
 
@@ -201,49 +155,26 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 style = Manager.SkinInfo.UsingBootstrap ? MenuStyleEnum.Bootstrap : MenuStyleEnum.Kendo;
 
             if (style == MenuStyleEnum.Bootstrap) {
+
                 string menu = (await CoreRendering.RenderMenuAsync(model.MenuList, DivId, null, RenderEngine: YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.BootstrapSmartMenu, HtmlHelper: HtmlHelper));
                 if (!string.IsNullOrWhiteSpace(menu)) {
                     await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "github.com.vadikom.smartmenus"); // multilevel navbar
                     hb.Append(menu);
                 }
+
             } else {
+
                 string menu = (await CoreRendering.RenderMenuAsync(model.MenuList, DivId, model.CssClass, RenderEngine: YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.KendoMenu, HtmlHelper: HtmlHelper));
                 if (!string.IsNullOrWhiteSpace(menu)) {
+
                     //await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
                     await KendoUICore.AddFileAsync("kendo.menu.min.js");
+
                     hb.Append($@"
-<div class='yt_yetawf_menus_menu t_display' role='navigation'>
+<div id='{ControlId}' class='yt_kendomenu t_display' role='navigation'>
     {menu}
 </div>");
-
-                    ScriptBuilder sb = new ScriptBuilder();
-                    sb.Append($@"
-$('#{DivId}').kendoMenu({{
-    direction: '{model.GetDirection()}',
-    orientation: '{model.GetOrientation()}',
-    popupCollision: 'fit flip',");
-
-                    //if (Module.UseAnimation) {
-                    //    @:  animation: {
-                    //    @:      open: { effects: '@Module.GetOpenEffects()', duration: @Module.OpenDuration },
-                    //    @:      close: { effects: '@Module.GetCloseEffects()', duration: @Module.CloseDuration }
-                    //    @:  },
-                    //},
-
-                    sb.Append($@"
-    hoverDelay: {model.HoverDelay}
-}});");
-
-                    if (model.ShowPath) {
-
-                        sb.Append($@"
-{BeginDocumentReady(DivId)}
-    new YetaWF_ComponentsHTML.MenuDisplayComponent('#{DivId}');
-{EndDocumentReady()}");
-
-                    }
-
-                    Manager.ScriptManager.AddLast(sb.ToString());
+                    Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.MenuComponent('{ControlId}', {{ MenuId: '{DivId}', Style: {(int)style}, Direction: {(int)model.Direction}, Orientation: {(int)model.Orientation}, PopupCollision: 'fit flip', HoverDelay: {model.HoverDelay} }});");
                 }
             }
 

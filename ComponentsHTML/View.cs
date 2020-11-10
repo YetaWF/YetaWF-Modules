@@ -22,6 +22,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     public abstract class YetaWFView : YetaWFViewBase {
 
+        // TODO: REMOVE
         /// <summary>
         /// Adds JavaScript code to execute code between BeginDocumentReady and EndDocumentReady which is
         /// executed once the page is fully loaded (see $YetaWF.addWhenReadyOnce, similar to $(document).ready()).

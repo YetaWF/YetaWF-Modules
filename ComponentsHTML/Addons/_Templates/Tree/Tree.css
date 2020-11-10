@@ -5,8 +5,7 @@
   width: 100%;
   height: inherit;
   font-weight: normal;
-  box-sizing: border-box;
-  overflow: auto; }
+  box-sizing: border-box; }
   .yt_tree .tg_header {
     white-space: nowrap;
     font-size: 11px;
@@ -36,7 +35,8 @@
     font-size: 11px;
     padding: 0;
     list-style-type: none;
-    white-space: nowrap; }
+    white-space: nowrap;
+    line-height: 24px; }
     .yt_tree li a {
       position: relative;
       line-height: 24px;

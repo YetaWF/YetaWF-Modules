@@ -23,103 +23,27 @@ var YetaWF_ComponentsHTML;
                 ChangeEvent: null,
                 GetValue: null,
                 Enable: null,
-            }, false, function (tag, control) {
-                ActionIconsComponent.closeMenusGiven([control.MenuControl]);
-                var menu = $(control.MenuControl).data("kendoMenu");
-                menu.destroy();
-                var btn = $(control.Control).data("kendoButton");
-                btn.destroy();
-                //var list = $YetaWF.getElementsBySelector("ul.yGridActionMenu", [control.Control]);
-                //for (let el of list) {
-                //    var menu = $(el).data("kendoMenu");
-                //    if (!menu) throw "No kendo object found";/*DEBUG*/
-                //    menu.destroy();
-                //}
             }) || this;
             _this.MenuControl = $YetaWF.getElementById(setup.MenuId);
-            var $btn = $(_this.Control).kendoButton(); // kendo use
-            $btn.on("click", function (ev) {
-                var vis = $YetaWF.isVisible(_this.MenuControl);
-                ActionIconsComponent.closeMenus();
-                if (!vis)
+            _this.ButtonControl = YetaWF_ComponentsHTML.DropDownButtonComponent.getControlFromSelector("button", YetaWF_ComponentsHTML.DropDownButtonComponent.SELECTOR, [_this.Control]);
+            $YetaWF.registerCustomEventHandler(_this.ButtonControl, YetaWF_ComponentsHTML.DropDownButtonComponent.CLICKEDEVENT, null, function (ev) {
+                if (!YetaWF_ComponentsHTML.MenuULComponent.closeMenus())
                     _this.openMenu();
-                ev.preventDefault();
                 return false;
             });
-            $(_this.MenuControl).kendoMenu({
-                orientation: "vertical"
-            }).hide();
             return _this;
         }
         ActionIconsComponent.prototype.openMenu = function () {
-            ActionIconsComponent.closeMenus();
-            var $idMenu = $(this.MenuControl);
-            $idMenu.appendTo($("body"));
-            $idMenu.show();
-            ++ActionIconsComponent.menusOpen;
-            this.positionMenu();
-        };
-        ActionIconsComponent.prototype.positionMenu = function () {
-            $YetaWF.positionLeftAlignedBelow(this.Control, this.MenuControl);
-        };
-        ActionIconsComponent.closeMenus = function () {
-            // find all action menus after grid (there really should only be one)
-            var menus = $YetaWF.getElementsBySelector(".yGridActionMenu");
-            ActionIconsComponent.closeMenusGiven(menus);
-        };
-        ActionIconsComponent.closeMenusGiven = function (menus) {
-            ActionIconsComponent.menusOpen = 0;
-            for (var _i = 0, menus_1 = menus; _i < menus_1.length; _i++) {
-                var menu = menus_1[_i];
-                $(menu).hide();
-                var idButton = $YetaWF.getAttribute(menu, "id").replace("_menu", "_btn");
-                var button = $YetaWF.getElementByIdCond(idButton);
-                if (button) { // there can be a case without button if we switched to a new page
-                    $(menu).appendTo(button.parentElement);
-                }
-            }
+            var menuDiv = this.MenuControl.cloneNode(true);
+            menuDiv.id = this.MenuControl.id + "_live";
+            document.body.appendChild(menuDiv);
+            new YetaWF_ComponentsHTML.MenuULComponent(menuDiv.id, { "Owner": this.MenuControl, "AutoOpen": true, "AutoRemove": true, "AttachTo": this.ButtonControl.Control, Dynamic: true });
         };
         ActionIconsComponent.TEMPLATE = "yt_actionicons";
         ActionIconsComponent.SELECTOR = ".yt_actionicons";
-        ActionIconsComponent.menusOpen = 0;
         return ActionIconsComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.ActionIconsComponent = ActionIconsComponent;
-    // Handle clicks elsewhere so we can close the menus
-    $YetaWF.registerMultipleEventHandlersBody(["click", "mousedown"], null, function (ev) {
-        var e = ev;
-        if (e.which !== 1)
-            return true;
-        if (ActionIconsComponent.menusOpen > 0) {
-            var menus = $YetaWF.getElementsBySelector(".yGridActionMenu"); // get all action menus
-            menus = $YetaWF.limitToVisibleOnly(menus);
-            // delay closing to handle the event
-            setTimeout(function () {
-                ActionIconsComponent.closeMenusGiven(menus);
-            }, 300);
-        }
-        return true;
-    });
-    // Handle Escape key to close any open menus
-    $YetaWF.registerEventHandlerBody("keydown", null, function (ev) {
-        if (ev.key !== "Escape")
-            return true;
-        ActionIconsComponent.closeMenus();
-        return true;
-    });
-    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, function (ev) {
-        ActionIconsComponent.closeMenus();
-        return true;
-    });
-    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, function (ev) {
-        ActionIconsComponent.closeMenus();
-        return true;
-    });
-    // last chance - handle a new page (UPS) and close open menus
-    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
-        ActionIconsComponent.closeMenus();
-        return true;
-    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=ActionIcons.js.map

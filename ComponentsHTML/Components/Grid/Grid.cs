@@ -16,6 +16,7 @@ using YetaWF.Core.DataProvider;
 using Newtonsoft.Json.Serialization;
 using YetaWF.Modules.ComponentsHTML.Controllers;
 using YetaWF.Modules.ComponentsHTML.Views;
+using YetaWF.Core.Pages;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -62,7 +63,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public int Pages { get; set; }
         public GridDefinition.SizeStyleEnum SizeStyle { get; internal set; }
         public List<GridColumnDefinition> Columns { get; set; }
-        public string FilterMenusHTML { get; set; }
         public int MinColumnWidth { get; set; }
         public string SaveSettingsColumnWidthsUrl { get; set; }
         public object ExtraData { get; set; }
@@ -123,7 +123,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override async Task IncludeAsync() {
             await Manager.AddOnManager.AddAddOnNamedAsync(YetaWF.Core.Controllers.AreaRegistration.CurrentPackage.AreaName, "fontawesome.com.fontawesome");
             //await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
+
+            // Add required menu support
             await KendoUICore.AddFileAsync("kendo.menu.min.js");
+            await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.Controllers.AreaRegistration.CurrentPackage.AreaName, "MenuUL", ComponentType.Display);
+
             await JqueryUICore.UseAsync();
             await base.IncludeAsync();
         }
@@ -374,7 +378,6 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
 
             HtmlBuilder hb = new HtmlBuilder();
             HtmlBuilder filterhb = new HtmlBuilder();
-            HtmlBuilder hbFilterMenus = new HtmlBuilder();
 
             string cssHead = "";
             if (!gridDef.ShowHeader)
@@ -741,17 +744,12 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 <div class='tg_fclear{buttonCss}'><span class='fas fa-times'></span></div>");
                         }
 
-                        if (filterOp != null)
-                            hbFilterMenus.Append(GetFilterMenu(gridDef, filterOpts, filterOp, idMenu, colIndex));
-
-                        filterhb.Append($@"
-            </div>");
-
                     } else {
                         filterhb.Append($@"
             &nbsp;");
                     }
                     filterhb.Append($@"
+            {(filterOp != null ? GetFilterMenu(gridDef, filterOpts, filterOp, idMenu, colIndex) : null)}
         </th>");
 
                 }
@@ -793,7 +791,6 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             }
 
             setup.HeaderHTML = hb.ToString();
-            setup.FilterMenusHTML += hbFilterMenus.ToString();
         }
 
         private string GetFilterMenu(GridDefinition gridModel, List<GridColumnInfo.FilterOptionEnum> filterOpts, GridColumnInfo.FilterOptionEnum? filterOp, string idMenu, int colIndex) {
@@ -806,16 +803,6 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 hb.Append($"<li data-sel='{(int)option}'{liCss}><span class='t_fmenuicon'>{HE(icon)}</span><span class='t_fmenutext'>{HE(text)}</span></li>");
             }
             hb.Append("</ul>");
-
-            // The <script> below is sent to client-side code where it is added, do not add to page server-side
-            hb.Append($@"
-<script>
-    $('#{idMenu}').kendoMenu({{
-        orientation: 'vertical',
-        select: function(ev) {{ YetaWF_ComponentsHTML.Grid.menuSelected(ev.item, {colIndex}); }}
-    }});
-</script>");// JQuery/Kendo UI Use
-
             return hb.ToString();
         }
 
@@ -998,22 +985,26 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                             continue;// we need a caption if we're using resource redirects
 
                         // Alignment
-                        string alignCss = null;
+                        string tdCss = null;
                         switch (gridCol.Alignment) {
                             case GridHAlignmentEnum.Unspecified:
                             case GridHAlignmentEnum.Left:
-                                alignCss = "tg_left";
+                                tdCss = "tg_left";
                                 break;
                             case GridHAlignmentEnum.Center:
-                                alignCss = "tg_center";
+                                tdCss = "tg_center";
                                 break;
                             case GridHAlignmentEnum.Right:
-                                alignCss = "tg_right";
+                                tdCss = "tg_right";
                                 break;
                         }
 
+                        // Truncate
+                        if (gridCol.Truncate)
+                            tdCss = CssManager.CombineCss(tdCss, "tg_truncate");
+
                         hb.Append($@"
-    <td role='gridcell' class='{alignCss} tg_c_{colName.ToLower()}'>");
+    <td role='gridcell' class='{tdCss} tg_c_{colName.ToLower()}'>");
 
                         if (hbHidden.Length > 0) { // add all hidden fields to first cell
                             hb.Append(hbHidden.ToString());

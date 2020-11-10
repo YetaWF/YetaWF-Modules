@@ -89,6 +89,9 @@
           padding: 2em 0 2em 2ch; }
           .yt_grid .yt_grid .tg_table table td .tg_emptydiv {
             padding: 0; }
+        .yt_grid .tg_table table td.tg_truncate {
+          text-overflow: ellipsis;
+          white-space: nowrap; }
       .yt_grid .tg_table table th.tg_left, .yt_grid .tg_table table td.tg_left {
         text-align: left; }
       .yt_grid .tg_table table th.tg_center, .yt_grid .tg_table table td.tg_center {
@@ -138,14 +141,13 @@
       -webkit-transform: translateY(-50%);
               transform: translateY(-50%); }
 
-.yt_grid_menus ul.k-menu {
-  position: absolute;
-  z-index: 4000;
-  font-size: 10px; }
-  .yt_grid_menus ul.k-menu .t_fmenuicon {
+ul.yt_grid_menu {
+  font-size: 10px;
+  overflow: auto; }
+  ul.yt_grid_menu .t_fmenuicon {
     display: inline-block;
     width: 4ch; }
-  .yt_grid_menus ul.k-menu .t_fmenutext {
+  ul.yt_grid_menu .t_fmenutext {
     display: inline-block; }
 
 .yt_grid.tg_skin {

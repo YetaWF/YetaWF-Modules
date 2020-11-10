@@ -21,8 +21,9 @@ var YetaWF_DevTests;
             var _this = _super.call(this, id, TemplateProgressBarModule.SELECTOR, null) || this;
             _this.ProgressBar = YetaWF.ComponentBaseDataImpl.getControlFromSelector(".t_row.t_bar " + YetaWF_ComponentsHTML.ProgressBarComponent.SELECTOR, YetaWF_ComponentsHTML.ProgressBarComponent.SELECTOR, [_this.Module]);
             _this.Value = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='Value']", YetaWF_ComponentsHTML.IntValueEditComponent.SELECTOR, [_this.Module]);
-            $YetaWF.registerCustomEventHandler(_this.Value, YetaWF_ComponentsHTML.IntValueEditComponent.EVENT, function (ev) {
+            $YetaWF.registerCustomEventHandler(_this.Value, YetaWF_ComponentsHTML.IntValueEditComponent.EVENT, null, function (ev) {
                 _this.ProgressBar.value = _this.Value.value;
+                return false;
             });
             return _this;
         }

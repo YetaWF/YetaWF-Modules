@@ -17,85 +17,80 @@ var YetaWF_ComponentsHTML;
                     return;
                 }
             }
+            // hide all module menus
+            YetaWF_ComponentsHTML.MenuULComponent.closeMenus();
+            // hide all edit icons
             var editIcons = $YetaWF.getElementsBySelector(".yModuleMenuEditIcon");
             if (editIcons.length) {
-                var menus = $YetaWF.getElementsBySelector(".yModuleMenu");
-                // hide all module menus
-                for (var _i = 0, menus_1 = menus; _i < menus_1.length; _i++) {
-                    var menu = menus_1[_i];
-                    menu.style.display = "none";
-                }
                 // hide all edit icons
-                for (var _a = 0, editIcons_1 = editIcons; _a < editIcons_1.length; _a++) {
-                    var editIcon = editIcons_1[_a];
+                for (var _i = 0, editIcons_1 = editIcons; _i < editIcons_1.length; _i++) {
+                    var editIcon = editIcons_1[_i];
                     editIcon.style.display = "none";
                 }
             }
         };
-        MenuHandler.registerMouseEnterHandlers = function () {
-            var mods = $YetaWF.getElementsBySelector(".yModule");
-            for (var _i = 0, mods_1 = mods; _i < mods_1.length; _i++) {
-                var mod = mods_1[_i];
-                $YetaWF.registerEventHandler(mod, "mouseenter", null, function (ev) {
-                    return MenuHandler.onHandleModuleMouseEnter(ev);
-                });
-                $YetaWF.registerEventHandler(mod, "mouseleave", null, function (ev) {
-                    return MenuHandler.onHandleModuleMouseLeave(ev);
-                });
-            }
-            var editIcons = $YetaWF.getElementsBySelector(".yModuleMenuEditIcon");
-            for (var _a = 0, editIcons_2 = editIcons; _a < editIcons_2.length; _a++) {
-                var editIcon = editIcons_2[_a];
-                $YetaWF.registerEventHandler(editIcon, "mouseenter", null, function (ev) {
-                    return MenuHandler.onHandleEditIconMouseEnter(ev);
-                });
-            }
-        };
-        MenuHandler.onHandleModuleMouseEnter = function (ev) {
-            //console.log("Entering module");
-            if (MenuHandler.ClearInterval)
-                clearInterval(MenuHandler.ClearInterval);
-            MenuHandler.ClearInterval = 0;
-            var modDiv = ev.__YetaWFElem;
-            // add a class to the module to identify it's the current module
-            $YetaWF.elementRemoveClass(modDiv, "yModule-current");
-            $YetaWF.elementAddClass(modDiv, "yModule-current");
-            // find the module's edit icon
+        MenuHandler.registerModuleHandlers = function (modDiv) {
             var editIcon = $YetaWF.getElement1BySelectorCond(".yModuleMenuEditIcon", [modDiv]);
             if (editIcon) {
-                // entered a new module - clear all module menus that may be open
-                MenuHandler.clearMenus(true);
-                // fade in edit icon
-                ComponentsHTMLHelper.fadeIn(editIcon, 500);
+                $YetaWF.registerEventHandler(modDiv, "mouseenter", null, function (ev) {
+                    //console.log("Entering module");
+                    if (MenuHandler.ClearInterval)
+                        clearInterval(MenuHandler.ClearInterval);
+                    MenuHandler.ClearInterval = 0;
+                    // add a class to the module to identify it's the current module
+                    $YetaWF.elementRemoveClass(modDiv, "yModule-current");
+                    $YetaWF.elementAddClass(modDiv, "yModule-current");
+                    // find the module's edit icon
+                    var editIcon = $YetaWF.getElement1BySelectorCond(".yModuleMenuEditIcon", [modDiv]);
+                    if (editIcon) {
+                        // entered a new module - clear all module menus that may be open
+                        MenuHandler.clearMenus(true);
+                        // fade in edit icon
+                        ComponentsHTMLHelper.fadeIn(editIcon, 500);
+                    }
+                    MenuHandler.ClearInterval = setInterval(function () { MenuHandler.clearMenus(false); }, MenuHandler.ClearTime);
+                    return true;
+                });
+                $YetaWF.registerEventHandler(modDiv, "mouseleave", null, function (ev) {
+                    //console.log("Exiting module");
+                    if (MenuHandler.ClearInterval)
+                        clearInterval(MenuHandler.ClearInterval);
+                    MenuHandler.ClearInterval = setInterval(function () { MenuHandler.clearMenus(false); }, MenuHandler.ClearTime);
+                    $YetaWF.elementRemoveClass(modDiv, "yModule-current");
+                    return true;
+                });
+                $YetaWF.registerEventHandler(editIcon, "mouseenter", null, function (ev) {
+                    //console.log("Entering edit icon");
+                    // find the module's menu
+                    var menuDiv = $YetaWF.getElement1BySelector(".yModuleMenu", [modDiv]);
+                    var menu = YetaWF_ComponentsHTML.MenuULComponent.getControlFromTagCond(menuDiv, YetaWF_ComponentsHTML.MenuULComponent.SELECTOR);
+                    if (!menu)
+                        menu = new YetaWF_ComponentsHTML.MenuULComponent(menuDiv.id, { "Owner": editIcon, "AutoOpen": false, "AutoRemove": false, "AttachTo": null });
+                    menu.open();
+                    return true;
+                });
             }
-            MenuHandler.ClearInterval = setInterval(function () { MenuHandler.clearMenus(false); }, MenuHandler.ClearTime);
-            return true;
         };
-        MenuHandler.onHandleModuleMouseLeave = function (ev) {
-            //console.log("Exiting module");
-            if (MenuHandler.ClearInterval)
-                clearInterval(MenuHandler.ClearInterval);
-            MenuHandler.ClearInterval = setInterval(function () { MenuHandler.clearMenus(false); }, MenuHandler.ClearTime);
-            var modDiv = ev.__YetaWFElem;
-            $YetaWF.elementRemoveClass(modDiv, "yModule-current");
-            return true;
-        };
-        /** Show/hide menu as we're hovering over the edit icon */
-        MenuHandler.onHandleEditIconMouseEnter = function (ev) {
-            //console.log("Entering edit icon");
-            var modDiv = ev.__YetaWFElem;
-            // find the module's menu
-            var menu = $YetaWF.getElement1BySelector(".yModuleMenu", [modDiv]);
-            menu.style.display = "";
-            return true;
+        MenuHandler.registerModule = function (modDiv) {
+            if (!$YetaWF.getAttributeCond(modDiv, "data-modreg")) {
+                MenuHandler.registerModuleHandlers(modDiv);
+                $YetaWF.setAttribute(modDiv, "data-modreg", "1"); // registered
+            }
         };
         MenuHandler.ClearInterval = 0;
         MenuHandler.ClearTime = 1000;
         return MenuHandler;
     }());
     YetaWF_ComponentsHTML.MenuHandler = MenuHandler;
-    $YetaWF.registerDocumentReady(function () {
-        MenuHandler.registerMouseEnterHandlers();
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
+        if (YVolatile.Basics.EditModeActive) {
+            var modDivs = YetaWF.ModuleBase.getModuleDivs(".yModule");
+            for (var _i = 0, modDivs_1 = modDivs; _i < modDivs_1.length; _i++) {
+                var modDiv = modDivs_1[_i];
+                MenuHandler.registerModule(modDiv);
+            }
+        }
+        return true;
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 

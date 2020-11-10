@@ -68,7 +68,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override async Task IncludeAsync() {
             //await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
             await KendoUICore.AddFileAsync("kendo.button.min.js");
+
+            // Add required menu support
             await KendoUICore.AddFileAsync("kendo.menu.min.js");
+            await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.Controllers.AreaRegistration.CurrentPackage.AreaName, "MenuUL", ComponentType.Display);
+
             await base.IncludeAsync();
         }
 
@@ -98,25 +102,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 {await CoreRendering.RenderMenuAsync(model, null, Addons.Templates.ActionIcons.CssActionIcons, HtmlHelper: HtmlHelper)}");
                     break;
 
-                case Grid.GridActionsEnum.DropdownMenu: {
-                        model.RenderMode = ModuleAction.RenderModeEnum.NormalMenu;
-                        string buttonId = ControlId + "_btn";
-                        ActionIconsSetup setup = new ActionIconsSetup {
-                            MenuId = ControlId + "_menu",
-                        };
-                        string menuHTML = await CoreRendering.RenderMenuAsync(model, setup.MenuId, Globals.CssGridActionMenu, HtmlHelper: HtmlHelper, Hidden: true);
-
-                        if (!string.IsNullOrWhiteSpace(menuHTML)) {
-                            hb.Append($@"
-<button id='{buttonId}' type='button' class='yt_actionicons'>
-    {HE(__ResStr("dropdownText", "Manage"))}<span class='k-icon k-i-arrow-60-down'></span>
-    {menuHTML}
-</button>");
-                            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ActionIconsComponent('{buttonId}', {Utility.JsonSerialize(setup)});");
-                        }
-                        break;
-                    }
+                case Grid.GridActionsEnum.DropdownMenu:
                 case Grid.GridActionsEnum.Mini: {
+
                         model.RenderMode = ModuleAction.RenderModeEnum.NormalMenu;
                         string buttonId = ControlId + "_btn";
                         ActionIconsSetup setup = new ActionIconsSetup {
@@ -125,14 +113,24 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         string menuHTML = await CoreRendering.RenderMenuAsync(model, setup.MenuId, Globals.CssGridActionMenu, HtmlHelper: HtmlHelper, Hidden: true);
 
                         if (!string.IsNullOrWhiteSpace(menuHTML)) {
+
+                            DropDownButtonComponent.Model ddModel = new DropDownButtonComponent.Model {
+                                Text = __ResStr("dropdownText", "Manage"),
+                                Tooltip = null,
+                                ButtonId = buttonId,
+                                MenuHTML = menuHTML,
+                                Mini = false,
+                            };
+
                             hb.Append($@"
-<button id='{buttonId}' href='#' class='yt_actionicons t_mini'><span class='k-icon k-i-arrow-60-down'></span>
-    {menuHTML}
-</button>");
-                            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ActionIconsComponent('{buttonId}', {Utility.JsonSerialize(setup)});");
+<div class='yt_actionicons{(actionStyle == Grid.GridActionsEnum.Mini ? " t_mini" : "")}' id='{ControlId}'>
+    {await HtmlHelper.ForDisplayContainerAsync(ddModel, DropDownButtonComponent.TemplateName)}
+</div>");
+
+                            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ActionIconsComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
                         }
-                        break;
                     }
+                    break;
             }
             return hb.ToString();
         }

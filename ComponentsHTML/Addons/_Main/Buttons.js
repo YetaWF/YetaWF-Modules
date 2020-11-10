@@ -18,7 +18,7 @@ var YetaWF_ComponentsHTML;
                 buttons = $YetaWF.getElementsBySelector("button", [tag]);
                 for (var _a = 0, buttons_2 = buttons; _a < buttons_2.length; _a++) {
                     var button = buttons_2[_a];
-                    if (!$YetaWF.elementHasClass(button, "y_jqueryui") && !$YetaWF.elementHasClass(button, "btn") && !$YetaWF.elementHasClass(button, "yt_actionicons"))
+                    if (!$YetaWF.elementHasClass(button, "y_jqueryui") && !$YetaWF.elementHasClass(button, "btn") && !$YetaWF.elementHasClass(button, "yt_dropdownbutton"))
                         $YetaWF.elementAddClasses(button, ["btn"]);
                 }
                 // explicitly marked for jquery

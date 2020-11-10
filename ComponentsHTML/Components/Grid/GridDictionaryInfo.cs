@@ -164,6 +164,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                             else if (string.Compare(part, "center", true) == 0) gridCol.Alignment = GridHAlignmentEnum.Center;
                             else if (string.Compare(part, "right", true) == 0) gridCol.Alignment = GridHAlignmentEnum.Right;
                             else if (string.Compare(part, "hidden", true) == 0) gridCol.Hidden = true;
+                            else if (string.Compare(part, "truncate", true) == 0) gridCol.Truncate = true;
                             else if (string.Compare(part, "onlysubmitwhenchecked", true) == 0) gridCol.OnlySubmitWhenChecked = true;
                             else if (string.Compare(part, "icons", true) == 0) {
                                 int n = GetNextNumber(parts, i, part, file, name);

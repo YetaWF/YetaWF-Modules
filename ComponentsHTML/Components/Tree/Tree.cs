@@ -75,6 +75,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     internal class TreeSetup {
 
         public bool DragDrop { get; set; } // Supports drag & drop
+        public bool ContextMenu { get; set; } // Supports context menu
 
         public string HoverCss { get; set; }
         public string HighlightCss { get; set; }
@@ -158,7 +159,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            if (treeModel.ShowHeader) {
+            if (treeModel.ShowHeader && treeModel.Header != null) {
 
                 PropertyData prop = ObjectSupport.GetPropertyData(treeModel.RecordType, nameof(TreeEntry.Text));
                 // Caption
@@ -166,9 +167,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (string.IsNullOrWhiteSpace(caption))
                     caption = prop.GetCaption(null);
                 // Description
-                string description = treeModel.HeaderTooltip.ToString();
-                if (string.IsNullOrWhiteSpace(description))
-                    description = prop.GetDescription(null);
+                string description = null;
+                if (treeModel.HeaderTooltip != null) {
+                    description = treeModel.HeaderTooltip.ToString();
+                    if (string.IsNullOrWhiteSpace(description))
+                        description = prop.GetDescription(null);
+                }
 
                 string alignCss = "tg_left";
 
@@ -356,6 +360,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         internal static TreeSetup GetTreeSetup(TreeDefinition treeModel) {
             TreeSetup setup = new TreeSetup() {
                 DragDrop = treeModel.DragDrop,
+                ContextMenu = treeModel.ContextMenu,
                 HoverCss = treeModel.UseSkinFormatting ? "ui-state-hover" : "tg_hover",
                 HighlightCss = treeModel.UseSkinFormatting ? "ui-state-highlight" : "tg_highlight",
                 DisabledCss = treeModel.UseSkinFormatting ? "ui-state-disabled" : "tg_disabled",

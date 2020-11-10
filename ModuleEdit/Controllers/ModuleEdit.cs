@@ -63,22 +63,22 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
 
             // we need to find the real type of the module for data binding
             ModuleDefinition origModule = await ModuleDefinition.LoadAsync(model.ModuleGuid);
-            await ObjectSupport.HandlePropertyAsync<List<PageDefinition>>(nameof(ModuleDefinition.Pages), nameof(ModuleDefinition.__GetPagesAsync), origModule);
 
-            ModuleDefinition mod = (ModuleDefinition)await GetObjectFromModelAsync(origModule.GetType(), nameof(model.Module));
-            if (!ModelState.IsValid)
-                return PartialView(model);
-
-            mod.CustomValidation(ModelState, "Module.");
-            if (!ModelState.IsValid)
-                return PartialView(model);
-
-            model.Module = mod;
-            await model.UpdateDataAsync();
-            Manager.CurrentModuleEdited = model.Module;
-
+            model.Module = (ModuleDefinition)await GetObjectFromModelAsync(origModule.GetType(), nameof(model.Module));
             ObjectSupport.CopyData(origModule, model.Module, ReadOnly: true); // update read only properties in model in case there is an error
             ObjectSupport.CopyDataFromOriginal(origModule, model.Module);
+            await ObjectSupport.HandlePropertyAsync<List<PageDefinition>>(nameof(ModuleDefinition.Pages), nameof(ModuleDefinition.__GetPagesAsync), model.Module);
+
+            Manager.CurrentModuleEdited = model.Module;
+
+            if (!ModelState.IsValid)
+                return PartialView(model);
+
+            model.Module.CustomValidation(ModelState, "Module.");
+            if (!ModelState.IsValid)
+                return PartialView(model);
+
+            await model.UpdateDataAsync();
 
             // copy/save
             model.Module.Temporary = false;

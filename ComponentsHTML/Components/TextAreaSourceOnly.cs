@@ -124,6 +124,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// public string Comment { get; set; }
     /// </example>
     [UsesAdditional("EmHeight", "int", "10", "Defines the height of the component in lines of text.")]
+    [UsesAdditional("Spellcheck", "boolean", "true", "Defines whether spell checking is on/off for the text area.")]
     [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
     public class TextAreaSourceOnlyEditComponent : TextAreaSourceOnlyComponentBase, IYetaWFComponent<object> {
 
@@ -147,6 +148,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 text = (string)model;
 
             int emHeight = PropData.GetAdditionalAttributeValue("EmHeight", 10);
+            bool spellcheck = PropData.GetAdditionalAttributeValue("Spellcheck", true);
 
             string placeHolder;
             TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out placeHolder);
@@ -160,6 +162,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Normal);
             tag.Attributes.Add("id", ControlId);
             tag.Attributes.Add("rows", emHeight.ToString());
+            tag.Attributes.Add("spellcheck", spellcheck ? "true": "false");
             if (placeHolder != null)
                 tag.Attributes.Add("placeholder", placeHolder);
 

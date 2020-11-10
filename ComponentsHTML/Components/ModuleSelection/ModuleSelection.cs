@@ -56,7 +56,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Displays module information based on the model. The model defines the module Guid for which information is displayed. 
+    /// Displays module information based on the model. The model defines the module Guid for which information is displayed.
     /// </summary>
     /// <example>
     /// [Caption("Selected Module"), Description("The current module")]
@@ -125,7 +125,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Allows selection of a new or existing module using a dropdown list. The model defines the new or existing module Guid. 
+    /// Allows selection of a new or existing module using a dropdown list. The model defines the new or existing module Guid.
     /// An entry "(select)" with value Guid.Empty is always inserted as the first item in the dropdown list.
     /// </summary>
     /// <example>
@@ -134,6 +134,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// public Guid SelectedModule { get; set; }
     /// </example>
     [UsesAdditional("New", "bool", "false", "Defines whether selection of new modules (to be created) is possible in which case all available modules are shown in the dropdown list. Otherwise only existing, designed modules are listed.")]
+    [UsesAdditional("EditSettings", "bool", "false", "Defines whether a link to edit module settings is available")]
     public class ModuleSelectionEditComponent : ModuleSelectionComponentBase, IYetaWFComponent<Guid?> {
 
         /// <summary>
@@ -157,6 +158,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             [UIHint("ModuleSelectionModuleExisting")]
             [Caption("Module"), Description("Select one of the available modules"), AdditionalMetadata("Disable1OrLess", false)]
             public Guid? Module { get; set; }
+            [UIHint("ModuleAction"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.NormalLinks)]
+            public ModuleAction ModuleAction { get; set; }
         }
 
         internal class Setup {
@@ -174,6 +177,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hb = new HtmlBuilder();
 
             bool newMods = PropData.GetAdditionalAttributeValue("New", false);
+            bool useEditMod = false;
+            Guid? editGuid = null;
 
             ModuleSelectionUINew uiNew = null;
             ModuleSelectionUIExisting uiExisting = null;
@@ -186,6 +191,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 uiExisting = new ModuleSelectionUIExisting {
                     Package = model,
                     Module = model,
+                    ModuleAction = null,
                 };
             }
             Setup setup = new Setup {
@@ -232,15 +238,32 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         {await HtmlHelper.ForLabelAsync(uiExisting, nameof(uiExisting.Module))}
         {await HtmlHelper.ForEditAsync(uiExisting, nameof(uiExisting.Module))}");
 
+                    useEditMod = PropData.GetAdditionalAttributeValue("EditSettings", false);
+
                 }
             }
+
             hb.Append($@"
     </div>
     <div class='t_link'>
         {GetModuleLink(model, force: true)}
     </div>
     <div class='t_description'>
-    </div>
+    </div>");
+
+            if (useEditMod) {
+                ModuleDefinition modSettings = await ModuleDefinition.LoadAsync(Manager.CurrentSite.ModuleEditingServices, AllowNone: true);
+                if (modSettings != null) {
+                    uiExisting.ModuleAction = await modSettings.GetModuleActionAsync("SettingsGenerate", editGuid);// force moduleaction
+
+                    hb.Append($@"
+    <div class='t_editsettings'>
+        {await HtmlHelper.ForDisplayAsync(uiExisting, nameof(uiExisting.ModuleAction))}
+    </div>");
+                }
+            }
+
+            hb.Append($@"
 </div>");
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ModuleSelectionEditComponent('{DivId}', {Utility.JsonSerialize(setup)});");

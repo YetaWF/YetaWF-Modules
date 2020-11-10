@@ -83,8 +83,8 @@ $large-screen: 1500px;
                 text-align:center;
                 white-space: normal;
                 .t_entry {
-                    height: initial;
-                    width: initial;
+                    height: auto;
+                    width: auto;
                     padding:7px 2px 0px 2px;
                     display:block;
                     vertical-align:initial;
@@ -116,8 +116,8 @@ $large-screen: 1500px;
 
                 .t_entry {
                     text-align:left;
-                    height: initial;
-                    width: initial;
+                    height: auto;
+                    width: auto;
                     padding:5px 2px 5px 1em;
                     display:block;
                     vertical-align:initial;

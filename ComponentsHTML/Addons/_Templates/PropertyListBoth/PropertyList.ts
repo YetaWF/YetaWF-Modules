@@ -185,8 +185,9 @@ namespace YetaWF_ComponentsHTML {
                             if (!item.ChangeEvent)
                                 throw `No ChangeEvent for control type ${item.ControlType}`;
                             let control = $YetaWF.getObjectData(item.Template) as YetaWF.ComponentBaseDataImpl;
-                            $YetaWF.registerCustomEventHandler(control, item.ChangeEvent, (evt: Event): void => {
+                            $YetaWF.registerCustomEventHandler(control, item.ChangeEvent, null, (evt: Event): boolean => {
                                 this.update();
+                                return false;
                             });
                             break;
                     }
@@ -195,15 +196,16 @@ namespace YetaWF_ComponentsHTML {
 
             // Initialize initial form
             this.update();
+            this.resize();
 
-            $YetaWF.registerCustomEventHandler(this, "propertylist_relayout", (ev: Event): boolean => {
+            $YetaWF.registerCustomEventHandler(this, "propertylist_relayout", null, (ev: Event): boolean => {
                 this.layout();
                 return false;
             });
             /**
              * Collapse whichever box is expanded
              */
-            $YetaWF.registerCustomEventHandler(this, "propertylist_collapse", (ev: Event): boolean => {
+            $YetaWF.registerCustomEventHandler(this, "propertylist_collapse", null, (ev: Event): boolean => {
                 this.setLayout();
                 let box = $YetaWF.getElement1BySelectorCond(".t_propexpanded", [this.Control]);
                 if (box) {
@@ -216,9 +218,10 @@ namespace YetaWF_ComponentsHTML {
         }
 
         private setLayout(): void {
-            if (window.innerWidth < this.MinWidth) {
+            let winRect = this.Control.getBoundingClientRect();
+            if (winRect.width < this.MinWidth) {
                 this.destroyMasonry();
-            } else if (!this.MasonryElem || window.innerWidth !== this.CurrWidth) {
+            } else if (!this.MasonryElem || winRect.width !== this.CurrWidth) {
                 let newIndex = this.getColumnDefIndex();
                 if (this.ColumnDefIndex !== newIndex) {
                     this.destroyMasonry();
@@ -294,7 +297,8 @@ namespace YetaWF_ComponentsHTML {
         }
 
         private createMasonry(): Masonry {
-            this.CurrWidth = window.innerWidth;
+            let winRect = this.Control.getBoundingClientRect();
+            this.CurrWidth = winRect.width;
             this.ColumnDefIndex = this.getColumnDefIndex();
             let cols = this.Setup.ColumnStyles[this.ColumnDefIndex].Columns;
             $YetaWF.elementAddClass(this.Control, `t_col${cols}`);
@@ -347,7 +351,8 @@ namespace YetaWF_ComponentsHTML {
             }
         }
         private getColumnDefIndex(): number {
-            let width = window.innerWidth;
+            let winRect = this.Control.getBoundingClientRect();
+            let width = winRect.width;
             let index = -1;
             for (let style of this.Setup.ColumnStyles) {
                 if (width < style.MinWindowSize)
@@ -587,7 +592,7 @@ namespace YetaWF_ComponentsHTML {
                 list.resize();
             }
         }
-        return false;
+        return true;
     });
 
 }

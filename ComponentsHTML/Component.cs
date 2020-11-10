@@ -193,33 +193,5 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // component, so we need to prefix the child component field name with the parent field name
             return HtmlHelper.ValidationMessage(containerFieldPrefix, fieldName);
         }
-
-        /// <summary>
-        /// Adds JavaScript code to execute code between BeginDocumentReady and EndDocumentReady which is
-        /// executed once the page is fully loaded (see $YetaWF.addWhenReadyOnce, similar to $(document).ready()).
-        /// </summary>
-        /// <remarks>This pattern should not be used and will be discontinued.</remarks>
-        /// <param name="id">The ID of the HTML element.</param>
-        /// <returns>The Javascript code.</returns>
-        protected string BeginDocumentReady(string id = null) {
-            if (string.IsNullOrWhiteSpace(id)) {
-                DocCloseParen = 0;
-                return "$YetaWF.addWhenReadyOnce(function (tag) {";
-            } else {
-                DocCloseParen = 1;
-                return $@"$YetaWF.addWhenReadyOnce(function (tag) {{ if ($(tag).has('#{id}').length > 0) {{";
-            }
-        }
-        private int DocCloseParen;
-
-        /// <summary>
-        /// Ends a JavaScript code section started by BeginDocumentReady, which contains JavaScript code to execute once
-        /// the page is fully loaded (see $YetaWF.addWhenReadyOnce, similar to $(document).ready()).
-        /// </summary>
-        /// <remarks>This pattern should not be used and will be discontinued.</remarks>
-        /// <returns>The Javascript code.</returns>
-        protected string EndDocumentReady() {
-            return (DocCloseParen > 0 ? "}" : "") + "});";
-        }
     }
 }

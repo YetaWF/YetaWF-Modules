@@ -31,3 +31,5 @@
   z-index: 1500;
   text-align: left;
   /* in case module has a different default */ }
+  .yModuleMenuEditIcon .yModuleMenuContainer ul.yModuleMenu {
+    display: none; }
