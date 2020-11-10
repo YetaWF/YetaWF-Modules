@@ -87,3 +87,9 @@
           -ms-user-select: none;
               user-select: none;
       overflow: hidden; }
+
+@media print {
+  .yt_panels_splitterinfo {
+    display: block;
+    overflow: visible;
+    height: auto; } }

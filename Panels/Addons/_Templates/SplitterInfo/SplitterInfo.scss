@@ -115,3 +115,11 @@ $smallscreen: 1200px;
         }
     }
 }
+
+@media print {
+    .yt_panels_splitterinfo {
+         display: block;
+         overflow: visible;
+         height:auto;
+    }
+}

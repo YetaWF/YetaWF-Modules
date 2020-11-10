@@ -25,6 +25,15 @@ var YetaWF_Panels;
             });
             return _this;
         }
+        SplitterModule.GetSplitterFromTag = function (tag) {
+            var mod = $YetaWF.elementClosestCond(tag, SplitterModule.SELECTOR);
+            if (!mod)
+                throw "The Splitter module cannot be found";
+            var splitter = YetaWF_Panels.SplitterInfoComponent.getControlFromSelector(YetaWF_Panels.SplitterInfoComponent.SELECTOR, YetaWF_Panels.SplitterInfoComponent.SELECTOR, [mod]);
+            if (!splitter)
+                throw "The Splitter module cannot be found";
+            return splitter;
+        };
         SplitterModule.SELECTOR = ".YetaWF_Panels_Splitter";
         return SplitterModule;
     }(YetaWF.ModuleBaseDataImpl));
