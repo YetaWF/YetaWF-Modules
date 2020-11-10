@@ -2,8 +2,9 @@
 
 $iconwidth: 16px;
 $iconheight: 16px;
+$borderrightcolor: lightgray;
 
-$smallscreen: 1200px;
+$smallscreen: 900px;
 
 .yt_panels_splitterinfo {
 
@@ -78,8 +79,7 @@ $smallscreen: 1200px;
     .yt_panels_splitterinfo_left {
         flex: 0 1 30%;
         position: relative;
-        border-right: solid 1px lightgray;//$$$$
-        min-width: 200px;//$$$$
+        border-right: solid 1px $borderrightcolor;
         .t_area {
             overflow: auto;
             height:100%;

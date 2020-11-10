@@ -47,7 +47,7 @@
     display: none; }
   .yt_panels_splitterinfo.t_expanded .yt_panels_splitterinfo_left {
     display: block; }
-  @media screen and (max-width: 1200px) {
+  @media screen and (max-width: 900px) {
     .yt_panels_splitterinfo.t_expanded .yt_panels_splitterinfo_right {
       display: none; } }
   .yt_panels_splitterinfo.t_expanded .yt_panels_splitterinfo_resize {
@@ -56,12 +56,11 @@
     -webkit-box-flex: 0;
             flex: 0 1 30%;
     position: relative;
-    border-right: solid 1px lightgray;
-    min-width: 200px; }
+    border-right: solid 1px lightgray; }
     .yt_panels_splitterinfo .yt_panels_splitterinfo_left .t_area {
       overflow: auto;
       height: 100%; }
-  @media screen and (max-width: 1200px) {
+  @media screen and (max-width: 900px) {
     .yt_panels_splitterinfo .yt_panels_splitterinfo_left {
       -webkit-box-flex: 0;
               flex: 0 1 100%; } }

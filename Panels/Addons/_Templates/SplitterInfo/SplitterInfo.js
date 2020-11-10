@@ -24,7 +24,7 @@ var YetaWF_Panels;
                 GetValue: null,
                 Enable: null,
             }) || this;
-            _this.SMALLSCREEN = 1200;
+            _this.SMALLSCREEN = 900;
             _this.Setup = setup;
             _this.Left = $YetaWF.getElement1BySelector(".yt_panels_splitterinfo_left", [_this.Control]);
             _this.Right = $YetaWF.getElement1BySelector(".yt_panels_splitterinfo_right", [_this.Control]);
