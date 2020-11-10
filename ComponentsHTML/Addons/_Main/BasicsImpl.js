@@ -295,6 +295,13 @@ var YetaWF_ComponentsHTML;
             }
         };
         /**
+         * Given an element, returns the owner (typically a module) that owns the element.
+         * The DOM hierarchy may not reflect this ownership, for example with popup menus which are appended to the <body> tag, but are owned by specific modules.
+         */
+        BasicsImpl.prototype.getOwnerFromTag = function (tag) {
+            return YetaWF_ComponentsHTML.MenuULComponent.getOwnerFromTag(tag);
+        };
+        /**
          * Returns whether a message popup dialog is currently active.
          */
         BasicsImpl.prototype.messagePopupActive = function () {

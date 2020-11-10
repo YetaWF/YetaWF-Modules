@@ -3,6 +3,7 @@
 namespace YetaWF_ComponentsHTML {
 
     interface MenuULSetup {
+        Owner: HTMLElement;
         AutoOpen: boolean;
         AutoRemove: boolean;
         AttachTo: HTMLElement | null;
@@ -74,7 +75,7 @@ namespace YetaWF_ComponentsHTML {
                 $YetaWF.positionLeftAlignedBelow(this.Setup.AttachTo, this.Control);
         }
 
-        public close(): void {
+        public close(): boolean {
 
             if (this.isOpen) {
 
@@ -90,14 +91,24 @@ namespace YetaWF_ComponentsHTML {
                     $YetaWF.processClearDiv(this.Control);
                     this.Control.remove();
                 }
+                return true;
             }
+            return false;
         }
 
         public static closeMenus(): boolean {
             let menus = YetaWF.ComponentBaseDataImpl.getControls<MenuULComponent>(MenuULComponent.SELECTOR);
+            let closed : boolean = false;
             for (let menu of menus)
-                menu.close();
-            return menus.length > 0;
+                closed = menu.close() || closed;
+            return closed;
+        }
+
+        public static getOwnerFromTag(tag: HTMLElement): HTMLElement | null {
+            let menu = YetaWF.ComponentBaseDataImpl.getControlFromTagCond<MenuULComponent>(tag, MenuULComponent.SELECTOR);
+            if (menu)
+                return menu.Setup.Owner;
+            return null;
         }
     }
 

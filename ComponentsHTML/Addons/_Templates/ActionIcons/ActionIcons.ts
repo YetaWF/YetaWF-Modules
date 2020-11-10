@@ -36,7 +36,7 @@ namespace YetaWF_ComponentsHTML {
             let menuDiv = this.MenuControl.cloneNode(true) as HTMLDivElement;
             menuDiv.id = `${this.MenuControl.id}_live`;
             document.body.appendChild(menuDiv);
-            new YetaWF_ComponentsHTML.MenuULComponent(menuDiv.id, { "AutoOpen": true, "AutoRemove": true, "AttachTo": this.ButtonControl.Control, Dynamic: true });
+            new YetaWF_ComponentsHTML.MenuULComponent(menuDiv.id, { "Owner": this.MenuControl, "AutoOpen": true, "AutoRemove": true, "AttachTo": this.ButtonControl.Control, Dynamic: true });
         }
     }
 }

@@ -65,7 +65,7 @@ var YetaWF_ComponentsHTML;
                     var menuDiv = $YetaWF.getElement1BySelector(".yModuleMenu", [modDiv]);
                     var menu = YetaWF_ComponentsHTML.MenuULComponent.getControlFromTagCond(menuDiv, YetaWF_ComponentsHTML.MenuULComponent.SELECTOR);
                     if (!menu)
-                        menu = new YetaWF_ComponentsHTML.MenuULComponent(menuDiv.id, { "AutoOpen": false, "AutoRemove": false, "AttachTo": null });
+                        menu = new YetaWF_ComponentsHTML.MenuULComponent(menuDiv.id, { "Owner": editIcon, "AutoOpen": false, "AutoRemove": false, "AttachTo": null });
                     menu.open();
                     return true;
                 });

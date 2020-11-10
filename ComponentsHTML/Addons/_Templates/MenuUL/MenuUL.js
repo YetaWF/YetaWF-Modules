@@ -75,15 +75,24 @@ var YetaWF_ComponentsHTML;
                     $YetaWF.processClearDiv(this.Control);
                     this.Control.remove();
                 }
+                return true;
             }
+            return false;
         };
         MenuULComponent.closeMenus = function () {
             var menus = YetaWF.ComponentBaseDataImpl.getControls(MenuULComponent.SELECTOR);
+            var closed = false;
             for (var _i = 0, menus_1 = menus; _i < menus_1.length; _i++) {
                 var menu = menus_1[_i];
-                menu.close();
+                closed = menu.close() || closed;
             }
-            return menus.length > 0;
+            return closed;
+        };
+        MenuULComponent.getOwnerFromTag = function (tag) {
+            var menu = YetaWF.ComponentBaseDataImpl.getControlFromTagCond(tag, MenuULComponent.SELECTOR);
+            if (menu)
+                return menu.Setup.Owner;
+            return null;
         };
         MenuULComponent.TEMPLATE = "yt_menuul";
         MenuULComponent.SELECTOR = ".yt_menuul";

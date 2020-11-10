@@ -261,7 +261,9 @@ var YetaWF_ComponentsHTML;
                         $YetaWF.elementAddClass(menuDiv, "yt_grid_menu");
                         document.body.appendChild(menuDiv);
                         new YetaWF_ComponentsHTML.MenuULComponent(menuDiv.id, {
-                            "AutoOpen": true, "AutoRemove": true, "AttachTo": button, "Dynamic": true,
+                            "Owner": _this.FilterBar,
+                            "AutoOpen": true, "AutoRemove": true,
+                            "AttachTo": button, "Dynamic": true,
                             "Click": function (liElem) {
                                 _this.menuSelected(liElem, colIndex);
                             },
