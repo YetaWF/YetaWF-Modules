@@ -114,6 +114,9 @@ i.yic.yic_componentshtml_modmenuedit {
     @media (min-width: 500px) {
       #ytoast.t_left {
         left: 5ch; } }
+  @media print {
+    #ytoast {
+      display: none; } }
 
 /* Print */
 @media print {

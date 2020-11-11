@@ -147,9 +147,6 @@ $errorline: #ddd;
             background-image:url(images/Close.png)
         }
     }
-    &.t_center {
-
-    }
     &.t_right {
         right: 0;
         @media (min-width: 500px) {
@@ -161,6 +158,9 @@ $errorline: #ddd;
         @media (min-width: 500px) {
             left: 5ch;
         }
+    }
+    @media print {
+        display:none;
     }
 }
 
