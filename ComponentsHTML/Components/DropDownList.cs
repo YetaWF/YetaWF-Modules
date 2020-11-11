@@ -178,28 +178,40 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder tagHtml = new HtmlBuilder();
 
-            string text = list.Count > 0 ? list[0].Text : null;
-            foreach (var item in list) {
-                YTagBuilder tagOpt = new YTagBuilder("option");
-                tagOpt.SetInnerText(item.Text.ToString());
-                tagOpt.Attributes["value"] = item.Value?.ToString();
+            // find the selected value
+            SelectionItem<TYPE> selItem = null;
+            foreach (SelectionItem<TYPE> item in list) {
                 if (Equals(item.Value, model)) {
-                    tagOpt.Attributes["selected"] = "selected";
-                    text = item.Text;
+                    selItem = item;
+                    break;
                 }
-                string desc = item.Tooltip?.ToString();
-                if (!string.IsNullOrWhiteSpace(desc))
-                    tagOpt.Attributes[Basics.CssTooltip] = desc;
-                tagHtml.Append(tagOpt.ToString(YTagRenderMode.Normal));
+            }
+            if (selItem == null) {
+                if (list.Count > 0) {
+                    selItem = list[0];
+                }
             }
 
+            if (list.Count > 0) {
+                foreach (var item in list) {
+                    YTagBuilder tagOpt = new YTagBuilder("option");
+                    tagOpt.SetInnerText(item.Text.ToString());
+                    tagOpt.Attributes["value"] = item.Value?.ToString();
+                    if (item == selItem)
+                        tagOpt.Attributes["selected"] = "selected";
+                    string desc = item.Tooltip?.ToString();
+                    if (!string.IsNullOrWhiteSpace(desc))
+                        tagOpt.Attributes[Basics.CssTooltip] = desc;
+                    tagHtml.Append(tagOpt.ToString(YTagRenderMode.Normal));
+                }
+            }
             tag.InnerHtml = tagHtml.ToString();
 
             hb.Append($@"
 <div id='{component.ControlId}' class='k-widget k-dropdown yt_dropdownlist_base t_edit {cssClass}' {(disabled ? "aria-disabled='true'" : "tabindex='0' aria-disabled='false'")} unselectable='on' role='listbox' aria-haspopup='true' aria-expanded='false' aria-owns='yDDPopup' aria-live='polite' aria-busy='false'
         aria-activedescendant='{Guid.NewGuid().ToString()}'>
     <div unselectable='on' class='t_container k-dropdown-wrap k-state-default {(disabled ? "k-state-disabled" : "")}' {(disabled ? "disabled='disabled'" : "")}>
-        <div unselectable='on' class='t_input k-input'>{HAE(text)}</div>
+        <div unselectable='on' class='t_input k-input'>{HAE(selItem != null ? selItem.Text : null)}</div>
         <div unselectable='on' class='t_select' aria-label='select'>
             <div class='t_img'></div>
         </div>

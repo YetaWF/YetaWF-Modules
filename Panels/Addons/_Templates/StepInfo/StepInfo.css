@@ -18,7 +18,6 @@
         font-weight: bold;
         display: block;
         -webkit-user-select: none;
-           -moz-user-select: none;
             -ms-user-select: none;
                 user-select: none; }
       .yt_panels_stepinfo.t_display .t_step .t_description {
@@ -27,7 +26,6 @@
         font-weight: normal;
         display: block;
         -webkit-user-select: none;
-           -moz-user-select: none;
             -ms-user-select: none;
                 user-select: none; }
     .yt_panels_stepinfo.t_display .t_step:first-child {

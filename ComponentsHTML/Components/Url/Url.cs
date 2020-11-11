@@ -164,6 +164,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
+            model = model ?? "";
+
             UrlTypeEnum type = PropData.GetAdditionalAttributeValue("UrlType", UrlTypeEnum.Remote);
 
             UrlUI ui = new UrlUI {
