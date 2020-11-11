@@ -9,22 +9,46 @@ namespace YetaWF_Panels {
         constructor(id: string) {
             super(id, SplitterModule.SELECTOR, null);
 
-            $YetaWF.registerEventHandler($YetaWF.getElement1BySelector(".yt_panels_splitterinfo_left .t_area", [this.Module]), "scroll", null, (ev: Event): boolean => {
-                $YetaWF.sendContainerScrollEvent(ev.__YetaWFElem);
+            $YetaWF.registerEventHandler(this.LeftArea, "scroll", null, (ev: Event): boolean => {
+                $YetaWF.sendContainerScrollEvent(this.LeftArea);
+                return true;
+            });
+            $YetaWF.registerEventHandler(this.RightArea, "scroll", null, (ev: Event): boolean => {
+                $YetaWF.sendContainerScrollEvent(this.RightArea);
                 return true;
             });
         }
 
         public static GetSplitterFromTag(tag: HTMLElement) : YetaWF_Panels.SplitterInfoComponent {
-            let mod = $YetaWF.elementClosestCond(tag, SplitterModule.SELECTOR);
+            let mod = YetaWF_Panels.SplitterModule.GetSplitterModuleFromTagCond(tag);
             if (!mod)
                 throw "The Splitter module cannot be found";
 
-            let splitter = YetaWF_Panels.SplitterInfoComponent.getControlFromSelector<YetaWF_Panels.SplitterInfoComponent>(YetaWF_Panels.SplitterInfoComponent.SELECTOR, YetaWF_Panels.SplitterInfoComponent.SELECTOR, [mod]);
+            let splitter = YetaWF_Panels.SplitterInfoComponent.getControlFromSelector<YetaWF_Panels.SplitterInfoComponent>(YetaWF_Panels.SplitterInfoComponent.SELECTOR, YetaWF_Panels.SplitterInfoComponent.SELECTOR, [mod.Module]);
             if (!splitter)
                 throw "The Splitter module cannot be found";
 
             return splitter;
+        }
+
+        public static GetSplitterModuleFromTagCond(tag: HTMLElement) : YetaWF_Panels.SplitterModule | null {
+            let modDiv = $YetaWF.elementClosestCond(tag, SplitterModule.SELECTOR);
+            if (!modDiv)
+                return null;
+
+            let mod = YetaWF_Panels.SplitterModule.getModuleFromTag<SplitterModule>(modDiv);
+            if (!mod)
+                throw "The Splitter module cannot be found";
+
+            return mod;
+        }
+
+
+        public get LeftArea(): HTMLElement {
+            return $YetaWF.getElement1BySelector(".yt_panels_splitterinfo_left .t_area", [this.Module]);
+        }
+        public get RightArea(): HTMLElement {
+            return $YetaWF.getElement1BySelector(".yt_panels_splitterinfo_right .t_area", [this.Module]);
         }
     }
 }

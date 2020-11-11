@@ -55,7 +55,6 @@ namespace YetaWF_Panels {
                 window.addEventListener("mouseup", SplitterInfoComponent.resizeWidthDone, false);
                 return false;
             });
-
         }
 
         public resized(): void { /* main window resized, reposition */
