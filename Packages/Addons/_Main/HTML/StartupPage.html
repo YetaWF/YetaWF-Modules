@@ -129,7 +129,8 @@
                         //alert(textStatus);
                         var result = [
                             'Uh oh! Something went wrong communicating with your new site - Obviously this shouldn\'t have happened',
-                            'This is the message we got from the site: ' + textStatus + ' (probably not very helpful)'
+                            'This is the message we got from the site: ' + textStatus + ' (probably not very helpful)',
+                            'See the log file ./Data/InitialInstall.txt for additional information'
                         ];
                         addLogItems(result);
                         if (savedInterval != 0) clearInterval(savedInterval);
