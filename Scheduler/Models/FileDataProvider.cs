@@ -16,6 +16,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider.File {
         public void Register() {
             DataProviderImpl.RegisterExternalDataProvider(FileDataProviderBase.ExternalName, typeof(DataProvider.SchedulerDataProvider), typeof(SchedulerDataProvider));
             DataProviderImpl.RegisterExternalDataProvider(FileDataProviderBase.ExternalName, typeof(DataProvider.LogDataProvider), typeof(LogDataProvider));
+            DataProviderImpl.RegisterExternalDataProvider(FileDataProviderBase.ExternalName, typeof(DataProvider.SchedulerConfigDataProvider), typeof(SchedulerConfigDataProvider));
         }
         class SchedulerDataProvider : FileDataProvider<string, SchedulerItemData> {
             public SchedulerDataProvider(Dictionary<string, object> options) : base(options) { }
@@ -56,6 +57,10 @@ namespace YetaWF.Modules.Scheduler.DataProvider.File {
             public string GetLogFileName() {
                 return LogFile;
             }
+        }
+        class SchedulerConfigDataProvider : FileDataProvider<int, SchedulerConfigData> {
+            public SchedulerConfigDataProvider(Dictionary<string, object> options) : base(options) { }
+            public override string GetBaseFolder() { return Path.Combine(YetaWFManager.DataFolder, Dataset); }
         }
     }
 }
