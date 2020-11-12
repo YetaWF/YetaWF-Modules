@@ -35,6 +35,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Twilio.AspNet.Core" Version="5.33.1" />
+      <PackageReference Include="Twilio.AspNet.Core" Version="5.37.2" />
     </ItemGroup>
 </Project>
