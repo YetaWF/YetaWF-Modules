@@ -41,7 +41,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         [Data_Identity]
         public int UserId { get; set; } // our internal user id
 
-        // asp.net id
+        // .net id
         [DontSave]
         public string Id { get { return UserId.ToString(); } set { UserId = Convert.ToInt32(value); } }
 

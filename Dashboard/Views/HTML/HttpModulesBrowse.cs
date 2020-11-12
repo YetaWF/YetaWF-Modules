@@ -33,7 +33,7 @@ namespace YetaWF.Modules.Dashboard.Views {
             } else {
                 hb.Append($@"
     <div class='{Globals.CssDivWarning}'>
-        {Utility.HtmlEncode(this.__ResStr("notAvail", "Information not available on ASP.NET Core MVC"))}
+        {Utility.HtmlEncode(this.__ResStr("notAvail", "Information not available on .NET Core"))}
     </div>");
             }
 
