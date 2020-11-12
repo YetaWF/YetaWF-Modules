@@ -35,7 +35,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         [Data_Identity]
         public int RoleId { get; set; } // our internal role id
 
-        // asp.net id
+        // .net id
         [DontSave]
         public string Id { get { return RoleId.ToString(); } set { RoleId = Convert.ToInt32(value); } }
 
