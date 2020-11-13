@@ -58,7 +58,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="ValidateImmediately">Defines whether client-side validation is immediate (true) or delayed until form submission (false).</param>
         /// <param name="ActionName">Overrides the default action name.</param>
         /// <param name="ControllerName">Overrides the default controller name.</param>
-        /// <param name="Pure">TODO: Purpose unclear.</param>
         /// <param name="Method">The method used to submit the form (get/post)</param>
         /// <returns>Returns the HTML with the generated &lt;form&gt; tag.</returns>
         protected async Task<string> RenderBeginFormAsync(object HtmlAttributes = null, bool SaveReturnUrl = false, bool ValidateImmediately = false, string ActionName = null, string ControllerName = null, string Method = "post") {

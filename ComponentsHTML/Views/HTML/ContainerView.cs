@@ -15,6 +15,9 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
     /// </summary>
     public class ContainerView : YetaWFView, IYetaWFView<ModuleDefinition, ContainerDataContainer.ContainerData> {
 
+        /// <summary>
+        /// Defines the name of the view.
+        /// </summary>
         public const string ViewName = "ContainerView";
 
         /// <summary>

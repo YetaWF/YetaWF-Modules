@@ -16,6 +16,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(DropDownButtonComponent), name, defaultValue, parms); }
 
+        /// <summary>
+        /// Defines the component's name.
+        /// </summary>
         public const string TemplateName = "DropDownButton";
 
         /// <summary>
@@ -38,12 +41,33 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
         public override string GetTemplateName() { return TemplateName; }
 
+        /// <summary>
+        /// Defines the model used to render the dropdown button.
+        /// </summary>
         public class Model {
+            /// <summary>
+            /// The text of the dropdown button.
+            /// </summary>
             public string Text { get; set; }
+            /// <summary>
+            /// The optional tooltip of the dropdown button.
+            /// </summary>
             public string Tooltip { get; set; }
+            /// <summary>
+            /// The HTML Id of the dropdown button.
+            /// </summary>
             public string ButtonId { get; set; }
+            /// <summary>
+            /// The HTML representing the dropdown menu (a &lt;ul&gt; tag).
+            /// </summary>
             public string MenuHTML { get; set; }
+            /// <summary>
+            /// Defines whether a small dropdown button is used. A small dropdown button doesn't display the button text.
+            /// </summary>
             public bool Mini { get; set; }
+            /// <summary>
+            /// The Optional CSS class added to the dropdown button tag.
+            /// </summary>
             public string CssClass { get; set; }
         }
 
@@ -91,6 +115,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return Task.FromResult(hb.ToString());
         }
 
+        /// <summary>
+        /// Called by the framework when the component needs to be rendered as HTML.
+        /// </summary>
+        /// <param name="model">The model being rendered by the component.</param>
+        /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderContainerAsync(Model model) {
             return RenderAsync(model);
         }

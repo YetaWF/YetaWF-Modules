@@ -100,7 +100,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal string TemplateName { get; set; }
 
-        public class Setup {
+        internal class Setup {
             public bool AdjustWidth { get; set; }
             public float DropDownWidthFactor { get; set; }
             public float DropDownHeightFactor { get; set; }

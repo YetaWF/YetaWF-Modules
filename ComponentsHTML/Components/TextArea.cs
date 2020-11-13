@@ -134,7 +134,7 @@ CKEDITOR.replace('{ControlId}', {{
     /// <remarks>
     /// If the StringLengthAttribute is specified for the model, the TextArea box is limited to the specified number of characters.
     ///
-    /// To render a regular TextArea HTML tag (without CKEditor), use the TextAreaSimple Component instead.
+    /// To render a regular TextArea HTML tag (without CKEditor), use the TextAreaSourceOnly Component instead.
     /// </remarks>
     /// <example>
     /// [Caption("Comment"), Description("Enter your comment about this blog entry for others to view")]

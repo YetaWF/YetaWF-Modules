@@ -16,17 +16,44 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     [PrivateComponent]
     public class ContainerDataContainer : YetaWFComponent, IYetaWFContainer<ContainerDataContainer.ContainerData> {
 
+        /// <summary>
+        /// Defines the container data to render the ContainerView.
+        /// </summary>
         public class ContainerData {
+            /// <summary>
+            /// The type of the container.
+            /// </summary>
             public ComponentType Type { get; set; }
+            /// <summary>
+            /// The container model.
+            /// </summary>
             public object Model { get; set; }
+            /// <summary>
+            /// The UIHint used to render the container.
+            /// </summary>
             public string UIHint { get; set; }
+            /// <summary>
+            /// The HTML field prefix used.
+            /// </summary>
             public string FieldPrefix { get; set; }
         }
+        /// <summary>
+        /// The result of the rendered ContainerView.
+        /// </summary>
         public class ContainerDataResult {
+            /// <summary>
+            /// The rendered HTML.
+            /// </summary>
             public string HTML { get; set; }
+            /// <summary>
+            /// Defines the current unique id counters.
+            /// </summary>
             public YetaWFManager.UniqueIdInfo UniqueIdCounters { get; set; }
         }
 
+        /// <summary>
+        /// Defines the component's name.
+        /// </summary>
         public const string TemplateName = "ContainerData";
 
         /// <summary>

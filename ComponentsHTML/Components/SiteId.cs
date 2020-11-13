@@ -37,7 +37,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal static Dictionary<int, string> Sites = null;
 
-        protected async Task<Dictionary<int, string>> GetSitesAsync() {
+        internal async Task<Dictionary<int, string>> GetSitesAsync() {
             Dictionary<int, string> sites = new Dictionary<int, string>();
             List<DataProviderSortInfo> sorts = null;
             sorts = DataProviderSortInfo.Join(sorts, new DataProviderSortInfo { Field = nameof(SiteDefinition.SiteDomain), Order = DataProviderSortInfo.SortDirection.Ascending });
@@ -47,6 +47,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return sites;
         }
 
+        /// <summary>
+        /// Returns a collection of integer/enum values suitable for rendering in a DropDownList component.
+        /// </summary>
+        /// <param name="showDefault">Set to true to add a "(select)" entry at the top of the list, false otherwise.</param>
+        /// <returns>Returns a collection of integer/enum values suitable for rendering in a DropDownList component.</returns>
         public async Task<List<SelectionItem<int>>> GetSelectionListIntAsync(bool showDefault) {
 
             Sites ??= await GetSitesAsync();
@@ -113,8 +118,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     public class SiteIdEditComponent : SiteIdComponentBase, IYetaWFComponent<int> {
 
+        /// <summary>
+        /// Returns the component type (edit/display).
+        /// </summary>
+        /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
+        /// <summary>
+        /// Called by the framework when the component needs to be rendered as HTML.
+        /// </summary>
+        /// <param name="model">The model being rendered by the component.</param>
+        /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(int model) {
 
             HtmlBuilder hb = new HtmlBuilder();

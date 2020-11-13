@@ -59,7 +59,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public bool SerializeForm { get; set; }// serialize all form data when uploading a file
         }
 
-        public class UI {
+        internal class UI {
             [UIHint("ProgressBar"), ReadOnly]
             public float ProgressBar { get; set; }
             public float ProgressBar_Min { get { return 0; } }
