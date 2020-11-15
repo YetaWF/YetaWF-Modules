@@ -97,12 +97,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (model.Start != null && model.End != null) {
                     Closed = false;
                     if (model.Start2 != null && model.End2 != null) {
-                        Start2 = model.GetStart2();
-                        End2 = model.GetEnd2();
+                        Start2 = model.GetStart2().Value;
+                        End2 = model.GetEnd2().Value;
                         Additional = true;
                     }
-                    Start = model.GetStart();
-                    End = model.GetEnd();
+                    Start = model.GetStart().Value;
+                    End = model.GetEnd().Value;
                 }
             }
 

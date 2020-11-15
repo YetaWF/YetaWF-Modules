@@ -229,7 +229,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(MultiString model) {
-        HtmlBuilder hb = new HtmlBuilder();
+            HtmlBuilder hb = new HtmlBuilder();
             if (model != null) {
                 hb.Append(HE(model.ToString()));
             }
@@ -308,7 +308,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 HtmlAttributes: new { __NoTemplate = true, @class = $"t_multistring_hidden {Forms.CssFormNoSubmit}" }));
 
             // generate a dropdownlist for the available languages
-                    List <SelectionItem<string>> selectLangList = new List<SelectionItem<string>>();
+            List <SelectionItem<string>> selectLangList = new List<SelectionItem<string>>();
             foreach (var lang in MultiString.Languages) {
                 selectLangList.Add(new SelectionItem<string> { Text = lang.ShortName, Value = lang.Id, Tooltip = lang.Description });
             }

@@ -44,9 +44,9 @@ namespace YetaWF.Modules.Caching.DataProvider {
                 else
                     cacheData = new GeneralFormatter().Serialize(data);
 #if MVC6
-                    YetaWFManager.MemoryCache.Set<byte[]>(key, cacheData);
+                YetaWFManager.MemoryCache.Set<byte[]>(key, cacheData);
 #else
-                    System.Web.HttpRuntime.Cache[key] = cacheData;
+                System.Web.HttpRuntime.Cache[key] = cacheData;
 #endif
             }
             return Task.CompletedTask;

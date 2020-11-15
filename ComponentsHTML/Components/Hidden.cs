@@ -37,7 +37,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// <remarks>
     /// Even though it's marked with the ReadOnly attribute, this component's value is still modifiable and will be included when a form is submitted.
     /// It never uses validation.
-    /// 
+    ///
     /// In most cases the Display version of this component should be used, instead of the Edit component. The Edit component uses validation which is not desirable in most cases.
     /// </remarks>
     /// <example>
@@ -107,7 +107,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(object model) {
-        YTagBuilder tag = new YTagBuilder("input");
+            YTagBuilder tag = new YTagBuilder("input");
             FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Normal);
             tag.MergeAttribute("type", "hidden");
             if (HtmlAttributes.ContainsKey("--NoTemplate"))

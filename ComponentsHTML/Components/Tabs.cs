@@ -76,11 +76,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             await base.IncludeAsync();
         }
 
-        internal class UI {
-            [UIHint("Tabs")]
-            public TabsDefinition TabsDef { get; set; }
-        }
-
         /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.
         /// </summary>
@@ -186,7 +181,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 ContextMenu = tabsModel.ContextMenu,
                 ActiveTabIndex = tabsModel.ActiveTabIndex,
                 ActiveTabHiddenId = Manager.UniqueId(),
-        };
+            };
             return setup;
         }
     }
