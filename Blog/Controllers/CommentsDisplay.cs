@@ -1,5 +1,6 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,6 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.Addons;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Modules.Blog.Modules;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Blog.Controllers {
 
@@ -33,15 +29,15 @@ namespace YetaWF.Modules.Blog.Controllers {
             public int CategoryIdentity { get; set; }
             public int EntryIdentity { get; set; }
 
-            public string Name { get; set; }
+            public string? Name { get; set; }
 
             public bool ShowGravatar { get; set; }
             [UIHint("YetaWF_Blog_Gravatar")]
-            public string Email { get; set; }
-            public string Website { get; set; }
+            public string? Email { get; set; }
+            public string? Website { get; set; }
 
-            public string Title { get; set; }
-            public string Comment { get; set; }
+            public string? Title { get; set; }
+            public string? Comment { get; set; }
 
             public bool Approved { get; set; }
             public bool Deleted { get; set; }
@@ -50,7 +46,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.IconsOnly)]
             public List<ModuleAction> Actions { get; set; }
 
-            public CommentData(BlogComment data, ModuleAction editAction, ModuleAction approveAction, ModuleAction removeAction) {
+            public CommentData(BlogComment data, ModuleAction? editAction, ModuleAction? approveAction, ModuleAction? removeAction) {
                 ObjectSupport.CopyData(data, this);
                 Actions = new List<ModuleAction>();
                 Actions.New(editAction);
@@ -61,7 +57,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         public class DisplayModel {
-            public List<CommentData> Comments { get; set; }
+            public List<CommentData> Comments { get; set; } = null!;
             public int PendingApproval { get; set; }
             public bool CanApprove { get; set; }
             public bool CanRemove { get; set; }
@@ -79,7 +75,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             CommentEditModule editMod = new CommentEditModule();
             using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
-                BlogEntry entry = null;
+                BlogEntry? entry = null;
                 if (entryNum != 0)
                     entry = await entryDP.GetItemAsync(entryNum);
                 if (entry == null)
@@ -98,9 +94,9 @@ namespace YetaWF.Modules.Blog.Controllers {
 
                 List<CommentData> list = new List<CommentData>();
                 foreach (BlogComment d in comments.Data) {
-                    ModuleAction editAction = await editMod.GetAction_EditAsync(Module.EditUrl, d.EntryIdentity, d.Identity);
-                    ModuleAction approveAction = await Module.GetAction_ApproveAsync(d.CategoryIdentity, d.Identity);
-                    ModuleAction removeAction = await Module.GetAction_RemoveAsync(d.CategoryIdentity, d.Identity);
+                    ModuleAction? editAction = await editMod.GetAction_EditAsync(Module.EditUrl, d.EntryIdentity, d.Identity);
+                    ModuleAction? approveAction = await Module.GetAction_ApproveAsync(d.CategoryIdentity, d.Identity);
+                    ModuleAction? removeAction = await Module.GetAction_RemoveAsync(d.CategoryIdentity, d.Identity);
                     if (model.CanApprove || model.CanRemove)
                         list.Add(new CommentData(d, editAction, approveAction, removeAction));
                     else {
@@ -143,7 +139,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         [ExcludeDemoMode]
         public async Task<ActionResult> Approve(int blogEntry, int comment) {
             using (BlogCommentDataProvider dataProvider = new BlogCommentDataProvider(blogEntry)) {
-                BlogComment cmt = await dataProvider.GetItemAsync(comment);
+                BlogComment? cmt = await dataProvider.GetItemAsync(comment);
                 if (cmt == null)
                     throw new InternalError("Can't find comment entry {0}", comment);
                 cmt.Approved = true;
@@ -158,7 +154,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         [ExcludeDemoMode]
         public async Task<ActionResult> Remove(int blogEntry, int comment) {
             using (BlogCommentDataProvider dataProvider = new BlogCommentDataProvider(blogEntry)) {
-                BlogComment cmt = await dataProvider.GetItemAsync(comment);
+                BlogComment? cmt = await dataProvider.GetItemAsync(comment);
                 if (cmt == null)
                     throw new InternalError("Can't find comment entry {0}", comment);
                 if (!await dataProvider.RemoveItemAsync(comment))

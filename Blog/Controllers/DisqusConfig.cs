@@ -1,5 +1,7 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
@@ -8,12 +10,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Modules.Blog.Support;
-using System.Threading.Tasks;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Blog.Controllers {
 
@@ -27,7 +23,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             [Caption("Shortname"), Description("The Shortname you assigned to your site (at Disqus) - If omitted, Disqus comments are not available")]
             [UIHint("Text40"), StringLength(DisqusConfigData.MaxShortName), ShortNameValidation, Trim]
             [HelpLink("https://disqus.com/admin/settings/general/")]
-            public string ShortName { get; set; }
+            public string? ShortName { get; set; }
 
             [Caption("Single Sign On"), Description("Defines whether SSO (Single Sign On) is enabled for your site allowing users to log in using their credentials")]
             [UIHint("Boolean")]
@@ -36,16 +32,16 @@ namespace YetaWF.Modules.Blog.Controllers {
             [Caption("Secret Key"), Description("Defines the Secret Key used for SSO (Single Sign On) - The Secret Key is created on the Disqus site when defining the SSO application")]
             [UIHint("Text80"), StringLength(DisqusConfigData.MaxPublicKey), RequiredIf("UseSSO", true), Trim]
             [ExcludeDemoMode]
-            public string PrivateKey { get; set; }
+            public string? PrivateKey { get; set; }
             [Caption("Public Key"), Description("Defines the Public Key used for SSO (Single Sign On) - The Public Key is created on the Disqus site when defining the SSO application")]
             [UIHint("Text80"), StringLength(DisqusConfigData.MaxPrivateKey), RequiredIf("UseSSO", true), Trim]
             [ExcludeDemoMode]
-            public string PublicKey { get; set; }
+            public string? PublicKey { get; set; }
 
             [Caption("Login Url"), Description("Defines the Url used when the user wants to log into the site to leave a comment (using SSO)")]
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
             [RequiredIf("UseSSO", true)]
-            public string LoginUrl { get; set; }
+            public string? LoginUrl { get; set; }
 
             [Caption("Login Popup Width"), Description("Defines the width of the popup window created by Disqus to log the user into the site (using SSO)")]
             [UIHint("IntValue4"), Range(20, 9999), RequiredIf("UseSSO", true)]

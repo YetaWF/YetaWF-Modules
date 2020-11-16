@@ -1,5 +1,6 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
@@ -9,11 +10,6 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.DataProvider;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Blog.Controllers {
 
@@ -30,11 +26,11 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Category"), Description("The name of this blog category")]
             [UIHint("MultiString40"), StringLength(BlogCategory.MaxCategory), Required, Trim]
-            public MultiString Category { get; set; }
+            public MultiString Category { get; set; } = null!;
 
             [Caption("Description"), Description("The description of the blog category - the category's description is shown at the top of each blog entry to describe your blog")]
             [UIHint("MultiString80"), StringLength(BlogCategory.MaxDescription), Required, Trim]
-            public MultiString Description { get; set; }
+            public MultiString Description { get; set; } = null!;
 
             [Caption("Use Captcha"), Description("Defines whether anonymous users entering comments are presented with a Captcha to insure they are not automated spam scripts")]
             [UIHint("Boolean")]
@@ -50,11 +46,11 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Syndication Email Address"), Description("The email address used as email address responsible for the blog category")]
             [UIHint("Email"), StringLength(Globals.MaxEmail), EmailValidation, RequiredIf("Syndicated", true), Trim]
-            public string SyndicationEmail { get; set; }
+            public string? SyndicationEmail { get; set; }
 
             [Caption("Syndication Copyright"), Description("The optional copyright information shown when the blog is accessed by news readers")]
             [UIHint("MultiString80"), StringLength(BlogCategory.MaxCopyright), Trim]
-            public MultiString SyndicationCopyright { get; set; }
+            public MultiString SyndicationCopyright { get; set; } = null!;
 
             [UIHint("Hidden")]
             public int Identity { get; set; }
@@ -74,7 +70,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         public async Task<ActionResult> CategoryEdit(int blogCategory) {
             using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
                 EditModel model = new EditModel { };
-                BlogCategory data = await dataProvider.GetItemAsync(blogCategory);
+                BlogCategory? data = await dataProvider.GetItemAsync(blogCategory);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Blog category with id {0} not found."), blogCategory);
                 model.SetData(data);
@@ -91,7 +87,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
                 // get the original item
-                BlogCategory data = await dataProvider.GetItemAsync(originalCategory);
+                BlogCategory? data = await dataProvider.GetItemAsync(originalCategory);
                 if (data == null)
                     throw new Error(this.__ResStr("alreadyDeletedId", "The blog category with id {0} has been removed and can no longer be updated.", originalCategory));
 

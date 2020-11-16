@@ -1,5 +1,6 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
@@ -7,11 +8,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Modules.Blog.DataProvider;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Blog.Controllers {
     public class CategoryAddModuleController : ControllerImpl<YetaWF.Modules.Blog.Modules.CategoryAddModule> {
@@ -43,7 +39,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Syndication Email Address"), Description("The email address used as email address responsible for the blog category")]
             [UIHint("Email"), StringLength(Globals.MaxEmail), EmailValidation, RequiredIf("Syndicated", true), Trim]
-            public string SyndicationEmail { get; set; }
+            public string? SyndicationEmail { get; set; }
 
             [Caption("Syndication Copyright"), Description("The optional copyright information shown when the blog is accessed by news readers")]
             [UIHint("MultiString80"), StringLength(BlogCategory.MaxCopyright), Trim]

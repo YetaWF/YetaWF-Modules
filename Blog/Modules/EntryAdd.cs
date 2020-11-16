@@ -27,11 +27,11 @@ namespace YetaWF.Modules.Blog.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_Add(string url) {
+        public ModuleAction? GetAction_Add(string? url) {
             // if the url has a category, use it as default category to add a new entry
             int blogCategory;
             Manager.TryGetUrlArg<int>("BlogCategory", out blogCategory);
-            object qs = null;
+            object? qs = null;
             if (blogCategory != 0)
                 qs = new { BlogCategory = blogCategory };
             return new ModuleAction(this) {

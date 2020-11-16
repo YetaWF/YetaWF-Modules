@@ -40,8 +40,7 @@ namespace YetaWF.Modules.Blog.Modules {
             return actions;
         }
 
-        public async Task<ModuleAction> GetAction_BlogAsync(string url, int blogCategory = 0, DateTime? StartDate = null, int Count = 0) {
-            BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
+        public async Task<ModuleAction?> GetAction_BlogAsync(string? url, int blogCategory = 0, DateTime? StartDate = null, int Count = 0) {
             QueryHelper query = new QueryHelper();
             if (string.IsNullOrWhiteSpace(url))
                 url = await BlogConfigData.GetCategoryCanonicalNameAsync(blogCategory);
@@ -49,7 +48,7 @@ namespace YetaWF.Modules.Blog.Modules {
                 url = ModulePermanentUrl;
                 query.Add("BlogCategory", blogCategory.ToString());
             }
-            string date = null;
+            string? date = null;
             if (StartDate != null) {
                 query.Add("StartDate", StartDate.ToString());
                 date = Formatting.Date_Month_YYYY((DateTime) StartDate);
@@ -72,16 +71,16 @@ namespace YetaWF.Modules.Blog.Modules {
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
             };
         }
-        public async Task<ModuleAction> GetAction_RssFeedAsync(int blogCategory = 0) {
+        public async Task<ModuleAction?> GetAction_RssFeedAsync(int blogCategory = 0) {
             BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
             if (!config.Feed) return null;
             //if (blogCategory == 0)
             //    manager.TryGetUrlArg<int>("BlogCategory", out blogCategory);
-            object qargs = null, qargsHR = null;
+            object? qargs = null, qargsHR = null;
             if (blogCategory != 0) {
                 qargs = new { BlogCategory = blogCategory, };
                 using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
-                    BlogCategory data = await dataProvider.GetItemAsync(blogCategory);
+                    BlogCategory? data = await dataProvider.GetItemAsync(blogCategory);
                     if (data != null)
                         qargsHR = new { Title = data.Category.ToString().Truncate(80) };
                 }

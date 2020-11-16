@@ -28,18 +28,18 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public int EntryIdentity { get; set; }
 
         [StringLength(MaxName)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
         [StringLength(Globals.MaxEmail)]
-        public string Email { get; set; }
+        public string? Email { get; set; }
 
         public bool ShowGravatar { get; set; }
         [StringLength(Globals.MaxUrl)]
-        public string Website { get; set; }
+        public string? Website { get; set; }
 
         [StringLength(MaxTitle)]
-        public string Title { get; set; }
+        public string? Title { get; set; }
         [StringLength(MaxComment)]
-        public string Comment { get; set; }
+        public string? Comment { get; set; }
 
         public bool Approved { get; set; }
         public bool Deleted { get; set; }
@@ -64,7 +64,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
         private IDataProvider<int, BlogComment> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, BlogComment> CreateDataProvider() {
+        private IDataProvider<int, BlogComment>? CreateDataProvider() {
             Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Comments", SiteIdentity: SiteIdentity, Cacheable: true, Parms: new { EntryIdentity = EntryIdentity });
         }
@@ -73,19 +73,19 @@ namespace YetaWF.Modules.Blog.DataProvider {
         // API
         // API
 
-        public Task<BlogComment> GetItemAsync(int comment) {
+        public Task<BlogComment?> GetItemAsync(int comment) {
             return DataProvider.GetAsync(comment);
         }
         public async Task<bool> AddItemAsync(BlogComment data) {
             data.DateCreated = DateTime.UtcNow;
             data.EntryIdentity = EntryIdentity;
             using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
-                BlogEntry entry = await entryDP.GetItemAsync(EntryIdentity);
+                BlogEntry? entry = await entryDP.GetItemAsync(EntryIdentity);
                 if (entry == null) throw new InternalError("Entry with id {0} not found", EntryIdentity);
                 data.CategoryIdentity = entry.CategoryIdentity;
             }
             using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
-                BlogCategory cat = await categoryDP.GetItemAsync(data.CategoryIdentity);
+                BlogCategory? cat = await categoryDP.GetItemAsync(data.CategoryIdentity);
                 if (cat == null)
                     throw new InternalError("Category {0} not found", data.CategoryIdentity);
                 if (cat.CommentApproval == BlogCategory.ApprovalType.None)
@@ -103,7 +103,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public Task<bool> RemoveItemAsync(int comment) {
             return DataProvider.RemoveAsync(comment);
         }
-        public Task<DataProviderGetRecords<BlogComment>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        public Task<DataProviderGetRecords<BlogComment>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
             filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(BlogComment.EntryIdentity), Operator = "==", Value = EntryIdentity });
             return DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }

@@ -13,10 +13,6 @@ using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Blog.Controllers;
 using YetaWF.Core.Components;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Blog.Modules {
 
@@ -38,10 +34,10 @@ namespace YetaWF.Modules.Blog.Modules {
 
         [Category("General"), Caption("Add URL"), Description("The URL to add a new blog entry - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string AddUrl { get; set; }
+        public string? AddUrl { get; set; }
         [Category("General"), Caption("Edit URL"), Description("The URL to edit a blog entry - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string EditUrl { get; set; }
+        public string? EditUrl { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
         public override List<RoleDefinition> ExtraRoles {
@@ -61,7 +57,7 @@ namespace YetaWF.Modules.Blog.Modules {
             return menuList;
         }
 
-        public ModuleAction GetAction_BrowseEntries(string url, int blogCategory) {
+        public ModuleAction? GetAction_BrowseEntries(string? url, int blogCategory) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = new { BlogCategory = blogCategory },
@@ -76,7 +72,7 @@ namespace YetaWF.Modules.Blog.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
             };
         }
-        public ModuleAction GetAction_Remove(int blogEntry) {
+        public ModuleAction? GetAction_Remove(int blogEntry) {
             if (!IsAuthorized("RemoveItems")) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(EntriesBrowseModuleController), "Remove"),

@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Blog.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public async Task<ModuleAction> GetAction_EditAsync(string url, int blogEntry) {
+        public async Task<ModuleAction?> GetAction_EditAsync(string? url, int blogEntry) {
             if (blogEntry == 0) return null;
             ModuleAction action = new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,

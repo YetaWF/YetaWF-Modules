@@ -3,7 +3,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
+using System.Threading.Tasks;
 using System.Xml;
+using YetaWF.Core.IO;
 using YetaWF.Core.Language;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -11,13 +14,6 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Scheduler;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.DataProvider;
-using System.Threading.Tasks;
-using YetaWF.Core.IO;
-#if MVC6
-using System.Net;
-#else
-using System.Web.Security.AntiXss;
-#endif
 
 namespace YetaWF.Modules.Blog.Scheduler {
 
@@ -71,10 +67,10 @@ namespace YetaWF.Modules.Blog.Scheduler {
             DynamicUrlsImpl dynamicUrls = new DynamicUrlsImpl();
             List<Type> types = dynamicUrls.GetDynamicUrlTypes();
             foreach (Type type in types) {
-                object obj = Activator.CreateInstance(type);
-                ISiteMapDynamicUrls iSiteMap = obj as ISiteMapDynamicUrls;
+                object obj = Activator.CreateInstance(type)!;
+                ISiteMapDynamicUrls? iSiteMap = obj as ISiteMapDynamicUrls;
                 if (iSiteMap != null) {
-                    BlogEntryDataProvider blogEntryDP = obj as BlogEntryDataProvider;
+                    BlogEntryDataProvider? blogEntryDP = obj as BlogEntryDataProvider;
                     if (blogEntryDP != null) { // limit to blog entries
                         await iSiteMap.FindDynamicUrlsAsync(AddNewsSiteMapPageAsync, ValidForNewsSiteMap);
                     }
@@ -112,19 +108,11 @@ namespace YetaWF.Modules.Blog.Scheduler {
             foreach (LanguageData lang in MultiString.Languages) {
                 string blogTitle, kwds, publishDate, blogCategory, langId;
                 publishDate = XmlConvert.ToString(blogEntry.DatePublished, XmlDateTimeSerializationMode.Utc);
-#if MVC6
                 canonicalUrl = WebUtility.HtmlEncode(canonicalUrl);
                 blogTitle = WebUtility.HtmlEncode(blogEntry.Title[lang.Id]);
                 kwds = WebUtility.HtmlEncode(blogEntry.Keywords[lang.Id]);
                 blogCategory = WebUtility.HtmlEncode((await blogEntry.GetCategoryAsync())[lang.Id]);
                 langId = WebUtility.HtmlEncode(lang.Id);
-#else
-                canonicalUrl = AntiXssEncoder.XmlEncode(canonicalUrl);
-                blogTitle = AntiXssEncoder.XmlEncode(blogEntry.Title[lang.Id]);
-                kwds = AntiXssEncoder.XmlEncode(blogEntry.Keywords[lang.Id]);
-                blogCategory = AntiXssEncoder.XmlEncode((await blogEntry.GetCategoryAsync())[lang.Id]);
-                langId = AntiXssEncoder.XmlEncode(lang.Id);
-#endif
                 await FileSystem.FileSystemProvider.AppendAllTextAsync(file, string.Format(
                     "  <url>\r\n" +
                     "    <loc>{0}</loc>\r\n" +

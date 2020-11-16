@@ -1,19 +1,15 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Modules.Blog.DataProvider;
-using YetaWF.Core;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
 using YetaWF.Core.Support;
-#else
-using System.Web.Mvc;
-#endif
+using YetaWF.Modules.Blog.DataProvider;
 
 namespace YetaWF.Modules.Blog.Controllers {
     public class EntryAddModuleController : ControllerImpl<YetaWF.Modules.Blog.Modules.EntryAddModule> {
@@ -37,12 +33,12 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Author"), Description("The name of the blog author")]
             [UIHint("Text40"), StringLength(BlogEntry.MaxAuthor), Required, Trim]
-            public string Author { get; set; }
+            public string? Author { get; set; }
 
             [Caption("Author's Url"), Description("The optional Url linking to the author's information")]
             [UIHint("Url"), StringLength(Globals.MaxUrl), Trim]
             [AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
-            public string AuthorUrl { get; set; }
+            public string? AuthorUrl { get; set; }
 
             [Caption("Allow Comments"), Description("Defines whether comments can be entered for this blog entry")]
             [UIHint("Boolean")]
@@ -58,13 +54,13 @@ namespace YetaWF.Modules.Blog.Controllers {
             [Caption("Summary"), Description("The summary for this blog entry - If no summary is entered, the entire blog text is shown instead of the summary")]
             [UIHint("TextArea"), AdditionalMetadata("EmHeight", 10), StringLength(BlogEntry.MaxSummary)]
             [AdditionalMetadata("TextAreaSave", false)]
-            public string Summary { get; set; }
+            public string? Summary { get; set; }
 
             [Caption("Blog Text"), Description("The complete text for this blog entry")]
             [UIHint("TextArea"), AdditionalMetadata("EmHeight", 20), StringLength(BlogEntry.MaxText)]
             [AdditionalMetadata("TextAreaSave", false)]
             [RequiredIf("Published", true)]
-            public string Text { get; set; }
+            public string? Text { get; set; }
 
             public AddModel() {
                 Title = new MultiString();

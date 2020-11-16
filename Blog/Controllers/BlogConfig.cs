@@ -1,5 +1,6 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
@@ -8,11 +9,6 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.DataProvider;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Blog.Controllers {
 
@@ -26,7 +22,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             [Category("Blog"), Caption("Blog Main Url"), Description("Main entry point for the site's blog")]
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local)]
             [StringLength(Globals.MaxUrl), Required, Trim]
-            public string BlogUrl { get; set; }
+            public string? BlogUrl { get; set; }
 
             [Category("Blog"), Caption("Default Blog Category"), Description("The default blog category displayed when no blog category is selected")]
             [UIHint("YetaWF_Blog_Category"), AdditionalMetadata("ShowAll", true), Required]
@@ -39,7 +35,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             [Category("Blog"), Caption("Blog Entry Url"), Description("URL to display a blog entry with comments")]
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local)]
             [StringLength(Globals.MaxUrl), Required, Trim]
-            public string BlogEntryUrl { get; set; }
+            public string? BlogEntryUrl { get; set; }
 
             [Category("Comments"), Caption("Show Gravatar"), Description("Defines whether Gravatar images are shown for visitors leaving comments")]
             [HelpLink("http://www.gravatar.com")]
@@ -60,7 +56,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Category("Notifications"), Caption("Email Address"), Description("The email address where all notifications for blog events are sent")]
             [UIHint("Email"), StringLength(Globals.MaxEmail), EmailValidation, Trim]
-            public string NotifyEmail { get; set; }
+            public string? NotifyEmail { get; set; }
 
             [Category("Notifications"), Caption("Notify - New Comment"), Description("Defines whether the administrator receives email notification when a new comment has been added to a blog entry")]
             [UIHint("Boolean")]
@@ -72,26 +68,26 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Category("Rss"), Caption("Feed Title"), Description("The Rss feed's title")]
             [UIHint("Text80"), StringLength(BlogConfigData.MaxFeedTitle), RequiredIf("Feed", true)]
-            public string FeedTitle { get; set; }
+            public string? FeedTitle { get; set; }
 
             [Category("Rss"), Caption("Feed Summary"), Description("The Rss feed's summary description")]
             [UIHint("Text80"), StringLength(BlogConfigData.MaxFeedSummary), RequiredIf("Feed", true)]
-            public string FeedSummary { get; set; }
+            public string? FeedSummary { get; set; }
 
             [Category("Rss"), Caption("Feed Main URL"), Description("The optional Rss feed's main URL")]
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
             [StringLength(Globals.MaxUrl), Trim]
-            public string FeedMainUrl { get; set; }
+            public string? FeedMainUrl { get; set; }
 
             [Category("Rss"), Caption("Feed Detail URL"), Description("The optional Rss feed's detail page for a blog entry")]
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local)]
             [StringLength(Globals.MaxUrl), Trim]
-            public string FeedDetailUrl { get; set; }
+            public string? FeedDetailUrl { get; set; }
 
             [Category("Rss"), Caption("Feed Image"), Description("The image used for this Rss feed")]
             [UIHint("Image"), AdditionalMetadata("ImageType", BlogConfigData.ImageType)]
             [AdditionalMetadata("Width", 200), AdditionalMetadata("Height", 200)]
-            public string FeedImage { get; set; }
+            public string? FeedImage { get; set; }
 
             public BlogConfigData GetData(BlogConfigData data) {
                 ObjectSupport.CopyData(this, data);
@@ -107,7 +103,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         public async Task<ActionResult> BlogConfig() {
             using (BlogConfigDataProvider dataProvider = new BlogConfigDataProvider()) {
                 Model model = new Model { };
-                BlogConfigData data = await dataProvider.GetItemAsync();
+                BlogConfigData? data = await dataProvider.GetItemAsync();
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "The blog settings were not found."));
                 model.SetData(data);

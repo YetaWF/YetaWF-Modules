@@ -35,9 +35,9 @@ namespace YetaWF.Modules.Blog.DataProvider {
         [StringLength(MaxTitle)]
         public MultiString Title { get; set; }
         [StringLength(MaxAuthor)]
-        public string Author { get; set; }
+        public string? Author { get; set; }
         [StringLength(Globals.MaxUrl)]
-        public string AuthorUrl { get; set; }
+        public string? AuthorUrl { get; set; }
         [StringLength(MaxKwds)]
         public MultiString Keywords { get; set; }
 
@@ -162,7 +162,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
         public async Task<MultiString> GetCategoryAsync() {
             using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
-                BlogCategory blogCategory = await categoryDP.GetItemAsync(CategoryIdentity);
+                BlogCategory? blogCategory = await categoryDP.GetItemAsync(CategoryIdentity);
                 if (blogCategory != null)
                     return blogCategory.Category;
                 return new MultiString();
@@ -194,7 +194,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
         private IDataProvider<int, BlogEntry> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, BlogEntry> CreateDataProvider() {
+        private IDataProvider<int, BlogEntry>? CreateDataProvider() {
             Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Entries", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -203,8 +203,8 @@ namespace YetaWF.Modules.Blog.DataProvider {
         // API
         // API
 
-        public async Task<BlogEntry> GetItemAsync(int blogEntry) {
-            BlogEntry data = await DataProvider.GetAsync(blogEntry);
+        public async Task<BlogEntry?> GetItemAsync(int blogEntry) {
+            BlogEntry? data = await DataProvider.GetAsync(blogEntry);
             if (data == null) return null;
             // TODO: This could be optimized for SQL using joins %%%%%%%%%%%%%%%%%%%
             await ObjectSupport.HandlePropertyAsync<MultiString>("Category", "GetCategoryAsync", data);
@@ -227,7 +227,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
             }
             return true;
         }
-        public async Task<DataProviderGetRecords<BlogEntry>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        public async Task<DataProviderGetRecords<BlogEntry>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
             DataProviderGetRecords<BlogEntry> recs = await DataProvider.GetRecordsAsync(skip, take, sort, filters);
             // TODO: This could be optimized for SQL using joins %%%%%%%%%%%%%%%%%%%
             foreach (BlogEntry blogEntry in recs.Data)
@@ -262,7 +262,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
                     string url = await BlogConfigData.GetEntryCanonicalNameAsync(entry.Identity);
 
-                    PageDefinition page = await PageDefinition.LoadFromUrlAsync(url);
+                    PageDefinition? page = await PageDefinition.LoadFromUrlAsync(url);
                     if (page == null) return; // there is no such root page
                     if (!searchWords.WantPage(page)) return;
 
@@ -290,7 +290,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
                 DataProviderGetRecords<BlogEntry> entries = await GetItemsAsync(0, 0, null, filters);
                 foreach (BlogEntry entry in entries.Data) {
                     string url = await BlogConfigData.GetEntryCanonicalNameAsync(entry.Identity);
-                    PageDefinition page = await PageDefinition.LoadFromUrlAsync(url);
+                    PageDefinition? page = await PageDefinition.LoadFromUrlAsync(url);
                     if (page == null) return; // there is no such root page
                     await addDynamicUrlAsync(page, url, entry.DateUpdated, page.SiteMapPriority, page.ChangeFrequency, entry);
                 }

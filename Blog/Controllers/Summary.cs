@@ -1,23 +1,17 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
-using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Modules.Blog.Modules;
-using YetaWF.Core.Localize;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Blog.Controllers {
 
@@ -31,7 +25,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             //[Caption("Title"), Description("The title for this blog entry")]
             //[UIHint("MultiString"), ReadOnly]
-            public MultiString Title { get; set; }
+            public MultiString Title { get; set; } = null!;
 
             [Caption("View"), Description("View the complete blog entry")]
             [UIHint("ModuleAction"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.LinksOnly), ReadOnly]
@@ -46,7 +40,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         public class DisplayModel {
-            public List<Entry> BlogEntries { get; set; }
+            public List<Entry> BlogEntries { get; set; } = null!;
         }
 
         [AllowGet]

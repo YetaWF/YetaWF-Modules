@@ -1,15 +1,11 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Modules.Blog.DataProvider;
-using System.Threading.Tasks;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
 using YetaWF.Core.Support;
-#else
-using System.Web.Mvc;
-#endif
+using YetaWF.Modules.Blog.DataProvider;
 
 namespace YetaWF.Modules.Blog.Controllers {
 

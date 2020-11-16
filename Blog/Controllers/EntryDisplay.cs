@@ -1,20 +1,15 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Modules.Blog.DataProvider;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
 using YetaWF.Core.Support;
-#else
-using System.Web.Mvc;
-#endif
+using YetaWF.Modules.Blog.DataProvider;
 
-namespace YetaWF.Modules.Blog.Controllers
-{
+namespace YetaWF.Modules.Blog.Controllers {
 
     public class EntryDisplayModuleController : ControllerImpl<YetaWF.Modules.Blog.Modules.EntryDisplayModule> {
 
@@ -27,12 +22,12 @@ namespace YetaWF.Modules.Blog.Controllers
 
             [Caption("Author"), Description("The name of the blog author")]
             [UIHint("String"), ReadOnly, SuppressIfNot("AuthorUrl", null)]
-            public string Author { get; set; }
+            public string? Author { get; set; }
 
             [Caption("Author"), Description("The optional Url linking to the author's information")]
             [UIHint("Url"), ReadOnly, SuppressEmpty]
-            public string AuthorUrl { get; set; }
-            public string AuthorUrl_Text { get { return Author; } }
+            public string? AuthorUrl { get; set; }
+            public string? AuthorUrl_Text { get { return Author; } }
 
             public bool Published { get; set; }
 
@@ -50,7 +45,7 @@ namespace YetaWF.Modules.Blog.Controllers
 
             [Caption("Blog Text"), Description("The complete text for this blog entry")]
             [UIHint("TextArea"), AdditionalMetadata("Encode", false), ReadOnly]
-            public string Text { get; set; }
+            public string? Text { get; set; }
 
             public void SetData(BlogEntry data) {
                 ObjectSupport.CopyData(data, this);
@@ -61,7 +56,7 @@ namespace YetaWF.Modules.Blog.Controllers
         public async Task<ActionResult> EntryDisplay(int? blogEntry) {
             int entryNum = blogEntry ?? 0;
             using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {
-                BlogEntry data = null;
+                BlogEntry? data = null;
                 if (entryNum != 0)
                     data = await dataProvider.GetItemAsync(entryNum);
                 if (data == null) {

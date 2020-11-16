@@ -30,17 +30,17 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public int Id { get; set; }
 
         [StringLength(MaxShortName)]
-        public string ShortName { get; set; }
+        public string? ShortName { get; set; }
 
         public bool UseSSO { get; set; }
 
         [StringLength(MaxPublicKey)]
-        public string PublicKey { get; set; }
+        public string? PublicKey { get; set; }
         [StringLength(MaxPrivateKey)]
-        public string PrivateKey { get; set; }
+        public string? PrivateKey { get; set; }
 
         [StringLength(Globals.MaxUrl)]
-        public string LoginUrl { get; set; }
+        public string? LoginUrl { get; set; }
 
         public int Width { get; set; }
         public int Height { get; set; }
@@ -74,7 +74,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
         private IDataProvider<int, DisqusConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, DisqusConfigData> CreateDataProvider() {
+        private IDataProvider<int, DisqusConfigData>? CreateDataProvider() {
             Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_DisqusConfig", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -89,7 +89,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
             }
         }
         public async Task<DisqusConfigData> GetItemAsync() {
-            DisqusConfigData config = await DataProvider.GetAsync(KEY);
+            DisqusConfigData? config = await DataProvider.GetAsync(KEY);
             if (config == null) {
                 config = new DisqusConfigData();
                 await AddConfigAsync(config);
@@ -108,7 +108,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
             );
         }
         public async Task UpdateConfigAsync(DisqusConfigData data) {
-            DisqusConfigData origConfig = Auditing.Active ? await GetItemAsync() : null;
+            DisqusConfigData? origConfig = Auditing.Active ? await GetItemAsync() : null;
             data.Id = KEY;
             UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)

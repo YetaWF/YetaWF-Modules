@@ -6,12 +6,8 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
-using YetaWF.DataProvider;
-#if MVC6
 using YetaWF.Core.Support;
-#else
-using System.Web.Mvc;
-#endif
+using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Blog.Modules {
 

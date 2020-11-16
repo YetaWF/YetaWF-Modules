@@ -1,22 +1,17 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Modules.Blog.Modules;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-using YetaWF.Core.Support;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Blog.Controllers {
 
@@ -29,16 +24,16 @@ namespace YetaWF.Modules.Blog.Controllers {
             public int Identity { get; set; }
             public int CategoryIdentity { get; set; }
 
-            public MultiString Title { get; set; }
+            public MultiString Title { get; set; } = null!;
 
             [Caption("Author"), Description("The name of the blog author")]
             [UIHint("String"), ReadOnly, SuppressIfNot("AuthorUrl", null)]
-            public string Author { get; set; }
+            public string? Author { get; set; }
 
             [Caption("Author"), Description("The optional Url linking to the author's information")]
             [UIHint("Url"), ReadOnly, SuppressEmpty]
-            public string AuthorUrl { get; set; }
-            public string AuthorUrl_Text { get { return Author; } }
+            public string? AuthorUrl { get; set; }
+            public string? AuthorUrl_Text { get { return Author; } }
 
             [Caption("Date Published"), Description("The date this entry has been published")]
             [UIHint("Date"), ReadOnly]
@@ -50,13 +45,13 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Summary"), Description("The summary for this blog entry")]
             [UIHint("TextArea"), AdditionalMetadata("Encode", false), ReadOnly]
-            public string DisplayableSummary { get; set; }
+            public string? DisplayableSummary { get; set; }
 
             [Caption("View"), Description("View the complete blog entry")]
             [UIHint("ModuleAction"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.NormalLinks), ReadOnly]
-            public ModuleAction ViewAction { get; set; }
+            public ModuleAction? ViewAction { get; set; }
 
-            public Entry(BlogEntry data, EntryEditModule editMod, EntryDisplayModule dispMod, ModuleAction editAction, ModuleAction viewAction) {
+            public Entry(BlogEntry data, EntryEditModule editMod, EntryDisplayModule? dispMod, ModuleAction? editAction, ModuleAction? viewAction) {
                 ObjectSupport.CopyData(data, this);
                 ViewAction = viewAction;
                 Actions = new List<ModuleAction>();
@@ -66,7 +61,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
         public class DisplayModel {
             public int CategoryIdentity { get; set; }
-            public List<Entry> BlogEntries { get; set; }
+            public List<Entry> BlogEntries { get; set; } = null!;
             public DateTime? StartDate { get; set; }
         }
 
@@ -104,8 +99,8 @@ namespace YetaWF.Modules.Blog.Controllers {
 
                 List<Entry> list = new List<Entry>();
                 foreach (BlogEntry d in data.Data) {
-                    ModuleAction viewAction = await dispMod.GetAction_DisplayAsync(d.Identity, ReadMore: d.Summary != d.Text);
-                    ModuleAction editAction = await editMod.GetAction_EditAsync(null, d.Identity);
+                    ModuleAction? viewAction = await dispMod.GetAction_DisplayAsync(d.Identity, ReadMore: d.Summary != d.Text);
+                    ModuleAction? editAction = await editMod.GetAction_EditAsync(null, d.Identity);
                     list.Add(new Entry(d, editMod, dispMod, editAction, viewAction));
                 }
                 DisplayModel model = new DisplayModel() {

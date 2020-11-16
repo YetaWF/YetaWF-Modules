@@ -3,19 +3,15 @@
 using System;
 using System.Threading.Tasks;
 using YetaWF.Core;
+using YetaWF.Core.Components;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Blog.DataProvider;
-using YetaWF.Core.Components;
-#if MVC6
-using YetaWF.Core.Support;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Blog.Modules {
 
@@ -40,7 +36,7 @@ namespace YetaWF.Modules.Blog.Modules {
 
         [Category("General"), Caption("Edit URL"), Description("The URL to edit the displayed blog entry - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string EditUrl { get; set; }
+        public string? EditUrl { get; set; }
 
         public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
             MenuList menuList = await base.GetModuleMenuListAsync(renderMode, location);

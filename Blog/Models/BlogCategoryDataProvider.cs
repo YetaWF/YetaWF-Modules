@@ -39,7 +39,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public DateTime DateCreated { get; set; }
         public bool Syndicated { get; set; }
         [StringLength(Globals.MaxEmail)]
-        public string SyndicationEmail { get; set; }
+        public string? SyndicationEmail { get; set; }
 
         public bool UseCaptcha { get; set; }
         public ApprovalType CommentApproval { get; set; }
@@ -67,7 +67,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
         private IDataProvider<int, BlogCategory> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, BlogCategory> CreateDataProvider() {
+        private IDataProvider<int, BlogCategory>? CreateDataProvider() {
             Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Categories", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -76,7 +76,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         // API
         // API
 
-        public Task<BlogCategory> GetItemAsync(int identity) {
+        public Task<BlogCategory?> GetItemAsync(int identity) {
             return DataProvider.GetAsync(identity);
         }
         public Task<bool> AddItemAsync(BlogCategory data) {
@@ -94,7 +94,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
             }
             return true;
         }
-        public Task<DataProviderGetRecords<BlogCategory>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        public Task<DataProviderGetRecords<BlogCategory>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
             return DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
     }

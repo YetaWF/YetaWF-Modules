@@ -31,7 +31,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
             ImageSupport.AddHandler(ImageType, GetBytesAsync: RetrieveImageAsync);
             return Task.CompletedTask;
         }
-        private async Task<ImageSupport.GetImageInBytesInfo> RetrieveImageAsync(string name, string location) {
+        private async Task<ImageSupport.GetImageInBytesInfo> RetrieveImageAsync(string? name, string? location) {
             ImageSupport.GetImageInBytesInfo fail = new ImageSupport.GetImageInBytesInfo();
             if (!string.IsNullOrWhiteSpace(location)) return fail;
             if (string.IsNullOrWhiteSpace(name)) return fail;
@@ -50,11 +50,11 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public int Id { get; set; }
 
         [StringLength(Globals.MaxUrl)]
-        public string BlogUrl { get; set; }
+        public string? BlogUrl { get; set; }
         public int DefaultCategory { get; set; }
         public int Entries { get; set; }
         [StringLength(Globals.MaxUrl)]
-        public string BlogEntryUrl { get; set; }
+        public string? BlogEntryUrl { get; set; }
 
         public bool ShowGravatar { get; set; }
         public Gravatar.GravatarEnum GravatarDefault { get; set; }
@@ -62,7 +62,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public int GravatarSize { get; set; }
 
         [StringLength(Globals.MaxEmail)]
-        public string NotifyEmail { get; set; }
+        public string? NotifyEmail { get; set; }
 
         [Data_NewValue]
         public bool NotifyNewComment { get; set; }
@@ -74,13 +74,13 @@ namespace YetaWF.Modules.Blog.DataProvider {
         public string FeedSummary { get; set; }
 
         [StringLength(Globals.MaxUrl)]
-        public string FeedMainUrl { get; set; }
+        public string? FeedMainUrl { get; set; }
         [StringLength(Globals.MaxUrl)]
-        public string FeedDetailUrl { get; set; }
+        public string? FeedDetailUrl { get; set; }
 
         [UIHint("Image")]
         [DontSave]
-        public string FeedImage {
+        public string? FeedImage {
             get {
                 if (_feedImage == null) {
                     if (FeedImage_Data != null && FeedImage_Data.Length > 0)
@@ -92,7 +92,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
                 _feedImage = value;
             }
         }
-        private string _feedImage = null;
+        private string? _feedImage = null;
 
         [Data_Binary]
         public byte[] FeedImage_Data { get; set; }
@@ -113,12 +113,12 @@ namespace YetaWF.Modules.Blog.DataProvider {
             FeedImage_Data = new byte[0];
         }
 
-        internal static async Task<string> GetCategoryCanonicalNameAsync(int blogCategory = 0) {
+        internal static async Task<string?> GetCategoryCanonicalNameAsync(int blogCategory = 0) {
             using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
                 BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
-                string canon = config.BlogUrl;
+                string? canon = config.BlogUrl;
                 if (blogCategory != 0) {
-                    BlogCategory cat = await categoryDP.GetItemAsync(blogCategory);
+                    BlogCategory? cat = await categoryDP.GetItemAsync(blogCategory);
                     if (cat != null)
                         canon = string.Format("{0}/Title/{1}/?BlogCategory={2}", config.BlogUrl, Utility.UrlEncodeSegment(cat.Category.ToString().Truncate(80)), blogCategory);
                 } else {
@@ -131,7 +131,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
             BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
             string canon = string.Format("{0}/?BlogEntry={1}", config.BlogEntryUrl, blogEntry);
             using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
-                BlogEntry data = await entryDP.GetItemAsync(blogEntry);
+                BlogEntry? data = await entryDP.GetItemAsync(blogEntry);
                 if (data != null)
                     canon = string.Format("{0}/Title/{1}/?BlogEntry={2}", config.BlogEntryUrl, Utility.UrlEncodeSegment(data.Title.ToString().Truncate(80)), blogEntry);
                 return canon;
@@ -152,7 +152,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
 
         private IDataProvider<int, BlogConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, BlogConfigData> CreateDataProvider() {
+        private IDataProvider<int, BlogConfigData>? CreateDataProvider() {
             Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -167,7 +167,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
             }
         }
         public async Task<BlogConfigData> GetItemAsync() {
-            BlogConfigData config = await DataProvider.GetAsync(KEY);
+            BlogConfigData? config = await DataProvider.GetAsync(KEY);
             if (config == null) {
                 config = new BlogConfigData();
                 await AddConfigAsync(config);
@@ -187,7 +187,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
             );
         }
         public async Task UpdateConfigAsync(BlogConfigData data) {
-            BlogConfigData origConfig = Auditing.Active ? await GetItemAsync() : null;
+            BlogConfigData? origConfig = Auditing.Active ? await GetItemAsync() : null;
             data.Id = KEY;
             await SaveImagesAsync(ModuleDefinition.GetPermanentGuid(typeof(BlogConfigModule)), data);
             UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);

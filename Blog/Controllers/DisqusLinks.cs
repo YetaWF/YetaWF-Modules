@@ -1,14 +1,9 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Modules.Blog.DataProvider;
-using YetaWF.Core.Support;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Blog.Controllers {
 
@@ -17,7 +12,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         public DisqusLinksModuleController() { }
 
         public class DisplayModel {
-            public string ShortName { get; set; }
+            public string? ShortName { get; set; }
         }
 
         [AllowGet]

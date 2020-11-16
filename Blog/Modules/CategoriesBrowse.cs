@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core;
+using YetaWF.Core.Components;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -13,11 +14,6 @@ using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Blog.Controllers;
 using YetaWF.Modules.Blog.Scheduler;
-using YetaWF.Core.Components;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Blog.Modules {
 
@@ -39,16 +35,16 @@ namespace YetaWF.Modules.Blog.Modules {
 
         [Category("General"), Caption("Add URL"), Description("The URL to add a new blog category - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string AddUrl { get; set; }
+        public string? AddUrl { get; set; }
         [Category("General"), Caption("Display URL"), Description("The URL to display a blog category - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string DisplayUrl { get; set; }
+        public string? DisplayUrl { get; set; }
         [Category("General"), Caption("Edit URL"), Description("The URL to edit a blog category - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string EditUrl { get; set; }
+        public string? EditUrl { get; set; }
         [Category("General"), Caption("Browse Entries URL"), Description("The URL to browse blog entries - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string BrowseEntriesUrl { get; set; }
+        public string? BrowseEntriesUrl { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
         public override List<RoleDefinition> ExtraRoles {
@@ -71,7 +67,7 @@ namespace YetaWF.Modules.Blog.Modules {
             return menuList;
         }
 
-        public ModuleAction GetAction_Categories(string url) {
+        public ModuleAction? GetAction_Categories(string? url) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Browse",
@@ -85,7 +81,7 @@ namespace YetaWF.Modules.Blog.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
             };
         }
-        public ModuleAction GetAction_Remove(int blogCategory) {
+        public ModuleAction? GetAction_Remove(int blogCategory) {
             if (!IsAuthorized("RemoveItems")) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(CategoriesBrowseModuleController), "Remove"),
@@ -103,7 +99,7 @@ namespace YetaWF.Modules.Blog.Modules {
                 ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to remove this blog category?"),
             };
         }
-        public ModuleAction GetAction_CreateNewsSiteMap() {
+        public ModuleAction? GetAction_CreateNewsSiteMap() {
             if (!IsAuthorized("NewsSiteMap")) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(CategoriesBrowseModuleController), "CreateNewsSiteMap"),
@@ -122,7 +118,7 @@ namespace YetaWF.Modules.Blog.Modules {
                 PleaseWaitText = this.__ResStr("screAuthPlsWait", "Creating news site map..."),
             };
         }
-        public ModuleAction GetAction_RemoveNewsSiteMap() {
+        public ModuleAction? GetAction_RemoveNewsSiteMap() {
             if (!IsAuthorized("NewsSiteMap")) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(CategoriesBrowseModuleController), "RemoveNewsSiteMap"),
@@ -140,7 +136,7 @@ namespace YetaWF.Modules.Blog.Modules {
                 ConfirmationText = this.__ResStr("sremAuthConfirm", "Are you sure you want to remove the current news site map?"),
             };
         }
-        public async Task<ModuleAction> GetAction_DownloadNewsSiteMapAsync() {
+        public async Task<ModuleAction?> GetAction_DownloadNewsSiteMapAsync() {
             if (!IsAuthorized("NewsSiteMap")) return null;
             NewsSiteMap sm = new NewsSiteMap();
             string filename = sm.GetNewsSiteMapFileName();

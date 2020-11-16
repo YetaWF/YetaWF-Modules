@@ -13,10 +13,6 @@ using YetaWF.DataProvider;
 using YetaWF.Modules.Blog.Addons;
 using YetaWF.Modules.Blog.Controllers;
 using System.Threading.Tasks;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Blog.Modules {
 
@@ -39,11 +35,11 @@ namespace YetaWF.Modules.Blog.Modules {
 
         [Category("General"), Caption("Edit URL"), Description("The URL to edit a blog comment - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string EditUrl { get; set; }
+        public string? EditUrl { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public async Task<ModuleAction> GetAction_ApproveAsync(int blogEntry, int comment) {
+        public async Task<ModuleAction?> GetAction_ApproveAsync(int blogEntry, int comment) {
             if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(Info.Resource_AllowManageComments)) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(CommentsDisplayModuleController), nameof(CommentsDisplayModuleController.Approve)),
@@ -61,7 +57,7 @@ namespace YetaWF.Modules.Blog.Modules {
                 ConfirmationText = this.__ResStr("approveConfirm", "Are you sure you want to approve this comment?"),
             };
         }
-        public async Task<ModuleAction> GetAction_RemoveAsync(int blogEntry, int comment) {
+        public async Task<ModuleAction?> GetAction_RemoveAsync(int blogEntry, int comment) {
             if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(Info.Resource_AllowManageComments)) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(CommentsDisplayModuleController), "Remove"),

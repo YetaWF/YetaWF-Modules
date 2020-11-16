@@ -23,7 +23,7 @@ namespace YetaWF.Modules.Blog.DataProvider.SQL {
         class BlogEntryDataProvider : SQLSimpleObject<int, BlogEntry> {
             public BlogEntryDataProvider(Dictionary<string, object> options) : base(options) { CalculatedPropertyCallbackAsync = GetCalculatedPropertyAsync; }
             private async Task<string> GetCalculatedPropertyAsync(string name) {
-                string sql = null;
+                string sql;
                 if (name == "CommentsUnapproved") {
                     using (DataProvider.BlogCommentDataProvider commentDP = new DataProvider.BlogCommentDataProvider(-1)) {// we don't know the entry, but it's not needed
                         sql = "SELECT COUNT(*) FROM $BlogComments$ WHERE ($BlogComments$.EntryIdentity = $ThisTable$.[Identity]) AND ($ThisTable$.Published = 1) AND ($BlogComments$.Deleted = 0) AND ($BlogComments$.Approved = 0)";

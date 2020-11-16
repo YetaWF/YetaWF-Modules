@@ -8,11 +8,7 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.DataProvider;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Blog.Controllers {
 
@@ -28,11 +24,11 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Category"), Description("The name of this blog category")]
             [UIHint("MultiString"), ReadOnly]
-            public MultiString Category { get; set; }
+            public MultiString Category { get; set; } = null!;
 
             [Caption("Description"), Description("The description of the blog category - the category's description is shown at the top of each blog entry to describe your blog")]
             [UIHint("MultiString"), ReadOnly]
-            public MultiString Description { get; set; }
+            public MultiString Description { get; set; } = null!;
 
             [Caption("Date Created"), Description("The creation date of the blog category")]
             [UIHint("DateTime"), ReadOnly]
@@ -52,11 +48,11 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Email Address"), Description("The email address used as email address responsible for the blog category")]
             [UIHint("String"), ReadOnly]
-            public string SyndicationEmail { get; set; }
+            public string? SyndicationEmail { get; set; }
 
             [Caption("Syndication Copyright"), Description("The optional copyright information shown when the blog is accessed by news readers")]
             [UIHint("MultiString"), ReadOnly]
-            public MultiString SyndicationCopyright { get; set; }
+            public MultiString SyndicationCopyright { get; set; } = null!;
 
             public void SetData(BlogCategory data) {
                 ObjectSupport.CopyData(data, this);
@@ -66,7 +62,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         [AllowGet]
         public async Task<ActionResult> CategoryDisplay(int blogCategory) {
             using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
-                BlogCategory data = await dataProvider.GetItemAsync(blogCategory);
+                BlogCategory? data = await dataProvider.GetItemAsync(blogCategory);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Blog category with id {0} not found."), blogCategory);
                 DisplayModel model = new DisplayModel();

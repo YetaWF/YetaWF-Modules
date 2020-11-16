@@ -1,9 +1,11 @@
 ﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
@@ -12,12 +14,6 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Support.Rss;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Modules.Blog.Modules;
-using YetaWF.Core.Components;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Blog.Controllers {
 
@@ -31,11 +27,11 @@ namespace YetaWF.Modules.Blog.Controllers {
                 throw new Error(this.__ResStr("noFeed", "The feed is no longer available"));
 
             int categoryIdentity = blogCategory ?? 0;
-            BlogCategory category = null;
+            BlogCategory? category = null;
             if (categoryIdentity != 0) {
                 using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
                     category = await categoryDP.GetItemAsync(categoryIdentity);
-                    if (!category.Syndicated)
+                    if (category == null || !category.Syndicated)
                         throw new Error(this.__ResStr("noFeed", "The feed is no longer available"));
                 }
             }
@@ -61,7 +57,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                     if (categoryIdentity == 0) {
                         using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
                             category = await categoryDP.GetItemAsync(blogEntry.CategoryIdentity);
-                            if (!category.Syndicated)
+                            if (category == null || !category.Syndicated)
                                 continue;
                         }
                     }
@@ -70,11 +66,13 @@ namespace YetaWF.Modules.Blog.Controllers {
                     SyndicationItem sItem = new SyndicationItem(blogEntry.Title.ToString(), blogEntry.Text, new Uri(viewAction.GetCompleteUrl()));
                     DateTime updDate = blogEntry.DateUpdated ?? blogEntry.DateCreated;
                     sItem.LastUpdatedTime = updDate;
-                    if (!string.IsNullOrEmpty(category.SyndicationEmail))
-                        sItem.Authors.Add(new SyndicationPerson(category.SyndicationEmail));
-                    sItem.Categories.Add(new SyndicationCategory(category.Category.ToString()));
-                    if (!string.IsNullOrEmpty(category.SyndicationCopyright.ToString()))
-                        sItem.Copyright = new TextSyndicationContent(category.SyndicationCopyright.ToString());
+                    if (category != null) {
+                        if (!string.IsNullOrEmpty(category.SyndicationEmail))
+                            sItem.Authors.Add(new SyndicationPerson(category.SyndicationEmail));
+                        sItem.Categories.Add(new SyndicationCategory(category.Category.ToString()));
+                        if (!string.IsNullOrEmpty(category.SyndicationCopyright.ToString()))
+                            sItem.Copyright = new TextSyndicationContent(category.SyndicationCopyright.ToString());
+                    }
                     sItem.PublishDate = blogEntry.DatePublished;
                     if (!string.IsNullOrEmpty(blogEntry.DisplayableSummary))
                         sItem.Summary = new TextSyndicationContent(blogEntry.DisplayableSummary);
@@ -84,7 +82,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                 }
 
                 SyndicationFeed feed;
-                if (categoryIdentity != 0) {
+                if (category != null) {
                     feed = new SyndicationFeed(category.Category.ToString(), category.Description.ToString(), new Uri(Manager.CurrentSite.MakeUrl(url)), items);
                 } else {
                     feed = new SyndicationFeed(config.FeedTitle, config.FeedSummary, new Uri(Manager.CurrentSite.MakeUrl(url)), items);

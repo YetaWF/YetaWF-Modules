@@ -10,11 +10,7 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.DataProvider;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Blog.Controllers {
 
@@ -42,20 +38,20 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Title"), Description("The title for this blog entry")]
             [UIHint("MultiString"), StringLength(BlogEntry.MaxTitle), Required, Trim]
-            public MultiString Title { get; set; }
+            public MultiString Title { get; set; } = null!;
 
             [Caption("Keywords"), Description("The keywords for this blog entry")]
             [UIHint("MultiString"), StringLength(BlogEntry.MaxKwds), Trim]
-            public MultiString Keywords { get; set; }
+            public MultiString Keywords { get; set; } = null!;
 
             [Caption("Author"), Description("The name of the blog author")]
             [UIHint("Text40"), StringLength(BlogEntry.MaxAuthor), Required, Trim]
-            public string Author { get; set; }
+            public string? Author { get; set; }
 
             [Caption("Author's Url"), Description("The optional Url linking to the author's information")]
             [UIHint("Url"), StringLength(Globals.MaxUrl), Trim]
             [AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
-            public string AuthorUrl { get; set; }
+            public string? AuthorUrl { get; set; }
 
             [Caption("Allow Comments"), Description("Defines whether comments can be entered for this blog entry")]
             [UIHint("Boolean")]
@@ -79,13 +75,13 @@ namespace YetaWF.Modules.Blog.Controllers {
             [Caption("Summary"), Description("The summary for this blog entry - If no summary is entered, the entire blog text is shown instead of the summary")]
             [UIHint("TextArea"), AdditionalMetadata("EmHeight", 10), StringLength(BlogEntry.MaxSummary)]
             [AdditionalMetadata("TextAreaSave", false), AdditionalMetadata("ImageBrowse", true), AdditionalMetadata("PageBrowse", false)]
-            public string Summary { get; set; }
+            public string? Summary { get; set; }
 
             [Caption("Blog Text"), Description("The complete text for this blog entry")]
             [UIHint("TextArea"), AdditionalMetadata("EmHeight", 20), StringLength(BlogEntry.MaxText)]
             [AdditionalMetadata("TextAreaSave", false), AdditionalMetadata("ImageBrowse", true), AdditionalMetadata("PageBrowse", false)]
             [RequiredIf("Published", true)]
-            public string Text { get; set; }
+            public string? Text { get; set; }
 
             public Guid Text_Folder { get { return BlogEntry.FolderGuid; } }
             public Guid Text_SubFolder { get { return UniqueId; } }
@@ -109,7 +105,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         public async Task<ActionResult> EntryEdit(int blogEntry) {
             using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {
                 EditModel model = new EditModel { };
-                BlogEntry data = await dataProvider.GetItemAsync(blogEntry);
+                BlogEntry? data = await dataProvider.GetItemAsync(blogEntry);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Blog entry with id {0} not found"), blogEntry);
                 model.SetData(data);
@@ -125,7 +121,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
             using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {
-                BlogEntry data = await dataProvider.GetItemAsync(model.Identity);
+                BlogEntry? data = await dataProvider.GetItemAsync(model.Identity);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Blog entry with id {0} not found"), model.Identity);
                 // save updated item

@@ -1,13 +1,16 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
@@ -16,14 +19,6 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Modules.Blog.Modules;
 using YetaWF.Modules.Blog.Scheduler;
-using YetaWF.Core.IO;
-using YetaWF.Core.Components;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web;
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Blog.Controllers {
 
@@ -54,11 +49,11 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Category"), Description("The name of this blog category")]
             [UIHint("MultiString"), ReadOnly]
-            public MultiString Category { get; set; }
+            public MultiString Category { get; set; } = null!;
 
             [Caption("Description"), Description("The description of the blog category - the category's description is shown at the top of each blog entry to describe your blog")]
             [UIHint("MultiString"), ReadOnly]
-            public MultiString Description { get; set; }
+            public MultiString Description { get; set; } = null!;
 
             [Caption("Date Created"), Description("The creation date of the blog category")]
             [UIHint("DateTime"), ReadOnly]
@@ -78,11 +73,11 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Email Address"), Description("The email address used as email address responsible for the blog category")]
             [UIHint("String"), ReadOnly]
-            public string SyndicationEmail { get; set; }
+            public string? SyndicationEmail { get; set; }
 
             [Caption("Syndication Copyright"), Description("The optional copyright information shown when the blog is accessed by news readers")]
             [UIHint("MultiString"), ReadOnly]
-            public MultiString SyndicationCopyright { get; set; }
+            public MultiString SyndicationCopyright { get; set; } = null!;
 
             private CategoriesBrowseModule Module { get; set; }
 
@@ -94,7 +89,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
         public class BrowseModel {
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
 
         private GridDefinition GetGridModel() {
@@ -103,7 +98,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                 SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = GetActionUrl(nameof(CategoriesBrowse_GridData)),
-                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
                         DataProviderGetRecords<BlogCategory> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
@@ -162,23 +157,11 @@ namespace YetaWF.Modules.Blog.Controllers {
             string filename = sm.GetNewsSiteMapFileName();
             if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
                 throw new Error(this.__ResStr("sitemapNotFound", "News site map not found - File '{0}' cannot be located", filename));
-#if MVC6
             Response.Headers.Remove("Cookie");
             Response.Cookies.Append(Basics.CookieDone, cookieToReturn.ToString(), new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = false, Path = "/" });
-#else
-            HttpCookie cookie = new HttpCookie(Basics.CookieDone, cookieToReturn.ToString());
-            Response.Cookies.Remove(Basics.CookieDone);
-            Response.SetCookie(cookie);
-#endif
 
             string contentType = "application/octet-stream";
-#if MVC6
             return new PhysicalFileResult(filename, contentType) { FileDownloadName = Path.GetFileName(filename) };
-#else
-            FilePathResult result = new FilePathResult(filename, contentType);
-            result.FileDownloadName = Path.GetFileName(filename);
-            return result;
-#endif
         }
     }
 }

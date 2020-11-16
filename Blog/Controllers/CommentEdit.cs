@@ -1,5 +1,6 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using YetaWF.Core;
@@ -12,11 +13,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.Addons;
 using YetaWF.Modules.Blog.DataProvider;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Blog.Controllers {
 
@@ -38,11 +34,11 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Name"), Description("The author's name")]
             [UIHint("Text40"), StringLength(BlogComment.MaxName), Required, Trim]
-            public string Name { get; set; }
+            public string? Name { get; set; }
 
             [Caption("Email Address"), Description("The author's email address")]
             [UIHint("Email"), EmailValidation, StringLength(Globals.ChEmail), Required, Trim]
-            public string Email { get; set; }
+            public string? Email { get; set; }
 
             [Caption("Show Gravatar"), Description("Defines whether the optional Gravatar is shown")]
             [HelpLink("http://www.gravatar.com")]
@@ -51,7 +47,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Website"), Description("The author's optional website")]
             [UIHint("Url"), StringLength(Globals.MaxUrl), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Remote), Trim]
-            public string Website { get; set; }
+            public string? Website { get; set; }
 
             [Caption("Approved"), Description("Defines whether the comment has been approved for public display")]
             [UIHint("Boolean")]
@@ -65,12 +61,12 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Title"), Description("The comment title")]
             [UIHint("Text80"), StringLength(BlogComment.MaxTitle), Required, Trim]
-            public string Title { get; set; }
+            public string? Title { get; set; }
 
             [Caption("Comment"), Description("The comment")]
             [UIHint("TextArea"), AdditionalMetadata("EmHeight", 10), StringLength(BlogComment.MaxComment)]
             [AdditionalMetadata("TextAreaSave", false), AdditionalMetadata("RestrictedHtml", true)]
-            public string Comment { get; set; }
+            public string? Comment { get; set; }
 
             internal BlogComment GetData(BlogComment data) {
                 ObjectSupport.CopyData(this, data);
@@ -93,7 +89,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         public async Task<ActionResult> CommentEdit(int blogEntry, int comment) {
             using (BlogCommentDataProvider dataProvider = new BlogCommentDataProvider(blogEntry)) {
                 EditModel model = new EditModel { };
-                BlogComment data = await dataProvider.GetItemAsync(comment);
+                BlogComment? data = await dataProvider.GetItemAsync(comment);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Comment entry with id {0} not found."), comment);
                 await model.SetData(data);
@@ -109,7 +105,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         public async Task<ActionResult> CommentEdit_Partial(EditModel model) {
             await model.UpdateDataAsync();
             using (BlogCommentDataProvider dataProvider = new BlogCommentDataProvider(model.EntryIdentity)) {
-                BlogComment data = await dataProvider.GetItemAsync(model.Identity);
+                BlogComment? data = await dataProvider.GetItemAsync(model.Identity);
                 if (data == null)
                     throw new Error(this.__ResStr("alreadyDeleted", "The comment entry with id {0} has been removed and can no longer be updated", model.Identity));
                 if (!ModelState.IsValid)
