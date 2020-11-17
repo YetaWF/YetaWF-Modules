@@ -24,14 +24,14 @@
   </ItemGroup>
 
   <Choose>
-    <When Condition="Exists('..\..\..\USE_SQLDYN.txt')">
+    <When Condition="Exists('..\..\..\USE_SQL.txt')">
       <ItemGroup>
-        <ProjectReference Include="..\..\..\DataProvider\SQLDyn\SQLDyn.csproj" />
+        <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj" />
       </ItemGroup>
     </When>
     <Otherwise>
       <ItemGroup>
-        <ProjectReference Include="..\..\..\DataProvider\SQL\SQL.csproj" />
+        <ProjectReference Include="..\..\..\DataProvider\SQLDyn\SQLDyn.csproj" />
       </ItemGroup>
     </Otherwise>
   </Choose>
