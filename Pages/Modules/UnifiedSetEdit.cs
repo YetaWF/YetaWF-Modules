@@ -28,6 +28,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
         public ModuleAction GetAction_Edit(string url, Guid unifiedSetGuid) {
+            if (YetaWF.Core.Support.Startup.MultiInstance) return null;
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = new { UnifiedSetGuid = unifiedSetGuid },

@@ -78,6 +78,7 @@ namespace YetaWF.Modules.Pages.Modules {
             };
         }
         public ModuleAction GetAction_Remove(Guid unifiedSetGuid, string name) {
+            if (YetaWF.Core.Support.Startup.MultiInstance) return null;
             if (!IsAuthorized("RemoveItems")) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(UnifiedSetsBrowseModuleController), "Remove"),

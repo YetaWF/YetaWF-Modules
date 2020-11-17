@@ -28,4 +28,5 @@ using YetaWF.PackageAttributes;
 
 [assembly: Resource(Info.Resource_AllowListOfLocalPagesAjax, "Allow list of local pages retrieval (Ajax) for ListOfLocalPages template", Administrator = true, Superuser = true)]
 
+[assembly: RequiresPackage("YetaWF.Caching")]
 [assembly: RequiresPackage("YetaWF.ComponentsHTML")]

@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj" />
     <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj" />
+    <ProjectReference Include="..\Caching\Caching.csproj" />
     <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj" />
   </ItemGroup>
 

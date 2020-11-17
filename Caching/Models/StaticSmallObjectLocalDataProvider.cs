@@ -156,6 +156,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
         private void RemoveExpired() {
             // already locked
+            if (NoExpiration) return;
             StaticObjects = (from s in StaticObjects where DateTime.Now.AddMinutes(-DurationSeconds) < s.Value.Created select s).ToDictionary(x => x.Key, x =>x.Value);
         }
 

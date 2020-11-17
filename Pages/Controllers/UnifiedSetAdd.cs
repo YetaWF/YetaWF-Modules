@@ -86,6 +86,7 @@ namespace YetaWF.Modules.Pages.Controllers {
 
         [AllowGet]
         public ActionResult UnifiedSetAdd() {
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Adding Unified Page Sets is not possible when distributed caching is enabled");
             AddModel model = new AddModel {};
             ObjectSupport.CopyData(new UnifiedSetData(), model);
             return View(model);
@@ -94,6 +95,7 @@ namespace YetaWF.Modules.Pages.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> UnifiedSetAdd_Partial(AddModel model) {
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Adding Unified Page Sets is not possible when distributed caching is enabled");
             if (!ModelState.IsValid)
                 return PartialView(model);
 

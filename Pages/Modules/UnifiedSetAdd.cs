@@ -28,6 +28,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
         public ModuleAction GetAction_Add(string url) {
+            if (YetaWF.Core.Support.Startup.MultiInstance) return null;
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Add",

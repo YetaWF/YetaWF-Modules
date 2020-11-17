@@ -102,6 +102,7 @@ namespace YetaWF.Modules.Pages.Controllers {
 
         [AllowGet]
         public async Task<ActionResult> UnifiedSetEdit(Guid unifiedSetGuid) {
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Editing Unified Page Sets is not possible when distributed caching is enabled");
             using (UnifiedSetDataProvider unifiedSetDP = new UnifiedSetDataProvider()) {
                 EditModel model = new EditModel { };
                 UnifiedSetData data = await unifiedSetDP.GetItemAsync(unifiedSetGuid);
@@ -115,6 +116,7 @@ namespace YetaWF.Modules.Pages.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> UnifiedSetEdit_Partial(EditModel model) {
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Editing Unified Page Sets is not possible when distributed caching is enabled");
 
             using (UnifiedSetDataProvider unifiedSetDP = new UnifiedSetDataProvider()) {
                 UnifiedSetData unifiedSet = await unifiedSetDP.GetItemAsync(model.UnifiedSetGuid);// get the original item

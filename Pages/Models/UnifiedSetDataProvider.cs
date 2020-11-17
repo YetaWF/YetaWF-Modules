@@ -1,5 +1,7 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Pages#License */
 
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +16,7 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
+using YetaWF.Modules.Caching.DataProvider;
 
 namespace YetaWF.Modules.Pages.DataProvider {
 
@@ -33,13 +36,13 @@ namespace YetaWF.Modules.Pages.DataProvider {
         /// User provided name for this page set.
         /// </summary>
         [StringLength(MaxName)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// User provided description for this page set.
         /// </summary>
         [StringLength(MaxDescription)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         /// <summary>
         /// Defines the master page for the unified page set. All referenced modules, skin and other attributes for all pages are defined by this page.
@@ -120,6 +123,29 @@ namespace YetaWF.Modules.Pages.DataProvider {
         }
     }
 
+    public class CacheInfo {
+
+        internal static StaticSmallObjectLocalDataProvider Cache { get; } = new StaticSmallObjectLocalDataProvider(0);// force always cache, even in non-release
+
+        public List<UnifiedSetData> SetData { get; set; } = null!;
+
+        public static async Task<List<UnifiedSetData>?> GetCachedSetDataAsync(int siteIdentity) {
+            GetObjectInfo<CacheInfo> info = await Cache.GetAsync<CacheInfo>(siteIdentity.ToString());
+            if (info.Success)
+                return info.Data.SetData;
+            return null;
+        }
+        public static async Task SetCachedSetDataAsync(int siteIdentity, CacheInfo info) {
+            await Cache.AddAsync<CacheInfo>(siteIdentity.ToString(), info);
+        }
+
+        public static async Task ClearAsync() {
+            ICacheClearable? clearableDP = Cache as ICacheClearable;
+            if (clearableDP != null)
+                await clearableDP.ClearAllAsync();
+        }
+    }
+
     public class UnifiedSetDataProvider : DataProviderImpl, IInstallableModel {
 
         // IMPLEMENTATION
@@ -131,7 +157,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
 
         private IDataProvider<Guid, UnifiedSetData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<Guid, UnifiedSetData> CreateDataProvider() {
+        private IDataProvider<Guid, UnifiedSetData>? CreateDataProvider() {
             Package package = YetaWF.Modules.Pages.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_UnifiedSets", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -140,13 +166,14 @@ namespace YetaWF.Modules.Pages.DataProvider {
         // API
         // API
 
-        public async Task<UnifiedSetData> GetItemAsync(Guid unifiedSetGuid) {
-            UnifiedSetData unifiedSet = await DataProvider.GetAsync(unifiedSetGuid);
+        public async Task<UnifiedSetData?> GetItemAsync(Guid unifiedSetGuid) {
+            UnifiedSetData ? unifiedSet = await DataProvider.GetAsync(unifiedSetGuid);
             if (unifiedSet == null) return null;
             unifiedSet.PageList = await GetPageListFromGuidsAsync(unifiedSet.PageGuids);
             return unifiedSet;
         }
         public async Task<bool> AddItemAsync(UnifiedSetData unifiedSet) {
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Adding Unified Page Sets is not possible when distributed caching is enabled");
             unifiedSet.UnifiedSetGuid = Guid.NewGuid();
             unifiedSet.Created = DateTime.UtcNow;
             if (unifiedSet.UnifiedMode == PageDefinition.UnifiedModeEnum.SkinDynamicContent) {
@@ -162,11 +189,13 @@ namespace YetaWF.Modules.Pages.DataProvider {
                 DataBefore: null,
                 DataAfter: unifiedSet
             );
+
+            await CacheInfo.ClearAsync();
             return true;
         }
         public async Task<UpdateStatusEnum> UpdateItemAsync(UnifiedSetData unifiedSet) {
-
-            UnifiedSetData origData = Auditing.Active ? await GetItemAsync(unifiedSet.UnifiedSetGuid) : null;
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Updating Unified Page Sets is not possible when distributed caching is enabled");
+            UnifiedSetData? origData = Auditing.Active ? await GetItemAsync(unifiedSet.UnifiedSetGuid) : null;
 
             unifiedSet.Updated = DateTime.UtcNow;
             if (unifiedSet.UnifiedMode == PageDefinition.UnifiedModeEnum.SkinDynamicContent) {
@@ -183,11 +212,13 @@ namespace YetaWF.Modules.Pages.DataProvider {
                 DataBefore: origData,
                 DataAfter: unifiedSet
             );
+            await CacheInfo.ClearAsync();
             return status;
         }
         public async Task<bool> RemoveItemAsync(Guid unifiedSetGuid) {
+            if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Removing Unified Page Sets is not possible when distributed caching is enabled");
 
-            UnifiedSetData origData = Auditing.Active ? await GetItemAsync(unifiedSetGuid) : null;
+            UnifiedSetData? origData = Auditing.Active ? await GetItemAsync(unifiedSetGuid) : null;
 
             if (!await DataProvider.RemoveAsync(unifiedSetGuid)) return false;
             await RemoveGuidAsync(unifiedSetGuid);
@@ -197,19 +228,38 @@ namespace YetaWF.Modules.Pages.DataProvider {
                 DataBefore: origData,
                 DataAfter: null
             );
+            await CacheInfo.ClearAsync();
             return true;
         }
-        public async Task<DataProviderGetRecords<UnifiedSetData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        public async Task<DataProviderGetRecords<UnifiedSetData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
             return await DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
 
+        public async Task<UnifiedSetData?> GetCachedItemAsync(string? collectionName, string skinName) {
+            List<UnifiedSetData>? unifiedSets = await CacheInfo.GetCachedSetDataAsync(SiteIdentity);
+            if (unifiedSets == null) {
+                using (UnifiedSetDataProvider unifiedSetDP = new UnifiedSetDataProvider()) {
+                    DataProviderGetRecords<UnifiedSetData> recs = await unifiedSetDP.GetItemsAsync(0, 0, null, null);
+                    await CacheInfo.SetCachedSetDataAsync(SiteIdentity, new CacheInfo { SetData = recs.Data });
+                    if (recs.Data.Count == 0)
+                        return null;
+                    unifiedSets = recs.Data;
+                }
+            }
+            UnifiedSetData? unifiedSet =
+                (from s in unifiedSets where string.Compare(s.PageSkin.Collection, collectionName, true) == 0 &&
+                    (string.Compare(s.PageSkin.FileName, skinName, true) == 0 || string.Compare($"{s.PageSkin.FileName}.cshtml", skinName, true) == 0) &&
+                    s.UnifiedMode == PageDefinition.UnifiedModeEnum.SkinDynamicContent select s).FirstOrDefault();
+            return unifiedSet;
+        }
+
         // PageList
         // PageList
         // PageList
 
-        static internal async Task<PageDefinition.UnifiedInfo> GetUnifiedPageInfoAsync(Guid? unifiedSetGuid, string collectionName, string skinName) {
+        static internal async Task<PageDefinition.UnifiedInfo?> GetUnifiedPageInfoAsync(Guid? unifiedSetGuid, string? collectionName, string? skinName) {
             using (UnifiedSetDataProvider unifiedSetDP = new UnifiedSetDataProvider()) {
-                UnifiedSetData unifiedSet;
+                UnifiedSetData? unifiedSet;
                 if (unifiedSetGuid != null) {
                     unifiedSet = await unifiedSetDP.GetItemAsync((Guid)unifiedSetGuid);
                     if (unifiedSet != null) {
@@ -227,20 +277,8 @@ namespace YetaWF.Modules.Pages.DataProvider {
                 // some pages (created with earlier versions of YetaWF) have a null skin name, which defaults to SkinAccess.FallbackPageFileName
                 if (string.IsNullOrWhiteSpace(skinName))
                     skinName = SkinAccess.FallbackPageFileName;
-                // find a unified page set that uses the matching skin
-                List<DataProviderFilterInfo> filters = null;
-                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = $"{nameof(UnifiedSetData.PageSkin)}.{nameof(SkinDefinition.Collection)}", Operator = "==", Value = collectionName });
-                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(UnifiedSetData.UnifiedMode), Operator = "==", Value = PageDefinition.UnifiedModeEnum.SkinDynamicContent });
 
-                List<DataProviderFilterInfo> subFilters = null;
-                // we need to check for Default and Default.cshtml in case we still have old data (pre razor removal)
-                subFilters = DataProviderFilterInfo.Join(subFilters, new DataProviderFilterInfo { Field = $"{nameof(UnifiedSetData.PageSkin)}.{nameof(SkinDefinition.FileName)}", Operator = "==", Value = skinName }, SimpleLogic: "||");
-                subFilters = DataProviderFilterInfo.Join(subFilters, new DataProviderFilterInfo { Field = $"{nameof(UnifiedSetData.PageSkin)}.{nameof(SkinDefinition.FileName)}", Operator = "==", Value = $"{skinName}.cshtml" }, SimpleLogic: "||" );
-
-                filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Logic = "&&", Filters = subFilters });
-
-                DataProviderGetRecords<UnifiedSetData> recs = await unifiedSetDP.GetItemsAsync(0, 1, null, filters);
-                unifiedSet = recs.Data.FirstOrDefault();
+                unifiedSet = await unifiedSetDP.GetCachedItemAsync(collectionName, skinName);
                 if (unifiedSet != null) {
                     return new PageDefinition.UnifiedInfo {
                         UnifiedSetGuid = unifiedSet.UnifiedSetGuid,
@@ -273,7 +311,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
             SerializableList<Guid> pageGuids = new SerializableList<Guid>();
             using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
                 // Get all pages that are currently part of the unified page set
-                List<DataProviderFilterInfo> filters = null;
+                List<DataProviderFilterInfo>? filters = null;
                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(PageDefinition.UnifiedSetGuid), Operator = "==", Value = unifiedSetGuid });
                 DataProviderGetRecords<PageDefinition> pageDefs = await pageDP.GetItemsAsync(0, 0, null, filters);
                 // translate page list to guid list (preserving order)
@@ -282,7 +320,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
                     if (pageDef != null) {
                         pageGuids.Add(pageDef.PageGuid);
                         // check if it's already in the list
-                        PageDefinition pageFound = (from p in pageDefs.Data where p.Url == page select p).FirstOrDefault();
+                        PageDefinition? pageFound = (from p in pageDefs.Data where p.Url == page select p).FirstOrDefault();
                         if (pageFound == null) {
                             // page not in list, add it
                             pageDef.UnifiedSetGuid = unifiedSetGuid;
@@ -309,7 +347,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
         private async Task RemoveGuidAsync(Guid unifiedSetGuid) {
             using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
                 // Get all pages that are part of the unified page set
-                List<DataProviderFilterInfo> filters = null;
+                List<DataProviderFilterInfo>? filters = null;
                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(PageDefinition.UnifiedSetGuid), Operator = "==", Value = unifiedSetGuid });
                 DataProviderGetRecords<PageDefinition> pageDefs = await pageDP.GetItemsAsync(0, 0, null, filters);
                 // remove all pages from unified page set if they're not within the page list
