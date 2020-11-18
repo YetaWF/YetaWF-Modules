@@ -158,7 +158,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             List<string> nl = new List<string>();
             foreach (string l in lines) {
                 string line = l.Replace("\t", "    ");
-                int i = line.IndexOf("###");
+                int i = line.IndexOf("###", StringComparison.Ordinal);
                 if (i >= 0)
                     nl.Add(line.Substring(0, i));
                 else
