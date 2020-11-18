@@ -19,8 +19,8 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// Uses a Redis server for locking.</remarks>
     public class LockRedisProvider : ILockProvider, IInitializeApplicationStartupFirstNodeOnly {
 
-        private static ConnectionMultiplexer Redis { get; set; }
-        private static string KeyPrefix { get; set; }
+        private static ConnectionMultiplexer Redis { get; set; } = null!;
+        private static string KeyPrefix { get; set; } = null!;
         private static Guid Id { get; set; }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
             // this is the first node, so clear all data
             IDatabase db = Redis.GetDatabase();
 
-            string keyPrefix = WebConfigHelper.GetValue(YetaWF.Modules.Caching.Controllers.AreaRegistration.CurrentPackage.AreaName, "RedisKeyPrefix", Application.DefaultRedisKeyPrefix);
+            string keyPrefix = WebConfigHelper.GetValue(YetaWF.Modules.Caching.Controllers.AreaRegistration.CurrentPackage.AreaName, "RedisKeyPrefix", Application.DefaultRedisKeyPrefix)!;
             System.Net.EndPoint endPoint = Redis.GetEndPoints().First();
             RedisKey[] keys = Redis.GetServer(endPoint).Keys(pattern: $"{keyPrefix}*").ToArray();
             //await db.ExecuteAsync("FLUSHALL");

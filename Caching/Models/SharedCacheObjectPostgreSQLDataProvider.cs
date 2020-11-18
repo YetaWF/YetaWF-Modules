@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         /// <summary>
         /// Hold an instance of the shared cache data provider used to maintain version information.
         /// </summary>
-        public static SharedCacheVersionPostgreSQLDataProvider SharedCacheVersionDP { get; private set; }
+        public static SharedCacheVersionPostgreSQLDataProvider SharedCacheVersionDP { get; private set; } = null!;
 
         // Startup
 
@@ -47,7 +47,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
         private IDataProvider<string, SharedCacheVersion> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<string, SharedCacheVersion> CreateDataProvider() {
+        private IDataProvider<string, SharedCacheVersion>? CreateDataProvider() {
             Package package = YetaWF.Modules.Caching.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_SharedCache", Cacheable: false, Parms: new { NoLanguages = true }, LimitIOMode: YetaWF.DataProvider.PostgreSQL.SQLBase.ExternalName);
         }
@@ -59,7 +59,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns>Returns version information.</returns>
-        public Task<SharedCacheVersion> GetVersionAsync(string key) {
+        public Task<SharedCacheVersion?> GetVersionAsync(string key) {
             return DataProvider.GetAsync(key);
         }
     }
@@ -82,14 +82,14 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
         private IDataProvider<string, SharedCacheObject> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<string, SharedCacheObject> CreateDataProvider() {
+        private IDataProvider<string, SharedCacheObject>? CreateDataProvider() {
             Package package = YetaWF.Modules.Caching.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_SharedCache", Cacheable: false, Parms: new { NoLanguages = true });
         }
 
         // API
 
-        public async Task AddAsync<TYPE>(string key, TYPE data) {
+        public async Task AddAsync<TYPE>(string key, TYPE? data) {
             // save new version shared and locally
             byte[] cacheData = new GeneralFormatter().Serialize(data);
             SharedCacheObject sharedCacheObj = new SharedCacheObject {
@@ -125,11 +125,11 @@ namespace YetaWF.Modules.Caching.DataProvider {
                     };
                 }
                 // get shared cached version
-                SharedCacheVersion sharedInfo = await SharedCacheVersionPostgreSQLDataProvider.SharedCacheVersionDP.GetVersionAsync(key);
+                SharedCacheVersion? sharedInfo = await SharedCacheVersionPostgreSQLDataProvider.SharedCacheVersionDP.GetVersionAsync(key);
                 if (sharedInfo != null) {
-                    if (sharedInfo.Created != localInfo.Data.Created) {
+                    if (sharedInfo.Created != localInfo.RequiredData.Created) {
                         // shared cached version is different, retrieve and save locally
-                        SharedCacheObject sharedCacheObj = await DataProvider.GetAsync(key);
+                        SharedCacheObject? sharedCacheObj = await DataProvider.GetAsync(key);
                         if (sharedCacheObj == null) { // this shouldn't happen, we just got the shared version
                                                       // return the local data instead
                         } else {
@@ -154,7 +154,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
                 if (localInfo.Success) {
                     return new GetObjectInfo<TYPE> {
                         Success = true,
-                        Data = new GeneralFormatter().Deserialize<TYPE>(localInfo.Data.Value),
+                        Data = new GeneralFormatter().Deserialize<TYPE>(localInfo.RequiredData.Value!),
                     };
                 } else {
                     return new GetObjectInfo<TYPE> {

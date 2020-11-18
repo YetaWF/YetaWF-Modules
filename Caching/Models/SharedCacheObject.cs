@@ -20,7 +20,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         /// The key.
         /// </summary>
         [Data_PrimaryKey, Data_Index, StringLength(MaxKey)]
-        public string Key { get; set; }
+        public string Key { get; set; } = null!;
         /// <summary>
         /// The timestamp when the version information was created.
         /// </summary>
@@ -38,7 +38,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
     internal class SharedCacheObject : SharedCacheVersion {
 
         [Data_Binary]
-        public byte[] Value { get; set; }
+        public byte[] Value { get; set; } = null!;
 
         public SharedCacheObject() { }
     }
@@ -48,8 +48,8 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// </summary>
     internal class LocalSharedCacheObject {
 
-        public string Key { get; set; }
-        public byte[] Value { get; set; }
+        public string Key { get; set; } = null!;
+        public byte[]? Value { get; set; }
         public DateTime Created { get; set; }
 
         public LocalSharedCacheObject() { }

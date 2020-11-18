@@ -21,7 +21,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         public YetaWFManager Manager { get { return YetaWFManager.Manager; } }
         public bool HaveManager { get { return YetaWFManager.HaveManager; } }
 
-        private static Dictionary<string, object> StaticObjects = new Dictionary<string, object>();
+        private static Dictionary<string, object?> StaticObjects = new Dictionary<string, object?>();
         private static object _lockObject = new object();
 
         public StaticObjectSingleDataProvider() {
@@ -42,7 +42,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         private string GetKey(string key) {
             return $"__static__{key}";
         }
-        public Task AddAsync<TYPE>(string key, TYPE data) {
+        public Task AddAsync<TYPE>(string key, TYPE? data) {
             key = GetKey(key);
             lock (_lockObject) { // used to protect StaticObjects - local only
                 StaticObjects.Remove(key);
@@ -53,7 +53,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         public Task<GetObjectInfo<TYPE>> GetAsync<TYPE>(string key) {
             // get cached version
             key = GetKey(key);
-            object obj;
+            object? obj;
             lock (_lockObject) { // used to protect StaticObjects - local only
                 if (StaticObjects.TryGetValue(key, out obj)) {
                     return Task.FromResult(new GetObjectInfo<TYPE> {

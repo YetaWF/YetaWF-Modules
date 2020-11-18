@@ -49,7 +49,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
         private class CachedObject {
             public DateTime Created { get; set; }
-            public object Data { get; set; }
+            public object? Data { get; set; }
         }
 
         private static Dictionary<string, CachedObject> StaticObjects = new Dictionary<string, CachedObject>();
@@ -93,7 +93,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         /// <typeparam name="TYPE">The type of the object.</typeparam>
         /// <param name="key">The resource name.</param>
         /// <param name="data">The data to cache.</param>
-        public Task AddAsync<TYPE>(string key, TYPE data) {
+        public Task AddAsync<TYPE>(string key, TYPE? data) {
             if (DontCache) return Task.CompletedTask;
             key = GetKey(key);
             CachedObject cache = new CachedObject {
@@ -117,14 +117,13 @@ namespace YetaWF.Modules.Caching.DataProvider {
             if (!DontCache) {
                 // get cached version
                 key = GetKey(key);
-                CachedObject cache;
                 lock (_lockObject) { // used to protect StaticObjects - local only
                     RemoveExpired();
-                    if (StaticObjects.TryGetValue(key, out cache)) {
+                    if (StaticObjects.TryGetValue(key, out CachedObject? cache)) {
                         if (!HasExpired(cache)) {
                             return Task.FromResult(new GetObjectInfo<TYPE> {
                                 Success = true,
-                                Data = (TYPE)cache.Data,
+                                Data = (TYPE?)cache.Data,
                             });
                         } else {
                             StaticObjects.Remove(key);

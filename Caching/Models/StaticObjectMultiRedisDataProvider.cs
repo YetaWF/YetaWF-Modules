@@ -25,9 +25,8 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
         // Implementation
 
-        private static ConnectionMultiplexer Redis { get; set; }
-        private static string KeyPrefix { get; set; }
-        private static Guid Id { get; set; }
+        private static ConnectionMultiplexer Redis { get; set; } = null!;
+        private static string KeyPrefix { get; set; } = null!;
 
         public StaticObjectMultiRedisDataProvider() {
             DisposableTracker.AddObject(this);
@@ -42,7 +41,6 @@ namespace YetaWF.Modules.Caching.DataProvider {
         public static Task InitAsync(string configString, string keyPrefix) {
             Redis = ConnectionMultiplexer.Connect(configString);
             KeyPrefix = keyPrefix;
-            Id = Guid.NewGuid();
             return Task.CompletedTask;
         }
 
@@ -65,7 +63,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         /// Add a shared object.
         /// </summary>
         /// <remarks>This requires an active Lock using a lock provider.</remarks>
-        public async Task AddAsync<TYPE>(string key, TYPE data) {
+        public async Task AddAsync<TYPE>(string key, TYPE? data) {
             key = KeyPrefix + key;
             key = GetKey(key);
             // save new version shared and locally
@@ -101,7 +99,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
             // get cached version
             TYPE data = default(TYPE);
 
-            StaticCacheObject cachedObj;
+            StaticCacheObject? cachedObj;
             bool localValid;
             lock (_lockObject) { // used to protect StaticObjects - local only
                 localValid = StaticObjects.TryGetValue(key, out cachedObj);
@@ -113,7 +111,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
                     Created = DateTime.MinValue,
                 };
             } else {
-                data = (TYPE)cachedObj.Value;
+                data = (TYPE)cachedObj!.Value;
             }
             // get shared cached version
             IDatabase db = Redis.GetDatabase();

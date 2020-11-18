@@ -39,7 +39,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         public FileSystemDataProviderStartup() { }
 
         internal static int TempFileCount = 0;
-        internal static string TempFolder;
+        internal static string TempFolder = null!;
 
         /// <summary>
         /// Called when any node of a (single- or multi-instance) site is starting up.
@@ -57,7 +57,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
             // used so this is installed immediately
             // permanently created data providers (never disposed)
             Package package = YetaWF.Modules.Caching.Controllers.AreaRegistration.CurrentPackage;
-            TempFolder = WebConfigHelper.GetValue(package.AreaName, "TempRootFolder", Path.Combine(YetaWFManager.DataFolder, package.AreaName, "TempFiles"));
+            TempFolder = WebConfigHelper.GetValue(package.AreaName, "TempRootFolder", Path.Combine(YetaWFManager.DataFolder, package.AreaName, "TempFiles"))!;
             YetaWF.Core.IO.FileSystem.FileSystemProvider = new FileSystemDataProvider(null);
             YetaWF.Core.IO.FileSystem.TempFileSystemProvider = new FileSystemDataProvider(TempFolder);
         }
@@ -65,19 +65,19 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
     internal class FileSystemDataProviderBase {
 
-        public string RootFolder { get; private set; }
+        public string? RootFolder { get; private set; }
         public bool Permanent { get { return RootFolder == null; } }
 
         private static readonly object lockObject = new object();
 
-        public FileSystemDataProviderBase(string rootFolder) {
+        public FileSystemDataProviderBase(string? rootFolder) {
             RootFolder = rootFolder;
         }
 
         protected void VerifyAccess(string path) {
 #if DEBUG
             if (Permanent) return;
-            if (!path.StartsWith(RootFolder))
+            if (!path.StartsWith(RootFolder!))
                 throw new InternalError($"Accessing {path} with TempFileSystemProvider");
 #endif
         }
@@ -151,7 +151,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
             return Task.FromResult(false);
         }
 
-        public virtual Task<List<string>> GetDirectoriesAsync(string targetFolder, string pattern = null) {
+        public virtual Task<List<string>> GetDirectoriesAsync(string targetFolder, string? pattern = null) {
             VerifyAccess(targetFolder);
             List<string> files;
             if (pattern == null)
@@ -161,7 +161,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
             return Task.FromResult(files);
         }
 
-        public virtual Task<List<string>> GetFilesAsync(string targetFolder, string pattern = null) {
+        public virtual Task<List<string>> GetFilesAsync(string targetFolder, string? pattern = null) {
             VerifyAccess(targetFolder);
             List<string> files;
             if (pattern == null)

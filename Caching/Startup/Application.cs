@@ -29,9 +29,9 @@ namespace YetaWF.Modules.Caching.Startup {
         internal const string DefaultRedisKeyPrefix = "";
         internal const string DefaultRedisPubSubPrefix = "";
 
-        internal static string LockProvider { get; private set; }
-        internal static string CacheProvider { get; private set; }
-        internal static string PubSubProvider { get; private set; }
+        internal static string LockProvider { get; private set; } = null!;
+        internal static string CacheProvider { get; private set; } = null!;
+        internal static string? PubSubProvider { get; private set; }
         internal const string SQLCacheProvider = "sql";
         internal const string PostgreSQLCacheProvider = "postgresql";
         internal const string FileCacheProvider = "file";
@@ -61,10 +61,10 @@ namespace YetaWF.Modules.Caching.Startup {
                 // distributed caching uses local and shared cache
                 YetaWF.Core.IO.Caching.GetLocalCacheProvider = LocalCacheObjectDataProvider.GetProvider;
 
-                CacheProvider = WebConfigHelper.GetValue(package.AreaName, "CacheProvider", RedisCacheProvider).ToLower();
+                CacheProvider = WebConfigHelper.GetValue(package.AreaName, "CacheProvider", RedisCacheProvider)!.ToLower();
                 if (CacheProvider == RedisCacheProvider) {
-                    string configString = WebConfigHelper.GetValue(package.AreaName, "RedisCacheConfig", DefaultRedisConfig);
-                    string keyPrefix = WebConfigHelper.GetValue(package.AreaName, "RedisKeyPrefix", DefaultRedisKeyPrefix);
+                    string configString = WebConfigHelper.GetValue(package.AreaName, "RedisCacheConfig", DefaultRedisConfig)!;
+                    string keyPrefix = WebConfigHelper.GetValue(package.AreaName, "RedisKeyPrefix", DefaultRedisKeyPrefix)!;
                     await SharedCacheObjectRedisDataProvider.InitAsync(configString, keyPrefix);
                     await StaticObjectMultiRedisDataProvider.InitAsync(configString, keyPrefix);
                     YetaWF.Core.IO.Caching.GetSharedCacheProvider = SharedCacheObjectRedisDataProvider.GetProvider;
@@ -87,15 +87,15 @@ namespace YetaWF.Modules.Caching.Startup {
             }
 
             // Lock provider
-            LockProvider = WebConfigHelper.GetValue(package.AreaName, "LockProvider", distributed ? FileCacheProvider : LocalLockProvider).ToLower();
+            LockProvider = WebConfigHelper.GetValue(package.AreaName, "LockProvider", distributed ? FileCacheProvider : LocalLockProvider)!.ToLower();
             if (LockProvider == FileCacheProvider) {
                 // create the lock folder if it doesn't exist
                 string rootFolder = GetRootFolder();
                 await YetaWF.Core.IO.FileSystem.FileSystemProvider.CreateDirectoryAsync(rootFolder);
                 YetaWF.Core.IO.Caching.LockProvider = new LockFileProvider(rootFolder);
             } else if (LockProvider == RedisCacheProvider) {
-                string configString = WebConfigHelper.GetValue(package.AreaName, "RedisLockConfig", DefaultRedisConfig);
-                string keyPrefix = WebConfigHelper.GetValue(package.AreaName, "RedisKeyPrefix", DefaultRedisKeyPrefix);
+                string configString = WebConfigHelper.GetValue(package.AreaName, "RedisLockConfig", DefaultRedisConfig)!;
+                string keyPrefix = WebConfigHelper.GetValue(package.AreaName, "RedisKeyPrefix", DefaultRedisKeyPrefix)!;
                 YetaWF.Core.IO.Caching.LockProvider = new LockRedisProvider(configString, keyPrefix);
             } else if (LockProvider == LocalLockProvider) {
                 YetaWF.Core.IO.Caching.LockProvider = new LockSingleProvider();
@@ -106,8 +106,8 @@ namespace YetaWF.Modules.Caching.Startup {
             // PubSub provider
             PubSubProvider = WebConfigHelper.GetValue<string>(package.AreaName, "PubSubProvider")?.ToLower();
             if (PubSubProvider == RedisCacheProvider) {
-                string configString = WebConfigHelper.GetValue(package.AreaName, "RedisPubSubConfig", DefaultRedisConfig);
-                string keyPrefix = WebConfigHelper.GetValue(package.AreaName, "RedisPubSubPrefix", DefaultRedisPubSubPrefix);
+                string configString = WebConfigHelper.GetValue(package.AreaName, "RedisPubSubConfig", DefaultRedisConfig)!;
+                string keyPrefix = WebConfigHelper.GetValue(package.AreaName, "RedisPubSubPrefix", DefaultRedisPubSubPrefix)!;
                 YetaWF.Core.IO.Caching.PubSubProvider = new PubSubRedisProvider(configString, keyPrefix);
             } else if (PubSubProvider == null) {
                 YetaWF.Core.IO.Caching.PubSubProvider = new DefaultPubSubProvider();
@@ -132,7 +132,7 @@ namespace YetaWF.Modules.Caching.Startup {
         }
         private static string GetRootFolder() {
             Package package = YetaWF.Modules.Caching.Controllers.AreaRegistration.CurrentPackage;
-            return WebConfigHelper.GetValue(package.AreaName, "FileLockFolder", Path.Combine(YetaWFManager.DataFolder, package.AreaName, "__LOCKS"));
+            return WebConfigHelper.GetValue(package.AreaName, "FileLockFolder", Path.Combine(YetaWFManager.DataFolder, package.AreaName, "__LOCKS"))!;
         }
 
         private class DefaultPubSubProvider : IPubSubProvider {

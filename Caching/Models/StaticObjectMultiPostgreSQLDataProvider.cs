@@ -31,7 +31,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
         private IDataProvider<string, SharedCacheObject> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<string, SharedCacheObject> CreateDataProvider() {
+        private IDataProvider<string, SharedCacheObject>? CreateDataProvider() {
             Package package = YetaWF.Modules.Caching.Controllers.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_SharedCache", Cacheable: false, Parms: new { NoLanguages = true });
         }
@@ -48,7 +48,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         /// Add a shared object.
         /// </summary>
         /// <remarks>This requires an active Lock using a lock provider.</remarks>
-        public async Task AddAsync<TYPE>(string key, TYPE data) {
+        public async Task AddAsync<TYPE>(string key, TYPE? data) {
             key = GetKey(key);
             // save new version shared and locally
             SharedCacheObject sharedCacheObj = new SharedCacheObject {
@@ -74,7 +74,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
             TYPE data = default(TYPE);
             key = GetKey(key);
 
-            StaticCacheObject cachedObj;
+            StaticCacheObject? cachedObj;
             bool localValid;
             lock (_lockObject) { // used to protect StaticObjects - local only
                 localValid = StaticObjects.TryGetValue(key, out cachedObj);
@@ -86,14 +86,14 @@ namespace YetaWF.Modules.Caching.DataProvider {
                     Created = DateTime.MinValue,
                 };
             } else {
-                data = (TYPE)cachedObj.Value;
+                data = (TYPE)cachedObj!.Value;
             }
             // get shared cached version
-            SharedCacheVersion sharedInfo = await SharedCacheVersionPostgreSQLDataProvider.SharedCacheVersionDP.GetVersionAsync(key);
+            SharedCacheVersion? sharedInfo = await SharedCacheVersionPostgreSQLDataProvider.SharedCacheVersionDP.GetVersionAsync(key);
             if (sharedInfo != null) {
                 if (sharedInfo.Created != cachedObj.Created) {
                     // shared cached version is different, retrieve and save locally
-                    SharedCacheObject sharedCacheObj = await DataProvider.GetAsync(key);
+                    SharedCacheObject? sharedCacheObj = await DataProvider.GetAsync(key);
                     if (sharedCacheObj == null) {
                         // this shouldn't happen, we just got the shared version
                     } else {

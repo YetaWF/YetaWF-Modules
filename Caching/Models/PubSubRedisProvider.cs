@@ -16,8 +16,8 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// </remarks>
     internal class PubSubRedisProvider : IPubSubProvider {
 
-        private static ConnectionMultiplexer Redis { get; set; }
-        private static string KeyPrefix { get; set; }
+        private static ConnectionMultiplexer Redis { get; set; } = null!;
+        private static string KeyPrefix { get; set; } = null!;
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.

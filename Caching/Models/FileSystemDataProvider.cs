@@ -13,7 +13,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
     internal class FileSystemDataProvider : FileSystemDataProviderBase, IFileSystem {
 
-        public FileSystemDataProvider(string rootFolder) : base(rootFolder) { }
+        public FileSystemDataProvider(string? rootFolder) : base(rootFolder) { }
 
         // Files
 

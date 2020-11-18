@@ -11,7 +11,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
     internal class LockFileProvider : ILockProvider {
 
-        public static string RootFolder { get; private set; }
+        public static string RootFolder { get; private set; } = null!;
 
         public void Dispose() { Dispose(true); }
         protected virtual void Dispose(bool disposing) {
@@ -33,7 +33,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
             private string Key;
             private string LockFile;
-            private System.IO.FileStream FileStream;
+            private System.IO.FileStream? FileStream;
             private static SemaphoreSlim localLock = new SemaphoreSlim(1, 1);// to protect local instance
             private bool LocalLocked = false;
             private bool Locked = false;
@@ -84,7 +84,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
             }
             public async Task UnlockAsync() {
                 if (Locked) {
-                    FileStream.Close();
+                    FileStream!.Close();
                     Locked = false;
                     try {
                         await YetaWF.Core.IO.FileSystem.FileSystemProvider.DeleteFileAsync(LockFile);

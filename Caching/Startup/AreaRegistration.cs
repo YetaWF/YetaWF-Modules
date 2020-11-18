@@ -22,10 +22,12 @@ namespace YetaWF.Modules.Caching.Controllers {
         /// <summary>
         /// Constructor.
         /// </summary>
-        public AreaRegistration() : base() { CurrentPackage = this.GetCurrentPackage(); }
+        public AreaRegistration() : base() {
+            CurrentPackage = this.GetCurrentPackage();
+        }
         /// <summary>
         /// Defines the current package, used by applications that need access to the YetaWF.Core.Packages.Package instance.
         /// </summary>
-        public static Package CurrentPackage;
+        public static Package CurrentPackage = null!;
     }
 }

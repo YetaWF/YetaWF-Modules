@@ -22,9 +22,8 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
         // Implementation
 
-        private static ConnectionMultiplexer Redis { get; set; }
-        private static string KeyPrefix { get; set; }
-        private static Guid Id { get; set; }
+        private static ConnectionMultiplexer Redis { get; set; } = null!;
+        private static string KeyPrefix { get; set; } = null!;
 
         public SharedCacheObjectRedisDataProvider() {
             DisposableTracker.AddObject(this);
@@ -39,7 +38,6 @@ namespace YetaWF.Modules.Caching.DataProvider {
         public static Task InitAsync(string configString, string keyPrefix) {
             Redis = ConnectionMultiplexer.Connect(configString);
             KeyPrefix = keyPrefix;
-            Id = Guid.NewGuid();
             return Task.CompletedTask;
         }
 
@@ -52,7 +50,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
         // API
 
-        public async Task AddAsync<TYPE>(string key, TYPE data) {
+        public async Task AddAsync<TYPE>(string key, TYPE? data) {
             key = KeyPrefix + key;
             // save new version shared and locally
             byte[] cacheData = new GeneralFormatter().Serialize(data);
@@ -108,7 +106,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
                 }
                 if (val != null) {
                     DateTime sharedCacheCreated = new DateTime((long)val);
-                    if (sharedCacheCreated != localInfo.Data.Created) {
+                    if (sharedCacheCreated != localInfo.RequiredData.Created) {
                         // shared cached version is different, retrieve and save locally
                         byte[] sharedCacheData;
                         if (YetaWFManager.IsSync()) {
@@ -140,7 +138,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
                 if (localInfo.Success) {
                     return new GetObjectInfo<TYPE> {
                         Success = true,
-                        Data = new GeneralFormatter().Deserialize<TYPE>(localInfo.Data.Value),
+                        Data = new GeneralFormatter().Deserialize<TYPE>(localInfo.RequiredData.Value!),
                     };
                 } else {
                     return new GetObjectInfo<TYPE> {
