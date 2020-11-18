@@ -132,7 +132,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
         public static async Task<List<UnifiedSetData>?> GetCachedSetDataAsync(int siteIdentity) {
             GetObjectInfo<CacheInfo> info = await Cache.GetAsync<CacheInfo>(siteIdentity.ToString());
             if (info.Success)
-                return info.Data.SetData;
+                return info.RequiredData.SetData;
             return null;
         }
         public static async Task SetCachedSetDataAsync(int siteIdentity, CacheInfo info) {
