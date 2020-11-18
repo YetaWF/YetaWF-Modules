@@ -36,7 +36,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         }
 
         [AllowPost]
-        [ConditionalAntiForgeryToken]
+        // don't use so this can be used on static pages [ConditionalAntiForgeryToken]
         public async Task<ActionResult> CategoriesList_Partial(Model model) {
             if (!ModelState.IsValid)
                 return PartialView(model);

@@ -25,11 +25,8 @@ namespace YetaWF.Modules.Visitors.Controllers {
             return View(model);
         }
 
-        // Don't use ConditionalAntiForgeryToken here - We have to prevent malicious cross-site attacks as this could be
-        // exploited to flood click tracking and fill up DBs, etc.
-        // This means you cannot use tracking on STATIC pages.
         [AllowPost]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken] // always force antiforgery to avoid cross-site attacks exploiting flooding click tracking
         public ActionResult TrackClick(string url) {
             VisitorEntryDataProvider.AddVisitEntryUrlAsync(url, true); // no await, as in fire and forget
             return new EmptyResult();

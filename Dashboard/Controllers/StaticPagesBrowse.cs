@@ -1,23 +1,18 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Dashboard#License */
 
-using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Support;
 using YetaWF.Core.Support.StaticPages;
 using YetaWF.Modules.Dashboard.Modules;
-using System.Threading.Tasks;
-using YetaWF.Core.Components;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-using YetaWF.Core.Support;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Dashboard.Controllers {
 
@@ -102,7 +97,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         }
 
         [AllowPost]
-        [ValidateAntiForgeryToken]
+        [ConditionalAntiForgeryToken]
         public async Task<ActionResult> StaticPagesBrowse_GridData(GridPartialViewData gridPVData) {
             return await GridPartialViewAsync<BrowseItem>(GetGridModel(), gridPVData);
         }
