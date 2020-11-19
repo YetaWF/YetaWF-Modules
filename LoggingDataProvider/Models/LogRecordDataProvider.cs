@@ -13,7 +13,6 @@ using YetaWF.Core.Extensions;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
-using YetaWF.Core.Log;
 using YetaWF.Core.Localize;
 #if MVC6
 using Microsoft.AspNetCore.Http;

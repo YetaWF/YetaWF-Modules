@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
         private IDataProvider<int, VisitorsConfigData> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<int, VisitorsConfigData> CreateDataProvider() {
-            Package package = YetaWF.Modules.Visitors.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Visitors.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

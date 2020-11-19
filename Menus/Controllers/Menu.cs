@@ -9,7 +9,6 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.Menus.Modules;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Core.Pages;
-using System.Linq;
 using YetaWF.Core.Modules;
 using YetaWF.Core.IO;
 #if MVC6
@@ -102,7 +101,7 @@ namespace YetaWF.Modules.Menus.Controllers {
         private async Task AddExternalLinksAsync(List<ModuleAction> origList) {
             if (ExternalList == null) {
                 List<ModuleAction> list = new List<ModuleAction>();
-                string listFile = WebConfigHelper.GetValue<string>(Controllers.AreaRegistration.CurrentPackage.AreaName, "ExternalList");
+                string listFile = WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "ExternalList");
                 if (!string.IsNullOrWhiteSpace(listFile)) {
                     List<string> lines = await FileSystem.FileSystemProvider.ReadAllLinesAsync(listFile);
                     foreach (string line in lines) {

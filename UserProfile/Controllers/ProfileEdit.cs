@@ -1,14 +1,14 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/UserProfile#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.UserProfile.DataProvider;
-using YetaWF.Core.Components;
-using Microsoft.AspNetCore.Mvc;
 
 namespace YetaWF.Modules.UserProfile.Controllers {
 

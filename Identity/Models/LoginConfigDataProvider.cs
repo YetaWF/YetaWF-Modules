@@ -13,7 +13,6 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.Modules;
 using YetaWF.Core.Identity;
-using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Core.Audit;
 using System;
 using YetaWF.Core.Localize;
@@ -150,7 +149,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         private IDataProvider<int, LoginConfigData> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<int, LoginConfigData> CreateDataProvider() {
-            Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Identity.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

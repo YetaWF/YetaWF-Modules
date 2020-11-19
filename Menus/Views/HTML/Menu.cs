@@ -8,7 +8,7 @@ using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Menus.Controllers;
 using YetaWF.Modules.Menus.Modules;
 
-namespace YetaWF.Modules.Logging.Views {
+namespace YetaWF.Modules.Menus.Views {
 
     public class MenuView : YetaWFView, IYetaWFView<MenuModule, MenuModuleController.MenuModel> {
 

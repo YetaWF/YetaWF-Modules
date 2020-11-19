@@ -1,6 +1,5 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Caching#License */
 
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.IO;

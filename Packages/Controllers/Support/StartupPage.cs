@@ -8,7 +8,6 @@ using YetaWF.Core.Site;
 using YetaWF.Core.Packages;
 using System.Collections.Generic;
 using System.Linq;
-using YetaWF.DataProvider;
 using YetaWF.Core.IO;
 using System.IO;
 using YetaWF.Core.Addons;

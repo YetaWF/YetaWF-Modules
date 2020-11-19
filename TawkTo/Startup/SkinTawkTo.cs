@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
-using YetaWF.Modules.TawkTo.Controllers;
 using YetaWF.Modules.TawkTo.DataProvider;
 
 namespace YetaWF.Modules.TawkTo.Addons {

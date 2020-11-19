@@ -232,7 +232,7 @@ namespace YetaWF.Modules.Panels.Controllers {
             }
         }
         private string GetCacheName(Guid moduleGuid) {
-            Package package = YetaWF.Core.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Core.AreaRegistration.CurrentPackage;
             return string.Format("{0}_PageBarCache_{1}_{2}", package.AreaName, Manager.CurrentSite.Identity, moduleGuid);
         }
         public SavedCacheInfo GetCache(Guid moduleGuid) {

@@ -23,7 +23,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Returns the package implementing the component.
         /// </summary>
         /// <returns>Returns the package implementing the component.</returns>
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         /// <summary>
         /// Returns the component name.
         /// </summary>
@@ -40,7 +40,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     /// <remarks>
     /// All provinces and their abbreviations are defined in ./CoreComponents/Core/Addons/_Templates/CAProvince/CAProvinces.txt.
-    /// 
+    ///
     /// The variable Globals.MaxProvince defines the maximum length of an abbreviation for a Canadian province.
     /// </remarks>
     /// <example>
@@ -74,7 +74,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     /// <remarks>
     /// All provinces and their abbreviations are defined in ./CoreComponents/Core/Addons/_Templates/CAProvince/CAProvinces.txt.
-    /// 
+    ///
     /// The variable Globals.MaxProvince defines the maximum length of an abbreviation for a Canadian province.
     /// </remarks>
     /// <example>

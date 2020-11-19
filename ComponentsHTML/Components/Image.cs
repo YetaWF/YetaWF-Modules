@@ -26,7 +26,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Returns the package implementing the component.
         /// </summary>
         /// <returns>Returns the package implementing the component.</returns>
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         /// <summary>
         /// Returns the component name.
         /// </summary>
@@ -71,7 +71,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     /// <remarks>
     /// This component supports all image types implemented using the Image Http Handler. This is an extensible class that supports file and data based images.
-    /// 
+    ///
     /// The model can also specify an absolute URL in which case that URL is used to render the image (without Image Http Handler).
     /// </remarks>
     /// <example>

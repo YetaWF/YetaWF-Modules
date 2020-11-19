@@ -47,7 +47,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         private IDataProviderIdentity<string, object, BlockedNumberEntry> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProviderIdentity<string, object, BlockedNumberEntry> CreateDataProvider() {
-            Package package = Softelvdm.Modules.IVR.Controllers.AreaRegistration.CurrentPackage;
+            Package package = Softelvdm.Modules.IVR.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_BlockedNumbers", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

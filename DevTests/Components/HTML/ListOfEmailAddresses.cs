@@ -21,7 +21,7 @@ namespace YetaWF.Modules.DevTests.Components {
 
         public const string TemplateName = "ListOfEmailAddresses";
 
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
     }
 

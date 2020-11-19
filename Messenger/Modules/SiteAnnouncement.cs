@@ -8,8 +8,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.DataProvider;
 
-namespace YetaWF.Modules.Messenger.Modules
-{
+namespace YetaWF.Modules.Messenger.Modules {
     public class SiteAnnouncementModuleDataProvider : ModuleDefinitionDataProvider<Guid, SiteAnnouncementModule>, IInstallableModel { }
 
     [ModuleGuid("{bace50b3-7508-4df9-9e90-62cfd2a7a1a1}")]

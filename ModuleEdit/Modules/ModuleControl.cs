@@ -16,7 +16,6 @@ using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.ModuleEdit.Controllers;
 #if MVC6
-using Microsoft.AspNetCore.Routing;
 #else
 #endif
 

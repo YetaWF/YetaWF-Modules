@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using YetaWF.Core;
 using YetaWF.Core.Audit;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -45,7 +44,7 @@ namespace YetaWF.Modules.Search.DataProvider {
         private IDataProvider<int, SearchConfigData> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<int, SearchConfigData> CreateDataProvider() {
-            Package package = YetaWF.Modules.Search.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Search.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

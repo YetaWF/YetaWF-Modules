@@ -1,7 +1,6 @@
 ﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Sites#License */
 
 using System;
-using YetaWF.Core;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -9,9 +8,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Site;
 using YetaWF.DataProvider;
-using YetaWF.Core.Support;
 #if MVC6
-using Microsoft.AspNetCore.Routing;
 #else
 using System.Web.Routing;
 #endif

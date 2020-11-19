@@ -45,7 +45,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.DataProvider {
         private IDataProvider<int, ConfigData> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<int, ConfigData> CreateDataProvider() {
-            Package package = YetaWF.Modules.SyntaxHighlighter.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.SyntaxHighlighter.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

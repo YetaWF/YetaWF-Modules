@@ -1,6 +1,5 @@
 ﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-using System;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Components;
@@ -21,7 +20,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Returns the package implementing the component.
         /// </summary>
         /// <returns>Returns the package implementing the component.</returns>
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         /// <summary>
         /// Returns the component name.
         /// </summary>

@@ -7,7 +7,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Modules.Search.Controllers;
 using YetaWF.Modules.Search.Modules;
 
 namespace YetaWF.Modules.Search.Views {

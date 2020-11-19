@@ -8,7 +8,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.CurrencyConverter.DataProvider;
 using System;
-using YetaWF.Modules.CurrencyConverter.Modules;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else

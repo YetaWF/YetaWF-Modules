@@ -10,7 +10,7 @@ namespace Softelvdm.Modules.IVR.Components {
     public abstract class PhoneNumberComponentBase : YetaWFComponent {
 
         public const string TemplateName = "PhoneNumber";
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
 
         public static string FormatPhoneNumber(string phoneNumber) {
@@ -23,7 +23,7 @@ namespace Softelvdm.Modules.IVR.Components {
     /// Displays a phone number. If the model is null, nothing is rendered.
     /// </summary>
     /// <remarks>
-    /// This component has limited features. A better alternative is the Softelvdm_TwilioProcessor_PhoneNumber component. 
+    /// This component has limited features. A better alternative is the Softelvdm_TwilioProcessor_PhoneNumber component.
     /// </remarks>
     /// <example>
     /// [Caption("From"), Description("The caller's phone number")]

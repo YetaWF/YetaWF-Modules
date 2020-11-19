@@ -23,11 +23,11 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         [Data_PrimaryKey]
         public int Id { get; set; }
 
-        public bool TestMode { get { return ! WebConfigHelper.GetValue<bool>(Softelvdm.Modules.TwilioProcessorDataProvider.Controllers.AreaRegistration.CurrentPackage.AreaName, "Live"); } }
-        public string LiveAccountSid { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.Controllers.AreaRegistration.CurrentPackage.AreaName, "LiveAccountSid"); } }
-        public string LiveAuthToken { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.Controllers.AreaRegistration.CurrentPackage.AreaName, "LiveAuthToken"); } }
-        public string TestAccountSid { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.Controllers.AreaRegistration.CurrentPackage.AreaName, "TestAccountSid"); } }
-        public string TestAuthToken { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.Controllers.AreaRegistration.CurrentPackage.AreaName, "TestAuthToken"); } }
+        public bool TestMode { get { return ! WebConfigHelper.GetValue<bool>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "Live"); } }
+        public string LiveAccountSid { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "LiveAccountSid"); } }
+        public string LiveAuthToken { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "LiveAuthToken"); } }
+        public string TestAccountSid { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "TestAccountSid"); } }
+        public string TestAuthToken { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "TestAuthToken"); } }
 
         [StringLength(Globals.MaxUrl)]
         public string LiveVerificationProcessCallUrl { get; set; }
@@ -77,7 +77,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         private IDataProvider<int, IVRConfig> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<int, IVRConfig> CreateDataProvider() {
-            Package package = Softelvdm.Modules.IVR.Controllers.AreaRegistration.CurrentPackage;
+            Package package = Softelvdm.Modules.IVR.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

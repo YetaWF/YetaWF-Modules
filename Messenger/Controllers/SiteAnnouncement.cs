@@ -8,7 +8,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Messenger.DataProvider;
 #if MVC6
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Mvc;
 #else
 using Microsoft.AspNet.SignalR;

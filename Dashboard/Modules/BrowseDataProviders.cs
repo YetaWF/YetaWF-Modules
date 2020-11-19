@@ -7,7 +7,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.DataProvider;
 #if MVC6
-using Microsoft.AspNetCore.Mvc;
 #else
 #endif
 

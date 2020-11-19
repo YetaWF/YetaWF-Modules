@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Caching.Controllers;
 using YetaWF.Modules.Caching.DataProvider;
 
 namespace YetaWF.Modules.Caching.Startup {
@@ -51,7 +50,7 @@ namespace YetaWF.Modules.Caching.Startup {
         /// <remarks>Installs low-level data providers for single- or multi-instance sites, based on appsettings.json settings.</remarks>
         public async Task InitializeApplicationStartupAsync() {
 
-            Package package = YetaWF.Modules.Caching.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Caching.AreaRegistration.CurrentPackage;
 
             // permanently created data providers (never disposed)
             bool distributed = WebConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, Distributed, false);
@@ -131,7 +130,7 @@ namespace YetaWF.Modules.Caching.Startup {
             }
         }
         private static string GetRootFolder() {
-            Package package = YetaWF.Modules.Caching.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Caching.AreaRegistration.CurrentPackage;
             return WebConfigHelper.GetValue(package.AreaName, "FileLockFolder", Path.Combine(YetaWFManager.DataFolder, package.AreaName, "__LOCKS"))!;
         }
 

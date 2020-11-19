@@ -8,7 +8,6 @@ using YetaWF.Core.Addons;
 using YetaWF.Core.IO;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Modules.SyntaxHighlighter.Controllers;
 
 namespace YetaWF.Modules.SyntaxHighlighter.Support {
 

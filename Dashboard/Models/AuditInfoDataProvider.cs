@@ -11,7 +11,6 @@ using YetaWF.Core.IO;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Dashboard.Controllers;
 
 namespace YetaWF.Modules.Dashboard.DataProvider {
 
@@ -79,7 +78,7 @@ namespace YetaWF.Modules.Dashboard.DataProvider {
         private IDataProviderIdentity<int, object, AuditInfo> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProviderIdentity<int, object, AuditInfo> CreateDataProvider() {
-            Package package = YetaWF.Modules.Dashboard.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Dashboard.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_AuditInfo", Parms: new { NoLanguages = true });
         }
 

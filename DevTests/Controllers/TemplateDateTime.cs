@@ -5,7 +5,6 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Components;
-using YetaWF.Core.Serializers;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else

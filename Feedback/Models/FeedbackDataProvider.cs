@@ -54,7 +54,7 @@ namespace YetaWF.Modules.Feedback.DataProvider {
         private IDataProvider<int, FeedbackData> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<int, FeedbackData> CreateDataProvider() {
-            Package package = YetaWF.Modules.Feedback.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Feedback.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

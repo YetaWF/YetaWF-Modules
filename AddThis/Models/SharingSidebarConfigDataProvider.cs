@@ -39,7 +39,7 @@ namespace YetaWF.Modules.AddThis.DataProvider {
         private IDataProvider<int, ConfigData> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<int, ConfigData> CreateDataProvider() {
-            Package package = YetaWF.Modules.AddThis.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.AddThis.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

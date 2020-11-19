@@ -68,7 +68,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         private IDataProvider<int, BlogCategory> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<int, BlogCategory>? CreateDataProvider() {
-            Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Blog.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Categories", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

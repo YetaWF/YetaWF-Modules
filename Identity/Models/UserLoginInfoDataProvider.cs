@@ -11,7 +11,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Site;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Identity.Controllers;
 
 namespace YetaWF.Modules.Identity.DataProvider {
 
@@ -88,7 +87,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         private IDataProvider<string, LoginInfo> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<string, LoginInfo> CreateDataProvider() {
-            Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Identity.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_LoginInfoList", SiteIdentity: SiteIdentity, Cacheable: true, Parms: new { NoLanguages = true });
         }
 

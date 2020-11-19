@@ -5,17 +5,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Components;
+using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Pages;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Pages.Controllers;
-using YetaWF.Core.Skins;
-using YetaWF.Core.Pages;
-using YetaWF.Core.DataProvider;
 using YetaWF.Modules.Pages.DataProvider;
 #if MVC6
 #else
@@ -30,7 +30,7 @@ namespace YetaWF.Modules.Pages.Components {
 
         public const string TemplateName = "ListOfLocalPages";
 
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
     }
 

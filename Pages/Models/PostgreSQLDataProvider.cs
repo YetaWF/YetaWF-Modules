@@ -73,7 +73,7 @@ namespace YetaWF.Modules.Pages.DataProvider.PostgreSQL {
                 private IDataProvider<string, PageDefinitionForModules> DataProvider { get { return GetDataProvider(); } }
 
                 private IDataProvider<string, PageDefinitionForModules> CreateDataProvider() {
-                    Package package = YetaWF.Modules.Pages.Controllers.AreaRegistration.CurrentPackage;
+                    Package package = YetaWF.Modules.Pages.AreaRegistration.CurrentPackage;
                     return MakeDataProvider(package, package.AreaName + "_ModuleDefinitions", SiteIdentity: SiteIdentity, Cacheable: true, LimitIOMode: SQLBase.ExternalName);
                 }
             }

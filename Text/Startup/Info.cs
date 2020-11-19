@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Text.Controllers;
 
 namespace YetaWF.Modules.Text.Addons {
 

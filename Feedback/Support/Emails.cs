@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using YetaWF.Core.Localize;
 using YetaWF.Core.SendEmail;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Feedback.Controllers;
 
 namespace YetaWF.Modules.Feedback.Support {
 

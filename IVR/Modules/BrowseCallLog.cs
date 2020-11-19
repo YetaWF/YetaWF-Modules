@@ -14,7 +14,6 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 #if MVC6
-using Microsoft.AspNetCore.Mvc;
 #else
 using System.Web.Mvc;
 #endif

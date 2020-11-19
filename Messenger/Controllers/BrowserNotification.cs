@@ -2,11 +2,9 @@
 
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
-using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
-using YetaWF.Core.Support;
 #else
 using System.Web.Mvc;
 #endif

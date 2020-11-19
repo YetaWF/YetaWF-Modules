@@ -16,7 +16,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     /// <remarks>
     /// The list of countries is located at ./CoreComponents/Core/Addons/_Templates/CountryISO3166/Countries.txt.
-    /// 
+    ///
     /// For information about ISO 3166 see https://en.wikipedia.org/wiki/ISO_3166.
     /// </remarks>
     /// <example>
@@ -39,7 +39,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Returns the package implementing the component.
         /// </summary>
         /// <returns>Returns the package implementing the component.</returns>
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         /// <summary>
         /// Returns the component name.
         /// </summary>

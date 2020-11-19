@@ -6,8 +6,6 @@ using YetaWF.Core.Identity;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.Addons;
 using YetaWF.Modules.Identity.DataProvider;
-using System.Collections.Generic;
-using YetaWF.Core.Localize;
 using System.Linq;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;

@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Dashboard.DataProvider {
         private IDataProvider<int, AuditConfigData> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<int, AuditConfigData> CreateDataProvider() {
-            Package package = YetaWF.Modules.Dashboard.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Dashboard.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

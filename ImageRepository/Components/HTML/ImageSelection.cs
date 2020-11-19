@@ -17,7 +17,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
 
         public const string TemplateName = "ImageSelection";
 
-        public override Package GetPackage() { return ImageRepository.Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return ImageRepository.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
     }
 

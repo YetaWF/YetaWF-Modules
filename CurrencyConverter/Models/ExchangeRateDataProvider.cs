@@ -13,7 +13,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.Modules.CurrencyConverter.Controllers;
 
 namespace YetaWF.Modules.CurrencyConverter.DataProvider {
 
@@ -53,7 +52,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
         private IDataProvider<int, ExchangeRateData> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<int, ExchangeRateData> CreateDataProvider() {
-            Package package = YetaWF.Modules.CurrencyConverter.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.CurrencyConverter.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Data", Cacheable: true);
         }
 

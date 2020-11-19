@@ -22,7 +22,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Returns the package implementing the component.
         /// </summary>
         /// <returns>Returns the package implementing the component.</returns>
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         /// <summary>
         /// Returns the component name.
         /// </summary>
@@ -40,7 +40,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// The complete long date is available as a tooltip when hovering over the rendered timespan.
     /// </summary>
     /// <remarks>All date/time values in YetaWF are internally stored and processed using UTC.
-    /// 
+    ///
     /// The model value must be specified as UTC. If the model value is null or equal to DateTime.MinValue or DateTime.MaxValue, nothing is rendered.
     /// </remarks>
     /// <example>

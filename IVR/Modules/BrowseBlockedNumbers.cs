@@ -1,5 +1,6 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
 
+using Softelvdm.Modules.IVR.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,9 +13,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-using Softelvdm.Modules.IVR.Controllers;
 #if MVC6
-using Microsoft.AspNetCore.Mvc;
 #else
 using System.Web.Mvc;
 #endif

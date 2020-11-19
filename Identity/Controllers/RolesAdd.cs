@@ -8,7 +8,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Support;
-using YetaWF.Core;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else

@@ -43,7 +43,7 @@ namespace YetaWF.Modules.Identity.Scheduler {
 
         public async Task UpdatePasswordExpiration(List<string> errorList) {
 
-            long ticks = WebConfigHelper.GetValue<long>(YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage.AreaName, "PasswordRenewal", new TimeSpan(0, 0, 0).Ticks); // 0  = indefinitely
+            long ticks = WebConfigHelper.GetValue<long>(YetaWF.Modules.Identity.AreaRegistration.CurrentPackage.AreaName, "PasswordRenewal", new TimeSpan(0, 0, 0).Ticks); // 0  = indefinitely
             if (ticks <= 0) return;// nothing to do
             TimeSpan interval = new TimeSpan(ticks); // renewal interval
             DateTime oldestDate = DateTime.UtcNow.Subtract(interval);

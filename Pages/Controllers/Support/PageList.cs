@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 #if MVC6
-using System.Net;
 #else
 #endif
 

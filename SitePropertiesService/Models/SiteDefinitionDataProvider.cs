@@ -38,7 +38,7 @@ namespace YetaWF.Modules.SitePropertiesService.Models {
         private IDataProvider<string, SiteDefinition> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<string, SiteDefinition> CreateDataProvider() {
-            Package package = YetaWF.Modules.SitePropertiesService.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.SitePropertiesService.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, "YetaWF_SiteProperties", Cacheable: false, Parms: new { NoLanguages = true });
         }
 

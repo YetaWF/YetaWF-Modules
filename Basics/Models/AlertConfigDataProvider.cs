@@ -66,7 +66,7 @@ namespace YetaWF.Modules.Basics.DataProvider {
         private IDataProvider<int, AlertConfig> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<int, AlertConfig> CreateDataProvider() {
-            Package package = YetaWF.Modules.Basics.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Basics.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_AlertConfig", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

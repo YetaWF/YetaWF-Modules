@@ -16,7 +16,6 @@ using YetaWF.Core.Site;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Core.Components;
-using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Identity;
 #if MVC6

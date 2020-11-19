@@ -14,7 +14,6 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Security;
 using YetaWF.Core.Site;
 using YetaWF.Core.Support;
-using YetaWF.Modules.SiteProperties.Controllers;
 using YetaWF.Modules.SiteProperties.Modules;
 
 namespace YetaWF.Modules.SiteProperties.Models {
@@ -58,7 +57,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
         private IDataProvider<string, SiteDefinition> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<string, SiteDefinition> CreateDataProvider() {
-            Package package = YetaWF.Modules.SiteProperties.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.SiteProperties.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, Cacheable: true, Parms: new { IdentitySeed = SiteDefinition.SiteIdentitySeed, NoLanguages = true });
         }
 
@@ -159,7 +158,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
                 }
                 // update appsettings.json
                 if (string.Compare(YetaWFManager.DefaultSiteName, site.OriginalSiteDomain, true) == 0 && site.SiteDomain != site.OriginalSiteDomain) {
-                    WebConfigHelper.SetValue<string>(YetaWF.Core.Controllers.AreaRegistration.CurrentPackage.AreaName, "DEFAULTSITE", site.SiteDomain);
+                    WebConfigHelper.SetValue<string>(YetaWF.Core.AreaRegistration.CurrentPackage.AreaName, "DEFAULTSITE", site.SiteDomain);
                     await WebConfigHelper.SaveAsync();
                     await Auditing.AddAuditAsync($"{nameof(SiteDefinitionDataProvider)}.{nameof(SaveSiteDefinitionAsync)}", site.OriginalSiteDomain, Guid.Empty,
                         $"DEFAULTSITE", RequiresRestart: true

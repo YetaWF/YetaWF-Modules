@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Core;

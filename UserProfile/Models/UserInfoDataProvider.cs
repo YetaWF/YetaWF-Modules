@@ -77,7 +77,7 @@ namespace YetaWF.Modules.UserProfile.DataProvider {
         private IDataProvider<int, UserInfo> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<int, UserInfo> CreateDataProvider() {
-            Package package = YetaWF.Modules.UserProfile.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.UserProfile.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

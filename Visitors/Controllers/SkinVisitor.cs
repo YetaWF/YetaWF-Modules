@@ -1,9 +1,9 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Visitors#License */
 
+using Microsoft.AspNetCore.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Visitors.DataProvider;
-using Microsoft.AspNetCore.Mvc;
 
 namespace YetaWF.Modules.Visitors.Controllers {
 

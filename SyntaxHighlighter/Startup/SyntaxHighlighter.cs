@@ -5,7 +5,6 @@ using YetaWF.Core.Addons;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
-using YetaWF.Modules.SyntaxHighlighter.Controllers;
 
 namespace YetaWF.Modules.SyntaxHighlighter.Addons {
 

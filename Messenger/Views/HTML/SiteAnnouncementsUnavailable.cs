@@ -7,7 +7,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Modules.Messenger.Controllers;
 using YetaWF.Modules.Messenger.Modules;
 
 namespace YetaWF.Modules.Messenger.Views {

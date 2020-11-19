@@ -7,7 +7,6 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -24,7 +23,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Returns the package implementing the component.
         /// </summary>
         /// <returns>Returns the package implementing the component.</returns>
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         /// <summary>
         /// Returns the component name.
         /// </summary>
@@ -41,7 +40,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     /// <remarks>
     /// The list of currencies is located at ./CoreComponents/Core/Addons/_Templates/CurrencyISO4217/Currencies.txt.
-    /// 
+    ///
     /// For information about ISO 4217 see https://en.wikipedia.org/wiki/ISO_4217.
     /// </remarks>
     /// <example>
@@ -74,7 +73,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     /// <remarks>
     /// The list of currencies is located at ./CoreComponents/Core/Addons/_Templates/CurrencyISO4217/Currencies.txt.
-    /// 
+    ///
     /// For information about ISO 4217 see https://en.wikipedia.org/wiki/ISO_4217.
     /// </remarks>
     /// <example>

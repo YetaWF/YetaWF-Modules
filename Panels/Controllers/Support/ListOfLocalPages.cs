@@ -1,12 +1,12 @@
 ﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Modules.Panels.Addons;
 using YetaWF.Modules.Panels.Components;
-using Microsoft.AspNetCore.Mvc;
 
 namespace YetaWF.Modules.Panels.Controllers {
 

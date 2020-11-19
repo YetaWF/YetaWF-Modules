@@ -8,7 +8,7 @@ using YetaWF.Core.Packages;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Allows selection of a string value from a list of string values using a dropdown list. 
+    /// Allows selection of a string value from a list of string values using a dropdown list.
     /// This is used internally for pane selection and is not intended for use by applications.
     /// </summary>
     public class PaneSelectionComponent : YetaWFComponent, IYetaWFComponent<string> {
@@ -25,7 +25,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Returns the package implementing the component.
         /// </summary>
         /// <returns>Returns the package implementing the component.</returns>
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         /// <summary>
         /// Returns the component name.
         /// </summary>

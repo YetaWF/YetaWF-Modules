@@ -11,7 +11,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Scheduler;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Scheduler.Controllers;
 
 namespace YetaWF.Modules.Scheduler.DataProvider {
 
@@ -77,7 +76,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         private IDataProvider<string, SchedulerItemData> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<string, SchedulerItemData> CreateDataProvider() {
-            Package package = YetaWF.Modules.Scheduler.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Scheduler.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, Cacheable: true, Parms: new { NoLanguages = true });
         }
 

@@ -2,10 +2,10 @@
 
 using System.Reflection;
 using System.Runtime.InteropServices;
-using YetaWF.Modules.Identity.Addons;
 using YetaWF.Core.Identity;
-using YetaWF.PackageAttributes;
 using YetaWF.Core.Packages;
+using YetaWF.Modules.Identity.Addons;
+using YetaWF.PackageAttributes;
 
 [assembly: AssemblyTitle("Identity")]
 [assembly: AssemblyDescription("User login, registration and authentication")]

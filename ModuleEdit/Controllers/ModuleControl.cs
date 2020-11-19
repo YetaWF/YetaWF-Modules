@@ -9,7 +9,6 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 using YetaWF.Core.Support.Zip;
-using YetaWF.Modules.ModuleEdit.Modules;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Addons;
 #if MVC6

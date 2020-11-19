@@ -65,7 +65,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         private IDataProvider<int, BlogComment> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<int, BlogComment>? CreateDataProvider() {
-            Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Blog.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Comments", SiteIdentity: SiteIdentity, Cacheable: true, Parms: new { EntryIdentity = EntryIdentity });
         }
 

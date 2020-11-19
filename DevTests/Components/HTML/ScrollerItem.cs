@@ -13,12 +13,12 @@ namespace YetaWF.Modules.DevTests.Components {
 
         public const string TemplateName = "ScrollerItem";
 
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
     }
 
     /// <summary>
-    /// A sample implementation of a component used with the Scroller component. 
+    /// A sample implementation of a component used with the Scroller component.
     /// The component is used as an item in the Scroller component and the model contains the image and text displayed.
     /// </summary>
     /// <remarks>

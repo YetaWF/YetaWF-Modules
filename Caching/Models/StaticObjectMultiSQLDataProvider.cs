@@ -44,7 +44,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         private IDataProvider<string, SharedCacheObject> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<string, SharedCacheObject>? CreateDataProvider() {
-            Package package = YetaWF.Modules.Caching.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Caching.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_SharedCache", Cacheable: false, Parms: new { NoLanguages = true });
         }
 

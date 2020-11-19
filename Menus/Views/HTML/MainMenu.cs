@@ -5,10 +5,11 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
+using YetaWF.Modules.Menus;
 using YetaWF.Modules.Menus.Controllers;
 using YetaWF.Modules.Menus.Modules;
 
-namespace YetaWF.Modules.Logging.Views {
+namespace YetaWF.Modules.Menu.Views {
 
     public class MainMenuView : YetaWFView, IYetaWFView<MainMenuModule, MainMenuModuleController.MenuModel> {
 

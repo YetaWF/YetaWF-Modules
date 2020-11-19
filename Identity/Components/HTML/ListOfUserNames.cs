@@ -25,12 +25,12 @@ namespace YetaWF.Modules.Identity.Components {
 
         public const string TemplateName = "ListOfUserNames";
 
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
     }
 
     /// <summary>
-    /// Shows a list of user accounts in a grid. The model contains the list of user accounts. 
+    /// Shows a list of user accounts in a grid. The model contains the list of user accounts.
     /// </summary>
     /// <example>
     /// [Caption("Users"), Description("Shows the users that can access voice mails for this extension")]
@@ -116,7 +116,7 @@ namespace YetaWF.Modules.Identity.Components {
     }
 
     /// <summary>
-    /// Allows adding/removing users from a list of user accounts in a grid. The model contains the list of user accounts. 
+    /// Allows adding/removing users from a list of user accounts in a grid. The model contains the list of user accounts.
     /// </summary>
     /// <example>
     /// [Caption("Users"), Description("Defines the users that can access voice mails for this extension")]

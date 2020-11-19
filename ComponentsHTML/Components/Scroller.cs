@@ -20,7 +20,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Returns the package implementing the component.
         /// </summary>
         /// <returns>Returns the package implementing the component.</returns>
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         /// <summary>
         /// Returns the component name.
         /// </summary>
@@ -37,13 +37,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     /// <remarks>
     /// The Scroller component is provided with a list of objects, each is rendered with the specified component (similar to how Property Lists are rendered), as each object is rendered using its own properties and the respective UIHint() definition.
-    /// 
+    ///
     /// A sample scroller implementation is available at Tests > Templates > Scroller (standard YetaWF site).
     /// </remarks>
     /// <example>
     /// [UIHint("Scroller"), ReadOnly, AdditionalMetadata("Component", "Softelvdm_StoreCatalog_ScrollerProduct")]
     /// public List&lt;Item&gt; Items { get; set; }
-    /// 
+    ///
     /// public class Item {
     ///     [UIHint("Image"), AdditionalMetadata("ImageType", ProductImageSupport.ImageType), AdditionalMetadata("Width", 100), AdditionalMetadata("Height", 100)]
     ///     [AdditionalMetadata("ShowMissing", false)]

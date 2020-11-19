@@ -1,13 +1,13 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Dashboard#License */
 
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
-using System.Threading.Tasks;
 using YetaWF.Modules.Dashboard.DataProvider;
-using Microsoft.AspNetCore.Mvc;
 
 namespace YetaWF.Modules.Dashboard.Controllers {
 

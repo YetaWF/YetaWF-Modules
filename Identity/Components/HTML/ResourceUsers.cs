@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Components;
-using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
@@ -26,7 +25,7 @@ namespace YetaWF.Modules.Identity.Components {
 
         public const string TemplateName = "ResourceUsers";
 
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
     }
 

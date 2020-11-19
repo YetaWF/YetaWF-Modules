@@ -47,7 +47,7 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
         public Grid.GridActionsEnum DefaultGridActions {
             get {
                 if (_DefaultGridActions == null)
-                    _DefaultGridActions = WebConfigHelper.GetValue(YetaWF.Modules.UserSettings.Controllers.AreaRegistration.CurrentPackage.AreaName, "DefaultGridActions", Grid.GridActionsEnum.DropdownMenu);
+                    _DefaultGridActions = WebConfigHelper.GetValue(YetaWF.Modules.UserSettings.AreaRegistration.CurrentPackage.AreaName, "DefaultGridActions", Grid.GridActionsEnum.DropdownMenu);
                 return (Grid.GridActionsEnum)_DefaultGridActions;
             }
         }
@@ -55,9 +55,9 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
 
         public bool DefaultShowGridSearchToolbar {
             get {
-                //_ShowGridSearchToolbar ??= WebConfigHelper.GetValue(YetaWF.Modules.UserSettings.Controllers.AreaRegistration.CurrentPackage.AreaName, "DefaultGridFilter", true);
+                //_ShowGridSearchToolbar ??= WebConfigHelper.GetValue(YetaWF.Modules.UserSettings.AreaRegistration.CurrentPackage.AreaName, "DefaultGridFilter", true);
                 if (_ShowGridSearchToolbar == null)
-                    _ShowGridSearchToolbar = WebConfigHelper.GetValue(YetaWF.Modules.UserSettings.Controllers.AreaRegistration.CurrentPackage.AreaName, "DefaultGridFilter", true);
+                    _ShowGridSearchToolbar = WebConfigHelper.GetValue(YetaWF.Modules.UserSettings.AreaRegistration.CurrentPackage.AreaName, "DefaultGridFilter", true);
                 return (bool)_ShowGridSearchToolbar;
             }
         }
@@ -149,7 +149,7 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
         private IDataProvider<int, UserData> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<int, UserData> CreateDataProvider() {
-            Package package = YetaWF.Modules.UserSettings.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.UserSettings.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

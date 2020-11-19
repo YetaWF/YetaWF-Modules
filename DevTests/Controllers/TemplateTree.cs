@@ -5,7 +5,6 @@ using YetaWF.Core.Models.Attributes;
 using System.Collections.Generic;
 using YetaWF.Core.Models;
 using System.Linq;
-using YetaWF.Core.Components;
 using System.Threading.Tasks;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;

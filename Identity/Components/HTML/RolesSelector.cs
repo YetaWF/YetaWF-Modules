@@ -19,12 +19,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public const string TemplateName = "RolesSelector";
 
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
     }
 
     /// <summary>
-    /// Shows a list of roles in a grid. The model contains the list of roles. 
+    /// Shows a list of roles in a grid. The model contains the list of roles.
     /// </summary>
     /// <remarks>
     /// For information about roles in YetaWF, see the Authorization topic.
@@ -110,7 +110,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Shows a list of all roles in a grid. Individual roles can be selected/deselected. The model contains the list of selected roles. 
+    /// Shows a list of all roles in a grid. Individual roles can be selected/deselected. The model contains the list of selected roles.
     /// </summary>
     /// <remarks>
     /// For information about roles in YetaWF, see the Authorization topic.

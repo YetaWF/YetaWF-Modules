@@ -1,22 +1,22 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
+using YetaWF.Core.DataProvider;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
-using Newtonsoft.Json;
-using YetaWF.Core.DataProvider;
-using Newtonsoft.Json.Serialization;
 using YetaWF.Modules.ComponentsHTML.Controllers;
 using YetaWF.Modules.ComponentsHTML.Views;
-using YetaWF.Core.Pages;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -36,7 +36,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Returns the package implementing the component.
         /// </summary>
         /// <returns>Returns the package implementing the component.</returns>
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         /// <summary>
         /// Returns the component name.
         /// </summary>
@@ -121,12 +121,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Called by the framework when the component is used so the component can add component specific addons.
         /// </summary>
         public override async Task IncludeAsync() {
-            await Manager.AddOnManager.AddAddOnNamedAsync(YetaWF.Core.Controllers.AreaRegistration.CurrentPackage.AreaName, "fontawesome.com.fontawesome");
+            await Manager.AddOnManager.AddAddOnNamedAsync(YetaWF.Core.AreaRegistration.CurrentPackage.AreaName, "fontawesome.com.fontawesome");
             //await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
 
             // Add required menu support
             await KendoUICore.AddFileAsync("kendo.menu.min.js");
-            await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.Controllers.AreaRegistration.CurrentPackage.AreaName, "MenuUL", ComponentType.Display);
+            await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, "MenuUL", ComponentType.Display);
 
             await JqueryUICore.UseAsync();
             await base.IncludeAsync();

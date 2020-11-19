@@ -21,7 +21,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Returns the package implementing the component.
         /// </summary>
         /// <returns>Returns the package implementing the component.</returns>
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         /// <summary>
         /// Returns the component name.
         /// </summary>
@@ -40,7 +40,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [Caption("IP Address"), Description("The IP address of the site visitor")]
     /// [UIHint("IPAddress"), ReadOnly]
     /// public string IPAddress { get; set; }
-    /// </example>    
+    /// </example>
     [UsesAdditional("", "bool", "true", "Defines whether action icons are added to display the host name and Geo location information for the IP address, otherwise no action icons are added.")]
     public class IPAddressDisplayComponent : IPAddressComponentBase, IYetaWFComponent<string> {
 

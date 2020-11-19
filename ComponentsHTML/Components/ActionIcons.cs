@@ -47,7 +47,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Returns the package implementing the component.
         /// </summary>
         /// <returns>Returns the package implementing the component.</returns>
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         /// <summary>
         /// Returns the component name.
         /// </summary>
@@ -71,7 +71,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // Add required menu support
             await KendoUICore.AddFileAsync("kendo.menu.min.js");
-            await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.Controllers.AreaRegistration.CurrentPackage.AreaName, "MenuUL", ComponentType.Display);
+            await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, "MenuUL", ComponentType.Display);
 
             await base.IncludeAsync();
         }

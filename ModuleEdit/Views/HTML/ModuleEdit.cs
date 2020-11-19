@@ -8,7 +8,7 @@ using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.ModuleEdit.Controllers;
 using YetaWF.Modules.ModuleEdit.Modules;
 
-namespace YetaWF.Modules.Modules.Views {
+namespace YetaWF.Modules.ModuleEdit.Views {
 
     public class EditView : YetaWFView, IYetaWFView2<ModuleEditModule, ModuleEditModuleController.ModuleEditModel> {
 

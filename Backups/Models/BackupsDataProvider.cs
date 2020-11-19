@@ -27,7 +27,7 @@ namespace YetaWF.Modules.Backups.DataProvider {
         private IDataProvider<string, BackupEntry> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<string, BackupEntry> CreateDataProvider() {
-            Package package = YetaWF.Modules.Backups.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Backups.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName);
         }
 

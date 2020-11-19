@@ -48,7 +48,7 @@ namespace YetaWF.Modules.PageEdit.DataProvider {
         private IDataProvider<int, ControlPanelConfigData> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<int, ControlPanelConfigData> CreateDataProvider() {
-            Package package = YetaWF.Modules.PageEdit.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.PageEdit.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_ControlPanel_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

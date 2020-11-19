@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -14,7 +13,6 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Search.Controllers;
 
 namespace YetaWF.Modules.Search.DataProvider {
     public class SearchData {
@@ -80,7 +78,7 @@ namespace YetaWF.Modules.Search.DataProvider {
         private ISearchDataProviderIOMode DataProviderIOMode { get { return GetDataProvider(); } }
 
         private IDataProvider<int, SearchData> CreateDataProvider() {
-            Package package = YetaWF.Modules.Search.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Search.AreaRegistration.CurrentPackage;
             dynamic dp = MakeDataProvider(package, package.AreaName + "_Data", SiteIdentity: SiteIdentity, Cacheable: true);
             if (dp != null)
                 Usable = true;

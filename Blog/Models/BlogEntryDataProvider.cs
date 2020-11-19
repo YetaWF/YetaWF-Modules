@@ -195,7 +195,7 @@ namespace YetaWF.Modules.Blog.DataProvider {
         private IDataProvider<int, BlogEntry> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<int, BlogEntry>? CreateDataProvider() {
-            Package package = YetaWF.Modules.Blog.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Blog.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Entries", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

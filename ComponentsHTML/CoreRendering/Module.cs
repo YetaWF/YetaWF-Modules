@@ -16,7 +16,7 @@ namespace YetaWF.Modules.ComponentsHTML {
     public partial class CoreRendering {
 
         private static YetaWFManager Manager { get { return YetaWFManager.Manager; } }
-        private static Package Package { get { return Controllers.AreaRegistration.CurrentPackage; } }
+        private static Package Package { get { return AreaRegistration.CurrentPackage; } }
 
         /// <summary>
         /// Renders module links.

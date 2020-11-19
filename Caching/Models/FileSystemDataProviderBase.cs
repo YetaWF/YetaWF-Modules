@@ -56,7 +56,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
             // used so this is installed immediately
             // permanently created data providers (never disposed)
-            Package package = YetaWF.Modules.Caching.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Caching.AreaRegistration.CurrentPackage;
             TempFolder = WebConfigHelper.GetValue(package.AreaName, "TempRootFolder", Path.Combine(YetaWFManager.DataFolder, package.AreaName, "TempFiles"))!;
             YetaWF.Core.IO.FileSystem.FileSystemProvider = new FileSystemDataProvider(null);
             YetaWF.Core.IO.FileSystem.TempFileSystemProvider = new FileSystemDataProvider(TempFolder);

@@ -1,7 +1,5 @@
 ﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
 
-using YetaWF.Core.Support;
-using YetaWF.Core;
 #if MVC6
 #else
 using Microsoft.AspNet.SignalR;

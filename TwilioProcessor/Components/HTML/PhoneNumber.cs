@@ -15,7 +15,7 @@ namespace Softelvdm.Modules.TwilioProcessor.Components {
         internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(PhoneNumberComponentBase), name, defaultValue, parms); }
 
         public const string TemplateName = "PhoneNumber";
-        public override Package GetPackage() { return TwilioProcessor.Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return TwilioProcessor.AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
 
         public static string FormatPhoneNumber(string phoneNumber) {

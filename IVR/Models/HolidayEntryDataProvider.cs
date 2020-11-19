@@ -41,7 +41,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         private IDataProviderIdentity<DateTime, object, HolidayEntry> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProviderIdentity<DateTime, object, HolidayEntry> CreateDataProvider() {
-            Package package = Softelvdm.Modules.IVR.Controllers.AreaRegistration.CurrentPackage;
+            Package package = Softelvdm.Modules.IVR.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Holidays", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

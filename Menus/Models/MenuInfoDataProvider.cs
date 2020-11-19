@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using System.Threading.Tasks;
 using YetaWF.Core.Audit;
 using YetaWF.Core.Components;
@@ -40,7 +39,7 @@ namespace YetaWF.Modules.Menus.DataProvider {
         private IDataProvider<Guid, MenuInfo> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<Guid, MenuInfo> CreateDataProvider() {
-            Package package = YetaWF.Modules.Menus.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Menus.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_MenuInfo", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

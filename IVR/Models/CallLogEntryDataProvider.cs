@@ -55,7 +55,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         private IDataProviderIdentity<int, object, CallLogEntry> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProviderIdentity<int, object, CallLogEntry> CreateDataProvider() {
-            Package package = Softelvdm.Modules.IVR.Controllers.AreaRegistration.CurrentPackage;
+            Package package = Softelvdm.Modules.IVR.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_CallLog", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

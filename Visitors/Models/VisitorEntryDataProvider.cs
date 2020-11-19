@@ -14,7 +14,6 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 #if MVC6
-using Microsoft.AspNetCore.Http.Extensions;
 #endif
 
 namespace YetaWF.Modules.Visitors.DataProvider {
@@ -90,7 +89,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
         private VisitorEntryDataProviderIOMode DataProviderIOMode { get { return GetDataProvider(); } }
 
         private IDataProvider<int, VisitorEntry> CreateDataProvider() {
-            Package package = YetaWF.Modules.Visitors.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Visitors.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true, Parms: new { NoLanguages = true } );
         }
 

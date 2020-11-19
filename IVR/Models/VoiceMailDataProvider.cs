@@ -74,7 +74,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         private IDataProviderIdentity<string, object, VoiceMailData> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProviderIdentity<string, object, VoiceMailData> CreateDataProvider() {
-            Package package = Softelvdm.Modules.IVR.Controllers.AreaRegistration.CurrentPackage;
+            Package package = Softelvdm.Modules.IVR.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_VoiceMails", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

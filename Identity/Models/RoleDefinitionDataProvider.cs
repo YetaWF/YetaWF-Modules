@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core;
+using YetaWF.Core.Audit;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
@@ -12,7 +13,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Audit;
 #if MVC6
 #else
 using Microsoft.AspNet.Identity;
@@ -73,7 +73,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         private IDataProvider<string, RoleDefinition> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<string, RoleDefinition> CreateDataProvider() {
-            Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Identity.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Roles", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
         private IDataProvider<int, LoggingConfigData> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<int, LoggingConfigData> CreateDataProvider() {
-            Package package = YetaWF.Modules.Logging.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Logging.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

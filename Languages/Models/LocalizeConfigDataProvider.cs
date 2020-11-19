@@ -57,7 +57,7 @@ namespace YetaWF.Modules.Languages.DataProvider {
         private IDataProvider<int, LocalizeConfigData> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<int, LocalizeConfigData> CreateDataProvider() {
-            Package package = YetaWF.Modules.Languages.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Languages.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

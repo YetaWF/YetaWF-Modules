@@ -31,7 +31,7 @@ namespace YetaWF.Modules.Identity.Components {
 
         public const string TemplateName = "UserId";
 
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
 
         public const int MAXUSERS = 50; // maximum # of users for a dropdown

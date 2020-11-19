@@ -6,7 +6,6 @@ using YetaWF.Core.DataProvider;
 using YetaWF.Core.Site;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-using YetaWF.Modules.SitePropertiesService.Controllers;
 
 namespace YetaWF.Modules.SitePropertiesService.DataProvider.File {
 

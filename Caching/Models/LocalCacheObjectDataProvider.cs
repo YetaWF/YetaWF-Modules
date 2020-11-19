@@ -1,11 +1,11 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Caching#License */
 
+using Microsoft.Extensions.Caching.Memory;
 using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.IO;
-using YetaWF.Core.Support.Serializers;
-using Microsoft.Extensions.Caching.Memory;
 using YetaWF.Core.Support;
+using YetaWF.Core.Support.Serializers;
 
 namespace YetaWF.Modules.Caching.DataProvider {
 

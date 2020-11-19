@@ -5,7 +5,6 @@ using YetaWF.Core.Addons;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
-using YetaWF.Modules.BootstrapCarousel.Controllers;
 
 namespace YetaWF.Modules.BootstrapCarousel.Addons.Templates {
 

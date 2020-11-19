@@ -16,7 +16,7 @@ namespace YetaWF.Modules.Panels.Components {
 
         public const string TemplateName = "StepInfo";
 
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
     }
 

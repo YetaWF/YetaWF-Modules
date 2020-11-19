@@ -44,7 +44,7 @@ namespace YetaWF.Modules.Search.DataProvider {
 
         private IDataProvider<int, SearchResult> CreateDataProvider() {
             if (SearchDataProvider.IsUsable) {
-                Package package = YetaWF.Modules.Search.Controllers.AreaRegistration.CurrentPackage;
+                Package package = YetaWF.Modules.Search.AreaRegistration.CurrentPackage;
                 return MakeDataProvider(package, package.AreaName + "_Urls", SiteIdentity: SiteIdentity, Cacheable: true);
             } else {
                 return null;

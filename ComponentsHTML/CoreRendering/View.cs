@@ -1,13 +1,10 @@
 ﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using System.Threading.Tasks;
-using YetaWF.Core.Support;
-using YetaWF.Core.Modules;
 using YetaWF.Core.Addons;
+using YetaWF.Core.Modules;
+using YetaWF.Core.Support;
 #if MVC6
-using System.Text.Encodings.Web;
-using Microsoft.AspNetCore.Html;
-using Microsoft.AspNetCore.Mvc.Rendering;
 #else
 using System.Web.Helpers;
 using System.Web.Mvc;

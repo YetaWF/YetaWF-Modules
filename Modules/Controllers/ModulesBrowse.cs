@@ -1,23 +1,22 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Modules#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Identity;
+using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Modules.Modules;
-using System.Threading.Tasks;
-using YetaWF.Core.Components;
-using YetaWF.Core.IO;
-using YetaWF.Core.Serializers;
-using YetaWF.Core.Identity;
-using YetaWF.Core.Pages;
-using Microsoft.AspNetCore.Mvc;
 
 namespace YetaWF.Modules.Modules.Controllers {
 

@@ -36,7 +36,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         private IDataProvider<int, SchedulerConfigData> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<int, SchedulerConfigData> CreateDataProvider() {
-            Package package = YetaWF.Modules.Scheduler.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Scheduler.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", Cacheable: true);
         }
 

@@ -1,4 +1,4 @@
-/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
+/* Copyright ï¿½ 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
 
 using System;
 using System.Collections.Generic;
@@ -53,7 +53,7 @@ namespace YetaWF.Modules.Messenger.DataProvider {
         private IDataProvider<string, Connection> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<string, Connection> CreateDataProvider() {
-            Package package = YetaWF.Modules.Messenger.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Messenger.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Connections", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

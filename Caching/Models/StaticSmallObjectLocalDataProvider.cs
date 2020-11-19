@@ -2,11 +2,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Caching.Controllers;
-using System.Linq;
 
 namespace YetaWF.Modules.Caching.DataProvider {
 

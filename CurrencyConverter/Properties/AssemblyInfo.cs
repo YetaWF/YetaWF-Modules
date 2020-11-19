@@ -2,8 +2,8 @@
 
 using System.Reflection;
 using System.Runtime.InteropServices;
-using YetaWF.PackageAttributes;
 using YetaWF.Core.Packages;
+using YetaWF.PackageAttributes;
 
 [assembly: AssemblyTitle("Currency Converter")]
 [assembly: AssemblyDescription("Currency conversion services")]

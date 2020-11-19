@@ -220,7 +220,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Returns the package implementing the component.
         /// </summary>
         /// <returns>Returns the package implementing the component.</returns>
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         /// <summary>
         /// Returns the component name.
         /// </summary>
@@ -262,7 +262,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override async Task IncludeAsync() {
             await KendoUICore.UseAsync();// needed for css
             //await KendoUICore.AddFileAsync("kendo.maskedtextbox.min.js");
-            await Manager.AddOnManager.AddTemplateAsync(Controllers.AreaRegistration.CurrentPackage.AreaName, "Text", ComponentType.Display);
+            await Manager.AddOnManager.AddTemplateAsync(AreaRegistration.CurrentPackage.AreaName, "Text", ComponentType.Display);
             await base.IncludeAsync();
         }
         /// <summary>
@@ -332,7 +332,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public static async Task IncludeExplicitAsync() { // this component is reusable so we need to explicitly include all js/css
             //await KendoUICore.AddFileAsync("kendo.maskedtextbox.min.js");
             await KendoUICore.UseAsync();// needed for css
-            await Manager.AddOnManager.AddTemplateAsync(Controllers.AreaRegistration.CurrentPackage.AreaName, "Text", ComponentType.Edit);
+            await Manager.AddOnManager.AddTemplateAsync(AreaRegistration.CurrentPackage.AreaName, "Text", ComponentType.Edit);
         }
         /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.

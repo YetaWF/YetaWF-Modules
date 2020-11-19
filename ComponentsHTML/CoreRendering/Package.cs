@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Modules.ComponentsHTML.Controllers;
 
 namespace YetaWF.Modules.ComponentsHTML {
 

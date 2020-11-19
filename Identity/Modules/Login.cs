@@ -2,7 +2,6 @@
 
 using System;
 using System.Threading.Tasks;
-using YetaWF.Core.Components;
 using YetaWF.Core.Identity;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -13,7 +12,6 @@ using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Identity.Addons;
 using YetaWF.Modules.Identity.Controllers;
-using YetaWF.Modules.Identity.DataProvider;
 
 namespace YetaWF.Modules.Identity.Modules {
 

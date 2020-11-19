@@ -46,7 +46,7 @@ namespace YetaWF.Modules.Messenger.DataProvider {
         private IDataProviderIdentity<int, object, SiteAnnouncement> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProviderIdentity<int, object, SiteAnnouncement> CreateDataProvider() {
-            Package package = YetaWF.Modules.Messenger.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Messenger.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Announcements", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

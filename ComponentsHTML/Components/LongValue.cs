@@ -18,7 +18,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Returns the package implementing the component.
         /// </summary>
         /// <returns>Returns the package implementing the component.</returns>
-        public override Package GetPackage() { return Controllers.AreaRegistration.CurrentPackage; }
+        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         /// <summary>
         /// Returns the component name.
         /// </summary>
@@ -37,7 +37,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [Caption("Memory Limit"), Description("The percentage of physical memory available to the application")]
     /// [UIHint("LongValue"), ReadOnly]
     /// public long EffectivePercentagePhysicalMemoryLimit { get; set; }
-    /// </example>    
+    /// </example>
     public class LongValueDisplayComponent : LongValueComponentBase, IYetaWFComponent<long>, IYetaWFComponent<long?> {
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Allows entry of a long value. 
+    /// Allows entry of a long value.
     /// </summary>
     /// <remarks>
     /// The RangeAttribute can be used to define the lowest and highest allowable values.

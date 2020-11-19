@@ -1,6 +1,5 @@
 ﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TwilioProcessorDataProvider#License */
 
-using Softelvdm.Modules.TwilioProcessorDataProvider.Controllers;
 using Softelvdm.Modules.TwilioProcessorDataProvider.Models.Attributes;
 using System;
 using System.Threading.Tasks;
@@ -25,11 +24,11 @@ namespace Softelvdm.Modules.TwilioProcessorDataProvider.DataProvider {
 
         public bool TestMode { get { return !LiveMode; } }
 
-        public bool LiveMode { get { return WebConfigHelper.GetValue<bool>(Softelvdm.Modules.TwilioProcessorDataProvider.Controllers.AreaRegistration.CurrentPackage.AreaName, "Live"); } }
-        public string LiveAccountSid { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.Controllers.AreaRegistration.CurrentPackage.AreaName, "LiveAccountSid"); } }
-        public string LiveAuthToken { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.Controllers.AreaRegistration.CurrentPackage.AreaName, "LiveAuthToken"); } }
-        public string TestAccountSid { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.Controllers.AreaRegistration.CurrentPackage.AreaName, "TestAccountSid"); } }
-        public string TestAuthToken { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.Controllers.AreaRegistration.CurrentPackage.AreaName, "TestAuthToken"); } }
+        public bool LiveMode { get { return WebConfigHelper.GetValue<bool>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "Live"); } }
+        public string LiveAccountSid { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "LiveAccountSid"); } }
+        public string LiveAuthToken { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "LiveAuthToken"); } }
+        public string TestAccountSid { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "TestAccountSid"); } }
+        public string TestAuthToken { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "TestAuthToken"); } }
 
         public bool SMSEnabled { get; set; }
 
@@ -83,7 +82,7 @@ namespace Softelvdm.Modules.TwilioProcessorDataProvider.DataProvider {
         private IDataProvider<int, TwilioData> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<int, TwilioData> CreateDataProvider() {
-            Package package = Softelvdm.Modules.TwilioProcessorDataProvider.Controllers.AreaRegistration.CurrentPackage;
+            Package package = Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, "Softelvdm_TwilioProcessor_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 

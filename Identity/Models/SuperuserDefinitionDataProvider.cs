@@ -13,7 +13,6 @@ using YetaWF.Core.Log;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Identity.Controllers;
 
 namespace YetaWF.Modules.Identity.DataProvider {
 
@@ -82,7 +81,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         private IDataProvider<string, UserDefinition> DataProvider { get { return GetDataProvider(); } }
 
         protected IDataProvider<string, UserDefinition> CreateDataProvider() {
-            Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Identity.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Superusers", Cacheable: true, Parms: new { IdentitySeed = SuperUserId, NoLanguages = true });
         }
 
@@ -134,7 +133,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             UpdateStatusEnum result;
             UserDefinition origSuperuser;// need to get current superuser because user may have changed the name through Appsettings.json
 
-            Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Identity.AreaRegistration.CurrentPackage;
             using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{package.AreaName}.{nameof(SuperuserDefinitionDataProvider)}_{originalName}")) {
                 List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = nameof(UserDefinition.UserId), Operator = "==", Value = SuperuserDefinitionDataProvider.SuperUserId });
                 origSuperuser = await DataProvider.GetOneRecordAsync(filters);

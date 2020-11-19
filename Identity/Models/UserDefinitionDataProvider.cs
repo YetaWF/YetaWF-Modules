@@ -147,7 +147,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         private IDataProvider<string, UserDefinition> DataProvider { get { return GetDataProvider(); } }
 
         private IDataProvider<string, UserDefinition> CreateDataProvider() {
-            Package package = YetaWF.Modules.Identity.Controllers.AreaRegistration.CurrentPackage;
+            Package package = YetaWF.Modules.Identity.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Users", SiteIdentity: SiteIdentity, Cacheable: true, Parms: new { NoLanguages = true});
         }
 
