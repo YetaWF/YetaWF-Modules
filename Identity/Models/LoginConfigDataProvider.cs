@@ -217,6 +217,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                     BccVerification = false,
                     BccForgottenPassword = false,
                     PersistentLogin = true,
+                    LoginUrl = "/User/Login",
                 };
                 await AddConfigAsync(config);
             }
