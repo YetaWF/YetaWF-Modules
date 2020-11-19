@@ -7,10 +7,9 @@ using YetaWF.Core.Identity;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Serializers;
 using YetaWF.Modules.Identity.Modules;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
+#if !DEBUG
+using YetaWF.Core.Support;
 #endif
 
 namespace YetaWF.Modules.Identity.Controllers {
