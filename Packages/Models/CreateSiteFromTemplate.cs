@@ -125,8 +125,6 @@ namespace YetaWF.Modules.Packages.DataProvider {
                         ExtractWebconfigSection(lines, build);
                     else if (section == "::COMMAND-SECTION::")
                         await ExtractCommandSectionAsync(lines, build);
-                    else if (section == "::SQL-SECTION::")
-                        ExtractSQLSection(lines, build);
                     else if (section.StartsWith("::INC "))
                         await ExtractINCSectionAsync(lines, build, section);
                     else
@@ -811,45 +809,6 @@ namespace YetaWF.Modules.Packages.DataProvider {
             return result;
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
-        private void ExtractSQLSection(List<string> lines, bool build) {
-
-            // TODO: REMOVE $$$$$
-            //string sqlConn = WebConfigHelper.GetValue<string>(DataProviderImpl.DefaultString, SQLBase.SQLConnectString);
-            //if (string.IsNullOrWhiteSpace(sqlConn)) throw TemplateError("No SQL connection string found in Appsettings.json (P:Default:SQLConnect)");
-
-            //for ( ; lines.Count > 0;) {
-
-            //    // get the command line
-            //    string sqlLine = lines.First();
-            //    if (sqlLine.StartsWith("::"))
-            //        break; // start of a new section
-
-            //    ++_LineCounter; lines.RemoveAt(0);
-            //    if (sqlLine.Trim() == "")
-            //        continue;
-            //    if (sqlLine.Trim() != "<<SQL")
-            //        throw TemplateError("Sql start (<<SQL) missing");
-            //    string sqlLines = "";
-
-            //    for (; lines.Count > 0;) {
-            //        sqlLine = lines.First();
-            //        ++_LineCounter; lines.RemoveAt(0);
-            //        if (sqlLine.Trim() == ">>SQL") {
-            //            if (build) {
-            //                using (SqlConnection conn = new SqlConnection(sqlConn)) {
-            //                    conn.Open();
-            //                    SqlCommand cmd = new SqlCommand(sqlLines, conn);
-            //                    cmd.ExecuteNonQuery();
-            //                }
-            //            }
-            //            continue;
-            //        }
-            //        if (sqlLine.Trim() != "GO")
-            //            sqlLines += sqlLine + "\r\n";
-            //    }
-            //}
-        }
         private async Task ExtractINCSectionAsync(List<string> lines, bool build, string section) {
             string[] parts = section.Split(new char[] { ' ' }, 2);
             if (parts.Length != 2)
