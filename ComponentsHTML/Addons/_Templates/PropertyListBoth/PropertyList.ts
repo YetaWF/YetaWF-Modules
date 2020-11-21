@@ -187,7 +187,7 @@ namespace YetaWF_ComponentsHTML {
                             let control = $YetaWF.getObjectData(item.Template) as YetaWF.ComponentBaseDataImpl;
                             $YetaWF.registerCustomEventHandler(control, item.ChangeEvent, null, (evt: Event): boolean => {
                                 this.update();
-                                return false;
+                                return true;
                             });
                             break;
                     }

@@ -110,7 +110,7 @@ var YetaWF_ComponentsHTML;
                             var control_1 = $YetaWF.getObjectData(item.Template);
                             $YetaWF.registerCustomEventHandler(control_1, item.ChangeEvent, null, function (evt) {
                                 _this.update();
-                                return false;
+                                return true;
                             });
                             break;
                     }
