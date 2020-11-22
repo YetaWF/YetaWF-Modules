@@ -102,7 +102,6 @@ namespace YetaWF.Modules.Logging.Controllers {
             public BrowseItem(BrowseLogModule module, LogRecord data) {
                 Module = module;
                 ObjectSupport.CopyData(data, this);
-                Info = Info.TruncateWithEllipse(80); // make it better displayable
             }
         }
 
