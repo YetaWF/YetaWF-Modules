@@ -93,7 +93,7 @@
   border-radius: 5px;
   padding: 3ch 2ch 2ch 2ch;
   margin-bottom: 2ch;
-  margin-right: 2ch; }
+  margin-right: 0; }
   .yt_propertylist.t_boxed .t_proptable.t_propexpanded .t_boxexpcoll.t_show,
   .yt_propertylist.t_boxedcat .t_proptable.t_propexpanded .t_boxexpcoll.t_show {
     background-image: url(images/Collapse16.png);

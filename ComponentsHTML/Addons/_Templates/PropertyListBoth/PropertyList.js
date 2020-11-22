@@ -63,10 +63,6 @@ var YetaWF_ComponentsHTML;
                     if (_this.ColumnDefIndex >= 0)
                         _this.MasonryElem = _this.createMasonry();
                 }
-                setInterval(function () {
-                    if (_this.MasonryElem)
-                        _this.MasonryElem.layout();
-                }, 1000);
             }
             // expand/collapse handling
             if (_this.Setup.Style === PropertyListStyleEnum.Boxed || _this.Setup.Style === PropertyListStyleEnum.BoxedWithCategories) {
@@ -181,6 +177,7 @@ var YetaWF_ComponentsHTML;
             // show apply/save/cancel buttons again
             this.toggleFormButtons(true);
             $YetaWF.sendContainerResizeEvent(box);
+            this.resize();
         };
         PropertyListComponent.prototype.expandBox = function (box) {
             var boxes = $YetaWF.getElementsBySelector(".t_proptable", [this.Control]);
@@ -232,6 +229,7 @@ var YetaWF_ComponentsHTML;
             }
             return new Masonry(this.Control, {
                 itemSelector: ".t_proptable",
+                gutter: 20,
                 horizontalOrder: false,
                 transitionDuration: "0.1s",
                 resize: false,
@@ -494,9 +492,14 @@ var YetaWF_ComponentsHTML;
             $YetaWF.elementRemoveClasses(box, ["t_propsuppress", YConfigs.Forms.CssFormNoSubmitContents]);
         };
         PropertyListComponent.prototype.layout = function () {
+            var _this = this;
             this.setLayout();
-            if (this.MasonryElem)
-                this.MasonryElem.layout();
+            if (this.MasonryElem) {
+                setTimeout(function () {
+                    if (_this.MasonryElem)
+                        _this.MasonryElem.layout();
+                }, 20);
+            }
         };
         PropertyListComponent.prototype.resize = function () {
             if (this.Setup.Style === PropertyListStyleEnum.Boxed || this.Setup.Style === PropertyListStyleEnum.BoxedWithCategories) {
@@ -516,6 +519,15 @@ var YetaWF_ComponentsHTML;
                 var list = YetaWF.ComponentBaseDataImpl.getControlFromTag(proplist, PropertyListComponent.SELECTOR);
                 list.resize();
             }
+        }
+        return true;
+    });
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
+        var proplists = $YetaWF.getElementsBySelector(PropertyListComponent.SELECTOR);
+        for (var _i = 0, proplists_3 = proplists; _i < proplists_3.length; _i++) {
+            var proplist = proplists_3[_i];
+            var list = YetaWF.ComponentBaseDataImpl.getControlFromTag(proplist, PropertyListComponent.SELECTOR);
+            list.resize();
         }
         return true;
     });

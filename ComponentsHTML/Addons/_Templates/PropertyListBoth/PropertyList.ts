@@ -139,10 +139,6 @@ namespace YetaWF_ComponentsHTML {
                     if (this.ColumnDefIndex >= 0)
                         this.MasonryElem = this.createMasonry();
                 }
-                setInterval((): void => {
-                    if (this.MasonryElem)
-                        this.MasonryElem.layout!();
-                }, 1000);
             }
 
             // expand/collapse handling
@@ -264,6 +260,7 @@ namespace YetaWF_ComponentsHTML {
             this.toggleFormButtons(true);
 
             $YetaWF.sendContainerResizeEvent(box);
+            this.resize();
         }
         private expandBox(box: HTMLElement): void {
             let boxes = $YetaWF.getElementsBySelector(".t_proptable", [this.Control]);
@@ -317,6 +314,7 @@ namespace YetaWF_ComponentsHTML {
 
             return new Masonry(this.Control, {
                 itemSelector: ".t_proptable",
+                gutter: 20,
                 horizontalOrder: false,
                 transitionDuration: "0.1s",
                 resize: false,
@@ -574,8 +572,12 @@ namespace YetaWF_ComponentsHTML {
         }
         public layout(): void {
             this.setLayout();
-            if (this.MasonryElem)
-                this.MasonryElem.layout!();
+            if (this.MasonryElem) {
+                setTimeout((): void => {
+                    if (this.MasonryElem)
+                        this.MasonryElem.layout!();
+                }, 20);
+            }
         }
         public resize(): void {
             if (this.Setup.Style === PropertyListStyleEnum.Boxed || this.Setup.Style === PropertyListStyleEnum.BoxedWithCategories) {
@@ -594,6 +596,13 @@ namespace YetaWF_ComponentsHTML {
         }
         return true;
     });
-
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: Event): boolean => {
+        let proplists = $YetaWF.getElementsBySelector(PropertyListComponent.SELECTOR);
+        for (let proplist of proplists) {
+            let list = YetaWF.ComponentBaseDataImpl.getControlFromTag<PropertyListComponent>(proplist, PropertyListComponent.SELECTOR);
+            list.resize();
+        }
+        return true;
+    });
 }
 
