@@ -26,6 +26,7 @@ namespace YetaWF.Modules.DevTests.Views {
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
     <div class='t_tests'>
         <input type='button' value='message()' name='message' />
+        <input type='button' value='warning()' name='warning' />
         <input type='button' value='error()' name='error' />
         <input type='button' value='alert()' name='alert' />
         <input type='button' value='alertYesNo()' name='alertYesNo' />

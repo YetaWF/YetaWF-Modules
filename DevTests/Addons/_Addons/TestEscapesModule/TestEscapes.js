@@ -23,6 +23,10 @@ var YetaWF_DevTests;
                 $YetaWF.message("TEST <A> &amp; & @ {0} TEST");
                 return true;
             });
+            $YetaWF.registerEventHandler(_this.Module, "click", "input[name='warning']", function (ev) {
+                $YetaWF.warning("TEST <A> &amp; & @ {0} TEST");
+                return true;
+            });
             $YetaWF.registerEventHandler(_this.Module, "click", "input[name='error']", function (ev) {
                 $YetaWF.error("TEST <A> &amp; & @ {0} TEST");
                 return true;

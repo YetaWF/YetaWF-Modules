@@ -67,6 +67,21 @@ namespace YetaWF_ComponentsHTML {
             }
         }
         /**
+         * Displays an warning message, usually in a popup.
+         */
+        public warning(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
+            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups || YVolatile.Basics.ForcePopup) {
+                this.alert(message, title || YLocs.Basics.DefaultAlertTitle, onOK);
+            } else {
+                if (!options)
+                    options = { encoded: false };
+                if (options.canClose === undefined) options.canClose = true;
+                if (options.autoClose === undefined) options.autoClose = BasicsImpl.DefaultTimeout;
+                this.addToast(Severity.Warning, title ?? YLocs.Basics.DefaultAlertTitle, message, options);
+                if (onOK) onOK();
+            }
+        }
+        /**
          * Displays an error message, usually in a popup.
          */
         public error(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
@@ -98,6 +113,7 @@ namespace YetaWF_ComponentsHTML {
         }
         /**
          * Displays an alert message, usually in a popup.
+         * TODO: Should be made private so it's not externally callable. Use message(), warning(), error() instead.
          */
         public alert(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
 

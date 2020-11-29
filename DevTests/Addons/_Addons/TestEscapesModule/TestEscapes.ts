@@ -13,6 +13,10 @@ namespace YetaWF_DevTests {
                 $YetaWF.message("TEST <A> &amp; & @ {0} TEST");
                 return true;
             });
+            $YetaWF.registerEventHandler(this.Module, "click", "input[name='warning']", (ev: MouseEvent): boolean => {
+                $YetaWF.warning("TEST <A> &amp; & @ {0} TEST");
+                return true;
+            });
             $YetaWF.registerEventHandler(this.Module, "click", "input[name='error']", (ev: MouseEvent): boolean => {
                 $YetaWF.error("TEST <A> &amp; & @ {0} TEST");
                 return true;

@@ -92,8 +92,8 @@ i.yic.yic_componentshtml_modmenuedit {
       background-color: red;
       box-shadow: 0px 0px 5px 0px #aaa; }
     #ytoast .t_entry.t_warning {
-      color: #555;
-      background-color: lightgreen;
+      color: #312e2e;
+      background-color: orange;
       box-shadow: 0px 0px 5px 0px #aaa; }
     #ytoast .t_entry .t_message {
       font-weight: 500; }

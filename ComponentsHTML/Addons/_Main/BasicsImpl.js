@@ -59,6 +59,25 @@ var YetaWF_ComponentsHTML;
             }
         };
         /**
+         * Displays an warning message, usually in a popup.
+         */
+        BasicsImpl.prototype.warning = function (message, title, onOK, options) {
+            if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups || YVolatile.Basics.ForcePopup) {
+                this.alert(message, title || YLocs.Basics.DefaultAlertTitle, onOK);
+            }
+            else {
+                if (!options)
+                    options = { encoded: false };
+                if (options.canClose === undefined)
+                    options.canClose = true;
+                if (options.autoClose === undefined)
+                    options.autoClose = BasicsImpl.DefaultTimeout;
+                this.addToast(Severity.Warning, title !== null && title !== void 0 ? title : YLocs.Basics.DefaultAlertTitle, message, options);
+                if (onOK)
+                    onOK();
+            }
+        };
+        /**
          * Displays an error message, usually in a popup.
          */
         BasicsImpl.prototype.error = function (message, title, onOK, options) {
@@ -98,6 +117,7 @@ var YetaWF_ComponentsHTML;
         };
         /**
          * Displays an alert message, usually in a popup.
+         * TODO: Should be made private so it's not externally callable. Use message(), warning(), error() instead.
          */
         BasicsImpl.prototype.alert = function (message, title, onOK, options) {
             if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups || YVolatile.Basics.ForcePopup) {
