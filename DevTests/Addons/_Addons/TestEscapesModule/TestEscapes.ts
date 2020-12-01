@@ -21,10 +21,6 @@ namespace YetaWF_DevTests {
                 $YetaWF.error("TEST <A> &amp; & @ {0} TEST");
                 return true;
             });
-            $YetaWF.registerEventHandler(this.Module, "click", "input[name='alert']", (ev: MouseEvent): boolean => {
-                $YetaWF.alert("TEST <A> &amp; & @ {0} TEST(+nl)(+nl)TEST <A> &amp; & @ {0} TEST", "TITLE <A> &amp; & @ {0} TEST");
-                return true;
-            });
             $YetaWF.registerEventHandler(this.Module, "click", "input[name='confirm']", (ev: MouseEvent): boolean => {
                 $YetaWF.confirm("TEST <A> &amp; & @ {0} TEST");
                 return true;

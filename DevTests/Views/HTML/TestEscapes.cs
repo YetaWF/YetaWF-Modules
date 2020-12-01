@@ -28,7 +28,6 @@ namespace YetaWF.Modules.DevTests.Views {
         <input type='button' value='message()' name='message' />
         <input type='button' value='warning()' name='warning' />
         <input type='button' value='error()' name='error' />
-        <input type='button' value='alert()' name='alert' />
         <input type='button' value='alertYesNo()' name='alertYesNo' />
         <input type='button' value='confirm()' name='confirm' />
         <input type='button' value='pleaseWait()' name='pleaseWait' />");

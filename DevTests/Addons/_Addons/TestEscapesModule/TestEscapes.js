@@ -31,10 +31,6 @@ var YetaWF_DevTests;
                 $YetaWF.error("TEST <A> &amp; & @ {0} TEST");
                 return true;
             });
-            $YetaWF.registerEventHandler(_this.Module, "click", "input[name='alert']", function (ev) {
-                $YetaWF.alert("TEST <A> &amp; & @ {0} TEST(+nl)(+nl)TEST <A> &amp; & @ {0} TEST", "TITLE <A> &amp; & @ {0} TEST");
-                return true;
-            });
             $YetaWF.registerEventHandler(_this.Module, "click", "input[name='confirm']", function (ev) {
                 $YetaWF.confirm("TEST <A> &amp; & @ {0} TEST");
                 return true;

@@ -117,7 +117,6 @@ var YetaWF_ComponentsHTML;
         };
         /**
          * Displays an alert message, usually in a popup.
-         * TODO: Should be made private so it's not externally callable. Use message(), warning(), error() instead.
          */
         BasicsImpl.prototype.alert = function (message, title, onOK, options) {
             if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups || YVolatile.Basics.ForcePopup) {

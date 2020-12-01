@@ -113,9 +113,8 @@ namespace YetaWF_ComponentsHTML {
         }
         /**
          * Displays an alert message, usually in a popup.
-         * TODO: Should be made private so it's not externally callable. Use message(), warning(), error() instead.
          */
-        public alert(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
+        private alert(message: string, title?: string, onOK?: () => void, options?: YetaWF.MessageOptions): void {
 
             if (YConfigs.Basics.MessageType === YetaWF.MessageTypeEnum.Popups || YVolatile.Basics.ForcePopup) {
 

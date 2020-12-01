@@ -51,7 +51,7 @@ var YetaWF_Messenger;
             });
         };
         SkinMessagingModule.prototype.handleNotifyException = function (message) {
-            $YetaWF.alert(message, "Messages Error");
+            $YetaWF.error(message, "Messages Error");
         };
         SkinMessagingModule.prototype.handleUserConnect = function (user) {
             $(document).trigger("YetaWF_Messenger_Messaging_UserConnect", {
