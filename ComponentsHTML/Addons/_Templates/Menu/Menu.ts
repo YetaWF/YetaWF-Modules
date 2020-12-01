@@ -1,5 +1,7 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
 
+/// <reference types="kendo-ui" />
+
 namespace YetaWF_ComponentsHTML {
 
     interface MenuSetup {

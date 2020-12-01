@@ -11,29 +11,16 @@ namespace YetaWF_Messenger {
 
         constructor() {
 
-            if (YConfigs.SignalR.Version === "MVC5") {
-                var $$: any = $;
-                var connection: any = $$.hubConnection(YConfigs.SignalR.Url, { useDefaultPath: false });
-                var hubProxy: any = connection.createHubProxy(SkinSiteAnnouncementsModule.PROXY);
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl(`${YConfigs.SignalR.Url}/${SkinSiteAnnouncementsModule.PROXY}`)
+                .configureLogging(signalR.LogLevel.Information)
+                .build();
 
-                hubProxy.on("Message", (content: string, title: string): void => {
-                    this.handleMessage(content, title);
-                });
+            connection.on("Message", (content: string, title: string): void => {
+                this.handleMessage(content, title);
+            });
 
-                connection.start().done((): void => { /*empty*/ });
-            } else {
-
-                const connection = new signalR.HubConnectionBuilder()
-                    .withUrl(`${YConfigs.SignalR.Url}/${SkinSiteAnnouncementsModule.PROXY}`)
-                    .configureLogging(signalR.LogLevel.Information)
-                    .build();
-
-                connection.on("Message", (content: string, title: string): void => {
-                    this.handleMessage(content, title);
-                });
-
-                connection.start().then((): void => { /*empty*/ });
-            }
+            connection.start().then((): void => { /*empty*/ });
 
         }
         private handleMessage(content: string, title: string): void {

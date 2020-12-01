@@ -92,10 +92,8 @@ var YetaWF_ComponentsHTML;
                 // Create a new command with the desired exec function
                 var overridecmd = new CKEDITOR.command(ev.editor, {
                     exec: function (editor) {
-                        var $form = $(editor.element.$).closest("form." + YConfigs.Forms.CssFormAjax);
-                        if ($form.length !== 1)
-                            throw "Couldn't find form"; /*DEBUG*/
-                        $YetaWF.Forms.submit($form[0], false);
+                        var form = $YetaWF.elementClosest(editor.element.$, "form." + YConfigs.Forms.CssFormAjax);
+                        $YetaWF.Forms.submit(form, false);
                     }
                 });
                 ev.editor.commands.save.exec = overridecmd.exec;

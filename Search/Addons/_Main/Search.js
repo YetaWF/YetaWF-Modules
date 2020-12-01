@@ -6,7 +6,8 @@ var YetaWF_Search;
         function Search() {
         }
         Search.highlightSearch = function () {
-            $(".yModule").removeHighlight();
+            var mods = $YetaWF.getElementsBySelector(".yModule");
+            Search.removeHighlight(mods);
             if (YVolatile.Basics.EditModeActive)
                 return; // never in edit mode
             var offButton = $YetaWF.getElement1BySelectorCond(".YetaWF_Search_SearchControl a[data-name='Off']");
@@ -17,7 +18,7 @@ var YetaWF_Search;
             if (kwdsString.length === 0)
                 return;
             var kwds = kwdsString.split(",");
-            $(".yPane .yModule").highlight(kwds);
+            Search.highlight(mods, kwds, false);
         };
         Search.setButtons = function () {
             var onButton = $YetaWF.getElement1BySelectorCond(".YetaWF_Search_SearchControl a[data-name='On']");
@@ -40,25 +41,96 @@ var YetaWF_Search;
             onButton.style.display = "none";
             offButton.style.display = "none";
         };
+        // highlighting code from http://johannburkard.de/blog/programming/javascript/highlight-javascript-text-higlighting-jquery-plugin.html
+        // removed jquery dependency
+        Search.highlight = function (elems, pat, ignore) {
+            if (elems.length > 0 && pat && pat.length) {
+                for (var _i = 0, elems_1 = elems; _i < elems_1.length; _i++) {
+                    var elem = elems_1[_i];
+                    Search.innerHighlight(elem, pat, ignore);
+                }
+            }
+        };
+        Search.removeHighlight = function (tags) {
+            for (var _i = 0, tags_1 = tags; _i < tags_1.length; _i++) {
+                var tag = tags_1[_i];
+                var spans = $YetaWF.getElementsBySelector("span.highlight", [tag]);
+                for (var _a = 0, spans_1 = spans; _a < spans_1.length; _a++) {
+                    var span = spans_1[_a];
+                    var parent_1 = span.parentNode;
+                    var content = document.createTextNode(span.innerText);
+                    parent_1.replaceChild(content, span);
+                    parent_1.normalize();
+                }
+            }
+        };
+        Search.replaceDiacritics = function (str) {
+            var diacritics = [
+                [/[\u00c0-\u00c6]/g, "A"],
+                [/[\u00e0-\u00e6]/g, "a"],
+                [/[\u00c7]/g, "C"],
+                [/[\u00e7]/g, "c"],
+                [/[\u00c8-\u00cb]/g, "E"],
+                [/[\u00e8-\u00eb]/g, "e"],
+                [/[\u00cc-\u00cf]/g, "I"],
+                [/[\u00ec-\u00ef]/g, "i"],
+                [/[\u00d1|\u0147]/g, "N"],
+                [/[\u00f1|\u0148]/g, "n"],
+                [/[\u00d2-\u00d8|\u0150]/g, "O"],
+                [/[\u00f2-\u00f8|\u0151]/g, "o"],
+                [/[\u0160]/g, "S"],
+                [/[\u0161]/g, "s"],
+                [/[\u00d9-\u00dc]/g, "U"],
+                [/[\u00f9-\u00fc]/g, "u"],
+                [/[\u00dd]/g, "Y"],
+                [/[\u00fd]/g, "y"]
+            ];
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for (var i = 0; i < diacritics.length; i++) {
+                str = str.replace(diacritics[i][0], diacritics[i][1]);
+            }
+            return str;
+        };
+        Search.innerHighlight = function (node, pat, ignore) {
+            var skip = 0;
+            if (node.nodeType === 3) {
+                var textNode = node;
+                var patternCount = pat.length;
+                for (var ii = 0; ii < patternCount; ii++) {
+                    var currentTerm = (ignore ? this.replaceDiacritics(pat[ii]) : pat[ii]).toUpperCase();
+                    var pos = (ignore ? this.replaceDiacritics(textNode.data) : textNode.data).toUpperCase().indexOf(currentTerm);
+                    if (pos >= 0) {
+                        var spannode = document.createElement("span");
+                        spannode.className = "highlight";
+                        var middlebit = textNode.splitText(pos);
+                        /*let endbit =*/ middlebit.splitText(currentTerm.length);
+                        var middleclone = middlebit.cloneNode(true);
+                        spannode.appendChild(middleclone);
+                        middlebit.parentNode.replaceChild(spannode, middlebit);
+                        skip = 1;
+                    }
+                }
+            }
+            else if (node.nodeType === 1) {
+                var elemNode = node;
+                if (elemNode.childNodes && !/(script|style)/i.test(elemNode.tagName)) {
+                    if (!$YetaWF.elementHasClass(elemNode, "yNoHighlight")) {
+                        for (var i = 0; i < elemNode.childNodes.length; ++i) {
+                            i += this.innerHighlight(elemNode.childNodes[i], pat, ignore);
+                        }
+                    }
+                }
+            }
+            return skip;
+        };
         Search.on = true;
         return Search;
     }());
     YetaWF_Search.Search = Search;
-    // Form postback - highlight new stuff
-    if ($YetaWF.FormsAvailable()) {
-        $YetaWF.Forms.addPostSubmitHandler(false /*!InPartialView*/, {
-            form: null,
-            callback: function (entry) {
-                Search.setButtons();
-                Search.highlightSearch();
-            },
-            userdata: null
-        });
-    }
-    // page or page content update - highlight new stuff
-    $YetaWF.addWhenReady(function (tag) {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
         Search.setButtons();
         Search.highlightSearch();
+        return true;
     });
     // Handles events turning the addon on/off (used for dynamic content)
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, function (ev) {
@@ -76,11 +148,10 @@ var YetaWF_Search;
         offButton.style.display = "";
         Search.highlightSearch();
         YVolatile.YetaWF_Search.HighLight = true;
-        $.ajax({
-            "url": "/YetaWF_Search/SearchControlModule/Switch",
-            "type": "post",
-            "data": "Value=true&" + YConfigs.Basics.ModuleGuid + "=" + encodeURIComponent($YetaWF.getModuleGuidFromTag(onButton))
-        });
+        var request = new XMLHttpRequest();
+        request.open("POST", "/YetaWF_Search/SearchControlModule/Switch", true);
+        request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+        request.send("Value=true&" + YConfigs.Basics.ModuleGuid + "=" + encodeURIComponent($YetaWF.getModuleGuidFromTag(onButton)));
         return false;
     });
     $YetaWF.registerEventHandlerBody("click", ".YetaWF_Search_SearchControl a[data-name='Off']", function (ev) {
@@ -88,13 +159,13 @@ var YetaWF_Search;
         var offButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='Off']");
         offButton.style.display = "none";
         onButton.style.display = "";
-        $(".yModule").removeHighlight();
+        var mods = $YetaWF.getElementsBySelector(".yModule");
+        Search.removeHighlight(mods);
         YVolatile.YetaWF_Search.HighLight = false;
-        $.ajax({
-            "url": "/YetaWF_Search/SearchControlModule/Switch",
-            "type": "post",
-            "data": "Value=false&" + YConfigs.Basics.ModuleGuid + "=" + encodeURIComponent($YetaWF.getModuleGuidFromTag(offButton))
-        });
+        var request = new XMLHttpRequest();
+        request.open("POST", "/YetaWF_Search/SearchControlModule/Switch", true);
+        request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+        request.send("Value=false&" + YConfigs.Basics.ModuleGuid + "=" + encodeURIComponent($YetaWF.getModuleGuidFromTag(offButton)));
         return false;
     });
 })(YetaWF_Search || (YetaWF_Search = {}));

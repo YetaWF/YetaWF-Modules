@@ -23,22 +23,26 @@ namespace YetaWF_Search {
         public static on: boolean = true;
 
         public static highlightSearch(): void {
-            ($(".yModule") as any).removeHighlight();
+
+            let mods = $YetaWF.getElementsBySelector(".yModule");
+            Search.removeHighlight(mods);
+
             if (YVolatile.Basics.EditModeActive) return; // never in edit mode
 
-            var offButton = $YetaWF.getElement1BySelectorCond(".YetaWF_Search_SearchControl a[data-name='Off']");
+            let offButton = $YetaWF.getElement1BySelectorCond(".YetaWF_Search_SearchControl a[data-name='Off']");
             if (!offButton || offButton.style.display === "none") return;
 
-            var uri = $YetaWF.parseUrl(window.location.href);
-            var kwdsString = uri.getSearch(YConfigs.YetaWF_Search.UrlArg);
+            let uri = $YetaWF.parseUrl(window.location.href);
+            let kwdsString = uri.getSearch(YConfigs.YetaWF_Search.UrlArg);
             if (kwdsString.length === 0) return;
-            var kwds = kwdsString.split(",");
-            ($(".yPane .yModule") as any).highlight(kwds);
+            let kwds = kwdsString.split(",");
+
+            Search.highlight(mods, kwds, false);
         }
         public static setButtons(): void {
-            var onButton = $YetaWF.getElement1BySelectorCond(".YetaWF_Search_SearchControl a[data-name='On']");
+            let onButton = $YetaWF.getElement1BySelectorCond(".YetaWF_Search_SearchControl a[data-name='On']");
             if (!onButton) return;
-            var offButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='Off']");
+            let offButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='Off']");
             if (Search.on) {
                 if ($YetaWF.parseUrl(window.location.href).hasSearch(YConfigs.YetaWF_Search.UrlArg)) {
                     if (YVolatile.YetaWF_Search && YVolatile.YetaWF_Search.HighLight) {
@@ -54,23 +58,94 @@ namespace YetaWF_Search {
             onButton.style.display = "none";
             offButton.style.display = "none";
         }
+
+        // highlighting code from http://johannburkard.de/blog/programming/javascript/highlight-javascript-text-higlighting-jquery-plugin.html
+        // removed jquery dependency
+
+        private static highlight(elems: HTMLElement[], pat: string[], ignore: boolean): void {
+            if (elems.length > 0 && pat && pat.length) {
+                for (let elem of elems) {
+                    Search.innerHighlight(elem, pat, ignore);
+                }
+            }
+        }
+        public static removeHighlight(tags: HTMLElement[]): void {
+            for (let tag of tags) {
+                let spans = $YetaWF.getElementsBySelector("span.highlight", [tag]);
+                for (let span of spans) {
+                    let parent = span.parentNode!;
+                    let content = document.createTextNode(span.innerText);
+                    parent.replaceChild(content, span);
+                    parent.normalize();
+                }
+            }
+        }
+
+        private static replaceDiacritics(str: string ): string {
+            let diacritics = [
+                [ /[\u00c0-\u00c6]/g, "A" ],
+                [ /[\u00e0-\u00e6]/g, "a" ],
+                [ /[\u00c7]/g, "C" ],
+                [ /[\u00e7]/g, "c" ],
+                [ /[\u00c8-\u00cb]/g, "E" ],
+                [ /[\u00e8-\u00eb]/g, "e" ],
+                [ /[\u00cc-\u00cf]/g, "I" ],
+                [ /[\u00ec-\u00ef]/g, "i" ],
+                [ /[\u00d1|\u0147]/g, "N" ],
+                [ /[\u00f1|\u0148]/g, "n" ],
+                [ /[\u00d2-\u00d8|\u0150]/g, "O" ],
+                [ /[\u00f2-\u00f8|\u0151]/g, "o" ],
+                [ /[\u0160]/g, "S" ],
+                [ /[\u0161]/g, "s" ],
+                [ /[\u00d9-\u00dc]/g, "U" ],
+                [ /[\u00f9-\u00fc]/g, "u" ],
+                [ /[\u00dd]/g, "Y" ],
+                [ /[\u00fd]/g, "y" ]
+            ];
+
+            // eslint-disable-next-line @typescript-eslint/prefer-for-of
+            for (let i = 0; i < diacritics.length; i++) {
+                str = str.replace(diacritics[i][0], diacritics[i][1] as string);
+            }
+            return str;
+        }
+        private static innerHighlight(node: ChildNode, pat: string[], ignore: boolean): number {
+            let skip = 0;
+            if (node.nodeType === 3) {
+                let textNode = node as Text;
+                let patternCount = pat.length;
+                for (let ii = 0; ii < patternCount; ii++) {
+                    let currentTerm = (ignore ? this.replaceDiacritics(pat[ii]) : pat[ii]).toUpperCase();
+                    let pos = (ignore ?  this.replaceDiacritics(textNode.data) : textNode.data).toUpperCase().indexOf(currentTerm);
+                    if (pos >= 0) {
+                        let spannode = document.createElement("span");
+                        spannode.className = "highlight";
+                        let middlebit = textNode.splitText(pos);
+                        /*let endbit =*/ middlebit.splitText(currentTerm.length);
+                        let middleclone = middlebit.cloneNode(true);
+                        spannode.appendChild(middleclone);
+                        middlebit.parentNode!.replaceChild(spannode, middlebit);
+                        skip = 1;
+                    }
+                }
+            } else if (node.nodeType === 1) {
+                let elemNode = node as Element;
+                if (elemNode.childNodes && !/(script|style)/i.test(elemNode.tagName)) {
+                    if (!$YetaWF.elementHasClass(elemNode, "yNoHighlight")) {
+                        for (let i = 0; i < elemNode.childNodes.length; ++i) {
+                            i += this.innerHighlight(elemNode.childNodes[i], pat, ignore);
+                        }
+                    }
+                }
+            }
+            return skip;
+        }
     }
 
-    // Form postback - highlight new stuff
-    if ($YetaWF.FormsAvailable()) {
-        $YetaWF.Forms.addPostSubmitHandler(false/*!InPartialView*/, {
-            form: null,
-            callback: (entry: YetaWF.SubmitHandlerEntry):void => {
-                Search.setButtons();
-                Search.highlightSearch();
-            },
-            userdata: null
-        });
-    }
-    // page or page content update - highlight new stuff
-    $YetaWF.addWhenReady((tag: HTMLElement): void => {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: Event): boolean => {
         Search.setButtons();
         Search.highlightSearch();
+        return true;
     });
     // Handles events turning the addon on/off (used for dynamic content)
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, (ev: CustomEvent<YetaWF.DetailsAddonChanged>): boolean => {
@@ -84,33 +159,36 @@ namespace YetaWF_Search {
 
     $YetaWF.registerEventHandlerBody("click", ".YetaWF_Search_SearchControl a[data-name='On']", (ev: MouseEvent): boolean => {
 
-        var onButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='On']");
-        var offButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='Off']");
+        let onButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='On']");
+        let offButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='Off']");
         onButton.style.display = "none";
         offButton.style.display = "";
         Search.highlightSearch();
+
         YVolatile.YetaWF_Search.HighLight = true;
-        $.ajax({
-            "url": "/YetaWF_Search/SearchControlModule/Switch",
-            "type": "post",
-            "data": `Value=true&${YConfigs.Basics.ModuleGuid}=${encodeURIComponent($YetaWF.getModuleGuidFromTag(onButton))}`
-        });
+
+        let request: XMLHttpRequest = new XMLHttpRequest();
+        request.open("POST", "/YetaWF_Search/SearchControlModule/Switch", true);
+        request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+        request.send(`Value=true&${YConfigs.Basics.ModuleGuid}=${encodeURIComponent($YetaWF.getModuleGuidFromTag(onButton))}`);
         return false;
     });
     $YetaWF.registerEventHandlerBody("click", ".YetaWF_Search_SearchControl a[data-name='Off']", (ev: MouseEvent): boolean => {
 
-        var onButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='On']");
-        var offButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='Off']");
+        let onButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='On']");
+        let offButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='Off']");
         offButton.style.display = "none";
         onButton.style.display = "";
 
-        ($(".yModule") as any).removeHighlight();
+        let mods = $YetaWF.getElementsBySelector(".yModule");
+        Search.removeHighlight(mods);
+
         YVolatile.YetaWF_Search.HighLight = false;
-        $.ajax({
-            "url": "/YetaWF_Search/SearchControlModule/Switch",
-            "type": "post",
-            "data": `Value=false&${YConfigs.Basics.ModuleGuid}=${encodeURIComponent($YetaWF.getModuleGuidFromTag(offButton))}`
-        });
+
+        let request: XMLHttpRequest = new XMLHttpRequest();
+        request.open("POST", "/YetaWF_Search/SearchControlModule/Switch", true);
+        request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+        request.send(`Value=false&${YConfigs.Basics.ModuleGuid}=${encodeURIComponent($YetaWF.getModuleGuidFromTag(offButton))}`);
         return false;
     });
 }

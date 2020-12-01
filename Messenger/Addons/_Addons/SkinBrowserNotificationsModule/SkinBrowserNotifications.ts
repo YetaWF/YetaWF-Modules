@@ -18,29 +18,16 @@ namespace YetaWF_Messenger {
                 return;
             }
 
-            if (YConfigs.SignalR.Version === "MVC5") {
-                var $$: any = $;
-                var connection: any = $$.hubConnection(YConfigs.SignalR.Url, { useDefaultPath: false });
-                var hubProxy: any = connection.createHubProxy(SkinBrowserNotificationsModule.PROXY);
+            const connection = new signalR.HubConnectionBuilder()
+                .withUrl(`${YConfigs.SignalR.Url}/${SkinBrowserNotificationsModule.PROXY}`)
+                .configureLogging(signalR.LogLevel.Information)
+                .build();
 
-                hubProxy.on("Message", (title: string, text: string, icon?: string, timeout?: number, url?: string): void => {
-                    this.handleMessage(title, text, icon, timeout, url);
-                });
+            connection.on("Message", (title: string, text: string, icon?: string, timeout?: number, url?: string): void => {
+                this.handleMessage(title, text, icon, timeout, url);
+            });
 
-                connection.start().done((): void => { /*empty*/ });
-            } else {
-
-                const connection = new signalR.HubConnectionBuilder()
-                    .withUrl(`${YConfigs.SignalR.Url}/${SkinBrowserNotificationsModule.PROXY}`)
-                    .configureLogging(signalR.LogLevel.Information)
-                    .build();
-
-                connection.on("Message", (title: string, text: string, icon?: string, timeout?: number, url?: string): void => {
-                    this.handleMessage(title, text, icon, timeout, url);
-                });
-
-                connection.start().then((): void => { /*empty*/ });
-            }
+            connection.start().then((): void => { /*empty*/ });
         }
 
         private handleMessage(title: string, text: string, icon?: string, timeout?: number, url?: string): void {

@@ -1,5 +1,6 @@
 "use strict";
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
+// Remove jQuery use
 var YetaWF_Messenger;
 (function (YetaWF_Messenger) {
     var MessagesTemplate = /** @class */ (function () {

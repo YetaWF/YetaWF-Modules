@@ -2,6 +2,8 @@
 
 var CKEDITOR: any;
 
+// Remove jQuery use
+
 namespace YetaWF_Messenger {
 
     export interface IPackageLocs {

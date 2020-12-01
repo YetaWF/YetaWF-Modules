@@ -72,7 +72,7 @@ namespace YetaWF_ComponentsHTML {
             });
 
             // Uploader control
-            (this.$Control as any).dmUploader({//jquery use
+            (this.$Control as any).dmUploader({// jquery use
                 url: this.Setup.SaveUrl,
                 //dataType: 'json',  //don't use otherwise response is not recognized in case of errors
                 //allowedTypes: '*',

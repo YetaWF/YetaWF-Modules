@@ -234,7 +234,7 @@ namespace YetaWF_ComponentsHTML {
         public closeOverlays(): void {
 
             // Close open bootstrap nav menus (if any) by clicking on the page
-            $("body").trigger("click");
+            $("body").trigger("click"); // jQuery use
 
             // all MenuUL menus
             if (MenuULComponent)
@@ -248,7 +248,7 @@ namespace YetaWF_ComponentsHTML {
                 DropDownListEditComponent.closeDropdowns();
 
             // Close any open kendo menus (if any) //TODO: This is sloppy and prob unnecessary
-            const $menus = $(".k-menu");
+            const $menus = $(".k-menu"); // jQuery use
             $menus.each((index: number, element: HTMLElement): void => {
                 const menu = $(element).data("kendoMenu");
                 if (menu)
@@ -257,7 +257,7 @@ namespace YetaWF_ComponentsHTML {
 
             // Close any open smartmenus
             try {
-                ($(".YetaWF_Menus") as any).collapse("hide");
+                ($(".YetaWF_Menus") as any).collapse("hide"); // jQuery use
             } catch (e) { }
         }
         /**

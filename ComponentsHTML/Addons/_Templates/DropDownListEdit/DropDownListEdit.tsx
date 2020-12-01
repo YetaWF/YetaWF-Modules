@@ -228,7 +228,7 @@ namespace YetaWF_ComponentsHTML {
         }
         public sendChangeEvent(): void {
             $YetaWF.sendCustomEvent(this.Control, DropDownListEditComponent.EVENTCHANGE);
-            $(this.Select).trigger("change");// jquery use for legacy code that uses $(elem).on("change")...
+            $(this.Select).trigger("change"); // jquery use for legacy code that uses $(elem).on("change")...
             FormsSupport.validateElement(this.Select);
         }
 

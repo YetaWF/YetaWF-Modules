@@ -1,5 +1,7 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
 
+// Remove jquery use
+
 namespace YetaWF_Messenger {
 
     export class SkinMessagingModule {

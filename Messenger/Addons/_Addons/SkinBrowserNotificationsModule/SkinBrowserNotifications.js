@@ -9,25 +9,14 @@ var YetaWF_Messenger;
                 console.error("No notification support");
                 return;
             }
-            if (YConfigs.SignalR.Version === "MVC5") {
-                var $$ = $;
-                var connection = $$.hubConnection(YConfigs.SignalR.Url, { useDefaultPath: false });
-                var hubProxy = connection.createHubProxy(SkinBrowserNotificationsModule.PROXY);
-                hubProxy.on("Message", function (title, text, icon, timeout, url) {
-                    _this.handleMessage(title, text, icon, timeout, url);
-                });
-                connection.start().done(function () { });
-            }
-            else {
-                var connection_1 = new signalR.HubConnectionBuilder()
-                    .withUrl(YConfigs.SignalR.Url + "/" + SkinBrowserNotificationsModule.PROXY)
-                    .configureLogging(signalR.LogLevel.Information)
-                    .build();
-                connection_1.on("Message", function (title, text, icon, timeout, url) {
-                    _this.handleMessage(title, text, icon, timeout, url);
-                });
-                connection_1.start().then(function () { });
-            }
+            var connection = new signalR.HubConnectionBuilder()
+                .withUrl(YConfigs.SignalR.Url + "/" + SkinBrowserNotificationsModule.PROXY)
+                .configureLogging(signalR.LogLevel.Information)
+                .build();
+            connection.on("Message", function (title, text, icon, timeout, url) {
+                _this.handleMessage(title, text, icon, timeout, url);
+            });
+            connection.start().then(function () { });
         }
         SkinBrowserNotificationsModule.prototype.handleMessage = function (title, text, icon, timeout, url) {
             var _this = this;

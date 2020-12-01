@@ -1,5 +1,7 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+/// <reference types="kendo-ui" />
+
 namespace YetaWF_ComponentsHTML {
 
     export class DropDownButtonComponent extends YetaWF.ComponentBaseDataImpl {

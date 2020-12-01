@@ -1,6 +1,7 @@
 "use strict";
 /* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
 var CKEDITOR;
+// Remove jQuery use
 var YetaWF_Messenger;
 (function (YetaWF_Messenger) {
     var MessagingModule = /** @class */ (function () {

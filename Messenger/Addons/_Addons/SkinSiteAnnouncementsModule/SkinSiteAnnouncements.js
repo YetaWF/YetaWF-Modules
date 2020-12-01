@@ -5,25 +5,14 @@ var YetaWF_Messenger;
     var SkinSiteAnnouncementsModule = /** @class */ (function () {
         function SkinSiteAnnouncementsModule() {
             var _this = this;
-            if (YConfigs.SignalR.Version === "MVC5") {
-                var $$ = $;
-                var connection = $$.hubConnection(YConfigs.SignalR.Url, { useDefaultPath: false });
-                var hubProxy = connection.createHubProxy(SkinSiteAnnouncementsModule.PROXY);
-                hubProxy.on("Message", function (content, title) {
-                    _this.handleMessage(content, title);
-                });
-                connection.start().done(function () { });
-            }
-            else {
-                var connection_1 = new signalR.HubConnectionBuilder()
-                    .withUrl(YConfigs.SignalR.Url + "/" + SkinSiteAnnouncementsModule.PROXY)
-                    .configureLogging(signalR.LogLevel.Information)
-                    .build();
-                connection_1.on("Message", function (content, title) {
-                    _this.handleMessage(content, title);
-                });
-                connection_1.start().then(function () { });
-            }
+            var connection = new signalR.HubConnectionBuilder()
+                .withUrl(YConfigs.SignalR.Url + "/" + SkinSiteAnnouncementsModule.PROXY)
+                .configureLogging(signalR.LogLevel.Information)
+                .build();
+            connection.on("Message", function (content, title) {
+                _this.handleMessage(content, title);
+            });
+            connection.start().then(function () { });
         }
         SkinSiteAnnouncementsModule.prototype.handleMessage = function (content, title) {
             if (SkinSiteAnnouncementsModule.on)
