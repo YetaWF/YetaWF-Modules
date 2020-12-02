@@ -63,7 +63,7 @@ namespace YetaWF_Search {
         // removed jquery dependency
 
         private static highlight(elems: HTMLElement[], pat: string[], ignore: boolean): void {
-            if (elems.length > 0 && pat && pat.length) {
+            if (pat.length) {
                 for (let elem of elems) {
                     Search.innerHighlight(elem, pat, ignore);
                 }
@@ -110,6 +110,7 @@ namespace YetaWF_Search {
             return str;
         }
         private static innerHighlight(node: ChildNode, pat: string[], ignore: boolean): number {
+
             let skip = 0;
             if (node.nodeType === 3) {
                 let textNode = node as Text;

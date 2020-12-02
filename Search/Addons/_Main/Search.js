@@ -44,7 +44,7 @@ var YetaWF_Search;
         // highlighting code from http://johannburkard.de/blog/programming/javascript/highlight-javascript-text-higlighting-jquery-plugin.html
         // removed jquery dependency
         Search.highlight = function (elems, pat, ignore) {
-            if (elems.length > 0 && pat && pat.length) {
+            if (pat.length) {
                 for (var _i = 0, elems_1 = elems; _i < elems_1.length; _i++) {
                     var elem = elems_1[_i];
                     Search.innerHighlight(elem, pat, ignore);
@@ -113,6 +113,8 @@ var YetaWF_Search;
             }
             else if (node.nodeType === 1) {
                 var elemNode = node;
+                if ($YetaWF.elementHasClass(elemNode, "yNoHighlight"))
+                    debugger;
                 if (elemNode.childNodes && !/(script|style)/i.test(elemNode.tagName)) {
                     if (!$YetaWF.elementHasClass(elemNode, "yNoHighlight")) {
                         for (var i = 0; i < elemNode.childNodes.length; ++i) {

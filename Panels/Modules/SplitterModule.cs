@@ -1,11 +1,15 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
 
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Pages;
+using YetaWF.Core.Search;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
@@ -16,7 +20,7 @@ namespace YetaWF.Modules.Panels.Modules {
 
     [ModuleGuid("{75C8D7C9-CE51-4d1b-A698-DEEC6757FA03}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class SplitterModule : ModuleDefinition {
+    public class SplitterModule : ModuleDefinition, ISearchDynamicUrls, ISiteMapDynamicUrls {
 
         public SplitterModule() {
             Title = this.__ResStr("modTitle", "Splitter");
@@ -28,7 +32,7 @@ namespace YetaWF.Modules.Panels.Modules {
             ModuleLeft = Guid.Empty;
             ModuleRight = Guid.Empty;
             WantFocus = true;
-            WantSearch = false;
+            WantSearch = true;
             ShowTitle = false;
         }
 
@@ -79,5 +83,68 @@ namespace YetaWF.Modules.Panels.Modules {
         [UIHint("ModuleSelection"), AdditionalMetadata("New", false), AdditionalMetadata("EditSettings", true), Required]
         public Guid ModuleRight { get; set; }
 
+        // ISEARCHDYNAMICURLS
+        // ISEARCHDYNAMICURLS
+        // ISEARCHDYNAMICURLS
+
+        public async Task KeywordsForDynamicUrlsAsync(ISearchWords searchWords) {
+
+            List<PageDefinition> pages = await PageDefinition.GetPagesFromModuleAsync(ModuleGuid);
+            if (pages.Count == 0) return;
+
+            ISearchPageDynamicUrls iSearchLeft = null;
+            if (ModuleLeft != Guid.Empty) {
+                ModuleDefinition modLeft = await ModuleDefinition.LoadAsync(ModuleLeft, AllowNone: true);
+                if (modLeft != null)
+                    iSearchLeft = modLeft as ISearchPageDynamicUrls;
+            }
+            ISearchPageDynamicUrls iSearchRight = null;
+            if (ModuleRight != Guid.Empty) {
+                ModuleDefinition modRight = await ModuleDefinition.LoadAsync(ModuleRight, AllowNone: true);
+                if (modRight != null)
+                    iSearchRight = modRight as ISearchPageDynamicUrls;
+            }
+
+            if (iSearchLeft != null || iSearchRight != null) {
+                foreach (PageDefinition page in pages) {
+                    if (searchWords.WantPage(page)) {
+                        iSearchLeft?.KeywordsForDynamicUrlsAsync(page, searchWords);
+                        iSearchRight?.KeywordsForDynamicUrlsAsync(page, searchWords);
+                    }
+                }
+            }
+        }
+
+        //// ISITEMAPDYNAMICURLS
+        //// ISITEMAPDYNAMICURLS
+        //// ISITEMAPDYNAMICURLS
+
+        public async Task FindDynamicUrlsAsync(AddDynamicUrlAsync addDynamicUrlAsync, Func<PageDefinition, bool> validForSiteMap) {
+
+            List<PageDefinition> pages = await PageDefinition.GetPagesFromModuleAsync(ModuleGuid);
+            if (pages.Count == 0) return;
+
+            ISiteMapPageDynamicUrls iSearchLeft = null;
+            if (ModuleLeft != Guid.Empty) {
+                ModuleDefinition modLeft = await ModuleDefinition.LoadAsync(ModuleLeft, AllowNone: true);
+                if (modLeft != null)
+                    iSearchLeft = modLeft as ISiteMapPageDynamicUrls;
+            }
+            ISiteMapPageDynamicUrls iSearchRight = null;
+            if (ModuleRight != Guid.Empty) {
+                ModuleDefinition modRight = await ModuleDefinition.LoadAsync(ModuleRight, AllowNone: true);
+                if (modRight != null)
+                    iSearchRight = modRight as ISiteMapPageDynamicUrls;
+            }
+
+            if (iSearchLeft != null || iSearchRight != null) {
+                foreach (PageDefinition page in pages) {
+                    if (validForSiteMap(page)) {
+                        iSearchLeft?.FindDynamicUrlsAsync(page, addDynamicUrlAsync, validForSiteMap);
+                        iSearchRight?.FindDynamicUrlsAsync(page, addDynamicUrlAsync, validForSiteMap);
+                    }
+                }
+            }
+        }
     }
 }

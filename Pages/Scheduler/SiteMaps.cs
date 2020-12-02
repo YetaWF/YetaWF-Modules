@@ -11,11 +11,8 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Scheduler;
 using YetaWF.Core.Support;
 using YetaWF.Core.IO;
-#if MVC6
 using System.Net;
-#else
-using System.Web.Security.AntiXss;
-#endif
+using System.Text;
 
 namespace YetaWF.Modules.Pages.Scheduler {
 
@@ -24,11 +21,6 @@ namespace YetaWF.Modules.Pages.Scheduler {
         private static YetaWFManager Manager { get { return YetaWFManager.Manager; } }
 
         public const string EventSiteMaps = "YetaWF.Pages: Build Site Map";
-
-        private const string SITEMAPFMT = "sitemap-{0}.xml";
-        private const string SITEMAPTEMPFMT = "sitemap-{0}.temp.xml";
-
-        private List<Guid> PagesFound = new List<Guid>();
 
         public Task RunItemAsync(SchedulerItemBase evnt) {
             if (evnt.EventName != EventSiteMaps)
@@ -52,6 +44,12 @@ namespace YetaWF.Modules.Pages.Scheduler {
             };
         }
 
+        private const string SITEMAPFMT = "sitemap-{0}.xml";
+
+        private List<Guid> PagesFound = new List<Guid>();
+        private StringBuilder SbSiteMap = new StringBuilder();
+        private static object SBSiteMapLock = new object();
+
         public SiteMaps() { }
 
         /// <summary>
@@ -59,15 +57,11 @@ namespace YetaWF.Modules.Pages.Scheduler {
         /// </summary>
         public async Task CreateAsync(bool slow = false) {
 
-            string file = GetTempFile();
-            await FileSystem.FileSystemProvider.DeleteFileAsync(file);
-
             // header
-            await FileSystem.FileSystemProvider.AppendAllTextAsync(file,
-                "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\r\n" +
-                "<urlset xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns =\"http://www.sitemaps.org/schemas/sitemap/0.9\" >\r\n"
-            );
-
+            lock (SBSiteMapLock) {
+                SbSiteMap.Append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\r\n" +
+                    "<urlset xsi:schemaLocation=\"http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns =\"http://www.sitemaps.org/schemas/sitemap/0.9\" >\r\n");
+            }
             // Dynamic Urls in types
             DynamicUrlsImpl dynamicUrls = new DynamicUrlsImpl();
             List<Type> types = dynamicUrls.GetDynamicUrlTypes();
@@ -96,24 +90,24 @@ namespace YetaWF.Modules.Pages.Scheduler {
                 if (page == null)
                     continue;
                 if (!PagesFound.Contains(page.PageGuid)) // don't include same again (this could be a page that generates dynamic Urls)
-                    await AddUrlAsync(file, page, page.EvaluatedCanonicalUrl, page.Updated, page.SiteMapPriority, page.ChangeFrequency);
+                    await AddUrlAsync(page, page.EvaluatedCanonicalUrl, page.Updated, page.SiteMapPriority, page.ChangeFrequency);
             }
 
             // end
-            await FileSystem.FileSystemProvider.AppendAllTextAsync(file,
-                "</urlset>\r\n"
-            );
+            lock (SBSiteMapLock) {
+                SbSiteMap.Append("</urlset>\r\n");
+            }
 
             string finalFile = GetFile();
             await FileSystem.FileSystemProvider.DeleteFileAsync(finalFile);
-            await FileSystem.FileSystemProvider.MoveFileAsync(file, finalFile);
+            await FileSystem.FileSystemProvider.AppendAllTextAsync(finalFile, SbSiteMap.ToString());
 
             if (Manager.CurrentSite.DefaultSiteMap)
                 await FileSystem.FileSystemProvider.CopyFileAsync(finalFile, Path.Combine(YetaWFManager.RootFolder, "sitemap.xml"));
         }
 
         private async Task AddSiteMapPageAsync(PageDefinition page, string url, DateTime? dateUpdated, PageDefinition.SiteMapPriorityEnum priority, PageDefinition.ChangeFrequencyEnum changeFrequency, object obj) {
-            await AddUrlAsync(GetTempFile(), page, url, dateUpdated, priority, changeFrequency);
+            await AddUrlAsync(page, url, dateUpdated, priority, changeFrequency);
         }
         private bool ValidForSiteMap(PageDefinition page) {
             if (!string.IsNullOrWhiteSpace(page.RedirectToPageUrl)) // no redirected pages
@@ -124,28 +118,27 @@ namespace YetaWF.Modules.Pages.Scheduler {
                 return false;
             return true;
         }
-        private async Task AddUrlAsync(string file, PageDefinition page, string canonicalUrl, DateTime? lastMod, PageDefinition.SiteMapPriorityEnum siteMapPriority, PageDefinition.ChangeFrequencyEnum changeFrequency) {
+        private Task AddUrlAsync(PageDefinition page, string canonicalUrl, DateTime? lastMod, PageDefinition.SiteMapPriorityEnum siteMapPriority, PageDefinition.ChangeFrequencyEnum changeFrequency) {
             if (!PagesFound.Contains(page.PageGuid)) // keep track of pages so we don't add it as a designed page in case it was dynamic
                 PagesFound.Add(page.PageGuid);
             canonicalUrl = Manager.CurrentSite.MakeUrl(canonicalUrl, PagePageSecurity: page.PageSecurity);
             if (!ValidForSiteMap(page))
-                return;
+                return Task.CompletedTask;
             string cf = GetChangeFrequencyText(changeFrequency);
             float prio = GetPriority(siteMapPriority);
             var w3clastMod = lastMod != null ? string.Format("    <lastmod>{0}</lastmod>\r\n", XmlConvert.ToString((DateTime)lastMod, XmlDateTimeSerializationMode.Utc)) : "";
-#if MVC6
             canonicalUrl = WebUtility.HtmlEncode(canonicalUrl);
-#else
-            canonicalUrl = AntiXssEncoder.XmlEncode(canonicalUrl);
-#endif
-            await FileSystem.FileSystemProvider.AppendAllTextAsync(file, string.Format(
-                "  <url>\r\n" +
-                "    <loc>{0}</loc>\r\n" +
-                "{1}" +
-                "    <changefreq>{2}</changefreq>\r\n" +
-                "    <priority>{3}</priority>\r\n" +
-                "  </url>\r\n", canonicalUrl, w3clastMod, cf, prio)
-            );
+
+            lock (SBSiteMapLock) {
+                SbSiteMap.AppendFormat(
+                    "  <url>\r\n" +
+                    "    <loc>{0}</loc>\r\n" +
+                    "{1}" +
+                    "    <changefreq>{2}</changefreq>\r\n" +
+                    "    <priority>{3}</priority>\r\n" +
+                    "  </url>\r\n", canonicalUrl, w3clastMod, cf, prio);
+            }
+            return Task.CompletedTask;
         }
 
         private float GetPriority(PageDefinition.SiteMapPriorityEnum siteMapPriority) {
@@ -191,9 +184,6 @@ namespace YetaWF.Modules.Pages.Scheduler {
             return GetFile();
         }
 
-        private string GetTempFile() {
-            return Path.Combine(YetaWFManager.RootFolder, string.Format(SITEMAPTEMPFMT, Manager.CurrentSite.SiteDomain.ToLower()));
-        }
         private string GetFile() {
             return Path.Combine(YetaWFManager.RootFolder, string.Format(SITEMAPFMT, Manager.CurrentSite.SiteDomain.ToLower()));
         }

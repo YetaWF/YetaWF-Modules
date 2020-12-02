@@ -63,9 +63,9 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             public bool SiteSpecific { get; set; }
 
             [Caption("Interval"), Description("The scheduler item's frequency")]
-            [UIHint("YetaWF_Scheduler_Frequency"), Required]
-            [ProcessIf(nameof(Enabled), true)]
-            [ProcessIf(nameof(EnableOnStartup), true)]
+            [UIHint("YetaWF_Scheduler_Frequency")]
+            [ProcessIf(nameof(Enabled), true), RequiredIf(nameof(Enabled), true)]
+            [ProcessIf(nameof(EnableOnStartup), true), RequiredIf(nameof(EnableOnStartup), true)]
             public SchedulerFrequency Frequency { get; set; }
 
             [UIHint("Hidden")]
