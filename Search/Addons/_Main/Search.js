@@ -113,8 +113,6 @@ var YetaWF_Search;
             }
             else if (node.nodeType === 1) {
                 var elemNode = node;
-                if ($YetaWF.elementHasClass(elemNode, "yNoHighlight"))
-                    debugger;
                 if (elemNode.childNodes && !/(script|style)/i.test(elemNode.tagName)) {
                     if (!$YetaWF.elementHasClass(elemNode, "yNoHighlight")) {
                         for (var i = 0; i < elemNode.childNodes.length; ++i) {
