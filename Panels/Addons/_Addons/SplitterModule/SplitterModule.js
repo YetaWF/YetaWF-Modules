@@ -47,6 +47,12 @@ var YetaWF_Panels;
                 throw "The Splitter module cannot be found";
             return mod;
         };
+        SplitterModule.GetSplitterModuleFromTag = function (tag) {
+            var mod = SplitterModule.GetSplitterModuleFromTagCond(tag);
+            if (!mod)
+                throw "The Splitter module cannot be found";
+            return mod;
+        };
         Object.defineProperty(SplitterModule.prototype, "LeftArea", {
             get: function () {
                 return $YetaWF.getElement1BySelector(".yt_panels_splitterinfo_left .t_area", [this.Module]);

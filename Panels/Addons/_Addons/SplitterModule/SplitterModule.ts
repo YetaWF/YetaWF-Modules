@@ -43,6 +43,12 @@ namespace YetaWF_Panels {
             return mod;
         }
 
+        public static GetSplitterModuleFromTag(tag: HTMLElement) : YetaWF_Panels.SplitterModule {
+            let mod = SplitterModule.GetSplitterModuleFromTagCond(tag);
+            if (!mod)
+                throw "The Splitter module cannot be found";
+            return mod;
+        }
 
         public get LeftArea(): HTMLElement {
             return $YetaWF.getElement1BySelector(".yt_panels_splitterinfo_left .t_area", [this.Module]);
