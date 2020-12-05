@@ -68,11 +68,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override async Task IncludeAsync() {
             //await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
             await KendoUICore.AddFileAsync("kendo.button.min.js");
-
-            // Add required menu support
-            await KendoUICore.AddFileAsync("kendo.menu.min.js");
-            await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, "MenuUL", ComponentType.Display);
-
             await base.IncludeAsync();
         }
 
@@ -119,7 +114,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                 Tooltip = null,
                                 ButtonId = buttonId,
                                 MenuHTML = menuHTML,
-                                Mini = false,
+                                Mini = actionStyle == Grid.GridActionsEnum.Mini,
                             };
 
                             hb.Append($@"
