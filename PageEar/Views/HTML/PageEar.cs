@@ -19,7 +19,19 @@ namespace YetaWF.Modules.PageEar.Views {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public Task<string> RenderViewAsync(PageEarModule module, PageEarModuleController.Model model) {
+        public class Setup {
+            public string AdImage { get; set; } = null!;
+            public string PeelImage { get; set; } = null!;
+            public string ClickURL { get; set; } = null!;
+            public int SmallSize { get; set; }
+            public int LargeSize { get; set; }
+            public bool AutoAnimate { get; set; }
+            public bool Debug { get; set; }
+        }
+
+        public async Task<string> RenderViewAsync(PageEarModule module, PageEarModuleController.Model model) {
+
+            await Manager.AddOnManager.AddAddOnNamedAsync(module.AreaName, ViewName);
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -28,31 +40,24 @@ namespace YetaWF.Modules.PageEar.Views {
 <div class='{Globals.CssDivWarning}'>
     {HE(this.__ResStr("changeMod", "Change \"Module Settings\" to configure the page ear displayed"))}
 </div>");
+            } else {
+                hb.Append("&nbsp;");// generate something otherwise module suppressed
             }
 
             if (module.AdImage_Data.Length > 0 && module.CoverImage_Data.Length > 0 && !string.IsNullOrWhiteSpace(module.ClickUrl)) {
 
-                Manager.ScriptManager.AddLast($@"
-$('body').peelback({{
-    adImage: '{JE(ImageHTML.FormatUrl(YetaWF.Core.Modules.ModuleImageSupport.ImageType, null, module.AdImage))}',
-    peelImage: '{JE(ImageHTML.FormatUrl(YetaWF.Core.Modules.ModuleImageSupport.ImageType, null, module.CoverImage))}',
-    clickURL: '{JE(module.ClickUrl)}',
-    smallSize: {module.SmallSize},
-    bigSize: {module.LargeSize},
-    autoAnimate: {(module.Animate ? "true" : "false")},
-    //gaTrack: true, //RFFU
-    //gaLabel: '#1 Stegosaurus',
-    debug: false
-}});
-
-// Listen for events that the page is changing
-$YetaWF.registerPageChange(true, function () {{
-    // when the page is removed, we need to clean up
-    $('#peelback').remove();
-}});");
-
+                Setup setup = new Setup {
+                    AdImage = ImageHTML.FormatUrl(YetaWF.Core.Modules.ModuleImageSupport.ImageType, null, module.AdImage),
+                    PeelImage = ImageHTML.FormatUrl(YetaWF.Core.Modules.ModuleImageSupport.ImageType, null, module.CoverImage),
+                    ClickURL = module.ClickUrl,
+                    SmallSize = module.SmallSize,
+                    LargeSize = module.LargeSize,
+                    AutoAnimate = module.Animate,
+                    Debug = false,
+                };
+                Manager.ScriptManager.AddLast($@"new YetaWF_PageEar.PageEarModule('{module.ModuleHtmlId}', {Utility.JsonSerialize(setup)});");
             }
-            return Task.FromResult(hb.ToString());
+            return hb.ToString();
         }
     }
 }

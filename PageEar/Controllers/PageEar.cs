@@ -1,11 +1,7 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEar#License */
 
 using YetaWF.Core.Controllers;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.PageEar.Controllers {
 

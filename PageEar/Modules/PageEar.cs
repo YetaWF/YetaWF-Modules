@@ -10,12 +10,8 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
-using YetaWF.DataProvider;
-#if MVC6
 using YetaWF.Core.Support;
-#else
-using System.Web.Mvc;
-#endif
+using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.PageEar.Modules {
 
@@ -30,8 +26,8 @@ namespace YetaWF.Modules.PageEar.Modules {
             Description = this.__ResStr("modSummary", "Adds a configurable page ear to each page where this module is located. The module can be added anywhere on the page (in a pane) and is only visible in Site Edit Mode. The page ear itself (in the upper right corner) is only shown in Site View Mode once all required module settings have been defined (like the images and URL).");
             WantFocus = WantSearch = false;
             ShowTitle = false;
-            AdImage_Data = new byte[] { };
-            CoverImage_Data = new byte[] { };
+            AdImage_Data = Array.Empty<byte>();
+            CoverImage_Data = Array.Empty<byte>();
             ClickUrl = Manager.CurrentSite.HomePageUrl;
             SmallSize = 80;
             Animate = true;
@@ -49,10 +45,10 @@ namespace YetaWF.Modules.PageEar.Modules {
         [UIHint("Image"), AdditionalMetadata("ImageType", ModuleImageSupport.ImageType)]
         [AdditionalMetadata("Width", 200), AdditionalMetadata("Height", 200)]
         [DontSave]
-        public string AdImage {
+        public string? AdImage {
             get {
                 if (_adImage == null) {
-                    if (AdImage_Data != null && AdImage_Data.Length > 0)
+                    if (AdImage_Data.Length > 0)
                         _adImage = ModuleGuid.ToString() + ",AdImage_Data";
                 }
                 return _adImage;
@@ -61,7 +57,7 @@ namespace YetaWF.Modules.PageEar.Modules {
                 _adImage = value;
             }
         }
-        private string _adImage = null;
+        private string? _adImage = null;
 
         [Data_Binary, CopyAttribute]
         public byte[] AdImage_Data { get; set; }
@@ -70,10 +66,10 @@ namespace YetaWF.Modules.PageEar.Modules {
         [UIHint("Image"), AdditionalMetadata("ImageType", ModuleImageSupport.ImageType), StringLength(Globals.MaxFileName)]
         [AdditionalMetadata("Width", 200), AdditionalMetadata("Height", 200)]
         [DontSave]
-        public string CoverImage {
+        public string? CoverImage {
             get {
                 if (_coverImage == null) {
-                    if (CoverImage_Data != null && CoverImage_Data.Length > 0)
+                    if (CoverImage_Data.Length > 0)
                         _coverImage = ModuleGuid.ToString() + ",CoverImage_Data";
                 }
                 return _coverImage;
@@ -82,7 +78,7 @@ namespace YetaWF.Modules.PageEar.Modules {
                 _coverImage = value;
             }
         }
-        private string _coverImage = null;
+        private string? _coverImage = null;
 
         [Data_Binary, CopyAttribute]
         public byte[] CoverImage_Data { get; set; }
@@ -93,7 +89,7 @@ namespace YetaWF.Modules.PageEar.Modules {
 
         public int LargeSize { get; set; }
 
-        [Category("General"), Caption("Url"), Description("The url where the user is directed when clicking on the page ear")]
+        [Category("General"), Caption("Url"), Description("The URL where the user is directed when clicking on the page ear")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
         [StringLength(Globals.MaxUrl), Required, Trim]
         public string ClickUrl { get; set; }
