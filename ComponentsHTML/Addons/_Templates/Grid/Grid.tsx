@@ -479,14 +479,13 @@ namespace YetaWF_ComponentsHTML {
                         return false;
                     });
                 }
-                // handle submit local data
-                $YetaWF.Forms.addPreSubmitHandler(true, {
-                    form: $YetaWF.Forms.getForm(this.Control),
-                    callback: (entry: YetaWF.SubmitHandlerEntry): void => {
-                        this.submitLocalData(entry);
-                    },
-                    userdata: this
-                });
+            }
+        }
+
+        // handle submit local data
+        public handlePreSubmitLocalData(form: HTMLFormElement) : void {
+            if (this.Setup.StaticData && this.Setup.NoSubmitContents) {
+                this.submitLocalData(form);
             }
         }
 
@@ -588,7 +587,7 @@ namespace YetaWF_ComponentsHTML {
                 throw "More than one column marked OnlySubmitWhenChecked";
             return colIndex;
         }
-        private submitLocalData(entry: YetaWF.SubmitHandlerEntry): void {
+        private submitLocalData(form: HTMLFormElement): void {
             if (!this.Setup.StaticData) return;
             let div = `<div class='${$YetaWF.Forms.DATACLASS}' style='display:none'>`;
             // retrieve all rows and add input/select fields to data div, resequence to make mvc serialization of lists work
@@ -618,7 +617,7 @@ namespace YetaWF_ComponentsHTML {
             }
             div += "</div>";
             if (row > 0)
-                (entry.form as HTMLElement).insertAdjacentHTML("beforeend", div);
+                form.insertAdjacentHTML("beforeend", div);
         }
         // sorting
         private clearSorts(): void {
@@ -1470,4 +1469,13 @@ namespace YetaWF_ComponentsHTML {
             throw "GetAllCheckBoxesSelected not available";
         }
     }
+
+    // handle submit local data
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Forms.EVENTPRESUBMIT, null, (ev: CustomEvent<YetaWF.DetailsPreSubmit>): boolean => {
+        let grids = YetaWF.ComponentBaseDataImpl.getControls<Grid>(Grid.SELECTOR, [ev.detail.form]);
+        for (let grid of grids) {
+            grid.handlePreSubmitLocalData(ev.detail.form);
+        }
+        return true;
+    });
 }

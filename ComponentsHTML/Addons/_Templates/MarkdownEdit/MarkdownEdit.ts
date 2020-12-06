@@ -28,15 +28,6 @@ namespace YetaWF_ComponentsHTML {
             this.Preview = $YetaWF.getElement1BySelector(".t_previewpane", [this.Control]);
             this.InputHTML = $YetaWF.getElement1BySelector(".t_html", [this.Control]) as HTMLInputElement;
 
-            // Update rendered html before form submit
-            $YetaWF.Forms.addPreSubmitHandler(true, {
-                form: $YetaWF.Forms.getForm(this.Control),
-                callback: (entry: YetaWF.SubmitHandlerEntry): void => {
-                    this.toHTML();
-                },
-                userdata: this
-            });
-
             $YetaWF.registerEventHandler(this.TextArea, "blur", null, (ev: Event): boolean => {
                 FormsSupport.validateElement(this.TextArea);
                 var event = document.createEvent("Event");
@@ -46,7 +37,7 @@ namespace YetaWF_ComponentsHTML {
             });
         }
 
-        private toHTML(): void {
+        public toHTML(): void {
             let converter = new showdown.Converter({ "headerLevelStart": 3, "simplifiedAutoLink": true, "excludeTrailingPunctuationFromURLs": true, "literalMidWordUnderscores": true});
             let html = converter.makeHtml(this.TextArea.value);
             this.Preview.innerHTML = html;
@@ -58,6 +49,15 @@ namespace YetaWF_ComponentsHTML {
             }
         }
     }
+
+    // Update rendered html before form submit
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Forms.EVENTPRESUBMIT, null, (ev: CustomEvent<YetaWF.DetailsPreSubmit>): boolean => {
+        let mds = YetaWF.ComponentBaseDataImpl.getControls<MarkdownEditComponent>(MarkdownEditComponent.SELECTOR, [ev.detail.form]);
+        for (let md of mds) {
+            md.toHTML();
+        }
+        return true;
+    });
 
     // inner tab control switched
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTACTIVATEDIV, null, (ev: CustomEvent<YetaWF.DetailsActivateDiv>): boolean => {

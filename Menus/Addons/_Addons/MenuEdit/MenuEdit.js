@@ -165,7 +165,7 @@ var YetaWF_Menus;
             this.AddToOriginList = $YetaWF.getElement1BySelector("input[name='ModEntry.AddToOriginList']", [this.Details]);
             this.NeedsModuleContext = $YetaWF.getElement1BySelector("input[name='ModEntry.NeedsModuleContext']", [this.Details]);
             this.DontFollow = $YetaWF.getElement1BySelector("input[name='ModEntry.DontFollow']", [this.Details]);
-            $YetaWF.registerCustomEventHandler(this.EntryType, "dropdownlist_change", null, function (ev) {
+            $YetaWF.registerCustomEventHandler(this.EntryType.Control, "dropdownlist_change", null, function (ev) {
                 if (_this.ActiveData) {
                     var data = _this.ActiveData;
                     data.EntryType = Number(_this.EntryType.value);

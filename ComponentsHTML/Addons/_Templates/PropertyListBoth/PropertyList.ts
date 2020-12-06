@@ -181,7 +181,7 @@ namespace YetaWF_ComponentsHTML {
                             if (!item.ChangeEvent)
                                 throw `No ChangeEvent for control type ${item.ControlType}`;
                             let control = $YetaWF.getObjectData(item.Template) as YetaWF.ComponentBaseDataImpl;
-                            $YetaWF.registerCustomEventHandler(control, item.ChangeEvent, null, (evt: Event): boolean => {
+                            $YetaWF.registerCustomEventHandler(control.Control, item.ChangeEvent, null, (evt: Event): boolean => {
                                 this.update();
                                 return true;
                             });
@@ -194,14 +194,14 @@ namespace YetaWF_ComponentsHTML {
             this.update();
             this.resize();
 
-            $YetaWF.registerCustomEventHandler(this, "propertylist_relayout", null, (ev: Event): boolean => {
+            $YetaWF.registerCustomEventHandler(this.Control, "propertylist_relayout", null, (ev: Event): boolean => {
                 this.layout();
                 return false;
             });
             /**
              * Collapse whichever box is expanded
              */
-            $YetaWF.registerCustomEventHandler(this, "propertylist_collapse", null, (ev: Event): boolean => {
+            $YetaWF.registerCustomEventHandler(this.Control, "propertylist_collapse", null, (ev: Event): boolean => {
                 this.setLayout();
                 let box = $YetaWF.getElement1BySelectorCond(".t_propexpanded", [this.Control]);
                 if (box) {

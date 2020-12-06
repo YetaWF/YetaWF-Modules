@@ -1,7 +1,5 @@
 ﻿/* Copyright © 2018 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
 
-var CKEDITOR: any;
-
 // Remove jQuery use
 
 namespace YetaWF_Messenger {

@@ -26,7 +26,7 @@ var YetaWF_ComponentsHTML;
             }) || this;
             _this.MenuControl = $YetaWF.getElementById(setup.MenuId);
             _this.ButtonControl = YetaWF_ComponentsHTML.DropDownButtonComponent.getControlFromSelector("button", YetaWF_ComponentsHTML.DropDownButtonComponent.SELECTOR, [_this.Control]);
-            $YetaWF.registerCustomEventHandler(_this.ButtonControl, YetaWF_ComponentsHTML.DropDownButtonComponent.CLICKEDEVENT, null, function (ev) {
+            $YetaWF.registerCustomEventHandler(_this.ButtonControl.Control, YetaWF_ComponentsHTML.DropDownButtonComponent.CLICKEDEVENT, null, function (ev) {
                 if (!YetaWF_ComponentsHTML.MenuULComponent.closeMenus())
                     _this.openMenu();
                 return false;

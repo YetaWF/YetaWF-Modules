@@ -30,14 +30,6 @@ var YetaWF_ComponentsHTML;
             _this.TextArea = $YetaWF.getElement1BySelector("textarea", [_this.Control]);
             _this.Preview = $YetaWF.getElement1BySelector(".t_previewpane", [_this.Control]);
             _this.InputHTML = $YetaWF.getElement1BySelector(".t_html", [_this.Control]);
-            // Update rendered html before form submit
-            $YetaWF.Forms.addPreSubmitHandler(true, {
-                form: $YetaWF.Forms.getForm(_this.Control),
-                callback: function (entry) {
-                    _this.toHTML();
-                },
-                userdata: _this
-            });
             $YetaWF.registerEventHandler(_this.TextArea, "blur", null, function (ev) {
                 FormsSupport.validateElement(_this.TextArea);
                 var event = document.createEvent("Event");
@@ -64,6 +56,15 @@ var YetaWF_ComponentsHTML;
         return MarkdownEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.MarkdownEditComponent = MarkdownEditComponent;
+    // Update rendered html before form submit
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Forms.EVENTPRESUBMIT, null, function (ev) {
+        var mds = YetaWF.ComponentBaseDataImpl.getControls(MarkdownEditComponent.SELECTOR, [ev.detail.form]);
+        for (var _i = 0, mds_1 = mds; _i < mds_1.length; _i++) {
+            var md = mds_1[_i];
+            md.toHTML();
+        }
+        return true;
+    });
     // inner tab control switched
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTACTIVATEDIV, null, function (ev) {
         for (var _i = 0, _a = ev.detail.tags; _i < _a.length; _i++) {

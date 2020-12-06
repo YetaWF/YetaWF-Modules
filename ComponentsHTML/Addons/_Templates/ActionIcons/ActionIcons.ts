@@ -25,7 +25,7 @@ namespace YetaWF_ComponentsHTML {
             this.MenuControl = $YetaWF.getElementById(setup.MenuId) as HTMLDivElement;
             this.ButtonControl = DropDownButtonComponent.getControlFromSelector("button", DropDownButtonComponent.SELECTOR, [this.Control]);
 
-            $YetaWF.registerCustomEventHandler(this.ButtonControl, DropDownButtonComponent.CLICKEDEVENT, null, (ev: CustomEvent):boolean => {
+            $YetaWF.registerCustomEventHandler(this.ButtonControl.Control, DropDownButtonComponent.CLICKEDEVENT, null, (ev: CustomEvent):boolean => {
                 if (!YetaWF_ComponentsHTML.MenuULComponent.closeMenus())
                     this.openMenu();
                 return false;

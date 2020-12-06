@@ -413,17 +413,15 @@ var YetaWF_ComponentsHTML;
                         return false;
                     });
                 }
-                // handle submit local data
-                $YetaWF.Forms.addPreSubmitHandler(true, {
-                    form: $YetaWF.Forms.getForm(_this.Control),
-                    callback: function (entry) {
-                        _this.submitLocalData(entry);
-                    },
-                    userdata: _this
-                });
             }
             return _this;
         }
+        // handle submit local data
+        Grid.prototype.handlePreSubmitLocalData = function (form) {
+            if (this.Setup.StaticData && this.Setup.NoSubmitContents) {
+                this.submitLocalData(form);
+            }
+        };
         Grid.prototype.sendEventDblClick = function () {
             $YetaWF.sendCustomEvent(this.Control, Grid.EVENTDBLCLICK);
         };
@@ -522,7 +520,7 @@ var YetaWF_ComponentsHTML;
                 throw "More than one column marked OnlySubmitWhenChecked";
             return colIndex;
         };
-        Grid.prototype.submitLocalData = function (entry) {
+        Grid.prototype.submitLocalData = function (form) {
             if (!this.Setup.StaticData)
                 return;
             var div = "<div class='" + $YetaWF.Forms.DATACLASS + "' style='display:none'>";
@@ -555,7 +553,7 @@ var YetaWF_ComponentsHTML;
             }
             div += "</div>";
             if (row > 0)
-                entry.form.insertAdjacentHTML("beforeend", div);
+                form.insertAdjacentHTML("beforeend", div);
         };
         // sorting
         Grid.prototype.clearSorts = function () {
@@ -1466,6 +1464,15 @@ var YetaWF_ComponentsHTML;
         return Grid;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.Grid = Grid;
+    // handle submit local data
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Forms.EVENTPRESUBMIT, null, function (ev) {
+        var grids = YetaWF.ComponentBaseDataImpl.getControls(Grid.SELECTOR, [ev.detail.form]);
+        for (var _i = 0, grids_1 = grids; _i < grids_1.length; _i++) {
+            var grid = grids_1[_i];
+            grid.handlePreSubmitLocalData(ev.detail.form);
+        }
+        return true;
+    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=Grid.js.map

@@ -1,6 +1,6 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-declare var CKEDITOR: any;
+/// <reference types="ckeditor" />
 
 namespace YetaWF_ComponentsHTML {
 
@@ -50,7 +50,7 @@ namespace YetaWF_ComponentsHTML {
             });
             this.Setup = setup;
 
-            let config: any = {
+            let config: CKEDITOR.config = {
                 customConfig: setup.CDNUrl,
                 height: `${setup.EmHeight}em`,
                 allowedContent: setup.RestrictedHtml ? false : true,
@@ -69,42 +69,18 @@ namespace YetaWF_ComponentsHTML {
                 (this.Control as HTMLTextAreaElement).value = ckEd.getData();
                 FormsSupport.validateElementFully(this.Control);
             });
-
-            // save data in the textarea field when the form is submitted
-            $YetaWF.Forms.addPreSubmitHandler(setup.InPartialView, {
-                form: $YetaWF.Forms.getForm($YetaWF.getElementById(controlId)),
-                callback: (entry: YetaWF.SubmitHandlerEntry): void => {
-                    let ckEd = entry.userdata;
-                    (this.Control as HTMLTextAreaElement).value = ckEd.getData();
-                },
-                userdata: ckEd,
-            });
         }
     }
 
-    // Override the built-in Save button to use our Form submit
-    // Need to wait for the ckeditor instance to finish initialization
-    // because CKEDITOR.instances.editor.commands is an empty object
-    // if you try to use it immediately after CKEDITOR.replace('editor');
-
-    if (typeof CKEDITOR !== "undefined") { // CKEDITOR is only defined when an editable textarea is used
-
-        CKEDITOR.on("instanceReady", (ev: any): void => {
-
-            // Replace the old save's exec function with the new one
-            if (ev.editor.commands.save) {
-                // Create a new command with the desired exec function
-                let overridecmd = new CKEDITOR.command(ev.editor, {
-                    exec: (editor: any): void => {
-                        let form = $YetaWF.elementClosest(editor.element.$, `form.${YConfigs.Forms.CssFormAjax}`) as HTMLFormElement;
-                        $YetaWF.Forms.submit(form, false);
-                    }
-                });
-
-                ev.editor.commands.save.exec = overridecmd.exec;
-            }
-        });
-    }
+    // save data in the textarea field when the form is submitted
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Forms.EVENTPRESUBMIT, null, (ev: CustomEvent<YetaWF.DetailsPreSubmit>): boolean => {
+        let ckeds = YetaWF.ComponentBaseDataImpl.getControls<TextAreaEditComponent>(TextAreaEditComponent.SELECTOR, [ev.detail.form]);
+        for (let cked of ckeds) {
+            let ck = CKEDITOR.instances[cked.Control.id];
+            (cked.Control as HTMLTextAreaElement).value = ck.getData();
+        }
+        return true;
+    });
 
     // when a tab page is switched, resize all the ckeditors in the newly visible panel (custom event)
     // when we're in a float div (property list or tabbed property list) the parent width isn't available until after the
@@ -112,12 +88,11 @@ namespace YetaWF_ComponentsHTML {
     // For other cases (outside float div) this does no harm and resizes to the current size.
 
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTACTIVATEDIV, null, (ev: CustomEvent<YetaWF.DetailsActivateDiv>): boolean => {
-        let ckeds = $YetaWF.getElementsBySelector(TextAreaEditComponent.SELECTOR, ev.detail.tags);
+        let ckeds = YetaWF.ComponentBaseDataImpl.getControls<TextAreaEditComponent>(TextAreaEditComponent.SELECTOR, ev.detail.tags);
         for (let cked of ckeds) {
-            let ctrl = TextAreaEditComponent.getControlFromTag<TextAreaEditComponent>(cked, TextAreaEditComponent.SELECTOR);
-            let ck = CKEDITOR.instances[cked.id];
+            let ck = CKEDITOR.instances[cked.Control.id];
             try {
-                ck.resize("100%", ctrl.Setup.EmHeight, true);
+                ck.resize("100%", cked.Setup.EmHeight, true);
             } catch (e) {}
         }
         return true;
