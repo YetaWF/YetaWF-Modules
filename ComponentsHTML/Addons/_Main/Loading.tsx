@@ -25,6 +25,8 @@ namespace YetaWF_ComponentsHTML {
         private On: boolean = false;
         private CursorX: number = 0;
         private CursorY: number = 0;
+        private Width : number = 0;
+        private Height : number = 0;
 
         constructor() {
 
@@ -54,17 +56,32 @@ namespace YetaWF_ComponentsHTML {
 
         private createLoading(): void {
             if (!this.LoadingDiv) {
-                this.LoadingDiv = <div id="yLoading" style="display:none"><img /></div> as HTMLDivElement;
+                this.LoadingDiv = <div id="yLoading"><img /></div> as HTMLDivElement;
                 ($YetaWF.getElement1BySelector("img", [this.LoadingDiv]) as HTMLImageElement).src = YConfigs.YetaWF_ComponentsHTML.LoaderGif;
                 document.body.appendChild(this.LoadingDiv);
+
+                let rect = this.LoadingDiv.getBoundingClientRect();
+                this.LoadingDiv.style.display = "none";
+
+                this.Width = rect.width;
+                this.Height = rect.height;
             }
         }
         private positionLoading(): void {
 
             if (!this.LoadingDiv) return;
 
-            let left = this.CursorX + LoadingClass.OFFSETLEFT + window.pageXOffset;
-            let top = this.CursorY + LoadingClass.OFFSETTOP + window.pageYOffset;
+            let htmlDiv = document.querySelector("html")!;
+
+            let x = this.CursorX + LoadingClass.OFFSETLEFT;
+            let y = this.CursorY + LoadingClass.OFFSETTOP;
+            if (x + this.Width > htmlDiv.clientWidth) x = htmlDiv.clientWidth - this.Width;
+            if (x < 0) x = 0;
+            if (y + this.Height > htmlDiv.clientHeight) y = htmlDiv.clientHeight - this.Height;
+            if (y < 0) y = 0;
+
+            let left = x + window.pageXOffset;
+            let top = y + window.pageYOffset;
 
             this.LoadingDiv.style.top = `${top}px`;
             this.LoadingDiv.style.left = `${left}px`;

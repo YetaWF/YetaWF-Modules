@@ -31,6 +31,7 @@ namespace YetaWF_DevTests {
                 return true;
             });
             $YetaWF.registerEventHandler(this.Module, "click", "input[name='pleaseWait']", (ev: MouseEvent): boolean => {
+                $YetaWF.setLoading();
                 $YetaWF.pleaseWait("Reload page to continue\n\nTEST <A> &amp; & @ {0} TEST", "TITLE <A> &amp; & @ {0} TEST");
                 return true;
             });

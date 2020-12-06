@@ -40,6 +40,7 @@ var YetaWF_DevTests;
                 return true;
             });
             $YetaWF.registerEventHandler(_this.Module, "click", "input[name='pleaseWait']", function (ev) {
+                $YetaWF.setLoading();
                 $YetaWF.pleaseWait("Reload page to continue\n\nTEST <A> &amp; & @ {0} TEST", "TITLE <A> &amp; & @ {0} TEST");
                 return true;
             });

@@ -10,6 +10,8 @@ var YetaWF_ComponentsHTML;
             this.On = false;
             this.CursorX = 0;
             this.CursorY = 0;
+            this.Width = 0;
+            this.Height = 0;
             $YetaWF.registerEventHandlerBody("mousemove", null, function (ev) {
                 _this.CursorX = ev.clientX;
                 _this.CursorY = ev.clientY;
@@ -34,17 +36,32 @@ var YetaWF_ComponentsHTML;
         };
         LoadingClass.prototype.createLoading = function () {
             if (!this.LoadingDiv) {
-                this.LoadingDiv = $YetaWF.createElement("div", { id: "yLoading", style: "display:none" },
+                this.LoadingDiv = $YetaWF.createElement("div", { id: "yLoading" },
                     $YetaWF.createElement("img", null));
                 $YetaWF.getElement1BySelector("img", [this.LoadingDiv]).src = YConfigs.YetaWF_ComponentsHTML.LoaderGif;
                 document.body.appendChild(this.LoadingDiv);
+                var rect = this.LoadingDiv.getBoundingClientRect();
+                this.LoadingDiv.style.display = "none";
+                this.Width = rect.width;
+                this.Height = rect.height;
             }
         };
         LoadingClass.prototype.positionLoading = function () {
             if (!this.LoadingDiv)
                 return;
-            var left = this.CursorX + LoadingClass.OFFSETLEFT + window.pageXOffset;
-            var top = this.CursorY + LoadingClass.OFFSETTOP + window.pageYOffset;
+            var htmlDiv = document.querySelector("html");
+            var x = this.CursorX + LoadingClass.OFFSETLEFT;
+            var y = this.CursorY + LoadingClass.OFFSETTOP;
+            if (x + this.Width > htmlDiv.clientWidth)
+                x = htmlDiv.clientWidth - this.Width;
+            if (x < 0)
+                x = 0;
+            if (y + this.Height > htmlDiv.clientHeight)
+                y = htmlDiv.clientHeight - this.Height;
+            if (y < 0)
+                y = 0;
+            var left = x + window.pageXOffset;
+            var top = y + window.pageYOffset;
             this.LoadingDiv.style.top = top + "px";
             this.LoadingDiv.style.left = left + "px";
         };
