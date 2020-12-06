@@ -7,6 +7,7 @@ var YetaWF_ComponentsHTML;
      */
     var Tooltips = /** @class */ (function () {
         function Tooltips() {
+            var _this = this;
             this.TOOLTIPCLASS = "yTooltip";
             this.TOOLTIPACTIVEELEMCLASS = "yTooltipActive";
             this.fadeInTime = 200;
@@ -14,9 +15,6 @@ var YetaWF_ComponentsHTML;
             this.activeTooltipElem = null;
             this.activeTooltip = null;
             this.CancelObject = { Canceled: false, Active: false };
-        }
-        Tooltips.prototype.init = function () {
-            var _this = this;
             var noTooltips = this.getNoTooltipSelectors(YVolatile.Basics.CssNoTooltips);
             var noTTImgSel = this.buildNoTT("img", noTooltips);
             var noTTASel = this.buildNoTT("a", noTooltips);
@@ -85,7 +83,7 @@ var YetaWF_ComponentsHTML;
                 }
                 return true;
             });
-        };
+        }
         Tooltips.prototype.getNoTooltipSelectors = function (noTooltips) {
             var sel = [];
             var classes = noTooltips.split(" ");
@@ -196,8 +194,5 @@ var YetaWF_ComponentsHTML;
     YetaWF_ComponentsHTML.Tooltips = Tooltips;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 var ToolTipsHTMLHelper = new YetaWF_ComponentsHTML.Tooltips();
-$YetaWF.registerDocumentReady(function () {
-    ToolTipsHTMLHelper.init();
-});
 
 //# sourceMappingURL=Tooltips.js.map

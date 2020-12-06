@@ -7,15 +7,6 @@ var YetaWF_Blog;
     var SkinDisqusLinksModule = /** @class */ (function () {
         function SkinDisqusLinksModule() {
         }
-        /**
-         * Initializes the module instance.
-         */
-        SkinDisqusLinksModule.prototype.init = function () {
-            $YetaWF.addWhenReady(function (tag) {
-                if (SkinDisqusLinksModule.on && DISQUSWIDGETS)
-                    DISQUSWIDGETS.getCount({ reset: true });
-            });
-        };
         SkinDisqusLinksModule.MODULEGUID = "776adfcd-da5f-4926-b29d-4c06353266c0";
         SkinDisqusLinksModule.on = true;
         return SkinDisqusLinksModule;
@@ -28,8 +19,11 @@ var YetaWF_Blog;
         }
         return true;
     });
-    var disqusLinks = new SkinDisqusLinksModule();
-    disqusLinks.init();
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
+        if (SkinDisqusLinksModule.on && DISQUSWIDGETS)
+            DISQUSWIDGETS.getCount({ reset: true });
+        return true;
+    });
 })(YetaWF_Blog || (YetaWF_Blog = {}));
 
 //# sourceMappingURL=DisqusLinks.js.map

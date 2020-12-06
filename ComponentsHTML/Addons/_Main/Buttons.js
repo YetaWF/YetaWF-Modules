@@ -6,7 +6,7 @@ var YetaWF_ComponentsHTML;
     var Buttons = /** @class */ (function () {
         function Buttons() {
         }
-        Buttons.init = function (tag) {
+        Buttons.initButtons = function (tag) {
             if (YVolatile.Skin.Bootstrap && YVolatile.Skin.BootstrapButtons) {
                 // bootstrap
                 var buttons = $YetaWF.getElementsBySelector("input[type=submit],input[type=button],input[type=reset],input[type=file],a[" + YConfigs.Basics.CssAttrActionButton + "]", [tag]);
@@ -49,7 +49,13 @@ var YetaWF_ComponentsHTML;
         return Buttons;
     }());
     YetaWF_ComponentsHTML.Buttons = Buttons;
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
+        for (var _i = 0, _a = ev.detail.containers; _i < _a.length; _i++) {
+            var container = _a[_i];
+            YetaWF_ComponentsHTML.Buttons.initButtons(container);
+        }
+        return true;
+    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-$YetaWF.addWhenReady(YetaWF_ComponentsHTML.Buttons.init);
 
 //# sourceMappingURL=Buttons.js.map

@@ -364,7 +364,7 @@ namespace YetaWF_ComponentsHTML {
         return true;
     });
 
-    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: Event): boolean => {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: CustomEvent<YetaWF.DetailsEventNavPageLoaded>): boolean => {
         PopupsImpl.reposition();
         return true;
     });

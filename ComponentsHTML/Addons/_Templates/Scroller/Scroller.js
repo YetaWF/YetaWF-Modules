@@ -33,6 +33,7 @@ var YetaWF_ComponentsHTML;
             _this.Panels = $YetaWF.getElementsBySelector(".t_item", [_this.Control]).length;
             _this.DivItems = $YetaWF.getElement1BySelector(".t_items", [_this.Control]);
             _this.DivItems.style.left = "0px";
+            _this.updateButtons();
             $YetaWF.registerEventHandler(_this.ElemLeft, "click", null, function (ev) {
                 _this.scroll(-1);
                 return false;
@@ -83,13 +84,21 @@ var YetaWF_ComponentsHTML;
         return ScrollerComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.ScrollerComponent = ScrollerComponent;
-    $YetaWF.addWhenReady(function (tag) {
-        var scrollers = $YetaWF.getElementsBySelector(ScrollerComponent.SELECTOR);
-        for (var _i = 0, scrollers_1 = scrollers; _i < scrollers_1.length; _i++) {
-            var scroller = scrollers_1[_i];
-            var scr = ScrollerComponent.getControlFromTag(scroller, ScrollerComponent.SELECTOR);
-            scr.updateButtons();
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, function (ev) {
+        var scrolls = YetaWF.ComponentBaseDataImpl.getControls(ScrollerComponent.SELECTOR, [ev.detail.container]);
+        for (var _i = 0, scrolls_1 = scrolls; _i < scrolls_1.length; _i++) {
+            var scroll_1 = scrolls_1[_i];
+            scroll_1.updateButtons();
         }
+        return true;
+    });
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, function (ev) {
+        var scrolls = YetaWF.ComponentBaseDataImpl.getControls(ScrollerComponent.SELECTOR, [ev.detail.container]);
+        for (var _i = 0, scrolls_2 = scrolls; _i < scrolls_2.length; _i++) {
+            var scroll_2 = scrolls_2[_i];
+            scroll_2.updateButtons();
+        }
+        return true;
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 

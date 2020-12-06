@@ -143,7 +143,7 @@ namespace YetaWF_ComponentsHTML {
     });
 
     // last chance - handle a new page (UPS) and close open menus
-    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: Event): boolean => {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: CustomEvent<YetaWF.DetailsEventNavPageLoaded>): boolean => {
         MenuULComponent.closeMenus();
         return true;
     });

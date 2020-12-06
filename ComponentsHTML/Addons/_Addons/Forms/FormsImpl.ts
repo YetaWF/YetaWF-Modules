@@ -182,26 +182,22 @@ namespace YetaWF_ComponentsHTML {
                 ++index;
             }
         }
-
-        // Forms initialization
-
-        /**
-         * Initialize the form when page/content is ready.
-         * No external use.
-         */
-        public initForm(tag: HTMLElement): void {
-            let forms = $YetaWF.getElementsBySelector("form", [tag]) as HTMLFormElement[];
-            for (let form of forms) {
-                if ($YetaWF.elementHasClass(form, "yValidateImmediately")) {
-                    YetaWF_ComponentsHTML_Validation.validateForm(form, true);
-                }
-            }
-        }
     }
+
+    /* Page load */
+
+    /**
+     * Initialize the form when page/content is ready.
+     * No external use.
+     */
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: CustomEvent<YetaWF.DetailsEventNavPageLoaded>): boolean => {
+        let forms = $YetaWF.getElementsBySelector("form",  ev.detail.containers) as HTMLFormElement[];
+        for (let form of forms) {
+            if ($YetaWF.elementHasClass(form, "yValidateImmediately"))
+                YetaWF_ComponentsHTML_Validation.validateForm(form, true);
+        }
+        return true;
+    });
 }
 
 var YetaWF_FormsImpl: YetaWF.IFormsImpl = new YetaWF_ComponentsHTML.FormsImpl();
-
-/* Page load */
-$YetaWF.addWhenReady((YetaWF_FormsImpl as YetaWF_ComponentsHTML.FormsImpl).initForm);
-

@@ -17,7 +17,7 @@ namespace YetaWF_ComponentsHTML {
 
         private CancelObject: CancelableFadeInOut = { Canceled: false, Active: false };
 
-        public init(): void {
+        public constructor() {
 
             const noTooltips = this.getNoTooltipSelectors(YVolatile.Basics.CssNoTooltips);
             const noTTImgSel = this.buildNoTT("img", noTooltips);
@@ -208,7 +208,3 @@ namespace YetaWF_ComponentsHTML {
 }
 
 var ToolTipsHTMLHelper = new YetaWF_ComponentsHTML.Tooltips();
-
-$YetaWF.registerDocumentReady((): void => {
-    ToolTipsHTMLHelper.init();
-});

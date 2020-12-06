@@ -31,7 +31,13 @@ var YetaWF_ComponentsHTML;
     }());
     YetaWF_ComponentsHTML.ClipboardSupport = ClipboardSupport;
     /* handle copy icon */
-    $YetaWF.addWhenReady(ClipboardSupport.initAll);
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
+        for (var _i = 0, _a = ev.detail.containers; _i < _a.length; _i++) {
+            var container = _a[_i];
+            ClipboardSupport.initAll(container);
+        }
+        return true;
+    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=Clipboard.js.map

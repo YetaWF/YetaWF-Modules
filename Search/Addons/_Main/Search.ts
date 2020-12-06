@@ -143,7 +143,7 @@ namespace YetaWF_Search {
         }
     }
 
-    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: Event): boolean => {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: CustomEvent<YetaWF.DetailsEventNavPageLoaded>): boolean => {
         Search.setButtons();
         Search.highlightSearch();
         return true;

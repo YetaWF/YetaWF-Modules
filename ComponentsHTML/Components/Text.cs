@@ -413,13 +413,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 hb.Append(ImageHTML.BuildKnownIcon("#TextCopy", sprites: Info.PredefSpriteIcons, title: __ResStr("ttCopy", "Copy to Clipboard"), cssClass: "yt_text_copy"));
             }
 
-            //if (!string.IsNullOrWhiteSpace(mask)) {
-            //    // if there is a Mask we need to use the KendoMaskedTextBox
-            //    await KendoUICore.AddFileAsync("kendo.maskedtextbox.min.js");
-            //    ScriptBuilder sb = new ScriptBuilder();
-            //    sb.Append("$('#{0}').kendoMaskedTextBox({{ mask: '{1}' }});\n", id, Utility.JserEncode(mask));
-            //    Manager.ScriptManager.AddLastDocumentReady(sb);
-            //}
             if (placeHolder != null)
                 Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.TextEditComponent('{component.ControlId}');");
 

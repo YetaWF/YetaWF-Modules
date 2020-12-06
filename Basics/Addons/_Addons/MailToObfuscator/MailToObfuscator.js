@@ -10,27 +10,31 @@ var YetaWF_Basics;
     }());
     YetaWF_Basics.MailtoObfuscatorSkinModule = MailtoObfuscatorSkinModule;
     // http://stackoverflow.com/questions/483212/effective-method-to-hide-email-from-spam-bots
-    $YetaWF.addWhenReady(function (tag) {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
         if (MailtoObfuscatorSkinModule.on) {
-            // find all <a> YGenMailTo tags and format an email address
-            var elems = $YetaWF.getElementsBySelector("a.YGenMailTo", [tag]);
-            for (var _i = 0, elems_1 = elems; _i < elems_1.length; _i++) {
-                var elem = elems_1[_i];
-                var addr = $YetaWF.getAttribute(elem, "data-name") + "@" + $YetaWF.getAttribute(elem, "data-domain");
-                var s = "mailto:" + addr;
-                var subj = $YetaWF.getAttributeCond(elem, "data-subject");
-                if (subj) {
-                    subj = subj.replace(" ", "+");
-                    s += "?subject=" + encodeURI(subj);
+            for (var _i = 0, _a = ev.detail.containers; _i < _a.length; _i++) {
+                var tag = _a[_i];
+                // find all <a> YGenMailTo tags and format an email address
+                var elems = $YetaWF.getElementsBySelector("a.YGenMailTo", [tag]);
+                for (var _b = 0, elems_1 = elems; _b < elems_1.length; _b++) {
+                    var elem = elems_1[_b];
+                    var addr = $YetaWF.getAttribute(elem, "data-name") + "@" + $YetaWF.getAttribute(elem, "data-domain");
+                    var s = "mailto:" + addr;
+                    var subj = $YetaWF.getAttributeCond(elem, "data-subject");
+                    if (subj) {
+                        subj = subj.replace(" ", "+");
+                        s += "?subject=" + encodeURI(subj);
+                    }
+                    var text = $YetaWF.getAttributeCond(elem, "data-text");
+                    if (!text)
+                        elem.innerText = addr;
+                    else
+                        elem.innerText = text;
+                    elem.href = s;
                 }
-                var text = $YetaWF.getAttributeCond(elem, "data-text");
-                if (!text)
-                    elem.innerText = addr;
-                else
-                    elem.innerText = text;
-                elem.href = s;
             }
         }
+        return true;
     });
     // Handles events turning the addon on/off (used for dynamic content)
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, function (ev) {

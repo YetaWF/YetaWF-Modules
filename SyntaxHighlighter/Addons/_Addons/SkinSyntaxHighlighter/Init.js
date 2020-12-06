@@ -59,9 +59,10 @@ var YetaWF_SyntaxHighlighter;
         AlexGorbatchevComHighlighterModule.on = true;
         return AlexGorbatchevComHighlighterModule;
     }());
-    $YetaWF.addWhenReady(function (tag) {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
         if (AlexGorbatchevComHighlighterModule.on)
             SyntaxHighlighter.highlight();
+        return true;
     });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, function (ev) {
         var addonGuid = ev.detail.addonGuid;

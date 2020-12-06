@@ -23,7 +23,8 @@ namespace YetaWF_ComponentsHTML {
             }
 
             // hide all module menus
-            MenuULComponent.closeMenus();
+            if (MenuULComponent)
+                MenuULComponent.closeMenus();
             // hide all edit icons
             let editIcons = $YetaWF.getElementsBySelector(".yModuleMenuEditIcon");
             if (editIcons.length) {
@@ -97,9 +98,9 @@ namespace YetaWF_ComponentsHTML {
         }
     }
 
-    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: Event): boolean => {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: CustomEvent<YetaWF.DetailsEventNavPageLoaded>): boolean => {
         if (YVolatile.Basics.EditModeActive) {
-            let modDivs = YetaWF.ModuleBase.getModuleDivs(".yModule");
+            let modDivs = YetaWF.ModuleBase.getModuleDivs(".yModule", ev.detail.containers);
             for (let modDiv of modDivs) {
                 MenuHandler.registerModule(modDiv);
             }

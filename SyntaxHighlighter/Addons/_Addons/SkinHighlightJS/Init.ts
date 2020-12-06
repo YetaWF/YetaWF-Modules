@@ -22,6 +22,12 @@ namespace YetaWF_SyntaxHighlighter {
         }
     }
 
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: CustomEvent<YetaWF.DetailsEventNavPageLoaded>): boolean => {
+        for (let container of ev.detail.containers)
+            HighlightJSModule.highlight(container);
+        return true;
+    });
+
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, (ev: CustomEvent<YetaWF.DetailsAddonChanged>): boolean => {
         let addonGuid = ev.detail.addonGuid;
         let on = ev.detail.on;
@@ -29,9 +35,6 @@ namespace YetaWF_SyntaxHighlighter {
             HighlightJSModule.on = on;
         }
         return true;
-    });
-    $YetaWF.addWhenReady((tag: HTMLElement): void => {
-        HighlightJSModule.highlight(tag);
     });
 }
 

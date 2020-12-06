@@ -9,27 +9,30 @@ namespace YetaWF_Basics {
     }
 
     // http://stackoverflow.com/questions/483212/effective-method-to-hide-email-from-spam-bots
-    $YetaWF.addWhenReady((tag: HTMLElement): void => {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: CustomEvent<YetaWF.DetailsEventNavPageLoaded>): boolean => {
         if (MailtoObfuscatorSkinModule.on) {
+            for (let tag of ev.detail.containers) {
             // find all <a> YGenMailTo tags and format an email address
-            var elems = $YetaWF.getElementsBySelector("a.YGenMailTo", [tag]) as HTMLAnchorElement[];
-            for (var elem of elems) {
-                var addr = $YetaWF.getAttribute(elem, "data-name") + "@" + $YetaWF.getAttribute(elem, "data-domain");
-                var s = "mailto:" + addr;
+                let elems = $YetaWF.getElementsBySelector("a.YGenMailTo", [tag]) as HTMLAnchorElement[];
+                for (let elem of elems) {
+                    let addr = $YetaWF.getAttribute(elem, "data-name") + "@" + $YetaWF.getAttribute(elem, "data-domain");
+                    let s = "mailto:" + addr;
 
-                var subj = $YetaWF.getAttributeCond(elem, "data-subject");
-                if (subj) {
-                    subj = subj.replace(" ", "+");
-                    s += "?subject=" + encodeURI(subj);
+                    let subj = $YetaWF.getAttributeCond(elem, "data-subject");
+                    if (subj) {
+                        subj = subj.replace(" ", "+");
+                        s += "?subject=" + encodeURI(subj);
+                    }
+                    let text = $YetaWF.getAttributeCond(elem, "data-text");
+                    if (!text)
+                        elem.innerText = addr;
+                    else
+                        elem.innerText = text;
+                    elem.href = s;
                 }
-                var text = $YetaWF.getAttributeCond(elem, "data-text");
-                if (!text)
-                    elem.innerText = addr;
-                else
-                    elem.innerText = text;
-                elem.href = s;
             }
         }
+        return true;
     });
 
     // Handles events turning the addon on/off (used for dynamic content)

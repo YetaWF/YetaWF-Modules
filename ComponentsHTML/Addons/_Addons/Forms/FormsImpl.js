@@ -181,26 +181,24 @@ var YetaWF_ComponentsHTML;
                 ++index;
             }
         };
-        // Forms initialization
-        /**
-         * Initialize the form when page/content is ready.
-         * No external use.
-         */
-        FormsImpl.prototype.initForm = function (tag) {
-            var forms = $YetaWF.getElementsBySelector("form", [tag]);
-            for (var _i = 0, forms_1 = forms; _i < forms_1.length; _i++) {
-                var form = forms_1[_i];
-                if ($YetaWF.elementHasClass(form, "yValidateImmediately")) {
-                    YetaWF_ComponentsHTML_Validation.validateForm(form, true);
-                }
-            }
-        };
         return FormsImpl;
     }());
     YetaWF_ComponentsHTML.FormsImpl = FormsImpl;
+    /* Page load */
+    /**
+     * Initialize the form when page/content is ready.
+     * No external use.
+     */
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
+        var forms = $YetaWF.getElementsBySelector("form", ev.detail.containers);
+        for (var _i = 0, forms_1 = forms; _i < forms_1.length; _i++) {
+            var form = forms_1[_i];
+            if ($YetaWF.elementHasClass(form, "yValidateImmediately"))
+                YetaWF_ComponentsHTML_Validation.validateForm(form, true);
+        }
+        return true;
+    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 var YetaWF_FormsImpl = new YetaWF_ComponentsHTML.FormsImpl();
-/* Page load */
-$YetaWF.addWhenReady(YetaWF_FormsImpl.initForm);
 
 //# sourceMappingURL=FormsImpl.js.map

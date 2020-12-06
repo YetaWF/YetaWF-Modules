@@ -6,7 +6,7 @@ namespace YetaWF_ComponentsHTML {
 
     export class Buttons {
 
-        public static init(tag: HTMLElement): void {
+        public static initButtons(tag: HTMLElement): void {
             if (YVolatile.Skin.Bootstrap && YVolatile.Skin.BootstrapButtons) {
                 // bootstrap
                 let buttons = $YetaWF.getElementsBySelector(`input[type=submit],input[type=button],input[type=reset],input[type=file],a[${YConfigs.Basics.CssAttrActionButton}]`, [tag]);
@@ -41,7 +41,11 @@ namespace YetaWF_ComponentsHTML {
             }
         }
     }
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: CustomEvent<YetaWF.DetailsEventNavPageLoaded>): boolean => {
+        for (let container of ev.detail.containers)
+            YetaWF_ComponentsHTML.Buttons.initButtons(container);
+        return true;
+    });
 }
 
-$YetaWF.addWhenReady(YetaWF_ComponentsHTML.Buttons.init);
 

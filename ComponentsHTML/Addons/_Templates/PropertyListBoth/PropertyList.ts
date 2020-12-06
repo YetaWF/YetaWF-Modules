@@ -596,8 +596,8 @@ namespace YetaWF_ComponentsHTML {
         }
         return true;
     });
-    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: Event): boolean => {
-        let proplists = $YetaWF.getElementsBySelector(PropertyListComponent.SELECTOR);
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: CustomEvent<YetaWF.DetailsEventNavPageLoaded>): boolean => {
+        let proplists = $YetaWF.getElementsBySelector(PropertyListComponent.SELECTOR, ev.detail.containers);
         for (let proplist of proplists) {
             let list = YetaWF.ComponentBaseDataImpl.getControlFromTag<PropertyListComponent>(proplist, PropertyListComponent.SELECTOR);
             list.resize();

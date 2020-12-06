@@ -12,57 +12,39 @@ namespace YetaWF_Basics {
         static dismissed: boolean = false;
         static on: boolean = true;
 
-        /**
-         * Initializes the module instance.
-         */
-        init(): void {
-            document.addEventListener("click", this.handleClick);
+        constructor() {
+            $YetaWF.registerEventHandlerBody("click", ".YetaWF_Basics_AlertDisplay .t_close img", (ev: MouseEvent): boolean =>{
+                AlertDisplayModule.dismissed = true;
 
-            $YetaWF.addWhenReady((section: HTMLElement): void => {
-                alert.initSection(section);
+                let alert = $YetaWF.getElement1BySelector(".YetaWF_Basics_AlertDisplay");
+                let close = $YetaWF.getElement1BySelector(".t_close", [alert]);
+                let ajaxurl = $YetaWF.getAttribute(close, "data-ajaxurl");
+
+                alert.style.display = "none";
+
+                // Save alert status server side
+                let request: XMLHttpRequest = new XMLHttpRequest();
+                request.open("POST", ajaxurl, true);
+                request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                request.send("");
+                // we don't care about the result of this request
+                return false;
             });
         }
 
-        /**
-         * Initializes all alert elements in the specified tag.
-         * @param tag - an element containing Alert elements.
-         */
-        initSection(tag: HTMLElement): void {
-            var alert: HTMLElement = document.querySelector(".YetaWF_Basics_AlertDisplay") as HTMLElement;
-            if (!alert) throw ".YetaWF_Basics_AlertDisplay not found";/*DEBUG*/
+        public initAlert(): void {
+            let alert = $YetaWF.getElement1BySelector(".YetaWF_Basics_AlertDisplay");
             if (!AlertDisplayModule.dismissed && AlertDisplayModule.on)
                 alert.style.display = "";
             else
                 alert.style.display = "none";
         }
-        /**
-         * Handles the click on the image to close the Alert.
-         * @param event
-         */
-        private handleClick(event: MouseEvent): void {
-            if (!$YetaWF.elementMatches(event.target as HTMLElement, ".YetaWF_Basics_AlertDisplay .t_close img")) return;
-
-            AlertDisplayModule.dismissed = true;
-
-            var alert: HTMLElement = document.querySelector(".YetaWF_Basics_AlertDisplay") as HTMLElement;
-            if (!alert) throw ".YetaWF_Basics_AlertDisplay not found";/*DEBUG*/
-
-            var close: Element | null = alert.querySelector(".t_close");
-            if (!close) throw "No .t_close element found";/*DEBUG*/
-            var ajaxurl: string | null = close.getAttribute("data-ajaxurl");
-            if (!ajaxurl) throw "No ajax url specified";/*DEBUG*/
-
-            alert.style.display = "none";
-
-            // Save alert status server side
-            var request: XMLHttpRequest = new XMLHttpRequest();
-            request.open("POST", ajaxurl, true);
-            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-            request.send("");
-            // we don't care about the result of this request
-        }
     }
 
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: CustomEvent<YetaWF.DetailsEventNavPageLoaded>): boolean => {
+        AlertDisplay.initAlert();
+        return true;
+    });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, (ev: CustomEvent<YetaWF.DetailsAddonChanged>): boolean => {
         let addonGuid = ev.detail.addonGuid;
         let on = ev.detail.on;
@@ -72,6 +54,5 @@ namespace YetaWF_Basics {
         return true;
     });
 
-    var alert: AlertDisplayModule = new AlertDisplayModule();
-    alert.init();
+    let AlertDisplay: AlertDisplayModule = new AlertDisplayModule();
 }

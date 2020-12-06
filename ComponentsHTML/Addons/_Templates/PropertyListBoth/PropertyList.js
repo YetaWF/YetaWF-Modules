@@ -523,7 +523,7 @@ var YetaWF_ComponentsHTML;
         return true;
     });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
-        var proplists = $YetaWF.getElementsBySelector(PropertyListComponent.SELECTOR);
+        var proplists = $YetaWF.getElementsBySelector(PropertyListComponent.SELECTOR, ev.detail.containers);
         for (var _i = 0, proplists_3 = proplists; _i < proplists_3.length; _i++) {
             var proplist = proplists_3[_i];
             var list = YetaWF.ComponentBaseDataImpl.getControlFromTag(proplist, PropertyListComponent.SELECTOR);

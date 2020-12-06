@@ -21,6 +21,13 @@ var YetaWF_SyntaxHighlighter;
         HighlightJSModule.on = true;
         return HighlightJSModule;
     }());
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
+        for (var _i = 0, _a = ev.detail.containers; _i < _a.length; _i++) {
+            var container = _a[_i];
+            HighlightJSModule.highlight(container);
+        }
+        return true;
+    });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, function (ev) {
         var addonGuid = ev.detail.addonGuid;
         var on = ev.detail.on;
@@ -28,9 +35,6 @@ var YetaWF_SyntaxHighlighter;
             HighlightJSModule.on = on;
         }
         return true;
-    });
-    $YetaWF.addWhenReady(function (tag) {
-        HighlightJSModule.highlight(tag);
     });
 })(YetaWF_SyntaxHighlighter || (YetaWF_SyntaxHighlighter = {}));
 

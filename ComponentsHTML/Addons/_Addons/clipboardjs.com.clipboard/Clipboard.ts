@@ -37,5 +37,9 @@ namespace YetaWF_ComponentsHTML {
     }
 
     /* handle copy icon */
-    $YetaWF.addWhenReady(ClipboardSupport.initAll);
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: CustomEvent<YetaWF.DetailsEventNavPageLoaded>): boolean => {
+        for (let container of ev.detail.containers)
+            ClipboardSupport.initAll(container);
+        return true;
+    });
 }

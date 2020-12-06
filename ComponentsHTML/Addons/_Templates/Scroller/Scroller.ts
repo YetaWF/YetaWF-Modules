@@ -32,6 +32,8 @@ namespace YetaWF_ComponentsHTML {
 
             this.DivItems.style.left = "0px";
 
+            this.updateButtons();
+
             $YetaWF.registerEventHandler(this.ElemLeft, "click", null, (ev: MouseEvent): boolean => {
                 this.scroll(-1);
                 return false;
@@ -86,12 +88,18 @@ namespace YetaWF_ComponentsHTML {
             //}, 250, function () { });
         }
     }
-
-    $YetaWF.addWhenReady((tag: HTMLElement): void => {
-        var scrollers = $YetaWF.getElementsBySelector(ScrollerComponent.SELECTOR);
-        for (let scroller of scrollers) {
-            var scr = ScrollerComponent.getControlFromTag<ScrollerComponent>(scroller, ScrollerComponent.SELECTOR);
-            scr.updateButtons();
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: CustomEvent<YetaWF.DetailsEventContainerResize>): boolean => {
+        let scrolls = YetaWF.ComponentBaseDataImpl.getControls<ScrollerComponent>(ScrollerComponent.SELECTOR, [ev.detail.container]);
+        for (let scroll of scrolls) {
+            scroll.updateButtons();
         }
+        return true;
+    });
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, (ev: CustomEvent<YetaWF.DetailsEventContainerScroll>): boolean => {
+        let scrolls = YetaWF.ComponentBaseDataImpl.getControls<ScrollerComponent>(ScrollerComponent.SELECTOR, [ev.detail.container]);
+        for (let scroll of scrolls) {
+            scroll.updateButtons();
+        }
+        return true;
     });
 }

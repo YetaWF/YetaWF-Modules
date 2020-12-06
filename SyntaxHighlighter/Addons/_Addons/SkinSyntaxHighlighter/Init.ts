@@ -84,10 +84,12 @@ namespace YetaWF_SyntaxHighlighter {
         }
     }
 
-    $YetaWF.addWhenReady((tag: HTMLElement): void => {
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: CustomEvent<YetaWF.DetailsEventNavPageLoaded>): boolean => {
         if (AlexGorbatchevComHighlighterModule.on)
             SyntaxHighlighter.highlight();
+        return true;
     });
+
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTADDONCHANGED, null, (ev: CustomEvent<YetaWF.DetailsAddonChanged>): boolean => {
         let addonGuid = ev.detail.addonGuid;
         let on = ev.detail.on;

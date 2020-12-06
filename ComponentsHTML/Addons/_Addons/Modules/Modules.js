@@ -18,7 +18,8 @@ var YetaWF_ComponentsHTML;
                 }
             }
             // hide all module menus
-            YetaWF_ComponentsHTML.MenuULComponent.closeMenus();
+            if (YetaWF_ComponentsHTML.MenuULComponent)
+                YetaWF_ComponentsHTML.MenuULComponent.closeMenus();
             // hide all edit icons
             var editIcons = $YetaWF.getElementsBySelector(".yModuleMenuEditIcon");
             if (editIcons.length) {
@@ -84,7 +85,7 @@ var YetaWF_ComponentsHTML;
     YetaWF_ComponentsHTML.MenuHandler = MenuHandler;
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
         if (YVolatile.Basics.EditModeActive) {
-            var modDivs = YetaWF.ModuleBase.getModuleDivs(".yModule");
+            var modDivs = YetaWF.ModuleBase.getModuleDivs(".yModule", ev.detail.containers);
             for (var _i = 0, modDivs_1 = modDivs; _i < modDivs_1.length; _i++) {
                 var modDiv = modDivs_1[_i];
                 MenuHandler.registerModule(modDiv);
