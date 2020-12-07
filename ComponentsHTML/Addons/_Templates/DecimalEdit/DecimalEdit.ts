@@ -7,7 +7,7 @@ namespace YetaWF_ComponentsHTML {
     interface DecimalEditSetup {
         Min: number;
         Max: number;
-        NoEntryText: string;
+        PlaceHolder: string|null;
     }
 
     export class DecimalEditComponent extends YetaWF.ComponentBaseDataImpl {
@@ -39,6 +39,7 @@ namespace YetaWF_ComponentsHTML {
                 culture: YVolatile.Basics.Language,
                 downArrowText: "",
                 upArrowText: "",
+                placeholder: setup.PlaceHolder??undefined,
                 change: (e: kendo.ui.NumericTextBoxChangeEvent): void => {
                     $(this.Control).trigger("change");
                     var event = document.createEvent("Event");

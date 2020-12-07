@@ -3,3 +3,11 @@
 .yt_currency.t_edit input {
   text-align: right;
   padding-right: 0.5ch; }
+  .yt_currency.t_edit input::-webkit-input-placeholder {
+    opacity: 0.6; }
+  .yt_currency.t_edit input:-ms-input-placeholder {
+    opacity: 0.6; }
+  .yt_currency.t_edit input::-ms-input-placeholder {
+    opacity: 0.6; }
+  .yt_currency.t_edit input::placeholder {
+    opacity: 0.6; }

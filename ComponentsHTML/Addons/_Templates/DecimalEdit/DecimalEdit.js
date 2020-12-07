@@ -19,6 +19,7 @@ var YetaWF_ComponentsHTML;
     var DecimalEditComponent = /** @class */ (function (_super) {
         __extends(DecimalEditComponent, _super);
         function DecimalEditComponent(controlId, setup) {
+            var _a;
             var _this = _super.call(this, controlId, DecimalEditComponent.TEMPLATE, DecimalEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: "decimal_change",
@@ -39,6 +40,7 @@ var YetaWF_ComponentsHTML;
                 culture: YVolatile.Basics.Language,
                 downArrowText: "",
                 upArrowText: "",
+                placeholder: (_a = setup.PlaceHolder) !== null && _a !== void 0 ? _a : undefined,
                 change: function (e) {
                     $(_this.Control).trigger("change");
                     var event = document.createEvent("Event");

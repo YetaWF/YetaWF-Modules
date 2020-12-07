@@ -19,6 +19,7 @@ var YetaWF_ComponentsHTML;
     var IntValueEditComponent = /** @class */ (function (_super) {
         __extends(IntValueEditComponent, _super);
         function IntValueEditComponent(controlId, setup) {
+            var _a;
             var _this = _super.call(this, controlId, IntValueEditComponent.TEMPLATE, IntValueEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: IntValueEditComponent.EVENT,
@@ -43,7 +44,7 @@ var YetaWF_ComponentsHTML;
                 decimals: 0, format: "#",
                 restrictDecimals: true,
                 min: setup.Min, max: setup.Max,
-                placeholder: setup.NoEntryText,
+                placeholder: (_a = setup.PlaceHolder) !== null && _a !== void 0 ? _a : undefined,
                 step: setup.Step,
                 downArrowText: "",
                 upArrowText: "",

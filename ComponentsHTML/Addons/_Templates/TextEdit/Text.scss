@@ -18,6 +18,9 @@ input[type="text"].t_edit {
         max-width:100%;
         width: 62ch;
     }
+    &::placeholder {
+        opacity:0.6;
+    }
 }
 
 .yt_text_copy {

@@ -5,3 +5,11 @@ textarea.k-textbox.yt_textareasourceonly.t_edit {
   padding-right: .5ch;
   width: 100%;
   resize: none; }
+  textarea.k-textbox.yt_textareasourceonly.t_edit::-webkit-input-placeholder {
+    opacity: 0.6; }
+  textarea.k-textbox.yt_textareasourceonly.t_edit:-ms-input-placeholder {
+    opacity: 0.6; }
+  textarea.k-textbox.yt_textareasourceonly.t_edit::-ms-input-placeholder {
+    opacity: 0.6; }
+  textarea.k-textbox.yt_textareasourceonly.t_edit::placeholder {
+    opacity: 0.6; }

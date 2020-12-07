@@ -53,7 +53,7 @@ var YetaWF_ComponentsHTML;
             this.PropertyListVisibleHandlers.push({ callback: callback });
         };
         /**
-         * Called to call all registered callbacks when a propertylist become visible.
+         * Called to call all registered callbacks when a propertylist becomes visible.
          */
         ComponentsHTML.prototype.processPropertyListVisible = function (tag) {
             for (var _i = 0, _a = this.PropertyListVisibleHandlers; _i < _a.length; _i++) {

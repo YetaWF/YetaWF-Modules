@@ -8,7 +8,7 @@ namespace YetaWF_ComponentsHTML {
         Min: number;
         Max: number;
         Step: number;
-        NoEntryText: string;
+        PlaceHolder: string|null;
     }
 
     export class IntValueEditComponent extends YetaWF.ComponentBaseDataImpl {
@@ -49,7 +49,7 @@ namespace YetaWF_ComponentsHTML {
                 decimals: 0, format: "#",
                 restrictDecimals: true,
                 min: setup.Min, max: setup.Max,
-                placeholder: setup.NoEntryText,
+                placeholder: setup.PlaceHolder??undefined,
                 step: setup.Step,
                 downArrowText: "",
                 upArrowText: "",

@@ -2,6 +2,7 @@
 
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
@@ -17,6 +18,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [UIHint("Password20"), StringLength(Globals.MaxPswd), Trim]
     /// public string Password { get; set; }
     /// </example>
+    [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
     public class Password20Component : YetaWFComponent, IYetaWFComponent<string> {
 
         internal const string TemplateName = "Password20";

@@ -87,7 +87,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// Enum values are only shown if the user's User Settings (see User > Settings, standard YetaWF site) has the ShowEnumValue property set to true.
     /// </remarks>
     [UsesAdditional("NoDefault", "bool", "false", "Defines whether a \"(select)\" entry is automatically added as the first entry, with a value of null")]
-    [UsesSibling("Supported", "List<object>", "Lists supported enum values. Enum values that are not in this list are suppressed.")]
+    [UsesSibling("_Supported", "List<object>", "Lists supported enum values. Enum values that are not in this list are suppressed.")]
     public class EnumSupportedEditComponent : EnumSupportedComponentBase, IYetaWFComponent<object> {
 
         /// <summary>

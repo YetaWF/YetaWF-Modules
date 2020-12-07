@@ -413,9 +413,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 hb.Append(ImageHTML.BuildKnownIcon("#TextCopy", sprites: Info.PredefSpriteIcons, title: __ResStr("ttCopy", "Copy to Clipboard"), cssClass: "yt_text_copy"));
             }
 
-            if (placeHolder != null)
-                Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.TextEditComponent('{component.ControlId}');");
-
             return hb.ToString();
         }
     }

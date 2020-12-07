@@ -16,5 +16,17 @@ input[type="text"].t_edit.yt_text80 {
   max-width: 100%;
   width: 62ch; }
 
+input[type="text"].t_edit::-webkit-input-placeholder {
+  opacity: 0.6; }
+
+input[type="text"].t_edit:-ms-input-placeholder {
+  opacity: 0.6; }
+
+input[type="text"].t_edit::-ms-input-placeholder {
+  opacity: 0.6; }
+
+input[type="text"].t_edit::placeholder {
+  opacity: 0.6; }
+
 .yt_text_copy {
   margin-left: .5ch; }

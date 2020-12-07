@@ -1,24 +1,19 @@
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
+using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.SendEmail;
 using YetaWF.Core.Support;
 using YetaWF.Core.Upload;
 using YetaWF.Modules.DevTests.Modules;
-using YetaWF.Core.SendEmail;
-using System.Threading.Tasks;
-using YetaWF.Core.IO;
-using YetaWF.Core.Components;
-#if MVC6
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web;
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.DevTests.Controllers {
 
@@ -60,6 +55,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public decimal? Currency { get; set; }
+            public string Currency_PlaceHolder { get { return this.__ResStr("currencyPH", "(Amount)"); } }
 
             [Category("Core"), Caption("CurrencyISO4217"), Description("CurrencyISO4217 (Required)")]
             [UIHint("CurrencyISO4217"), StringLength(YetaWF.Core.Components.CurrencyISO4217.Currency.MaxId), Trim]
@@ -72,6 +68,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public decimal? Decimal { get; set; }
+            public string Decimal_PlaceHolder { get { return this.__ResStr("decimalPH", "(Number)"); } }
 
             [Category("Core"), Caption("DropDownList"), Description("DropDownList (SelectionRequired)")]
             [UIHint("DropDownList"), StringLength(20)]
@@ -119,6 +116,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public int? IntValue { get; set; }
+            public string IntValue_PlaceHolder { get { return this.__ResStr("intvaluePH", "(Number)"); } }
 
             [Category("Core"), Caption("IntValue2"), Description("IntValue2 (Required)")]
             [UIHint("IntValue2")]
@@ -180,6 +178,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string Password20 { get; set; }
+            public string Password20_PlaceHolder { get { return this.__ResStr("password20PH", "(Password)"); } }
 
             [Category("Core"), Caption("SMTPServer"), Description("SMTPServer (Required)")]
             [UIHint("SMTPServer")]
@@ -192,6 +191,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string Text { get; set; }
+            public string Text_PlaceHolder { get { return this.__ResStr("textPH", "(This is a placeholder)"); } }
 
             [Category("Core"), Caption("Text10"), Description("Text10 (Required)")]
             [UIHint("Text10"), StringLength(10)]
@@ -294,12 +294,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
         [AllowPost]
         [ExcludeDemoMode]
-#if MVC6
-        public async Task<ActionResult> UploadSomething(IFormFile __filename)
-#else
-        public async Task<ActionResult> UploadSomething(HttpPostedFileBase __filename)
-#endif
-        {
+        public async Task<ActionResult> UploadSomething(IFormFile __filename) {
             // Save the uploaded file as a temp file
             FileUpload upload = new FileUpload();
             string tempName = await upload.StoreTempImageFileAsync(__filename);

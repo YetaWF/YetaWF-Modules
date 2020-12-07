@@ -4,5 +4,8 @@
     input {
         text-align: right;
         padding-right: 0.5ch;
+        &::placeholder {
+            opacity:0.6;
+        }
     }
 }

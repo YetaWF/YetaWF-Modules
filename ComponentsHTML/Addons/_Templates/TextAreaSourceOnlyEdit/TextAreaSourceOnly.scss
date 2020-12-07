@@ -5,4 +5,7 @@ textarea.k-textbox.yt_textareasourceonly.t_edit {// need specificity
     padding-right:.5ch;
     width:100%;
     resize:none;
+    &::placeholder {
+        opacity:0.6;
+    }
 }

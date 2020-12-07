@@ -1,17 +1,28 @@
 @charset "UTF-8";
 /* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+span.k-widget.yt_intvalue_base {
+  max-width: 100%; }
+
+span.k-widget input.yt_intvalue_base {
+  text-align: right;
+  padding-right: 0.5ch; }
+  span.k-widget input.yt_intvalue_base::-webkit-input-placeholder {
+    opacity: 0.6; }
+  span.k-widget input.yt_intvalue_base:-ms-input-placeholder {
+    opacity: 0.6; }
+  span.k-widget input.yt_intvalue_base::-ms-input-placeholder {
+    opacity: 0.6; }
+  span.k-widget input.yt_intvalue_base::placeholder {
+    opacity: 0.6; }
+
 span.k-widget.yt_intvalue {
-  max-width: 100%;
   width: 14em; }
 
 span.k-widget.yt_intvalue2 {
-  max-width: 100%;
   width: 5em; }
 
 span.k-widget.yt_intvalue4 {
-  max-width: 100%;
   width: 6em; }
 
 span.k-widget.yt_intvalue6 {
-  max-width: 100%;
   width: 7em; }

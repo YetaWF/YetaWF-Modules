@@ -198,7 +198,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// Base class for the IntValue edit component implementation.
     /// </summary>
     [UsesAdditional("Step", "int", "1", "The increment/decrement used when clicking on the up/down arrows of the edit control.")]
-    [UsesAdditional("NoEntry", "string", "null", "The specified string is displayed as long as there is no value entered.")]
+    [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
     public abstract class IntValueEditComponentBase : YetaWFComponent, IYetaWFComponent<int>, IYetaWFComponent<int?> {
 
         /// <summary>
@@ -233,6 +233,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public IntValueEditComponentBase(string templateName, string templateClass) {
             TemplateName = templateName;
             TemplateClass = templateClass;
+        }
+
+        internal class IntValueSetup {
+            public int Min { get; set; }
+            public int Max { get; set; }
+            public int Step { get; set; }
+            public string PlaceHolder { get; set; }
         }
 
         /// <summary>
@@ -272,20 +279,26 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (model != null)
                 tag.MergeAttribute("value", ((int)model).ToString());
 
+            string placeHolder;
+            TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out placeHolder);
+
+            IntValueSetup setup = new IntValueSetup {
+                Min = 0,
+                Max = 999999999,
+                PlaceHolder = placeHolder,
+                Step = PropData.GetAdditionalAttributeValue<int>("Step", 1),
+            };
+
             // handle min/max
-            int min = 0, max = 999999999;
             RangeAttribute rangeAttr = PropData.TryGetAttribute<RangeAttribute>();
             if (rangeAttr != null) {
-                min = (int)rangeAttr.Minimum;
-                max = (int)rangeAttr.Maximum;
+                setup.Min = (int)rangeAttr.Minimum;
+                setup.Max = (int)rangeAttr.Maximum;
             }
-            string noEntry = PropData.GetAdditionalAttributeValue<string>("NoEntry", null);
-            int step = PropData.GetAdditionalAttributeValue<int>("Step", 1);
 
-            hb.Append($@"
-{tag.ToString(YTagRenderMode.StartTag)}");
+            hb.Append(tag.ToString(YTagRenderMode.StartTag));
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.IntValueEditComponent('{id}', {{ Min: {min}, Max: {max}, Step: {step}, NoEntryText: '{JE(noEntry??"")}' }});");
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.IntValueEditComponent('{id}', {Utility.JsonSerialize(setup)});");
 
             return Task.FromResult(hb.ToString());
         }

@@ -91,7 +91,7 @@ namespace YetaWF_ComponentsHTML {
             this.PropertyListVisibleHandlers.push({ callback: callback });
         }
         /**
-         * Called to call all registered callbacks when a propertylist become visible.
+         * Called to call all registered callbacks when a propertylist becomes visible.
          */
         public processPropertyListVisible(tag: HTMLElement): void {
             for (const entry of this.PropertyListVisibleHandlers) {

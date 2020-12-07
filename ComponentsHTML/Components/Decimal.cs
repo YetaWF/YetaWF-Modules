@@ -88,6 +88,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [UIHint("Decimal"), Range(0.0, 100.0), Required]
     /// public decimal SalesTaxRate { get; set; }
     /// </example>
+    [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
     public class DecimalEditComponent : DecimalComponentBase, IYetaWFComponent<Decimal>, IYetaWFComponent<Decimal?> {
 
         /// <summary>
@@ -95,6 +96,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
+
+        internal class DecimalSetup {
+            public double Min { get; set; }
+            public double Max { get; set; }
+            public string PlaceHolder { get; set; }
+        }
 
         /// <summary>
         /// Called by the framework when the component is used so the component can add component specific addons.
@@ -126,21 +133,28 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Normal);
             string id = MakeId(tag);
 
+            string placeHolder;
+            TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out placeHolder);
+
+            DecimalSetup setup = new DecimalSetup {
+                Min = 0,
+                Max = 999999999.99,
+                PlaceHolder = placeHolder,
+            };
+
             // handle min/max
-            float min = 0, max = 99999999.99F;
             RangeAttribute rangeAttr = PropData.TryGetAttribute<RangeAttribute>();
             if (rangeAttr != null) {
-                min = Convert.ToSingle(rangeAttr.Minimum);
-                max = Convert.ToSingle(rangeAttr.Maximum);
+                setup.Min = Convert.ToSingle(rangeAttr.Minimum);
+                setup.Max = Convert.ToSingle(rangeAttr.Maximum);
             }
             string format = PropData.GetAdditionalAttributeValue("Format", "0.00");
             if (model != null)
                 tag.MergeAttribute("value", ((decimal)model).ToString(format));
 
-            hb.Append($@"
-{tag.ToString(YTagRenderMode.StartTag)}");
+            hb.Append(tag.ToString(YTagRenderMode.StartTag));
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DecimalEditComponent('{id}', {{ Min: {min}, Max: {max} }});");
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DecimalEditComponent('{id}', {Utility.JsonSerialize(setup)});");
 
             return Task.FromResult(hb.ToString());
         }

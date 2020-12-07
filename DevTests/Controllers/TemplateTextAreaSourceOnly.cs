@@ -25,11 +25,13 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string Prop1Req { get; set; }
+            public string Prop1Req_PlaceHolder { get { return this.__ResStr("prop1ReqPH", "(This is a required field)"); }  }
 
             [Caption("TextAreaSourceOnly"), Description("TextAreaSourceOnly")]
             [UIHint("TextAreaSourceOnly"), StringLength(0), Trim]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public string Prop1 { get; set; }
+            public string Prop1_PlaceHolder { get { return this.__ResStr("prop1PH", "(This is an optional field)"); } }
 
             [Caption("TextAreaSourceOnly (Read/Only)"), Description("TextAreaSourceOnly (read/only)")]
             [UIHint("TextAreaSourceOnly"), ReadOnly]
