@@ -68,6 +68,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override async Task IncludeAsync() {
             //await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
             await KendoUICore.AddFileAsync("kendo.button.min.js");
+
+            // dropdown button
+            await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, DropDownButtonComponent.TemplateName, ComponentType.Display);
+
             await base.IncludeAsync();
         }
 
