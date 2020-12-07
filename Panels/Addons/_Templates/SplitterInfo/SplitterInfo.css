@@ -74,6 +74,9 @@
       height: 100%; }
       .yt_panels_splitterinfo .yt_panels_splitterinfo_right .t_area .yModule {
         height: 100%; }
+      @media screen and (max-width: 900px) {
+        .yt_panels_splitterinfo .yt_panels_splitterinfo_right .t_area {
+          overflow: hidden; } }
     .yt_panels_splitterinfo .yt_panels_splitterinfo_right .yt_panels_splitterinfo_resize {
       position: absolute;
       width: 5px;

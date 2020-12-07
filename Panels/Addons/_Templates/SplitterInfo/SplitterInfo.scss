@@ -102,6 +102,9 @@ $smallscreen: 900px;
             .yModule {
                 height:100%;
             }
+            @media screen and (max-width: $smallscreen) {
+                overflow: hidden;
+            }
         }
         .yt_panels_splitterinfo_resize {
             position: absolute;
