@@ -323,7 +323,9 @@ namespace YetaWF_ComponentsHTML {
          * The DOM hierarchy may not reflect this ownership, for example with popup menus which are appended to the <body> tag, but are owned by specific modules.
          */
         public getOwnerFromTag(tag: HTMLElement): HTMLElement | null {
-            return MenuULComponent.getOwnerFromTag(tag);
+            if (MenuULComponent)
+                return MenuULComponent.getOwnerFromTag(tag);
+            return null;
         }
 
         /**

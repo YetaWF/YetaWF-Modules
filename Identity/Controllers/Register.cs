@@ -52,6 +52,10 @@ namespace YetaWF.Modules.Identity.Controllers {
             [RequiredIfNot(nameof(RegistrationType), RegistrationTypeEnum.NameOnly)]
             public string Email { get; set; }
 
+            [Caption("Partner"), Description("Enter your partner name")]
+            [UIHint("Email"), StringLength(40), Trim]
+            public string PartnerName { get; set; }
+
             [Caption("Password"), Description("Enter your desired password")]
             [UIHint("Password20"), StringLength(Globals.MaxPswd), Required]
             public string Password { get; set; }
@@ -158,6 +162,9 @@ namespace YetaWF.Modules.Identity.Controllers {
                 throw new InternalError("Hidden field tampering detected");
             if (!model.ShowCaptcha && ModelState[nameof(model.Captcha)] != null)
                 ModelState[nameof(model.Captcha)].ValidationState = Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Valid;
+
+            if (!string.IsNullOrWhiteSpace(model.PartnerName))// bot trap
+                return NotAuthorized();
 
             model.RegistrationType = config.RegistrationType;// don't trust what we get from user
             if (Module.ShowPasswordRules) {

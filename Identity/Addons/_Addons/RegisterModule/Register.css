@@ -3,6 +3,9 @@
 .YetaWF_Identity_Register .yt_propertylist .t_row.t_passwordrules .t_vals {
   max-width: 50ch; }
 
+.YetaWF_Identity_Register .yt_propertylist .t_row.t_partnername {
+  display: none; }
+
 .YetaWF_Identity_Register .t_detailsbuttons input[type='submit'] {
   width: 25ch; }
 

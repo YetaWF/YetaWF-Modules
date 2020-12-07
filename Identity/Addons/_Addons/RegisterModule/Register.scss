@@ -7,6 +7,9 @@
                 max-width: 50ch;
             }
         }
+        .t_row.t_partnername {
+            display:none;
+        }
     }
     .t_detailsbuttons {
         input[type='submit'] {
