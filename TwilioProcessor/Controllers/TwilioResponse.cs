@@ -19,7 +19,7 @@ namespace Softelvdm.Modules.TwilioProcessor.Controllers {
         /// </summary>
         /// <returns>An empty action result.</returns>
         /// <remarks>
-        /// For details about all parameters see the Twilio documentation at <a href="https://www.twilio.com/docs/api/rest/sending-messages</a>.
+        /// For details about all parameters see the Twilio documentation at https://www.twilio.com/docs/api/rest/sending-messages.
         /// </remarks>
         [AllowGet]
         public new ActionResult Response(string ValidateToNumber, string To, string From, string MessageSid, string MessageStatus, string ErrorCode) {

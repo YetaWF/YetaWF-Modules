@@ -3,12 +3,8 @@
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Modules.ComponentsHTML.Components;
-#if MVC6
+using YetaWF.Modules.Identity.Components;
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
 

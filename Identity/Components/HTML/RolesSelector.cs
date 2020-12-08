@@ -11,9 +11,10 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Identity.Controllers;
 
-namespace YetaWF.Modules.ComponentsHTML.Components {
+namespace YetaWF.Modules.Identity.Components {
 
     public abstract class RolesSelectorComponentBase : YetaWFComponent {
 

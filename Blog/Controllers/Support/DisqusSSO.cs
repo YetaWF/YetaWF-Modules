@@ -10,36 +10,36 @@ using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.Blog.Controllers.Support {
 
+    /// <summary>
+    /// This class generates the payload we need to authenticate users remotely through Disqus
+    /// This requires the Disqus SSO package and to have set up your application/remote domain properly
+    /// See here for more: http://help.disqus.com/customer/portal/articles/236206-integrating-single-sign-on
+    ///
+    /// Usage:
+    /// After inputting user data, a final payload will be generated which you use for the javascript variable 'remote_auth_s3'
+    ///
+    /// Markup:
+    /// ------
+    /// var disqus_config = function () {
+    ///         this.page.remote_auth_s3 = '&lt;&#37= Payload &#37&gt;';
+    ///         this.page.api_key = 'DISQUS_PUBLIC_KEY'; // TODO enter your API public key
+    ///     }
+    ///
+    /// Code-behind:
+    /// -----------
+    /// string Payload = Disqus.Examples.SSO.GetPayload("test1", "Charlie Chaplin", "charlie@example.com");
+    ///
+    /// </summary>
+
+    /// Disqus API secret key can be obtained here: http://disqus.com/api/applications/
+    /// This will only work if that key is associated with your SSO remote domain
+    /// It is highly recommended that you DO NOT hard-code your API secret key here, and instead read it from a secure configuration store
+
     public class SSO {
 
         public SSO(string APISecret) {
             _apiSecret = APISecret;
         }
-
-        /// <summary>
-        /// This class generates the payload we need to authenticate users remotely through Disqus
-        /// This requires the Disqus SSO package and to have set up your application/remote domain properly
-        /// See here for more: http://help.disqus.com/customer/portal/articles/236206-integrating-single-sign-on
-        ///
-        /// Usage:
-        /// After inputting user data, a final payload will be generated which you use for the javascript variable 'remote_auth_s3'
-        ///
-        /// Markup:
-        /// ------
-        /// var disqus_config = function () {
-        ///         this.page.remote_auth_s3 = '<%= Payload %>';
-        ///         this.page.api_key = 'DISQUS_PUBLIC_KEY'; // TODO enter your API public key
-        ///     }
-        ///
-        /// Code-behind:
-        /// -----------
-        /// string Payload = Disqus.Examples.SSO.GetPayload("test1", "Charlie Chaplin", "charlie@example.com");
-        ///
-        /// </summary>
-
-        /// Disqus API secret key can be obtained here: http://disqus.com/api/applications/
-        /// This will only work if that key is associated with your SSO remote domain
-        /// It is highly recommended that you DO NOT hard-code your API secret key here, and instead read it from a secure configuration store
 
         private string _apiSecret = "DISQUS_SECRET_KEY"; // TODO enter your API secret key (for illustrative purposes only)
 
