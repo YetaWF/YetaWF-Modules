@@ -29,6 +29,15 @@ var YetaWF_Panels;
             });
             return _this;
         }
+        SplitterModule.GetSplitterFromTagCond = function (tag) {
+            var mod = YetaWF_Panels.SplitterModule.GetSplitterModuleFromTagCond(tag);
+            if (!mod)
+                return null;
+            var splitter = YetaWF_Panels.SplitterInfoComponent.getControlFromSelector(YetaWF_Panels.SplitterInfoComponent.SELECTOR, YetaWF_Panels.SplitterInfoComponent.SELECTOR, [mod.Module]);
+            if (!splitter)
+                throw "The Splitter module cannot be found";
+            return splitter;
+        };
         SplitterModule.GetSplitterFromTag = function (tag) {
             var mod = YetaWF_Panels.SplitterModule.GetSplitterModuleFromTagCond(tag);
             if (!mod)

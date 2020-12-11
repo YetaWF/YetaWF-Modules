@@ -19,6 +19,17 @@ namespace YetaWF_Panels {
             });
         }
 
+        public static GetSplitterFromTagCond(tag: HTMLElement) : YetaWF_Panels.SplitterInfoComponent | null {
+            let mod = YetaWF_Panels.SplitterModule.GetSplitterModuleFromTagCond(tag);
+            if (!mod) return null;
+
+            let splitter = YetaWF_Panels.SplitterInfoComponent.getControlFromSelector<YetaWF_Panels.SplitterInfoComponent>(YetaWF_Panels.SplitterInfoComponent.SELECTOR, YetaWF_Panels.SplitterInfoComponent.SELECTOR, [mod.Module]);
+            if (!splitter)
+                throw "The Splitter module cannot be found";
+
+            return splitter;
+        }
+
         public static GetSplitterFromTag(tag: HTMLElement) : YetaWF_Panels.SplitterInfoComponent {
             let mod = YetaWF_Panels.SplitterModule.GetSplitterModuleFromTagCond(tag);
             if (!mod)
