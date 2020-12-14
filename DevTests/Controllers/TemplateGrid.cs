@@ -73,8 +73,8 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public Guid Guid { get; set; }
 
             [Caption("Description"), Description("Description")]
-            [UIHint("String"), ReadOnly]
-            public string Description { get; set; }
+            [UIHint("MultiString"), ReadOnly]
+            public MultiString Description { get; set; }
 
             [Caption("Hidden"), Description("A hidden field")]
             [UIHint("Hidden"), ReadOnly]
@@ -102,7 +102,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public string ShortName { get; set; }
             public string ShortName2 { get { return ShortName; } }
             public string Hidden { get; set; }
-            public string Description { get; set; }
+            public MultiString Description { get; set; }
             public DateTime SomeDateTime { get; set; }
             public DateTime SomeDate { get; set; }
             public Guid Guid { get; set; }
