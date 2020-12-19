@@ -1,4 +1,4 @@
-﻿/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Visitors#License */
+/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Visitors#License */
 
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -10,12 +10,12 @@ using YetaWF.PackageAttributes;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Softel vdm, Inc.")]
 [assembly: AssemblyProduct("Visitors")]
-[assembly: AssemblyCopyright("Copyright © 2020 - Softel vdm, Inc.")]
+[assembly: AssemblyCopyright("Copyright © 2021 - Softel vdm, Inc.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 
-[assembly: AssemblyVersion("5.3.0.0")]
+[assembly: AssemblyVersion("5.4.0.0")]
 
 [assembly: Package(PackageTypeEnum.Module, "YetaWF")]
 [assembly: PackageInfo("https://YetaWF.com/UpdateServer",
