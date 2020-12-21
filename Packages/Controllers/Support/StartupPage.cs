@@ -107,8 +107,8 @@ namespace YetaWF.Modules.Packages.Controllers {
                     hb.Append($@"
 <tr>
     <td><input type='checkbox' checked='checked' name='{package.Name}'{disabled}/></td>
-    <td>{Utility.HtmlEncode(package.Name)}</td>
-    <td>{Utility.HtmlEncode(package.Description)}</td>
+    <td>{Utility.HE(package.Name)}</td>
+    <td>{Utility.HE(package.Description)}</td>
 </tr>");
                 }
             }

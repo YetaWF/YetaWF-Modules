@@ -66,10 +66,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(string model) {
 
-            YTagBuilder tag = new YTagBuilder("div");
-            tag.AddCssClass("yt_timezone");
-            tag.AddCssClass("t_display");
-
             if (!System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows)) {
                 try {
                     model = TZConvert.WindowsToIana(model);
@@ -79,16 +75,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             try {
                 tzi = TimeZoneInfo.FindSystemTimeZoneById(model);
             } catch (Exception) { }
+
+            string text;
+            string title = string.Empty;
             if (tzi == null) {
-                tag.SetInnerText(__ResStr("unknown", "(unknown)"));
+                text = __ResStr("unknown", "(unknown)");
             } else {
                 if (System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows))
-                    tag.SetInnerText(tzi.DisplayName);
+                    text = tzi.DisplayName;
                 else
-                    tag.SetInnerText(tzi.Id);
-                tag.Attributes.Add("title", tzi.IsDaylightSavingTime(DateTime.Now/*need local time*/) ? tzi.DaylightName : tzi.StandardName);
+                    text = tzi.Id;
+                title = $" title='{HAE(tzi.IsDaylightSavingTime(DateTime.Now/*need local time*/) ? tzi.DaylightName : tzi.StandardName)}'";
             }
-            return Task.FromResult(tag.ToString(YTagRenderMode.Normal));
+            return Task.FromResult($"<div class='yt_timezone t_display'{title}>{HE(text)}</div>");
         }
     }
 

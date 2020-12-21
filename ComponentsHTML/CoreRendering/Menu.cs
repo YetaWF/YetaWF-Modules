@@ -5,11 +5,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.ComponentsHTML {
 
@@ -23,107 +20,82 @@ namespace YetaWF.Modules.ComponentsHTML {
         /// <param name="cssClass">The optional CSS classes to use for the menu.</param>
         /// <param name="HtmlHelper">The HtmlHelper instance.</param>
         /// <returns>Returns the complete menu as HTML.</returns>
-        public Task<string> RenderMenuListAsync(MenuList menu, string id = null, string cssClass = null, YHtmlHelper HtmlHelper = null)
-        {
+        public Task<string> RenderMenuListAsync(MenuList menu, string id = null, string cssClass = null, YHtmlHelper HtmlHelper = null) {
             return RenderMenuAsync(menu, id, cssClass, RenderEngine: ModuleAction.RenderEngineEnum.BootstrapSmartMenu, HtmlHelper: HtmlHelper);
         }
 
-        internal static async Task<string> RenderMenuAsync(MenuList menu, string id = null, string cssClass = null,
-            ModuleAction.RenderEngineEnum RenderEngine = ModuleAction.RenderEngineEnum.KendoMenu, bool Hidden = false, YHtmlHelper HtmlHelper = null)
-        {
-
-            HtmlBuilder hb = new HtmlBuilder();
+        internal static async Task<string> RenderMenuAsync(MenuList menu, string id = null, string cssClass = null, ModuleAction.RenderEngineEnum RenderEngine = ModuleAction.RenderEngineEnum.KendoMenu, bool Hidden = false, YHtmlHelper HtmlHelper = null) {
             int level = 0;
 
             if (menu.Count == 0)
-                return null;
+                return string.Empty;
             string menuContents = await RenderLIAsync(HtmlHelper, menu, null, menu.RenderMode, RenderEngine, menu.LICssClass, level);
             if (string.IsNullOrWhiteSpace(menuContents))
-                return null;
+                return string.Empty;
 
-            // <ul class= style= >
-            YTagBuilder ulTag = new YTagBuilder("ul");
+            string style = string.Empty;
+
             if (Hidden)
-                ulTag.Attributes.Add("style", "display:none");
-            if (!string.IsNullOrWhiteSpace(cssClass))
-                ulTag.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule(cssClass));
-            ulTag.AddCssClass(string.Format("t_lvl{0}", level));
+                style = " style=display:none;";
+
+            string css = $"t_lvl{level}";
+            css = CssManager.CombineCss(css, Manager.AddOnManager.CheckInvokedCssModule(cssClass));
             if (RenderEngine == ModuleAction.RenderEngineEnum.BootstrapSmartMenu) {
-                ulTag.AddCssClass("nav");
-                ulTag.AddCssClass("navbar-nav");
+                css = CssManager.CombineCss(css, "nav");
+                css = CssManager.CombineCss(css, "navbar-nav");
             }
+
             if (!string.IsNullOrWhiteSpace(id))
-                ulTag.Attributes.Add("id", id);
-            hb.Append(ulTag.ToString(YTagRenderMode.StartTag));
+                id = $" id='{id}'";
 
-            // <li>....</li>
-            hb.Append(menuContents);
-
-            // </ul>
-            hb.Append(ulTag.ToString(YTagRenderMode.EndTag));
-
-            return hb.ToString();
+            return $@"<ul{id} class='{css}'{style}>{menuContents}</ul>";
         }
         internal static async Task<string> RenderMenuAsync(YHtmlHelper htmlHelper, List<ModuleAction> subMenu, Guid? subGuid, string cssClass, ModuleAction.RenderModeEnum renderMode, ModuleAction.RenderEngineEnum renderEngine, int level) {
 
-            HtmlBuilder hb = new HtmlBuilder();
-
             string menuContents = await RenderLIAsync(htmlHelper, subMenu, subGuid, renderMode, renderEngine, null, level);
-            if (string.IsNullOrWhiteSpace(menuContents)) return null;
+            if (string.IsNullOrWhiteSpace(menuContents)) return string.Empty;
 
-            // <ul>
-            YTagBuilder ulTag = new YTagBuilder("ul");
-            ulTag.AddCssClass(string.Format("t_lvl{0}", level));
+            string css = $"t_lvl{level}";
             if (renderEngine == ModuleAction.RenderEngineEnum.BootstrapSmartMenu)
-                ulTag.AddCssClass("dropdown-menu");
+                css = CssManager.CombineCss(css, "dropdown-menu");
             if (subGuid != null) {
-                ulTag.AddCssClass("t_megamenu_content");
-                ulTag.AddCssClass("mega-menu"); // used by smartmenus
+                css = CssManager.CombineCss(css, "t_megamenu_content");
+                css = CssManager.CombineCss(css, "mega-menu"); // used by smartmenus
             }
-            if (!string.IsNullOrWhiteSpace(cssClass))
-                ulTag.AddCssClass(cssClass);
-            hb.Append(ulTag.ToString(YTagRenderMode.StartTag));
+            css = CssManager.CombineCss(css, cssClass);
 
-            // <li>....</li>
-            hb.Append(menuContents);
-
-            // </ul>
-            hb.Append(ulTag.ToString(YTagRenderMode.EndTag));
-
-            return hb.ToString();
+            return $@"<ul class='{css}'>{menuContents}</ul>";
         }
 
         internal static async Task<string> RenderLIAsync(YHtmlHelper htmlHelper, List<ModuleAction> subMenu, Guid? subGuid, ModuleAction.RenderModeEnum renderMode, ModuleAction.RenderEngineEnum renderEngine, string liCss, int level) {
+
             HtmlBuilder hb = new HtmlBuilder();
 
             ++level;
 
             if (subGuid != null) {
                 // megamenu content
-                // <li>
-                YTagBuilder tag = new YTagBuilder("li");
-                tag.AddCssClass("t_megamenu_content");
-                if (!string.IsNullOrWhiteSpace(liCss)) tag.AddCssClass(liCss);
+                string css = string.Empty;
+                css = CssManager.CombineCss(css, liCss);
                 if (renderEngine == ModuleAction.RenderEngineEnum.BootstrapSmartMenu)
-                    tag.AddCssClass("nav-item");
-                hb.Append(tag.ToString(YTagRenderMode.StartTag));
+                    css = CssManager.CombineCss(css, "nav-item");
 
+                string contents = string.Empty;
                 ModuleDefinition subMod = await ModuleDefinition.LoadAsync((Guid)subGuid, AllowNone: true);
                 if (subMod != null) {
                     subMod.ShowTitle = false; // don't show the module title in a submenu (temp. override)
                     if (htmlHelper == null)
                         throw new InternalError("HtmlHelper required for module rendering");
-                    hb.Append(await subMod.RenderModuleAsync(htmlHelper));
+                    contents = await subMod.RenderModuleAsync(htmlHelper);
                 }
+                hb.Append($"<li class='t_megamenu_content{css}'>{contents}</li>\n");
 
-                hb.Append("</li>\n");
             } else {
                 foreach (var menuEntry in subMenu) {
 
                     if (menuEntry.Enabled && await menuEntry.RendersSomethingAsync()) {
 
                         bool rendered = false;
-                        string subMenuContents = null;
 
                         Guid? subModGuid = null;
                         if (!Manager.EditMode) {
@@ -134,45 +106,37 @@ namespace YetaWF.Modules.ComponentsHTML {
 
                         if (subModGuid != null || (menuEntry.SubMenu != null && menuEntry.SubMenu.Count > 0)) {
 
-                            subMenuContents = await RenderMenuAsync(htmlHelper, menuEntry.SubMenu, subModGuid, menuEntry.CssClass, renderMode, renderEngine, level);
+                            string subMenuContents = await RenderMenuAsync(htmlHelper, menuEntry.SubMenu, subModGuid, menuEntry.CssClass, renderMode, renderEngine, level);
                             if (!string.IsNullOrWhiteSpace(subMenuContents)) {
-                                // <li>
-                                YTagBuilder tag = new YTagBuilder("li");
+
+                                string css = string.Empty;
                                 if (renderEngine == ModuleAction.RenderEngineEnum.BootstrapSmartMenu) {
-                                    tag.AddCssClass("dropdown");
-                                    tag.AddCssClass("nav-item");
+                                    css = CssManager.CombineCss(css, "dropdown");
+                                    css = CssManager.CombineCss(css, "nav-item");
                                 }
                                 if (subModGuid != null)
-                                    tag.AddCssClass("t_megamenu_hassub");
-                                if (!string.IsNullOrWhiteSpace(liCss)) tag.AddCssClass(liCss);
-                                hb.Append(tag.ToString(YTagRenderMode.StartTag));
+                                    css = CssManager.CombineCss(css, "t_megamenu_hassub");
+                                css = CssManager.CombineCss(css, liCss);
 
                                 string menuContents = await CoreRendering.RenderActionAsync(menuEntry, renderMode, null, RenderEngine: renderEngine, HasSubmenu: true, BootstrapSmartMenuLevel: level);
-                                hb.Append(menuContents);
 
-                                hb.Append("\n");
-                                hb.Append(subMenuContents);
-
-                                hb.Append("</li>\n");
+                                css = string.IsNullOrWhiteSpace(css) ? string.Empty : $" class='{css}'";
+                                hb.Append($"<li{css}>\n{menuContents}\n{subMenuContents}</li>\n");
                                 rendered = true;
                             }
                         }
 
                         if (!rendered) {
-                            // <li>
-                            YTagBuilder tag = new YTagBuilder("li");
-                            //if (!menuEntry.Enabled)
-                            //    tag.MergeAttribute("disabled", "disabled");
-                            if (!string.IsNullOrWhiteSpace(liCss)) tag.AddCssClass(liCss);
-                            if (renderEngine == ModuleAction.RenderEngineEnum.BootstrapSmartMenu) {
-                                tag.AddCssClass("nav-item");
-                            }
-                            hb.Append(tag.ToString(YTagRenderMode.StartTag));
+                            string css = string.Empty;
+                            css = CssManager.CombineCss(css, liCss);
 
+                            if (renderEngine == ModuleAction.RenderEngineEnum.BootstrapSmartMenu)
+                                css = CssManager.CombineCss(css, "nav-item");
+
+                            css = string.IsNullOrWhiteSpace(css) ? string.Empty : $" class='{css}'";
                             string menuContents = await CoreRendering.RenderActionAsync(menuEntry, renderMode, null, RenderEngine: renderEngine, BootstrapSmartMenuLevel: level);
-                            hb.Append(menuContents);
 
-                            hb.Append("</li>\n");
+                            hb.Append($"<li{css}>{menuContents}</li>\n");
                         }
                     }
                 }

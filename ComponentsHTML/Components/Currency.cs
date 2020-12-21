@@ -127,20 +127,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(Decimal? model) {
-            HtmlBuilder hb = new HtmlBuilder();
-
-            hb.Append($"<div id='{ControlId}' class='yt_currency t_edit y_inline'>");
-
-            YTagBuilder tag = new YTagBuilder("input");
-            FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Normal);
 
             bool rdonly = PropData.GetAdditionalAttributeValue<bool>("ReadOnly", false);
             bool disabled = PropData.GetAdditionalAttributeValue<bool>("Disabled", false);
+            string dis = string.Empty;
             if (disabled)
-                tag.Attributes.Add("disabled", "disabled");
+                dis = " disabled='disabled'";
 
-            string placeHolder;
-            TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out placeHolder);
+            TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out string placeHolder);
+
+            string val = string.Empty;
+            if (model != null)
+                val = $" value='{Formatting.FormatAmount((decimal)model)}'";
 
             CurrencySetup setup = new CurrencySetup {
                 Min = 0,
@@ -154,15 +152,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 setup.Min = (double)rangeAttr.Minimum;
                 setup.Max = (double)rangeAttr.Maximum;
             }
-            if (model != null)
-                tag.MergeAttribute("value", Formatting.FormatAmount((decimal)model));
-
-            hb.Append(tag.ToString(YTagRenderMode.StartTag));
-
-            hb.Append($"</div>");
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.CurrencyEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
-            return Task.FromResult(hb.ToString());
+            return Task.FromResult(
+$@"<div id='{ControlId}' class='yt_currency t_edit y_inline'>
+    <input{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} class='{GetClasses()}'{val}{dis}>
+</div>");
+
         }
     }
 }

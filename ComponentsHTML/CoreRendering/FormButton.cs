@@ -1,9 +1,11 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML {
@@ -20,7 +22,8 @@ namespace YetaWF.Modules.ComponentsHTML {
         }
         private string RenderFormButton(FormButton formButton) {
 
-            YTagBuilder tag = new YTagBuilder("input");
+            Dictionary<string, object> attrs = new Dictionary<string, object>();
+            string css = null;
 
             string text = formButton.Text;
             switch (formButton.ButtonType) {
@@ -31,16 +34,16 @@ namespace YetaWF.Modules.ComponentsHTML {
                         return null;
                     }
                     if (string.IsNullOrWhiteSpace(text)) text = this.__ResStr("btnSave", "Save");
-                    tag.Attributes.Add("type", "submit");
+                    attrs.Add("type", "submit");
                     break;
                 case ButtonTypeEnum.Apply:
                     if (string.IsNullOrWhiteSpace(text)) text = this.__ResStr("btnApply", "Apply");
-                    tag.Attributes.Add("type", "button");
-                    tag.Attributes.Add(Forms.CssDataApplyButton, "");
+                    attrs.Add("type", "button");
+                    attrs.Add(Forms.CssDataApplyButton, string.Empty);
                     break;
                 default:
                 case ButtonTypeEnum.Button:
-                    tag.Attributes.Add("type", "button");
+                    attrs.Add("type", "button");
                     break;
                 case ButtonTypeEnum.Cancel:
                     //if (!Manager.IsInPopup && !Manager.HaveReturnToUrl) {
@@ -48,23 +51,25 @@ namespace YetaWF.Modules.ComponentsHTML {
                     //    return null;
                     //}
                     if (string.IsNullOrWhiteSpace(text)) text = this.__ResStr("btnCancel", "Cancel");
-                    tag.Attributes.Add("type", "button");
-                    tag.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule(Forms.CssFormCancel));
+                    attrs.Add("type", "button");
+                    css = CssManager.CombineCss(css, Manager.AddOnManager.CheckInvokedCssModule(Forms.CssFormCancel));
                     break;
             }
-            if (!string.IsNullOrWhiteSpace(formButton.Id))
-                tag.Attributes.Add("id", formButton.Id);
             if (!string.IsNullOrWhiteSpace(formButton.Name))
-                tag.Attributes.Add("name", formButton.Name);
+                attrs.Add("name", formButton.Name);
             if (formButton.Hidden)
-                tag.Attributes.Add("style", "display:none");
+                attrs.Add("style", "display:none");
             if (!string.IsNullOrWhiteSpace(formButton.Title))
-                tag.Attributes.Add("title", formButton.Title);
-            tag.Attributes.Add("value", text);
-            if (!string.IsNullOrWhiteSpace(formButton.CssClass))
-                tag.AddCssClass(formButton.CssClass);
+                attrs.Add("title", formButton.Title);
 
-            return tag.ToString(YTagRenderMode.StartTag);
+            if (!string.IsNullOrWhiteSpace(formButton.CssClass))
+                css = CssManager.CombineCss(css, formButton.CssClass);
+
+            string id = null;
+            if (!string.IsNullOrWhiteSpace(formButton.Id))
+                id = $" id='{formButton.Id}'";
+
+            return $@"<input{id} class='{css}{HtmlBuilder.GetClasses(attrs)}' value='{Utility.HAE(text)}'{HtmlBuilder.Attributes(attrs)}>";
         }
     }
 }

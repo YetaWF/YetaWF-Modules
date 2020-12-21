@@ -43,8 +43,8 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
 
             if (!string.IsNullOrWhiteSpace(message)) {
                  hb.Append($@"
-<div class='{Utility.HtmlEncode(Globals.CssDivAlert)}'>
-    {Utility.HtmlEncode(message)}
+<div class='{Utility.HE(Globals.CssDivAlert)}'>
+    {Utility.HE(message)}
 </div>");
             }
             return Task.FromResult(hb.ToString());

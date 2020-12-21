@@ -80,10 +80,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         <div class='t_items'>");
 
             foreach (var item in model) {
-                YTagBuilder tag = new YTagBuilder("div");
-                tag.AddCssClass("t_item");
-                tag.InnerHtml = await HtmlHelper.ForDisplayContainerAsync(item, uiHint);
-                hb.Append(tag.ToString(YTagRenderMode.Normal));
+                hb.Append($@"<div class='t_item'>{await HtmlHelper.ForDisplayContainerAsync(item, uiHint)}</div>");
             }
 
             hb.Append($@"

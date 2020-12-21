@@ -66,16 +66,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(DateTime? model) {
-            HtmlBuilder hb = new HtmlBuilder();
             if (model != null && (DateTime)model > DateTime.MinValue && (DateTime)model < DateTime.MaxValue) {
-                YTagBuilder tag = new YTagBuilder("div");
-                tag.AddCssClass("yt_DateLong");
-                tag.AddCssClass("t_display");
-                FieldSetup(tag, FieldType.Anonymous);
-                tag.SetInnerText(YetaWF.Core.Localize.Formatting.FormatLongDate(model));
-                hb.Append(tag.ToString(YTagRenderMode.Normal));
+                return Task.FromResult($"<div{FieldSetup(FieldType.Anonymous)} class='yt_datelong t_display'>{HE(YetaWF.Core.Localize.Formatting.FormatLongDate(model))}</div>");
             }
-            return Task.FromResult(hb.ToString());
+            return Task.FromResult(string.Empty);
         }
     }
 }

@@ -89,7 +89,7 @@ namespace YetaWF.Modules.Languages.Components {
                 for (int i = 0; i < countClasses; ++i) {
                     hb.Append($@"
         <div class='t_link_{i}'>
-            <a href='#{linkClass}_{i}'>{Utility.HtmlEncode(model[i].Name)}</a>
+            <a href='#{linkClass}_{i}'>{Utility.HE(model[i].Name)}</a>
         </div>");
                 }
                 hb.Append($@"
@@ -113,7 +113,7 @@ namespace YetaWF.Modules.Languages.Components {
                     if (countClasses > 1) {
                         hb.Append($@"
         <div class='t_classname'>
-            <a class='t_target' id='{linkClass}_{classIndex}'>{Utility.HtmlEncode(uiClassData.Name)}</a>
+            <a class='t_target' id='{linkClass}_{classIndex}'>{Utility.HE(uiClassData.Name)}</a>
         </div>");
                     }
 
@@ -165,19 +165,19 @@ namespace YetaWF.Modules.Languages.Components {
                 </div>
                 <div class='t_propvars'>
                     <div class='t_caption'>
-                        {await HtmlHelper.ForEditAsync(uiProp, nameof(uiProp.Caption))}{Utility.HtmlEncode(this.__ResStr("cmtCaption", " (Caption)"))}
+                        {await HtmlHelper.ForEditAsync(uiProp, nameof(uiProp.Caption))}{Utility.HE(this.__ResStr("cmtCaption", " (Caption)"))}
                     </div>
                     <div class='t_desc'>
-                        {await HtmlHelper.ForEditAsync(uiProp, nameof(uiProp.Description))}{Utility.HtmlEncode(this.__ResStr("cmtDescription", " (Description)"))}
+                        {await HtmlHelper.ForEditAsync(uiProp, nameof(uiProp.Description))}{Utility.HE(this.__ResStr("cmtDescription", " (Description)"))}
                     </div>
                     <div class='t_helplink'>
-                        {await HtmlHelper.ForEditAsync(uiProp, nameof(uiProp.HelpLink))}{Utility.HtmlEncode(this.__ResStr("cmtHelpLink", " (HelpLink)"))}
+                        {await HtmlHelper.ForEditAsync(uiProp, nameof(uiProp.HelpLink))}{Utility.HE(this.__ResStr("cmtHelpLink", " (HelpLink)"))}
                     </div>
                     <div class='t_textabove'>
-                        {await HtmlHelper.ForEditAsync(uiProp, nameof(uiProp.TextAbove))}{Utility.HtmlEncode(this.__ResStr("cmtTextAbove", " (TextAbove)"))}
+                        {await HtmlHelper.ForEditAsync(uiProp, nameof(uiProp.TextAbove))}{Utility.HE(this.__ResStr("cmtTextAbove", " (TextAbove)"))}
                     </div>
                     <div class='t_textbelow'>
-                        {await HtmlHelper.ForEditAsync(uiProp, nameof(uiProp.TextBelow))}{Utility.HtmlEncode(this.__ResStr("cmtTextBelow", " (TextBelow)"))}
+                        {await HtmlHelper.ForEditAsync(uiProp, nameof(uiProp.TextBelow))}{Utility.HE(this.__ResStr("cmtTextBelow", " (TextBelow)"))}
                     </div>
                 </div>
             </div>

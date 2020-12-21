@@ -44,21 +44,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     error = errors.First();
             }
 
-            YTagBuilder tagBuilder = new YTagBuilder("span");
-            tagBuilder.MergeAttribute("data-v-for", fieldName);
-            tagBuilder.AddCssClass(hasError ? "v-error" : "v-valid");
-
+            HtmlBuilder hbImg = new HtmlBuilder();
             if (hasError) {
                 // we're building the same client side in validation.ts, make sure to keep in sync
-                // <img src="${$YetaWF.htmlAttrEscape(YConfigs.Forms.CssWarningIconUrl)}" name=${name} class="${YConfigs.Forms.CssWarningIcon}" ${YConfigs.Basics.CssTooltip}="${$YetaWF.htmlAttrEscape(val.M)}"/>
-                YTagBuilder tagImg = new YTagBuilder("img");
-                tagImg.Attributes.Add("src", Forms.CssWarningIconUrl);
-                tagImg.Attributes.Add("name", fieldName);
-                tagImg.AddCssClass(Forms.CssWarningIcon);
-                tagImg.Attributes.Add(Basics.CssTooltip, error);
-                tagBuilder.InnerHtml = tagImg.ToString();
+                hbImg.Append($@"<img src='{Utility.HAE(Forms.CssWarningIconUrl)}' name='{Utility.HAE(fieldName)}' class='{Forms.CssWarningIcon}' {Basics.CssTooltip}='{Utility.HAE(error)}'>");
             }
-            return tagBuilder.ToString(YTagRenderMode.Normal);
+
+            string css = hasError ? "v-error" : "v-valid";
+            HtmlBuilder hb = new HtmlBuilder();
+            hb.Append($@"<span data-v-for='{fieldName}' class='{css}'>{hbImg.ToString()}</span>");
+            return hb.ToString();
         }
     }
 }

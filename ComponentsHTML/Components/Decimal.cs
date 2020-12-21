@@ -62,18 +62,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(Decimal? model) {
-            HtmlBuilder hb = new HtmlBuilder();
             if (model != null && (Decimal)model > Decimal.MinValue && (Decimal)model < Decimal.MaxValue) {
-                YTagBuilder tag = new YTagBuilder("div");
-                tag.AddCssClass("yt_decimal");
-                tag.AddCssClass("t_display");
-                FieldSetup(tag, FieldType.Anonymous);
-                string format = PropData.GetAdditionalAttributeValue("Format", "0.00");
-                if (model != null)
-                    tag.SetInnerText(((decimal)model).ToString(format));
-                hb.Append(tag.ToString(YTagRenderMode.Normal));
+                string s = string.Empty;
+                if (model != null) {
+                    string format = PropData.GetAdditionalAttributeValue("Format", "0.00");
+                    s = ((decimal)model).ToString(format);
+                }
+                return Task.FromResult($@"<div{FieldSetup(FieldType.Anonymous)} class='yt_decimal t_display{GetClasses()}'>{HAE(s)}</div>");
             }
-            return Task.FromResult(hb.ToString());
+            return Task.FromResult(string.Empty);
         }
     }
 
@@ -125,16 +122,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(Decimal? model) {
-            HtmlBuilder hb = new HtmlBuilder();
 
-            YTagBuilder tag = new YTagBuilder("input");
-            tag.AddCssClass("yt_decimal");
-            tag.AddCssClass("t_edit");
-            FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Normal);
-            string id = MakeId(tag);
+            string value = null;
+            if (model != null) {
+                string format = PropData.GetAdditionalAttributeValue("Format", "0.00");
+                value = HAE(((decimal)model).ToString(format));
+            }
 
-            string placeHolder;
-            TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out placeHolder);
+            TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out string placeHolder);
 
             DecimalSetup setup = new DecimalSetup {
                 Min = 0,
@@ -148,15 +143,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 setup.Min = Convert.ToSingle(rangeAttr.Minimum);
                 setup.Max = Convert.ToSingle(rangeAttr.Maximum);
             }
-            string format = PropData.GetAdditionalAttributeValue("Format", "0.00");
-            if (model != null)
-                tag.MergeAttribute("value", ((decimal)model).ToString(format));
+            string tags = $@"<input{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} id='{ControlId}' class='yt_decimal t_edit{GetClasses()}' maxlength='20' value='{value}'>";
 
-            hb.Append(tag.ToString(YTagRenderMode.StartTag));
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DecimalEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DecimalEditComponent('{id}', {Utility.JsonSerialize(setup)});");
-
-            return Task.FromResult(hb.ToString());
+            return Task.FromResult(tags);
         }
     }
 }

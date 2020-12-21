@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Blog.Views {
             if (model.Comments.Count == 0) {
                 hb.Append($@"
     <div class='t_nocomments'>
-        {Utility.HtmlEncode(this.__ResStr("nocommentsAdd", "Be the first to add a comment!"))}
+        {Utility.HE(this.__ResStr("nocommentsAdd", "Be the first to add a comment!"))}
     </div>");
             }
 
@@ -58,12 +58,12 @@ namespace YetaWF.Modules.Blog.Views {
                     if (comment.Deleted) {
                         hb.Append($@"
             <div class='t_boxdeleted'>
-                {Utility.HtmlEncode(this.__ResStr("deleted", "This comment has been deleted"))}
+                {Utility.HE(this.__ResStr("deleted", "This comment has been deleted"))}
             </div>");
                     } else if (!comment.Approved) {
                         hb.Append($@"
             <div class='t_boxnotapproved'>
-                {Utility.HtmlEncode(this.__ResStr("notApproved", "This comment has not yet been approved"))}
+                {Utility.HE(this.__ResStr("notApproved", "This comment has not yet been approved"))}
             </div>");
                     }
                 }
@@ -76,22 +76,22 @@ namespace YetaWF.Modules.Blog.Views {
                 }
 
                 hb.Append($@"
-            <div class='t_title'>{Utility.HtmlEncode(comment.Title)}</div>
+            <div class='t_title'>{Utility.HE(comment.Title)}</div>
             <div class='t_comment'>{comment.Comment}</div>
             <div class='t_boxinfo'>
-                <div class='t_cmtby'>{Utility.HtmlEncode(this.__ResStr("by", "By:"))}</div>
+                <div class='t_cmtby'>{Utility.HE(this.__ResStr("by", "By:"))}</div>
                 <div class='t_cmtauthor'>");
 
                 if (string.IsNullOrEmpty(comment.Website)) {
-                    hb.Append(Utility.HtmlEncode(comment.Name));
+                    hb.Append(Utility.HE(comment.Name));
                 } else {
-                    hb.Append($"<a href='{Utility.HtmlAttributeEncode(comment.Website)}' class='linkpreview-show' target='_blank' rel='nofollow noopener noreferrer'>{Utility.HtmlEncode(comment.Name)}</a>");
+                    hb.Append($"<a href='{Utility.HAE(comment.Website)}' class='linkpreview-show' target='_blank' rel='nofollow noopener noreferrer'>{Utility.HE(comment.Name)}</a>");
                 }
 
                 hb.Append($@"
                 </div>
-                <div class='t_cmton'>{Utility.HtmlEncode(this.__ResStr("on", "On:"))}</div>
-                <div class='t_cmtdate'>{Utility.HtmlEncode(Formatting.FormatDate(comment.DateCreated))}</div>
+                <div class='t_cmton'>{Utility.HE(this.__ResStr("on", "On:"))}</div>
+                <div class='t_cmtdate'>{Utility.HE(Formatting.FormatDate(comment.DateCreated))}</div>
             </div>
             <div class='t_boxactions'>
                 {await HtmlHelper.ForDisplayAsync(comment, nameof(comment.Actions))}

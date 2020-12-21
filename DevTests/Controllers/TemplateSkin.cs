@@ -22,27 +22,17 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
             public enum ControlStatusEnum { Normal, Disabled, }
 
-            [Caption("Page Skin (Required)"), Description("Page Skin (Required)")]
-            [UIHint("PageSkin"), Trim]
-            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public SkinDefinition PageSkinReq { get; set; }
-
-            [Caption("Popup Skin (Required)"), Description("Popup Skin (Required)")]
-            [UIHint("PopupSkin"), Trim]
-            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public SkinDefinition PopupSkinReq { get; set; }
-
-            [Caption("Page Skin"), Description("Page Skin (Required)")]
+            [Caption("Page Skin"), Description("Page Skin")]
             [UIHint("PageSkin"), Trim]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public SkinDefinition PageSkin { get; set; }
 
-            [Caption("Popup Skin"), Description("Popup Skin (Required)")]
+            [Caption("Popup Skin"), Description("Popup Skin")]
             [UIHint("PopupSkin"), Trim]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public SkinDefinition PopupSkin { get; set; }
 
-            [Caption("Module Skins"), Description("Module Skins (Required)")]
+            [Caption("Module Skins"), Description("Module Skins")]
             [UIHint("ModuleSkins"), Trim]
             public SerializableList<SkinDefinition> ModuleSkins { get; set; }
 
@@ -63,10 +53,8 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public ControlStatusEnum ControlStatus { get; set; }
 
             public Model() {
-                PageSkinReq = new SkinDefinition();
                 PageSkin = new SkinDefinition();
                 PageSkinRO = new SkinDefinition();
-                PopupSkinReq = new SkinDefinition();
                 PopupSkin = new SkinDefinition();
                 PopupSkinRO = new SkinDefinition();
                 ModuleSkins = new SerializableList<SkinDefinition>();

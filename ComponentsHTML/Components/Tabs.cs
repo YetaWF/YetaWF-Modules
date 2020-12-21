@@ -107,8 +107,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                     hb.Append($@"
         <li data-tab='{count}' role='tab' tabindex='{(active ? "0" : "-1")}' class='ui-tabs-tab ui-corner-top ui-tab ui-state-default {tabCss}' aria-controls='{tabId}' aria-labelledby='{tabId}_lb' aria-selected='{(active ? "true" : "false")}' aria-expanded='{(active ? "true" : "false")}'>
-            <a href='#{tabId}' {Basics.CssTooltip}='{Utility.HtmlAttributeEncode(tabEntry.ToolTip?.ToString())}' role='presentation' tabindex='-1' class='ui-tabs-anchor' id='{tabId}_lb'>
-                {Utility.HtmlEncode(tabEntry.Caption?.ToString())}
+            <a href='#{tabId}' {Basics.CssTooltip}='{Utility.HAE(tabEntry.ToolTip?.ToString())}' role='presentation' tabindex='-1' class='ui-tabs-anchor' id='{tabId}_lb'>
+                {Utility.HE(tabEntry.Caption?.ToString())}
             </a>
         </li>");
 
@@ -118,9 +118,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     string id = active ? $" id='{model.Id}_tab_active'" : "";
 
                     hb.Append(@$"
-        <li{id} data-tab='{count}' class='k-item k-state-default {tabCss}{(count==0 ? " k-first":"")}' {Basics.CssTooltip}='{Utility.HtmlAttributeEncode(tabEntry.ToolTip?.ToString())}'{tabCss} role='tab' aria-selected='{(active ? "true" : "false")}' aria-controls='{tabId}'>
+        <li{id} data-tab='{count}' class='k-item k-state-default {tabCss}{(count==0 ? " k-first":"")}' {Basics.CssTooltip}='{Utility.HAE(tabEntry.ToolTip?.ToString())}'{tabCss} role='tab' aria-selected='{(active ? "true" : "false")}' aria-controls='{tabId}'>
             <span class='k-loading k-complete'></span>
-            <span unselectable='on' class='k-link'>{Utility.HtmlEncode(tabEntry.Caption?.ToString())}</span>
+            <span unselectable='on' class='k-link'>{Utility.HE(tabEntry.Caption?.ToString())}</span>
         </li>");
 
                 }

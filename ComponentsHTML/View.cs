@@ -1,19 +1,14 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using YetaWF.Core.Components;
-using YetaWF.Core.Support;
-using YetaWF.Core.Addons;
-using YetaWF.Core.Pages;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.DependencyInjection;
-#else
-using System.Web.Routing;
-using System.Web.Mvc;
-#endif
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using YetaWF.Core.Addons;
+using YetaWF.Core.Components;
+using YetaWF.Core.Pages;
+using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -76,40 +71,24 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (string.IsNullOrWhiteSpace(ControllerName))
                 ControllerName = ModuleBase.Controller;
 
-            IDictionary<string, object> rvd = YHtmlHelper.AnonymousObjectToHtmlAttributes(HtmlAttributes);
+            IDictionary<string, object> attrs = YHtmlHelper.AnonymousObjectToHtmlAttributes(HtmlAttributes);
             if (SaveReturnUrl)
-                rvd.Add(Basics.CssSaveReturnUrl, "");
+                attrs.Add(Basics.CssSaveReturnUrl, string.Empty);
 
             string css = null;
             if (Manager.CurrentSite.FormErrorsImmed)
                 css = CssManager.CombineCss(css, "yValidateImmediately");
-            css = CssManager.CombineCss(css, Forms.CssFormAjax);
-            rvd.Add("class", css);
+            attrs.Add("class", css);
 
-            YTagBuilder tagBuilder = new YTagBuilder("form");
-            tagBuilder.MergeAttributes(rvd, true);
-            if (ModuleBase.FormAutoComplete)
-                tagBuilder.Attributes.Add("autocomplete", "on");
-            else
-                tagBuilder.Attributes.Add("autocomplete", "off");
-
-            string id = null;
-            if (tagBuilder.Attributes.ContainsKey("id")) {
-                id = (string)tagBuilder.Attributes["id"];
-            } else {
-                id = Manager.UniqueId();
-                tagBuilder.Attributes.Add("id", id);
-            }
             string formAction;
-#if MVC6
             System.IServiceProvider services = HtmlHelper.ActionContext.HttpContext.RequestServices;
             IUrlHelper urlHelper = services.GetRequiredService<IUrlHelperFactory>().GetUrlHelper(HtmlHelper.ActionContext);
             formAction = urlHelper.Action(action: ActionName, controller: ControllerName, new { area = HtmlHelper.RouteData.Values["area"] });
-#else
-            formAction = UrlHelper.GenerateUrl(null /* routeName */, ActionName, ControllerName, null, RouteTable.Routes, HtmlHelper.RequestContext, true /* includeImplicitMvcValues */);
-#endif
-            tagBuilder.MergeAttribute("action", formAction, true);
-            tagBuilder.MergeAttribute("method", Method, true);
+
+            HtmlBuilder hb = new HtmlBuilder();
+            string id = HtmlBuilder.GetId(attrs);
+            hb.Append($@"
+<form id='{id}' class='{Forms.CssFormAjax}{HtmlBuilder.GetClasses(attrs)}' autocomplete='{(ModuleBase.FormAutoComplete ? "on" : "off")}' action='{Utility.HAE(formAction)}' method='{Method}'{HtmlBuilder.Attributes(attrs)}>");
 
             // show errors if already present
             if (!HtmlHelper.ModelState.IsValid) {
@@ -120,7 +99,7 @@ if ($YetaWF.Forms.hasErrors(f))
 ");
             }
 
-            return tagBuilder.ToString(YTagRenderMode.StartTag);
+            return hb.ToString();
         }
         /// <summary>
         /// Renders the ending &lt;/form&gt; tag.

@@ -5,7 +5,6 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
-using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.PageEdit.Controllers;
 using YetaWF.Modules.PageEdit.Modules;
@@ -27,12 +26,9 @@ namespace YetaWF.Modules.PageEdit.Views {
 
             ModuleAction action = Manager.EditMode ? module.GetAction_SwitchToView() : module.GetAction_SwitchToEdit();
             if (action != null) {
-                YTagBuilder tag = new YTagBuilder("div");
-                tag.Attributes.Add("id", "yEditControlDiv");
                 if (Manager.SkinInfo.UsingBootstrap && Manager.SkinInfo.UsingBootstrapButtons)
                     action.CssClass = CssManager.CombineCss(action.CssClass, "btn btn-outline-primary");
-                tag.InnerHtml = await action.RenderAsButtonIconAsync("yEditControlButton");
-                return tag.ToString(YTagRenderMode.Normal);
+                return $"<div id='yEditControlDiv'>{await action.RenderAsButtonIconAsync("yEditControlButton")}</div>";
             }
             return null;
         }

@@ -71,21 +71,11 @@ namespace YetaWF.Modules.Blog.Components {
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
         public async Task<string> RenderAsync(string model) {
-
-            HtmlBuilder hb = new HtmlBuilder();
-
-            hb.Append($@"<div class='yt_yetawf_blog_gravatar t_display'>");
-
-            YTagBuilder tagImg = new YTagBuilder("img");
             BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
             string url = GravatarUrl(model, config.GravatarSize, config.GravatarRating, config.GravatarDefault);
-            tagImg.Attributes.Add("src", url);
-            tagImg.Attributes.Add("alt", this.__ResStr("altGravatar", "Gravatar image - {0}", model));
-            hb.Append(tagImg.ToString(YTagRenderMode.StartTag));
+            string alt = this.__ResStr("altGravatar", "Gravatar image - {0}", model);
 
-            hb.Append($@"</div>");
-
-            return hb.ToString();
+            return $@"<img{FieldSetup(FieldType.Anonymous)} class='yt_yetawf_blog_gravatar t_display{GetClasses()}' src='{Utility.HAE(url)}' alt='{alt}'></div>";
         }
     }
 }

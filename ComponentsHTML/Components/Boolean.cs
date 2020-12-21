@@ -61,16 +61,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(bool? model) {
 
-            YTagBuilder tag = new YTagBuilder("input");
-            tag.AddCssClass("yt_boolean");
-            tag.AddCssClass("t_display");
-            FieldSetup(tag, FieldType.Anonymous);
-            tag.Attributes.Add("type", "checkbox");
-            tag.Attributes.Add("disabled", "disabled");
+            string check = null;
             if (model != null && (bool)model)
-                tag.Attributes.Add("checked", "checked");
-            return Task.FromResult(tag.ToString(YTagRenderMode.StartTag));
-
+                check = " checked='checked'";
+            string tag = $@"<input{FieldSetup(FieldType.Anonymous)} type='checkbox' disabled='disabled'{check} class='yt_boolean t_display{GetClasses()}' >";
+            return Task.FromResult(tag);
         }
     }
     /// <summary>
@@ -104,26 +99,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(bool? model) {
 
-            YTagBuilder tag = new YTagBuilder("input");
-            tag.AddCssClass("yt_boolean");
-            tag.AddCssClass("t_edit");
-            FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Anonymous);
-            tag.Attributes.Add("id", ControlId);
-            tag.Attributes.Add("type", "checkbox");
-            tag.Attributes.Add("value", "true");
+            string check = null;
             if (model != null && (bool)model)
-                tag.Attributes.Add("checked", "checked");
-
+                check = " checked='checked'";
+            string tag = $@"<input id='{ControlId}'{FieldSetup(Validation ? FieldType.Validated : FieldType.Anonymous)} type='checkbox'{check} value='true' class='yt_boolean t_edit{GetClasses()}'>";
             // add a hidden field so we always get "something" for check boxes (that means we have to deal with duplicates names)
-            YTagBuilder tagHidden = new YTagBuilder("input");
-            FieldSetup(tagHidden, FieldType.Normal);
-            tagHidden.Attributes.Add("type", "hidden");
-            tagHidden.Attributes.Add("value", "false");
-            tagHidden.AddCssClass("yform-novalidate");
+            string tagHidden = $@"<input{FieldSetup(FieldType.Normal)} type='hidden' value='false' class='yt_boolean t_edit yform-novalidate'>";
 
-            //Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.BooleanEditComponent('{ControlId}');");
+            //Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.BooleanEditComponent('{id}');");
 
-            return Task.FromResult(tag.ToString(YTagRenderMode.StartTag) + tagHidden.ToString(YTagRenderMode.StartTag));
+            return Task.FromResult(tag + tagHidden);
         }
     }
 }

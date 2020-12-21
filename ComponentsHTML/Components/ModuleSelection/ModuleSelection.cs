@@ -41,17 +41,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         internal string GetModuleLink(Guid? model, bool force = false) {
 
             if (!force) {
-                if (model == null || model == Guid.Empty) return "";
+                if (model == null || model == Guid.Empty) return string.Empty;
             }
-            YTagBuilder tag = new YTagBuilder("a");
 
-            tag.MergeAttribute("href", ModuleDefinition.GetModulePermanentUrl(model ?? Guid.Empty));
-            tag.MergeAttribute("target", "_blank");
-            tag.MergeAttribute("rel", "nofollow noopener noreferrer");
-            tag.Attributes.Add(Basics.CssTooltip, __ResStr("linkTT", "Click to preview the module in a new window - not all modules can be displayed correctly and may require additional parameters"));
+            string tt = __ResStr("linkTT", "Click to preview the module in a new window - not all modules can be displayed correctly and may require additional parameters");
 
-            tag.InnerHtml = tag.InnerHtml + ImageHTML.BuildKnownIcon("#ModulePreview", sprites: Info.PredefSpriteIcons);
-            return tag.ToString(YTagRenderMode.Normal);
+            string image = ImageHTML.BuildKnownIcon("#ModulePreview", sprites: Info.PredefSpriteIcons);
+            return $"<a href='{ModuleDefinition.GetModulePermanentUrl(model ?? Guid.Empty)}' target='_blank' rel='nofollow noopener noreferrer' {Basics.CssTooltip}='{HAE(tt)}'>{image}</a>";
         }
     }
 
@@ -78,11 +74,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(Guid? model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
-
-            hb.Append(@"
-<div class='yt_moduleselection t_display'>");
-
             ModuleDefinition mod = null;
             if (model != null && model != Guid.Empty)
                 mod = await ModuleDefinition.LoadAsync((Guid)model, AllowNone: true);
@@ -98,29 +89,23 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 modName = __ResStr("name", "{0} - {1}", package.Name, mod.Name);
             }
 
-            YTagBuilder tag = new YTagBuilder("div");
-            tag.AddCssClass("t_select");
-            tag.SetInnerText(modName);
-            hb.Append(tag.ToString(YTagRenderMode.Normal));
+            string modDiv = string.Empty;
+            if (mod != null)
+                modDiv = $"<div class='t_link'>{GetModuleLink(model)}</div>";
 
-            if (mod != null) {
-                tag = new YTagBuilder("div");
-                tag.AddCssClass("t_link");
-                tag.InnerHtml = GetModuleLink(model);
-                hb.Append(tag.ToString(YTagRenderMode.Normal));
-            }
-
-            tag = new YTagBuilder("div");
-            tag.AddCssClass("t_description");
+            string desc;
             if (mod == null)
-                tag.InnerHtml = "&nbsp;";
+                desc = "&nbsp;";
             else
-                tag.SetInnerText(mod.Description.ToString());
-            hb.Append(tag.ToString(YTagRenderMode.Normal));
+                desc = HE(mod.Description.ToString());
 
-            hb.Append(@"
-</div>");
-            return hb.ToString();
+            return $@"
+<div class='yt_moduleselection t_display'>
+    <div class='t_select'>{HE(modName)}</div>
+    {modDiv}
+    <div class='t_description'>{desc}</div>
+</div>";
+
         }
     }
 

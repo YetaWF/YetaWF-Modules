@@ -65,29 +65,25 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public async Task<string> RenderAsync(DateTime model) {
             return await RenderAsync((DateTime?)model);
         }
+
         /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(DateTime? model) {
-            YTagBuilder tag = new YTagBuilder("div");
-            FieldSetup(tag, FieldType.Anonymous);
-
             if (model != null && (DateTime)model > DateTime.MinValue && (DateTime)model < DateTime.MaxValue) {
                 DateTime last = (DateTime)model;
                 TimeSpan diff = last - DateTime.UtcNow;
                 string words = HE(Formatting.FormatTimeSpanInWords(diff));
                 string wordsTT = Formatting.FormatLongDateTime(last);
-                tag.Attributes.Add(Basics.CssTooltip, wordsTT);
-                tag.SetInnerText(words);
+                return Task.FromResult($@"<div{FieldSetup(FieldType.Anonymous)}{HtmlBuilder.GetClassAttribute(HtmlAttributes)} {Basics.CssTooltip}='{HAE(wordsTT)}'>{HE(words)}</div>");
             } else {
                 string text;
                 if (!TryGetSiblingProperty($"{PropertyName}_EmptyHTML", out text))
                     return Task.FromResult<string>(null);
-                tag.InnerHtml = text;
+                return Task.FromResult($@"<div{FieldSetup(FieldType.Anonymous)}{HtmlBuilder.GetClassAttribute(HtmlAttributes)}>{text}</div>");
             }
-            return Task.FromResult(tag.ToString(YTagRenderMode.Normal));
         }
     }
 }

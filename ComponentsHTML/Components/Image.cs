@@ -49,14 +49,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="ExternalUrl">Defines whether a full URL including domain is rendered (true) or whether just the path is used (false).</param>
         /// <param name="SecurityType">The security type of the rendered image URL.</param>
         /// <returns></returns>
-        public static string RenderImage(string imageType, int width, int height, string model,
-                string CacheBuster = null, string Alt = null, bool ExternalUrl = false, PageDefinition.PageSecurityType SecurityType = PageDefinition.PageSecurityType.Any) {
+        public static string RenderImage(string imageType, int width, int height, string model, string CacheBuster = null, string Alt = null, bool ExternalUrl = false, PageDefinition.PageSecurityType SecurityType = PageDefinition.PageSecurityType.Any) {
             string url = ImageHTML.FormatUrl(imageType, null, model, width, height, CacheBuster: CacheBuster, ExternalUrl: ExternalUrl, SecurityType: SecurityType);
-            YTagBuilder img = new YTagBuilder("img");
-            img.AddCssClass("t_preview");
-            img.Attributes.Add("src", url);
-            img.Attributes.Add("alt", Alt ?? __ResStr("altImg", "Image"));
-            return img.ToString(YTagRenderMode.StartTag);
+            return $"<img class='t_preview' src='{HAE(url)}' alt='{HAE(Alt ?? __ResStr("altImg", "Image"))}'>";
         }
         internal static async Task<string> RenderImageAttributesAsync(string model) {
             if (model == null) return "";
@@ -98,9 +93,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(string model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
-            hb.Append("<div class='yt_image t_display'>");
-
             string imageType = PropData.GetAdditionalAttributeValue<string>("ImageType", null);
             int width = PropData.GetAdditionalAttributeValue("Width", 0);
             int height = PropData.GetAdditionalAttributeValue("Height", 0);
@@ -109,11 +101,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 if (width != 0 || height != 0) throw new InternalError("Can't use Width or Height with external Urls");
 
-                YTagBuilder img = new YTagBuilder("img");
-                img.Attributes.Add("src", model);
-                if (!img.Attributes.ContainsKey("alt"))
-                    img.Attributes.Add("alt", __ResStr("altImage", "Image"));
-                hb.Append(img.ToString(YTagRenderMode.Normal));
+                return Task.FromResult($@"<div class='yt_image t_display'><img src='{Utility.HAE(model)}' alt='{Utility.HAE(__ResStr("altImage", "Image"))}'></div>");
 
             } else {
 
@@ -130,19 +118,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 bool linkToImage = PropData.GetAdditionalAttributeValue("LinkToImage", false);
                 if (linkToImage) {
-                    YTagBuilder link = new YTagBuilder("a");
                     string imgUrl = ImageHTML.FormatUrl(imageType, null, model);
-                    link.MergeAttribute("href", imgUrl);
-                    link.MergeAttribute("target", "_blank");
-                    link.MergeAttribute("rel", "noopener noreferrer");
-                    link.InnerHtml = imgTag;
-                    hb.Append(link.ToString(YTagRenderMode.Normal));
+                    return Task.FromResult($@"<div class='yt_image t_display'><a href='{Utility.HAE(imgUrl)}' target='_blank' rel='noopener noreferrer'>{imgTag}</a></div>");
                 } else
-                    hb.Append(imgTag);
+                    return Task.FromResult($@"<div class='yt_image t_display'>{imgTag}</div>");
             }
-
-            hb.Append("</div>");
-            return Task.FromResult(hb.ToString());
         }
     }
 
@@ -192,8 +172,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 UploadId = uploadId,
             };
 
-            HtmlBuilder hb = new HtmlBuilder();
-            hb.Append($@"
+            string tags = $@"
 <div class='yt_image t_edit' id='{ControlId}'>
     {await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model, "Hidden", HtmlAttributes: new { __NoTemplate = true }, Validation: true)}
     <div class='t_image'>
@@ -206,11 +185,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         <input type='button' class='t_clear' value='{__ResStr("btnClear", "Clear")}' title='{__ResStr("txtClear", "Click to clear the current image")}' />
     </div>
     {await HtmlHelper.ForEditContainerAsync(setupUpload, "FileUpload1", HtmlAttributes: new { id = uploadId })}
-</div>");
+</div>";
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ImageEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
-            return hb.ToString();
+            return tags;
         }
     }
 }

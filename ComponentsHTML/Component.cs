@@ -1,7 +1,6 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
@@ -11,12 +10,8 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using System.Collections.Generic;
 using YetaWF.Core.Extensions;
-#if MVC6
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-#else
-using System.Web.Mvc;
-using System.Web.Mvc.Html;
-#endif
+using YetaWF.Core.Pages;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -72,74 +67,67 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         /// <summary>
-        /// Adds a unique ID to the specified tag.
+        /// Returns HTML attributes and name= attribute for the component, used on the HTML tag.
         /// </summary>
-        /// <param name="tag">The tag to which the ID is added</param>
-        /// <returns>Returns the ID.</returns>
-        public string MakeId(YTagBuilder tag) {
-            string id = (from a in tag.Attributes where string.Compare(a.Key, "id", true) == 0 select a.Value).FirstOrDefault();
-            if (string.IsNullOrWhiteSpace(id)) {
-                id = Manager.UniqueId();
-                tag.Attributes.Add("id", id);
-            }
-            return id;
-        }
-
-        /// <summary>
-        /// Adds HTML attributes and name= attribute to a tag.
-        /// </summary>
-        /// <param name="tag">The tag to which attributes are added.</param>
         /// <param name="fieldType">The type of the field.</param>
-        /// <remarks>This is used for the main tag of a template.
-        ///
-        /// Also adds validation attributes depending on the field's type.</remarks>
-        public void FieldSetup(YTagBuilder tag, FieldType fieldType) {
-            if (HtmlAttributes != null)
-                tag.MergeAttributes(HtmlAttributes, false);
+        /// <remarks>FieldSetup should be call first, as it adds entries to the HtmlAttributes collection, including additional CSS classes.
+        /// This is used for the main tag of a template. Automatically adds the components HtmlAttributes.
+        /// 
+        /// Adds validation attributes depending on the field's type <paramref name="fieldType"/>.</remarks>
+        public string FieldSetup(FieldType fieldType) {
+            HtmlBuilder hb = new HtmlBuilder();
             switch (fieldType) {
                 case FieldType.Anonymous:
                     break;
                 case FieldType.Normal:
-                    tag.MergeAttribute("name", FieldName, false);
+                    hb.Append($@" name='{FieldName}'");
                     break;
                 case FieldType.Validated:
-                    tag.MergeAttribute("name", FieldName, false);
+                    hb.Append($@" name='{FieldName}'");
                     // error state
-                    AddErrorClass(tag);
+                    string errClass = GetErrorClass();
+                    if (errClass != null)
+                        HtmlAttributes.Add("class", errClass);
                     // client side validation
-                    AddValidation(tag);
+                    string validations = GetValidation();
+                    if (validations != null)
+                        HtmlAttributes.Add("data-v", validations);
                     break;
             }
+            hb.Append(HtmlBuilder.Attributes(HtmlAttributes));
+            return hb.ToString();
         }
-        private void AddErrorClass(YTagBuilder tagBuilder) {
-            string cls = GetErrorClass();
-            if (!string.IsNullOrWhiteSpace(cls))
-                tagBuilder.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule(cls));
+        /// <summary>
+        /// Returns the CSS classes defined for this component.
+        /// </summary>
+        /// <returns>Returns the CSS classes defined in the HtmlAttributes property. An empty string is returned if no classes are defined.</returns>
+        public string GetClasses() {
+            return HtmlBuilder.GetClasses(HtmlAttributes);
         }
+        /// <summary>
+        /// Returns a complete class= CSS attribute including all classes defined in the HtmlAttributes property.
+        /// </summary>
+        /// <param name="extraCss">Optional additional CSS classes.</param>
+        /// <returns>Returns a complete class= CSS attribute including all classes defined in the HtmlAttributes property. An empty string is returned if no classes are defined.</returns>
+        public string GetClassAttribute(string extraCss = null) {
+            string css = extraCss;
+            if (HtmlAttributes != null && HtmlAttributes.ContainsKey("class"))
+                css = CssManager.CombineCss(css, (string)HtmlAttributes["class"]);
+            if (string.IsNullOrWhiteSpace(css))
+                return string.Empty;
+            return $" class='{css}'";
+        }
+
         internal string GetErrorClass() {
-#if MVC6
             ModelStateEntry modelState;
-#else
-            ModelState modelState;
-#endif
             if (HtmlHelper.ModelState.TryGetValue(FieldName, out modelState)) {
                 if (modelState.Errors.Count > 0)
                     return "v-valerror";
             }
             return null;
         }
-        private void AddValidation(YTagBuilder tagBuilder) {
-            //$$$ // add some default validations
-            //if (!PropData.ReadOnly) {
-            //    if (PropData.PropInfo.PropertyType == typeof(DateTime) || PropData.PropInfo.PropertyType == typeof(DateTime?)) {
-            //        tagBuilder.Attributes["data-val-date"] = __ResStr("valDate", "Please enter a valid value for field '{0}'", PropData.GetCaption(Container));
-            //        tagBuilder.MergeAttribute("data-val", "true");
-            //    } else if (PropData.PropInfo.PropertyType == typeof(int) || PropData.PropInfo.PropertyType == typeof(int?) ||
-            //            PropData.PropInfo.PropertyType == typeof(long) || PropData.PropInfo.PropertyType == typeof(long?)) {
-            //        tagBuilder.Attributes["data-val-number"] = __ResStr("valNumber", "Please enter a valid number for field '{0}'", PropData.GetCaption(Container));
-            //        tagBuilder.MergeAttribute("data-val", "true");
-            //    }
-            //}
+
+        private string GetValidation() {
             // Build validation attribute
             List<object> objs = new List<object>();
             foreach (YIClientValidation val in PropData.ClientValidationAttributes) {
@@ -148,7 +136,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 // but breaks when used elsewhere (like here) so we only call GetCaption if there is a validation attribute (FOR NOW).
                 // That whole resource  redirect business needs to be fixed (old and ugly, and fragile).
                 string caption = PropData.GetCaption(Container);
-                ValidationBase valBase = val.AddValidation(Container, PropData, caption, tagBuilder);
+                ValidationBase valBase = val.AddValidation(Container, PropData, caption);
                 if (valBase != null) {
                     string method = valBase.Method;
                     if (string.IsNullOrWhiteSpace(method))
@@ -163,9 +151,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         throw new InternalError($"No method name found after removing Attribute and Validation suffixes");
                 }
             }
-            if (objs.Count > 0)
-                tagBuilder.Attributes.Add("data-v", Utility.JsonSerialize(objs));
+            return objs.Count > 0 ? Utility.JsonSerialize(objs) : null;
         }
+
         /// <summary>
         /// Returns the client-side validation message for a component with the specified field name.
         /// </summary>

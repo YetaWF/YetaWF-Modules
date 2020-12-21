@@ -55,12 +55,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(object model) {
-
-            YTagBuilder tag = new YTagBuilder("span");
-            FieldSetup(tag, FieldType.Anonymous);
-            tag.InnerHtml = ImageHTML.BuildKnownIcon("#RemoveLight", title: __ResStr("altRemove", "Remove"), name: "DeleteAction");
-
-            return Task.FromResult(tag.ToString(YTagRenderMode.Normal));
+            return Task.FromResult($"<span{FieldSetup(FieldType.Anonymous)}{HtmlBuilder.GetClassAttribute(HtmlAttributes)}>{ImageHTML.BuildKnownIcon("#RemoveLight", title: __ResStr("altRemove", "Remove"), name: "DeleteAction")}</span>");
         }
     }
 }

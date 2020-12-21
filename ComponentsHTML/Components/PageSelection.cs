@@ -115,7 +115,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(Guid? model) {
-            HtmlBuilder hb = new HtmlBuilder();
 
             // dropdown
             List<SelectionItem<string>> list;
@@ -129,36 +128,29 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             string ddList = await DropDownListComponent.RenderDropDownListAsync(this, (model ?? Guid.Empty).ToString(), list, null);
 
-            // link
-            YTagBuilder tag = new YTagBuilder("a");
-
             PageDefinition page = null;
             if (model != null)
                 page = await PageDefinition.LoadAsync((Guid)model);
 
-            tag.MergeAttribute("href", (page != null ? page.EvaluatedCanonicalUrl : ""));
-            tag.MergeAttribute("target", "_blank");
-            tag.MergeAttribute("rel", "nofollow noopener noreferrer");
-            tag.Attributes.Add(Basics.CssTooltip, __ResStr("linkTT", "Click to preview the page in a new window - not all pages can be displayed correctly and may require additional parameters"));
+            // link
+            string href = page != null ? page.EvaluatedCanonicalUrl : string.Empty;
+            string tt =__ResStr("linkTT", "Click to preview the page in a new window - not all pages can be displayed correctly and may require additional parameters");
 
-            tag.InnerHtml = tag.InnerHtml + ImageHTML.BuildKnownIcon("#PagePreview", sprites: Info.PredefSpriteIcons);
-            string linkTag = tag.ToString(YTagRenderMode.Normal);
-
-            hb.Append($@"
+            string tags = $@"
 <div id='{DivId}' class='yt_pageselection t_edit'>
     <div class='t_select'>
-        {ddList.ToString()}
+        {ddList}
     </div>
     <div class='t_link'>
-        {linkTag}
+        <a href='{HAE(href)}' target='_blank' rel='nofollow noopener noreferrer' {Basics.CssTooltip}='{HAE(tt)}'>{ImageHTML.BuildKnownIcon("#PagePreview", sprites: Info.PredefSpriteIcons)}</a>
     </div>
     <div class='t_description'>
     </div>
-</div>");
+</div>";
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PageSelectionEditComponent('{DivId}');");
 
-            return hb.ToString();
+            return tags;
         }
     }
 }

@@ -76,7 +76,7 @@ namespace YetaWF.Modules.Languages.Components {
                 hb.Append($@"
     <div class='t_enum'>
         <div class='t_enumtype'>
-            {Utility.HtmlEncode(uiEnumData.Name)}
+            {Utility.HE(uiEnumData.Name)}
         </div>");
 
                 using (Manager.StartNestedComponent($"{FieldName}[{enumIndex}]")) {

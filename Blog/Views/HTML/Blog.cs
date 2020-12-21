@@ -37,8 +37,8 @@ namespace YetaWF.Modules.Blog.Views {
 
                 hb.Append($@"
 <h2>
-    <a href='{Utility.HtmlAttributeEncode(await BlogConfigData.GetEntryCanonicalNameAsync(blogEntry.Identity))}' class='yaction-link'>
-        {Utility.HtmlEncode(blogEntry.Title.ToString())}
+    <a href='{Utility.HAE(await BlogConfigData.GetEntryCanonicalNameAsync(blogEntry.Identity))}' class='yaction-link'>
+        {Utility.HE(blogEntry.Title.ToString())}
     </a>
 </h2>
 <div class='t_entry t_entry{count}'>

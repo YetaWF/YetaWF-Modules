@@ -78,42 +78,34 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             if (string.IsNullOrWhiteSpace(hrefUrl) || (!hrefUrl.StartsWith("http://") && !hrefUrl.StartsWith("https://") && !hrefUrl.StartsWith("/"))) {
                 // no link
-                YTagBuilder tag = new YTagBuilder("span");
-                FieldSetup(tag, FieldType.Anonymous);
-
-                string cssClass = PropData.GetAdditionalAttributeValue("CssClass", "");
+                string cssClass = PropData.GetAdditionalAttributeValue("CssClass", string.Empty);
                 if (!string.IsNullOrWhiteSpace(cssClass))
-                    tag.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule(cssClass));
+                    cssClass = Manager.AddOnManager.CheckInvokedCssModule(cssClass);
 
-                tag.SetInnerText(model);
-                hb.Append(tag.ToString(YTagRenderMode.Normal));
+                hb.Append($"<span{FieldSetup(FieldType.Anonymous)}{GetClassAttribute(cssClass)}>{HE(model)}</span>");
 
             } else {
                 // link
-                YTagBuilder tag = new YTagBuilder("a");
-                FieldSetup(tag, FieldType.Anonymous);
 
                 string cssClass = PropData.GetAdditionalAttributeValue("CssClass", "");
                 if (!string.IsNullOrWhiteSpace(cssClass))
-                    tag.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule(cssClass));
+                    cssClass = Manager.AddOnManager.CheckInvokedCssModule(cssClass);
 
-                tag.MergeAttribute("href", hrefUrl);
-                tag.MergeAttribute("target", "_blank");
-                tag.MergeAttribute("rel", "nofollow noopener noreferrer");
                 string text;
                 if (!TryGetSiblingProperty($"{PropertyName}_Text", out text))
                     text = model;
-                tag.SetInnerText(text);
-                string tooltip = null;
-                TryGetSiblingProperty($"{PropertyName}_ToolTip", out tooltip);
+
+                string tt = string.Empty;
+                TryGetSiblingProperty($"{PropertyName}_ToolTip", out string tooltip);
                 if (!string.IsNullOrWhiteSpace(tooltip))
-                    tag.MergeAttribute(Basics.CssTooltip, tooltip);
+                    tt = $" {Basics.CssTooltip}='{HAE(tooltip)}'";
 
                 // image
-                if (PropData.GetAdditionalAttributeValue("ShowImage", true)) {
-                    tag.InnerHtml = tag.InnerHtml + ImageHTML.BuildKnownIcon("#UrlRemote", sprites: Info.PredefSpriteIcons);
-                }
-                hb.Append(tag.ToString(YTagRenderMode.Normal));
+                string image = string.Empty;
+                if (PropData.GetAdditionalAttributeValue("ShowImage", true))
+                    image = ImageHTML.BuildKnownIcon("#UrlRemote", sprites: Info.PredefSpriteIcons);
+
+                hb.Append($"<a{FieldSetup(FieldType.Anonymous)} href='{HAE(hrefUrl)}' target='_blank' rel='nofollow noopener noreferrer'{GetClassAttribute(cssClass)}{tt}>{HE(text)}{image}</a>");
             }
             hb.Append("</div>");
             return Task.FromResult(hb.ToString());
@@ -175,20 +167,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             };
 
             hb.Append($@"
-<div id='{ControlId}' class='yt_url t_edit'>");
-
-            YTagBuilder tag = new YTagBuilder("input");
-            tag.AddCssClass("t_hidden");
-            tag.Attributes["type"] = "hidden";
-            FieldSetup(tag, FieldType.Validated);
-            tag.MergeAttribute("value", model);
-            hb.Append(tag.ToString(YTagRenderMode.StartTag));
+<div id='{ControlId}' class='yt_url t_edit'>
+    <input{FieldSetup(FieldType.Validated)} type='hidden' class='t_hidden' value='{model}'>");
 
             using (Manager.StartNestedComponent(FieldName)) {
 
                 hb.Append($@"
-    {await HtmlHelper.ForEditAsync(ui, nameof(ui.UrlType), Validation: false)}
-");
+    {await HtmlHelper.ForEditAsync(ui, nameof(ui.UrlType), Validation: false)}");
 
                 if ((type & UrlTypeEnum.Local) != 0) {
                     hb.Append($@"
@@ -205,25 +190,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
 
             // link
-            tag = new YTagBuilder("a");
-            tag.MergeAttribute("href", Utility.UrlEncodePath(model));
-            tag.MergeAttribute("target", "_blank");
-            tag.MergeAttribute("rel", "nofollow noopener noreferrer");
-
-            tag.InnerHtml = tag.InnerHtml + ImageHTML.BuildKnownIcon("#UrlRemote", sprites: Info.PredefSpriteIcons);
-            string link = tag.ToString(YTagRenderMode.Normal);
+            hb.Append($@"
+    <div class='t_link'>
+        <a href='{HAE(model)}' target='_blank' rel='nofollow noopener noreferrer'>{ImageHTML.BuildKnownIcon("#UrlRemote", sprites: Info.PredefSpriteIcons)}</a>
+    </div>
+</div>");
 
             UrlEditSetup setup = new UrlEditSetup {
                 Type = type,
                 Url = model,
             };
-
-            hb.Append($@"
-    <div class='t_link'>
-        {link}
-    </div>
-</div>");
-
             Manager.ScriptManager.AddLast($"new YetaWF_ComponentsHTML.UrlEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
             return hb.ToString();

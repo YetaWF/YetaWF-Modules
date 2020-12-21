@@ -265,22 +265,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             bool showVariables = YetaWF.Core.Localize.UserSettings.GetProperty<bool>("ShowVariables");
 
             // property table
-            HtmlBuilder hbProps = new HtmlBuilder();
             string divId = Manager.UniqueId();
-            hbProps.Append($@"
+            string props = $@"
 <div id='{divId}' class='yt_propertylist {(ReadOnly ? "t_display" : "t_edit")}'>
    {await RenderHiddenAsync(model)}
    {await RenderListAsync(model, null, showVariables, ReadOnly)}
-</div>");
+</div>";
 
             if (!string.IsNullOrWhiteSpace(classData.Legend)) {
-                YTagBuilder tagFieldSet = new YTagBuilder("fieldset");
-                YTagBuilder tagLegend = new YTagBuilder("legend");
-                tagLegend.SetInnerText(classData.Legend);
-                tagFieldSet.InnerHtml = tagLegend.ToString(YTagRenderMode.Normal) + hbProps.ToString();
-                hb.Append(tagFieldSet.ToString(YTagRenderMode.Normal));
+                hb.Append($@"<fieldset><legend>{HE(classData.Legend)}</legend>{props}</fieldset>");
             } else {
-                hb.Append(hbProps.ToString());
+                hb.Append(props);
             }
             RenderFooter(hb, classData);
 

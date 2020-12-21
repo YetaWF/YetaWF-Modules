@@ -3,13 +3,8 @@
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
-#if MVC6
-#else
-using System.Web.Helpers;
-using System.Web.Mvc;
-using System.Web.Mvc.Html;
-#endif
 
 namespace YetaWF.Modules.ComponentsHTML {
 
@@ -25,31 +20,24 @@ namespace YetaWF.Modules.ComponentsHTML {
         /// <returns>Returns the complete view as HTML.</returns>
         public Task<string> RenderViewAsync(YHtmlHelper htmlHelper, ModuleDefinition module, string viewHtml, bool UsePartialFormCss) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+            string css = Manager.AddOnManager.CheckInvokedCssModule(Forms.CssFormPartial);
 
-            YTagBuilder tag = new YTagBuilder("div");
-            tag.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule(Forms.CssFormPartial));
+            string id = null;
             string divId = null;
             if (Manager.IsPostRequest) {
                 divId = Manager.UniqueId();
-                tag.Attributes.Add("id", divId);
+                id = $" id='{divId}'";
             } else {
-                if (UsePartialFormCss && !Manager.IsInPopup && Manager.ActiveDevice != YetaWFManager.DeviceSelected.Mobile &&
-                        !string.IsNullOrWhiteSpace(Manager.SkinInfo.PartialFormCss) && module.UsePartialFormCss)
-                    tag.AddCssClass(Manager.SkinInfo.PartialFormCss);
+                if (UsePartialFormCss && !Manager.IsInPopup && Manager.ActiveDevice != YetaWFManager.DeviceSelected.Mobile && !string.IsNullOrWhiteSpace(Manager.SkinInfo.PartialFormCss) && module.UsePartialFormCss)
+                    css = CssManager.CombineCss(css, Manager.SkinInfo.PartialFormCss);
             }
-            hb.Append(tag.ToString(YTagRenderMode.StartTag));
-            hb.Append(htmlHelper.AntiForgeryToken());
-            hb.Append($@"<input name='{Basics.ModuleGuid}' type='hidden' value='{module.ModuleGuid}' />");
 
-            hb.Append(viewHtml);
+            string tags = $@"<div{id} class='{css}'>{htmlHelper.AntiForgeryToken()}<input name='{Basics.ModuleGuid}' type='hidden' value='{module.ModuleGuid}' />{viewHtml}</div>";
 
-            hb.Append(tag.ToString(YTagRenderMode.EndTag));
-
-            if (divId != null)
+            if (Manager.IsPostRequest)
                 Manager.ScriptManager.AddLast($"$YetaWF.Forms.initPartialForm('{divId}');");
 
-            return Task.FromResult(hb.ToString());
+            return Task.FromResult(tags);
         }
     }
 }

@@ -58,13 +58,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(DayTimeRange model) {
-            HtmlBuilder hb = new HtmlBuilder();
             if (model != null) {
-                YTagBuilder tag = new YTagBuilder("div");
-                tag.AddCssClass("yt_daytimerange");
-                tag.AddCssClass("t_display");
-                FieldSetup(tag, FieldType.Anonymous);
-
                 string s = null;
                 if (model.Start != null && model.End != null) {
                     if (model.Start2 != null && model.End2 != null) {
@@ -74,10 +68,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     }
                 } else
                     s = __ResStr("time0", "");
-                tag.SetInnerText(s);
-                hb.Append(tag.ToString(YTagRenderMode.Normal));
+                return Task.FromResult($@"<div{FieldSetup(FieldType.Anonymous)} class='yt_daytimerange t_display{GetClasses()}' >{HAE(s)}</div>");
             }
-            return Task.FromResult(hb.ToString());
+            return Task.FromResult(string.Empty);
         }
     }
 
@@ -205,7 +198,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(DayTimeRangeComponent), name, defaultValue, parms); }
 
             public DayTimeRangeToValidation() { }
-            public ValidationBase AddValidation(object container, PropertyData propData, string caption, YTagBuilder tag) {
+            public ValidationBase AddValidation(object container, PropertyData propData, string caption) {
                 return new ValidationBase {
                     Method = nameof(DayTimeRangeToValidation),
                     Message = __ResStr("dtrTo", "The end time in the field labeled '{0}' must be later than the start time", caption),
@@ -219,7 +212,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(DayTimeRangeComponent), name, defaultValue, parms); }
 
             public DayTimeRangeFrom2Validation() { }
-            public ValidationBase AddValidation(object container, PropertyData propData, string caption, YTagBuilder tag) {
+            public ValidationBase AddValidation(object container, PropertyData propData, string caption) {
                 return new ValidationBase {
                     Method = nameof(DayTimeRangeFrom2Validation),
                     Message = __ResStr("dtrFrom2", "The starting time in the field labeled '{0}' must be later than the start and end time of the first time range", caption),

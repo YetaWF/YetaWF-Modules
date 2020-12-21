@@ -83,28 +83,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 int emHeight = PropData.GetAdditionalAttributeValue("EmHeight", 10);
 
-                YTagBuilder tag = new YTagBuilder("textarea");
-                tag.AddCssClass("yt_textareasourceonly");
-                tag.AddCssClass("t_display");
-                tag.AddCssClass("k-textbox"); // USE KENDO style
-                //tag.AddCssClass("k-state-disabled"); // USE KENDO style
-                FieldSetup(tag, FieldType.Anonymous);
-                tag.Attributes.Add("id", ControlId);
-                tag.Attributes.Add("rows", emHeight.ToString());
+                string readOnly = string.Empty;
+                string disabled = string.Empty;
                 if (copy)
-                    tag.Attributes.Add("readonly", "readonly");
+                    readOnly = " readonly='readonly'";
                 else
-                    tag.Attributes.Add("disabled", "disabled");
-                tag.SetInnerText(text);
+                    disabled = " disabled='disabled'";
 
-                hb.Append(tag.ToString(YTagRenderMode.Normal));
+                hb.Append($"<textarea id='{ControlId}'{FieldSetup(FieldType.Anonymous)} rows='{emHeight}' class='yt_textareasourceonly t_display k-textbox'{readOnly}{disabled}>{HE(text)}</textarea>");
 
                 if (copy)
                     hb.Append(ImageHTML.BuildKnownIcon("#TextAreaSourceOnlyCopy", sprites: Info.PredefSpriteIcons, title: __ResStr("ttCopy", "Copy to Clipboard"), cssClass: "yt_textareasourceonly_copy"));
             }
-            if (copy) {
+            if (copy)
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "clipboardjs.com.clipboard");// add clipboard support
-            }
 
             return hb.ToString();
         }
@@ -153,41 +145,29 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string placeHolder;
             TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out placeHolder);
 
-            HtmlBuilder hb = new HtmlBuilder();
-
-            YTagBuilder tag = new YTagBuilder("textarea");
-            tag.AddCssClass("yt_textareasourceonly");
-            tag.AddCssClass("t_edit");
-            tag.AddCssClass("k-textbox"); // USE KENDO style
-            FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Normal);
-            tag.Attributes.Add("id", ControlId);
-            tag.Attributes.Add("rows", emHeight.ToString());
-            tag.Attributes.Add("spellcheck", spellcheck ? "true": "false");
             if (placeHolder != null)
-                tag.Attributes.Add("placeholder", placeHolder);
+                placeHolder = $" placeholder='{HAE(placeHolder)}'";
 
             // handle StringLengthAttribute as maxlength
             StringLengthAttribute lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
             if (lenAttr != null) {
 #if DEBUG
-                if (tag.Attributes.ContainsKey("maxlength"))
+                if (HtmlAttributes.ContainsKey("maxlength"))
                     throw new InternalError($"Both StringLengthAttribute and maxlength specified - {FieldName}");
 #endif
                 int maxLength = lenAttr.MaximumLength;
                 if (maxLength > 0 && maxLength <= 8000)
-                    tag.MergeAttribute("maxlength", maxLength.ToString());
+                    HtmlAttributes.Add("maxlength", maxLength.ToString());
             }
 #if DEBUG
-            if (lenAttr == null && !tag.Attributes.ContainsKey("maxlength"))
+            if (lenAttr == null && !HtmlAttributes.ContainsKey("maxlength"))
                 throw new InternalError($"No max string length given using StringLengthAttribute or maxlength - {FieldName}");
 #endif
-
-            tag.SetInnerText(text);
-            hb.Append(tag.ToString(YTagRenderMode.Normal));
+            string tags = $"<textarea id='{ControlId}'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} rows='{emHeight}' spellcheck='{(spellcheck ? "true" : "false")}' class='yt_textareasourceonly t_edit k-textbox'{placeHolder}>{HE(text)}</textarea>";
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.TextAreaSourceOnlyEditComponent('{ControlId}');");
 
-            return Task.FromResult(hb.ToString());
+            return Task.FromResult(tags);
         }
     }
 }

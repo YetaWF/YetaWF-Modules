@@ -32,17 +32,6 @@ namespace YetaWF.Modules.PageEdit.Views {
 
         public async Task<string> RenderViewAsync(PageControlModule module, PageControlModuleController.PageControlModel model) {
 
-            // <div id="yPageControlDiv">
-            //  action button (with id tid_pagecontrolbutton)
-            //  module html...
-            // </div>
-            YTagBuilder tag = new YTagBuilder("div");
-            tag.Attributes.Add("id", "yPageControlDiv");
-
-            ModuleAction action = await module.GetAction_PageControlAsync();
-            tag.InnerHtml = await action.RenderAsButtonIconAsync("tid_pagecontrolbutton");
-
-
             bool canEdit = model.EditAuthorized;
             bool canImportPage = false;
             bool canImportModule = false;
@@ -146,9 +135,12 @@ namespace YetaWF.Modules.PageEdit.Views {
             if (ui.TabsDef.Tabs.Count == 0)
                 return "&nbsp;";
 
+
+            ModuleAction action = await module.GetAction_PageControlAsync();
+
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
-{tag.ToString(YTagRenderMode.Normal)}
+<div id='yPageControlDiv'>{await action.RenderAsButtonIconAsync("tid_pagecontrolbutton")}</div>
 <div id='{id}'>
     {await HtmlHelper.ForDisplayAsync(ui, nameof(ui.TabsDef), HtmlAttributes: new { __NoTemplate = true })}
     {Globals.LazyHTMLOptimization /*Fix Firefox bug, where actions aren't broken into multiple lines, by leaving white space between actions*/}

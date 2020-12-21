@@ -64,16 +64,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(TimeSpan? model) {
-            HtmlBuilder hb = new HtmlBuilder();
-            if (model != null) {
-                YTagBuilder tag = new YTagBuilder("div");
-                tag.AddCssClass("yt_timespan");
-                tag.AddCssClass("t_display");
-                FieldSetup(tag, FieldType.Anonymous);
-                tag.SetInnerText(Formatting.FormatTimeSpan(model));
-                hb.Append(tag.ToString(YTagRenderMode.Normal));
-            }
-            return Task.FromResult(hb.ToString());
+            if (model != null)
+                return Task.FromResult($"<div{FieldSetup(FieldType.Anonymous)} class='yt_timespan t_display'>{HE(Formatting.FormatTimeSpan(model))}</div>");
+            return Task.FromResult(string.Empty);
         }
     }
 

@@ -95,8 +95,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderContainerAsync(FileUpload1 model) {
 
-            UseSuppliedIdAsControlId();
-
             HtmlBuilder hb = new HtmlBuilder();
 
             Setup setup = new Setup {

@@ -42,16 +42,11 @@ namespace YetaWF.Modules.Identity.Components {
 
         public Task<string> RenderAsync(int model) {
 
-            YTagBuilder tag = new YTagBuilder("span");
-            FieldSetup(tag, FieldType.Anonymous);
-
             using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider()) {
                 RoleDefinition role = dataProvider.GetRoleById(model);
-                tag.SetInnerText(role.Name);
-                tag.Attributes.Add(Basics.CssTooltipSpan, role.Description);
+                if (role == null) return Task.FromResult(string.Empty);
+                return Task.FromResult($"<span{FieldSetup(FieldType.Anonymous)}{HtmlBuilder.GetClassAttribute(HtmlAttributes)} {Basics.CssTooltipSpan}='{HAE(role.Description)}'>{HE(role.Name)}</span>");
             }
-
-            return Task.FromResult(tag.ToString(YTagRenderMode.Normal));
         }
     }
 

@@ -161,7 +161,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         {await HtmlHelper.ForEditAsync(ps, nameof(ps.FileName))}
     </div>
 </div>");
-
                 Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PageSkinEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
             }

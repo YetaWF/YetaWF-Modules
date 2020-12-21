@@ -51,12 +51,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(object model) {
-            YTagBuilder tag = new YTagBuilder("input");
-            FieldSetup(tag, FieldType.Normal);
-            tag.MergeAttribute("name", FieldNamePrefix, true);
-            tag.MergeAttribute("type", "hidden");
-            tag.MergeAttribute("value", model == null ? "" : model.ToString());
-            return Task.FromResult(tag.ToString(YTagRenderMode.StartTag));
+            return Task.FromResult($"<input name='{FieldNamePrefix}' type='hidden' value='{model?.ToString()}'{HtmlBuilder.GetClassAttribute(HtmlAttributes)}{HtmlBuilder.Attributes(HtmlAttributes)}>");
         }
     }
     /// <summary>
@@ -80,12 +75,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(object model) {
-            YTagBuilder tag = new YTagBuilder("input");
-            FieldSetup(tag, FieldType.Normal);
-            tag.MergeAttribute("name", FieldNamePrefix, true);
-            tag.MergeAttribute("type", "hidden");
-            tag.MergeAttribute("value", model == null ? "" : model.ToString());
-            return Task.FromResult(tag.ToString(YTagRenderMode.StartTag));
+            return Task.FromResult($"<input name='{FieldNamePrefix}' type='hidden' value='{model?.ToString()}'{HtmlBuilder.GetClassAttribute(HtmlAttributes)}{HtmlBuilder.Attributes(HtmlAttributes)}>");
         }
     }
 }

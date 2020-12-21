@@ -33,19 +33,19 @@ namespace YetaWF.Modules.CurrencyConverter.Views {
             hb.Append($@"
 <div class='t_converter'>
     <div class='t_amountlabel'>
-        {Utility.HtmlEncode(this.__ResStr("amount", "Amount:"))}
+        {Utility.HE(this.__ResStr("amount", "Amount:"))}
     </div>
     <div class='t_amount{wantFocus}'>
         {await HtmlHelper.ForEditAsync(model, nameof(model.Amount))}
     </div>
     <div class='t_fromlabel'>
-        {Utility.HtmlEncode(this.__ResStr("from", "From:"))}
+        {Utility.HE(this.__ResStr("from", "From:"))}
     </div>
     <div class='t_from'>
         {await HtmlHelper.ForEditAsync(model, nameof(model.FromCountry))}
     </div>
     <div class='t_tolabel'>
-        {Utility.HtmlEncode(this.__ResStr("to", "To:"))}
+        {Utility.HE(this.__ResStr("to", "To:"))}
     </div>
     <div class='t_to'>
         {await HtmlHelper.ForEditAsync(model, nameof(model.ToCountry))}
@@ -56,12 +56,12 @@ namespace YetaWF.Modules.CurrencyConverter.Views {
     <div class='t_result_from t_results'>
     </div>
     <div class='t_result_is t_results'>
-        {Utility.HtmlEncode(this.__ResStr("is", " => "))}
+        {Utility.HE(this.__ResStr("is", " => "))}
     </div>
     <div class='t_result_to t_results'>
     </div>
     <div class='t_disclaimer'>
-        {Utility.HtmlEncode(this.__ResStr("disclaimer", "Conversions are approximate and do not include taxes/fees and other conversion costs"))}
+        {Utility.HE(this.__ResStr("disclaimer", "Conversions are approximate and do not include taxes/fees and other conversion costs"))}
     </div>
 </div>");
 

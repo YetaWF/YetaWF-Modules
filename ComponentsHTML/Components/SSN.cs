@@ -85,30 +85,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(string model) {
 
-            UseSuppliedIdAsControlId();
-
-            HtmlBuilder hb = new HtmlBuilder();
-
-            hb.Append($"<div id='{ControlId}' class='yt_ssn t_edit'>");
-
             Dictionary<string, object> hiddenAttributes = new Dictionary<string, object>(HtmlAttributes) {
                 { "__NoTemplate", true }
             };
-            hb.Append(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, null, "Hidden", HtmlAttributes: hiddenAttributes, Validation: Validation));
+            string hidden = await HtmlHelper.ForEditComponentAsync(Container, PropertyName, null, "Hidden", HtmlAttributes: hiddenAttributes, Validation: Validation);
 
-            YTagBuilder tag = new YTagBuilder("input");
-            FieldSetup(tag, FieldType.Anonymous);
-            tag.Attributes.Add("name", "ssninput");
-
+            string value = string.Empty;
             if (model != null)
-                tag.MergeAttribute("value", model);
-            hb.Append(tag.ToString(YTagRenderMode.StartTag));
+                value = model;
 
-            hb.Append($"</div>");
+            string tags = $"<div id='{ControlId}' class='yt_ssn t_edit'>{hidden}<input{FieldSetup(FieldType.Anonymous)} name='ssninput' value='{value}'></div>";
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.SSNEditComponent('{ControlId}');");
 
-            return hb.ToString();
+            return tags;
         }
     }
 }

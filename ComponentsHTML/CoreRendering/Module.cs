@@ -1,5 +1,6 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Addons;
@@ -7,6 +8,7 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Addons;
 using YetaWF.Modules.ComponentsHTML.Components;
@@ -63,6 +65,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                 await KendoUICore.AddFileAsync("kendo.menu.min.js");
 
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "Modules");// various module support
+                await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, "MenuUL", YetaWFComponentBase.ComponentType.Display);
 
                 hb.Append($@"
 <div class={Manager.AddOnManager.CheckInvokedCssModule(Globals.CssModuleMenuEditIcon)} style='display:none'>
@@ -143,29 +146,29 @@ namespace YetaWF.Modules.ComponentsHTML {
                     break;
             }
 
-            YTagBuilder tag = new YTagBuilder("a");
+            Dictionary<string, object> attrs = new Dictionary<string, object>();
+            string css = null;
             if (!string.IsNullOrWhiteSpace(action.Tooltip))
-                tag.MergeAttribute(Basics.CssTooltip, action.Tooltip);
+                attrs.Add(Basics.CssTooltip, action.Tooltip);
             if (!string.IsNullOrWhiteSpace(action.Name))
-                tag.MergeAttribute("data-name", action.Name);
+                attrs.Add("data-name", action.Name);
             if (!action.Displayed)
-                tag.MergeAttribute("style", "display:none");
+                attrs.Add("style", "display:none");
+
             if (HasSubmenu) {
                 if (RenderEngine == ModuleAction.RenderEngineEnum.BootstrapSmartMenu) {
-                    tag.AddCssClass("dropdown-toggle");
-                    tag.Attributes.Add("data-toggle", "dropdown-toggle");
+                    css = CssManager.CombineCss(css, "dropdown-toggle");
+                    attrs.Add("data-toggle", "dropdown-toggle");
                 }
-                tag.Attributes.Add("aria-haspopup", "true");
-                tag.Attributes.Add("aria-expanded", "false");
+                attrs.Add("aria-haspopup", "true");
+                attrs.Add("aria-expanded", "false");
             }
             if (RenderEngine == ModuleAction.RenderEngineEnum.BootstrapSmartMenu)
-                tag.AddCssClass(BootstrapSmartMenuLevel <= 1 ? "nav-link" : "dropdown-item");
-
-            if (!string.IsNullOrWhiteSpace(id))
-                tag.Attributes.Add("id", id);
+                css = CssManager.CombineCss(css, BootstrapSmartMenuLevel <= 1 ? "nav-link" : "dropdown-item");
 
             if (!string.IsNullOrWhiteSpace(action.CssClass))
-                tag.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule(action.CssClass));
+                css = CssManager.CombineCss(css, Manager.AddOnManager.CheckInvokedCssModule(action.CssClass));
+
             string extraClass;
             switch (mode) {
                 default:
@@ -177,105 +180,112 @@ namespace YetaWF.Modules.ComponentsHTML {
                 case ModuleAction.RenderModeEnum.NormalLinks: extraClass = "y_act_normlink"; break;
                 case ModuleAction.RenderModeEnum.NormalMenu: extraClass = "y_act_normmenu"; break;
             }
-            tag.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule(extraClass));
+            css = CssManager.CombineCss(css, Manager.AddOnManager.CheckInvokedCssModule(extraClass));
 
             string url = action.GetCompleteUrl(OnPage: true);
             if (!string.IsNullOrWhiteSpace(url)) {
-                tag.MergeAttribute("href", Utility.UrlEncodePath(url));
+                attrs.Add("href", url);
                 if (Manager.CurrentPage != null) {
                     string currUrl = Manager.CurrentPage.EvaluatedCanonicalUrl;
                     if (!string.IsNullOrWhiteSpace(currUrl) && currUrl != "/") {// this doesn't work on home page because everything matches
                         if (action.Url == currUrl)
-                            tag.AddCssClass("t_currenturl");
+                            css = CssManager.CombineCss(css, "t_currenturl");
                         if (currUrl.StartsWith(action.Url))
-                            tag.AddCssClass("t_currenturlpart");
+                            css = CssManager.CombineCss(css, "t_currenturlpart");
                     }
                 }
             } else
-                tag.MergeAttribute("href", "javascript:void(0);");
+                attrs.Add("href", "javascript:void(0);");
 
             if (!string.IsNullOrWhiteSpace(action.ConfirmationText)) {
                 if (action.Category == ModuleAction.ActionCategoryEnum.Delete) {
                     // confirm deletions?
                     if (UserSettings.GetProperty<bool>("ConfirmDelete"))
-                        tag.MergeAttribute(Basics.CssConfirm, action.ConfirmationText);
+                        attrs.Add(Basics.CssConfirm, action.ConfirmationText);
                 } else {
                     // confirm actions?
                     if (UserSettings.GetProperty<bool>("ConfirmActions"))
-                        tag.MergeAttribute(Basics.CssConfirm, action.ConfirmationText);
+                        attrs.Add(Basics.CssConfirm, action.ConfirmationText);
                 }
             }
             if (!string.IsNullOrWhiteSpace(action.PleaseWaitText))
-                tag.MergeAttribute(Basics.CssPleaseWait, action.PleaseWaitText);
+                attrs.Add(Basics.CssPleaseWait, action.PleaseWaitText);
             if (action.CookieAsDoneSignal)
-                tag.Attributes.Add(Basics.CookieDoneCssAttr, "");
+                attrs.Add(Basics.CookieDoneCssAttr, string.Empty);
+
             if (action.SaveReturnUrl) {
-                tag.Attributes.Add(Basics.CssSaveReturnUrl, "");
+                attrs.Add(Basics.CssSaveReturnUrl, string.Empty);
                 if (!action.AddToOriginList)
-                    tag.Attributes.Add(Basics.CssDontAddToOriginList, "");
+                    attrs.Add(Basics.CssDontAddToOriginList, string.Empty);
             }
             if (!string.IsNullOrWhiteSpace(action.ExtraData))
-                tag.Attributes.Add(Basics.CssExtraData, action.ExtraData);
+                attrs.Add(Basics.CssExtraData, action.ExtraData);
+
             if (action.NeedsModuleContext)
-                tag.Attributes.Add(Basics.CssAddModuleContext, "");
+                attrs.Add(Basics.CssAddModuleContext, string.Empty);
 
             if (post)
-                tag.Attributes.Add(Basics.PostAttr, "");
-            if (action.DontFollow || action.CookieAsDoneSignal || post || nothing) {
-                tag.MergeAttribute("rel", "nofollow"); // this is so bots don't follow this assuming it's a simple page (Post actions can't be retrieved with GET/HEAD anyway)
-            }
+                attrs.Add(Basics.PostAttr, string.Empty);
+
+            if (action.DontFollow || action.CookieAsDoneSignal || post || nothing)
+                attrs.Add("rel", "nofollow"); // this is so bots don't follow this assuming it's a simple page (Post actions can't be retrieved with GET/HEAD anyway)
+
             if (outerWindow)
-                tag.Attributes.Add(Basics.CssOuterWindow, "");
+                attrs.Add(Basics.CssOuterWindow, string.Empty);
+
             if (!nothing)
-                tag.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule(Basics.CssActionLink));
+                css = CssManager.CombineCss(css, Manager.AddOnManager.CheckInvokedCssModule(Basics.CssActionLink));
+
             if (newWindow) {
-                tag.MergeAttribute("target", "_blank");
-                tag.MergeAttribute("rel", "noopener noreferrer");
+                attrs.Add("target", "_blank");
+                if (!attrs.ContainsKey("rel"))
+                    attrs.Add("rel", "noopener noreferrer");
             }
+
             if (popup) {
-                tag.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule(Basics.CssPopupLink));
+                css = CssManager.CombineCss(css, Manager.AddOnManager.CheckInvokedCssModule(Basics.CssPopupLink));
                 if (popupEdit)
-                    tag.Attributes.Add(Basics.CssAttrDataSpecialEdit, "");
+                    attrs.Add(Basics.CssAttrDataSpecialEdit, string.Empty);
             }
             if (mode == ModuleAction.RenderModeEnum.Button || mode == ModuleAction.RenderModeEnum.ButtonIcon || mode == ModuleAction.RenderModeEnum.ButtonOnly)
-                tag.Attributes.Add(Basics.CssAttrActionButton, "");
+                attrs.Add(Basics.CssAttrActionButton, string.Empty);
 
             bool hasText = false, hasImg = false;
-            string innerHtml = "";
+            string innerHtml = string.Empty;
             if (mode != ModuleAction.RenderModeEnum.LinksOnly && mode != ModuleAction.RenderModeEnum.ButtonOnly && !string.IsNullOrWhiteSpace(action.ImageUrlFinal)) {
                 string text = mode == ModuleAction.RenderModeEnum.NormalMenu ? action.MenuText : action.LinkText;
                 if (RenderEngine == ModuleAction.RenderEngineEnum.KendoMenu) {
-                    innerHtml += ImageHTML.BuildKnownIcon(action.ImageUrlFinal, alt: text, cssClass: Basics.CssNoTooltip + " k-image"); // k-image is needed to align <i> and <img> correctly
+                    innerHtml = ImageHTML.BuildKnownIcon(action.ImageUrlFinal, alt: text, cssClass: Basics.CssNoTooltip + " k-image"); // k-image is needed to align <i> and <img> correctly
                 } else {
-                    innerHtml += ImageHTML.BuildKnownIcon(action.ImageUrlFinal, alt: text, cssClass: Basics.CssNoTooltip);
+                    innerHtml = ImageHTML.BuildKnownIcon(action.ImageUrlFinal, alt: text, cssClass: Basics.CssNoTooltip);
                 }
                 hasImg = true;
             }
+
             if (mode != ModuleAction.RenderModeEnum.IconsOnly && mode != ModuleAction.RenderModeEnum.ButtonIcon) {
                 string text = mode == ModuleAction.RenderModeEnum.NormalMenu ? action.MenuText : action.LinkText;
                 if (!string.IsNullOrWhiteSpace(text)) {
-                    innerHtml += Utility.HtmlEncode(text);
+                    innerHtml += Utility.HE(text);
                     hasText = true;
                 }
             }
+
             if (hasText) {
                 if (hasImg) {
-                    tag.AddCssClass("y_act_textimg");
+                    css = CssManager.CombineCss(css, "y_act_textimg");
                 } else {
-                    tag.AddCssClass("y_act_text");
+                    css = CssManager.CombineCss(css, "y_act_text");
                 }
             } else {
                 if (hasImg) {
-                    tag.AddCssClass("y_act_img");
+                    css = CssManager.CombineCss(css, "y_act_img");
                 }
             }
+
             if (HasSubmenu && RenderEngine == ModuleAction.RenderEngineEnum.BootstrapSmartMenu)
                 innerHtml += " <span class='caret'></span>";
 
-            tag.AddCssClass(Globals.CssModuleNoPrint);
-            tag.InnerHtml = innerHtml;
-
-            return tag.ToString(YTagRenderMode.Normal);
+            return $@"<a{(id != null ? $" id='{id}'" : null)} class='{Globals.CssModuleNoPrint} {css} {HtmlBuilder.GetClasses(attrs)}'{HtmlBuilder.Attributes(attrs)}>{innerHtml}</a>";
         }
     }
 }

@@ -57,19 +57,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(string model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
-
-            YTagBuilder tag = new YTagBuilder("span");
-            tag.AddCssClass("t_display");
-            FieldSetup(tag, FieldType.Anonymous);
-
             string toolTip = GetSiblingProperty<string>($"{PropertyName}_ToolTip");
-
+            string tt = string.Empty;
             if (!string.IsNullOrWhiteSpace(toolTip))
-                tag.Attributes.Add(Basics.CssTooltipSpan, toolTip);
-            if (!string.IsNullOrWhiteSpace(model))
-                tag.SetInnerText(model);
-            return Task.FromResult(tag.ToString(YTagRenderMode.Normal));
+                tt = $" {Basics.CssTooltipSpan}='{Utility.HAE(toolTip)}'";
+
+            return Task.FromResult($"<span{FieldSetup(FieldType.Anonymous)}{GetClassAttribute()}{tt}>{Utility.HE(model)}</span>");
         }
     }
 }

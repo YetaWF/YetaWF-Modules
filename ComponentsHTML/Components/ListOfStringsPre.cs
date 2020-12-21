@@ -60,7 +60,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             if (model != null) {
                 foreach (var s in model) {
-                    hb.Append(Utility.HtmlEncode(s));
+                    hb.Append(Utility.HE(s));
                     hb.Append("\r\n");
                 }
             }

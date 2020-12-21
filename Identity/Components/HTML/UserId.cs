@@ -96,11 +96,6 @@ namespace YetaWF.Modules.Identity.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            YTagBuilder tag = new YTagBuilder("span");
-            tag.AddCssClass("yt_yetawf_identity_userid");
-            tag.AddCssClass("t_display");
-            FieldSetup(tag, FieldType.Anonymous);
-
             ModuleAction actionDisplay = null;
             ModuleAction actionLoginAs = null;
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
@@ -116,10 +111,9 @@ namespace YetaWF.Modules.Identity.Components {
                     Modules.LoginModule modLogin = (Modules.LoginModule)await ModuleDefinition.CreateUniqueModuleAsync(typeof(Modules.LoginModule));
                     actionLoginAs = await modLogin.GetAction_LoginAsAsync(model, userName);
                 }
-                tag.SetInnerText(userName);
+                hb.Append($"<span{FieldSetup(FieldType.Anonymous)} class='yt_yetawf_identity_userid t_display{GetClasses()}'>{HE(userName)}</span>");
             }
 
-            hb.Append(tag.ToString(YTagRenderMode.Normal));
             if (actionDisplay != null)
                 hb.Append(await actionDisplay.RenderAsync(ModuleAction.RenderModeEnum.IconsOnly));
             if (actionLoginAs != null)

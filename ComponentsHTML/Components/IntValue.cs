@@ -265,22 +265,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(int? model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
-
-            YTagBuilder tag = new YTagBuilder("input");
-            string id = MakeId(tag);
-            tag.AddCssClass(TemplateClass);
-            tag.AddCssClass("t_edit");
-            tag.AddCssClass("yt_intvalue_base");
-            FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Normal);
-
-            tag.MergeAttribute("maxlength", "20");
-
-            if (model != null)
-                tag.MergeAttribute("value", ((int)model).ToString());
-
-            string placeHolder;
-            TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out placeHolder);
+            TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out string placeHolder);
 
             IntValueSetup setup = new IntValueSetup {
                 Min = 0,
@@ -296,11 +281,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 setup.Max = (int)rangeAttr.Maximum;
             }
 
-            hb.Append(tag.ToString(YTagRenderMode.StartTag));
+            string tags = $@"<input{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} id='{ControlId}' class='{TemplateClass} t_edit yt_intvalue_base{GetClasses()}' maxlength='20' value='{model?.ToString()}'>";
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.IntValueEditComponent('{id}', {Utility.JsonSerialize(setup)});");
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.IntValueEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
-            return Task.FromResult(hb.ToString());
+            return Task.FromResult(tags);
         }
     }
 }

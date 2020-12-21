@@ -68,16 +68,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(DateTime? model) {
-            HtmlBuilder hb = new HtmlBuilder();
             if (model != null && (DateTime)model > DateTime.MinValue && (DateTime)model < DateTime.MaxValue) {
-                YTagBuilder tag = new YTagBuilder("div");
-                tag.AddCssClass("yt_datetime");
-                tag.AddCssClass("t_display");
-                FieldSetup(tag, FieldType.Anonymous);
-                tag.SetInnerText(YetaWF.Core.Localize.Formatting.FormatDateTime(model));
-                hb.Append(tag.ToString(YTagRenderMode.Normal));
+                return Task.FromResult($@"<div{FieldSetup(FieldType.Anonymous)} class='yt_date t_display{GetClasses()}'>{HE(YetaWF.Core.Localize.Formatting.FormatDateTime(model))}</div>");
             }
-            return Task.FromResult(hb.ToString());
+            return Task.FromResult(string.Empty);
         }
     }
 
@@ -133,21 +127,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(DateTime? model) {
 
-            UseSuppliedIdAsControlId();
-
-            HtmlBuilder hb = new HtmlBuilder();
-
-            hb.Append($"<div id='{ControlId}' class='yt_datetime t_edit'>");
-
-            Dictionary<string, object> hiddenAttributes = new Dictionary<string, object>(HtmlAttributes) {
-                { "__NoTemplate", true }
-            };
-            hb.Append(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, null, "Hidden", HtmlAttributes: hiddenAttributes, Validation: Validation));
-
-            YTagBuilder tag = new YTagBuilder("input");
-            FieldSetup(tag, FieldType.Anonymous);
-            tag.Attributes.Add("name", "dtpicker");
-
             // handle min/max date
             DateTimeSetup setup = new DateTimeSetup {
                 Min = new DateTime(1900, 1, 1),
@@ -160,15 +139,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (maxAttr != null)
                 setup.Max = maxAttr.MaxDate;
 
-            if (model != null)
-                tag.MergeAttribute("value", Formatting.FormatDateTime((DateTime)model));// shows date using user's timezone
-            hb.Append(tag.ToString(YTagRenderMode.StartTag));
+            Dictionary<string, object> hiddenAttributes = new Dictionary<string, object>(HtmlAttributes) {
+                { "__NoTemplate", true }
+            };
+            string hidden = await HtmlHelper.ForEditComponentAsync(Container, PropertyName, null, "Hidden", HtmlAttributes: hiddenAttributes, Validation: Validation);
 
-            hb.Append($"</div>");
+            string tags = $"<div id='{DivId}' class='yt_datetime t_edit'>{hidden}<input{FieldSetup(FieldType.Anonymous)} name='dtpicker' value='{(model != null ? HAE(Formatting.FormatDateTime((DateTime)model)) : null)}'></div>";
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DateTimeEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DateTimeEditComponent('{DivId}', {Utility.JsonSerialize(setup)});");
 
-            return hb.ToString();
+            return tags;
         }
     }
 }

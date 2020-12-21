@@ -71,8 +71,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             bool sourceOnly = PropData.GetAdditionalAttributeValue("SourceOnly", false);
             bool full = PropData.GetAdditionalAttributeValue("Full", false);
 
-            HtmlBuilder hb = new HtmlBuilder();
-
             if (full || sourceOnly) {
 
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "ckeditor");
@@ -84,47 +82,28 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (sourceOnly)
                     url = addonUrl + "sourceonly_ro_config.js";
 
-                YTagBuilder tag = new YTagBuilder("textarea");
-                tag.AddCssClass("yt_textarea");
-                tag.AddCssClass("t_edit");
-                tag.AddCssClass("t_readonly");
-                FieldSetup(tag, FieldType.Anonymous);
-                tag.Attributes.Add("id", ControlId);
-                tag.SetInnerText(text);
-
-                hb.Append(tag.ToString(YTagRenderMode.Normal));
+                string tags = $"<textarea id='{ControlId}'{FieldSetup(FieldType.Anonymous)} class='yt_textarea t_edit t_readonly'>{HE(text)}</textarea>";
 
                 Manager.ScriptManager.AddLast($@"
 CKEDITOR.replace('{ControlId}', {{
     customConfig: '{Utility.JserEncode(Manager.GetCDNUrl(url))}',
     height: '{emHeight}em'
 }});");
+                return tags;
 
             } else {
 
                 if (string.IsNullOrWhiteSpace(text))
                     return null;
 
-                hb.Append(Globals.LazyHTMLOptimization);
-
-                YTagBuilder tag = new YTagBuilder("div");
-                tag.AddCssClass("yt_textarea");
-                tag.AddCssClass("t_display");
-                FieldSetup(tag, FieldType.Anonymous);
-
                 bool encode = PropData.GetAdditionalAttributeValue("Encode", true);
                 if (encode) {
-                    tag.SetInnerText(text);
-                    text = tag.InnerHtml;
+                    text = HE(text);
                     text = text.Replace("\r\n", "<br/>");
                     text = text.Replace("\n", "<br/>");
                 }
-                tag.InnerHtml = text;
-
-                hb.Append(tag.ToString(YTagRenderMode.Normal));
-                hb.Append(Globals.LazyHTMLOptimizationEnd);
+                return $"{Globals.LazyHTMLOptimization}<div{FieldSetup(FieldType.Anonymous)} class='yt_textarea t_display'>{text}</div>{Globals.LazyHTMLOptimizationEnd}";
             }
-            return hb.ToString();
         }
     }
 
@@ -184,14 +163,13 @@ CKEDITOR.replace('{ControlId}', {{
                 text = (MultiString)model;
             else
                 text = (string)model;
-            Guid owningGuid = Guid.Empty;
 
-            TryGetSiblingProperty<Guid>($"{PropertyName}_Folder", out owningGuid);
+            TryGetSiblingProperty<Guid>($"{PropertyName}_Folder", out Guid owningGuid);
             if (owningGuid == Guid.Empty && Manager.CurrentModuleEdited != null)
                 owningGuid = Manager.CurrentModuleEdited.ModuleGuid;
-            if (owningGuid == Guid.Empty) {
+            if (owningGuid == Guid.Empty)
                 owningGuid = Manager.CurrentModule.ModuleGuid;
-            }
+
             Guid subFolder = PropData.GetAdditionalAttributeValue("SubFolder", Guid.Empty);
             if (subFolder == Guid.Empty)
                 TryGetSiblingProperty<Guid>($"{PropertyName}_SubFolder", out subFolder);
@@ -220,17 +198,6 @@ CKEDITOR.replace('{ControlId}', {{
             else if (!useSave)
                 url = addonUrl + "nosave_config.js";
 
-            HtmlBuilder hb = new HtmlBuilder();
-
-            YTagBuilder tag = new YTagBuilder("textarea");
-            tag.AddCssClass("yt_textarea");
-            tag.AddCssClass("t_edit");
-            FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Normal);
-            tag.Attributes.Add("id", ControlId);
-
-            tag.SetInnerText(text);
-            hb.Append(tag.ToString(YTagRenderMode.Normal));
-
             TextAreaSetup setup = new TextAreaSetup {
                 InPartialView = Manager.InPartialView,
                 CDNUrl = Manager.GetCDNUrl(url),
@@ -242,9 +209,11 @@ CKEDITOR.replace('{ControlId}', {{
                 FilebrowserWindowFeatures = "modal=yes,location=no,menubar=no,toolbar=no,dependent=yes,minimizable=no,alwaysRaised=yes,resizable=yes,scrollbars=yes",
             };
 
+            string tags = $"<textarea id='{ControlId}'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} class='yt_textarea t_edit'>{HE(text)}</textarea>";
+
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.TextAreaEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
-            return hb.ToString();
+            return tags;
         }
     }
 }

@@ -64,20 +64,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(bool? model) {
 
-            YTagBuilder tag = new YTagBuilder("input");
-            tag.AddCssClass("yt_booleantext");
-            tag.AddCssClass("t_display");
-            FieldSetup(tag, FieldType.Anonymous);
-            tag.Attributes.Add("type", "checkbox");
-            tag.Attributes.Add("disabled", "disabled");
+            string check = string.Empty;
             if (model != null && (bool)model)
-                tag.Attributes.Add("checked", "checked");
+                check = " checked='checked'";
 
-            string text;
-            if (TryGetSiblingProperty($"{PropertyName}_Text", out text))
-                return Task.FromResult(tag.ToString(YTagRenderMode.StartTag) + HE(text));
-            else
-                return Task.FromResult(tag.ToString(YTagRenderMode.StartTag));
+            TryGetSiblingProperty($"{PropertyName}_Text", out string text);
+
+            return Task.FromResult( $@"<input{FieldSetup(FieldType.Anonymous)} class='yt_booleantext t_display{GetClasses()}' type='checkbox' disabled='disabled'{check}>{HE(text)}");
         }
     }
     /// <summary>
@@ -117,34 +110,23 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(bool? model) {
 
-            YTagBuilder tag = new YTagBuilder("input");
-            tag.AddCssClass("yt_booleantext");
-            tag.AddCssClass("t_edit");
-            FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Anonymous);
-            tag.Attributes.Add("id", ControlId);
-            tag.Attributes.Add("type", "checkbox");
-            tag.Attributes.Add("value", "true");
-            if (model != null && (bool)model)
-                tag.Attributes.Add("checked", "checked");
-
             // add a hidden field so we always get "something" for check boxes (that means we have to deal with duplicates names)
-            YTagBuilder tagHidden = new YTagBuilder("input");
-            FieldSetup(tagHidden, FieldType.Normal);
-            tagHidden.Attributes.Add("type", "hidden");
-            tagHidden.Attributes.Add("value", "false");
-            tagHidden.AddCssClass("yform-novalidate");
 
-            //Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.BooleanTextEditComponent('{ControlId}');");
+            string check = string.Empty;
+            if (model != null && (bool)model)
+                check = " checked='checked'";
 
-            string tooltip;
-            if (TryGetSiblingProperty($"{PropertyName}_Tooltip", out tooltip))
-                tag.Attributes.Add("data-tooltip", tooltip);
+            TryGetSiblingProperty($"{PropertyName}_Text", out string text);
 
-            string text;
-            if (TryGetSiblingProperty($"{PropertyName}_Text", out text))
-                return Task.FromResult(tag.ToString(YTagRenderMode.StartTag) + tagHidden.ToString(YTagRenderMode.StartTag) + HE(text));
+            if (TryGetSiblingProperty($"{PropertyName}_Tooltip", out string tooltip))
+                tooltip = $" data-tooltip='{Utility.HAE(tooltip)}'";
 
-            return Task.FromResult(tag.ToString(YTagRenderMode.StartTag) + tagHidden.ToString(YTagRenderMode.StartTag));
+            return Task.FromResult($@"
+<input id='{ControlId}'{FieldSetup(Validation ? FieldType.Validated : FieldType.Anonymous)} class='yt_booleantext t_edit{GetClasses()}' type='checkbox' value='true'{check}{tooltip}>
+{HE(text)}
+<input{FieldSetup(FieldType.Normal)} type='hidden' value='false' class='yform-novalidate'>");
+
+            //Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.BooleanTextEditComponent('{id}');");
         }
     }
 }

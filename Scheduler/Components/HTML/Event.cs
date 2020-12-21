@@ -39,7 +39,7 @@ namespace YetaWF.Modules.Scheduler.Components {
             hb.Append($@"
 <div class='yt_yetawf_scheduler_event t_display'>
     <div class='t_event'>
-        <span class='t_eventname'>{Utility.HtmlEncode(model.Name)}</span>
+        <span class='t_eventname'>{Utility.HE(model.Name)}</span>
     </div>
     <div class='t_info'>
         <div class='t_row t_implementingassembly'>
@@ -47,7 +47,7 @@ namespace YetaWF.Modules.Scheduler.Components {
                 {await HtmlHelper.ForLabelAsync(model, nameof(model.ImplementingAssembly))}
             </div>
             <div class='t_vals'>
-                <span class='t_implasm'>{Utility.HtmlEncode(model.ImplementingAssembly)}</span>
+                <span class='t_implasm'>{Utility.HE(model.ImplementingAssembly)}</span>
             </div>
         </div>
         <div class='t_row t_implementingtype'>
@@ -55,7 +55,7 @@ namespace YetaWF.Modules.Scheduler.Components {
                 {await HtmlHelper.ForLabelAsync(model, nameof(model.ImplementingType))}
             </div>
             <div class='t_vals'>
-                <span class='t_impltype'>{Utility.HtmlEncode(model.ImplementingType)}</span>
+                <span class='t_impltype'>{Utility.HE(model.ImplementingType)}</span>
             </div>
         </div>
     </div>
@@ -126,7 +126,7 @@ namespace YetaWF.Modules.Scheduler.Components {
                 {await HtmlHelper.ForLabelAsync(model, nameof(model.ImplementingAssembly))}
             </div>
             <div class='t_vals'>
-                <span class='t_implasm'>{Utility.HtmlEncode(model.ImplementingAssembly)}</span>
+                <span class='t_implasm'>{Utility.HE(model.ImplementingAssembly)}</span>
             </div>
         </div>
         <div class='t_row t_implementingtype'>
@@ -134,7 +134,7 @@ namespace YetaWF.Modules.Scheduler.Components {
                 {await HtmlHelper.ForLabelAsync(model, nameof(model.ImplementingType))}
             </div>
             <div class='t_vals'>
-                <span class='t_impltype'>{Utility.HtmlEncode(model.ImplementingType)}</span>
+                <span class='t_impltype'>{Utility.HE(model.ImplementingType)}</span>
             </div>
         </div>
         <div class='t_row t_eventbuiltindescription'>
@@ -142,7 +142,7 @@ namespace YetaWF.Modules.Scheduler.Components {
                 {await HtmlHelper.ForLabelAsync(model, nameof(model.EventBuiltinDescription))}
             </div>
             <div class='t_vals'>
-                <span class='t_description'>{Utility.HtmlEncode(model.EventBuiltinDescription)}</span>
+                <span class='t_description'>{Utility.HE(model.EventBuiltinDescription)}</span>
             </div>
         </div>
     </div>

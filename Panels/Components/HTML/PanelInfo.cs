@@ -102,7 +102,7 @@ namespace YetaWF.Modules.Panels.Components {
         <h3 class='ui-accordion-header ui-corner-top ui-state-default ui-accordion-icons {(active ? "ui-accordion-header-active ui-state-active" : "ui-accordion-header-collapsed ui-corner-all")}' role='tab'
             id='{DivId}_{panelIndex}_lb' aria-controls='{DivId}_{panelIndex}_pane' aria-selected='{(active ? "true" : "false")}' aria-expanded='{(active ? "true" : "false")}' tabindex='{(active ? "0" : "-1")}'>
             <span class='ui-accordion-header-icon ui-icon ui-icon-triangle-1-s'></span>
-            {Utility.HtmlEncode(caption)}
+            {Utility.HE(caption)}
         </h3>
         <div class='ui-accordion-content ui-corner-bottom ui-helper-reset ui-widget-content {(active ? "ui-accordion-content-active" : "")}' id='{DivId}_{panelIndex}_pane'
             aria-labelledby='{DivId}_{panelIndex}_lb' role='tabpanel' aria-hidden='{(active ? "false" : "true")}' style='overflow: hidden;{(active ? "" : "display:none")}'>");
@@ -138,7 +138,7 @@ namespace YetaWF.Modules.Panels.Components {
                         hb.Append($@"
         <li class='k-item{(panelIndex == 0 ? " k-first" : "")}{(panelIndex == model.Panels.Count - 1 ? " k-last" : "")} {(active ? "k-state-active k-state-highlight" : "")}' role='menuitem' aria-expanded='{(active ? "true" : "false")}' aria-selected='{(active ? "true" : "false")}'>
             <span class='k-link k-header{(active ? " k-state-selected" : "")}'>
-                {Utility.HtmlEncode(caption)}
+                {Utility.HE(caption)}
                 <span class='k-icon {(active ? "k-i-arrow-60-up k-panelbar-collapse" : "k-i-arrow-60-down k-panelbar-expand")}'></span>
             </span>
             <div class='t_panel-kendo k-content' style='display:{(active ? "block" : "none")};{(active ? "height='auto';" : "")}overflow: hidden;' role='region' aria-hidden='{(active ? "false" : "true")}'>");

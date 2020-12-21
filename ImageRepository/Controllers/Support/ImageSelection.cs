@@ -47,7 +47,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
                     sel = " selected";
                     name = f;
                 }
-                hb.Append(string.Format("<option title='{0}' value='{1}'{2}>{0}</option>", Utility.HtmlAttributeEncode(plain), Utility.HtmlAttributeEncode(f), sel));
+                hb.Append(string.Format("<option title='{0}' value='{1}'{2}>{0}</option>", Utility.HAE(plain), Utility.HAE(f), sel));
             }
 
             // Upload control considers Json result a success. result has a function to execute, newName has the file name
@@ -76,7 +76,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
             HtmlBuilder hb = new HtmlBuilder();
             foreach (var f in await ImageSelectionInfo.ReadFilesAsync(new Guid(folderGuid), subFolder, fileType)) {
                 string fPlain = f.RemoveStartingAt(ImageSupport.ImageSeparator);
-                hb.Append(string.Format("<option title='{0}' value='{1}'>{2}</option>", Utility.HtmlAttributeEncode(fPlain), Utility.HtmlAttributeEncode(f), Utility.HtmlEncode(fPlain)));
+                hb.Append(string.Format("<option title='{0}' value='{1}'>{2}</option>", Utility.HAE(fPlain), Utility.HAE(f), Utility.HE(fPlain)));
             }
             UploadRemoveResponse response = new UploadRemoveResponse {
                 Result = $@"$YetaWF.confirm('{Utility.JserEncode(this.__ResStr("removeImageOK", "Image \"{0}\" successfully removed", namePlain))}');",

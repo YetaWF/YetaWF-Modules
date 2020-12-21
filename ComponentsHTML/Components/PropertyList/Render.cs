@@ -20,7 +20,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (classData.Header.StartsWith("-"))
                     hb.Append(classData.Header.Substring(1));
                 else
-                    hb.Append(Utility.HtmlEncode(classData.Header));
+                    hb.Append(Utility.HE(classData.Header));
                 hb.Append("</div>");
             }
         }
@@ -30,7 +30,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (classData.Footer.StartsWith("-"))
                     hb.Append(classData.Footer.Substring(1));
                 else
-                    hb.Append(Utility.HtmlEncode(classData.Footer));
+                    hb.Append(Utility.HE(classData.Footer));
                 hb.Append("</div>");
             }
         }
@@ -76,15 +76,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     string hs = await HtmlHelper.ForLabelAsync(model, property.Name, ShowVariable: showVariables, SuppressIfEmpty: true);
                     if (!string.IsNullOrWhiteSpace(hs)) {
                         labelDone = true;
-                        hb.Append("<div class='t_labels'>");
-                        hb.Append(hs);
-                        hb.Append("</div>");
+                        hb.Append($"<div class='t_labels'>{hs}</div>");
                     }
                     hb.Append("<div class='t_vals t_textabove'>");
                     if (property.TextAbove.StartsWith("-"))
                         hb.Append(property.TextAbove.Substring(1));
                     else
-                        hb.Append(Utility.HtmlEncode(property.TextAbove).Replace(ScriptBuilder.NL, "<br/>"));
+                        hb.Append(Utility.HE(property.TextAbove).Replace(ScriptBuilder.NL, "<br/>"));
                     hb.Append("</div>");
                 }
                 if (haveValue || string.IsNullOrWhiteSpace(property.TextAbove)) {
@@ -93,9 +91,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     } else {
                         string hs = await HtmlHelper.ForLabelAsync(model, property.Name, ShowVariable: showVariables, SuppressIfEmpty: true);
                         if (!string.IsNullOrWhiteSpace(hs)) {
-                            hb.Append("<div class='t_labels'>");
-                            hb.Append(hs);
-                            hb.Append("</div>");
+                            hb.Append($"<div class='t_labels'>{hs}</div>");
                             labelDone = true;
                         }
                     }
@@ -116,14 +112,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                 break;
                         }
                         focusSet = true;
-                        hb.Append("<div class='{0}'>", cls);
-                        hb.Append(shtml);
-                        hb.Append(ValidationMessage(property.Name));
-                        hb.Append("</div>");
+                        hb.Append($"<div class='{cls}'>{shtml}{ValidationMessage(property.Name)}</div>");
                     } else {
-                        hb.Append("<div class='t_vals t_val'>");
-                        hb.Append(shtml);
-                        hb.Append("</div>");
+                        hb.Append($"<div class='t_vals t_val'>{shtml}</div>");
                     }
                 }
 
@@ -135,10 +126,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     if (property.TextBelow.StartsWith("-"))
                         hb.Append(property.TextBelow.Substring(1));
                     else
-                        hb.Append(Utility.HtmlEncode(property.TextBelow).Replace(ScriptBuilder.NL, "<br/>"));
+                        hb.Append(Utility.HE(property.TextBelow).Replace(ScriptBuilder.NL, "<br/>"));
                     hb.Append("</div>");
                 }
-
                 hb.Append("</div>");
             }
             return hb.ToString();

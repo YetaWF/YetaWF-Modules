@@ -49,28 +49,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(string model) {
 
-            HtmlBuilder sb = new HtmlBuilder();
-
-            YTagBuilder tagLabel = new YTagBuilder("label");
-            FieldSetup(tagLabel, FieldType.Anonymous);
+            string text;
             if (string.IsNullOrEmpty(model)) // we're distinguishing between "" and " "
-                tagLabel.InnerHtml = "&nbsp;";
+                text = "&nbsp;";
             else
-                tagLabel.SetInnerText(model);
-            sb.Append(tagLabel.ToString(YTagRenderMode.Normal));
+                text = HE(model);
+            string label = $"<label{FieldSetup(FieldType.Anonymous)}{HtmlBuilder.GetClassAttribute(HtmlAttributes)}>{text}</label>";
 
-            string helpLink;
-            if (TryGetSiblingProperty<string>($"{PropertyName}_HelpLink", out helpLink) && !string.IsNullOrWhiteSpace(helpLink)) {
-                YTagBuilder tagA = new YTagBuilder("a");
-                tagA.Attributes.Add("href", Utility.UrlEncodePath(helpLink));
-                tagA.Attributes.Add("target", "_blank");
-                tagA.MergeAttribute("rel", "noopener noreferrer");
-                tagA.AddCssClass(Manager.AddOnManager.CheckInvokedCssModule("yt_extlabel_img"));
-                tagA.InnerHtml = ImageHTML.BuildKnownIcon("#Help");
-                sb.Append(tagA.ToString(YTagRenderMode.Normal));
+            if (TryGetSiblingProperty<string>($"{PropertyName}_HelpLink", out string helpLink) && !string.IsNullOrWhiteSpace(helpLink)) {
+                helpLink = $"<a href='{HAE(helpLink)}' class='yt_extlabel_img' target='_blank' rel='noopener noreferrer'>{ImageHTML.BuildKnownIcon("#Help")}</a>";
+                return Task.FromResult(label + helpLink);
             }
-
-            return Task.FromResult(sb.ToString());
+            return Task.FromResult(label);
         }
     }
 }

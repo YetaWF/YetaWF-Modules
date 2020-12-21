@@ -7,6 +7,7 @@ using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
@@ -147,12 +148,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             await IncludeExplicitAsync();
 
-            component.UseSuppliedIdAsControlId();
-
-            HtmlBuilder hb = new HtmlBuilder();
-
-            YTagBuilder tag = new YTagBuilder("select");
-
+            string css = string.Empty;
             bool disabled = false;
             if (list.Count <= 1) {
                 if (component.PropData.GetAdditionalAttributeValue("Disable1OrLess", true))
@@ -160,14 +156,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
             if (disabled) {
                 //$$$$$$ THIS DOESN'T WORK WITH TEMPLATES
-                component.FieldSetup(tag, FieldType.Normal);
-                tag.Attributes.Remove("disabled");
-                tag.Attributes.Add("disabled", "disabled");
+                component.HtmlAttributes.Remove("disabled");
+                component.HtmlAttributes.Add("disabled", "disabled");
                 if (list.Count > 0)
-                    tag.AddCssClass("disabled-submit");// submit disabled field
-
-            } else {
-                component.FieldSetup(tag, component.Validation ? FieldType.Validated : FieldType.Normal);
+                    css = CssManager.CombineCss(css, "disabled-submit");// submit disabled field
             }
 
             Setup setup = new Setup {
@@ -194,20 +186,21 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             if (list.Count > 0) {
                 foreach (var item in list) {
-                    YTagBuilder tagOpt = new YTagBuilder("option");
-                    tagOpt.SetInnerText(item.Text.ToString());
-                    tagOpt.Attributes["value"] = item.Value?.ToString();
+
+                    string desc = null;
+                    string t = item.Tooltip?.ToString();
+                    if (!string.IsNullOrWhiteSpace(t))
+                        desc = $" {Basics.CssTooltip}='{HAE(t)}'";
+
+                    string selected = null;
                     if (item == selItem)
-                        tagOpt.Attributes["selected"] = "selected";
-                    string desc = item.Tooltip?.ToString();
-                    if (!string.IsNullOrWhiteSpace(desc))
-                        tagOpt.Attributes[Basics.CssTooltip] = desc;
-                    tagHtml.Append(tagOpt.ToString(YTagRenderMode.Normal));
+                        selected = " selected='selected'";
+
+                    tagHtml.Append($"<option value='{item.Value?.ToString()}'{selected}{desc}>{HE(item.Text.ToString())}</option>");
                 }
             }
-            tag.InnerHtml = tagHtml.ToString();
 
-            hb.Append($@"
+            string tags = $@"
 <div id='{component.ControlId}' class='k-widget k-dropdown yt_dropdownlist_base t_edit {cssClass}' {(disabled ? "aria-disabled='true'" : "tabindex='0' aria-disabled='false'")} unselectable='on' role='listbox' aria-haspopup='true' aria-expanded='false' aria-owns='yDDPopup' aria-live='polite' aria-busy='false'
         aria-activedescendant='{Guid.NewGuid().ToString()}'>
     <div unselectable='on' class='t_container k-dropdown-wrap k-state-default {(disabled ? "k-state-disabled" : "")}' {(disabled ? "disabled='disabled'" : "")}>
@@ -216,12 +209,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             <div class='t_img'></div>
         </div>
     </div>
-    {tag.ToString(YTagRenderMode.Normal)}
-</div>");
+    <select{component.FieldSetup(disabled ? (component.Validation ? FieldType.Validated : FieldType.Normal) : FieldType.Normal)}{component.GetClassAttribute(css)}>{tagHtml.ToString()}</select>
+</div>";
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DropDownListEditComponent('{component.ControlId}', {Utility.JsonSerialize(setup)});");
 
-            return hb.ToString();
+            return tags;
         }
 
         internal class AjaxData {
@@ -254,13 +247,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder tagHtml = new HtmlBuilder();
 
             foreach (var item in list) {
-                YTagBuilder tagOpt = new YTagBuilder("option");
-                tagOpt.SetInnerText(item.Text.ToString());
-                tagOpt.Attributes["value"] = item.Value?.ToString();
-                string desc = item.Tooltip?.ToString();
-                if (!string.IsNullOrWhiteSpace(desc))
-                    tagOpt.Attributes[Basics.CssTooltip] = desc;
-                tagHtml.Append(tagOpt.ToString(YTagRenderMode.Normal));
+                string desc = null;
+                string t = item.Tooltip?.ToString();
+                if (!string.IsNullOrWhiteSpace(t))
+                    desc = $" {Basics.CssTooltip}='{HAE(t)}'";
+                tagHtml.Append($"<option value='{item.Value?.ToString()}'{desc}>{HE(item.Text.ToString())}</option>");
             }
             return tagHtml.ToString();
         }

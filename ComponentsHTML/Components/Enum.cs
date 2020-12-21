@@ -78,13 +78,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string caption = ObjectSupport.GetEnumDisplayInfo(model, out desc, ShowValue: showValues);
 
             if (HtmlAttributes.Count > 0 || !string.IsNullOrWhiteSpace(desc)) {
-                YTagBuilder tag = new YTagBuilder("span");
-                tag.AddCssClass("yt_enum");
-                tag.AddCssClass("t_display");
-                FieldSetup(tag, FieldType.Anonymous);
-                tag.Attributes.Add(Basics.CssTooltipSpan, desc);
-                tag.SetInnerText(caption);
-                return Task.FromResult(tag.ToString(YTagRenderMode.Normal));
+                return Task.FromResult($"<span{FieldSetup(FieldType.Anonymous)} class='yt_enum t_display{GetClasses()}' {Basics.CssTooltipSpan}='{HAE(desc)}'>{HE(caption)}</span>");
             } else {
                 return Task.FromResult(caption);
             }

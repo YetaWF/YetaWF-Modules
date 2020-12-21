@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
@@ -61,20 +62,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return RenderStringTTAsync(this, model, null);
         }
         internal static Task<string> RenderStringTTAsync(YetaWFComponent component, StringTT model, string cssClass) {
-            HtmlBuilder hb = new HtmlBuilder();
 
-            YTagBuilder tag = new YTagBuilder("span");
+            string css = string.Empty;
             if (!string.IsNullOrWhiteSpace(cssClass)) {
-                tag.AddCssClass(cssClass);
-                tag.AddCssClass("t_display");
+                css = CssManager.CombineCss(css, cssClass);
+                css = CssManager.CombineCss(css, "t_display");
             }
-            component.FieldSetup(tag, FieldType.Anonymous);
 
+            string tt = string.Empty;
             if (!string.IsNullOrWhiteSpace(model.Tooltip))
-                tag.Attributes.Add(Basics.CssTooltipSpan, model.Tooltip);
-            if (!string.IsNullOrWhiteSpace(model.Text))
-                tag.SetInnerText(model.Text);
-            return Task.FromResult(tag.ToString(YTagRenderMode.Normal));
+                tt = $" {Basics.CssTooltipSpan}='HAE(model.Tooltip)'";
+            return Task.FromResult($"<span{component.FieldSetup(FieldType.Anonymous)}{component.GetClassAttribute(css)}{tt}>{HAE(model.Text)}</span>");
         }
     }
 
@@ -90,12 +88,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="tooltip">The tooltip.</param>
         /// <returns></returns>
         public static string ForStringTTDisplay(this YHtmlHelper htmlHelper, string text, string tooltip) {
-            YTagBuilder tag = new YTagBuilder("span");
+            string tt = string.Empty;
             if (!string.IsNullOrWhiteSpace(tooltip))
-                tag.Attributes.Add(Basics.CssTooltipSpan, tooltip);
-            if (!string.IsNullOrWhiteSpace(text))
-                tag.SetInnerText(text);
-            return tag.ToString(YTagRenderMode.Normal);
+                tt = $" {Basics.CssTooltipSpan}='{Utility.HAE(tooltip)}'";
+            return $"<span{tt}>{Utility.HE(text)}</span>";
         }
     }
 }

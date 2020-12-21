@@ -5,6 +5,7 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Addons;
 
@@ -271,28 +272,31 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(string model) {
+
             HtmlBuilder hb = new HtmlBuilder();
 
             bool copy = PropData.GetAdditionalAttributeValue<bool>("Copy", true);
             bool rdonly = PropData.GetAdditionalAttributeValue<bool>("ReadOnly", false);
 
-            YTagBuilder tag = new YTagBuilder("input");
-            tag.AddCssClass(TemplateClass);
-            // adding k-textbox to the control makes it look like a kendo maskedtext box without the overhead of actually calling kendoMaskedTextBox
-            tag.AddCssClass("k-textbox");
-            tag.AddCssClass("t_display");
+            string css = string.Empty;
             if (!rdonly)
-                tag.AddCssClass("k-state-disabled"); // USE KENDO style
-            FieldSetup(tag, FieldType.Anonymous);
+                css = CssManager.CombineCss(css, "k-state-disabled"); // USE KENDO style
 
-            tag.MergeAttribute("type", "text");
-            tag.MergeAttribute("value", model ?? "");
+            string readOnly = string.Empty;
+            string disabled = string.Empty;
             if (copy || rdonly)
-                tag.MergeAttribute("readonly", "readonly");
+                readOnly = " readonly='readonly'";
             else
-                tag.MergeAttribute("disabled", "disabled");
+                disabled = " disabled='disabled'";
 
-            hb.Append(tag.ToString(YTagRenderMode.StartTag));
+            if (!string.IsNullOrWhiteSpace(css))
+                css = $" {css}";
+
+            // adding k-textbox to the control makes it look like a kendo maskedtext box without the overhead of actually calling kendoMaskedTextBox
+            string id = HtmlBuilder.GetIdCond(HtmlAttributes);
+            if (id != null)
+                id = $" id='{id}'";
+            hb.Append($@"<input{id}{FieldSetup(FieldType.Anonymous)} type='text' value='{HAE(model ?? string.Empty)}' class='k-textbox t_display {TemplateClass}{css}'{readOnly}{disabled}>");
 
             if (copy) {
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "clipboardjs.com.clipboard");// add clipboard support
@@ -353,61 +357,44 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             await IncludeExplicitAsync();
 
-            HtmlBuilder hb = new HtmlBuilder();
+            string css = null;
+            css = CssManager.CombineCss(css, templateCssClass);
+            css = CssManager.CombineCss(css, component.GetClasses());
 
-            component.UseSuppliedIdAsControlId();
-
-            YTagBuilder tag = new YTagBuilder("input");
-            if (!string.IsNullOrWhiteSpace(templateCssClass))
-                tag.AddCssClass(templateCssClass);
-            tag.AddCssClass("yt_text_base");
-            // adding k-textbox to the control makes it look like a kendo maskedtext box without the overhead of actually calling kendoMaskedTextBox
-            tag.AddCssClass("k-textbox");
-            tag.AddCssClass("t_edit");
-            component.FieldSetup(tag, component.Validation ? FieldType.Validated : FieldType.Normal);
-            tag.Attributes.Add("id", component.ControlId);
-            //string id = null;
-            //if (!string.IsNullOrWhiteSpace(mask)) {
-            //    id = component.MakeId(tag);
-            //}
             string autoComplete = component.PropData.GetAdditionalAttributeValue<string>("AutoComplete", null);
-            if (autoComplete != null) {
-                tag.MergeAttribute("autocomplete", autoComplete, replaceExisting: false);
-            } else {
+            if (autoComplete == null) {
                 if (Manager.CurrentModule != null && Manager.CurrentModule.FormAutoComplete)
-                    tag.MergeAttribute("autocomplete", "on", replaceExisting: false);
+                    autoComplete = "on";
                 else
-                    tag.MergeAttribute("autocomplete", "off", replaceExisting: false);
+                    autoComplete = "off";
             }
-            bool copy = component.PropData.GetAdditionalAttributeValue<bool>("Copy", false);
-            //string mask = component.PropData.GetAdditionalAttributeValue<string>("Mask", null);
+
+            string placeHolder = string.Empty;
+            component.TryGetSiblingProperty<string>($"{component.PropertyName}_PlaceHolder", out placeHolder);
+            if (!string.IsNullOrWhiteSpace(placeHolder))
+                placeHolder = $"placeholder='{HAE(placeHolder)}'";
 
             // handle StringLengthAttribute as maxlength
             StringLengthAttribute lenAttr = component.PropData.TryGetAttribute<StringLengthAttribute>();
             if (lenAttr != null) {
 #if DEBUG
-                if (tag.Attributes.ContainsKey("maxlength"))
+                if (component.HtmlAttributes.ContainsKey("maxlength"))
                     throw new InternalError("Both StringLengthAttribute and maxlength specified - {0}", component.FieldName);
 #endif
                 int maxLength = lenAttr.MaximumLength;
                 if (maxLength > 0 && maxLength <= 8000)
-                    tag.MergeAttribute("maxlength", maxLength.ToString());
+                    component.HtmlAttributes.Add("maxlength", maxLength.ToString());
             }
 #if DEBUG
-            if (lenAttr == null && !tag.Attributes.ContainsKey("maxlength"))
+            if (lenAttr == null && !component.HtmlAttributes.ContainsKey("maxlength"))
                 throw new InternalError("No max string length given using StringLengthAttribute or maxlength - {0}", component.FieldName);
 #endif
-            string placeHolder;
-            component.TryGetSiblingProperty<string>($"{component.PropertyName}_PlaceHolder", out placeHolder);
-            if (placeHolder != null)
-                tag.Attributes.Add("placeholder", placeHolder);
 
-            // text
-            tag.MergeAttribute("type", "text");
-            tag.MergeAttribute("value", model ?? "");
+            // adding k-textbox to the control makes it look like a kendo maskedtext box without the overhead of actually calling kendoMaskedTextBox
+            HtmlBuilder hb = new HtmlBuilder();
+            hb.Append($@"<input{component.FieldSetup(component.Validation ? FieldType.Validated : FieldType.Normal)} id='{component.ControlId}' type='text' value='{HAE(model??string.Empty)}' class='yt_text_base k-textbox t_edit {css}' autocomplete='{autoComplete}'{placeHolder}>");
 
-            hb.Append($@"{tag.ToString(YTagRenderMode.StartTag)}");
-
+            bool copy = component.PropData.GetAdditionalAttributeValue<bool>("Copy", false);
             if (copy) {
                 await Manager.AddOnManager.AddAddOnNamedAsync(component.Package.AreaName, "clipboardjs.com.clipboard");// add clipboard support
                 hb.Append(ImageHTML.BuildKnownIcon("#TextCopy", sprites: Info.PredefSpriteIcons, title: __ResStr("ttCopy", "Copy to Clipboard"), cssClass: "yt_text_copy"));

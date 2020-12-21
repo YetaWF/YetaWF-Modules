@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Dashboard.Views {
 
                 hb.Append($@"
     <div class='{Globals.CssDivWarning}'>
-        {Utility.HtmlEncode(this.__ResStr("notAvail", "Information not available on .NET 5.0"))}
+        {Utility.HE(this.__ResStr("notAvail", "Information not available on .NET 5.0"))}
     </div>");
             }
             return hb.ToString();

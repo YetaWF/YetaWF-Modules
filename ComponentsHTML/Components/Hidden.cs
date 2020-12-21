@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
@@ -58,18 +59,24 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(object model) {
-            YTagBuilder tag = new YTagBuilder("input");
-            FieldSetup(tag, FieldType.Normal);
-            tag.MergeAttribute("type", "hidden");
+
+            string css = string.Empty;
             if (HtmlAttributes.ContainsKey("--NoTemplate"))
                 HtmlAttributes.Remove("--NoTemplate");
             else if (HtmlAttributes.ContainsKey("__NoTemplate"))
                 HtmlAttributes.Remove("__NoTemplate");
             else
-                tag.AddCssClass("yt_hidden");
-            if (model != null && model.GetType().IsEnum)
-                model = (int)model;
-            tag.MergeAttribute("value", model == null ? "" : model.ToString());
+                css = "yt_hidden";
+            css = CssManager.CombineCss(css, GetClasses());
+            css = string.IsNullOrWhiteSpace(css) ? string.Empty : $" class='{css}'";
+
+            string value = string.Empty;
+            if (model != null) {
+                if (model.GetType().IsEnum)
+                    value = ((int)model).ToString();
+                else
+                    value = model.ToString();
+            }
 
             StringLengthAttribute lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
 #if NOTYET
@@ -77,9 +84,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 throw new InternalError($"No max string length given using StringLengthAttribute - {FieldName}");
 #endif
             if (lenAttr != null && lenAttr.MaximumLength > 0 && lenAttr.MaximumLength <= 8000)
-                tag.MergeAttribute("maxlength", lenAttr.MaximumLength.ToString());
+                HtmlAttributes.Add("maxlength", lenAttr.MaximumLength.ToString());
 
-            return Task.FromResult(tag.ToString(YTagRenderMode.StartTag));
+            string id = HtmlBuilder.GetIdCond(HtmlAttributes);
+            if (id != null)
+                id = $" id='{id}'";
+            return Task.FromResult($"<input{id}{FieldSetup(FieldType.Normal)} type='hidden' value='{value}'{css}>");
         }
     }
 
@@ -107,18 +117,24 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(object model) {
-            YTagBuilder tag = new YTagBuilder("input");
-            FieldSetup(tag, Validation ? FieldType.Validated : FieldType.Normal);
-            tag.MergeAttribute("type", "hidden");
+
+            string css = string.Empty;
             if (HtmlAttributes.ContainsKey("--NoTemplate"))
                 HtmlAttributes.Remove("--NoTemplate");
             else if (HtmlAttributes.ContainsKey("__NoTemplate"))
                 HtmlAttributes.Remove("__NoTemplate");
             else
-                tag.AddCssClass("yt_hidden");
-            if (model != null && model.GetType().IsEnum)
-                model = (int)model;
-            tag.MergeAttribute("value", model == null ? "" : model.ToString());
+                css = "yt_hidden";
+            css = CssManager.CombineCss(css, GetClasses());
+            css = string.IsNullOrWhiteSpace(css) ? string.Empty : $" class='{css}'";
+
+            string value = string.Empty;
+            if (model != null) {
+                if (model.GetType().IsEnum)
+                    value = ((int)model).ToString();
+                else
+                    value = model.ToString();
+            }
 
             StringLengthAttribute lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
 #if NOTYET
@@ -126,9 +142,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 throw new InternalError($"No max string length given using StringLengthAttribute - {FieldName}");
 #endif
             if (lenAttr != null && lenAttr.MaximumLength > 0 && lenAttr.MaximumLength <= 8000)
-                tag.MergeAttribute("maxlength", lenAttr.MaximumLength.ToString());
+                HtmlAttributes.Add("maxlength", lenAttr.MaximumLength.ToString());
 
-            return Task.FromResult(tag.ToString(YTagRenderMode.StartTag));
+            string id = HtmlBuilder.GetIdCond(HtmlAttributes);
+            if (id != null)
+                id = $" id='{id}'";
+            return Task.FromResult($"<input{id}{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} type='hidden' value='{value}'{css}>");
         }
     }
 }

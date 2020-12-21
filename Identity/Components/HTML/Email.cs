@@ -38,14 +38,11 @@ namespace YetaWF.Modules.Identity.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            YTagBuilder tag = new YTagBuilder("span");
-            FieldSetup(tag, FieldType.Anonymous);
-
             ModuleAction actionDisplay = null;
             ModuleAction actionLoginAs = null;
+            string userName = string.Empty;
             using (UserDefinitionDataProvider userDefDP = new UserDefinitionDataProvider()) {
                 UserDefinition user = null;
-                string userName = "";
                 if (!string.IsNullOrWhiteSpace(model)) {
                     user = await userDefDP.GetItemByEmailAsync(model);
                     if (user == null) {
@@ -59,9 +56,8 @@ namespace YetaWF.Modules.Identity.Components {
                     }
                 } else
                     userName = __ResStr("noEmail", "(not specified)");
-                tag.SetInnerText(userName);
             }
-            hb.Append(tag.ToString(YTagRenderMode.Normal));
+            hb.Append($"<span{FieldSetup(FieldType.Anonymous)}{HtmlBuilder.GetClassAttribute(HtmlAttributes)}>{HE(userName)}</span>");
             if (actionDisplay != null)
                 hb.Append(await actionDisplay.RenderAsync(ModuleAction.RenderModeEnum.IconsOnly));
             if (actionLoginAs != null)
