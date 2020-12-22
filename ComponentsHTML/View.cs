@@ -71,14 +71,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (string.IsNullOrWhiteSpace(ControllerName))
                 ControllerName = ModuleBase.Controller;
 
-            IDictionary<string, object> attrs = YHtmlHelper.AnonymousObjectToHtmlAttributes(HtmlAttributes);
+            IDictionary<string, object> attrs = HtmlBuilder.AnonymousObjectToHtmlAttributes(HtmlAttributes);
             if (SaveReturnUrl)
                 attrs.Add(Basics.CssSaveReturnUrl, string.Empty);
 
             string css = null;
             if (Manager.CurrentSite.FormErrorsImmed)
                 css = CssManager.CombineCss(css, "yValidateImmediately");
-            attrs.Add("class", css);
 
             string formAction;
             System.IServiceProvider services = HtmlHelper.ActionContext.HttpContext.RequestServices;
@@ -88,7 +87,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hb = new HtmlBuilder();
             string id = HtmlBuilder.GetId(attrs);
             hb.Append($@"
-<form id='{id}' class='{Forms.CssFormAjax}{HtmlBuilder.GetClasses(attrs)}' autocomplete='{(ModuleBase.FormAutoComplete ? "on" : "off")}' action='{Utility.HAE(formAction)}' method='{Method}'{HtmlBuilder.Attributes(attrs)}>");
+<form id='{id}' class='{Forms.CssFormAjax}{HtmlBuilder.GetClasses(attrs, css)}' autocomplete='{(ModuleBase.FormAutoComplete ? "on" : "off")}' action='{Utility.HAE(formAction)}' method='{Method}'{HtmlBuilder.Attributes(attrs)}>");
 
             // show errors if already present
             if (!HtmlHelper.ModelState.IsValid) {

@@ -101,8 +101,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Returns the CSS classes defined for this component.
         /// </summary>
         /// <returns>Returns the CSS classes defined in the HtmlAttributes property. An empty string is returned if no classes are defined.</returns>
-        public string GetClasses() {
-            return HtmlBuilder.GetClasses(HtmlAttributes);
+        public string GetClasses(string extraCss = null) {
+            return HtmlBuilder.GetClasses(HtmlAttributes, extraCss);
         }
         /// <summary>
         /// Returns a complete class= CSS attribute including all classes defined in the HtmlAttributes property.
@@ -110,12 +110,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="extraCss">Optional additional CSS classes.</param>
         /// <returns>Returns a complete class= CSS attribute including all classes defined in the HtmlAttributes property. An empty string is returned if no classes are defined.</returns>
         public string GetClassAttribute(string extraCss = null) {
-            string css = extraCss;
-            if (HtmlAttributes != null && HtmlAttributes.ContainsKey("class"))
-                css = CssManager.CombineCss(css, (string)HtmlAttributes["class"]);
-            if (string.IsNullOrWhiteSpace(css))
-                return string.Empty;
-            return $" class='{css}'";
+            return HtmlBuilder.GetClassAttribute(HtmlAttributes, extraCss);
         }
 
         internal string GetErrorClass() {
