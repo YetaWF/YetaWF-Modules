@@ -27,6 +27,13 @@ namespace YetaWF_ComponentsHTML {
 
         ToastDiv: HTMLDivElement|null = null;
 
+        // PAGE INITIALIZATION
+        // PAGE INITIALIZATION
+        // PAGE INITIALIZATION
+
+        /** Called when a new full page has been loaded and needs to be initialized */
+        public initFullPage(): void {  }
+
         // LOADING
         // LOADING
         // LOADING

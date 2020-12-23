@@ -285,7 +285,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             if (HasSubmenu && RenderEngine == ModuleAction.RenderEngineEnum.BootstrapSmartMenu)
                 innerHtml += " <span class='caret'></span>";
 
-            return $@"<a{(id != null ? $" id='{id}'" : null)} class='{Globals.CssModuleNoPrint} {css} {HtmlBuilder.GetClasses(attrs)}'{HtmlBuilder.Attributes(attrs)}>{innerHtml}</a>";
+            return $@"<a{(id != null ? $" id='{id}'" : null)} class='{Globals.CssModuleNoPrint}{HtmlBuilder.GetClasses(attrs, css)}'{HtmlBuilder.Attributes(attrs)}>{innerHtml}</a>";
         }
     }
 }

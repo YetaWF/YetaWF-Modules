@@ -19,6 +19,11 @@ var YetaWF_ComponentsHTML;
             // TOAST
             this.Toasts = [];
         }
+        // PAGE INITIALIZATION
+        // PAGE INITIALIZATION
+        // PAGE INITIALIZATION
+        /** Called when a new full page has been loaded and needs to be initialized */
+        BasicsImpl.prototype.initFullPage = function () { };
         Object.defineProperty(BasicsImpl.prototype, "isLoading", {
             get: function () {
                 return this.loading;
