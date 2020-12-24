@@ -1,2 +1,1 @@
-﻿jquery.peelback.js
-PageEar.ts
+﻿PageEar.tsx

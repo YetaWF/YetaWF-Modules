@@ -2,3 +2,25 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEar#License */
 body.yDisplayMode .YetaWF_PageEar_PageEar {
   display: none; }
+
+#YetaWF_PageEar_Peelback .t_img {
+  width: 0;
+  height: 0;
+  z-index: 9001;
+  position: absolute;
+  top: 0;
+  right: 0;
+  -ms-interpolation-mode: 'bicubic'; }
+
+#YetaWF_PageEar_Peelback .t_mask {
+  width: 0;
+  height: 0;
+  z-index: 9000;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-position: right top;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-size: auto;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5); }
