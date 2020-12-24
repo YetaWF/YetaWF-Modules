@@ -25,9 +25,9 @@ namespace YetaWF_ComponentsHTML {
             const noTTISel = this.buildNoTT("i", noTooltips);
             const a2 = YConfigs.Basics.CssTooltip;
             const a3 = YConfigs.Basics.CssTooltipSpan;
-            const noTTMisc = `.ui-jqgrid span[${a2}],th[${a2}],span[${a3}],li[${a2}],div[${a2}]`;
+            const ttMisc = `.ui-jqgrid span[${a2}],th[${a2}],span[${a3}],li[${a2}],div[${a2}]`;
 
-            const selectors = `label,input:not(.ui-button-disabled),a:not(.ui-button-disabled),button:not(.ui-button-disabled),${noTTImgSel},${noTTASel},${noTTISel},${noTTMisc}`;
+            const selectors = `label,input:not(.ui-button-disabled),a:not(.ui-button-disabled),button:not(.ui-button-disabled),${noTTImgSel},${noTTASel},${noTTISel},${ttMisc}`;
 
             $YetaWF.registerMultipleEventHandlersBody(["mouseover", "click"], `${selectors}`, (ev: Event): boolean => {
 
@@ -103,12 +103,9 @@ namespace YetaWF_ComponentsHTML {
             return sel;
         }
         private buildNoTT(sel: string, noTooltips: string[]): string {
-            var s = "";
-            for (const n of noTooltips) {
-                if (s.length)
-                    s += ",";
-                s += `${sel}:not(${n})`;
-            }
+            var s = `${sel}`;
+            for (const n of noTooltips)
+                s += `:not(.${n})`;
             return s;
         }
 

@@ -21,8 +21,8 @@ var YetaWF_ComponentsHTML;
             var noTTISel = this.buildNoTT("i", noTooltips);
             var a2 = YConfigs.Basics.CssTooltip;
             var a3 = YConfigs.Basics.CssTooltipSpan;
-            var noTTMisc = ".ui-jqgrid span[" + a2 + "],th[" + a2 + "],span[" + a3 + "],li[" + a2 + "],div[" + a2 + "]";
-            var selectors = "label,input:not(.ui-button-disabled),a:not(.ui-button-disabled),button:not(.ui-button-disabled)," + noTTImgSel + "," + noTTASel + "," + noTTISel + "," + noTTMisc;
+            var ttMisc = ".ui-jqgrid span[" + a2 + "],th[" + a2 + "],span[" + a3 + "],li[" + a2 + "],div[" + a2 + "]";
+            var selectors = "label,input:not(.ui-button-disabled),a:not(.ui-button-disabled),button:not(.ui-button-disabled)," + noTTImgSel + "," + noTTASel + "," + noTTISel + "," + ttMisc;
             $YetaWF.registerMultipleEventHandlersBody(["mouseover", "click"], "" + selectors, function (ev) {
                 var elem = ev.__YetaWFElem;
                 for (;;) {
@@ -97,12 +97,10 @@ var YetaWF_ComponentsHTML;
             return sel;
         };
         Tooltips.prototype.buildNoTT = function (sel, noTooltips) {
-            var s = "";
+            var s = "" + sel;
             for (var _i = 0, noTooltips_1 = noTooltips; _i < noTooltips_1.length; _i++) {
                 var n = noTooltips_1[_i];
-                if (s.length)
-                    s += ",";
-                s += sel + ":not(" + n + ")";
+                s += ":not(." + n + ")";
             }
             return s;
         };
