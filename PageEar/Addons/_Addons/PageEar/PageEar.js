@@ -86,7 +86,7 @@ var YetaWF_PageEar;
             if (this.Setup.AutoAnimate) {
                 if (!this.Interval)
                     return;
-                width = Number.parseFloat(this.PeelImage.style.width);
+                width = parseFloat(this.PeelImage.style.width);
                 if (this.Increase) {
                     width += this.Increment;
                     if (width >= this.Setup.LargeSize) {

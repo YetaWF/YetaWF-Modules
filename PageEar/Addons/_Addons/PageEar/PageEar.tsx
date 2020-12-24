@@ -61,7 +61,7 @@ namespace YetaWF_PageEar {
             this.PeelMask.style.width = `${this.Setup.SmallSize}px`;
             this.PeelMask.style.height = `${this.Setup.SmallSize}px`;
 
-            this.Increment = (this.Setup.LargeSize - this.Setup.SmallSize) / (PageEarModule.TIME / PageEarModule.STEPTIME)
+            this.Increment = (this.Setup.LargeSize - this.Setup.SmallSize) / (PageEarModule.TIME / PageEarModule.STEPTIME);
 
             $YetaWF.registerEventHandler(this.PeelDiv, "mouseover", null, (ev:MouseEvent): boolean => {
                 this.maximize();
@@ -100,7 +100,7 @@ namespace YetaWF_PageEar {
             let width: number;
             if (this.Setup.AutoAnimate) {
                 if (!this.Interval) return;
-                width = Number.parseFloat(this.PeelImage.style.width);
+                width = parseFloat(this.PeelImage.style.width);
                 if (this.Increase) {
                     width += this.Increment;
                     if (width >= this.Setup.LargeSize) {
