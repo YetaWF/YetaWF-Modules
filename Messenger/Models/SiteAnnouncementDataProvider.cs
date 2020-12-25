@@ -23,9 +23,9 @@ namespace YetaWF.Modules.Messenger.DataProvider {
         public DateTime Sent { get; set; }
 
         [StringLength(MaxMessage)]
-        public string Message { get; set; }
+        public string Message { get; set; } = null!;
         [StringLength(MaxTitle)]
-        public string Title { get; set; }
+        public string Title { get; set; } = null!;
 
         public SiteAnnouncement() {
             Sent = DateTime.UtcNow;
@@ -45,7 +45,7 @@ namespace YetaWF.Modules.Messenger.DataProvider {
 
         private IDataProviderIdentity<int, object, SiteAnnouncement> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderIdentity<int, object, SiteAnnouncement> CreateDataProvider() {
+        private IDataProviderIdentity<int, object, SiteAnnouncement>? CreateDataProvider() {
             Package package = YetaWF.Modules.Messenger.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Announcements", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -54,7 +54,7 @@ namespace YetaWF.Modules.Messenger.DataProvider {
         // API
         // API
 
-        public async Task<SiteAnnouncement> GetItemAsync(int key) {
+        public async Task<SiteAnnouncement?> GetItemAsync(int key) {
             return await DataProvider.GetByIdentityAsync(key);
         }
         public async Task<bool> AddItemAsync(SiteAnnouncement data) {
@@ -67,7 +67,7 @@ namespace YetaWF.Modules.Messenger.DataProvider {
         public async Task<bool> RemoveItemAsync(int key) {
             return await DataProvider.RemoveByIdentityAsync(key);
         }
-        public async Task<DataProviderGetRecords<SiteAnnouncement>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        public async Task<DataProviderGetRecords<SiteAnnouncement>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
             return await DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
         public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {

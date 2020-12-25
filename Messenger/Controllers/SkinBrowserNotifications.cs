@@ -5,11 +5,7 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Support;
 using YetaWF.Core;
 using YetaWF.Modules.Messenger.Modules;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Messenger.Controllers {
 

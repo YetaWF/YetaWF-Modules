@@ -7,12 +7,7 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Messenger.DataProvider;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using Microsoft.AspNet.SignalR;
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Messenger.Controllers {
     public class SiteAnnouncementModuleController : ControllerImpl<YetaWF.Modules.Messenger.Modules.SiteAnnouncementModule> {
@@ -24,12 +19,12 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
             [Caption("Title"), Description("Defines the title of the message to be sent")]
             [UIHint("Text80"), StringLength(DataProvider.SiteAnnouncement.MaxTitle), Trim, Required]
-            public string Title { get; set; }
+            public string Title { get; set; } = null!;
 
             [TextAbove("Please enter the message to be sent to all users that are currently using the site (anonymous and logged on users).")]
             [Caption("Message"), Description("Defines the message to be sent")]
             [UIHint("TextArea"), AdditionalMetadata("PageBrowse", true), AdditionalMetadata("Encode", false), StringLength(DataProvider.SiteAnnouncement.MaxMessage), Trim, Required]
-            public string Message { get; set; }
+            public string Message { get; set; } = null!;
 
             [Caption("Test Mode"), Description("Select to test sending a message to yourself (no other users will receive this message)")]
             [UIHint("Boolean"), SuppressIf(nameof(IsDemoMode), false), ReadOnly]
@@ -43,7 +38,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
             [Caption(" "), Description(" ")]
             [UIHint("String"), SuppressIf(nameof(IsDemoMode), false), ReadOnly]
-            public string Description { get; set; }
+            public string? Description { get; set; }
 
             public bool IsDemoMode { get { return YetaWFManager.IsDemo; } }
 

@@ -3,11 +3,7 @@
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Messenger.Controllers {
 
@@ -21,12 +17,12 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
             [Caption("Title"), Description("Defines the title of the message to be sent")]
             [UIHint("Text80"), StringLength(80), Trim, Required]
-            public string Title { get; set; }
+            public string Title { get; set; } = null!;
 
             [TextAbove("Please enter the message to be sent as a desktop notification.")]
             [Caption("Message"), Description("Defines the message to be sent")]
             [UIHint("TextAreaSourceOnly"), StringLength(120), Trim, Required]
-            public string Message { get; set; }
+            public string Message { get; set; } = null!;
 
             public Model() { }
         }

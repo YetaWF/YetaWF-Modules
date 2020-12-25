@@ -13,11 +13,7 @@ using YetaWF.Modules.Messenger.DataProvider;
 using YetaWF.Modules.Messenger.Modules;
 using YetaWF.Core.Components;
 using YetaWF.Modules.Messenger.Views;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Messenger.Controllers {
 
@@ -40,11 +36,11 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
             [Caption("Title"), Description("The title of the message sent to all users")]
             [UIHint("String"), ReadOnly]
-            public string Title { get; set; }
+            public string? Title { get; set; }
 
             [Caption("Message"), Description("The message that was sent to all users")]
             [UIHint("String"), ReadOnly]
-            public string Message { get; set; }
+            public string? Message { get; set; }
 
             public int Key { get; set; }
 
@@ -59,7 +55,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
         public class BrowseModel {
             [Caption(""), Description("")] // empty entries required so property is shown in property list (but with a suppressed label)
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
         private GridDefinition GetGridModel() {
             return new GridDefinition {
@@ -67,7 +63,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
                 SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = GetActionUrl(nameof(BrowseSiteAnnouncement_GridData)),
-                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (SiteAnnouncementDataProvider dataProvider = new SiteAnnouncementDataProvider()) {
                         DataProviderGetRecords<SiteAnnouncement> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {

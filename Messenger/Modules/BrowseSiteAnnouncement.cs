@@ -11,10 +11,6 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Messenger.Modules {
 
@@ -36,7 +32,7 @@ namespace YetaWF.Modules.Messenger.Modules {
 
         [Category("General"), Caption("Send Message Url"), Description("The Url to send a new site announcement - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string SendUrl { get; set; }
+        public string? SendUrl { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
@@ -47,7 +43,7 @@ namespace YetaWF.Modules.Messenger.Modules {
             return menuList;
         }
 
-        public ModuleAction GetAction_Items(string url) {
+        public ModuleAction GetAction_Items(string? url) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Browse",
