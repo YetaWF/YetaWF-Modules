@@ -17,7 +17,7 @@ var YetaWF_ComponentsHTML;
         };
         // Validation
         /**
-         * Re-validate all fields within the div, typically used after paging in a grid to let jquery.validate update all fields
+         * Re-validate all fields within the div, typically used after paging in a grid to let validatation update all fields
          */
         FormsImpl.prototype.updateValidation = function (div) {
             // apparently not used

@@ -20,7 +20,7 @@ namespace YetaWF_ComponentsHTML {
         // Validation
 
         /**
-         * Re-validate all fields within the div, typically used after paging in a grid to let jquery.validate update all fields
+         * Re-validate all fields within the div, typically used after paging in a grid to let validatation update all fields
          */
         public updateValidation(div: HTMLElement): void {
             // apparently not used

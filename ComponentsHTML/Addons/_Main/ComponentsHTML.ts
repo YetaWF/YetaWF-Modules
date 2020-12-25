@@ -10,7 +10,7 @@ namespace YetaWF {
 }
 namespace YetaWF_ComponentsHTML {
     export interface IPackageVolatiles {
-        jqueryUI: boolean; // defines whether jqueryui has been loaded
+        jqueryUI: boolean; // defines whether the jqueryui theme has been loaded
         jqueryUITheme: string; // the theme in use
         kendoUI: boolean; // defines whether kendoui has been loaded
         kendoUITheme: string; // the theme in use
