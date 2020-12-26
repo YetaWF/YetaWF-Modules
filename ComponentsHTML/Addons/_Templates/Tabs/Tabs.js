@@ -244,18 +244,22 @@ var YetaWF_ComponentsHTML;
          * Adds a tab/pane and returns the DIV that can be used to add contents.
          */
         TabsComponent.prototype.add = function (caption, tooltip) {
-            //$$$jquery only
-            var tabstrip = $YetaWF.getElement1BySelector("#" + this.ControlId + " > ul.t_tabstrip");
-            var total = this.tabs.length;
-            var tab = $YetaWF.createElement("li", { role: "tab", tabindex: "-1", class: "ui-tabs-tab ui-corner-top ui-tab ui-state-default", "aria-selected": "false", "aria-expanded": "false" },
-                $YetaWF.createElement("a", { "data-tooltip": tooltip, role: "presentation", tabindex: "-1", class: "ui-tabs-anchor" }, caption));
-            tabstrip.appendChild(tab);
-            var pane = $YetaWF.createElement("div", { class: "t_proptable t_cat t_tabpanel ui-tabs-panel ui-corner-bottom ui-widget-content", role: "tabpanel", style: "display:none", "aria-hidden": "true" },
-                $YetaWF.createElement("div", { class: "t_contents t_loading" }, "Loading..."));
-            this.Control.appendChild(pane);
-            this.resequenceTabs();
-            this.activatePane(total);
-            return $YetaWF.getElement1BySelector(".t_contents", [pane]);
+            if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery) {
+                var tabstrip = $YetaWF.getElement1BySelector("#" + this.ControlId + " > ul.t_tabstrip");
+                var total = this.tabs.length;
+                var tab = $YetaWF.createElement("li", { role: "tab", tabindex: "-1", class: "ui-tabs-tab ui-corner-top ui-tab ui-state-default", "aria-selected": "false", "aria-expanded": "false" },
+                    $YetaWF.createElement("a", { "data-tooltip": tooltip, role: "presentation", tabindex: "-1", class: "ui-tabs-anchor" }, caption));
+                tabstrip.appendChild(tab);
+                var pane = $YetaWF.createElement("div", { class: "t_proptable t_cat t_tabpanel ui-tabs-panel ui-corner-bottom ui-widget-content", role: "tabpanel", style: "display:none", "aria-hidden": "true" },
+                    $YetaWF.createElement("div", { class: "t_contents t_loading" }, "Loading..."));
+                this.Control.appendChild(pane);
+                this.resequenceTabs();
+                this.activatePane(total);
+                return $YetaWF.getElement1BySelector(".t_contents", [pane]);
+            }
+            else {
+                throw "Kendo UI based tab control doesn't support add()";
+            }
         };
         TabsComponent.prototype.remove = function (index) {
             var tabs = this.tabs;
@@ -275,33 +279,37 @@ var YetaWF_ComponentsHTML;
                 this.activatePane(index);
         };
         TabsComponent.prototype.resequenceTabs = function () {
-            //$$$jquery
-            var count = 0;
-            for (var _i = 0, _a = this.tabs; _i < _a.length; _i++) {
-                var tab = _a[_i];
-                var tabId = this.ControlId + "_tab" + count;
-                var tabIdLb = tabId + "_lb";
-                $YetaWF.setAttribute(tab, "data-tab", count.toString());
-                $YetaWF.setAttribute(tab, "aria-controls", tabId);
-                $YetaWF.setAttribute(tab, "aria-labelledby", tabIdLb);
-                var anchor = $YetaWF.getElement1BySelector("a", [tab]);
-                anchor.href = "#" + tabId;
-                anchor.id = "#" + tabIdLb;
-                ++count;
+            if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery) {
+                var count = 0;
+                for (var _i = 0, _a = this.tabs; _i < _a.length; _i++) {
+                    var tab = _a[_i];
+                    var tabId = this.ControlId + "_tab" + count;
+                    var tabIdLb = tabId + "_lb";
+                    $YetaWF.setAttribute(tab, "data-tab", count.toString());
+                    $YetaWF.setAttribute(tab, "aria-controls", tabId);
+                    $YetaWF.setAttribute(tab, "aria-labelledby", tabIdLb);
+                    var anchor = $YetaWF.getElement1BySelector("a", [tab]);
+                    anchor.href = "#" + tabId;
+                    anchor.id = "#" + tabIdLb;
+                    ++count;
+                }
+                count = 0;
+                var panes = $YetaWF.getElementsBySelector("#" + this.ControlId + " > div.t_tabpanel");
+                for (var _b = 0, panes_1 = panes; _b < panes_1.length; _b++) {
+                    var pane = panes_1[_b];
+                    var tabId = this.ControlId + "_tab" + count;
+                    var tabIdLb = tabId + "_lb";
+                    $YetaWF.setAttribute(pane, "data-tab", count.toString());
+                    pane.id = tabId;
+                    $YetaWF.setAttribute(pane, "aria-labelledby", tabIdLb);
+                    var loadingDiv = $YetaWF.getElement1BySelectorCond(".t_contents.t_loading", [pane]);
+                    if (loadingDiv)
+                        loadingDiv.id = tabId + "_content";
+                    ++count;
+                }
             }
-            count = 0;
-            var panes = $YetaWF.getElementsBySelector("#" + this.ControlId + " > div.t_tabpanel");
-            for (var _b = 0, panes_1 = panes; _b < panes_1.length; _b++) {
-                var pane = panes_1[_b];
-                var tabId = this.ControlId + "_tab" + count;
-                var tabIdLb = tabId + "_lb";
-                $YetaWF.setAttribute(pane, "data-tab", count.toString());
-                pane.id = tabId;
-                $YetaWF.setAttribute(pane, "aria-labelledby", tabIdLb);
-                var loadingDiv = $YetaWF.getElement1BySelectorCond(".t_contents.t_loading", [pane]);
-                if (loadingDiv)
-                    loadingDiv.id = tabId + "_content";
-                ++count;
+            else {
+                throw "Kendo UI based tab control doesn't support resequenceTabs()";
             }
         };
         TabsComponent.TEMPLATE = "yt_tabs";
