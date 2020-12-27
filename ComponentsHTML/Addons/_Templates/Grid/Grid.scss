@@ -202,6 +202,14 @@ ul.yt_grid_menu {
         display:inline-block;
     }
 }
+
+.yt_grid { // both tg_skin and tg_noskin
+    tbody tr:not(.ui-state-highlight):hover {
+        background-color: var(--tbl-bg-hover);
+        color: var(--tbl-clr-hover);
+    }
+}
+
 .yt_grid.tg_skin { /* Skin dependent formatting */
     .tg_table.ui-widget { // jquery-ui rendering
         table {

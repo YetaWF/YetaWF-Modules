@@ -45,19 +45,27 @@ $bar-active: darken($bar-background, 20%);
     &.t_noskin {
         .yt_panels_pagebarinfo_list {
             background: $bar-background;
-            background: var(--elem-background, $bar-background);
+            background: var(--bar-bg, $bar-background);
             .t_entry {
                 &:hover {
                     background: $bar-hover;
-                    background: var(--elem-hover, $bar-hover);
+                    background: var(--bar-bg-hover, $bar-hover);
+                    a {
+                        color: $bar-color;
+                        color: var(--bar-clr-hover, $bar-color);
+                    }
                 }
                 &.t_active {
                     background: $bar-active;
-                    background: var(--elem-active, $bar-active);
+                    background: var(--bar-bg-active, $bar-active);
+                    a {
+                        color: $bar-color;
+                        color: var(--bar-clr-active, $bar-color);
+                    }
                 }
                 a {
                     color: $bar-color;
-                    color: var(--elem-color, $bar-color);
+                    color: var(--bar-clr, $bar-color);
                 }
             }
         }

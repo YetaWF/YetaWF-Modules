@@ -147,6 +147,10 @@ ul.yt_grid_menu {
   ul.yt_grid_menu .t_fmenutext {
     display: inline-block; }
 
+.yt_grid tbody tr:not(.ui-state-highlight):hover {
+  background-color: var(--tbl-bg-hover);
+  color: var(--tbl-clr-hover); }
+
 .yt_grid.tg_skin {
   /* Skin dependent formatting */ }
   .yt_grid.tg_skin .tg_table.ui-widget table tr.ui-widget-content,
