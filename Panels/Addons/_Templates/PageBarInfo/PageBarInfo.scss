@@ -3,12 +3,15 @@
 $entry-width: 120px;
 $entry-height: 80px; // horizontal only
 $large-entry-width: 250px;
-$bar-background: silver;
-$bar-color: white;
-$bar-active: darken($bar-background, 20%);
 
 $small-screen: 1000px;
 $large-screen: 1500px;
+
+// t_noskin colors, when CSS variables are not available
+$bar-background: silver;
+$bar-hover: darken($bar-background, 10%);
+$bar-color: white;
+$bar-active: darken($bar-background, 20%);
 
 .yt_panels_pagebarinfo {
     &.t_styleshorz,
@@ -42,12 +45,19 @@ $large-screen: 1500px;
     &.t_noskin {
         .yt_panels_pagebarinfo_list {
             background: $bar-background;
+            background: var(--elem-background, $bar-background);
             .t_entry {
+                &:hover {
+                    background: $bar-hover;
+                    background: var(--elem-hover, $bar-hover);
+                }
                 &.t_active {
                     background: $bar-active;
+                    background: var(--elem-active, $bar-active);
                 }
                 a {
                     color: $bar-color;
+                    color: var(--elem-color, $bar-color);
                 }
             }
         }

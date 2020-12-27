@@ -67,7 +67,6 @@ var YetaWF_Identity;
             this.inputName.value = "";
             this.inputHidden.value = "0";
             this.GridAll.ClearSelection();
-            //$$$this.GridAll.enable();
         };
         UserIdEditComponent.TEMPLATE = "yt_yetawf_identity_userid";
         UserIdEditComponent.SELECTOR = ".yt_yetawf_identity_userid.t_large.t_edit";

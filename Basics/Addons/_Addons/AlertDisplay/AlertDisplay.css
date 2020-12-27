@@ -1,17 +1,17 @@
 @charset "UTF-8";
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Basics#License */
 .YetaWF_Basics_AlertDisplay {
+  z-index: 10000;
   position: fixed;
   left: 0px;
   top: 0px;
   right: 0px;
-  border: 1px solid #ff0000;
-  background-color: #e26363;
   padding: 1em;
   margin: 1em;
   border-radius: 10px;
-  color: #ffffff;
-  z-index: 10000; }
+  border: 1px solid #ff0000;
+  background-color: #e26363;
+  color: #ffffff; }
   .YetaWF_Basics_AlertDisplay .t_close img {
     margin: 5px;
     margin-right: 1em;

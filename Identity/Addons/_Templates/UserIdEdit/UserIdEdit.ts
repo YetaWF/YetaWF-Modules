@@ -72,7 +72,6 @@ namespace YetaWF_Identity {
             this.inputName.value = "";
             this.inputHidden.value = "0";
             this.GridAll.ClearSelection();
-            //$$$this.GridAll.enable();
         }
     }
 }

@@ -22,11 +22,17 @@
   background: transparent; }
 
 .yt_panels_pagebarinfo.t_noskin .yt_panels_pagebarinfo_list {
-  background: silver; }
+  background: lime;
+  background: var(--elem-background, lime); }
+  .yt_panels_pagebarinfo.t_noskin .yt_panels_pagebarinfo_list .t_entry:hover {
+    background: #00cc00;
+    background: var(--elem-hover, #00cc00); }
   .yt_panels_pagebarinfo.t_noskin .yt_panels_pagebarinfo_list .t_entry.t_active {
-    background: #8d8d8d; }
+    background: #009900;
+    background: var(--elem-active, #009900); }
   .yt_panels_pagebarinfo.t_noskin .yt_panels_pagebarinfo_list .t_entry a {
-    color: white; }
+    color: white;
+    color: var(--elem-color, white); }
 
 .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_expcoll {
   cursor: pointer;

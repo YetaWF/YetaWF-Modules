@@ -63,7 +63,7 @@ namespace YetaWF.Modules.Panels.Modules {
         [Data_NewValue]
         public string ContentPane { get; set; }
 
-        [Category("General"), Caption("Skin Theme"), Description("Defines whether the page bar is rendered using the skin's theme or using custom CSS")]
+        [Category("General"), Caption("Use jQuery UI Theme"), Description("Defines whether the page bar is rendered using the defined jQuery UI theme or using custom CSS")]
         [UIHint("Boolean")]
         [Data_NewValue]
         public bool UseSkinFormatting { get; set; } // use skin theme (jquery-ui)
