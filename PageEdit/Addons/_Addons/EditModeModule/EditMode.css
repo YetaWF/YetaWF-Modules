@@ -18,6 +18,7 @@
   .YetaWF_PageEdit_EditMode #yEditControlDiv {
     line-height: 1; }
     .YetaWF_PageEdit_EditMode #yEditControlDiv > a {
+      display: block;
       line-height: 1;
       padding: 4px 4px; }
 

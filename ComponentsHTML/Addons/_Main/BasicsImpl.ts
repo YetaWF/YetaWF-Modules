@@ -274,27 +274,7 @@ namespace YetaWF_ComponentsHTML {
          */
         public elementEnableToggle(elem: HTMLElement, enable: boolean): void {
 
-            if ($YetaWF.elementHasClass(elem, "ui-button")) {
-                // Handle buttons
-                // jquery-ui button
-                elem.removeAttribute("disabled");
-                $YetaWF.elementRemoveClass(elem, "ui-state-disabled");
-                if (!enable) {
-                    elem.setAttribute("disabled", "disabled");
-                    $YetaWF.elementAddClass(elem, "ui-state-disabled");
-                }
-            } else if ($YetaWF.elementHasClass(elem, "btn")) {
-                // bootstrap button (using a tag)
-                elem.removeAttribute("disabled");
-                elem.removeAttribute("aria-disabled");
-                if (enable) {
-                    $YetaWF.elementRemoveClass(elem, "disabled");
-                } else {
-                    $YetaWF.elementAddClass(elem, "disabled");
-                    elem.setAttribute("disabled", "disabled");
-                    $YetaWF.setAttribute(elem, "aria-disabled", "true");
-                }
-            } else if (TextEditComponent && $YetaWF.elementHasClass(elem, TextEditComponent.TEMPLATE)) { // using template name as class name
+            if (TextEditComponent && $YetaWF.elementHasClass(elem, TextEditComponent.TEMPLATE)) { // using template name as class name
                 // Handle text/input
                 elem.removeAttribute("disabled");
                 if (!enable)

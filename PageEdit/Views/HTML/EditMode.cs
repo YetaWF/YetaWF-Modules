@@ -25,11 +25,8 @@ namespace YetaWF.Modules.PageEdit.Views {
             // </div>
 
             ModuleAction action = Manager.EditMode ? module.GetAction_SwitchToView() : module.GetAction_SwitchToEdit();
-            if (action != null) {
-                if (Manager.SkinInfo.UsingBootstrap && Manager.SkinInfo.UsingBootstrapButtons)
-                    action.CssClass = CssManager.CombineCss(action.CssClass, "btn btn-outline-primary");
+            if (action != null)
                 return $"<div id='yEditControlDiv'>{await action.RenderAsButtonIconAsync("yEditControlButton")}</div>";
-            }
             return null;
         }
     }

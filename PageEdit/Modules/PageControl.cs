@@ -66,12 +66,9 @@ namespace YetaWF.Modules.PageEdit.Modules {
         }
 
         public async Task<ModuleAction> GetAction_PageControlAsync() {
-            string css = null;
-            if (Manager.SkinInfo.UsingBootstrap && Manager.SkinInfo.UsingBootstrapButtons)
-                css = "btn btn-outline-primary";
             return new ModuleAction(this) {
                 Category = ModuleAction.ActionCategoryEnum.Significant,
-                CssClass = css,
+                CssClass = "y_button_outline",
                 Image = await new SkinImages().FindIcon_PackageAsync("PageEdit.png", Package.GetCurrentPackage(this)),
                 Location = ModuleAction.ActionLocationEnum.Any,
                 Mode = ModuleAction.ActionModeEnum.Any,
@@ -88,6 +85,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.SwitchToEdit)),
                 QueryArgs = new { },
+                CssClass = "y_button_outline",
                 NeedsModuleContext = true,
                 Image = "#Edit",
                 LinkText = this.__ResStr("modSwitchToEditLink", "Switch To Site Edit Mode"),
@@ -106,8 +104,9 @@ namespace YetaWF.Modules.PageEdit.Modules {
         public ModuleAction GetAction_SwitchToView() {
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.SwitchToView)),
-                NeedsModuleContext = true,
                 QueryArgs = new { },
+                CssClass = "y_button_outline",
+                NeedsModuleContext = true,
                 Image = "#Display",
                 LinkText = this.__ResStr("modSwitchToViewLink", "Switch To Site View Mode"),
                 MenuText = this.__ResStr("modSwitchToViewText", "Switch To Site View Mode"),

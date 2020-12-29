@@ -26,6 +26,7 @@
     border-bottom-left-radius: var(--tabs-tab-border-radius);
     border-bottom-right-radius: var(--tabs-tab-border-radius); }
     #yPageControlMod .yt_moduleactions a {
+      display: block;
       color: #2e2e2e;
       text-decoration: none;
       margin-bottom: .1rem; }
