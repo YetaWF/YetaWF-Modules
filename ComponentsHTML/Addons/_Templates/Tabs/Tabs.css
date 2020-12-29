@@ -3,7 +3,8 @@
 .yt_tabs {
   position: relative;
   padding: .2em;
-  background-color: var(--tabs-bg);
+  background: var(--tabs-bg);
+  color: var(--tabs-clr);
   border: var(--tabs-tab-border-width) solid var(--tabs-tab-border-color);
   border-radius: var(--tabs-tab-border-radius); }
   .yt_tabs > ul.t_tabstrip {
@@ -11,7 +12,7 @@
     width: 100%;
     margin: 0;
     padding: .2em .2em 0 .2em;
-    background-color: var(--tabs-strip-bg);
+    background: var(--tabs-strip-bg);
     border: var(--tabs-strip-border-width) solid var(--tabs-tab-strip-color);
     border-radius: var(--tabs-tab-border-radius); }
     .yt_tabs > ul.t_tabstrip > li.t_tab {
@@ -23,7 +24,7 @@
       padding: 0;
       line-height: 2em;
       white-space: nowrap;
-      background-color: var(--tabs-tab-bg);
+      background: var(--tabs-tab-bg);
       color: var(--tabs-tab-clr);
       border-left: var(--tabs-tab-border-width) solid var(--tabs-tab-border-color);
       border-top: var(--tabs-tab-border-width) solid var(--tabs-tab-border-color);
@@ -34,12 +35,12 @@
       .yt_tabs > ul.t_tabstrip > li.t_tab.t_tabactive {
         margin-bottom: -1px;
         padding-bottom: 1px;
-        background-color: var(--tabs-tab-bg-active);
+        background: var(--tabs-tab-bg-active);
         color: var(--tabs-tab-clr-active); }
         .yt_tabs > ul.t_tabstrip > li.t_tab.t_tabactive > a.t_tabanchor {
           color: var(--tabs-tab-clr-active); }
       .yt_tabs > ul.t_tabstrip > li.t_tab:hover:not(.t_tabactive) {
-        background-color: var(--tabs-tab-bg-hover);
+        background: var(--tabs-tab-bg-hover);
         color: var(--tabs-tab-clr-hover); }
         .yt_tabs > ul.t_tabstrip > li.t_tab:hover:not(.t_tabactive) > a.t_tabanchor {
           color: var(--tabs-tab-clr-hover); }
