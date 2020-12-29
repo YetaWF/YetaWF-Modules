@@ -22,23 +22,17 @@
   background: transparent; }
 
 .yt_panels_pagebarinfo.t_noskin .yt_panels_pagebarinfo_list {
-  background: silver;
-  background: var(--bar-bg, silver); }
+  background: var(--bar-bg); }
   .yt_panels_pagebarinfo.t_noskin .yt_panels_pagebarinfo_list .t_entry:hover {
-    background: #a7a7a7;
-    background: var(--bar-bg-hover, #a7a7a7); }
+    background: var(--bar-bg-hover); }
     .yt_panels_pagebarinfo.t_noskin .yt_panels_pagebarinfo_list .t_entry:hover a {
-      color: white;
-      color: var(--bar-clr-hover, white); }
+      color: var(--bar-clr-hover); }
   .yt_panels_pagebarinfo.t_noskin .yt_panels_pagebarinfo_list .t_entry.t_active {
-    background: #8d8d8d;
-    background: var(--bar-bg-active, #8d8d8d); }
+    background: var(--bar-bg-active); }
     .yt_panels_pagebarinfo.t_noskin .yt_panels_pagebarinfo_list .t_entry.t_active a {
-      color: white;
-      color: var(--bar-clr-active, white); }
+      color: var(--bar-clr-active); }
   .yt_panels_pagebarinfo.t_noskin .yt_panels_pagebarinfo_list .t_entry a {
-    color: white;
-    color: var(--bar-clr, white); }
+    color: var(--bar-clr); }
 
 .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_expcoll {
   cursor: pointer;
@@ -80,7 +74,7 @@
   .yt_panels_pagebarinfo.t_stylesvert.t_expanded .yt_panels_pagebarinfo_list {
     -webkit-box-flex: 0;
             flex: 0 0 250px;
-    overflow-x: auto;
+    overflow-x: hidden;
     overflow-y: auto;
     text-align: left;
     white-space: nowrap; }
@@ -106,7 +100,6 @@
     display: block;
     position: absolute;
     right: 0;
-    top: calc(50% - 12px);
     width: 8px;
     height: 24px;
     background-image: url(images/Expand.png); }

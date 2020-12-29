@@ -7,12 +7,6 @@ $large-entry-width: 250px;
 $small-screen: 1000px;
 $large-screen: 1500px;
 
-// t_noskin colors, when CSS variables are not available
-$bar-background: silver;
-$bar-hover: darken($bar-background, 10%);
-$bar-color: white;
-$bar-active: darken($bar-background, 20%);
-
 .yt_panels_pagebarinfo {
     &.t_styleshorz,
     &.t_stylesvert {
@@ -44,28 +38,22 @@ $bar-active: darken($bar-background, 20%);
 
     &.t_noskin {
         .yt_panels_pagebarinfo_list {
-            background: $bar-background;
-            background: var(--bar-bg, $bar-background);
+            background: var(--bar-bg);
             .t_entry {
                 &:hover {
-                    background: $bar-hover;
-                    background: var(--bar-bg-hover, $bar-hover);
+                    background: var(--bar-bg-hover);
                     a {
-                        color: $bar-color;
-                        color: var(--bar-clr-hover, $bar-color);
+                        color: var(--bar-clr-hover);
                     }
                 }
                 &.t_active {
-                    background: $bar-active;
-                    background: var(--bar-bg-active, $bar-active);
+                    background: var(--bar-bg-active);
                     a {
-                        color: $bar-color;
-                        color: var(--bar-clr-active, $bar-color);
+                        color: var(--bar-clr-active);
                     }
                 }
                 a {
-                    color: $bar-color;
-                    color: var(--bar-clr, $bar-color);
+                    color: var(--bar-clr);
                 }
             }
         }
@@ -127,7 +115,7 @@ $bar-active: darken($bar-background, 20%);
         &.t_stylesvert.t_expanded { // if expanded
             .yt_panels_pagebarinfo_list {
                 flex: 0 0  $large-entry-width;
-                overflow-x:auto;
+                overflow-x:hidden;
                 overflow-y:auto;
                 text-align:left;
                 white-space: nowrap;
@@ -164,7 +152,7 @@ $bar-active: darken($bar-background, 20%);
                 display:block;
                 position:absolute;
                 right:0;
-                top:calc(50% - 12px);
+                //top:calc(50% - 12px);
                 width:8px;
                 height:24px;
                 background-image: url(images/Expand.png);

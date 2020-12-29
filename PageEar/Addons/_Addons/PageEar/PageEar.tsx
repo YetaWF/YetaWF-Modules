@@ -54,7 +54,7 @@ namespace YetaWF_PageEar {
             this.PeelMask = $YetaWF.getElement1BySelector(".t_mask", [this.PeelDiv]) as HTMLDivElement;
             this.PeelMask.style.backgroundImage = `url('${this.Setup.AdImage}')`;
 
-            document.body.prepend(this.PeelDiv);
+            document.body.appendChild(this.PeelDiv);
 
             this.PeelImage.style.width = `${this.Setup.SmallSize}px`;
             this.PeelImage.style.height = `${this.Setup.SmallSize}px`;

@@ -42,7 +42,7 @@ var YetaWF_PageEar;
             _this.PeelImage = $YetaWF.getElement1BySelector(".t_img", [_this.PeelDiv]);
             _this.PeelMask = $YetaWF.getElement1BySelector(".t_mask", [_this.PeelDiv]);
             _this.PeelMask.style.backgroundImage = "url('" + _this.Setup.AdImage + "')";
-            document.body.prepend(_this.PeelDiv);
+            document.body.appendChild(_this.PeelDiv);
             _this.PeelImage.style.width = _this.Setup.SmallSize + "px";
             _this.PeelImage.style.height = _this.Setup.SmallSize + "px";
             _this.PeelMask.style.width = _this.Setup.SmallSize + "px";

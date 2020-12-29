@@ -105,7 +105,7 @@ var YetaWF_Panels;
             var list = $YetaWF.getElement1BySelector(".yt_panels_pagebarinfo_list", [this.Control]);
             var listRect = list.getBoundingClientRect();
             var top = list.offsetTop + (listRect.height - expRect.height) / 2;
-            expColl.style.top = top + "px";
+            expColl.style.top = top + list.scrollTop + "px";
         };
         Object.defineProperty(PageBarInfoComponent.prototype, "count", {
             get: function () {
