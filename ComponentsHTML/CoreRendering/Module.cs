@@ -172,9 +172,9 @@ namespace YetaWF.Modules.ComponentsHTML {
             string extraClass;
             switch (mode) {
                 default:
-                case ModuleAction.RenderModeEnum.Button: extraClass = "y_act_button"; break;
-                case ModuleAction.RenderModeEnum.ButtonIcon: extraClass = "y_act_buttonicon"; break;
-                case ModuleAction.RenderModeEnum.ButtonOnly: extraClass = "y_act_buttononly"; break;
+                case ModuleAction.RenderModeEnum.Button: extraClass = "y_button y_act_button"; break;
+                case ModuleAction.RenderModeEnum.ButtonIcon: extraClass = "y_button y_act_buttonicon"; break;
+                case ModuleAction.RenderModeEnum.ButtonOnly: extraClass = "y_button y_act_buttononly"; break;
                 case ModuleAction.RenderModeEnum.IconsOnly: extraClass = "y_act_icon"; break;
                 case ModuleAction.RenderModeEnum.LinksOnly: extraClass = "y_act_link"; break;
                 case ModuleAction.RenderModeEnum.NormalLinks: extraClass = "y_act_normlink"; break;

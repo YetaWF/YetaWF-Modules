@@ -8,6 +8,7 @@
     #yPageControlDiv {
         line-height:1;
         > a {
+            display:block;
             line-height:1;
             padding:4px 4px;
         }
@@ -30,7 +31,6 @@
         border-bottom-left-radius: var(--tabs-tab-border-radius);
         border-bottom-right-radius: var(--tabs-tab-border-radius);
         a {
-            display:block;
             color: #2e2e2e;
             text-decoration: none;
             margin-bottom:.1rem;
