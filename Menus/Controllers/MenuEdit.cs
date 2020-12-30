@@ -173,7 +173,6 @@ namespace YetaWF.Modules.Menus.Controllers {
                     RecordType = typeof(ModuleAction),
                     ShowHeader = false,
                     DragDrop = true,
-                    UseSkinFormatting = true,
                     JSONData = true,
                 };
                 ModEntry = new MenuEntry();

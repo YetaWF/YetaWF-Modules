@@ -79,7 +79,7 @@ var YetaWF_ComponentsHTML;
                     liElem = _this.getNextVisibleEntry(liElem);
                     if (!liElem)
                         return false;
-                    _this.setSelect(liElem, true);
+                    _this.setSelect(liElem);
                     _this.sendSelectEvent();
                     return false;
                 }
@@ -90,7 +90,7 @@ var YetaWF_ComponentsHTML;
                     liElem = _this.getPrevVisibleEntry(liElem);
                     if (!liElem)
                         return false;
-                    _this.setSelect(liElem, true);
+                    _this.setSelect(liElem);
                     _this.sendSelectEvent();
                     return false;
                 }
@@ -98,7 +98,7 @@ var YetaWF_ComponentsHTML;
                     var liElem = _this.getFirstVisibleItem();
                     if (!liElem)
                         return false;
-                    _this.setSelect(liElem, true);
+                    _this.setSelect(liElem);
                     _this.sendSelectEvent();
                     return false;
                 }
@@ -106,7 +106,7 @@ var YetaWF_ComponentsHTML;
                     var liElem = _this.getLastVisibleItem();
                     if (!liElem)
                         return false;
-                    _this.setSelect(liElem, true);
+                    _this.setSelect(liElem);
                     _this.sendSelectEvent();
                     return false;
                 }
@@ -120,7 +120,7 @@ var YetaWF_ComponentsHTML;
                         liElem = _this.getPrevVisibleEntry(liElem);
                         if (!liElem)
                             return false;
-                        _this.setSelect(liElem, true);
+                        _this.setSelect(liElem);
                         _this.sendSelectEvent();
                     }
                     return false;
@@ -135,7 +135,7 @@ var YetaWF_ComponentsHTML;
                         liElem = _this.getNextVisibleEntry(liElem);
                         if (!liElem)
                             return false;
-                        _this.setSelect(liElem, true);
+                        _this.setSelect(liElem);
                         _this.sendSelectEvent();
                     }
                     return false;
@@ -478,13 +478,12 @@ var YetaWF_ComponentsHTML;
             var liElem = $YetaWF.elementClosest(entry, "li");
             return liElem;
         };
-        TreeComponent.prototype.setSelect = function (liElem, focus) {
+        TreeComponent.prototype.setSelect = function (liElem) {
             this.clearSelect();
             $YetaWF.elementAddClass(liElem, "t_select");
             var entry = $YetaWF.getElement1BySelector(".t_entry", [liElem]);
             $YetaWF.elementAddClass(entry, this.Setup.SelectedCss);
-            if (focus === true)
-                entry.focus();
+            entry.focus();
         };
         TreeComponent.prototype.getSelectData = function () {
             var liElem = this.getSelect();

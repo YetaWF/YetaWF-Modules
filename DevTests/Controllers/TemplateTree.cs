@@ -45,7 +45,6 @@ namespace YetaWF.Modules.DevTests.Controllers {
                 DragDrop = true,
                 RecordType = typeof(EntryElement),
                 ShowHeader = true,
-                UseSkinFormatting = true,
                 JSONData = true,
                 AjaxUrl = GetActionUrl(nameof(TemplateTree_GetRecords)),
             };

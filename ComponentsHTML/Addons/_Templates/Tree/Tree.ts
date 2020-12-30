@@ -107,7 +107,7 @@ namespace YetaWF_ComponentsHTML {
                     if (!liElem) return false;
                     liElem = this.getNextVisibleEntry(liElem);
                     if (!liElem) return false;
-                    this.setSelect(liElem, true);
+                    this.setSelect(liElem);
                     this.sendSelectEvent();
                     return false;
                 } else if (key === "ArrowUp" || key === "Up") {
@@ -115,19 +115,19 @@ namespace YetaWF_ComponentsHTML {
                     if (!liElem) return false;
                     liElem = this.getPrevVisibleEntry(liElem);
                     if (!liElem) return false;
-                    this.setSelect(liElem, true);
+                    this.setSelect(liElem);
                     this.sendSelectEvent();
                     return false;
                 } else if (key === "Home") {
                     var liElem = this.getFirstVisibleItem();
                     if (!liElem) return false;
-                    this.setSelect(liElem, true);
+                    this.setSelect(liElem);
                     this.sendSelectEvent();
                     return false;
                 } else if (key === "End") {
                     var liElem = this.getLastVisibleItem();
                     if (!liElem) return false;
-                    this.setSelect(liElem, true);
+                    this.setSelect(liElem);
                     this.sendSelectEvent();
                     return false;
                 } else if (key === "ArrowLeft" || key === "Left") {
@@ -138,7 +138,7 @@ namespace YetaWF_ComponentsHTML {
                     else {
                         liElem = this.getPrevVisibleEntry(liElem);
                         if (!liElem) return false;
-                        this.setSelect(liElem, true);
+                        this.setSelect(liElem);
                         this.sendSelectEvent();
                     }
                     return false;
@@ -150,7 +150,7 @@ namespace YetaWF_ComponentsHTML {
                     else {
                         liElem = this.getNextVisibleEntry(liElem);
                         if (!liElem) return false;
-                        this.setSelect(liElem, true);
+                        this.setSelect(liElem);
                         this.sendSelectEvent();
                     }
                     return false;
@@ -497,13 +497,12 @@ namespace YetaWF_ComponentsHTML {
             let liElem = $YetaWF.elementClosest(entry, "li") as HTMLLIElement | null;
             return liElem;
         }
-        public setSelect(liElem: HTMLLIElement, focus?:boolean): void {
+        public setSelect(liElem: HTMLLIElement): void {
             this.clearSelect();
             $YetaWF.elementAddClass(liElem, "t_select");
             let entry = $YetaWF.getElement1BySelector(".t_entry", [liElem]);
             $YetaWF.elementAddClass(entry, this.Setup.SelectedCss);
-            if (focus === true)
-                entry.focus();
+            entry.focus();
         }
         public getSelectData<T = TreeEntry>(): T | null {
             var liElem = this.getSelect();

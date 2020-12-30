@@ -133,7 +133,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 dd = " ondragstart='YetaWF_ComponentsHTML.TreeComponent.onDragStart(event)' ondrop='YetaWF_ComponentsHTML.TreeComponent.onDrop(event)' ondragend='YetaWF_ComponentsHTML.TreeComponent.onDragEnd(event)' ondragover='YetaWF_ComponentsHTML.TreeComponent.onDragOver(event)'";
 
             hb.Append($@"
-<div id='{treeModel.Id}' class='yt_tree t_display {(treeModel.UseSkinFormatting ? "tg_skin ui-corner-top ui-widget ui-widget-content" : "tg_noskin")}'{dd}>
+<div id='{treeModel.Id}' class='yt_tree t_display'{dd}>
     {headerHTML}
     {html}
 </div>");
@@ -166,8 +166,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 // Render column header
                 hb.Append($@"
-    <div class='{alignCss} tg_header{(treeModel.UseSkinFormatting ? " ui-state-default" : "")}' {Basics.CssTooltip}='{HAE(description ?? "")}'>
-        <span>{HE(caption)}</span>
+    <div class='{alignCss} tg_header'>
+        <span {Basics.CssTooltipSpan}='{HAE(description ?? "")}'>{HE(caption)}</span>
     </div>");
 
             }
@@ -349,12 +349,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             TreeSetup setup = new TreeSetup() {
                 DragDrop = treeModel.DragDrop,
                 ContextMenu = treeModel.ContextMenu,
-                HoverCss = treeModel.UseSkinFormatting ? "ui-state-hover" : "tg_hover",
-                HighlightCss = treeModel.UseSkinFormatting ? "ui-state-highlight" : "tg_highlight",
-                DisabledCss = treeModel.UseSkinFormatting ? "ui-state-disabled" : "tg_disabled",
-                RowHighlightCss = treeModel.UseSkinFormatting ? "ui-state-highlight" : "tg_highlight",
-                RowDragDropHighlightCss = treeModel.UseSkinFormatting ? "ui-state-active" : "tg_dragdrophighlight",
-                SelectedCss = treeModel.UseSkinFormatting ? "ui-state-active" : "t_select",
+                HighlightCss = "tg_highlight",
+                DisabledCss = "tg_disabled",
+                RowHighlightCss = "tg_highlight",
+                RowDragDropHighlightCss = "tg_dragdrophighlight",
+                SelectedCss = "t_select",
                 ContentTargetId = treeModel.ContentTargetPane,
                 ContentTargetPane = treeModel.ContentTargetPane,
                 AjaxUrl = treeModel.AjaxUrl,
