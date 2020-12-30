@@ -54,10 +54,6 @@ namespace YetaWF.Modules.Panels.Controllers {
             [UIHint("Text20"), StringLength(20)]
             public string ContentPane { get; set; }
 
-            [Category("General"), Caption("Skin Theme"), Description("Defines whether the page bar is rendered using the skin's theme or using custom CSS")]
-            [UIHint("Boolean")]
-            public bool UseSkinFormatting { get; set; } // use skin theme (jquery-ui)
-
             [Category("General"), Caption("Default Image"), Description("The default image used when a page doesn't define its own FavIcon")]
             [UIHint("Image"), AdditionalMetadata("ImageType", ModuleImageSupport.ImageType)]
             [AdditionalMetadata("Width", 100), AdditionalMetadata("Height", 100)]
@@ -81,7 +77,6 @@ namespace YetaWF.Modules.Panels.Controllers {
                     PageList = Module.PageList,
                     Style = Module.Style,
                     ContentPane = Module.ContentPane,
-                    UseSkinFormatting = Module.UseSkinFormatting,
                     DefaultImage = Module.DefaultImage,
                     DefaultImage_Data = Module.DefaultImage_Data
                 };
@@ -91,7 +86,6 @@ namespace YetaWF.Modules.Panels.Controllers {
                     PanelInfo = new Models.PageBarInfo() {
                         Style = Module.Style,
                         ContentPane = Module.ContentPane,
-                        UseSkinFormatting = Module.UseSkinFormatting,
                         Panels = await GetPanelsAsync()
                     }
                 };
@@ -136,7 +130,6 @@ namespace YetaWF.Modules.Panels.Controllers {
             Module.PagePattern = model.PagePattern;
             Module.Style = model.Style;
             Module.ContentPane = model.ContentPane;
-            Module.UseSkinFormatting = model.UseSkinFormatting;
             Module.DefaultImage = model.DefaultImage;
             Module.DefaultImage_Data = Module.DefaultImage_Data;
             await Module.SaveAsync();

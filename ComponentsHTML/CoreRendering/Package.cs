@@ -75,11 +75,10 @@ namespace YetaWF.Modules.ComponentsHTML {
         /// Adds any form-specific addons for the current page that are required by the package rendering components and views.
         /// </summary>
         /// <remarks>This is only called if a page contains a form.</remarks>
-        public async Task AddFormsAddOnsAsync() {
-            SkinAccess skinAccess = new SkinAccess();
-            if (!Manager.SkinInfo.UsingBootstrap || !Manager.SkinInfo.UsingBootstrapButtons)
-                await JqueryUICore.UseAsync(); // using jquery UI buttons
+        public Task AddFormsAddOnsAsync() {
+            return Task.CompletedTask;
         }
+
         /// <summary>
         /// Adds any popup-specific addons for the current page that are required by the package rendering components and views.
         /// </summary>

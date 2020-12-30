@@ -86,10 +86,10 @@ namespace YetaWF.Modules.Panels.Components {
         {await HtmlHelper.ForDisplayAsync(ui, nameof(ui.TabsDef), HtmlAttributes: new { __NoTemplate = true })}
     </div>");
 
-            } else if (model.Style == PanelInfo.PanelStyleEnum.AccordionjQuery) {
+            } else if (model.Style == PanelInfo.PanelStyleEnum.Accordion) {
 
                 hb.Append($@"
-    <div class='t_panels t_accjquery ui-accordion ui-widget ui-helper-reset' id='{DivId}' role='tablist'>");
+    <div class='t_panels t_accordion' id='{DivId}' role='tablist'>");
 
                 for (int panelIndex = 0; panelIndex < model.Panels.Count; ++panelIndex) {
 
@@ -98,13 +98,23 @@ namespace YetaWF.Modules.Panels.Components {
                     if (await model.Panels[panelIndex].IsAuthorizedAsync()) {
                         string caption = model.Panels[panelIndex].Caption;
                         if (string.IsNullOrWhiteSpace(caption)) { caption = this.__ResStr("noCaption", "(no caption)"); }
+
+                        // svg icon used: fas-caret-down
+                        // svg icon used: fas-caret-up
                         hb.Append($@"
-        <h3 class='ui-accordion-header ui-corner-top ui-state-default ui-accordion-icons {(active ? "ui-accordion-header-active ui-state-active" : "ui-accordion-header-collapsed ui-corner-all")}' role='tab'
+        <h2 class='t_accheader {(active ? "t_active" : "t_collapsed")}' role='tab'
             id='{DivId}_{panelIndex}_lb' aria-controls='{DivId}_{panelIndex}_pane' aria-selected='{(active ? "true" : "false")}' aria-expanded='{(active ? "true" : "false")}' tabindex='{(active ? "0" : "-1")}'>
-            <span class='ui-accordion-header-icon ui-icon ui-icon-triangle-1-s'></span>
+            <div class='t_accicon'>
+                <svg class='t_down' aria-hidden='true' focusable='false' role='img' width='16' height='16' viewBox='0 0 320 512'>
+                    <path fill='currentColor' d='M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z'></path>
+                </svg>
+                <svg class='t_up' aria-hidden='true' focusable='false' role='img' width='16' height='16' viewBox='0 0 320 512'>
+                    <path fill='currentColor' d='M288.662 352H31.338c-17.818 0-26.741-21.543-14.142-34.142l128.662-128.662c7.81-7.81 20.474-7.81 28.284 0l128.662 128.662c12.6 12.599 3.676 34.142-14.142 34.142z'></path>
+                </svg>
+            </div>
             {Utility.HE(caption)}
-        </h3>
-        <div class='ui-accordion-content ui-corner-bottom ui-helper-reset ui-widget-content {(active ? "ui-accordion-content-active" : "")}' id='{DivId}_{panelIndex}_pane'
+        </h2>
+        <div class='t_panel t_acccontent {(active ? "t_active" : "")}' id='{DivId}_{panelIndex}_pane'
             aria-labelledby='{DivId}_{panelIndex}_lb' role='tabpanel' aria-hidden='{(active ? "false" : "true")}' style='overflow: hidden;{(active ? "" : "display:none")}'>");
 
                         ModuleDefinition mod = await model.Panels[panelIndex].GetModuleAsync();
@@ -122,44 +132,9 @@ namespace YetaWF.Modules.Panels.Components {
                 hb.Append($@"
     </div>");
 
-            } else if (model.Style == PanelInfo.PanelStyleEnum.AccordionKendo) {
-
-                hb.Append($@"
-    <ul class='t_panels t_acckendo k-widget k-reset k-header k-panelbar' role='menu' tabindex='0'>");
-
-                for (int panelIndex = 0; panelIndex < model.Panels.Count; ++panelIndex) {
-
-                    bool active = panelIndex == model._ActiveTab;
-
-                    if (await model.Panels[panelIndex].IsAuthorizedAsync()) {
-                        string caption = model.Panels[panelIndex].Caption;
-                        if (string.IsNullOrWhiteSpace(caption)) { caption = this.__ResStr("noCaption", "(no caption)"); }
-
-                        hb.Append($@"
-        <li class='k-item{(panelIndex == 0 ? " k-first" : "")}{(panelIndex == model.Panels.Count - 1 ? " k-last" : "")} {(active ? "k-state-active k-state-highlight" : "")}' role='menuitem' aria-expanded='{(active ? "true" : "false")}' aria-selected='{(active ? "true" : "false")}'>
-            <span class='k-link k-header{(active ? " k-state-selected" : "")}'>
-                {Utility.HE(caption)}
-                <span class='k-icon {(active ? "k-i-arrow-60-up k-panelbar-collapse" : "k-i-arrow-60-down k-panelbar-expand")}'></span>
-            </span>
-            <div class='t_panel-kendo k-content' style='display:{(active ? "block" : "none")};{(active ? "height='auto';" : "")}overflow: hidden;' role='region' aria-hidden='{(active ? "false" : "true")}'>");
-
-                        ModuleDefinition mod = await model.Panels[panelIndex].GetModuleAsync();
-                        if (mod != null) {
-                            mod.ShowTitle = false;
-                            mod.UsePartialFormCss = false;
-                            hb.Append(await mod.RenderModuleAsync(HtmlHelper));
-                        } else {
-                            hb.Append(this.__ResStr("noModule", "(no module defined)"));
-                        }
-                        hb.Append($@"
-            </div>
-        </li>");
-                    }
-                }
-                hb.Append($@"
-    </ul>
-</div>");
             }
+            hb.Append($@"
+</div>");
 
             Setup setup = new Setup {
                 Style = model.Style,

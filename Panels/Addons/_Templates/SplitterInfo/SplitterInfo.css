@@ -8,7 +8,7 @@
   .yt_panels_splitterinfo .yt_panels_splitterinfo_title {
     font-size: 1em;
     padding: .2em 0.5em .2em .5em;
-    background-color: lightgray; }
+    background: var(--bar-bg); }
   .yt_panels_splitterinfo .yt_panels_splitterinfo_cmds {
     position: absolute;
     z-index: 1;
@@ -18,7 +18,7 @@
     line-height: 1;
     padding: 0.2em 0 0 0; }
     .yt_panels_splitterinfo .yt_panels_splitterinfo_cmds .yt_panels_splitterinfo_colldesc {
-      color: black;
+      color: var(--bar-clr);
       cursor: pointer;
       display: inline-block;
       margin-right: .5ch;
@@ -29,18 +29,16 @@
       cursor: pointer;
       display: inline-block;
       width: 16px;
-      height: 16px;
-      background-image: url(images/Collapse.png); }
+      height: 16px; }
   .yt_panels_splitterinfo .yt_panels_splitterinfo_left {
     display: none; }
   .yt_panels_splitterinfo .yt_panels_splitterinfo_exp {
     display: block;
     position: absolute;
-    left: 0;
+    left: 5px;
     top: 0;
     width: 16px;
-    height: 16px;
-    background-image: url(images/Expand.png); }
+    height: 16px; }
   .yt_panels_splitterinfo .yt_panels_splitterinfo_resize {
     display: none; }
   .yt_panels_splitterinfo.t_expanded .yt_panels_splitterinfo_exp {
@@ -56,7 +54,7 @@
     -webkit-box-flex: 0;
             flex: 0 1 30%;
     position: relative;
-    border-right: solid 1px lightgray; }
+    border-right: var(--elem-border-width) solid var(--elem-border-clr); }
     .yt_panels_splitterinfo .yt_panels_splitterinfo_left .t_area {
       overflow: auto;
       height: 100%; }
@@ -88,6 +86,8 @@
           -ms-user-select: none;
               user-select: none;
       overflow: hidden; }
+  .yt_panels_splitterinfo svg {
+    position: relative; }
 
 @media print {
   .yt_panels_splitterinfo {

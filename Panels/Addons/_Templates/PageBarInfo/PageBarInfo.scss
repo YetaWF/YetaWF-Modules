@@ -8,60 +8,12 @@ $small-screen: 1000px;
 $large-screen: 1500px;
 
 .yt_panels_pagebarinfo {
-    &.t_styleshorz,
-    &.t_stylesvert {
-        .yt_panels_pagebarinfo_list {
-            flex:none;
-            overflow-x:auto;
-            overflow-y: hidden;
-            white-space: nowrap;
-            .t_entry {
-                height:$entry-height;
-                width:$entry-width;
-                padding:20px 2px 0px 2px;
-                display:inline-block;
-                vertical-align:top;
-                text-align:center;
-            }
-        }
-        .t_area {
-            padding: 10px 20px 10px 20px;
-            width:100%;
-        }
-    }
-
-    &.t_skin {
-        .yt_panels_pagebarinfo_list {
-            background: transparent;// don't use jquery-ui ui-widget-content background
-        }
-    }
-
-    &.t_noskin {
-        .yt_panels_pagebarinfo_list {
-            background: var(--bar-bg);
-            .t_entry {
-                &:hover {
-                    background: var(--bar-bg-hover);
-                    a {
-                        color: var(--bar-clr-hover);
-                    }
-                }
-                &.t_active {
-                    background: var(--bar-bg-active);
-                    a {
-                        color: var(--bar-clr-active);
-                    }
-                }
-                a {
-                    color: var(--bar-clr);
-                }
-            }
-        }
-    }
-}
-
-.yt_panels_pagebarinfo {
     .yt_panels_pagebarinfo_list {
+        flex:none;
+        overflow-x:auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+        background: var(--bar-bg);
         .t_expcoll {
             cursor: pointer;
             display:none;
@@ -73,9 +25,37 @@ $large-screen: 1500px;
                 white-space:normal;
             }
         }
+        .t_entry {
+            &:hover {
+                background: var(--bar-bg-hover);
+                a {
+                    color: var(--bar-clr-hover);
+                }
+            }
+            &.t_active {
+                background: var(--bar-bg-active);
+                a {
+                    color: var(--bar-clr-active);
+                }
+            }
+            a {
+                color: var(--bar-clr);
+            }
+        }
+        .t_entry {
+            height:$entry-height;
+            width:$entry-width;
+            padding:20px 2px 0px 2px;
+            display:inline-block;
+            vertical-align:top;
+            text-align:center;
+        }
+    }
+    .t_area {
+        padding: 10px 20px 10px 20px;
+        width:100%;
     }
 }
-
 
 @media (min-width: $small-screen) {
 

@@ -1,5 +1,67 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
 
-.yt_panels_panelinfo .t_panels .t_panel-kendo {
-    padding: 16px 16px 16px 16px;
+.yt_panels_panelinfo {
+    .t_panels.t_accordion {
+        > .t_accheader {
+            position: relative;
+            display: block;
+            outline: none;
+            cursor: pointer;
+            margin: 2px 0 0 0;
+            padding: .5em .5em .5em .7em;
+            background: var(--tabs-tab-bg);
+            color: var(--tabs-tab-clr);
+            font: var(--body-font);
+            border: var(--tabs-tab-border-color) solid var(--tabs-tab-border-width);
+            border-radius: var(--tabs-tab-border-radius);
+            &:hover:not(.t_active) {
+                background: var(--tabs-tab-bg-hover);
+                color: var(--tabs-tab-clr-hover);
+                .t_accicon {
+                    color: var(--tabs-tab-clr-hover);
+                }
+            }
+            &.t_active {
+                background: var(--tabs-tab-bg-active);
+                color: var(--tabs-tab-clr-active);
+                border-bottom-left-radius:0;
+                border-bottom-right-radius:0;
+                .t_accicon {
+                    color: var(--tabs-tab-clr-active);
+                    svg.t_up {
+                        display:inline-block;
+                    }
+                    svg.t_down {
+                        display:none;
+                    }
+                }
+                &:focus {
+                    background: var(--tabs-tab-bg-focus);
+                    color: var(--tabs-tab-clr-focus);
+                }
+            }
+            .t_accicon {
+                display:inline-block;
+                width:16px;
+                height:16px;
+                color: var(--tabs-tab-clr);
+                svg.t_up {
+                    display:none;
+                }
+                svg.t_down {
+                    display:inline-block;
+                }
+            }
+        }
+        > .t_acccontent {
+            padding:1em;
+            font: var(--body-font);
+            background: var(--tabs-bg);
+            color: var(--tabs-clr);
+            border: var(--tabs-tab-border-color) solid var(--tabs-tab-border-width);
+            border-top:0;
+            border-bottom-left-radius: var(--tabs-tab-border-radius);
+            border-bottom-right-radius: var(--tabs-tab-border-radius);
+        }
+    }
 }

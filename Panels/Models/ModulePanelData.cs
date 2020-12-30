@@ -32,10 +32,8 @@ namespace YetaWF.Modules.Panels.Models {
         public enum PanelStyleEnum {
             [EnumDescription("Tabs","Tabs are used to switch between panels")]
             Tabs = 0,
-            [EnumDescription("Accordion (jQuery UI)", "A jQuery UI accordion is used to switch between panels")]
-            AccordionjQuery = 1,
-            [EnumDescription("Accordion (Kendo)", "A Kendo accordion is used to switch between panels")]
-            AccordionKendo = 2,
+            [EnumDescription("Accordion", "An accordion-style display is used to switch between panels")]
+            Accordion = 1,
         }
         public class PanelEntry {
 

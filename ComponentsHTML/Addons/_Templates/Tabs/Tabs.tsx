@@ -122,6 +122,8 @@ namespace YetaWF_ComponentsHTML {
 
             this.ActiveTabHidden.value = index.toString();
 
+            activeTab.focus();
+
             $YetaWF.sendActivateDivEvent([activePanel]);
             $YetaWF.sendPanelSwitchedEvent(activePanel);
 

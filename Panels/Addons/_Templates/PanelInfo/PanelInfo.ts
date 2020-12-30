@@ -4,8 +4,7 @@ namespace YetaWF_Panels {
 
     export enum StyleEnum {
         Tabs = 0,
-        AccordionjQuery = 1,
-        AccordionKendo = 2,
+        Accordion = 1,
     }
     interface Setup {
         Style: StyleEnum;
@@ -32,121 +31,49 @@ namespace YetaWF_Panels {
             });
             this.Setup = setup;
 
-            if (this.Setup.Style === StyleEnum.AccordionKendo) {
-                $YetaWF.registerEventHandler(this.Control, "click", "ul.t_acckendo > li", (ev: MouseEvent): boolean => {
-                    let liActive = ev.__YetaWFElem as HTMLLIElement;
-                    let contentActive = $YetaWF.getElement1BySelector(".k-content", [liActive]);
-                    let activeShown = this.isShown(contentActive);
-                    let lis = $YetaWF.getElementsBySelector("ul.t_acckendo > li", [this.Control]) as HTMLLIElement[];
-                    for (let li of lis) {
-                        let liContent = $YetaWF.getElement1BySelector(".k-content", [li]);
-                        this.khide(li, liContent);
-                    }
-                    if (!activeShown)
-                        this.kshow(liActive, contentActive);
-                    return false;
-                });
-            } else if (this.Setup.Style === StyleEnum.AccordionjQuery) {
-                $YetaWF.registerEventHandler(this.Control, "click", "h3", (ev: MouseEvent): boolean => {
+            if (this.Setup.Style === StyleEnum.Accordion) {
+                $YetaWF.registerEventHandler(this.Control, "click", "h2", (ev: MouseEvent): boolean => {
                     let hActive = ev.__YetaWFElem as HTMLElement;
                     let contentActive = hActive.nextElementSibling as HTMLElement;
                     let activeShown = this.isShown(contentActive);
-                    let headers = $YetaWF.getElementsBySelector("h3", [this.Control]) as HTMLLIElement[];
+                    let headers = $YetaWF.getElementsBySelector("h2", [this.Control]) as HTMLLIElement[];
                     for (let header of headers)
-                        this.jhide(header, header.nextElementSibling as HTMLElement);
+                        this.hide(header, header.nextElementSibling as HTMLElement);
                     if (!activeShown)
-                        this.jshow(hActive, hActive.nextElementSibling as HTMLElement);
+                        this.show(hActive, hActive.nextElementSibling as HTMLElement);
                     return false;
                 });
             }
-
-            // Kendo hover
-            $YetaWF.registerEventHandler(this.Control, "mousemove", "ul.t_acckendo > li .k-header", (ev: MouseEvent): boolean => {
-                let li = ev.__YetaWFElem as HTMLLIElement;
-                $YetaWF.elementAddClass(li, "k-state-hover");
-                return true;
-            });
-            $YetaWF.registerEventHandler(this.Control, "mouseout", "ul.t_acckendo > li .k-header", (ev: MouseEvent): boolean => {
-                let li = ev.__YetaWFElem as HTMLLIElement;
-                $YetaWF.elementRemoveClass(li, "k-state-hover");
-                return true;
-            });
-
-            // jqueryui hover
-            $YetaWF.registerEventHandler(this.Control, "mousemove", ".t_accjquery > h3", (ev: MouseEvent): boolean => {
-                let header = ev.__YetaWFElem as HTMLElement;
-                $YetaWF.elementAddClass(header, "ui-state-hover");
-                return true;
-            });
-            $YetaWF.registerEventHandler(this.Control, "mouseout", ".t_accjquery > h3", (ev: MouseEvent): boolean => {
-                let header = ev.__YetaWFElem as HTMLElement;
-                $YetaWF.elementRemoveClass(header, "ui-state-hover");
-                return true;
-            });
         }
 
-        // Kendo
-
-        private khide(li: HTMLLIElement, tag: HTMLElement): void {
-            this.collapse(tag);
-            $YetaWF.setAttribute(tag, "aria-hidden", "true");
-
-            $YetaWF.elementRemoveClasses(li, ["k-state-active", "k-state-highlight"]);
-            $YetaWF.setAttribute(li, "aria-expanded", "false");
-            $YetaWF.setAttribute(li, "aria-selected", "false");
-
-            let header = $YetaWF.getElement1BySelector(".k-header", [li]);
-            $YetaWF.elementRemoveClass(header, "k-state-selected");
-            let icon = $YetaWF.getElement1BySelector(".k-icon", [li]);
-            $YetaWF.elementRemoveClasses(icon, ["k-i-arrow-60-up", "k-panelbar-collapse", "k-i-arrow-60-down", "k-panelbar-expand"]);
-            $YetaWF.elementAddClasses(icon, ["k-i-arrow-60-down", "k-panelbar-expand"]);
-        }
-        private kshow(li: HTMLLIElement, tag: HTMLElement): void {
-            $YetaWF.setAttribute(tag, "aria-hidden", "false");
-            this.expand(tag);
-
-            $YetaWF.elementRemoveClasses(li, ["k-state-active", "k-state-highlight"]);
-            $YetaWF.elementAddClasses(li, ["k-state-active", "k-state-highlight"]);
-            $YetaWF.setAttribute(li, "aria-expanded", "true");
-            $YetaWF.setAttribute(li, "aria-selected", "true");
-
-            let header = $YetaWF.getElement1BySelector(".k-header", [li]);
-            $YetaWF.elementRemoveClass(header, "k-state-selected");
-            $YetaWF.elementAddClass(header, "k-state-selected");
-            let icon = $YetaWF.getElement1BySelector(".k-icon", [li]);
-            $YetaWF.elementRemoveClasses(icon, ["k-i-arrow-60-up", "k-panelbar-collapse", "k-i-arrow-60-down", "k-panelbar-expand"]);
-            $YetaWF.elementAddClasses(icon, ["k-i-arrow-60-up", "k-panelbar-collapse"]);
-        }
-        private isShown(tag: HTMLElement): boolean {
-            return tag.style.display === "block" || tag.style.display === "";
-        }
-
-        // jQuery-ui
-
-        private jhide(header: HTMLElement, tag: HTMLElement): void {
+        private hide(header: HTMLElement, tag: HTMLElement): void {
             this.collapse(tag);
 
-            $YetaWF.elementRemoveClasses(header, ["ui-accordion-header-active", "ui-state-active", "ui-accordion-header-collapsed", "ui-corner-all"]);
-            $YetaWF.elementAddClasses(header, ["ui-accordion-header-collapsed", "ui-corner-all"]);
+            $YetaWF.elementRemoveClasses(header, ["t_active", "t_collapsed"]);
+            $YetaWF.elementAddClass(header, "t_collapsed");
             $YetaWF.setAttribute(header, "aria-expanded", "false");
             $YetaWF.setAttribute(header, "aria-selected", "false");
             $YetaWF.setAttribute(header, "tabindex", "-1");
 
-            $YetaWF.elementRemoveClass(tag, "ui-accordion-content-active");
+            $YetaWF.elementRemoveClass(tag, "t_active");
             $YetaWF.setAttribute(tag, "aria-hidden", "true");
         }
-        private jshow(header: HTMLElement, tag: HTMLElement): void {
+        private show(header: HTMLElement, tag: HTMLElement): void {
             this.expand(tag);
 
-            $YetaWF.elementRemoveClasses(header, ["ui-accordion-header-active", "ui-state-active", "ui-accordion-header-collapsed", "ui-corner-all"]);
-            $YetaWF.elementAddClasses(header, ["ui-accordion-header-active", "ui-state-active"]);
+            $YetaWF.elementRemoveClasses(header, ["t_active", "t_collapsed"]);
+            $YetaWF.elementAddClass(header, "t_active");
             $YetaWF.setAttribute(header, "aria-expanded", "true");
             $YetaWF.setAttribute(header, "aria-selected", "true");
             $YetaWF.setAttribute(header, "tabindex", "0");
 
-            $YetaWF.elementRemoveClass(tag, "ui-accordion-content-active");
-            $YetaWF.elementAddClass(tag, "ui-accordion-content-active");
+            $YetaWF.elementRemoveClass(tag, "t_active");
+            $YetaWF.elementAddClass(tag, "t_active");
             $YetaWF.setAttribute(tag, "aria-hidden", "false");
+        }
+
+        private isShown(tag: HTMLElement): boolean {
+            return tag.style.display === "block" || tag.style.display === "";
         }
 
         // helper

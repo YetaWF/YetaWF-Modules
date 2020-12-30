@@ -56,15 +56,7 @@ namespace YetaWF.Modules.Panels.Components {
                     styleCss = "t_styleshorz";
                     break;
             }
-            if (model.UseSkinFormatting) {
-                await JqueryUICore.UseAsync();// needed for css
-                styleCss += " t_skin";
-                styleListCss = " ui-widget-content";
-                activeCss = " t_active ui-state-active";
-            } else {
-                styleCss += " t_noskin";
-                activeCss = " t_active";
-            }
+            activeCss = " t_active";
 
             string paneContents = "";
             if (model.ContentPage != null)

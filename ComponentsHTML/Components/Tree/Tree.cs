@@ -13,10 +13,6 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -106,14 +102,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Display; }
-
-        /// <summary>
-        /// Called by the framework when the component is used so the component can add component specific addons.
-        /// </summary>
-        public override async Task IncludeAsync() {
-            await JqueryUICore.UseAsync();// needed for css
-            await base.IncludeAsync();
-        }
 
         /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.

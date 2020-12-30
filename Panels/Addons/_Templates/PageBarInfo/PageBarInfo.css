@@ -1,12 +1,31 @@
 @charset "UTF-8";
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
-.yt_panels_pagebarinfo.t_styleshorz .yt_panels_pagebarinfo_list, .yt_panels_pagebarinfo.t_stylesvert .yt_panels_pagebarinfo_list {
+.yt_panels_pagebarinfo .yt_panels_pagebarinfo_list {
   -webkit-box-flex: 0;
           flex: none;
   overflow-x: auto;
   overflow-y: hidden;
-  white-space: nowrap; }
-  .yt_panels_pagebarinfo.t_styleshorz .yt_panels_pagebarinfo_list .t_entry, .yt_panels_pagebarinfo.t_stylesvert .yt_panels_pagebarinfo_list .t_entry {
+  white-space: nowrap;
+  background: var(--bar-bg); }
+  .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_expcoll {
+    cursor: pointer;
+    display: none; }
+  .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_link {
+    font-size: .6rem;
+    line-height: 1.2; }
+    .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_link .yaction-link {
+      white-space: normal; }
+  .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_entry:hover {
+    background: var(--bar-bg-hover); }
+    .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_entry:hover a {
+      color: var(--bar-clr-hover); }
+  .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_entry.t_active {
+    background: var(--bar-bg-active); }
+    .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_entry.t_active a {
+      color: var(--bar-clr-active); }
+  .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_entry a {
+    color: var(--bar-clr); }
+  .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_entry {
     height: 80px;
     width: 120px;
     padding: 20px 2px 0px 2px;
@@ -14,35 +33,9 @@
     vertical-align: top;
     text-align: center; }
 
-.yt_panels_pagebarinfo.t_styleshorz .t_area, .yt_panels_pagebarinfo.t_stylesvert .t_area {
+.yt_panels_pagebarinfo .t_area {
   padding: 10px 20px 10px 20px;
   width: 100%; }
-
-.yt_panels_pagebarinfo.t_skin .yt_panels_pagebarinfo_list {
-  background: transparent; }
-
-.yt_panels_pagebarinfo.t_noskin .yt_panels_pagebarinfo_list {
-  background: var(--bar-bg); }
-  .yt_panels_pagebarinfo.t_noskin .yt_panels_pagebarinfo_list .t_entry:hover {
-    background: var(--bar-bg-hover); }
-    .yt_panels_pagebarinfo.t_noskin .yt_panels_pagebarinfo_list .t_entry:hover a {
-      color: var(--bar-clr-hover); }
-  .yt_panels_pagebarinfo.t_noskin .yt_panels_pagebarinfo_list .t_entry.t_active {
-    background: var(--bar-bg-active); }
-    .yt_panels_pagebarinfo.t_noskin .yt_panels_pagebarinfo_list .t_entry.t_active a {
-      color: var(--bar-clr-active); }
-  .yt_panels_pagebarinfo.t_noskin .yt_panels_pagebarinfo_list .t_entry a {
-    color: var(--bar-clr); }
-
-.yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_expcoll {
-  cursor: pointer;
-  display: none; }
-
-.yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_link {
-  font-size: .6rem;
-  line-height: 1.2; }
-  .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_link .yaction-link {
-    white-space: normal; }
 
 @media (min-width: 1000px) {
   .yt_panels_pagebarinfo.t_stylesvert {

@@ -2,7 +2,8 @@
 
 $iconwidth: 16px;
 $iconheight: 16px;
-$borderrightcolor: lightgray;
+
+$smallfont: 11px;
 
 $smallscreen: 900px;
 
@@ -15,7 +16,7 @@ $smallscreen: 900px;
     .yt_panels_splitterinfo_title {
         font-size: 1em;
         padding: .2em 0.5em .2em .5em;
-        background-color: lightgray;
+        background: var(--bar-bg);
     }
     .yt_panels_splitterinfo_cmds {
         position: absolute;
@@ -27,11 +28,11 @@ $smallscreen: 900px;
         padding: 0.2em 0 0 0;
         // border-bottom: 1px solid lightgray;
         .yt_panels_splitterinfo_colldesc {
-            color:black;
+            color: var(--bar-clr);
             cursor: pointer;
             display: inline-block;
             margin-right: .5ch;
-            font-size: 11px;
+            font-size: $smallfont;
             line-height: 1.5;
             vertical-align: top;
         }
@@ -40,7 +41,6 @@ $smallscreen: 900px;
             display:inline-block;
             width:$iconwidth;
             height:$iconheight;
-            background-image: url(images/Collapse.png);
         }
     }
     .yt_panels_splitterinfo_left {
@@ -49,11 +49,10 @@ $smallscreen: 900px;
     .yt_panels_splitterinfo_exp {
         display:block;
         position: absolute;
-        left:0;
+        left:5px;
         top:0;
         width:$iconwidth;
         height:$iconheight;
-        background-image: url(images/Expand.png);
     }
     .yt_panels_splitterinfo_resize {
         display:none;
@@ -79,7 +78,7 @@ $smallscreen: 900px;
     .yt_panels_splitterinfo_left {
         flex: 0 1 30%;
         position: relative;
-        border-right: solid 1px $borderrightcolor;
+        border-right: var(--elem-border-width) solid var(--elem-border-clr);
         .t_area {
             overflow: auto;
             height:100%;
@@ -116,6 +115,9 @@ $smallscreen: 900px;
             user-select: none;
             overflow: hidden;
         }
+    }
+    svg {// fix clickable in IE
+        position:relative;
     }
 }
 

@@ -22,6 +22,7 @@
       top: 0;
       margin: 1px .2em 0 0;
       padding: 0;
+      outline: none;
       line-height: 2em;
       white-space: nowrap;
       background: var(--tabs-tab-bg);
@@ -46,6 +47,9 @@
           color: var(--tabs-tab-clr-hover); }
           .yt_tabs > ul.t_tabstrip > li.t_tab:hover:not(.t_tabactive) > a.t_tabanchor:hover {
             color: var(--tabs-tab-clr-hover); }
+      .yt_tabs > ul.t_tabstrip > li.t_tab:focus {
+        background: var(--tabs-tab-bg-focus);
+        color: var(--tabs-tab-clr-focus); }
       .yt_tabs > ul.t_tabstrip > li.t_tab > a.t_tabanchor {
         padding: 0 1em 0 1em;
         text-decoration: none;

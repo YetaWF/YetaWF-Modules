@@ -114,6 +114,7 @@ var YetaWF_ComponentsHTML;
             $YetaWF.setAttribute(activePanel, "aria-hidden", "false");
             activePanel.style.display = "";
             this.ActiveTabHidden.value = index.toString();
+            activeTab.focus();
             $YetaWF.sendActivateDivEvent([activePanel]);
             $YetaWF.sendPanelSwitchedEvent(activePanel);
             $YetaWF.sendCustomEvent(this.Control, TabsComponent.EVENTSWITCHED);

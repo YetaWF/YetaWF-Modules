@@ -30,7 +30,6 @@ namespace YetaWF.Modules.Panels.Modules {
             UsePartialFormCss = false;
             WantSearch = false;
             WantFocus = false;
-            UseSkinFormatting = true;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new PageBarModuleDataProvider(); }
@@ -62,11 +61,6 @@ namespace YetaWF.Modules.Panels.Modules {
         [UIHint("Text20"), StringLength(20)]
         [Data_NewValue]
         public string ContentPane { get; set; }
-
-        [Category("General"), Caption("Use jQuery UI Theme"), Description("Defines whether the page bar is rendered using the defined jQuery UI theme or using custom CSS")]
-        [UIHint("Boolean")]
-        [Data_NewValue]
-        public bool UseSkinFormatting { get; set; } // use skin theme (jquery-ui)
 
         [Category("General"), Caption("Default Image"), Description("The default image used when a page doesn't define its own FavIcon")]
         [UIHint("Image"), AdditionalMetadata("ImageType", ModuleImageSupport.ImageType)]
