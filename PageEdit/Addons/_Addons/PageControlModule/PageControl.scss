@@ -8,6 +8,7 @@
     #yPageControlDiv {
         line-height:1;
         > a {
+            display:block;
             line-height:1;
             padding:4px 4px;
         }
@@ -20,11 +21,22 @@
     left:30px;
     width:800px;
     z-index:1500;
+    .yt_tabs  {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
     .yt_moduleactions {
         background-color: #e4e3e3;
         padding: .5em;
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 3px;
         a {
+            color: #2e2e2e;
+            text-decoration: none;
             margin-bottom:.1rem;
+            &:hover {
+                text-decoration: underline;
+            }
         }
     }
 }

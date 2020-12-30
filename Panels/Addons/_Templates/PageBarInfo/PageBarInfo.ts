@@ -100,7 +100,7 @@ namespace YetaWF_Panels {
 
             let listRect = list.getBoundingClientRect();
             let top = list.offsetTop + (listRect.height - expRect.height) / 2;
-            expColl.style.top = `${top}px`;
+            expColl.style.top = `${top+list.scrollTop}px`;
         }
 
         public get count(): number {

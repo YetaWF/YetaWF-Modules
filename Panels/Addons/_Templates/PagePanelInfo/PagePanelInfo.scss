@@ -38,14 +38,14 @@
         }
         .t_image {
             float:left;
-            display:inline-block;
+            display:block;
             padding-right: 1ch;
         }
         .t_link {
             float:left;
             width:20ch;
             padding-right: 1ch;
-            display:inline-block;
+            display:block;
             a {
                 white-space: normal;
             }

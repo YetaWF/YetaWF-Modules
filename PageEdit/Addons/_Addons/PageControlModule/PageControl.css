@@ -8,6 +8,7 @@
   .YetaWF_PageEdit_PageControl #yPageControlDiv {
     line-height: 1; }
     .YetaWF_PageEdit_PageControl #yPageControlDiv > a {
+      display: block;
       line-height: 1;
       padding: 4px 4px; }
 
@@ -17,8 +18,17 @@
   left: 30px;
   width: 800px;
   z-index: 1500; }
+  #yPageControlMod .yt_tabs {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0; }
   #yPageControlMod .yt_moduleactions {
     background-color: #e4e3e3;
-    padding: .5em; }
+    padding: .5em;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px; }
     #yPageControlMod .yt_moduleactions a {
+      color: #2e2e2e;
+      text-decoration: none;
       margin-bottom: .1rem; }
+      #yPageControlMod .yt_moduleactions a:hover {
+        text-decoration: underline; }

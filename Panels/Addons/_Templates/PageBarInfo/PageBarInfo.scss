@@ -164,7 +164,7 @@ $bar-active: darken($bar-background, 20%);
                 display:block;
                 position:absolute;
                 right:0;
-                top:calc(50% - 12px);
+                //top:calc(50% - 12px);
                 width:8px;
                 height:24px;
                 background-image: url(images/Expand.png);
