@@ -23,15 +23,58 @@ $smbuttonvertmargin: 2px;
 $smbuttonhorzmargin: 2px;
 
 .yt_grid {
+
     position:relative;
-    font-weight:normal;
+
     .tg_table {  // general rendering
         overflow-x:auto;
 
         table {
-            border-collapse:separate;
             box-sizing: border-box;
             table-layout: fixed;
+            .tg_header {
+                th {
+                    position: relative;
+                    overflow:hidden;
+                    white-space:nowrap;
+                    padding:$headerverticalpadding $headerhorzpadding $headerverticalpadding $headerhorzpadding;
+                    span {
+                        cursor:default;
+                    }
+                    .tg_resize {
+                        position:absolute;
+                        width:4px;
+                        height:100%;
+                        right:0;
+                        top:0;
+                        cursor:col-resize;
+                        user-select: none;
+                        overflow: hidden;
+                    }
+                    .tg_sorticon {
+                        position:relative;
+                        font-size: $fontsizesort;
+                        .tg_sortasc, .tg_sortdesc, .tg_sortboth {
+                            position:relative;
+                            display:none;
+                            padding-left:5px;
+                            &.tg_active {
+                                display:inline-block;
+                            }
+                        }
+                        .tg_sortasc {
+                            top:$fontsizesort/4;
+                        }
+                        .tg_sortdesc {
+                            top:-$fontsizesort/4;
+                        }
+                         .tg_sortboth {
+                            opacity: 0.2;
+                         }
+                    }
+                    user-select: none; /* Standard syntax */
+                }
+            }
             tr.tg_filter {
                 .tg_fentry {
                     display: table;
@@ -63,76 +106,42 @@ $smbuttonhorzmargin: 2px;
                     padding:$smbuttonvertpadding $smbuttonhorzpadding $smbuttonvertpadding $smbuttonhorzpadding;
                 }
             }
-            tr {
-                /* highlighted row (with bool __highlight property) */
-                &.tg_highlight td,
-                &.tg_highlight.tg_lowlight td {
-                    background-color: silver;
+            tbody {
+                tr {
+                    outline:0;
+                    /* highlighted row (with bool __highlight property) */
+                    &.tg_highlight td,
+                    &.tg_highlight.tg_lowlight td {
+                        background-color: var(--tbl-bg-highlight);
+                        color: var(--tbl-clr-highlight);
+                    }
+                    /* lowlighted row (with bool __lowlight property) */
+                    &.tg_lowlight td {
+                        background-color: var(--tbl-bg-lowlight);
+                        color: var(--tbl-clr-lowlight);
+                    }
+                    &.tg_selecthighlight td {
+                        background-color: var(--tbl-bg-active);
+                        color: var(--tbl-clr-active);
+                    }
+                    &:hover {
+                        background-color: var(--tbl-bg-hover);
+                        color: var(--tbl-clr-hover);
+                    }
                 }
-                /* lowlighted row (with bool __lowlight property) */
-                &.tg_lowlight td {
-                    background-color: ghostwhite;
-                    color: darkslategray;
-                }
-            }
-            th {
-                overflow:hidden;
-                white-space:nowrap;
-                padding:$headerverticalpadding $headerhorzpadding $headerverticalpadding $headerhorzpadding;
-            }
-            .tg_header th {
-                position: relative;
-                span {
-                    cursor:default;
-                }
-                .tg_resize {
-                    position:absolute;
-                    width:4px;
-                    height:100%;
-                    right:0;
-                    top:0;
-                    cursor:col-resize;
-                    user-select: none;
-                    overflow: hidden;
-                }
-                .tg_sorticon {
-                    position:relative;
-                    font-size: $fontsizesort;
-                    .tg_sortasc, .tg_sortdesc, .tg_sortboth {
-                        position:relative;
-                        display:none;
-                        padding-left:5px;
-                        &.tg_active {
-                            display:inline-block;
+                td {
+                    padding:$cellverticalpadding $cellhorzpadding $cellverticalpadding $cellhorzpadding;
+                    .tg_emptydiv {
+                        padding:2em 0 2em 2ch;
+                        .yt_grid & { // nested grid, no padding
+                            padding:0;
                         }
                     }
-                    .tg_sortasc {
-                        top:$fontsizesort/4;
-                    }
-                    .tg_sortdesc {
-                        top:-$fontsizesort/4;
-                    }
-                     .tg_sortboth {
-                        opacity: 0.2;
-                     }
-                }
-                user-select: none; /* Standard syntax */
-            }
-            td {
-                overflow:hidden;
-                padding:$cellverticalpadding $cellhorzpadding $cellverticalpadding $cellhorzpadding;
-                .tg_emptydiv {
-                    padding:2em 0 2em 2ch;
-                    .yt_grid & { // nested grid, no padding
-                        padding:0;
-                    }
-                }
-                &.tg_truncate {
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
                 }
             }
             th, td {
+                font: var(--body-font);
+                overflow:hidden;
                 &.tg_left {
                     text-align:left;
                 }
@@ -142,37 +151,34 @@ $smbuttonhorzmargin: 2px;
                 &.tg_right {
                     text-align:right;
                 }
+                &.tg_truncate {
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
             }
         }
     }
     .tg_pager {
-        font-size:$fontsize;
-        .tg_reload, .tg_search, .tg_pgtop, .tg_pgnext, .tg_pgprev, .tg_pgbottom {
-            display: inline-block;
-            margin:$buttonvertmargin $buttonhorzmargin $buttonvertmargin $buttonhorzmargin;
-            .fas {
-                padding:$buttonvertpadding $buttonhorzpadding $buttonvertpadding $buttonhorzpadding;
-            }
-        }
         .tg_pgbtns, .tg_pgctl, .tg_pgnum, .tg_pgsel, .tg_totals {
-            display: inline-block;
+            display:inline-block;
             margin:$buttonvertmargin $buttonhorzmargin $buttonvertmargin $buttonhorzmargin;
         }
         .tg_pgbtns, .tg_pgctl, .tg_pgsel {
             margin-right:4ch;
+        }
+        .tg_reload, .tg_search, .tg_pgtop, .tg_pgnext, .tg_pgprev, .tg_pgbottom {
+            margin:$buttonvertmargin $buttonhorzmargin $buttonvertmargin $buttonhorzmargin;
+            .fas {
+                font-size:$buttonfontsize;
+                padding:$buttonvertpadding $buttonhorzpadding $buttonvertpadding $buttonhorzpadding;
+            }
         }
         label {
             padding: 0 $cellhorzpadding 0 $cellhorzpadding;
         }
         user-select: none; /* Standard syntax */
     }
-    .tg_button {
-        cursor: pointer;
-        &:disabled {
-            cursor: default;
-        }
-    }
-    .tg_loading {
+    .tg_loading { // Loading indicator not currently customizable
         position:absolute;
         left:0; right: 0; top: 0; bottom: 0;
         background: rgba(255, 255, 255, 0.5);
@@ -190,98 +196,58 @@ $smbuttonhorzmargin: 2px;
             transform: translateY(-50%);
         }
     }
-}
-ul.yt_grid_menu {
-    font-size:$menufontsize;
-    overflow:auto;
-    .t_fmenuicon {
-        display:inline-block;
-        width:4ch;
-    }
-    .t_fmenutext {
-        display:inline-block;
-    }
-}
-
-.yt_grid { // both tg_skin and tg_noskin
-    tbody tr:not(.ui-state-highlight):hover {
-        background-color: var(--tbl-bg-hover);
-        color: var(--tbl-clr-hover);
+    ul.yt_grid_menu {
+        font-size:$menufontsize;
+        overflow:auto;
+        .t_fmenuicon {
+            display:inline-block;
+            width:4ch;
+        }
+        .t_fmenutext {
+            display:inline-block;
+        }
     }
 }
 
-.yt_grid.tg_skin { /* Skin dependent formatting */
-    .tg_table.ui-widget { // jquery-ui rendering
+.yt_grid.tg_skin { /* Use skin theme */
+    background: var(--tbl-header-bg);
+    color: var(--tbl-header-clr);
+    border: var(--tbl-border-width) solid var(--tbl-border-clr);
+    border-radius: var(--tbl-border-radius);
+    .tg_table {
         table {
-            tr.ui-widget-content,
-            tr.ui-state-default {
-                border-width: 0;
-                border-style: none;
-
-                & > th {
-                    font-weight: inherit;
-                    border-width: 0;
-                    border-style: none;
-                    border-color: inherit;
-                    border-right-width: 1px;
-                    border-right-style: solid;
-                    border-bottom-width: 1px;
-                    border-bottom-style: solid;
-                }
-
-                & > td {
-                    border-color: inherit;
-                    border-right-width: 1px;
-                    border-right-style: solid;
-                    border-bottom-width: 1px;
-                    border-bottom-style: solid;
-                }
-            }
-        }
-    }
-
-    .tg_pager {
-        border-top-style: none;
-    }
-}
-
-.yt_grid.tg_noskin { /* Not skin dependent formatting, usually module specific */
-    .tg_table {
-        input,
-        select,
-        textarea,
-        button { // Insures that jquery-ui doesn't override our font size for controls
-            font-size:$fontsizenoskin !important;
-        }
-        th, td {
-            font-size:$fontsizenoskin;
-        }
-    }
-    .tg_pager {
-        font-size:$fontsize;
-        .tg_reload, .tg_search, .tg_pgtop, .tg_pgnext, .tg_pgprev, .tg_pgbottom {
-            .fas {
-                font-size:$buttonfontsizenoskin;
-            }
-        }
-        .tg_pgbtns, .tg_pgctl, .tg_pgnum, .tg_pgsel, .tg_totals {
-            font-size:$fontsizenoskin;
-        }
-    }
-}
-.yt_grid.tg_skin { /* Not skin dependent formatting, usually module specific */
-    .tg_table {
-        input,
-        select,
-        textarea,
-        button { // Insures that jquery-ui doesn't override our font size for controls
-            font-size:$fontsize !important;
-        }
-        th, td {
+            border-collapse:collapse;
+            font: var(--body-font);
             font-size:$fontsize;
+            tbody {
+                background: var(--tbl-bg);
+                color: var(--tbl-clr);
+            }
+            .tg_header {
+                border-bottom: var(--tbl-border-width) solid var(--tbl-border-clr);
+            }
+            tr.tg_filter {
+                border-bottom: var(--tbl-border-width) solid var(--tbl-border-clr);
+            }
+            th, td {
+                font-size:$fontsize;
+                border-right: var(--tbl-border-lite-width) solid var(--tbl-border-lite-clr);
+            }
+            th {
+                &:hover {
+                    background: var(--tbl-header-bg-hover);
+                    color: var(--tbl-header-clr-hover);
+                }
+            }
+            td {
+                border-bottom: var(--tbl-border-lite-width) solid var(--tbl-border-lite-clr);
+            }
         }
     }
     .tg_pager {
+        background: var(--tbl-header-bg);
+        color: var(--tbl-header-clr);
+        border-top: var(--tbl-border-width) solid var(--tbl-border-clr);
         font-size:$fontsize;
         .tg_reload, .tg_search, .tg_pgtop, .tg_pgnext, .tg_pgprev, .tg_pgbottom {
             .fas {
@@ -294,12 +260,28 @@ ul.yt_grid_menu {
     }
 }
 
-.yt_grid.tg_skin .yt_grid.tg_noskin { /* NESTED GRID */
+.yt_grid.tg_noskin { /* Skin theme not used */
     .tg_table {
-        th, td {
-            font-size:$fontsize;
+        table {
+            font: var(--body-font);
+            font-size:$fontsizenoskin;
+            th, td {
+                font-size:$fontsizenoskin;
+            }
+            .tg_header th {
+                font-weight:bold;
+            }
+        }
+    }
+    .tg_pager {
+        font-size:$fontsizenoskin;
+        .tg_reload, .tg_search, .tg_pgtop, .tg_pgnext, .tg_pgprev, .tg_pgbottom {
+            .fas {
+                font-size:$buttonfontsizenoskin;
+            }
+        }
+        .tg_pgbtns, .tg_pgctl, .tg_pgnum, .tg_pgsel, .tg_totals {
+            font-size:$fontsizenoskin;
         }
     }
 }
-
-

@@ -26,7 +26,6 @@ namespace YetaWF_ComponentsHTML {
         Columns: GridColumnDefinition[];
         SaveSettingsColumnWidthsUrl: string;
         ExtraData: any;
-        HoverCss: string;
         HighlightCss: string;
         DisabledCss: string;
         RowHighlightCss: string;
@@ -174,15 +173,6 @@ namespace YetaWF_ComponentsHTML {
                 return true;
             });
 
-            $YetaWF.registerEventHandler(this.Control, "mouseover", ".tg_header th, .tg_filter .tg_button, .tg_pager .tg_button", (ev: MouseEvent): boolean => {
-                if (!$YetaWF.elementHasClass(ev.__YetaWFElem, this.Setup.HoverCss))
-                    $YetaWF.elementAddClass(ev.__YetaWFElem, this.Setup.HoverCss);
-                return true;
-            });
-            $YetaWF.registerEventHandler(this.Control, "mouseout", ".tg_header th, .tg_filter .tg_button, .tg_pager .tg_button", (ev: MouseEvent): boolean => {
-                $YetaWF.elementRemoveClass(ev.__YetaWFElem, this.Setup.HoverCss);
-                return true;
-            });
             $YetaWF.registerEventHandler(this.Control, "mouseover", ".tg_resize", (ev: MouseEvent): boolean => {
                 // don't allow mouseover to propagate and close tooltips
                 $YetaWF.closeOverlays();
@@ -209,8 +199,7 @@ namespace YetaWF_ComponentsHTML {
             // Reload
             if (this.BtnReload) {
                 $YetaWF.registerEventHandler(this.BtnReload, "click", null, (ev: MouseEvent): boolean => {
-                    if (!$YetaWF.elementHasClass(ev.__YetaWFElem, this.Setup.DisabledCss))
-                        this.reload(this.Setup.Page);
+                    this.reload(this.Setup.Page);
                     return false;
                 });
                 $YetaWF.registerModuleRefresh(this.Control, (mod: HTMLElement): void => {
@@ -222,40 +211,32 @@ namespace YetaWF_ComponentsHTML {
             // Nav buttons
             if (this.BtnTop) {
                 $YetaWF.registerEventHandler(this.BtnTop, "click", null, (ev: MouseEvent): boolean => {
-                    if (!$YetaWF.elementHasClass(ev.__YetaWFElem, this.Setup.DisabledCss)) {
-                        if (this.Setup.Page >= 0)
-                            this.reload(0);
-                    }
+                    if (this.Setup.Page >= 0)
+                        this.reload(0);
                     return false;
                 });
             }
             if (this.BtnPrev) {
                 $YetaWF.registerEventHandler(this.BtnPrev, "click", null, (ev: MouseEvent): boolean => {
-                    if (!$YetaWF.elementHasClass(ev.__YetaWFElem, this.Setup.DisabledCss)) {
-                        let page = this.Setup.Page - 1;
-                        if (page >= 0)
-                            this.reload(page);
-                    }
+                    let page = this.Setup.Page - 1;
+                    if (page >= 0)
+                        this.reload(page);
                     return false;
                 });
             }
             if (this.BtnNext) {
                 $YetaWF.registerEventHandler(this.BtnNext, "click", null, (ev: MouseEvent): boolean => {
-                    if (!$YetaWF.elementHasClass(ev.__YetaWFElem, this.Setup.DisabledCss)) {
-                        let page = this.Setup.Page + 1;
-                        if (page < this.Setup.Pages)
-                            this.reload(page);
-                    }
+                    let page = this.Setup.Page + 1;
+                    if (page < this.Setup.Pages)
+                        this.reload(page);
                     return false;
                 });
             }
             if (this.BtnBottom) {
                 $YetaWF.registerEventHandler(this.BtnBottom, "click", null, (ev: MouseEvent): boolean => {
-                    if (!$YetaWF.elementHasClass(ev.__YetaWFElem, this.Setup.DisabledCss)) {
-                        let page = this.Setup.Pages - 1;
-                        if (page >= 0)
-                            this.reload(page);
-                    }
+                    let page = this.Setup.Pages - 1;
+                    if (page >= 0)
+                        this.reload(page);
                     return false;
                 });
             }
@@ -896,10 +877,10 @@ namespace YetaWF_ComponentsHTML {
                 }
                 this.PagerTotals.innerHTML = `<span>${totals}</span>`;
             }
-            if (this.BtnTop) $YetaWF.elementToggleClass(this.BtnTop, this.Setup.DisabledCss, this.Setup.Page <= 0);
-            if (this.BtnPrev) $YetaWF.elementToggleClass(this.BtnPrev, this.Setup.DisabledCss, this.Setup.Page <= 0);
-            if (this.BtnNext) $YetaWF.elementToggleClass(this.BtnNext, this.Setup.DisabledCss, this.Setup.Page >= this.Setup.Pages - 1);
-            if (this.BtnBottom) $YetaWF.elementToggleClass(this.BtnBottom, this.Setup.DisabledCss, this.Setup.Page >= this.Setup.Pages - 1);
+            if (this.BtnTop) $YetaWF.elementEnableToggle(this.BtnTop, this.Setup.Page > 0);
+            if (this.BtnPrev) $YetaWF.elementEnableToggle(this.BtnPrev, this.Setup.Page > 0);
+            if (this.BtnNext) $YetaWF.elementEnableToggle(this.BtnNext, this.Setup.Page < this.Setup.Pages - 1);
+            if (this.BtnBottom) $YetaWF.elementEnableToggle(this.BtnBottom, this.Setup.Page < this.Setup.Pages - 1);
 
             // show/hide "No Records"
             if (this.Setup.StaticData) {
@@ -1216,7 +1197,6 @@ namespace YetaWF_ComponentsHTML {
         // API
 
         public enable(enable: boolean): void {
-            // TODO: This currently only works with jqueryui class
             $YetaWF.elementRemoveClass(this.Control, this.Setup.DisabledCss);
             if (!enable)
                 $YetaWF.elementAddClass(this.Control, this.Setup.DisabledCss);

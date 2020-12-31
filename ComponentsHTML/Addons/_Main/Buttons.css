@@ -43,5 +43,28 @@ a.y_button, a.y_button:hover {
   padding-left: 0.75rem; }
 
 @media print {
-  .y_button, button {
+  .y_button {
     display: none; } }
+
+button.y_buttonlite {
+  background: var(--buttonlite-bg);
+  color: var(--buttonlite-clr);
+  padding: 0;
+  text-decoration: none;
+  border: var(--elem-border-clr) solid var(--elem-border-width);
+  border-radius: var(--elem-border-radius); }
+  button.y_buttonlite:not(:disabled) {
+    cursor: pointer; }
+  button.y_buttonlite:hover:not(:disabled) {
+    text-decoration: none;
+    background: var(--buttonlite-bg-hover);
+    color: var(--buttonlite-clr-hover); }
+  button.y_buttonlite:disabled {
+    text-decoration: none;
+    cursor: default;
+    opacity: 0.60; }
+  button.y_buttonlite:focus {
+    outline: 0;
+    text-decoration: none;
+    background: var(--buttonlite-bg-focus);
+    color: var(--buttonlite-clr-focus); }

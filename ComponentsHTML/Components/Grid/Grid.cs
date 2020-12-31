@@ -66,7 +66,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public int MinColumnWidth { get; set; }
         public string SaveSettingsColumnWidthsUrl { get; set; }
         public object ExtraData { get; set; }
-        public string HoverCss { get; set; }
         public string HighlightCss { get; set; }
         public string DisabledCss { get; set; }
         public string RowHighlightCss { get; set; }
@@ -128,11 +127,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             await KendoUICore.AddFileAsync("kendo.menu.min.js");
             await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, "MenuUL", ComponentType.Display);
 
-            await JqueryUICore.UseAsync();
             await base.IncludeAsync();
         }
-
-        private string buttonCss;
 
         /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.
@@ -149,7 +145,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 model.ShowFilter = YetaWF.Core.Localize.UserSettings.GetProperty<bool>("ShowGridSearchToolbar");
             if (model.DropdownActionWidth == null)
                 model.DropdownActionWidth = GetDropdownActionWidthInChars();
-            buttonCss = model.UseSkinFormatting ? " ui-corner-all ui-pg-button ui-state-default tg_button" : " tg_button";
 
             string idEmpty = UniqueId();
 
@@ -200,11 +195,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 PageSize = pageSize,
                 ExtraData = model.ExtraData,
                 SizeStyle = model.SizeStyle,
-                HoverCss = model.UseSkinFormatting ? "ui-state-hover" : "tg_hover",
-                HighlightCss = model.UseSkinFormatting ? "ui-state-highlight" : "tg_highlight",
-                DisabledCss = model.UseSkinFormatting ? "ui-state-disabled" : "tg_disabled",
-                RowHighlightCss = model.UseSkinFormatting ? "ui-state-highlight" : "tg_highlight",
-                RowDragDropHighlightCss = model.UseSkinFormatting ? "ui-state-active" : "tg_dragdrophighlight",
+                HighlightCss = "tg_highlight",
+                DisabledCss = "tg_disabled",
+                RowHighlightCss = "tg_selecthighlight",
+                RowDragDropHighlightCss = "tg_dragdrophighlight",
                 SortActiveCss = "tg_active",
                 SettingsModuleGuid = model.SettingsModuleGuid,
                 SaveSettingsColumnWidthsUrl = dictInfo.SaveColumnWidths != false ? Utility.UrlFor(typeof(GridSaveSettingsController), nameof(GridSaveSettingsController.GridSaveColumnWidths)) : null,
@@ -282,10 +276,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     break;
             }
 
-            // add ui-corner-top for rounded edges
             hb.Append($@"
 <div id='{model.Id}' name='{FieldName}' class='yt_grid t_display{noSubmitClass} {(model.UseSkinFormatting ? "tg_skin" : "tg_noskin")}'>
-    <div class='tg_table{(model.UseSkinFormatting ? " ui-widget ui-widget-content" : "")}'>
+    <div class='tg_table'>
         <table role='presentation'{cssTableStyle}>
             {setup.HeaderHTML}
             <tbody>
@@ -298,9 +291,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 using (Manager.StartNestedComponent(FieldName)) {
 
-                    // add ui-corner-bottom for rounded bottom edge
                     hb.Append($@"
-    <div id='{model.Id}_Pager' class='tg_pager{(model.UseSkinFormatting ? " ui-state-default" : "")}'>
+    <div id='{model.Id}_Pager' class='tg_pager'>
         {await RenderPagerAsync(model, data, gridSavedSettings, dictInfo, setup)}
     </div>");
                 }
@@ -309,7 +301,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // loading
             if (!model.IsStatic) {
                 hb.Append($@"
-    <div id='{model.Id}_Loading' style='display:none' class='tg_loading{(model.UseSkinFormatting ? " ui-state-default" : "")}'>
+    <div id='{model.Id}_Loading' style='display:none' class='tg_loading'>
         <div class='t_text'>{__ResStr("loading", "Loading ...")}</div>
     </div>");
             }
@@ -385,7 +377,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
 
             hb.Append($@"
 <thead{cssHead}>
-    <tr class='tg_header{(gridDef.UseSkinFormatting ? " ui-state-default" : "")}'>");
+    <tr class='tg_header'>");
 
             int colIndex = 0;
             foreach (var d in dictInfo.ColumnInfo) {
@@ -488,7 +480,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
 
                 // Render column header
                 hb.Append($@"
-        <th class='{alignCss} tg_c_{propName.ToLower()}{(gridDef.UseSkinFormatting ? " ui-state-default" : "")}'{cssWidth}>
+        <th class='{alignCss} tg_c_{propName.ToLower()}'{cssWidth}>
             <span {Basics.CssTooltipSpan}='{HAE(description ?? "")}'>{HE(caption)}</span>{sortHtml}{resizeHTML}
         </th>");
 
@@ -537,8 +529,8 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                     {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.Value), HtmlAttributes: new { id = idFilter })}
                     {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.Url))}
                     {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.UIHint))}
-                    <div class='tg_ffilter{buttonCss}'>Filter</div>
-                    <div class='tg_fclear{buttonCss}'><span class='fas fa-times'></span></div>
+                    <button class='tg_ffilter y_buttonlite' tabindex='0'>{HE(__ResStr("filter", "Filter"))}</button>
+                    <button class='tg_fclear y_buttonlite' tabindex='0'><span class='fas fa-times'></span></button>
                 </ div>");
 
                         } else if (prop.PropInfo.PropertyType == typeof(bool) || prop.PropInfo.PropertyType == typeof(bool?)) {
@@ -574,11 +566,11 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                                 filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.GreaterEqual;
 
                                 filterhb.Append($@"
-                <div class='tg_fmenu{buttonCss}' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></div>
+                <button class='tg_fmenu y_buttonlite' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
                 <div class='tg_fctrls'>
                     {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.Value), HtmlAttributes: new { id = idFilter })}
                 </div>
-                <div class='tg_fclear{buttonCss}'><span class='fas fa-times'></span></div>");
+                <button class='tg_fclear y_buttonlite' tabindex='0'><span class='fas fa-times'></span></button>");
 
                             } else {
                                 // this is a dynamic enumerated value
@@ -602,7 +594,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                                 filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.Equal;
 
                                 filterhb.Append($@"
-                <div class='tg_fmenu{buttonCss}' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></div>
+                <button class='tg_fmenu y_buttonlite' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
                 <div class='tg_fctrls'>
                     {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.Value), HtmlAttributes: new { id = idFilter })}
                 </div>");
@@ -624,11 +616,11 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                             filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.GreaterEqual;
 
                             filterhb.Append($@"
-                <div class='tg_fmenu{buttonCss}' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></div>
+                <button class='tg_fmenu y_buttonlite' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
                 <div class='tg_fctrls'>
                     {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.Value), HtmlAttributes: new { id = idFilter })}
                 </div>
-                <div class='tg_fclear{buttonCss}'><span class='fas fa-times'></span></div>");
+                <button class='tg_fclear y_buttonlite' tabindex='0'><span class='fas fa-times'></span></button>");
 
                         } else if (prop.PropInfo.PropertyType == typeof(DateTime) || prop.PropInfo.PropertyType == typeof(DateTime?)) {
 
@@ -648,11 +640,11 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                                 filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.GreaterEqual;
 
                                 filterhb.Append($@"
-                <div class='tg_fmenu{buttonCss}' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></div>
+                <button class='tg_fmenu y_buttonlite' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
                 <div class='tg_fctrls'>
                     {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.Value), HtmlAttributes: new { id = idFilter })}
                 </div>
-                <div class='tg_fclear{buttonCss}'><span class='fas fa-times'></span></div>");
+                <button class='tg_fclear y_buttonlite' tabindex='0'><span class='fas fa-times'></span></button>");
 
                             } else if (prop.UIHint == "Date" || prop.UIHint.EndsWith("_Date")) {
                                 filterType = "date";
@@ -666,11 +658,11 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                                 filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.GreaterEqual;
 
                                 filterhb.Append($@"
-                <div class='tg_fmenu{buttonCss}' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></div>
+                <button class='tg_fmenu y_buttonlite' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
                 <div class='tg_fctrls'>
                     {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.Value), HtmlAttributes: new { id = idFilter })}
                 </div>
-                <div class='tg_fclear{buttonCss}'><span class='fas fa-times'></span></div>");
+                <button class='tg_fclear y_buttonlite' tabindex='0'><span class='fas fa-times'></span></button>");
 
                             } else {
                                 throw new InternalError("Need DateTime or Date UIHint for DateTime data");
@@ -688,11 +680,11 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                             filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.Contains;
 
                             filterhb.Append($@"
-                <div class='tg_fmenu{buttonCss}' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></div>
+                <button class='tg_fmenu y_buttonlite' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
                 <div class='tg_fctrls'>
                     {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.Value), HtmlAttributes: new { id = idFilter })}
                 </div>
-                <div class='tg_fclear{buttonCss}'><span class='fas fa-times'></span></div>");
+                <button class='tg_fclear y_buttonlite' tabindex='0'><span class='fas fa-times'></span></button>");
 
                         } else if (prop.PropInfo.PropertyType.IsEnum) {
 
@@ -723,7 +715,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                             filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.Equal;
 
                             filterhb.Append($@"
-                <div class='tg_fmenu{buttonCss}' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></div>
+                <button class='tg_fmenu y_buttonlite' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
                 <div class='tg_fctrls'>
                     {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.Value), HtmlAttributes: new { id = idFilter })}
                 </div>");
@@ -737,11 +729,11 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                             filterOp = filterOp ?? filterOpts.First();
 
                             filterhb.Append($@"
-                <div class='tg_fmenu{buttonCss}' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></div>
+                <button class='tg_fmenu y_buttonlite' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
                 <div class='tg_fctrls'>
                     {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.Value), HtmlAttributes: new { id = idFilter })}
                 </div>
-                <div class='tg_fclear{buttonCss}'><span class='fas fa-times'></span></div>");
+                <button class='tg_fclear y_buttonlite' tabindex='0'><span class='fas fa-times'></span></button>");
                         }
 
                     } else {
@@ -780,7 +772,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
 
                 hb.Append($@"
     </tr>
-    <tr class='tg_filter{(gridDef.UseSkinFormatting ? " ui-state-default" : "")}'{filterStyle}>
+    <tr class='tg_filter'{filterStyle}>
         {filterhb.ToString()}
     </tr>
 </thead>");
@@ -799,8 +791,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             foreach (GridColumnInfo.FilterOptionEnum option in filterOpts) {
                 string icon = GetFilterIcon(option);
                 string text = GetFilterText(option);
-                string liCss = option == filterOp ? $" class='{(gridModel.UseSkinFormatting ? "ui-state-highlight" : "tg_highlight")}'" : "";
-                hb.Append($"<li data-sel='{(int)option}'{liCss}><span class='t_fmenuicon'>{HE(icon)}</span><span class='t_fmenutext'>{HE(text)}</span></li>");
+                hb.Append($"<li data-sel='{(int)option}'><span class='t_fmenuicon'>{HE(icon)}</span><span class='t_fmenutext'>{HE(text)}</span></li>");
             }
             hb.Append("</ul>");
             return hb.ToString();
@@ -879,7 +870,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                     styleCss = " style='display:none'";
 
                 hb.Append($@"
-<tr role='row'{styleCss} class='tg_emptytr{(model.UseSkinFormatting ? " ui-widget-content" : "")}'>
+<tr role='row'{styleCss} class='tg_emptytr'>
     <td role='gridcell' colspan='{dictInfo.VisibleColumns}'>
         <div class='tg_emptydiv'>
             {HE(model.NoRecordsText)}
@@ -971,7 +962,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
 
                 HtmlBuilder hb = new HtmlBuilder();
                 hb.Append($@"
-<tr role='row'{originData} class='{lightCss}{(gridModel.UseSkinFormatting ? " ui-widget-content" : "")}'{trStyle} tabindex='0'>");
+<tr role='row'{originData} class='{lightCss}'{trStyle} tabindex='0'>");
 
                 foreach (string colName in dictInfo.ColumnInfo.Keys) {
 
@@ -1069,9 +1060,9 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             string reloadHTML = "";
             string searchHTML = "";
             if (!gridModel.IsStatic && gridModel.SupportReload)
-                reloadHTML = $@"<div class='tg_reload{buttonCss}' {Basics.CssTooltip}='{HAE(__ResStr("btnTop", "Reload the current page"))}'><span class='fas fa-sync-alt'></span></div>";
+                reloadHTML = $@"<button class='tg_reload y_buttonlite' {Basics.CssTooltip}='{HAE(__ResStr("btnTop", "Reload the current page"))}'><span class='fas fa-sync-alt'></span></button>";
             if (setup.CanFilter)
-                searchHTML = $@"<div class='tg_search{buttonCss}' {Basics.CssTooltip}='{HAE(__ResStr("btnFilter", "Turn the filter bar on or off"))}'><span class='fas fa-search'></span></div>";
+                searchHTML = $@"<button class='tg_search y_buttonlite' {Basics.CssTooltip}='{HAE(__ResStr("btnFilter", "Turn the filter bar on or off"))}'><span class='fas fa-search'></span></button>";
 
             if (!string.IsNullOrEmpty(reloadHTML) || !string.IsNullOrEmpty(searchHTML)) {
                 hb.Append($@"
@@ -1082,10 +1073,10 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
 
             if (setup.PageSize != 0) {
 
-                string topHTML = $@"<div class='tg_pgtop{buttonCss}' {Basics.CssTooltip}='{HAE(__ResStr("btnFirst", "Go to the first page"))}'><span class='fas fa-fast-backward'></span></div>";
-                string prevHTML = $@"<div class='tg_pgprev{buttonCss}' {Basics.CssTooltip}='{HAE(__ResStr("btnPrev", "Go to the previous page"))}'><span class='fas fa-backward'></span></div>";
-                string nextHTML = $@"<div class='tg_pgnext{buttonCss}' {Basics.CssTooltip}='{HAE(__ResStr("btnNext", "Go to the next page"))}'><span class='fas fa-forward'></span></div>";
-                string bottomHTML = $@"<div class='tg_pgbottom{buttonCss}' {Basics.CssTooltip}='{HAE(__ResStr("btnLast", "Go to the last page"))}'><span class='fas fa-fast-forward'></span></div>";
+                string topHTML = $@"<button class='tg_pgtop y_buttonlite' {Basics.CssTooltip}='{HAE(__ResStr("btnFirst", "Go to the first page"))}'><span class='fas fa-fast-backward'></span></button>";
+                string prevHTML = $@"<button class='tg_pgprev y_buttonlite' {Basics.CssTooltip}='{HAE(__ResStr("btnPrev", "Go to the previous page"))}'><span class='fas fa-backward'></span></button>";
+                string nextHTML = $@"<button class='tg_pgnext y_buttonlite' {Basics.CssTooltip}='{HAE(__ResStr("btnNext", "Go to the next page"))}'><span class='fas fa-forward'></span></button>";
+                string bottomHTML = $@"<button class='tg_pgbottom y_buttonlite' {Basics.CssTooltip}='{HAE(__ResStr("btnLast", "Go to the last page"))}'><span class='fas fa-fast-forward'></span></button>";
 
                 hb.Append($@"
     <div class='tg_pgctl'>

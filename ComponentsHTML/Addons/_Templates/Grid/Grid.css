@@ -1,53 +1,17 @@
 @charset "UTF-8";
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 .yt_grid {
-  position: relative;
-  font-weight: normal; }
+  position: relative; }
   .yt_grid .tg_table {
     overflow-x: auto; }
     .yt_grid .tg_table table {
-      border-collapse: separate;
       box-sizing: border-box;
       table-layout: fixed; }
-      .yt_grid .tg_table table tr.tg_filter .tg_fentry {
-        display: table;
-        width: 100%; }
-      .yt_grid .tg_table table tr.tg_filter .tg_fctrls {
-        display: table-cell;
-        width: 100%; }
-        .yt_grid .tg_table table tr.tg_filter .tg_fctrls .yt_text_base,
-        .yt_grid .tg_table table tr.tg_filter .tg_fctrls .k-widget {
-          /* kendo ui controls */
-          width: 100%; }
-        .yt_grid .tg_table table tr.tg_filter .tg_fctrls select {
-          width: 100%; }
-        .yt_grid .tg_table table tr.tg_filter .tg_fctrls .tg_ffilter {
-          display: inline-block;
-          width: 10ch;
-          text-align: center;
-          font-size: 8px;
-          margin: 2px 2px 2px 2px;
-          padding: 2px 2px 2px 2px; }
-      .yt_grid .tg_table table tr.tg_filter .tg_fclear, .yt_grid .tg_table table tr.tg_filter .tg_fmenu {
-        display: inline-block;
-        font-size: 8px;
-        margin: 2px 2px 2px 2px;
-        padding: 2px 2px 2px 2px; }
-      .yt_grid .tg_table table tr {
-        /* highlighted row (with bool __highlight property) */
-        /* lowlighted row (with bool __lowlight property) */ }
-        .yt_grid .tg_table table tr.tg_highlight td,
-        .yt_grid .tg_table table tr.tg_highlight.tg_lowlight td {
-          background-color: silver; }
-        .yt_grid .tg_table table tr.tg_lowlight td {
-          background-color: ghostwhite;
-          color: darkslategray; }
-      .yt_grid .tg_table table th {
-        overflow: hidden;
-        white-space: nowrap;
-        padding: 2px 4px 2px 4px; }
       .yt_grid .tg_table table .tg_header th {
         position: relative;
+        overflow: hidden;
+        white-space: nowrap;
+        padding: 2px 4px 2px 4px;
         -webkit-user-select: none;
             -ms-user-select: none;
                 user-select: none;
@@ -80,44 +44,82 @@
             top: -3px; }
           .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortboth {
             opacity: 0.2; }
-      .yt_grid .tg_table table td {
-        overflow: hidden;
+      .yt_grid .tg_table table tr.tg_filter .tg_fentry {
+        display: table;
+        width: 100%; }
+      .yt_grid .tg_table table tr.tg_filter .tg_fctrls {
+        display: table-cell;
+        width: 100%; }
+        .yt_grid .tg_table table tr.tg_filter .tg_fctrls .yt_text_base,
+        .yt_grid .tg_table table tr.tg_filter .tg_fctrls .k-widget {
+          /* kendo ui controls */
+          width: 100%; }
+        .yt_grid .tg_table table tr.tg_filter .tg_fctrls select {
+          width: 100%; }
+        .yt_grid .tg_table table tr.tg_filter .tg_fctrls .tg_ffilter {
+          display: inline-block;
+          width: 10ch;
+          text-align: center;
+          font-size: 8px;
+          margin: 2px 2px 2px 2px;
+          padding: 2px 2px 2px 2px; }
+      .yt_grid .tg_table table tr.tg_filter .tg_fclear, .yt_grid .tg_table table tr.tg_filter .tg_fmenu {
+        display: inline-block;
+        font-size: 8px;
+        margin: 2px 2px 2px 2px;
         padding: 2px 2px 2px 2px; }
-        .yt_grid .tg_table table td .tg_emptydiv {
+      .yt_grid .tg_table table tbody tr {
+        outline: 0;
+        /* highlighted row (with bool __highlight property) */
+        /* lowlighted row (with bool __lowlight property) */ }
+        .yt_grid .tg_table table tbody tr.tg_highlight td,
+        .yt_grid .tg_table table tbody tr.tg_highlight.tg_lowlight td {
+          background-color: var(--tbl-bg-highlight);
+          color: var(--tbl-clr-highlight); }
+        .yt_grid .tg_table table tbody tr.tg_lowlight td {
+          background-color: var(--tbl-bg-lowlight);
+          color: var(--tbl-clr-lowlight); }
+        .yt_grid .tg_table table tbody tr.tg_selecthighlight td {
+          background-color: var(--tbl-bg-active);
+          color: var(--tbl-clr-active); }
+        .yt_grid .tg_table table tbody tr:hover {
+          background-color: var(--tbl-bg-hover);
+          color: var(--tbl-clr-hover); }
+      .yt_grid .tg_table table tbody td {
+        padding: 2px 2px 2px 2px; }
+        .yt_grid .tg_table table tbody td .tg_emptydiv {
           padding: 2em 0 2em 2ch; }
-          .yt_grid .yt_grid .tg_table table td .tg_emptydiv {
+          .yt_grid .yt_grid .tg_table table tbody td .tg_emptydiv {
             padding: 0; }
-        .yt_grid .tg_table table td.tg_truncate {
+      .yt_grid .tg_table table th, .yt_grid .tg_table table td {
+        font: var(--body-font);
+        overflow: hidden; }
+        .yt_grid .tg_table table th.tg_left, .yt_grid .tg_table table td.tg_left {
+          text-align: left; }
+        .yt_grid .tg_table table th.tg_center, .yt_grid .tg_table table td.tg_center {
+          text-align: center; }
+        .yt_grid .tg_table table th.tg_right, .yt_grid .tg_table table td.tg_right {
+          text-align: right; }
+        .yt_grid .tg_table table th.tg_truncate, .yt_grid .tg_table table td.tg_truncate {
           text-overflow: ellipsis;
           white-space: nowrap; }
-      .yt_grid .tg_table table th.tg_left, .yt_grid .tg_table table td.tg_left {
-        text-align: left; }
-      .yt_grid .tg_table table th.tg_center, .yt_grid .tg_table table td.tg_center {
-        text-align: center; }
-      .yt_grid .tg_table table th.tg_right, .yt_grid .tg_table table td.tg_right {
-        text-align: right; }
   .yt_grid .tg_pager {
-    font-size: 11px;
     -webkit-user-select: none;
         -ms-user-select: none;
             user-select: none;
     /* Standard syntax */ }
-    .yt_grid .tg_pager .tg_reload, .yt_grid .tg_pager .tg_search, .yt_grid .tg_pager .tg_pgtop, .yt_grid .tg_pager .tg_pgnext, .yt_grid .tg_pager .tg_pgprev, .yt_grid .tg_pager .tg_pgbottom {
-      display: inline-block;
-      margin: 3px 3px 3px 3px; }
-      .yt_grid .tg_pager .tg_reload .fas, .yt_grid .tg_pager .tg_search .fas, .yt_grid .tg_pager .tg_pgtop .fas, .yt_grid .tg_pager .tg_pgnext .fas, .yt_grid .tg_pager .tg_pgprev .fas, .yt_grid .tg_pager .tg_pgbottom .fas {
-        padding: 2px 4px 2px 4px; }
     .yt_grid .tg_pager .tg_pgbtns, .yt_grid .tg_pager .tg_pgctl, .yt_grid .tg_pager .tg_pgnum, .yt_grid .tg_pager .tg_pgsel, .yt_grid .tg_pager .tg_totals {
       display: inline-block;
       margin: 3px 3px 3px 3px; }
     .yt_grid .tg_pager .tg_pgbtns, .yt_grid .tg_pager .tg_pgctl, .yt_grid .tg_pager .tg_pgsel {
       margin-right: 4ch; }
+    .yt_grid .tg_pager .tg_reload, .yt_grid .tg_pager .tg_search, .yt_grid .tg_pager .tg_pgtop, .yt_grid .tg_pager .tg_pgnext, .yt_grid .tg_pager .tg_pgprev, .yt_grid .tg_pager .tg_pgbottom {
+      margin: 3px 3px 3px 3px; }
+      .yt_grid .tg_pager .tg_reload .fas, .yt_grid .tg_pager .tg_search .fas, .yt_grid .tg_pager .tg_pgtop .fas, .yt_grid .tg_pager .tg_pgnext .fas, .yt_grid .tg_pager .tg_pgprev .fas, .yt_grid .tg_pager .tg_pgbottom .fas {
+        font-size: 8px;
+        padding: 2px 4px 2px 4px; }
     .yt_grid .tg_pager label {
       padding: 0 2px 0 2px; }
-  .yt_grid .tg_button {
-    cursor: pointer; }
-    .yt_grid .tg_button:disabled {
-      cursor: default; }
   .yt_grid .tg_loading {
     position: absolute;
     left: 0;
@@ -137,79 +139,62 @@
       top: 50%;
       -webkit-transform: translateY(-50%);
               transform: translateY(-50%); }
-
-ul.yt_grid_menu {
-  font-size: 10px;
-  overflow: auto; }
-  ul.yt_grid_menu .t_fmenuicon {
-    display: inline-block;
-    width: 4ch; }
-  ul.yt_grid_menu .t_fmenutext {
-    display: inline-block; }
-
-.yt_grid tbody tr:not(.ui-state-highlight):hover {
-  background-color: var(--tbl-bg-hover);
-  color: var(--tbl-clr-hover); }
+  .yt_grid ul.yt_grid_menu {
+    font-size: 10px;
+    overflow: auto; }
+    .yt_grid ul.yt_grid_menu .t_fmenuicon {
+      display: inline-block;
+      width: 4ch; }
+    .yt_grid ul.yt_grid_menu .t_fmenutext {
+      display: inline-block; }
 
 .yt_grid.tg_skin {
-  /* Skin dependent formatting */ }
-  .yt_grid.tg_skin .tg_table.ui-widget table tr.ui-widget-content,
-  .yt_grid.tg_skin .tg_table.ui-widget table tr.ui-state-default {
-    border-width: 0;
-    border-style: none; }
-    .yt_grid.tg_skin .tg_table.ui-widget table tr.ui-widget-content > th,
-    .yt_grid.tg_skin .tg_table.ui-widget table tr.ui-state-default > th {
-      font-weight: inherit;
-      border-width: 0;
-      border-style: none;
-      border-color: inherit;
-      border-right-width: 1px;
-      border-right-style: solid;
-      border-bottom-width: 1px;
-      border-bottom-style: solid; }
-    .yt_grid.tg_skin .tg_table.ui-widget table tr.ui-widget-content > td,
-    .yt_grid.tg_skin .tg_table.ui-widget table tr.ui-state-default > td {
-      border-color: inherit;
-      border-right-width: 1px;
-      border-right-style: solid;
-      border-bottom-width: 1px;
-      border-bottom-style: solid; }
-  .yt_grid.tg_skin .tg_pager {
-    border-top-style: none; }
-
-.yt_grid.tg_noskin {
-  /* Not skin dependent formatting, usually module specific */ }
-  .yt_grid.tg_noskin .tg_table input,
-  .yt_grid.tg_noskin .tg_table select,
-  .yt_grid.tg_noskin .tg_table textarea,
-  .yt_grid.tg_noskin .tg_table button {
-    font-size: 14px !important; }
-  .yt_grid.tg_noskin .tg_table th, .yt_grid.tg_noskin .tg_table td {
-    font-size: 14px; }
-  .yt_grid.tg_noskin .tg_pager {
+  /* Use skin theme */
+  background: var(--tbl-header-bg);
+  color: var(--tbl-header-clr);
+  border: var(--tbl-border-width) solid var(--tbl-border-clr);
+  border-radius: var(--tbl-border-radius); }
+  .yt_grid.tg_skin .tg_table table {
+    border-collapse: collapse;
+    font: var(--body-font);
     font-size: 11px; }
-    .yt_grid.tg_noskin .tg_pager .tg_reload .fas, .yt_grid.tg_noskin .tg_pager .tg_search .fas, .yt_grid.tg_noskin .tg_pager .tg_pgtop .fas, .yt_grid.tg_noskin .tg_pager .tg_pgnext .fas, .yt_grid.tg_noskin .tg_pager .tg_pgprev .fas, .yt_grid.tg_noskin .tg_pager .tg_pgbottom .fas {
-      font-size: 12px; }
-    .yt_grid.tg_noskin .tg_pager .tg_pgbtns, .yt_grid.tg_noskin .tg_pager .tg_pgctl, .yt_grid.tg_noskin .tg_pager .tg_pgnum, .yt_grid.tg_noskin .tg_pager .tg_pgsel, .yt_grid.tg_noskin .tg_pager .tg_totals {
-      font-size: 14px; }
-
-.yt_grid.tg_skin {
-  /* Not skin dependent formatting, usually module specific */ }
-  .yt_grid.tg_skin .tg_table input,
-  .yt_grid.tg_skin .tg_table select,
-  .yt_grid.tg_skin .tg_table textarea,
-  .yt_grid.tg_skin .tg_table button {
-    font-size: 11px !important; }
-  .yt_grid.tg_skin .tg_table th, .yt_grid.tg_skin .tg_table td {
-    font-size: 11px; }
+    .yt_grid.tg_skin .tg_table table tbody {
+      background: var(--tbl-bg);
+      color: var(--tbl-clr); }
+    .yt_grid.tg_skin .tg_table table .tg_header {
+      border-bottom: var(--tbl-border-width) solid var(--tbl-border-clr); }
+    .yt_grid.tg_skin .tg_table table tr.tg_filter {
+      border-bottom: var(--tbl-border-width) solid var(--tbl-border-clr); }
+    .yt_grid.tg_skin .tg_table table th, .yt_grid.tg_skin .tg_table table td {
+      font-size: 11px;
+      border-right: var(--tbl-border-lite-width) solid var(--tbl-border-lite-clr); }
+    .yt_grid.tg_skin .tg_table table th:hover {
+      background: var(--tbl-header-bg-hover);
+      color: var(--tbl-header-clr-hover); }
+    .yt_grid.tg_skin .tg_table table td {
+      border-bottom: var(--tbl-border-lite-width) solid var(--tbl-border-lite-clr); }
   .yt_grid.tg_skin .tg_pager {
+    background: var(--tbl-header-bg);
+    color: var(--tbl-header-clr);
+    border-top: var(--tbl-border-width) solid var(--tbl-border-clr);
     font-size: 11px; }
     .yt_grid.tg_skin .tg_pager .tg_reload .fas, .yt_grid.tg_skin .tg_pager .tg_search .fas, .yt_grid.tg_skin .tg_pager .tg_pgtop .fas, .yt_grid.tg_skin .tg_pager .tg_pgnext .fas, .yt_grid.tg_skin .tg_pager .tg_pgprev .fas, .yt_grid.tg_skin .tg_pager .tg_pgbottom .fas {
       font-size: 8px; }
     .yt_grid.tg_skin .tg_pager .tg_pgbtns, .yt_grid.tg_skin .tg_pager .tg_pgctl, .yt_grid.tg_skin .tg_pager .tg_pgnum, .yt_grid.tg_skin .tg_pager .tg_pgsel, .yt_grid.tg_skin .tg_pager .tg_totals {
       font-size: 11px; }
 
-.yt_grid.tg_skin .yt_grid.tg_noskin {
-  /* NESTED GRID */ }
-  .yt_grid.tg_skin .yt_grid.tg_noskin .tg_table th, .yt_grid.tg_skin .yt_grid.tg_noskin .tg_table td {
-    font-size: 11px; }
+.yt_grid.tg_noskin {
+  /* Skin theme not used */ }
+  .yt_grid.tg_noskin .tg_table table {
+    font: var(--body-font);
+    font-size: 14px; }
+    .yt_grid.tg_noskin .tg_table table th, .yt_grid.tg_noskin .tg_table table td {
+      font-size: 14px; }
+    .yt_grid.tg_noskin .tg_table table .tg_header th {
+      font-weight: bold; }
+  .yt_grid.tg_noskin .tg_pager {
+    font-size: 14px; }
+    .yt_grid.tg_noskin .tg_pager .tg_reload .fas, .yt_grid.tg_noskin .tg_pager .tg_search .fas, .yt_grid.tg_noskin .tg_pager .tg_pgtop .fas, .yt_grid.tg_noskin .tg_pager .tg_pgnext .fas, .yt_grid.tg_noskin .tg_pager .tg_pgprev .fas, .yt_grid.tg_noskin .tg_pager .tg_pgbottom .fas {
+      font-size: 12px; }
+    .yt_grid.tg_noskin .tg_pager .tg_pgbtns, .yt_grid.tg_noskin .tg_pager .tg_pgctl, .yt_grid.tg_noskin .tg_pager .tg_pgnum, .yt_grid.tg_noskin .tg_pager .tg_pgsel, .yt_grid.tg_noskin .tg_pager .tg_totals {
+      font-size: 14px; }

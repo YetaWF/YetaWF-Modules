@@ -106,15 +106,6 @@ var YetaWF_ComponentsHTML;
                 $YetaWF.sendContainerScrollEvent(_this.Control);
                 return true;
             });
-            $YetaWF.registerEventHandler(_this.Control, "mouseover", ".tg_header th, .tg_filter .tg_button, .tg_pager .tg_button", function (ev) {
-                if (!$YetaWF.elementHasClass(ev.__YetaWFElem, _this.Setup.HoverCss))
-                    $YetaWF.elementAddClass(ev.__YetaWFElem, _this.Setup.HoverCss);
-                return true;
-            });
-            $YetaWF.registerEventHandler(_this.Control, "mouseout", ".tg_header th, .tg_filter .tg_button, .tg_pager .tg_button", function (ev) {
-                $YetaWF.elementRemoveClass(ev.__YetaWFElem, _this.Setup.HoverCss);
-                return true;
-            });
             $YetaWF.registerEventHandler(_this.Control, "mouseover", ".tg_resize", function (ev) {
                 // don't allow mouseover to propagate and close tooltips
                 $YetaWF.closeOverlays();
@@ -142,8 +133,7 @@ var YetaWF_ComponentsHTML;
             // Reload
             if (_this.BtnReload) {
                 $YetaWF.registerEventHandler(_this.BtnReload, "click", null, function (ev) {
-                    if (!$YetaWF.elementHasClass(ev.__YetaWFElem, _this.Setup.DisabledCss))
-                        _this.reload(_this.Setup.Page);
+                    _this.reload(_this.Setup.Page);
                     return false;
                 });
                 $YetaWF.registerModuleRefresh(_this.Control, function (mod) {
@@ -155,40 +145,32 @@ var YetaWF_ComponentsHTML;
             // Nav buttons
             if (_this.BtnTop) {
                 $YetaWF.registerEventHandler(_this.BtnTop, "click", null, function (ev) {
-                    if (!$YetaWF.elementHasClass(ev.__YetaWFElem, _this.Setup.DisabledCss)) {
-                        if (_this.Setup.Page >= 0)
-                            _this.reload(0);
-                    }
+                    if (_this.Setup.Page >= 0)
+                        _this.reload(0);
                     return false;
                 });
             }
             if (_this.BtnPrev) {
                 $YetaWF.registerEventHandler(_this.BtnPrev, "click", null, function (ev) {
-                    if (!$YetaWF.elementHasClass(ev.__YetaWFElem, _this.Setup.DisabledCss)) {
-                        var page = _this.Setup.Page - 1;
-                        if (page >= 0)
-                            _this.reload(page);
-                    }
+                    var page = _this.Setup.Page - 1;
+                    if (page >= 0)
+                        _this.reload(page);
                     return false;
                 });
             }
             if (_this.BtnNext) {
                 $YetaWF.registerEventHandler(_this.BtnNext, "click", null, function (ev) {
-                    if (!$YetaWF.elementHasClass(ev.__YetaWFElem, _this.Setup.DisabledCss)) {
-                        var page = _this.Setup.Page + 1;
-                        if (page < _this.Setup.Pages)
-                            _this.reload(page);
-                    }
+                    var page = _this.Setup.Page + 1;
+                    if (page < _this.Setup.Pages)
+                        _this.reload(page);
                     return false;
                 });
             }
             if (_this.BtnBottom) {
                 $YetaWF.registerEventHandler(_this.BtnBottom, "click", null, function (ev) {
-                    if (!$YetaWF.elementHasClass(ev.__YetaWFElem, _this.Setup.DisabledCss)) {
-                        var page = _this.Setup.Pages - 1;
-                        if (page >= 0)
-                            _this.reload(page);
-                    }
+                    var page = _this.Setup.Pages - 1;
+                    if (page >= 0)
+                        _this.reload(page);
                     return false;
                 });
             }
@@ -831,13 +813,13 @@ var YetaWF_ComponentsHTML;
                 this.PagerTotals.innerHTML = "<span>" + totals + "</span>";
             }
             if (this.BtnTop)
-                $YetaWF.elementToggleClass(this.BtnTop, this.Setup.DisabledCss, this.Setup.Page <= 0);
+                $YetaWF.elementEnableToggle(this.BtnTop, this.Setup.Page > 0);
             if (this.BtnPrev)
-                $YetaWF.elementToggleClass(this.BtnPrev, this.Setup.DisabledCss, this.Setup.Page <= 0);
+                $YetaWF.elementEnableToggle(this.BtnPrev, this.Setup.Page > 0);
             if (this.BtnNext)
-                $YetaWF.elementToggleClass(this.BtnNext, this.Setup.DisabledCss, this.Setup.Page >= this.Setup.Pages - 1);
+                $YetaWF.elementEnableToggle(this.BtnNext, this.Setup.Page < this.Setup.Pages - 1);
             if (this.BtnBottom)
-                $YetaWF.elementToggleClass(this.BtnBottom, this.Setup.DisabledCss, this.Setup.Page >= this.Setup.Pages - 1);
+                $YetaWF.elementEnableToggle(this.BtnBottom, this.Setup.Page < this.Setup.Pages - 1);
             // show/hide "No Records"
             if (this.Setup.StaticData) {
                 if (this.Setup.Records === 0) {
@@ -1160,7 +1142,6 @@ var YetaWF_ComponentsHTML;
         // API
         // API
         Grid.prototype.enable = function (enable) {
-            // TODO: This currently only works with jqueryui class
             $YetaWF.elementRemoveClass(this.Control, this.Setup.DisabledCss);
             if (!enable)
                 $YetaWF.elementAddClass(this.Control, this.Setup.DisabledCss);
