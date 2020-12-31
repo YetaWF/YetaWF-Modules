@@ -7,36 +7,72 @@
 #ypopup {
 
     position: fixed;
+    z-index:2002 !important;
 
-    &.ui-dialog {
-       z-index:2002 !important;
-    }
+    font: var(--body-font);
+    background: var(--dialog-bg);
+    color: var(--dialog-clr);
+    border: var(--elem-border-width) solid var(--elem-border-clr);
+    border-radius: var(--tbl-border-radius);
+
+    padding: .2em;
 
     display: flex;
     flex-direction: column;
     overflow:hidden;
 
-    iframe.ui-dialog-content {
+    .t_titlebar {
+        background: var(--dialog-title-bg);
+        color: var(--dialog-title-clr);
+        cursor: move;
+        padding: .4em .5em .4em 1em;
+        position: relative;
+        border: var(--elem-border-width) solid var(--elem-border-clr);
+        border-radius: var(--tbl-border-radius);
+        font: var(--dialog-title-font);
+    }
+    .t_close {
+        float:right;
+        margin-left:.5em;
+        svg {
+            width:16px;
+            height:16px;
+        }
+    }
+    .t_content {
+        width: auto;
+        min-height: 2em;
+        max-height: none;
+        height: auto;
+        margin:0;
+        padding: .5em 1em;
+        overflow: auto;
+    }
+    iframe {
         padding:0;
         margin:0;
         height:100%;
+        width:100%;
         max-height:none;
-    }
-    #ypopupContent.ui-dialog-content {
-        margin:0;
-        padding: .5em 1em;
     }
 }
 
-.ui-widget-overlay.ui-front {
+#ypopupOverlay {
     z-index:2001 !important;
+    background: var(--overlay-bg);
+    opacity: var(--overlay-opacity);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 
 body.yPopup {
     padding: .5em 1em;
     height:100%;
-
 }
+
 body.yPopup,
 #ypopup.yPopupDyn {
     .yPane .yModule {

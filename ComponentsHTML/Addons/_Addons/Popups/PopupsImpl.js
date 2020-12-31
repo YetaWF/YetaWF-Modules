@@ -27,7 +27,7 @@ var YetaWF_ComponentsHTML;
             // with unified page sets there may actually not be a parent, but window.parent returns itself in this case anyway
             var win = window.parent;
             var popup = win.document.YPopupWindowActive;
-            var overlay = $YetaWF.getElement1BySelectorCond(".ui-widget-overlay.ui-front", [win.document.body]);
+            var overlay = $YetaWF.getElementByIdCond("ypopupOverlay");
             if (overlay)
                 overlay.remove();
             win.document.body.style.overflow = "";
@@ -47,14 +47,11 @@ var YetaWF_ComponentsHTML;
         PopupsImpl.prototype.openDynamicPopup = function (result, done) {
             // we're already in a popup
             PopupsImpl.internalClosePopup();
-            var popup = $YetaWF.createElement("div", { id: PopupsImpl.POPUPID, tabindex: "-1", role: "dialog", class: "yPopupDyn ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-dialog-buttons ui-draggable", "aria-describedby": "ypopupContent", "aria-labelledby": "ypopupTitle", style: "display:none" },
-                $YetaWF.createElement("div", { class: "ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix ui-draggable-handle" },
-                    $YetaWF.createElement("span", { id: "ypopupTitle", class: "ui-dialog-title" }, result.PageTitle),
-                    $YetaWF.createElement("button", { type: "button", class: "ui-button ui-corner-all ui-widget ui-button-icon-only ui-dialog-titlebar-close" },
-                        $YetaWF.createElement("span", { class: "ui-button-icon ui-icon ui-icon-closethick" }),
-                        $YetaWF.createElement("span", { class: "ui-button-icon-space" }, " "),
-                        "Close")),
-                $YetaWF.createElement("div", { id: "ypopupContent", class: "ui-dialog-content ui-widget-content" }));
+            var popup = $YetaWF.createElement("div", { id: PopupsImpl.POPUPID, tabindex: "-1", role: "dialog", class: "yPopupDyn", "aria-describedby": "ypopupContent", "aria-labelledby": "ypopupTitle", style: "display:none" },
+                $YetaWF.createElement("div", { class: "t_titlebar" },
+                    $YetaWF.createElement("span", { id: "ypopupTitle", class: "t_title" }, result.PageTitle),
+                    $YetaWF.createElement("button", { type: "button", class: "y_buttonlite t_close" })),
+                $YetaWF.createElement("div", { id: "ypopupContent", class: "t_content" }));
             $YetaWF.elementAddClass(popup, YVolatile.Skin.PopupCss);
             // mark that a popup is active
             document.expando = true;
@@ -83,7 +80,9 @@ var YetaWF_ComponentsHTML;
             $YetaWF.setLoading(false);
             done(popup);
             // handle close button
-            var closeButton = $YetaWF.getElement1BySelector(".ui-dialog-titlebar button", [popup]);
+            var closeButton = $YetaWF.getElement1BySelector(".t_titlebar button", [popup]);
+            // icon used fas-multiply
+            closeButton.innerHTML = "<svg aria-hidden='true' focusable='false' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 352 512'><path fill='currentColor' d='M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z'></path></svg>";
             $YetaWF.registerEventHandler(closeButton, "click", null, function (ev) {
                 PopupsImpl.internalClosePopup();
                 return false;
@@ -97,7 +96,7 @@ var YetaWF_ComponentsHTML;
             });
         };
         PopupsImpl.addOverlay = function () {
-            var overlay = $YetaWF.createElement("div", { class: "ui-widget-overlay ui-front" });
+            var overlay = $YetaWF.createElement("div", { id: "ypopupOverlay" });
             document.body.appendChild(overlay);
         };
         PopupsImpl.reposition = function () {
@@ -168,7 +167,7 @@ var YetaWF_ComponentsHTML;
             var popup = win.document.YPopupWindowActive;
             if (!popup)
                 return;
-            $YetaWF.registerEventHandler(popup, "mousedown", ".ui-dialog-titlebar", function (ev) {
+            $YetaWF.registerEventHandler(popup, "mousedown", ".t_titlebar", function (ev) {
                 var drect = popup.getBoundingClientRect();
                 win.document.YPopupXOffset = ev.clientX - drect.left;
                 win.document.YPopupYOffset = ev.clientY - drect.top;
@@ -195,14 +194,11 @@ var YetaWF_ComponentsHTML;
                     PopupsImpl.internalClosePopup();
                 }
             }
-            var popup = $YetaWF.createElement("div", { id: PopupsImpl.POPUPID, tabindex: "-1", role: "dialog", class: "yPopup ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-dialog-buttons ui-draggable", "aria-labelledby": "ypopupTitle", style: "display:none" },
-                $YetaWF.createElement("div", { class: "ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix ui-draggable-handle" },
-                    $YetaWF.createElement("span", { id: "ypopupTitle", class: "ui-dialog-title" }, "..."),
-                    $YetaWF.createElement("button", { type: "button", class: "ui-button ui-corner-all ui-widget ui-button-icon-only ui-dialog-titlebar-close" },
-                        $YetaWF.createElement("span", { class: "ui-button-icon ui-icon ui-icon-closethick" }),
-                        $YetaWF.createElement("span", { class: "ui-button-icon-space" }, " "),
-                        "Close")),
-                $YetaWF.createElement("iframe", { title: "(???)", frameborder: "0", class: "ui-dialog-content ui-widget-content" }));
+            var popup = $YetaWF.createElement("div", { id: PopupsImpl.POPUPID, tabindex: "-1", role: "dialog", class: "yPopup", "aria-labelledby": "ypopupTitle", style: "display:none" },
+                $YetaWF.createElement("div", { class: "t_titlebar" },
+                    $YetaWF.createElement("span", { id: "ypopupTitle", class: "t_title" }, "..."),
+                    $YetaWF.createElement("button", { type: "button", class: "y_buttonlite t_close" })),
+                $YetaWF.createElement("iframe", { title: "(???)", frameborder: "0" }));
             // mark that a popup is active
             document.expando = true;
             document.YPopupWindowActive = popup;
@@ -226,7 +222,8 @@ var YetaWF_ComponentsHTML;
             PopupsImpl.reposition();
             PopupsImpl.setupDragDrop();
             // handle close button
-            var closeButton = $YetaWF.getElement1BySelector(".ui-dialog-titlebar button", [popup]);
+            var closeButton = $YetaWF.getElement1BySelector(".t_titlebar button", [popup]);
+            closeButton.innerHTML = "<svg aria-hidden='true' focusable='false' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 352 512'><path fill='currentColor' d='M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z'></path></svg>";
             $YetaWF.registerEventHandler(closeButton, "click", null, function (ev) {
                 PopupsImpl.internalClosePopup();
                 return false;
@@ -270,7 +267,7 @@ var YetaWF_ComponentsHTML;
                     clientX += drect.left;
                     clientY += drect.top;
                     // adjust clientY for title
-                    var title = $YetaWF.getElement1BySelector(".ui-dialog-titlebar", [popup]);
+                    var title = $YetaWF.getElement1BySelector(".t_titlebar", [popup]);
                     clientY += title.clientHeight;
                 }
                 var left = clientX - win.document.YPopupXOffset;

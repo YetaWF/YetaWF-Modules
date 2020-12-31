@@ -39,15 +39,15 @@ i.yic {
 /* tooltip */
 
 .yTooltip {
-    background: #FFF;
-    color: #555;
+    background: var(--tt-bg);
+    color: var(--tt-clr);
+    font:var(--tt-font);
 
-    border-radius:4px;
-    border: solid 1px silver;
+    border: var(--tt-border-width) solid var(--tt-border-clr);
+    border-radius:var(--tt-border-radius);
+    box-shadow: var(--tt-shadow);
+
     padding: 8px 10px;
-    font-size:12px;
-
-    box-shadow: 5px 5px lightgray;
 
     position: absolute;
     max-width:300px;
@@ -74,21 +74,6 @@ i.yic {
 
 /* Toast */
 
-$infocolor: #555;
-$infobgcolor: #9bef9f;
-$infoshadow: #aaa;
-$infoline: #ddd;
-
-$warncolor: rgb(49, 46, 46);
-$warnbgcolor: orange;
-$warnshadow: #aaa;
-$warnline: #ddd;
-
-$errorcolor: white;
-$errorbgcolor: red;
-$errorshadow: #aaa;
-$errorline: #ddd;
-
 #ytoast {
     z-index:4001; // keep above overlay and all popups
     position:fixed;
@@ -96,55 +81,58 @@ $errorline: #ddd;
     width:300px;
     margin-bottom:0;
     padding-bottom:0;
+
     @media (min-width: 500px) {
         width:400px;
         padding-bottom:2em;
     }
+
     overflow: hidden;
     .t_entry {
         position:relative;
-        border: 1px solid rgba(0,0,0,.1);
+        border: var(--tst-border);
         margin:1ch;
         padding:1ch;
-        border-radius:5px;
-        &.t_info .t_title {
-            border-bottom: 1px solid $infoline;
-        }
-        &.t_error .t_title {
-            border-bottom: 1px solid $errorline;
-        }
-        &.t_warning .t_title {
-            border-bottom: 1px solid $warnline;
-        }
+        border-radius:var(--tst-border-radius);
         .t_title {
+            font: var(--tst-title-font);
             margin-bottom: .5em;
-            font-weight:bold;
-        }
-        &.t_info {
-            color: $infocolor;
-            background-color: $infobgcolor;
-            box-shadow: 0px 0px 5px 0px $infoshadow;
-        }
-        &.t_error {
-            color: $errorcolor;
-            background-color: $errorbgcolor;
-            box-shadow: 0px 0px 5px 0px $errorshadow;
-        }
-        &.t_warning {
-            color: $warncolor;
-            background-color: $warnbgcolor;
-            box-shadow: 0px 0px 5px 0px $warnshadow;
         }
         .t_message {
-            font-weight:500;
+            font: var(--tst-msg-font);
+        }
+        &.t_info {
+            color: var(--tst-info-clr);
+            background: var(--tst-info-bg);
+            box-shadow: var(--tst-info-shadow);
+            .t_title {
+                border-bottom: var(--tst-info-line);
+            }
+        }
+        &.t_error {
+            color: var(--tst-error-clr);
+            background: var(--tst-error-bg);
+            box-shadow: var(--tst-error-shadow);
+            .t_title {
+                border-bottom: var(--tst-error-line);
+            }
+        }
+        &.t_warning {
+            color: var(--tst-warn-clr);
+            background: var(--tst-warn-bg);
+            box-shadow: var(--tst-warn-shadow);
+            .t_title {
+                border-bottom: var(--tst-warn-line);
+            }
         }
         .t_close {
-            width: 16px;
-            height: 16px;
+            svg {
+                width: 12px;
+                height: 12px;
+            }
             position: absolute;
-            top: 5px;
+            top: 0px;
             right: 5px;
-            background-image:url(images/Close.png)
         }
     }
     &.t_right {
@@ -165,7 +153,7 @@ $errorline: #ddd;
 }
 
 /* Print */
-
+//TODO: MOVE
 @media print {
     .cke .cke_top {
         display: none;

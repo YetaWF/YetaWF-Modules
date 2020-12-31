@@ -25,6 +25,9 @@ namespace YetaWF_ComponentsHTML {
         public static readonly ToastDivSelector: string = "#ytoast";
         public static readonly DefaultTimeout:number = 7000;
 
+        // icon used fas-multiply
+        private static CloseSVG: string = "<svg aria-hidden='true' focusable='false' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 352 512'><path fill='currentColor' d='M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z'></path></svg>";
+
         ToastDiv: HTMLDivElement|null = null;
 
         // PAGE INITIALIZATION
@@ -362,7 +365,7 @@ namespace YetaWF_ComponentsHTML {
             if (title)
                 html += `<div class='t_title'>${$YetaWF.htmlEscape(title)}</div>`;
             if (options.canClose)
-                html += "<div class='t_close' aria-label='Close'></div>";
+                html += `<div class='t_close' aria-label='Close'>${BasicsImpl.CloseSVG}</div>`;
             if (message) {
                 if (!options.encoded) {
                     // change \n to <br/>

@@ -37,12 +37,11 @@
         min-height: 2em;
         max-height: none;
         height: auto;
-        padding: .5em 1em 0 1em;
+        padding: .5em 1em .5em 1em;
         overflow: auto;
     }
     .t_buttonpane {
-        margin-top: .5em;
-        padding: .5em 1em .5em .4em;
+        padding: .5em .5em .4em .5em;
         border-top: var(--elem-border-width) solid var(--dialog-line-clr);
     }
     .t_buttons {
