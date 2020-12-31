@@ -12,7 +12,6 @@ namespace YetaWF.Modules.ComponentsHTML {
 
         internal class ComponentsData {
             public bool KendoUIUsed { get; set; }
-            public bool JqueryUIUsed { get; set; }
         }
 
         internal static ComponentsData GetComponentsData() {
@@ -53,14 +52,6 @@ namespace YetaWF.Modules.ComponentsHTML {
             SkinAccess skinAccess = new SkinAccess();
             string skin;
 
-            // add jqueryui theme folder in case we need to dynamically load jqueryui from the client
-            // Find the jquery theme+
-            skin = Manager.CurrentPage.jQueryUISkin;
-            if (string.IsNullOrWhiteSpace(skin))
-                skin = Manager.CurrentSite.jQueryUISkin;
-            string jqueryUIFolder = await skinAccess.FindJQueryUISkinAsync(skin);
-            Manager.ScriptManager.AddVolatileOption(AreaRegistration.CurrentPackage.AreaName, "jqueryUITheme", jqueryUIFolder);
-
             // add kendoui theme folder in case we need to dynamically load kendoui from the client
             // Find the kendo theme
             skinAccess = new SkinAccess();
@@ -86,7 +77,6 @@ namespace YetaWF.Modules.ComponentsHTML {
         public async Task AddPopupsAddOnsAsync() {
             await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Popups");
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "Popups");
-            await JqueryUICore.UseAsync();//Css for popups
         }
     }
 }

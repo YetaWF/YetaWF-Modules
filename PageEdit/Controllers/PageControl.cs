@@ -193,11 +193,6 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [UIHint("String"), ReadOnly, SuppressEmpty]
             public string BootstrapSkinDescription { get; set; }
 
-            [Category("Skin"), Caption("Default jQuery UI Skin"), Description("The default skin for jQuery-UI elements (buttons, modal dialogs, etc.) - individual pages can override the default skin")]
-            [HelpLink("http://jqueryui.com/themeroller/")]
-            [UIHint("jQueryUISkin"), StringLength(SkinDefinition.MaxName), AdditionalMetadata("NoDefault", true), Trim]
-            public string jQueryUISkin { get; set; }
-
             [Category("Skin"), Caption("Default Kendo UI Skin"), Description("The default skin for Kendo UI elements (buttons, modal dialogs, etc.) - individual pages can override the default skin")]
             [HelpLink("http://demos.telerik.com/kendo-ui/themebuilder/")]
             [UIHint("KendoUISkin"), StringLength(SkinDefinition.MaxName), AdditionalMetadata("NoDefault", true), Trim]
@@ -309,7 +304,6 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 },
                 SkinSelectionModel = new SkinSelectionModel {
                     BootstrapSkin = Manager.CurrentSite.BootstrapSkin,
-                    jQueryUISkin = Manager.CurrentSite.jQueryUISkin,
                     KendoUISkin = Manager.CurrentSite.KendoUISkin,
                     BootstrapSkinDescription = (!Manager.SkinInfo.UsingBootstrap || !Manager.SkinInfo.UseDefaultBootstrap) ?
                         this.__ResStr("noBootswatch", "The current page skin does not support selecting a default Bootstrap skin. The skin does not support Bootswatch, which is required for skin selection.") :
@@ -413,7 +407,6 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             ObjectSupport.CopyData(Manager.CurrentSite, origSite);// make a copy of original site
             SiteDefinition site = Manager.CurrentSite;// update new settings
             site.BootstrapSkin = model.BootstrapSkin;
-            site.jQueryUISkin = model.jQueryUISkin;
             site.KendoUISkin = model.KendoUISkin;
             ObjectSupport.ModelDisposition modelDisp = ObjectSupport.EvaluateModelChanges(origSite, site);
             switch (modelDisp) {

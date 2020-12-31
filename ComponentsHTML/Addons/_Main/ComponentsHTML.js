@@ -12,23 +12,6 @@ var YetaWF_ComponentsHTML;
             // PropertyListVisible
             this.PropertyListVisibleHandlers = [];
         }
-        ComponentsHTML.prototype.MUSTHAVE_JQUERYUI = function () {
-            if (!YVolatile.YetaWF_ComponentsHTML.jqueryUI)
-                throw "jquery-ui is required but has not been loaded";
-        };
-        ComponentsHTML.prototype.REQUIRES_JQUERYUI = function (run) {
-            if (!YVolatile.YetaWF_ComponentsHTML.jqueryUI) {
-                YVolatile.YetaWF_ComponentsHTML.jqueryUI = true;
-                $YetaWF.ContentHandling.loadAddons([
-                    { AreaName: "YetaWF_ComponentsHTML", ShortName: "jqueryui-themes", Argument1: YVolatile.YetaWF_ComponentsHTML.jqueryUITheme }
-                ], function () {
-                    run();
-                });
-            }
-            else {
-                run();
-            }
-        };
         ComponentsHTML.prototype.MUSTHAVE_KENDOUI = function () {
             if (!YVolatile.YetaWF_ComponentsHTML.kendoUI)
                 throw "Kendo UI is required but has not been loaded";

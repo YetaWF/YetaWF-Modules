@@ -136,12 +136,6 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public int IntValue6 { get; set; }
 
-            [Category("Core"), Caption("jQueryUISkin"), Description("JQueryUISkin (Required)")]
-            [UIHint("jQueryUISkin"), AdditionalMetadata("NoDefault", false)]
-            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
-            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string JQueryUISkin { get; set; }
-
             [Category("Core"), Caption("KendoUISkin"), Description("KendoUISkin (Required)")]
             [UIHint("KendoUISkin"), AdditionalMetadata("NoDefault", false)]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]

@@ -113,10 +113,6 @@ namespace YetaWF.Modules.Pages.Controllers {
             [UIHint("PopupSkin"), ReadOnly]
             public SkinDefinition SelectedPopupSkin { get; set; }
 
-            [Caption("jquery UI Skin"), Description("The skin for jQuery-UI elements (buttons, modal dialogs, etc.) used on this page")]
-            [UIHint("jQueryUISkin"), ReadOnly]
-            public string jQueryUISkin { get; set; }
-
             [Caption("Kendo UI Skin"), Description("The skin for Kendo UI elements (buttons, modal dialogs, etc.) used on this page")]
             [UIHint("KendoUISkin"), ReadOnly]
             public string KendoUISkin { get; set; }

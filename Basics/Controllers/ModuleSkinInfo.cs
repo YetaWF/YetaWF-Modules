@@ -26,10 +26,6 @@ namespace YetaWF.Modules.Basics.Controllers {
             [UIHint("PopupSkin")]
             public SkinDefinition PageSelectedPopupSkin { get; set; }
 
-            [Caption("Page jQuery UI Skin"), Description("The page skin for jQuery-UI elements (buttons, modal dialogs, etc.)")]
-            [UIHint("jQueryUISkin")]
-            public string PagejQueryUISkin { get; set; }
-
             [Caption("Page Kendo UI Skin"), Description("The page skin for Kendo UI elements (buttons, modal dialogs, etc.)")]
             [UIHint("KendoUISkin")]
             public string PageKendoUISkin { get; set; }
@@ -45,10 +41,6 @@ namespace YetaWF.Modules.Basics.Controllers {
             [Caption("Site Default Bootstrap Skin"), Description("The default skin for overall page appearance and Bootstrap elements")]
             [UIHint("BootstrapSkin")]
             public string SiteBootstrapSkin { get; set; }
-
-            [Caption("Site Default jQuery UI Skin"), Description("The default skin for jQuery-UI elements (buttons, modal dialogs, etc.)")]
-            [UIHint("jQueryUISkin")]
-            public string SitejQueryUISkin { get; set; }
 
             [Caption("Site Default Kendo UI Skin"), Description("The default skin for Kendo UI elements (buttons, modal dialogs, etc.)")]
             [UIHint("KendoUISkin")]
@@ -79,11 +71,9 @@ namespace YetaWF.Modules.Basics.Controllers {
             model.SiteSelectedSkin = Manager.CurrentSite.SelectedSkin;
             model.SiteSelectedPopupSkin = Manager.CurrentSite.SelectedPopupSkin;
             model.SiteBootstrapSkin = Manager.CurrentSite.BootstrapSkin;
-            model.SitejQueryUISkin = Manager.CurrentSite.jQueryUISkin;
             model.SiteKendoUISkin = Manager.CurrentSite.KendoUISkin;
             model.PageSelectedSkin = Manager.CurrentPage.SelectedSkin;
             model.PageSelectedPopupSkin = Manager.CurrentPage.SelectedPopupSkin;
-            model.PagejQueryUISkin = Manager.CurrentPage.jQueryUISkin;
             model.PageKendoUISkin = Manager.CurrentPage.KendoUISkin;
             model.Characters = "<span class='t_chars'>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<br/>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</span>";
             return View(model);

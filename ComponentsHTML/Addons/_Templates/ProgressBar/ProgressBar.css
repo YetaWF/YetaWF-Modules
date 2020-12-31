@@ -1,0 +1,12 @@
+@charset "UTF-8";
+/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+.yt_progressbar.t_display {
+  background: var(--pbar-bg);
+  border: var(--elem-border-width) solid var(--elem-border-clr);
+  border-radius: var(--elem-border-radius);
+  height: 2em;
+  overflow: hidden; }
+  .yt_progressbar.t_display .t_value {
+    margin: -1px;
+    height: 100%;
+    background: var(--pbar-value-bg); }

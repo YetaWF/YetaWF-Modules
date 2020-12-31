@@ -5,9 +5,6 @@
   overflow: auto;
   border: 1px solid lightgray;
   border-radius: 3px; }
-  .YetaWF_Menus_MenuEdit .t_treeview .ui-widget.ui-widget-content,
-  .YetaWF_Menus_MenuEdit .t_treeview .ui-widget-content {
-    border: none; }
 
 .YetaWF_Menus_MenuEdit .t_view {
   /*float: left;*/

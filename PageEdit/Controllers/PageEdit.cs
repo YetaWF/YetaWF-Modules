@@ -157,10 +157,6 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [UIHint("PageSelection"), Trim]
             public Guid? TemplateGuid { get; set; }
 
-            [Category("Skin"), Caption("jQuery UI Skin"), Description("The skin for jQuery-UI elements (buttons, modal dialogs, etc.) used on this page")]
-            [UIHint("jQueryUISkin"), StringLength(PageDefinition.MaxjQueryUISkin), Trim]
-            public string jQueryUISkin { get; set; }
-
             [Category("Skin"), Caption("Kendo UI Skin"), Description("The skin for Kendo UI elements (buttons, modal dialogs, etc.) used on this page")]
             [UIHint("KendoUISkin"), StringLength(PageDefinition.MaxKendoUISkin), Trim]
             public string KendoUISkin { get; set; }

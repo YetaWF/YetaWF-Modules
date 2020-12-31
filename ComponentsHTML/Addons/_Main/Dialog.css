@@ -2,12 +2,49 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 #yDialogContainer {
   position: fixed;
-  z-index: 3001 !important; }
-  #yDialogContainer #yAlert {
+  z-index: 3001 !important;
+  font: var(--body-font);
+  background: var(--dialog-bg);
+  color: var(--dialog-clr);
+  border: var(--elem-border-width) solid var(--elem-border-clr);
+  border-radius: var(--tbl-border-radius);
+  width: 400px;
+  padding: .2em; }
+  #yDialogContainer .t_titlebar {
+    background: var(--dialog-title-bg);
+    color: var(--dialog-title-clr);
+    cursor: move;
+    padding: .4em .5em .4em 1em;
+    position: relative;
+    border: var(--elem-border-width) solid var(--elem-border-clr);
+    border-radius: var(--tbl-border-radius);
+    font: var(--dialog-title-font); }
+  #yDialogContainer .t_close {
+    float: right;
+    margin-left: .5em; }
+    #yDialogContainer .t_close svg {
+      width: 16px;
+      height: 16px; }
+  #yDialogContainer .t_content {
     width: auto;
     min-height: 2em;
     max-height: none;
-    height: auto; }
+    height: auto;
+    padding: .5em 1em 0 1em;
+    overflow: auto; }
+  #yDialogContainer .t_buttonpane {
+    margin-top: .5em;
+    padding: .5em 1em .5em .4em;
+    border-top: var(--elem-border-width) solid var(--dialog-line-clr); }
+  #yDialogContainer .t_buttons {
+    text-align: right; }
 
-.ui-widget-overlay.ui-front {
-  z-index: 2001 !important; }
+#yDialogOverlay {
+  z-index: 2001 !important;
+  background: var(--overlay-bg);
+  opacity: var(--overlay-opacity);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; }

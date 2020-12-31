@@ -3,7 +3,7 @@
 namespace YetaWF_ComponentsHTML {
 
     /**
-     * Implements a stand-alone tooltip so we don't need jqueryui/bootstrap
+     * Implements a stand-alone tooltip.
      */
     export class Tooltips {
 
@@ -25,9 +25,9 @@ namespace YetaWF_ComponentsHTML {
             const noTTISel = this.buildNoTT("i", noTooltips);
             const a2 = YConfigs.Basics.CssTooltip;
             const a3 = YConfigs.Basics.CssTooltipSpan;
-            const ttMisc = `.ui-jqgrid span[${a2}],th[${a2}],span[${a3}],li[${a2}],div[${a2}]`;
+            const ttMisc = `th[${a2}],span[${a3}],li[${a2}],div[${a2}]`;
 
-            const selectors = `label,input:not(.ui-button-disabled),a:not(.ui-button-disabled),button:not(.ui-button-disabled),${noTTImgSel},${noTTASel},${noTTISel},${ttMisc}`;
+            const selectors = `label,input,a,button,${noTTImgSel},${noTTASel},${noTTISel},${ttMisc}`;
 
             $YetaWF.registerMultipleEventHandlersBody(["mouseover", "click"], `${selectors}`, (ev: Event): boolean => {
 

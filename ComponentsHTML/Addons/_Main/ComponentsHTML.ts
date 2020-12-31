@@ -10,8 +10,6 @@ namespace YetaWF {
 }
 namespace YetaWF_ComponentsHTML {
     export interface IPackageVolatiles {
-        jqueryUI: boolean; // defines whether the jqueryui theme has been loaded
-        jqueryUITheme: string; // the theme in use
         kendoUI: boolean; // defines whether kendoui has been loaded
         kendoUITheme: string; // the theme in use
     }
@@ -35,27 +33,6 @@ namespace YetaWF_ComponentsHTML {
         // Loader
         // Loader
         // Loader
-
-        public MUSTHAVE_JQUERYUI(): void {
-            if (!YVolatile.YetaWF_ComponentsHTML.jqueryUI)
-                throw "jquery-ui is required but has not been loaded";
-        }
-
-        public REQUIRES_JQUERYUI(run: () => void): void {
-
-            if (!YVolatile.YetaWF_ComponentsHTML.jqueryUI) {
-
-                YVolatile.YetaWF_ComponentsHTML.jqueryUI = true;
-
-                $YetaWF.ContentHandling.loadAddons([
-                    { AreaName: "YetaWF_ComponentsHTML", ShortName: "jqueryui-themes", Argument1: YVolatile.YetaWF_ComponentsHTML.jqueryUITheme }
-                ], (): void => {
-                    run();
-                });
-            } else {
-                run();
-            }
-        }
 
         public MUSTHAVE_KENDOUI(): void {
             if (!YVolatile.YetaWF_ComponentsHTML.kendoUI)
