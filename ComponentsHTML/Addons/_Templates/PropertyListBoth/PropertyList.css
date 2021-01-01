@@ -36,6 +36,17 @@
   .yt_propertylist .yt_email.t_edit {
     max-width: 100%; }
 
+.yt_propertylist.t_tabbed {
+  box-shadow: var(--tbl-shadow); }
+
+/* Header/Footer */
+.y_header {
+  padding-bottom: .8ch; }
+
+.y_footer {
+  padding-top: .8ch;
+  padding-bottom: .8ch; }
+
 .yCondense .yt_propertylist .t_labels {
   float: none;
   width: auto;
@@ -77,9 +88,9 @@
     position: absolute;
     top: -12px;
     left: 20px;
-    background-color: lightgray;
-    color: black;
-    border-radius: 3px;
+    background-color: var(--elem-border-clr);
+    color: --elem-clr;
+    border-radius: --elem-border-radius;
     padding: 0 3px; }
 
 .yt_propertylist.t_boxed .t_proptablehidden,
@@ -89,8 +100,8 @@
 .yt_propertylist.t_boxed .t_proptable,
 .yt_propertylist.t_boxedcat .t_proptable {
   position: relative;
-  border: 1px solid lightgray;
-  border-radius: 5px;
+  border: var(--elem-border-width) solid var(--elem-border-clr);
+  border-radius: var(--elem-border-radius);
   padding: 3ch 2ch 2ch 2ch;
   margin-bottom: 2ch;
   margin-right: 0; }
@@ -133,7 +144,7 @@
 .yt_propertylist.t_boxed.t_col3 .t_proptable,
 .yt_propertylist.t_boxedcat.t_col3 .t_proptable {
   float: left;
-  width: 31%; }
+  width: 32%; }
 
 .yt_propertylist.t_boxed.t_col4 .t_proptable,
 .yt_propertylist.t_boxedcat.t_col4 .t_proptable {
@@ -143,4 +154,4 @@
 .yt_propertylist.t_boxed.t_col5 .t_proptable,
 .yt_propertylist.t_boxedcat.t_col5 .t_proptable {
   float: left;
-  width: 18%; }
+  width: 19%; }

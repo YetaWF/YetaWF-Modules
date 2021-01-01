@@ -3,12 +3,13 @@
 /* PANE TAG */
 .yPaneTag {
   position: absolute;
-  top: -10px;
-  left: 0px;
-  color: #555;
-  background-color: silver;
-  font-size: 9px;
-  z-index: 1; }
+  z-index: 1;
+  top: -.7em;
+  left: .5em;
+  font-size: .7em;
+  background: var(--elem-border-clr);
+  color: var(--elem-clr);
+  padding: 0 0.2em; }
 
 .YetaWF_PageEdit_EditMode {
   position: absolute;
@@ -23,13 +24,13 @@
       padding: 4px 4px; }
 
 .yModule-current {
-  background-color: silver; }
+  background: var(--elem-border-clr); }
 
 .yModuleMenuEditIcon {
   position: absolute;
+  z-index: 1500;
   left: 0;
   top: 0;
-  z-index: 1500;
   text-align: left;
   /* in case module has a different default */ }
   .yModuleMenuEditIcon .yModuleMenuContainer ul.yModuleMenu {

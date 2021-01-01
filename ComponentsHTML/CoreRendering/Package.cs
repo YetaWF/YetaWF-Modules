@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
-using YetaWF.Modules.ComponentsHTML.Components;
 
 namespace YetaWF.Modules.ComponentsHTML {
 
@@ -37,8 +36,8 @@ namespace YetaWF.Modules.ComponentsHTML {
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "necolas.github.io.normalize");
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "jquery");
 
-            await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Basics");
             await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Icons");
+            await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Basics");
 
             if (Manager.IsInPopup)
                 await AddPopupsAddOnsAsync();
@@ -49,13 +48,10 @@ namespace YetaWF.Modules.ComponentsHTML {
         /// Adds any skin-specific addons for the current page that are required by the package rendering components and views.
         /// </summary>
         public async Task AddSkinAddOnsAsync() {
-            SkinAccess skinAccess = new SkinAccess();
-            string skin;
-
             // add kendoui theme folder in case we need to dynamically load kendoui from the client
             // Find the kendo theme
-            skinAccess = new SkinAccess();
-            skin = Manager.CurrentPage.KendoUISkin;
+            SkinAccess skinAccess = new SkinAccess();
+            string skin = Manager.CurrentPage.KendoUISkin;
             if (string.IsNullOrWhiteSpace(skin))
                 skin = Manager.CurrentSite.KendoUISkin;
             string kendoUITheme = await skinAccess.FindKendoUISkinAsync(skin);

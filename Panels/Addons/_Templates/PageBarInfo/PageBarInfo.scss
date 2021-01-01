@@ -52,10 +52,28 @@ $large-screen: 1500px;
         }
     }
     .t_area {
-        padding: 10px 20px 10px 20px;
+        padding: .7em 1.3em .7em 1.3em;
         width:100%;
+        h1 {
+            font-size:var(--bar-h1-height);
+            margin:0;
+            padding:0;
+            padding-bottom:var(--bar-h1-padding-bottom)
+        }
     }
 }
+
+
+/* Wide Content */
+
+.widecontentfill {
+    .yt_panels_pagebarinfo {
+        .t_area .yModule {
+            margin-bottom:.8em;
+        }
+    }
+}
+
 
 @media (min-width: $small-screen) {
 
@@ -81,7 +99,7 @@ $large-screen: 1500px;
             }
             .t_area {
                 flex:1;
-                padding: 10px 20px 10px 20px;
+                padding: .7em 1.3em .7em 1.3em;
                 overflow:hidden;
                 overflow-y:auto;
             }

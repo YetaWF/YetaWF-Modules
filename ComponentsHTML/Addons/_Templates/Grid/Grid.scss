@@ -112,20 +112,20 @@ $smbuttonhorzmargin: 2px;
                     /* highlighted row (with bool __highlight property) */
                     &.tg_highlight td,
                     &.tg_highlight.tg_lowlight td {
-                        background-color: var(--tbl-bg-highlight);
+                        background: var(--tbl-bg-highlight);
                         color: var(--tbl-clr-highlight);
                     }
                     /* lowlighted row (with bool __lowlight property) */
                     &.tg_lowlight td {
-                        background-color: var(--tbl-bg-lowlight);
+                        background: var(--tbl-bg-lowlight);
                         color: var(--tbl-clr-lowlight);
                     }
                     &.tg_selecthighlight td {
-                        background-color: var(--tbl-bg-active);
+                        background: var(--tbl-bg-active);
                         color: var(--tbl-clr-active);
                     }
                     &:hover {
-                        background-color: var(--tbl-bg-hover);
+                        background: var(--tbl-bg-hover);
                         color: var(--tbl-clr-hover);
                     }
                 }
@@ -185,7 +185,7 @@ $smbuttonhorzmargin: 2px;
         .t_text {
             margin:auto;
             width:25ch;
-            background-color:white;
+            background:white;
             color:black;
             text-align:center;
             border-radius:10px;
@@ -214,6 +214,7 @@ $smbuttonhorzmargin: 2px;
     color: var(--tbl-header-clr);
     border: var(--tbl-border-width) solid var(--tbl-border-clr);
     border-radius: var(--tbl-border-radius);
+    box-shadow: var(--tbl-shadow);
     .tg_table {
         table {
             border-collapse:collapse;

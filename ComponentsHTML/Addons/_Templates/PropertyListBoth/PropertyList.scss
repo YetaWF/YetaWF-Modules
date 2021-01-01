@@ -58,6 +58,20 @@
     }
 }
 
+.yt_propertylist.t_tabbed {
+    box-shadow: var(--tbl-shadow);
+}
+
+/* Header/Footer */
+.y_header {
+    padding-bottom: .8ch;
+}
+.y_footer {
+    padding-top: .8ch;
+    padding-bottom: .8ch;
+}
+
+
 .yCondense {
     // definitions for small screen
     .yt_propertylist {
@@ -115,9 +129,9 @@
             position: absolute;
             top:-12px;
             left:20px;
-            background-color:lightgray;
-            color: black;
-            border-radius:3px;
+            background-color: var(--elem-border-clr);
+            color:--elem-clr;
+            border-radius:--elem-border-radius;
             padding:0 3px;
         }
     }
@@ -129,8 +143,8 @@
     }
     .t_proptable {
         position:relative;
-        border: 1px solid lightgray;
-        border-radius:5px;
+        border:  var(--elem-border-width) solid var(--elem-border-clr);
+        border-radius: var(--elem-border-radius);
         padding:3ch 2ch 2ch 2ch;
         margin-bottom:2ch;
         margin-right:0;
@@ -178,7 +192,7 @@
     }
     &.t_col3 .t_proptable {
         float:left;
-        width:31%;
+        width:32%;
     }
     &.t_col4 .t_proptable {
         float:left;
@@ -186,6 +200,6 @@
     }
     &.t_col5 .t_proptable {
         float:left;
-        width:18%;
+        width:19%;
     }
 }

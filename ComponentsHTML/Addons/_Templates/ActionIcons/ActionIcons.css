@@ -37,7 +37,7 @@ ul.yGridActionMenu {
     margin-right: 1ch; }
     .yModuleLinks .yaction-link i, .yModuleLinks .yaction-link img {
       /* a bit of extra space around the image in a module action link */
-      margin-right: .5ch; }
+      margin-right: .4ch; }
 
 /* Module title */
 .yModuleTitle h1 {

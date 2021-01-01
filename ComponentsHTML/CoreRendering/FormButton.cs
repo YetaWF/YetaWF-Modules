@@ -69,7 +69,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             if (!string.IsNullOrWhiteSpace(formButton.Id))
                 id = $" id='{formButton.Id}'";
 
-            css = CssManager.CombineCss(css, "y_button");
+            css = CssManager.CombineCss(css, "y_buttonform");
             return $@"<input{id}{HtmlBuilder.GetClassAttribute(attrs, css)} value='{Utility.HAE(text)}'{HtmlBuilder.Attributes(attrs)}>";
         }
     }

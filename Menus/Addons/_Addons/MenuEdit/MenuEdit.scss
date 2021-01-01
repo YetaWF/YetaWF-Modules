@@ -1,27 +1,27 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
 
-.YetaWF_Menus_MenuEdit  {
+// should be used on widecontent page and is not really well suited for mobile
 
-    .t_treeview {
-        height:20em;
-        overflow: auto;
-        border: 1px solid lightgray;
-        border-radius: 3px;
-    }
-
+.YetaWF_Menus_MenuEdit {
     .t_view {
-        /*float: left;*/
-        /*margin-right: 2ch;*/
-        margin-bottom:1em;
+        float:left;
+        width:29%;
+        margin-right:1%;
+        .t_treeview {
+            height:50em;
+            .yt_tree {
+                overflow: auto;
+            }
+        }
     }
     .t_details {
-        /*float: left;*/
-        /*margin-right: 2ch;*/
-        margin-bottom:2em;
+        float:left;
+        width:69%;
+        max-width:100%;
+        font-size:smaller;
     }
     .t_details .t_row.t_needsmodulecontext {
         /* Hide "Needs Module Context" for now as that is not customizable */
         display:none;
     }
 }
-
