@@ -12,7 +12,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
-using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Pages.Controllers;
@@ -144,10 +143,6 @@ namespace YetaWF.Modules.Pages.Components {
             [Caption("Title"), Description("The page title which will appear as title in the browser window")]
             [UIHint("MultiString"), ReadOnly]
             public MultiString Title { get; set; }
-
-            [Caption("Page Skin"), Description("The skin used to display the page")]
-            [UIHint("PageSkin"), ReadOnly]
-            public SkinDefinition SelectedSkin { get; set; }
 
             public AllEntry(PageDefinition page) {
                 ObjectSupport.CopyData(page, this);

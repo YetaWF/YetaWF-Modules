@@ -259,15 +259,6 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 if (skinparts.Length != 4)
                     throw TemplateError("Invalid skin format");
 
-                page.SelectedSkin.Collection = skinparts[0].Trim();
-                if (page.SelectedSkin.Collection == "-")
-                    page.SelectedSkin.Collection = null;
-                page.SelectedSkin.FileName = skinparts[1].Trim();
-                page.SelectedPopupSkin.Collection = skinparts[2].Trim();
-                if (page.SelectedPopupSkin.Collection == "-")
-                    page.SelectedPopupSkin.Collection = null;
-                page.SelectedPopupSkin.FileName = skinparts[3].Trim();
-
                 SerializableList<PageDefinition.AllowedRole> roles = new SerializableList<PageDefinition.AllowedRole>();
                 switch (user) {
                     case "Administrator":

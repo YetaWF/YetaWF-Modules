@@ -51,10 +51,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             // add kendoui theme folder in case we need to dynamically load kendoui from the client
             // Find the kendo theme
             SkinAccess skinAccess = new SkinAccess();
-            string skin = Manager.CurrentPage.KendoUISkin;
-            if (string.IsNullOrWhiteSpace(skin))
-                skin = Manager.CurrentSite.KendoUISkin;
-            string kendoUITheme = await skinAccess.FindKendoUISkinAsync(skin);
+            string kendoUITheme = await skinAccess.FindKendoUISkinAsync(Manager.CurrentSite.KendoUISkin);
             Manager.ScriptManager.AddVolatileOption(AreaRegistration.CurrentPackage.AreaName, "kendoUITheme", kendoUITheme);
         }
 

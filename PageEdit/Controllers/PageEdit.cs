@@ -13,16 +13,11 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Site;
-using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Core.Components;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Identity;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.PageEdit.Controllers {
 
@@ -145,21 +140,9 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [UIHint("ReferencedModules")]
             public SerializableList<ModuleDefinition.ReferencedModule> ReferencedModules { get; set; }
 
-            [Category("Skin"), Caption("Page Skin"), Description("The skin used to display the page")]
-            [UIHint("PageSkin"), Trim]
-            public SkinDefinition SelectedSkin { get; set; }
-
-            [Category("Skin"), Caption("Popup Skin"), Description("The skin used when the page is displayed in a popup window")]
-            [UIHint("PopupSkin"), Trim]
-            public SkinDefinition SelectedPopupSkin { get; set; }
-
             [Category("Skin"), Caption("Template"), Description("The local designed page used as a template for this page - All modules from the template are copied and rendered on this page in their defined pane - Modules in panes that are not available are not shown - Any page can be used as a template")]
             [UIHint("PageSelection"), Trim]
             public Guid? TemplateGuid { get; set; }
-
-            [Category("Skin"), Caption("Kendo UI Skin"), Description("The skin for Kendo UI elements (buttons, modal dialogs, etc.) used on this page")]
-            [UIHint("KendoUISkin"), StringLength(PageDefinition.MaxKendoUISkin), Trim]
-            public string KendoUISkin { get; set; }
 
             [Category("Skin"), Caption("CSS Class"), Description("The optional CSS classes to be added to the page's <body> tag for further customization through stylesheets")]
             [UIHint("Text40"), StringLength(PageDefinition.MaxCssClass), CssClassesValidationAttribute, Trim]

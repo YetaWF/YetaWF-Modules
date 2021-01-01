@@ -105,18 +105,6 @@ namespace YetaWF.Modules.Pages.Controllers {
             [UIHint("DateTime"), ReadOnly]
             public DateTime Updated { get; set; }
 
-            [Caption("Page Skin"), Description("The skin used to display the page")]
-            [UIHint("PageSkin"), ReadOnly]
-            public SkinDefinition SelectedSkin { get; set; }
-
-            [Caption("Popup Skin"), Description("The skin used when the page is displayed in a popup window")]
-            [UIHint("PopupSkin"), ReadOnly]
-            public SkinDefinition SelectedPopupSkin { get; set; }
-
-            [Caption("Kendo UI Skin"), Description("The skin for Kendo UI elements (buttons, modal dialogs, etc.) used on this page")]
-            [UIHint("KendoUISkin"), ReadOnly]
-            public string KendoUISkin { get; set; }
-
             [Description("The optional CSS classes to be added to the page's <body> tag for further customization through stylesheets")]
             [UIHint("String"), ReadOnly]
             public string CssClass { get; set; }

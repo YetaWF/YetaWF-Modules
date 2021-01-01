@@ -27,10 +27,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 // Find Kendo UI theme
                 SkinAccess skinAccess = new SkinAccess();
-                string skin = Manager.CurrentPage.KendoUISkin;
-                if (string.IsNullOrWhiteSpace(skin))
-                    skin = Manager.CurrentSite.KendoUISkin;
-                string kendoUITheme = await skinAccess.FindKendoUISkinAsync(skin);
+                string kendoUITheme = await skinAccess.FindKendoUISkinAsync(Manager.CurrentSite.KendoUISkin);
                 await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.AreaName, "telerik.com.Kendo_UI_Core", kendoUITheme);
 
                 Manager.ScriptManager.AddVolatileOption(AreaRegistration.CurrentPackage.AreaName, "kendoUI", true, Replace: true);

@@ -4,11 +4,7 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Basics.Controllers {
 
@@ -18,31 +14,19 @@ namespace YetaWF.Modules.Basics.Controllers {
 
         public class DisplayModel {
 
-            [Caption("Page Skin"), Description("The skin used to for the current page")]
-            [UIHint("PageSkin")]
-            public SkinDefinition PageSelectedSkin { get; set; }
-
-            [Caption("Page Popup Skin"), Description("The skin used for the current page in a popup window")]
-            [UIHint("PopupSkin")]
-            public SkinDefinition PageSelectedPopupSkin { get; set; }
-
-            [Caption("Page Kendo UI Skin"), Description("The page skin for Kendo UI elements (buttons, modal dialogs, etc.)")]
-            [UIHint("KendoUISkin")]
-            public string PageKendoUISkin { get; set; }
-
-            [Caption("Site Default Page Skin"), Description("The default skin used for pages")]
+            [Caption("Site Defined Page Skin"), Description("The skin used for all pages")]
             [UIHint("PageSkin")]
             public SkinDefinition SiteSelectedSkin { get; set; }
 
-            [Caption("Site Default Popup Skin"), Description("The default skin used in a popup window")]
+            [Caption("Site Defined Popup Skin"), Description("The skin used in popup windows")]
             [UIHint("PopupSkin")]
             public SkinDefinition SiteSelectedPopupSkin { get; set; }
 
-            [Caption("Site Default Bootstrap Skin"), Description("The default skin for overall page appearance and Bootstrap elements")]
+            [Caption("Site Defined Bootstrap Skin"), Description("The skin for overall page appearance and Bootstrap elements")]
             [UIHint("BootstrapSkin")]
             public string SiteBootstrapSkin { get; set; }
 
-            [Caption("Site Default Kendo UI Skin"), Description("The default skin for Kendo UI elements (buttons, modal dialogs, etc.)")]
+            [Caption("Site Defined Kendo UI Skin"), Description("The skin for Kendo UI elements (buttons, modal dialogs, etc.)")]
             [UIHint("KendoUISkin")]
             public string SiteKendoUISkin { get; set; }
 
@@ -72,9 +56,6 @@ namespace YetaWF.Modules.Basics.Controllers {
             model.SiteSelectedPopupSkin = Manager.CurrentSite.SelectedPopupSkin;
             model.SiteBootstrapSkin = Manager.CurrentSite.BootstrapSkin;
             model.SiteKendoUISkin = Manager.CurrentSite.KendoUISkin;
-            model.PageSelectedSkin = Manager.CurrentPage.SelectedSkin;
-            model.PageSelectedPopupSkin = Manager.CurrentPage.SelectedPopupSkin;
-            model.PageKendoUISkin = Manager.CurrentPage.KendoUISkin;
             model.Characters = "<span class='t_chars'>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<br/>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</span>";
             return View(model);
         }

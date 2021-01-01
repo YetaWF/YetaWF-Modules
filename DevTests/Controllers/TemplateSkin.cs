@@ -32,10 +32,6 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public SkinDefinition PopupSkin { get; set; }
 
-            [Caption("Module Skins"), Description("Module Skins")]
-            [UIHint("ModuleSkins"), Trim]
-            public SerializableList<SkinDefinition> ModuleSkins { get; set; }
-
             [Caption("Page Skin (Read/Only)"), Description("Page Skin (Read/Only)")]
             [UIHint("PageSkin"), ReadOnly]
             public SkinDefinition PageSkinRO { get; set; }
@@ -43,10 +39,6 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [Caption("Popup Skin (Read/Only)"), Description("Popup Skin (Read/Only)")]
             [UIHint("PopupSkin"), ReadOnly]
             public SkinDefinition PopupSkinRO { get; set; }
-
-            [Caption("Module Skins (Read/Only)"), Description("Module Skins (Read/Only)")]
-            [UIHint("ModuleSkins"), ReadOnly]
-            public SerializableList<SkinDefinition> ModuleSkinsRO { get; set; }
 
             [Caption("Control Status"), Description("Defines the processing status of the controls")]
             [UIHint("Enum")]
@@ -57,8 +49,6 @@ namespace YetaWF.Modules.DevTests.Controllers {
                 PageSkinRO = new SkinDefinition();
                 PopupSkin = new SkinDefinition();
                 PopupSkinRO = new SkinDefinition();
-                ModuleSkins = new SerializableList<SkinDefinition>();
-                ModuleSkinsRO = new SerializableList<SkinDefinition>();
             }
         }
 

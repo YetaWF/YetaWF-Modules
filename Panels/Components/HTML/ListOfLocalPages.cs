@@ -94,10 +94,6 @@ namespace YetaWF.Modules.Panels.Components {
             [UIHint("Boolean"), ReadOnly]
             public bool Popup { get; set; }
 
-            [Caption("Page Skin"), Description("The skin used to display the page")]
-            [UIHint("PageSkin"), ReadOnly]
-            public SkinDefinition SelectedSkin { get; set; }
-
             public AllEntry(PageDefinition page) {
                 ObjectSupport.CopyData(page, this);
             }

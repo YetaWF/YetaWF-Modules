@@ -50,11 +50,6 @@ namespace YetaWF.Modules.Pages.DataProvider {
         public Guid MasterPageGuid { get; set; }
 
         /// <summary>
-        /// Defines the skin that combines all pages into this Unified Page Set (used with SkinDynamicContent only).
-        /// </summary>
-        public SkinDefinition PageSkin { get; set; }
-
-        /// <summary>
         /// Defines whether this Unified Page Set is currently disabled.
         /// </summary>
         [Data_NewValue]
@@ -102,12 +97,11 @@ namespace YetaWF.Modules.Pages.DataProvider {
         public SerializableList<Guid> PageGuids { get; set; }
 
         public UnifiedSetData() {
-            UnifiedMode = PageDefinition.UnifiedModeEnum.SkinDynamicContent;
+            UnifiedMode = PageDefinition.UnifiedModeEnum.AllPagesDynamicContent;
             Popups = false;
             UnifiedAnimation = 1000;
             PageList = new List<string>();
             PageGuids = new SerializableList<Guid>();
-            PageSkin = new SkinDefinition();
         }
     }
 
@@ -176,11 +170,8 @@ namespace YetaWF.Modules.Pages.DataProvider {
             if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Adding Unified Page Sets is not possible when distributed caching is enabled");
             unifiedSet.UnifiedSetGuid = Guid.NewGuid();
             unifiedSet.Created = DateTime.UtcNow;
-            if (unifiedSet.UnifiedMode == PageDefinition.UnifiedModeEnum.SkinDynamicContent) {
+            if (unifiedSet.UnifiedMode == PageDefinition.UnifiedModeEnum.AllPagesDynamicContent)
                 unifiedSet.PageList = new List<string>();
-            } else {
-                unifiedSet.PageSkin = new SkinDefinition();
-            }
             unifiedSet.PageGuids = await UpdatePageGuidsAsync(unifiedSet.UnifiedSetGuid, unifiedSet.PageList);
             if (!await DataProvider.AddAsync(unifiedSet)) return false;
 
@@ -198,11 +189,8 @@ namespace YetaWF.Modules.Pages.DataProvider {
             UnifiedSetData? origData = Auditing.Active ? await GetItemAsync(unifiedSet.UnifiedSetGuid) : null;
 
             unifiedSet.Updated = DateTime.UtcNow;
-            if (unifiedSet.UnifiedMode == PageDefinition.UnifiedModeEnum.SkinDynamicContent) {
+            if (unifiedSet.UnifiedMode == PageDefinition.UnifiedModeEnum.AllPagesDynamicContent)
                 unifiedSet.PageList = new List<string>();
-            } else {
-                unifiedSet.PageSkin = new SkinDefinition();
-            }
             unifiedSet.PageGuids = await UpdatePageGuidsAsync(unifiedSet.UnifiedSetGuid, unifiedSet.PageList);
             UpdateStatusEnum status = await DataProvider.UpdateAsync(unifiedSet.UnifiedSetGuid, unifiedSet.UnifiedSetGuid, unifiedSet);
             if (status != UpdateStatusEnum.OK) return status;
@@ -235,7 +223,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
             return await DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
 
-        public async Task<UnifiedSetData?> GetCachedItemAsync(string? collectionName, string skinName) {
+        public async Task<UnifiedSetData?> GetCachedItemAsync() {
             List<UnifiedSetData>? unifiedSets = await CacheInfo.GetCachedSetDataAsync(SiteIdentity);
             if (unifiedSets == null) {
                 using (UnifiedSetDataProvider unifiedSetDP = new UnifiedSetDataProvider()) {
@@ -246,10 +234,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
                     unifiedSets = recs.Data;
                 }
             }
-            UnifiedSetData? unifiedSet =
-                (from s in unifiedSets where string.Compare(s.PageSkin.Collection, collectionName, true) == 0 &&
-                    (string.Compare(s.PageSkin.FileName, skinName, true) == 0 || string.Compare($"{s.PageSkin.FileName}.cshtml", skinName, true) == 0) &&
-                    s.UnifiedMode == PageDefinition.UnifiedModeEnum.SkinDynamicContent select s).FirstOrDefault();
+            UnifiedSetData? unifiedSet = (from s in unifiedSets where s.UnifiedMode == PageDefinition.UnifiedModeEnum.AllPagesDynamicContent select s).FirstOrDefault();
             return unifiedSet;
         }
 
@@ -257,7 +242,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
         // PageList
         // PageList
 
-        static internal async Task<PageDefinition.UnifiedInfo?> GetUnifiedPageInfoAsync(Guid? unifiedSetGuid, string? collectionName, string? skinName) {
+        static internal async Task<PageDefinition.UnifiedInfo?> GetUnifiedPageInfoAsync(Guid? unifiedSetGuid) {
             using (UnifiedSetDataProvider unifiedSetDP = new UnifiedSetDataProvider()) {
                 UnifiedSetData? unifiedSet;
                 if (unifiedSetGuid != null) {
@@ -274,11 +259,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
                         };
                     }
                 }
-                // some pages (created with earlier versions of YetaWF) have a null skin name, which defaults to SkinAccess.FallbackPageFileName
-                if (string.IsNullOrWhiteSpace(skinName))
-                    skinName = SkinAccess.FallbackPageFileName;
-
-                unifiedSet = await unifiedSetDP.GetCachedItemAsync(collectionName, skinName);
+                unifiedSet = await unifiedSetDP.GetCachedItemAsync();
                 if (unifiedSet != null) {
                     return new PageDefinition.UnifiedInfo {
                         UnifiedSetGuid = unifiedSet.UnifiedSetGuid,
@@ -288,8 +269,6 @@ namespace YetaWF.Modules.Pages.DataProvider {
                         Popups = unifiedSet.Popups,
                         Animation = 0,
                         Mode = unifiedSet.UnifiedMode,
-                        PageSkinCollectionName = collectionName,
-                        PageSkinFileName = skinName,
                     };
                 }
             }

@@ -57,14 +57,9 @@ namespace YetaWF.Modules.Pages.Controllers {
             [UIHint("Enum")]
             public PageDefinition.UnifiedModeEnum UnifiedMode { get; set; }
 
-            [Caption("Page Skin"), Description("All pages using this skin are combined into this Unified Page Set and use the Master Page for all its attributes - Pages that are explicitly included in another Unified Page Set are not part of this set even if the skin matches")]
-            [UIHint("PageSkin")]
-            [ProcessIf(nameof(UnifiedMode), PageDefinition.UnifiedModeEnum.SkinDynamicContent)]
-            public SkinDefinition PageSkin { get; set; }
-
             [Caption("Popups"), Description("Defines whether popups are part of this Unified Page Set (used with SkinDynamicContent and DynamicContent only)")]
             [UIHint("Boolean")]
-            [ProcessIf(nameof(UnifiedMode), PageDefinition.UnifiedModeEnum.SkinDynamicContent)]
+            [ProcessIf(nameof(UnifiedMode), PageDefinition.UnifiedModeEnum.AllPagesDynamicContent)]
             [ProcessIf(nameof(UnifiedMode), PageDefinition.UnifiedModeEnum.DynamicContent)]
             public bool Popups { get; set; }
 
@@ -96,7 +91,6 @@ namespace YetaWF.Modules.Pages.Controllers {
             }
             public EditModel() {
                 PageList = new List<string>();
-                PageSkin = new Core.Skins.SkinDefinition();
             }
         }
 

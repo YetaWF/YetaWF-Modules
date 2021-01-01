@@ -7,9 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
-#if MVC6
-#else
-#endif
 
 namespace YetaWF.Modules.Pages.Scheduler {
 
