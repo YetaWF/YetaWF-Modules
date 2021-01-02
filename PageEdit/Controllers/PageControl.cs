@@ -184,18 +184,18 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             }
         }
         public class SkinSelectionModel {
-            [Category("Skin"), Caption("Default Bootstrap Skin"), Description("The skin for overall page appearance and Bootstrap elements (only supported for skins that support Bootswatch)")]
+            [Category("Skin"), Caption("Bootstrap Skin"), Description("The skin for overall page appearance and Bootstrap elements (only supported for skins that support Bootswatch)")]
             [HelpLink("https://www.bootstrapcdn.com/bootswatch/")]
-            [UIHint("BootstrapSkin"), StringLength(SkinDefinition.MaxName), AdditionalMetadata("NoDefault", true), Trim]
+            [UIHint("BootstrapSkin"), StringLength(SiteDefinition.MaxBootstrapSkin), AdditionalMetadata("NoDefault", true), Trim]
             public string BootstrapSkin { get; set; }
 
             [Category("Skin"), Caption(" "), Description("")]
             [UIHint("String"), ReadOnly, SuppressEmpty]
             public string BootstrapSkinDescription { get; set; }
 
-            [Category("Skin"), Caption("Default Kendo UI Skin"), Description("The skin for Kendo UI elements (buttons, modal dialogs, etc.)")]
+            [Category("Skin"), Caption("Kendo UI Skin"), Description("The skin for Kendo UI elements (buttons, modal dialogs, etc.)")]
             [HelpLink("http://demos.telerik.com/kendo-ui/themebuilder/")]
-            [UIHint("KendoUISkin"), StringLength(SkinDefinition.MaxName), AdditionalMetadata("NoDefault", true), Trim]
+            [UIHint("KendoUISkin"), StringLength(SiteDefinition.MaxKendoUISkin), AdditionalMetadata("NoDefault", true), Trim]
             public string KendoUISkin { get; set; }
 
             public SkinSelectionModel() { }

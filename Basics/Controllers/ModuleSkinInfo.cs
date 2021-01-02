@@ -14,13 +14,9 @@ namespace YetaWF.Modules.Basics.Controllers {
 
         public class DisplayModel {
 
-            [Caption("Site Defined Page Skin"), Description("The skin used for all pages")]
-            [UIHint("PageSkin")]
+            [Caption("Site Defined Skin"), Description("The skin used for all pages/popups")]
+            [UIHint("Skin")]
             public SkinDefinition SiteSelectedSkin { get; set; }
-
-            [Caption("Site Defined Popup Skin"), Description("The skin used in popup windows")]
-            [UIHint("PopupSkin")]
-            public SkinDefinition SiteSelectedPopupSkin { get; set; }
 
             [Caption("Site Defined Bootstrap Skin"), Description("The skin for overall page appearance and Bootstrap elements")]
             [UIHint("BootstrapSkin")]
@@ -52,8 +48,7 @@ namespace YetaWF.Modules.Basics.Controllers {
         [AllowGet]
         public ActionResult ModuleSkinInfo() {
             DisplayModel model = new DisplayModel();
-            model.SiteSelectedSkin = Manager.CurrentSite.SelectedSkin;
-            model.SiteSelectedPopupSkin = Manager.CurrentSite.SelectedPopupSkin;
+            model.SiteSelectedSkin = Manager.CurrentSite.Skin;
             model.SiteBootstrapSkin = Manager.CurrentSite.BootstrapSkin;
             model.SiteKendoUISkin = Manager.CurrentSite.KendoUISkin;
             model.Characters = "<span class='t_chars'>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<br/>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</span>";

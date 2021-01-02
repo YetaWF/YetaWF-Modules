@@ -41,7 +41,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// Displays a Bootswatch theme name. If the model is null, nothing is rendered.
     /// </summary>
     /// <example>
-    /// [Category("Skin"), Caption("Default Bootstrap Skin"), Description("The default skin for overall page appearance and Bootstrap elements (only supported for skins that support Bootswatch) - individual pages can override the default skin")]
+    /// [Category("Skin"), Caption("Default Bootstrap Skin"), Description("The skin for overall page appearance and Bootstrap elements (only supported for skins that support Bootswatch)")]
     /// [UIHint("BootstrapSkin"), ReadOnly]
     /// public string BootstrapSkin { get; set; }
     /// </example>
@@ -77,7 +77,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// Allows selection of an installed Bootswatch theme using a dropdown list.
     /// </summary>
     /// <example>
-    /// [Category("Skin"), Caption("Default Bootstrap Skin"), Description("The default skin for overall page appearance and Bootstrap elements (only supported for skins that support Bootswatch) - individual pages can override the default skin")]
+    /// [Category("Skin"), Caption("Default Bootstrap Skin"), Description("The default skin for overall page appearance and Bootstrap elements (only supported for skins that support Bootswatch)")]
     /// [HelpLink("https://www.bootstrapcdn.com/bootswatch/")]
     /// [UIHint("BootstrapSkin"), StringLength(SkinDefinition.MaxName), AdditionalMetadata("NoDefault", true), Trim]
     /// public string BootstrapSkin { get; set; }

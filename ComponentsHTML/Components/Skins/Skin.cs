@@ -12,11 +12,11 @@ using YetaWF.Modules.ComponentsHTML.Controllers;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Base class for the PageSkin component implementation.
+    /// Base class for the Skin component implementation.
     /// </summary>
-    public abstract class PageSkinComponentBase : YetaWFComponent {
+    public abstract class SkinComponentBase : YetaWFComponent {
 
-        internal const string TemplateName = "PageSkin";
+        internal const string TemplateName = "Skin";
 
         /// <summary>
         /// Returns the package implementing the component.
@@ -38,11 +38,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// Displays the selected page skin information. The model defines the skin definition and cannot be null.
     /// </summary>
     /// <example>
-    /// [Category("Skin"), Caption("Page Skin"), Description("The skin used to display the page")]
-    /// [UIHint("PageSkin"), ReadOnly]
+    /// [Category("Skin"), Caption("Skin"), Description("The skin used to display pages/popups")]
+    /// [UIHint("Skin"), ReadOnly]
     /// public SkinDefinition SelectedSkin { get; set; }
     /// </example>
-    public class PageSkinDisplayComponent : PageSkinComponentBase, IYetaWFComponent<SkinDefinition> {
+    public class SkinDisplayComponent : SkinComponentBase, IYetaWFComponent<SkinDefinition> {
 
         /// <summary>
         /// Returns the component type (edit/display).
@@ -50,16 +50,23 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        internal class PageSkinUI {
+        internal class SkinUI {
             [Caption("Skin Collection"), Description("The name of the skin collection")]
             [StringLength(SkinDefinition.MaxCollection)]
             [UIHint("SkinCollection")]
-            public string Collection { get; set; } // may be null for site default
-            [Caption("Skin Name"), Description("The name of the skin")]
-            [StringLength(SkinDefinition.MaxSkinFile)]
+            public string Collection { get; set; }
+
+            [Caption("Page"), Description("The name of the page skin")]
+            [StringLength(SkinDefinition.MaxPageFile)]
             [UIHint("SkinNamePage")]
-            public string FileName { get; set; } // may be null for site default
-            public string FileName_Collection { get { return Collection; } }
+            public string PageFileName { get; set; }
+            public string PageFileName_Collection { get { return Collection; } }
+
+            [Caption("Popup"), Description("The name of the popup skin")]
+            [StringLength(SkinDefinition.MaxPopupFile)]
+            [UIHint("SkinNamePopup")]
+            public string PopupFileName { get; set; }
+            public string PopupFileName_Collection { get { return Collection; } }
         }
 
         /// <summary>
@@ -71,22 +78,27 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            PageSkinUI ps = new PageSkinUI {
+            SkinUI ps = new SkinUI {
                 Collection = model.Collection,
-                FileName = model.FileName,
+                PageFileName = model.PageFileName,
+                PopupFileName = model.PopupFileName,
             };
 
             using (Manager.StartNestedComponent(FieldName)) {
 
                 hb.Append($@"
-<div id='{ControlId}' class='yt_pageskin t_display'>
+<div id='{ControlId}' class='yt_skin t_display'>
     <div class='t_collection'>
         {await HtmlHelper.ForLabelAsync(ps, nameof(ps.Collection))}
         {await HtmlHelper.ForDisplayAsync(ps, nameof(ps.Collection))}
     </div>
-    <div class='t_skin'>
-        {await HtmlHelper.ForLabelAsync(ps, nameof(ps.FileName))}
-        {await HtmlHelper.ForDisplayAsync(ps, nameof(ps.FileName))}
+    <div class='t_skinpage'>
+        {await HtmlHelper.ForLabelAsync(ps, nameof(ps.PageFileName))}
+        {await HtmlHelper.ForDisplayAsync(ps, nameof(ps.PageFileName))}
+    </div>
+    <div class='t_skinpopup'>
+        {await HtmlHelper.ForLabelAsync(ps, nameof(ps.PopupFileName))}
+        {await HtmlHelper.ForDisplayAsync(ps, nameof(ps.PopupFileName))}
     </div>
 </div>");
             }
@@ -98,12 +110,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// Allows selection of a page skin from all the available skin collections.
     /// </summary>
     /// <example>
-    /// [Category("Skin"), Caption("Page Skin"), Description("The skin used to display the page")]
-    /// [UIHint("PageSkin"), Trim]
+    /// [Category("Skin"), Caption("Skin"), Description("The skin used to display pages/popups")]
+    /// [UIHint("Skin"), Trim]
     /// public SkinDefinition SelectedSkin { get; set; }
     /// </example>
     [UsesAdditional("NoDefault", "bool", "false", "Defines whether a \"(Site Default)\" entry is automatically added as the first entry, with a value of null")]
-    public class PageSkinEditComponent : PageSkinComponentBase, IYetaWFComponent<SkinDefinition> {
+    public class SkinEditComponent : SkinComponentBase, IYetaWFComponent<SkinDefinition> {
 
         /// <summary>
         /// Returns the component type (edit/display).
@@ -111,16 +123,23 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        internal class PageSkinUI {
+        internal class SkinUI {
             [Caption("Skin Collection"), Description("The name of the skin collection")]
             [StringLength(SkinDefinition.MaxCollection)]
             [UIHint("SkinCollection")]
-            public string Collection { get; set; } // may be null for site default
-            [Caption("Skin Name"), Description("The name of the skin")]
-            [StringLength(SkinDefinition.MaxSkinFile)]
+            public string Collection { get; set; }
+
+            [Caption("Page"), Description("The name of the page skin")]
+            [StringLength(SkinDefinition.MaxPageFile)]
             [UIHint("SkinNamePage")]
-            public string FileName { get; set; } // may be null for site default
-            public string FileName_Collection { get { return Collection; } }
+            public string PageFileName { get; set; }
+            public string PageFileName_Collection { get { return Collection; } }
+
+            [Caption("Popup"), Description("The name of the popup skin")]
+            [StringLength(SkinDefinition.MaxPopupFile)]
+            [UIHint("SkinNamePopup")]
+            public string PopupFileName { get; set; }
+            public string PopupFileName_Collection { get { return Collection; } }
         }
         internal class Setup {
             public string AjaxUrl { get; set; }
@@ -135,18 +154,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            PageSkinUI ps = new PageSkinUI {
+            SkinUI ps = new SkinUI {
                 Collection = model.Collection,
-                FileName = model.FileName,
+                PageFileName = model.PageFileName,
+                PopupFileName = model.PopupFileName,
             };
 
             Setup setup = new Setup {
-                AjaxUrl = Utility.UrlFor(typeof(SkinController), nameof(SkinController.GetPageSkins)),
+                AjaxUrl = Utility.UrlFor(typeof(SkinController), nameof(SkinController.GetSkins)),
             };
 
             // add dummy input field so we can find the property name in this template
             hb.Append($@"
-<div id='{ControlId}' class='yt_pageskin t_edit'>
+<div id='{ControlId}' class='yt_skin t_edit'>
      {await HtmlHelper.ForEditComponentAsync(Container, PropertyName, "-", "Hidden", HtmlAttributes: new { __NoTemplate = true, @class = Forms.CssFormNoSubmit })}");
 
             using (Manager.StartNestedComponent(FieldName)) {
@@ -156,12 +176,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         {await HtmlHelper.ForLabelAsync(ps, nameof(ps.Collection))}
         {await HtmlHelper.ForEditAsync(ps, nameof(ps.Collection))}
     </div>
-    <div class='t_skin'>
-        {await HtmlHelper.ForLabelAsync(ps, nameof(ps.FileName))}
-        {await HtmlHelper.ForEditAsync(ps, nameof(ps.FileName))}
+    <div class='t_skinpage'>
+        {await HtmlHelper.ForLabelAsync(ps, nameof(ps.PageFileName))}
+        {await HtmlHelper.ForEditAsync(ps, nameof(ps.PageFileName))}
+    </div>
+    <div class='t_skinpopup'>
+        {await HtmlHelper.ForLabelAsync(ps, nameof(ps.PopupFileName))}
+        {await HtmlHelper.ForEditAsync(ps, nameof(ps.PopupFileName))}
     </div>
 </div>");
-                Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PageSkinEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
+                Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.SkinEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
             }
             return hb.ToString();

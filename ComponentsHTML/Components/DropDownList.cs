@@ -242,7 +242,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return sb.ToString();
         }
 
-        private static string GetOptionsHTML(List<SelectionItem<TYPE>> list) {
+        /// <summary>
+        /// Returns HTML for a dropdownlist with the available &lt;option&gt;s.
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public static string GetOptionsHTML(List<SelectionItem<TYPE>> list) {
 
             HtmlBuilder tagHtml = new HtmlBuilder();
 

@@ -34,7 +34,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Internal component used by the PageSkin and PopupSkins components. Not intended for application use.
+    /// Internal component used by the Skin component. Not intended for application use.
     /// </summary>
     [PrivateComponent]
     public class SkinNamePageDisplayComponent : SkinNamePageComponentBase, IYetaWFComponent<string> {
@@ -67,7 +67,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Internal component used by the PageSkin and PopupSkins components. Not intended for application use.
+    /// Internal component used by the Skin component. Not intended for application use.
     /// </summary>
     [PrivateComponent]
     public class SkinNamePageEditComponent : SkinNamePageComponentBase, IYetaWFComponent<string> {
@@ -97,6 +97,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // display the skins in a drop down
             return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_skinname");
         }
+
         internal static string RenderReplacementSkinsForCollection(string skinCollection) {
             SkinAccess skinAccess = new SkinAccess();
             PageSkinList skinList = skinAccess.GetAllPageSkins(skinCollection);
@@ -106,7 +107,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 Value = skin.PageViewName,
             }).ToList();
             // render a new dropdown list
-            return DropDownListEditComponentBase<string>.RenderDataSource(list, null);
+            return DropDownListEditComponentBase<string>.GetOptionsHTML(list);
         }
     }
 }

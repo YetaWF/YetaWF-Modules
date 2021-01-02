@@ -200,6 +200,11 @@ var YetaWF_ComponentsHTML;
             enumerable: false,
             configurable: true
         });
+        DropDownListEditComponent.prototype.setOptionsHTML = function (optionsHTML) {
+            this.Select.innerHTML = optionsHTML;
+            this.optionsUpdated();
+            this.selectedIndex = 0;
+        };
         // retrieve the tooltip for the nth item (index) in the dropdown list
         DropDownListEditComponent.prototype.getToolTip = function (index) {
             var total = this.totalItems;
@@ -473,9 +478,7 @@ var YetaWF_ComponentsHTML;
                 if (request.readyState === 4 /*DONE*/) {
                     $YetaWF.setLoading(false);
                     var retVal = $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, _this.Control, undefined, undefined, function (data) {
-                        _this.Select.innerHTML = data.OptionsHTML;
-                        _this.optionsUpdated();
-                        _this.selectedIndex = 0;
+                        _this.setOptionsHTML(data.OptionsHTML);
                         if (onSuccess)
                             onSuccess(data);
                     });

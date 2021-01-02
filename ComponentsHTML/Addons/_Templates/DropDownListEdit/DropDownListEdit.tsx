@@ -199,6 +199,13 @@ namespace YetaWF_ComponentsHTML {
             return this.Popup != null;
         }
 
+        public setOptionsHTML(optionsHTML: string): void {
+            this.Select.innerHTML = optionsHTML;
+            this.optionsUpdated();
+
+            this.selectedIndex = 0;
+        }
+
         // retrieve the tooltip for the nth item (index) in the dropdown list
         public getToolTip(index: number): string | null {
             let total = this.totalItems;
@@ -494,10 +501,8 @@ namespace YetaWF_ComponentsHTML {
                     $YetaWF.setLoading(false);
                     var retVal = $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, this.Control, undefined, undefined, (data: AjaxData): void => {
 
-                        this.Select.innerHTML = data.OptionsHTML;
-                        this.optionsUpdated();
+                        this.setOptionsHTML(data.OptionsHTML);
 
-                        this.selectedIndex = 0;
                         if (onSuccess)
                             onSuccess(data);
                     });
