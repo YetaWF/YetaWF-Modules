@@ -18,10 +18,6 @@ namespace YetaWF.Modules.Basics.Controllers {
             [UIHint("Skin")]
             public SkinDefinition SiteSelectedSkin { get; set; }
 
-            [Caption("Site Defined Bootstrap Skin"), Description("The skin for overall page appearance and Bootstrap elements")]
-            [UIHint("BootstrapSkin")]
-            public string SiteBootstrapSkin { get; set; }
-
             [Caption("Site Defined Kendo UI Skin"), Description("The skin for Kendo UI elements (buttons, modal dialogs, etc.)")]
             [UIHint("KendoUISkin")]
             public string SiteKendoUISkin { get; set; }
@@ -49,7 +45,6 @@ namespace YetaWF.Modules.Basics.Controllers {
         public ActionResult ModuleSkinInfo() {
             DisplayModel model = new DisplayModel();
             model.SiteSelectedSkin = Manager.CurrentSite.Skin;
-            model.SiteBootstrapSkin = Manager.CurrentSite.BootstrapSkin;
             model.SiteKendoUISkin = Manager.CurrentSite.KendoUISkin;
             model.Characters = "<span class='t_chars'>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<br/>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</span>";
             return View(model);

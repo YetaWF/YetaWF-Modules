@@ -184,15 +184,6 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             }
         }
         public class SkinSelectionModel {
-            [Category("Skin"), Caption("Bootstrap Skin"), Description("The skin for overall page appearance and Bootstrap elements (only supported for skins that support Bootswatch)")]
-            [HelpLink("https://www.bootstrapcdn.com/bootswatch/")]
-            [UIHint("BootstrapSkin"), StringLength(SiteDefinition.MaxBootstrapSkin), AdditionalMetadata("NoDefault", true), Trim]
-            public string BootstrapSkin { get; set; }
-
-            [Category("Skin"), Caption(" "), Description("")]
-            [UIHint("String"), ReadOnly, SuppressEmpty]
-            public string BootstrapSkinDescription { get; set; }
-
             [Category("Skin"), Caption("Kendo UI Skin"), Description("The skin for Kendo UI elements (buttons, modal dialogs, etc.)")]
             [HelpLink("http://demos.telerik.com/kendo-ui/themebuilder/")]
             [UIHint("KendoUISkin"), StringLength(SiteDefinition.MaxKendoUISkin), AdditionalMetadata("NoDefault", true), Trim]
@@ -303,11 +294,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                     CurrentPageGuid = Manager.CurrentPage.PageGuid,
                 },
                 SkinSelectionModel = new SkinSelectionModel {
-                    BootstrapSkin = Manager.CurrentSite.BootstrapSkin,
                     KendoUISkin = Manager.CurrentSite.KendoUISkin,
-                    BootstrapSkinDescription = (!Manager.SkinInfo.UsingBootstrap || !Manager.SkinInfo.UseDefaultBootstrap) ?
-                        this.__ResStr("noBootswatch", "The current page skin does not support selecting a default Bootstrap skin. The skin does not support Bootswatch, which is required for skin selection.") :
-                        null,
                 },
                 LoginSiteSelectionModel = new LoginSiteSelectionModel(),
             };
@@ -406,7 +393,6 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             SiteDefinition origSite = new SiteDefinition();
             ObjectSupport.CopyData(Manager.CurrentSite, origSite);// make a copy of original site
             SiteDefinition site = Manager.CurrentSite;// update new settings
-            site.BootstrapSkin = model.BootstrapSkin;
             site.KendoUISkin = model.KendoUISkin;
             ObjectSupport.ModelDisposition modelDisp = ObjectSupport.EvaluateModelChanges(origSite, site);
             switch (modelDisp) {

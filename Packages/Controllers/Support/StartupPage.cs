@@ -65,7 +65,6 @@ namespace YetaWF.Modules.Packages.Controllers {
 
         static List<string> RequiredPackages = new List<string> {
                 "YetaWF.Basics",
-                "YetaWF.BootstrapSkin",
                 "YetaWF.Caching",
                 "YetaWF.Core",
                 "YetaWF.Core.CssHttpHandler",
