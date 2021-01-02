@@ -58,7 +58,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // get all available skins
             SkinAccess skinAccess = new SkinAccess();
 
-            string desc = (from skinColl in skinAccess.GetAllSkinCollections() where model == skinColl.CollectionName select skinColl.CollectionDescription).FirstOrDefault();
+            string desc = (from skinColl in skinAccess.GetAllSkinCollections() where model == skinColl.Name select skinColl.Description).FirstOrDefault();
             if (desc == null) {
                 bool useDefault = !PropData.GetAdditionalAttributeValue("NoDefault", false);
                 if (useDefault)
@@ -91,9 +91,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // get all available skins
             SkinAccess skinAccess = new SkinAccess();
-            List<SelectionItem<string>> list = (from skinColl in skinAccess.GetAllSkinCollections() orderby skinColl.CollectionDescription select new SelectionItem<string>() {
-                Text = skinColl.CollectionDescription,
-                Value = skinColl.CollectionName,
+            List<SelectionItem<string>> list = (from skinColl in skinAccess.GetAllSkinCollections() orderby skinColl.Description select new SelectionItem<string>() {
+                Text = skinColl.Description,
+                Value = skinColl.Name,
             }).ToList();
             // display the skins in a drop down
             return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_skinselection");
