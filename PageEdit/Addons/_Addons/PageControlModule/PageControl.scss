@@ -1,26 +1,28 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
 
 .YetaWF_PageEdit_PageControl {
-    position:absolute;
+    position:fixed;
     z-index:1510;
     left:30px;
     top:5px;
-    #yPageControlDiv {
-        line-height:1;
-        > a {
-            display:block;
-            line-height:1;
-            padding:4px 4px;
+    #yPageControlDiv .t_controlpanel {
+        height:16px;
+        width:16px;
+        padding:4px;
+        box-sizing: content-box;
+        svg {
+            vertical-align: top;
+            height:16px;
+            width:16px;
         }
     }
 }
 
 #yPageControlMod {
     display:none;
-    position:absolute;
-    left:30px;
     width:800px;
     z-index:1500;
+    font-size:.8em;
     .yt_tabs  {
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;

@@ -32,7 +32,7 @@ i.yic.yic_componentshtml_modmenuedit {
   background: var(--tt-bg);
   color: var(--tt-clr);
   font: var(--tt-font);
-  border: var(--tt-border-width) solid var(--tt-border-clr);
+  border: var(--tt-border);
   border-radius: var(--tt-border-radius);
   box-shadow: var(--tt-shadow);
   padding: 8px 10px;

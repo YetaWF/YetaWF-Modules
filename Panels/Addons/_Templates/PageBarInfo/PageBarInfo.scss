@@ -14,6 +14,7 @@ $large-screen: 1500px;
         overflow-y: hidden;
         white-space: nowrap;
         background: var(--bar-bg);
+        border-right: var(--bar-border);
         .t_expcoll {
             cursor: pointer;
             display:none;
@@ -55,7 +56,7 @@ $large-screen: 1500px;
         padding: .7em 1.3em .7em 1.3em;
         width:100%;
         h1 {
-            font-size:var(--bar-h1-height);
+            font-size:var(--bar-h1-font-size);
             margin:0;
             padding:0;
             padding-bottom:var(--bar-h1-padding-bottom)

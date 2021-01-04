@@ -12,8 +12,8 @@
     font: var(--body-font);
     background: var(--dialog-bg);
     color: var(--dialog-clr);
-    border: var(--elem-border-width) solid var(--elem-border-clr);
-    border-radius: var(--tbl-border-radius);
+    border: var(--dialog-border);
+    border-radius: var(--dialog-border-radius);
 
     padding: .2em;
 
@@ -27,8 +27,8 @@
         cursor: move;
         padding: .4em .5em .4em 1em;
         position: relative;
-        border: var(--elem-border-width) solid var(--elem-border-clr);
-        border-radius: var(--tbl-border-radius);
+        border: var(--dialog-border);
+        border-radius: var(--dialog-border-radius);
         font: var(--dialog-title-font);
     }
     .t_close {

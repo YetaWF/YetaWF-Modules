@@ -12,7 +12,7 @@
             background: var(--tabs-tab-bg);
             color: var(--tabs-tab-clr);
             font: var(--body-font);
-            border: var(--tabs-tab-border-color) solid var(--tabs-tab-border-width);
+            border: var(--tabs-tab-border);
             border-radius: var(--tabs-tab-border-radius);
             &:hover:not(.t_active) {
                 background: var(--tabs-tab-bg-hover);
@@ -58,7 +58,7 @@
             font: var(--body-font);
             background: var(--tabs-bg);
             color: var(--tabs-clr);
-            border: var(--tabs-tab-border-color) solid var(--tabs-tab-border-width);
+            border: var(--tabs-tab-border);
             border-top:0;
             border-bottom-left-radius: var(--tabs-tab-border-radius);
             border-bottom-right-radius: var(--tabs-tab-border-radius);

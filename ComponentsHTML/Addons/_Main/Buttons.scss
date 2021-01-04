@@ -14,10 +14,11 @@
         padding-right: 0;
     }
     &.y_button_outline {
-        background: transparent;
+        background: var(--body-bg);
+        color: var(--body-clr);
     }
-    border: var(--button-border-clr) solid var(--elem-border-width);
-    border-radius: var(--elem-border-radius);
+    border: var(--button-border);
+    border-radius: var(--button-border-radius);
     &:not(:disabled) {
         cursor: pointer;
     }
@@ -42,9 +43,9 @@
 .y_buttonform {
     margin-right:3px;// so outline,shadow is not clipped
     margin-left:3px;// so outline,shadow is not clipped
-    box-shadow: var(--elem-shadow);
+    box-shadow: var(--button-shadow);
     &:focus {
-        box-shadow: var(--button-border-clr-focus-shadow);
+        box-shadow: var(--button-focus-shadow);
     }
 }
 
@@ -65,8 +66,8 @@ button.y_buttonlite {
     line-height: 1;
     padding: 0;
     text-decoration: none;
-    border: var(--elem-border-clr) solid var(--elem-border-width);
-    border-radius: var(--elem-border-radius);
+    border: var(--buttonlite-border);
+    border-radius: var(--buttonlite-border-radius);
     &:not(:disabled) {
         cursor: pointer;
     }

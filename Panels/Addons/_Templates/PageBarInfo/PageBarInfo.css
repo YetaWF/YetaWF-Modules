@@ -6,7 +6,8 @@
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
-  background: var(--bar-bg); }
+  background: var(--bar-bg);
+  border-right: var(--bar-border); }
   .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_expcoll {
     cursor: pointer;
     display: none; }
@@ -37,7 +38,7 @@
   padding: .7em 1.3em .7em 1.3em;
   width: 100%; }
   .yt_panels_pagebarinfo .t_area h1 {
-    font-size: var(--bar-h1-height);
+    font-size: var(--bar-h1-font-size);
     margin: 0;
     padding: 0;
     padding-bottom: var(--bar-h1-padding-bottom); }

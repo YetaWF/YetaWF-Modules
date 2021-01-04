@@ -76,27 +76,25 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 text = (MultiString)model;
             else
                 text = (string)model;
+            text ??= string.Empty;
 
             bool copy = PropData.GetAdditionalAttributeValue<bool>("Copy", true);
 
-            if (!string.IsNullOrWhiteSpace(text)) {
+            int emHeight = PropData.GetAdditionalAttributeValue("EmHeight", 10);
 
-                int emHeight = PropData.GetAdditionalAttributeValue("EmHeight", 10);
-
-                string readOnly = string.Empty;
-                string disabled = string.Empty;
-                if (copy)
-                    readOnly = " readonly='readonly'";
-                else
-                    disabled = " disabled='disabled'";
-
-                hb.Append($"<textarea id='{ControlId}'{FieldSetup(FieldType.Anonymous)} rows='{emHeight}' class='yt_textareasourceonly t_display k-textbox'{readOnly}{disabled}>{HE(text)}</textarea>");
-
-                if (copy)
-                    hb.Append(ImageHTML.BuildKnownIcon("#TextAreaSourceOnlyCopy", sprites: Info.PredefSpriteIcons, title: __ResStr("ttCopy", "Copy to Clipboard"), cssClass: "yt_textareasourceonly_copy"));
-            }
+            string readOnly = string.Empty;
+            string disabled = string.Empty;
             if (copy)
+                readOnly = " readonly='readonly'";
+            else
+                disabled = " disabled='disabled'";
+
+            hb.Append($"<textarea id='{ControlId}'{FieldSetup(FieldType.Anonymous)} rows='{emHeight}' class='yt_textareasourceonly t_display k-textbox'{readOnly}{disabled}>{HE(text)}</textarea>");
+
+            if (copy) {
+                hb.Append(ImageHTML.BuildKnownIcon("#TextAreaSourceOnlyCopy", sprites: Info.PredefSpriteIcons, title: __ResStr("ttCopy", "Copy to Clipboard"), cssClass: "yt_textareasourceonly_copy"));
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "clipboardjs.com.clipboard");// add clipboard support
+            }
 
             return hb.ToString();
         }
@@ -118,6 +116,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     [UsesAdditional("EmHeight", "int", "10", "Defines the height of the component in lines of text.")]
     [UsesAdditional("Spellcheck", "boolean", "true", "Defines whether spell checking is on/off for the text area.")]
     [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
+    [UsesAdditional("Copy", "bool", "false", "Defines whether a copy icon is displayed to allow the user to copy the contents to the clipboard. If false is specified, no copy icon is shown.")]
     public class TextAreaSourceOnlyEditComponent : TextAreaSourceOnlyComponentBase, IYetaWFComponent<object> {
 
         /// <summary>
@@ -131,7 +130,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<string> RenderAsync(object model) {
+        public async Task<string> RenderAsync(object model) {
 
             string text;
             if (model is MultiString)
@@ -141,6 +140,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             int emHeight = PropData.GetAdditionalAttributeValue("EmHeight", 10);
             bool spellcheck = PropData.GetAdditionalAttributeValue("Spellcheck", true);
+            bool copy = PropData.GetAdditionalAttributeValue<bool>("Copy", false);
 
             string placeHolder;
             TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out placeHolder);
@@ -163,11 +163,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (lenAttr == null && !HtmlAttributes.ContainsKey("maxlength"))
                 throw new InternalError($"No max string length given using StringLengthAttribute or maxlength - {FieldName}");
 #endif
-            string tags = $"<textarea id='{ControlId}'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} rows='{emHeight}' spellcheck='{(spellcheck ? "true" : "false")}' class='yt_textareasourceonly t_edit k-textbox'{placeHolder}>{HE(text)}</textarea>";
+            HtmlBuilder hb = new HtmlBuilder();
+            hb.Append($"<textarea id='{ControlId}'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} rows='{emHeight}' spellcheck='{(spellcheck ? "true" : "false")}' class='yt_textareasourceonly t_edit k-textbox'{placeHolder}>{HE(text)}</textarea>");
+            if (copy) {
+                hb.Append(ImageHTML.BuildKnownIcon("#TextAreaSourceOnlyCopy", sprites: Info.PredefSpriteIcons, title: __ResStr("ttCopy", "Copy to Clipboard"), cssClass: "yt_textareasourceonly_copy"));
+                await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "clipboardjs.com.clipboard");// add clipboard support
+            }
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.TextAreaSourceOnlyEditComponent('{ControlId}');");
 
-            return Task.FromResult(tags);
+            return hb.ToString();
         }
     }
 }

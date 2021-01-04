@@ -5,7 +5,7 @@
   padding: .2em;
   background: var(--tabs-bg);
   color: var(--tabs-clr);
-  border: var(--tabs-tab-border-width) solid var(--tabs-tab-border-color);
+  border: var(--tabs-tab-border);
   border-radius: var(--tabs-tab-border-radius); }
   .yt_tabs > ul.t_tabstrip {
     display: table;
@@ -13,7 +13,7 @@
     margin: 0;
     padding: .2em .2em 0 .2em;
     background: var(--tabs-strip-bg);
-    border: var(--tabs-strip-border-width) solid var(--tabs-tab-strip-color);
+    border: var(--tabs-strip-border);
     border-radius: var(--tabs-tab-border-radius); }
     .yt_tabs > ul.t_tabstrip > li.t_tab {
       list-style: none;
@@ -27,9 +27,9 @@
       white-space: nowrap;
       background: var(--tabs-tab-bg);
       color: var(--tabs-tab-clr);
-      border-left: var(--tabs-tab-border-width) solid var(--tabs-tab-border-color);
-      border-top: var(--tabs-tab-border-width) solid var(--tabs-tab-border-color);
-      border-right: var(--tabs-tab-border-width) solid var(--tabs-tab-border-color);
+      border-left: var(--tabs-tab-border);
+      border-top: var(--tabs-tab-border);
+      border-right: var(--tabs-tab-border);
       border-top-left-radius: var(--tabs-tab-border-radius);
       border-top-right-radius: var(--tabs-tab-border-radius);
       cursor: pointer; }

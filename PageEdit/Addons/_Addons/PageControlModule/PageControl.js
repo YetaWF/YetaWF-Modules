@@ -21,7 +21,7 @@ var YetaWF_PageEdit;
             var _this = _super.call(this, id, PageControlModule.SELECTOR, null) || this;
             _this.FadeTime = 250;
             _this.PageControlMod = $YetaWF.getElementById(YConfigs.YetaWF_PageEdit.PageControlMod);
-            var pagebutton = $YetaWF.getElementById("tid_pagecontrolbutton");
+            var pagebutton = $YetaWF.getElement1BySelector(".t_controlpanel", [_this.Module]);
             $YetaWF.registerEventHandler(pagebutton, "click", null, function (ev) {
                 _this.toggleControlPanel();
                 return false;
@@ -54,7 +54,7 @@ var YetaWF_PageEdit;
                 }
                 return;
             }
-            var pagebutton = $YetaWF.getElementByIdCond("tid_pagecontrolbutton");
+            var pagebutton = $YetaWF.getElement1BySelector(".t_controlpanel", [this.Module]);
             if (pagebutton) {
                 if (YVolatile.Basics.TemporaryPage) {
                     if (YVolatile.Basics.PageControlVisible) {

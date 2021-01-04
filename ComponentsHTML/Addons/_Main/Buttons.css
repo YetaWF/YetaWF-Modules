@@ -8,14 +8,15 @@
   line-height: 1.8em;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
   text-decoration: none;
-  border: var(--button-border-clr) solid var(--elem-border-width);
-  border-radius: var(--elem-border-radius); }
+  border: var(--button-border);
+  border-radius: var(--button-border-radius); }
   .y_button.y_button_sm, .y_buttonform.y_button_sm {
     line-height: 1;
     padding-left: 0;
     padding-right: 0; }
   .y_button.y_button_outline, .y_buttonform.y_button_outline {
-    background: transparent; }
+    background: var(--body-bg);
+    color: var(--body-clr); }
   .y_button:not(:disabled), .y_buttonform:not(:disabled) {
     cursor: pointer; }
   .y_button:hover:not(:disabled), .y_buttonform:hover:not(:disabled) {
@@ -35,9 +36,9 @@
 .y_buttonform {
   margin-right: 3px;
   margin-left: 3px;
-  box-shadow: var(--elem-shadow); }
+  box-shadow: var(--button-shadow); }
   .y_buttonform:focus {
-    box-shadow: var(--button-border-clr-focus-shadow); }
+    box-shadow: var(--button-focus-shadow); }
 
 a.y_button, a.y_button:hover {
   text-decoration: none;
@@ -53,8 +54,8 @@ button.y_buttonlite {
   line-height: 1;
   padding: 0;
   text-decoration: none;
-  border: var(--elem-border-clr) solid var(--elem-border-width);
-  border-radius: var(--elem-border-radius); }
+  border: var(--buttonlite-border);
+  border-radius: var(--buttonlite-border-radius); }
   button.y_buttonlite:not(:disabled) {
     cursor: pointer; }
   button.y_buttonlite:hover:not(:disabled) {

@@ -1,5 +1,26 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
 
+.YetaWF_PageEdit_EditMode {
+    position:fixed;
+    z-index:1510;
+    left:2px;
+    top:5px;
+    #yEditControlDiv {
+        .t_display,
+        .t_edit {
+            height:16px;
+            width:16px;
+            padding:4px;
+            box-sizing: content-box;
+            svg {
+                vertical-align: top;
+                height:16px;
+                width:16px;
+            }
+        }
+    }
+}
+
 /* PANE TAG */
 .yPaneTag {
     position: absolute;
@@ -7,28 +28,13 @@
     top: -.7em;
     left: .5em;
     font-size: .7em;
-    background: var(--elem-border-clr);
+    background: var(--mod-current-bg);
     color: var(--elem-clr);
     padding: 0 0.2em;
 }
 
-.YetaWF_PageEdit_EditMode {
-    position:absolute;
-    z-index:1510;
-    left:2px;
-    top:5px;
-    #yEditControlDiv {
-        line-height:1;
-        > a {
-            display:block;
-            line-height:1;
-            padding:4px 4px;
-        }
-    }
-}
-
 .yModule-current {
-    background: var(--elem-border-clr);
+    background: var(--mod-current-bg);
 }
 
 .yModuleMenuEditIcon {

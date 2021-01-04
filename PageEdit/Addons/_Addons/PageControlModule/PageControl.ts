@@ -28,7 +28,7 @@ namespace YetaWF_PageEdit {
 
             this.PageControlMod = $YetaWF.getElementById(YConfigs.YetaWF_PageEdit.PageControlMod) as HTMLDivElement;
 
-            const pagebutton = $YetaWF.getElementById("tid_pagecontrolbutton");
+            const pagebutton = $YetaWF.getElement1BySelector(".t_controlpanel", [this.Module]);
             $YetaWF.registerEventHandler(pagebutton, "click", null, (ev: MouseEvent): boolean => {
                 this.toggleControlPanel();
                 return false;
@@ -61,7 +61,7 @@ namespace YetaWF_PageEdit {
                 return;
             }
 
-            const pagebutton = $YetaWF.getElementByIdCond("tid_pagecontrolbutton");
+            const pagebutton = $YetaWF.getElement1BySelector(".t_controlpanel", [this.Module]);
             if (pagebutton) {
                 if (YVolatile.Basics.TemporaryPage) {
                     if (YVolatile.Basics.PageControlVisible) {

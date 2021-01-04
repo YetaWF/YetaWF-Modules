@@ -18,7 +18,6 @@
     line-height: 1;
     padding: 0.2em 0 0 0; }
     .yt_panels_splitterinfo .yt_panels_splitterinfo_cmds .yt_panels_splitterinfo_colldesc {
-      color: var(--bar-clr);
       cursor: pointer;
       display: inline-block;
       margin-right: .5ch;
@@ -54,7 +53,7 @@
     -webkit-box-flex: 0;
             flex: 0 1 30%;
     position: relative;
-    border-right: var(--elem-border-width) solid var(--elem-border-clr); }
+    border-right: var(--bar-border); }
     .yt_panels_splitterinfo .yt_panels_splitterinfo_left .t_area {
       overflow: auto;
       height: 100%; }

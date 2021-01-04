@@ -152,7 +152,7 @@
   /* Use skin theme */
   background: var(--tbl-header-bg);
   color: var(--tbl-header-clr);
-  border: var(--tbl-border-width) solid var(--tbl-border-clr);
+  border: var(--tbl-border);
   border-radius: var(--tbl-border-radius);
   box-shadow: var(--tbl-shadow); }
   .yt_grid.tg_skin .tg_table table {
@@ -163,21 +163,21 @@
       background: var(--tbl-bg);
       color: var(--tbl-clr); }
     .yt_grid.tg_skin .tg_table table .tg_header {
-      border-bottom: var(--tbl-border-width) solid var(--tbl-border-clr); }
+      border-bottom: var(--tbl-border); }
     .yt_grid.tg_skin .tg_table table tr.tg_filter {
-      border-bottom: var(--tbl-border-width) solid var(--tbl-border-clr); }
+      border-bottom: var(--tbl-border); }
     .yt_grid.tg_skin .tg_table table th, .yt_grid.tg_skin .tg_table table td {
       font-size: 11px;
-      border-right: var(--tbl-border-lite-width) solid var(--tbl-border-lite-clr); }
+      border-right: var(--tbl-border-lite); }
     .yt_grid.tg_skin .tg_table table th:hover {
       background: var(--tbl-header-bg-hover);
       color: var(--tbl-header-clr-hover); }
     .yt_grid.tg_skin .tg_table table td {
-      border-bottom: var(--tbl-border-lite-width) solid var(--tbl-border-lite-clr); }
+      border-bottom: var(--tbl-border-lite); }
   .yt_grid.tg_skin .tg_pager {
     background: var(--tbl-header-bg);
     color: var(--tbl-header-clr);
-    border-top: var(--tbl-border-width) solid var(--tbl-border-clr);
+    border-top: var(--tbl-border);
     font-size: 11px; }
     .yt_grid.tg_skin .tg_pager .tg_reload .fas, .yt_grid.tg_skin .tg_pager .tg_search .fas, .yt_grid.tg_skin .tg_pager .tg_pgtop .fas, .yt_grid.tg_skin .tg_pager .tg_pgnext .fas, .yt_grid.tg_skin .tg_pager .tg_pgprev .fas, .yt_grid.tg_skin .tg_pager .tg_pgbottom .fas {
       font-size: 8px; }

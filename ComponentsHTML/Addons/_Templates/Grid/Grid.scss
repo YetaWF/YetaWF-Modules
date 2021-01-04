@@ -212,7 +212,7 @@ $smbuttonhorzmargin: 2px;
 .yt_grid.tg_skin { /* Use skin theme */
     background: var(--tbl-header-bg);
     color: var(--tbl-header-clr);
-    border: var(--tbl-border-width) solid var(--tbl-border-clr);
+    border: var(--tbl-border);
     border-radius: var(--tbl-border-radius);
     box-shadow: var(--tbl-shadow);
     .tg_table {
@@ -225,14 +225,14 @@ $smbuttonhorzmargin: 2px;
                 color: var(--tbl-clr);
             }
             .tg_header {
-                border-bottom: var(--tbl-border-width) solid var(--tbl-border-clr);
+                border-bottom: var(--tbl-border);
             }
             tr.tg_filter {
-                border-bottom: var(--tbl-border-width) solid var(--tbl-border-clr);
+                border-bottom: var(--tbl-border);
             }
             th, td {
                 font-size:$fontsize;
-                border-right: var(--tbl-border-lite-width) solid var(--tbl-border-lite-clr);
+                border-right: var(--tbl-border-lite);
             }
             th {
                 &:hover {
@@ -241,14 +241,14 @@ $smbuttonhorzmargin: 2px;
                 }
             }
             td {
-                border-bottom: var(--tbl-border-lite-width) solid var(--tbl-border-lite-clr);
+                border-bottom: var(--tbl-border-lite);
             }
         }
     }
     .tg_pager {
         background: var(--tbl-header-bg);
         color: var(--tbl-header-clr);
-        border-top: var(--tbl-border-width) solid var(--tbl-border-clr);
+        border-top: var(--tbl-border);
         font-size:$fontsize;
         .tg_reload, .tg_search, .tg_pgtop, .tg_pgnext, .tg_pgprev, .tg_pgbottom {
             .fas {

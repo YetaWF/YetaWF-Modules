@@ -85,7 +85,6 @@ namespace YetaWF.Modules.PageEdit.Modules {
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.SwitchToEdit)),
                 QueryArgs = new { },
-                CssClass = "y_button_outline",
                 NeedsModuleContext = true,
                 Image = "#Edit",
                 LinkText = this.__ResStr("modSwitchToEditLink", "Switch To Site Edit Mode"),
@@ -105,7 +104,6 @@ namespace YetaWF.Modules.PageEdit.Modules {
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.SwitchToView)),
                 QueryArgs = new { },
-                CssClass = "y_button_outline",
                 NeedsModuleContext = true,
                 Image = "#Display",
                 LinkText = this.__ResStr("modSwitchToViewLink", "Switch To Site View Mode"),

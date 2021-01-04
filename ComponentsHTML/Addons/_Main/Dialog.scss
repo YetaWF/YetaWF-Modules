@@ -7,8 +7,8 @@
     font: var(--body-font);
     background: var(--dialog-bg);
     color: var(--dialog-clr);
-    border: var(--elem-border-width) solid var(--elem-border-clr);
-    border-radius: var(--tbl-border-radius);
+    border: var(--dialog-border);
+    border-radius: var(--dialog-border-radius);
 
     width:400px;
     padding: .2em;
@@ -19,8 +19,8 @@
         cursor: move;
         padding: .4em .5em .4em 1em;
         position: relative;
-        border: var(--elem-border-width) solid var(--elem-border-clr);
-        border-radius: var(--tbl-border-radius);
+        border: var(--dialog-border);
+        border-radius: var(--dialog-border-radius);
         font: var(--dialog-title-font);
     }
     .t_close {
@@ -42,10 +42,13 @@
     }
     .t_buttonpane {
         padding: .5em .5em .4em .5em;
-        border-top: var(--elem-border-width) solid var(--dialog-line-clr);
+        border-top: var(--dialog-line);
     }
     .t_buttons {
         text-align: right;
+        button{
+            margin-right:1ch;
+        }
     }
 }
 

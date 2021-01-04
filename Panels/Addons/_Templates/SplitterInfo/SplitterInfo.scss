@@ -28,7 +28,6 @@ $smallscreen: 900px;
         padding: 0.2em 0 0 0;
         // border-bottom: 1px solid lightgray;
         .yt_panels_splitterinfo_colldesc {
-            color: var(--bar-clr);
             cursor: pointer;
             display: inline-block;
             margin-right: .5ch;
@@ -78,7 +77,7 @@ $smallscreen: 900px;
     .yt_panels_splitterinfo_left {
         flex: 0 1 30%;
         position: relative;
-        border-right: var(--elem-border-width) solid var(--elem-border-clr);
+        border-right: var(--bar-border);
         .t_area {
             overflow: auto;
             height:100%;
