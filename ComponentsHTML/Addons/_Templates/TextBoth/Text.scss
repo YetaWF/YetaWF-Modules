@@ -1,0 +1,52 @@
+/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+.yt_text_base.t_edit,
+.yt_text_base.t_display {
+
+    display:inline-block;
+    text-indent:.5em;
+    line-height:1.5em;
+    padding: .18em 0;
+    vertical-align: middle;
+
+    background: var(--inp-bg);
+    color: var(--inp-clr);
+    border: var(--inp-border);
+    border-radius: var(--inp-border-radius);
+
+    outline:none;
+    &:hover:not(:disabled):not(:focus) {
+        border: var(--inp-border-hover);
+    }
+    &:focus {
+        border: var(--inp-border-focus);
+    }
+    &:disabled {
+        opacity: .6;
+    }
+
+    &.yt_text10 {
+        max-width:100%;
+        width: 16ch;
+    }
+    &.yt_text20 {
+        max-width:100%;
+        width: 26ch;
+    }
+    &.yt_text,
+    &.yt_text40 {
+        max-width:100%;
+        width: 38ch;
+    }
+    &.yt_text80 {
+        max-width:100%;
+        width: 62ch;
+    }
+    &::placeholder {
+        opacity:0.6;
+    }
+}
+
+.yt_text_copy {
+    margin-left:.5ch;
+}

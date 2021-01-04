@@ -292,11 +292,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (!string.IsNullOrWhiteSpace(css))
                 css = $" {css}";
 
-            // adding k-textbox to the control makes it look like a kendo maskedtext box without the overhead of actually calling kendoMaskedTextBox
             string id = HtmlBuilder.GetIdCond(HtmlAttributes);
             if (id != null)
                 id = $" id='{id}'";
-            hb.Append($@"<input{id}{FieldSetup(FieldType.Anonymous)} type='text' value='{HAE(model ?? string.Empty)}' class='k-textbox t_display {TemplateClass}{css}'{readOnly}{disabled}>");
+            hb.Append($@"<input{id}{FieldSetup(FieldType.Anonymous)} type='text' value='{HAE(model ?? string.Empty)}' class='t_display {TemplateClass}{css}'{readOnly}{disabled}>");
 
             if (copy) {
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "clipboardjs.com.clipboard");// add clipboard support
@@ -390,9 +389,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 throw new InternalError("No max string length given using StringLengthAttribute or maxlength - {0}", component.FieldName);
 #endif
 
-            // adding k-textbox to the control makes it look like a kendo maskedtext box without the overhead of actually calling kendoMaskedTextBox
             HtmlBuilder hb = new HtmlBuilder();
-            hb.Append($@"<input{component.FieldSetup(component.Validation ? FieldType.Validated : FieldType.Normal)} id='{component.ControlId}' type='text' value='{HAE(model??string.Empty)}' class='yt_text_base k-textbox t_edit {css}' autocomplete='{autoComplete}'{placeHolder}>");
+            hb.Append($@"<input{component.FieldSetup(component.Validation ? FieldType.Validated : FieldType.Normal)} id='{component.ControlId}' type='text' value='{HAE(model??string.Empty)}' class='yt_text_base t_edit {css}' autocomplete='{autoComplete}'{placeHolder}>");
 
             bool copy = component.PropData.GetAdditionalAttributeValue<bool>("Copy", false);
             if (copy) {

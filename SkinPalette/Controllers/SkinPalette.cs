@@ -252,13 +252,39 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string PropCatClr { get; set; } = null!;
 
+            [Category("PropertyList"), Caption("--prop-cat-border"), Description("Border")]
+            [UIHint("Text40"), StringLength(MaxBorder), Required]
+            public string PropCatBorder { get; set; } = null!;
+
             [Category("PropertyList"), Caption("--prop-cat-border-radius"), Description("Border Radius")]
             [UIHint("Text40"), StringLength(MaxRadius), Required]
             public string PropCatBorderRadius { get; set; } = null!;
 
-            [Category("PropertyList"), Caption("--prop-cat-border"), Description("Border")]
+
+
+            [Category("Input"), Caption("--inp-bg"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string InputBg { get; set; } = null!;
+
+            [Category("Input"), Caption("--inp-clr"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string InputClr { get; set; } = null!;
+
+            [Category("Input"), Caption("--inp-border"), Description("Border")]
             [UIHint("Text40"), StringLength(MaxBorder), Required]
-            public string PropCatBorder { get; set; } = null!;
+            public string InputBorder { get; set; } = null!;
+
+            [Category("Input"), Caption("--inp-border-hover"), Description("Border")]
+            [UIHint("Text40"), StringLength(MaxBorder), Required]
+            public string InputBorderHover { get; set; } = null!;
+
+            [Category("Input"), Caption("--inp-border-focus"), Description("Border")]
+            [UIHint("Text40"), StringLength(MaxBorder), Required]
+            public string InputBorderFocus { get; set; } = null!;
+
+            [Category("Input"), Caption("--inp-border-radius"), Description("Border Radius")]
+            [UIHint("Text40"), StringLength(MaxRadius), Required]
+            public string InputBorderRadius { get; set; } = null!;
 
 
 

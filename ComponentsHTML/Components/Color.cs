@@ -89,7 +89,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
 <div class='yt_color t_edit' id='{DivId}'>
     {await TextEditComponent.RenderTextAsync(this, model, null)}
-    <input type='color' value='{HAE(selModel)}' class='t_selector k-textbox'>
+    <input type='color' value='{HAE(selModel)}' class='t_selector'>
 </div>");
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ColorEditComponent('{DivId}');");// , {Utility.JsonSerialize(setup)});");
 

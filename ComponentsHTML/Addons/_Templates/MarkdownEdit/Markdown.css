@@ -1,6 +1,6 @@
 @charset "UTF-8";
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
-.yt_markdown textarea.k-textbox {
+.yt_markdown textarea {
   padding-left: .5ch;
   padding-right: .5ch;
   width: 100%;

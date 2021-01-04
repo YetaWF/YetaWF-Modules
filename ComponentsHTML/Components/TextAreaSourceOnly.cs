@@ -79,7 +79,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             text ??= string.Empty;
 
             bool copy = PropData.GetAdditionalAttributeValue<bool>("Copy", true);
-
             int emHeight = PropData.GetAdditionalAttributeValue("EmHeight", 10);
 
             string readOnly = string.Empty;
@@ -89,7 +88,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             else
                 disabled = " disabled='disabled'";
 
-            hb.Append($"<textarea id='{ControlId}'{FieldSetup(FieldType.Anonymous)} rows='{emHeight}' class='yt_textareasourceonly t_display k-textbox'{readOnly}{disabled}>{HE(text)}</textarea>");
+            hb.Append($"<textarea id='{ControlId}'{FieldSetup(FieldType.Anonymous)} rows='{emHeight}' class='yt_textareasourceonly t_display'{readOnly}{disabled}>{HE(text)}</textarea>");
 
             if (copy) {
                 hb.Append(ImageHTML.BuildKnownIcon("#TextAreaSourceOnlyCopy", sprites: Info.PredefSpriteIcons, title: __ResStr("ttCopy", "Copy to Clipboard"), cssClass: "yt_textareasourceonly_copy"));
@@ -164,7 +163,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 throw new InternalError($"No max string length given using StringLengthAttribute or maxlength - {FieldName}");
 #endif
             HtmlBuilder hb = new HtmlBuilder();
-            hb.Append($"<textarea id='{ControlId}'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} rows='{emHeight}' spellcheck='{(spellcheck ? "true" : "false")}' class='yt_textareasourceonly t_edit k-textbox'{placeHolder}>{HE(text)}</textarea>");
+            hb.Append($"<textarea id='{ControlId}'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} rows='{emHeight}' spellcheck='{(spellcheck ? "true" : "false")}' class='yt_textareasourceonly t_edit'{placeHolder}>{HE(text)}</textarea>");
             if (copy) {
                 hb.Append(ImageHTML.BuildKnownIcon("#TextAreaSourceOnlyCopy", sprites: Info.PredefSpriteIcons, title: __ResStr("ttCopy", "Copy to Clipboard"), cssClass: "yt_textareasourceonly_copy"));
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "clipboardjs.com.clipboard");// add clipboard support
