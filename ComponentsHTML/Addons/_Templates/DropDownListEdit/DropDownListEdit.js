@@ -50,14 +50,14 @@ var YetaWF_ComponentsHTML;
             _this.optionsUpdated();
             $YetaWF.registerEventHandler(_this.Container, "mouseenter", null, function (ev) {
                 if (_this.Enabled) {
-                    $YetaWF.elementRemoveClass(_this.Container, "k-state-hover");
-                    $YetaWF.elementAddClass(_this.Container, "k-state-hover");
+                    $YetaWF.elementRemoveClass(_this.Container, "t_hover");
+                    $YetaWF.elementAddClass(_this.Container, "t_hover");
                 }
                 return true;
             });
             $YetaWF.registerEventHandler(_this.Container, "mouseleave", null, function (ev) {
                 if (_this.Enabled)
-                    $YetaWF.elementRemoveClass(_this.Container, "k-state-hover");
+                    $YetaWF.elementRemoveClass(_this.Container, "t_hover");
                 return true;
             });
             $YetaWF.registerEventHandler(_this.Container, "click", null, function (ev) {
@@ -67,14 +67,14 @@ var YetaWF_ComponentsHTML;
             });
             $YetaWF.registerEventHandler(_this.Control, "focusin", null, function (ev) {
                 if (_this.Enabled) {
-                    $YetaWF.elementRemoveClass(_this.Container, "k-state-focused");
-                    $YetaWF.elementAddClass(_this.Container, "k-state-focused");
+                    $YetaWF.elementRemoveClass(_this.Container, "t_focused");
+                    $YetaWF.elementAddClass(_this.Container, "t_focused");
                     _this.Focused = true;
                 }
                 return true;
             });
             $YetaWF.registerEventHandler(_this.Control, "focusout", null, function (ev) {
-                $YetaWF.elementRemoveClass(_this.Container, "k-state-focused");
+                $YetaWF.elementRemoveClass(_this.Container, "t_focused");
                 _this.Focused = false;
                 _this.closePopup(SendSelectEnum.ChangeSinceOpen);
                 return true;
@@ -222,10 +222,10 @@ var YetaWF_ComponentsHTML;
             this.closePopup(SendSelectEnum.No);
             $YetaWF.elementEnableToggle(this.Select, enabled);
             $YetaWF.elementEnableToggle(this.Container, enabled);
-            $YetaWF.elementRemoveClass(this.Container, "k-state-disabled");
+            $YetaWF.elementRemoveClass(this.Container, "t_disabled");
             this.Control.removeAttribute("tabindex");
             if (!enabled) {
-                $YetaWF.elementAddClass(this.Container, "k-state-disabled");
+                $YetaWF.elementAddClass(this.Container, "t_disabled");
                 $YetaWF.setAttribute(this.Control, "aria-disabled", "true");
             }
             else {
@@ -256,10 +256,10 @@ var YetaWF_ComponentsHTML;
             this.IndexOnOpen = this.selectedIndex;
             DropDownListEditComponent.closeDropdowns();
             this.Popup =
-                $YetaWF.createElement("div", { id: "yDDPopup", "data-owner": this.ControlId, class: "k-animation-container", "aria-hidden": "false" },
-                    $YetaWF.createElement("div", { class: "k-list-container k-popup k-group k-reset", "data-role": "popup", "aria-hidden": "false" },
-                        $YetaWF.createElement("div", { class: "k-list-scroller", unselectable: "on" },
-                            $YetaWF.createElement("ul", { unselectable: "on", class: "k-list k-reset", tabindex: "-1", "aria-hidden": "true", "aria-live": "off", "data-role": "staticlist", role: "listbox" }))));
+                $YetaWF.createElement("div", { id: DropDownListEditComponent.POPUPID, "data-owner": this.ControlId, "aria-hidden": "false" },
+                    $YetaWF.createElement("div", { class: "t_container", "data-role": "popup", "aria-hidden": "false" },
+                        $YetaWF.createElement("div", { class: "t_scroller", unselectable: "on" },
+                            $YetaWF.createElement("ul", { unselectable: "on", class: "t_list", tabindex: "-1", "aria-hidden": "true", "aria-live": "off", "data-role": "staticlist", role: "listbox" }))));
             var ul = $YetaWF.getElement1BySelector("ul", [this.Popup]);
             var opts = this.Select.options;
             var len = opts.length;
@@ -271,7 +271,7 @@ var YetaWF_ComponentsHTML;
                     tt = " " + YConfigs.Basics.CssTooltip + "=\"" + tt + "\"";
                 else
                     tt = "";
-                html += "<li tabindex=\"-1\" role=\"option\" unselectable=\"on\" class=\"k-item\" data-index=\"" + i + "\"" + tt + ">" + o.innerHTML + "</li>";
+                html += "<li tabindex=\"-1\" role=\"option\" unselectable=\"on\" class=\"t_item\" data-index=\"" + i + "\"" + tt + ">" + o.innerHTML + "</li>";
             }
             ul.innerHTML = html;
             var style = window.getComputedStyle(this.Control);
@@ -303,13 +303,13 @@ var YetaWF_ComponentsHTML;
             });
             $YetaWF.registerEventHandler(this.Popup, "mouseover", "ul li", function (ev) {
                 var li = ev.__YetaWFElem;
-                $YetaWF.elementRemoveClass(li, "k-state-hover");
-                $YetaWF.elementAddClass(li, "k-state-hover");
+                $YetaWF.elementRemoveClass(li, "t_hover");
+                $YetaWF.elementAddClass(li, "t_hover");
                 return true;
             });
             $YetaWF.registerEventHandler(this.Popup, "mouseout", "ul li", function (ev) {
                 var li = ev.__YetaWFElem;
-                $YetaWF.elementRemoveClass(li, "k-state-hover");
+                $YetaWF.elementRemoveClass(li, "t_hover");
                 return true;
             });
         };
@@ -340,7 +340,7 @@ var YetaWF_ComponentsHTML;
                 return;
             var ownerId = $YetaWF.getAttribute(popup, "data-owner");
             var control = DropDownListEditComponent.getControlById(ownerId, DropDownListEditComponent.SELECTOR);
-            var scroller = $YetaWF.getElement1BySelector(".k-list-scroller", [popup]);
+            var scroller = $YetaWF.getElement1BySelector(".t_scroller", [popup]);
             // resize to fit
             var controlRect = control.Control.getBoundingClientRect();
             var desiredHeight = control.Setup.DropDownHeightFactor * DropDownListEditComponent.DEFAULTHEIGHT;
@@ -404,14 +404,14 @@ var YetaWF_ComponentsHTML;
             if (this.Popup) {
                 var ul = $YetaWF.getElement1BySelector("ul", [this.Popup]);
                 var li = ul.children[index];
-                $YetaWF.elementRemoveClasses(li, ["k-state-selected", "k-state-focused"]);
-                $YetaWF.elementAddClass(li, "k-state-selected");
+                $YetaWF.elementRemoveClasses(li, ["t_selected", "t_focused"]);
+                $YetaWF.elementAddClass(li, "t_selected");
                 var ariaId = $YetaWF.getAttribute(this.Control, "aria-activedescendant");
                 li.id = ariaId;
                 $YetaWF.setAttribute(li, "aria-selected", "true");
                 if (this.Focused)
-                    $YetaWF.elementAddClass(li, "k-state-focused");
-                var scroller = $YetaWF.getElement1BySelector(".k-list-scroller", [this.Popup]);
+                    $YetaWF.elementAddClass(li, "t_focused");
+                var scroller = $YetaWF.getElement1BySelector(".t_scroller", [this.Popup]);
                 var rectElem = li.getBoundingClientRect();
                 var rectContainer = scroller.getBoundingClientRect();
                 if (rectElem.bottom > rectContainer.bottom)
@@ -422,10 +422,10 @@ var YetaWF_ComponentsHTML;
         };
         DropDownListEditComponent.prototype.clearSelectedPopupItem = function () {
             if (this.Popup) {
-                var lis = $YetaWF.getElementsBySelector("ul li.k-state-selected", [this.Popup]);
+                var lis = $YetaWF.getElementsBySelector("ul li.t_selected", [this.Popup]);
                 for (var _i = 0, lis_1 = lis; _i < lis_1.length; _i++) {
                     var li = lis_1[_i];
-                    $YetaWF.elementRemoveClasses(li, ["k-state-selected", "k-state-focused"]);
+                    $YetaWF.elementRemoveClasses(li, ["t_selected", "t_focused"]);
                     $YetaWF.setAttribute(li, "aria-selected", "false");
                     li.id = "";
                 }
@@ -459,7 +459,7 @@ var YetaWF_ComponentsHTML;
                     width = w;
             }
             // extra for dropdown selector
-            elem.innerText = "MMMM"; // 4 characters
+            elem.innerText = "MMM"; // 3 characters
             width += elem.clientWidth;
             elem.remove();
             return width;

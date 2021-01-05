@@ -67,14 +67,14 @@ namespace YetaWF_ComponentsHTML {
 
             $YetaWF.registerEventHandler(this.Container, "mouseenter", null, (ev: MouseEvent): boolean => {
                 if (this.Enabled) {
-                    $YetaWF.elementRemoveClass(this.Container, "k-state-hover");
-                    $YetaWF.elementAddClass(this.Container, "k-state-hover");
+                    $YetaWF.elementRemoveClass(this.Container, "t_hover");
+                    $YetaWF.elementAddClass(this.Container, "t_hover");
                 }
                 return true;
             });
             $YetaWF.registerEventHandler(this.Container, "mouseleave", null, (ev: MouseEvent): boolean => {
                 if (this.Enabled)
-                    $YetaWF.elementRemoveClass(this.Container, "k-state-hover");
+                    $YetaWF.elementRemoveClass(this.Container, "t_hover");
                 return true;
             });
             $YetaWF.registerEventHandler(this.Container, "click", null, (ev: MouseEvent): boolean => {
@@ -85,14 +85,14 @@ namespace YetaWF_ComponentsHTML {
 
             $YetaWF.registerEventHandler(this.Control, "focusin", null, (ev: FocusEvent): boolean => {
                 if (this.Enabled) {
-                    $YetaWF.elementRemoveClass(this.Container, "k-state-focused");
-                    $YetaWF.elementAddClass(this.Container, "k-state-focused");
+                    $YetaWF.elementRemoveClass(this.Container, "t_focused");
+                    $YetaWF.elementAddClass(this.Container, "t_focused");
                     this.Focused = true;
                 }
                 return true;
             });
             $YetaWF.registerEventHandler(this.Control, "focusout", null, (ev: FocusEvent): boolean => {
-                $YetaWF.elementRemoveClass(this.Container, "k-state-focused");
+                $YetaWF.elementRemoveClass(this.Container, "t_focused");
                 this.Focused = false;
                 this.closePopup(SendSelectEnum.ChangeSinceOpen);
                 return true;
@@ -222,10 +222,10 @@ namespace YetaWF_ComponentsHTML {
             this.closePopup(SendSelectEnum.No);
             $YetaWF.elementEnableToggle(this.Select, enabled);
             $YetaWF.elementEnableToggle(this.Container, enabled);
-            $YetaWF.elementRemoveClass(this.Container, "k-state-disabled");
+            $YetaWF.elementRemoveClass(this.Container, "t_disabled");
             this.Control.removeAttribute("tabindex");
             if (!enabled) {
-                $YetaWF.elementAddClass(this.Container, "k-state-disabled");
+                $YetaWF.elementAddClass(this.Container, "t_disabled");
                 $YetaWF.setAttribute(this.Control, "aria-disabled", "true");
             } else {
                 $YetaWF.setAttribute(this.Control, "tabindex", "0");
@@ -258,10 +258,10 @@ namespace YetaWF_ComponentsHTML {
 
             DropDownListEditComponent.closeDropdowns();
             this.Popup =
-                <div id="yDDPopup" data-owner={this.ControlId} class="k-animation-container" aria-hidden="false">
-                    <div class="k-list-container k-popup k-group k-reset" data-role="popup" aria-hidden="false">
-                        <div class="k-list-scroller" unselectable="on">
-                            <ul unselectable="on" class="k-list k-reset" tabindex="-1" aria-hidden="true" aria-live="off" data-role="staticlist" role="listbox">
+                <div id={DropDownListEditComponent.POPUPID} data-owner={this.ControlId} aria-hidden="false">
+                    <div class="t_container" data-role="popup" aria-hidden="false">
+                        <div class="t_scroller" unselectable="on">
+                            <ul unselectable="on" class="t_list" tabindex="-1" aria-hidden="true" aria-live="off" data-role="staticlist" role="listbox">
                             </ul>
                         </div>
                     </div>
@@ -278,7 +278,7 @@ namespace YetaWF_ComponentsHTML {
                     tt = ` ${YConfigs.Basics.CssTooltip}="${tt}"`;
                 else
                     tt = "";
-                html += `<li tabindex="-1" role="option" unselectable="on" class="k-item" data-index="${i}"${tt}>${o.innerHTML}</li>`;
+                html += `<li tabindex="-1" role="option" unselectable="on" class="t_item" data-index="${i}"${tt}>${o.innerHTML}</li>`;
             }
             ul.innerHTML = html;
 
@@ -313,13 +313,13 @@ namespace YetaWF_ComponentsHTML {
             });
             $YetaWF.registerEventHandler(this.Popup, "mouseover", "ul li", (ev: MouseEvent): boolean => {
                 let li = ev.__YetaWFElem;
-                $YetaWF.elementRemoveClass(li, "k-state-hover");
-                $YetaWF.elementAddClass(li, "k-state-hover");
+                $YetaWF.elementRemoveClass(li, "t_hover");
+                $YetaWF.elementAddClass(li, "t_hover");
                 return true;
             });
             $YetaWF.registerEventHandler(this.Popup, "mouseout", "ul li", (ev: MouseEvent): boolean => {
                 let li = ev.__YetaWFElem;
-                $YetaWF.elementRemoveClass(li, "k-state-hover");
+                $YetaWF.elementRemoveClass(li, "t_hover");
                 return true;
             });
         }
@@ -349,7 +349,7 @@ namespace YetaWF_ComponentsHTML {
             if (!popup) return;
             let ownerId = $YetaWF.getAttribute(popup, "data-owner");
             let control = DropDownListEditComponent.getControlById<DropDownListEditComponent>(ownerId, DropDownListEditComponent.SELECTOR);
-            let scroller = $YetaWF.getElement1BySelector(".k-list-scroller", [popup]);
+            let scroller = $YetaWF.getElement1BySelector(".t_scroller", [popup]);
 
             // resize to fit
 
@@ -416,15 +416,15 @@ namespace YetaWF_ComponentsHTML {
             if (this.Popup) {
                 let ul = $YetaWF.getElement1BySelector("ul", [this.Popup]);
                 let li = ul.children[index] as HTMLLIElement;
-                $YetaWF.elementRemoveClasses(li, ["k-state-selected", "k-state-focused"]);
-                $YetaWF.elementAddClass(li, "k-state-selected");
+                $YetaWF.elementRemoveClasses(li, ["t_selected", "t_focused"]);
+                $YetaWF.elementAddClass(li, "t_selected");
                 let ariaId = $YetaWF.getAttribute(this.Control, "aria-activedescendant");
                 li.id = ariaId;
                 $YetaWF.setAttribute(li, "aria-selected", "true");
                 if (this.Focused)
-                    $YetaWF.elementAddClass(li, "k-state-focused");
+                    $YetaWF.elementAddClass(li, "t_focused");
 
-                let scroller = $YetaWF.getElement1BySelector(".k-list-scroller", [this.Popup]);
+                let scroller = $YetaWF.getElement1BySelector(".t_scroller", [this.Popup]);
 
                 let rectElem = li.getBoundingClientRect();
                 let rectContainer = scroller.getBoundingClientRect();
@@ -435,9 +435,9 @@ namespace YetaWF_ComponentsHTML {
 
         private clearSelectedPopupItem(): void {
             if (this.Popup) {
-                let lis = $YetaWF.getElementsBySelector("ul li.k-state-selected", [this.Popup]);
+                let lis = $YetaWF.getElementsBySelector("ul li.t_selected", [this.Popup]);
                 for (const li of lis) {
-                    $YetaWF.elementRemoveClasses(li, ["k-state-selected", "k-state-focused"]);
+                    $YetaWF.elementRemoveClasses(li, ["t_selected", "t_focused"]);
                     $YetaWF.setAttribute(li, "aria-selected", "false");
                     li.id = "";
                 }
@@ -476,7 +476,7 @@ namespace YetaWF_ComponentsHTML {
             }
 
             // extra for dropdown selector
-            elem.innerText = "MMMM";// 4 characters
+            elem.innerText = "MMM";// 3 characters
             width += elem.clientWidth;
 
             elem.remove();

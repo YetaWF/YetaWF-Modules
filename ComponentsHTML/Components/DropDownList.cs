@@ -144,8 +144,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns></returns>
         public static async Task<string> RenderDropDownListAsync(YetaWFComponent component, TYPE model, List<SelectionItem<TYPE>> list, string cssClass) {
 
-            // Uses kendo styles (k-widget, k-dropdown , k-dropdown-wrap, k-input, k-select)
-
             await IncludeExplicitAsync();
 
             string css = string.Empty;
@@ -200,13 +198,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 }
             }
 
+            // icon used: fa-caret-down
             string tags = $@"
-<div id='{component.ControlId}' class='k-widget k-dropdown yt_dropdownlist_base t_edit {cssClass}' {(disabled ? "aria-disabled='true'" : "tabindex='0' aria-disabled='false'")} unselectable='on' role='listbox' aria-haspopup='true' aria-expanded='false' aria-owns='yDDPopup' aria-live='polite' aria-busy='false'
+<div id='{component.ControlId}' class='yt_dropdownlist_base t_edit {cssClass}' {(disabled ? "aria-disabled='true'" : "tabindex='0' aria-disabled='false'")} unselectable='on' role='listbox' aria-haspopup='true' aria-expanded='false' aria-owns='yDDPopup' aria-live='polite' aria-busy='false'
         aria-activedescendant='{Guid.NewGuid().ToString()}'>
-    <div unselectable='on' class='t_container k-dropdown-wrap k-state-default {(disabled ? "k-state-disabled" : "")}' {(disabled ? "disabled='disabled'" : "")}>
-        <div unselectable='on' class='t_input k-input'>{HAE(selItem != null ? selItem.Text : null)}</div>
+    <div unselectable='on' class='t_container {(disabled ? "t_disabled" : "")}' {(disabled ? "disabled='disabled'" : "")}>
+        <div unselectable='on' class='t_input'>{HAE(selItem != null ? selItem.Text : null)}</div>
         <div unselectable='on' class='t_select' aria-label='select'>
-            <div class='t_img'></div>
+            <svg aria-hidden='true' focusable='false' role='img' viewBox='0 0 320 512'>
+                <path fill='currentColor' d='M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z'></path>
+            </svg>
         </div>
     </div>
     <select{component.FieldSetup(disabled ? (component.Validation ? FieldType.Validated : FieldType.Normal) : FieldType.Normal)}{component.GetClassAttribute(css)}>{tagHtml.ToString()}</select>

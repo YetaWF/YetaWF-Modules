@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
@@ -77,6 +78,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(string model) {
+
+            CssLegacy.ExcludeLegacyBrowser();
 
             HtmlBuilder hb = new HtmlBuilder();
 

@@ -5,6 +5,7 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.SkinPalette.Controllers {
@@ -285,6 +286,87 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [Category("Input"), Caption("--inp-border-radius"), Description("Border Radius")]
             [UIHint("Text40"), StringLength(MaxRadius), Required]
             public string InputBorderRadius { get; set; } = null!;
+
+
+            [Category("Dropdownlist"), Caption("--dd-bg"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string DDBg { get; set; } = null!;
+
+            [Category("Dropdownlist"), Caption("--dd-clr"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string DDClr { get; set; } = null!;
+
+            [Category("Dropdownlist"), Caption("--dd-bg-hover"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string DDBgHover { get; set; } = null!;
+
+            [Category("Dropdownlist"), Caption("--dd-clr-hover"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string DDClrHover { get; set; } = null!;
+
+            [Category("Dropdownlist"), Caption("--dd-bg-focus"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string DDBgFocus { get; set; } = null!;
+
+            [Category("Dropdownlist"), Caption("--dd-clr-focus"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string DDClrFocus { get; set; } = null!;
+
+            [Category("Dropdownlist"), Caption("--dd-border"), Description("Border")]
+            [UIHint("Text40"), StringLength(MaxBorder), Required]
+            public string DDBorder { get; set; } = null!;
+
+            [Category("Dropdownlist"), Caption("--dd-border-hover"), Description("Border")]
+            [UIHint("Text40"), StringLength(MaxBorder), Required]
+            public string DDBorderHover { get; set; } = null!;
+
+            [Category("Dropdownlist"), Caption("--dd-border-focus"), Description("Border")]
+            [UIHint("Text40"), StringLength(MaxBorder), Required]
+            public string DDBorderFocus { get; set; } = null!;
+
+            [Category("Dropdownlist"), Caption("--dd-border-radius"), Description("Border Radius")]
+            [UIHint("Text40"), StringLength(MaxRadius), Required]
+            public string DDBorderRadius { get; set; } = null!;
+
+            [Category("Dropdownlist"), Caption("--dd-p-bg"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string DDListBg { get; set; } = null!;
+
+            [Category("Dropdownlist"), Caption("--dd-p-clr"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string DDListClr { get; set; } = null!;
+
+            [Category("Dropdownlist"), Caption("--dd-p-bg-hover"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string DDListBgHover { get; set; } = null!;
+
+            [Category("Dropdownlist"), Caption("--dd-p-clr-hover"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string DDListClrHover { get; set; } = null!;
+
+            [Category("Dropdownlist"), Caption("--dd-p-bg-focus"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string DDListBgFocus { get; set; } = null!;
+
+            [Category("Dropdownlist"), Caption("--dd-p-clr-focus"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string DDListClrFocus { get; set; } = null!;
+
+            [Category("Dropdownlist"), Caption("--dd-p-border"), Description("Border")]
+            [UIHint("Text40"), StringLength(MaxBorder), Required]
+            public string DDListBorder { get; set; } = null!;
+
+            [Category("Dropdownlist"), Caption("--dd-p-border-radius"), Description("Border Radius")]
+            [UIHint("Text40"), StringLength(MaxRadius), Required]
+            public string DDListBorderRadius { get; set; } = null!;
+
+            [Category("Dropdownlist"), Caption("--dd-p-shadow"), Description("Shadow")]
+            [UIHint("Text40"), StringLength(MaxShadow), Required]
+            public string DDListShadow { get; set; } = null!;
+
+            [Category("Dropdownlist"), Caption("--dd-p-shadow-focus"), Description("Shadow")]
+            [UIHint("Text40"), StringLength(MaxShadow), Required]
+            public string DDListShadowFocus { get; set; } = null!;
 
 
 
@@ -596,6 +678,7 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
         [AllowGet]
         public ActionResult SkinPalette() {
 
+            if (CssLegacy.IsLegacyBrowser()) return new EmptyResult();
             if (Manager.IsInPopup) return new EmptyResult();
 
             Model model = new Model {};

@@ -8,45 +8,63 @@ $ddheight: 1em;
 
 .yt_dropdownlist_base.t_edit {
 
+    position: relative;
+    display:inline-block;
     max-width:100%;
+    outline:none;
+    vertical-align: middle;
 
     .t_container {
         overflow: hidden;
         cursor: pointer;
 
-        &.k-dropdown-wrap {
-            padding-right: 0;// override k-dropdown-wrap's 2em ($ddselwidth)
+        background: var(--dd-bg);
+        color: var(--dd-clr);
+
+        border: var(--dd-border);
+        border-radius: var(--dd-border-radius);
+        //box-shadow: 0 0 3px 0 rgba(0,0,0,.3);
+
+        outline:none;
+        padding-right: 0;
+
+        &:hover:not(.t_focused):not(.t_disabled) {
+            background: var(--dd-bg-hover);
+            color: var(--dd-clr-hover);
+            border: var(--dd-border-hover);
+        }
+        &.t_focused {
+            background: var(--dd-bg-focus);
+            color: var(--dd-clr-focus);
+            border: var(--inp-border-focus);
+        }
+        &.t_disabled {
+            opacity: .6;
+            .t_select {
+                opacity: .6;
+            }
+        }
+        .t_input {
+            text-indent: 0;
+            padding: .3em $ddselwidth .3em .4em;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+        .t_select {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: $ddselwidth;
+            text-align: center;
+            padding: .3em 0;
+            svg {
+                width:$ddwidth;
+                height:$ddheight;
+            }
         }
     }
-    .k-dropdown-wrap .k-input {
-        text-indent: 0;
-    }
-    .t_input.k-input { // k-input for specificity
-        padding: .2em $ddselwidth .2em .4em;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-    }
-    .t_select {
-        position:absolute;
-        top:0;
-        right:0;
-        width:$ddselwidth;
-        height:100%;
-
-        .t_img {
-            width:$ddwidth;
-            height:$ddheight;
-            position:absolute;
-            top:50%;
-            left:50%;
-            margin-top: - $ddheight / 2;
-            margin-left: - $ddwidth / 2;
-            background: url('image/caret-down-solid.svg') 0px 0px no-repeat;
-            background-position-x: center;
-        }
-    }
-
     select {
         display:none;
     }
@@ -55,8 +73,41 @@ $ddheight: 1em;
 #yDDPopup {
     position: absolute;
     z-index:2500;
-    li {
-        text-overflow: ellipsis;
-        white-space: nowrap;
+    .t_container {
+        padding:.12em;
+        background: var(--dd-p-bg);
+        color: var(--dd-p-clr);
+        border: var(--dd-p-border);
+        border-radius: var(--dd-p-border-radius);
+        box-shadow: var(--dd-p-shadow);
+        .t_scroller {
+            overflow: auto;
+            .t_list {
+                outline: 0;
+                list-style: none;
+                padding-left: 0;
+                margin:0;
+                height:auto;
+                li {
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    padding: 0 .25em;
+                    line-height: 1.8em;
+                    min-height: 1.8em;
+                    cursor: default;
+                    border: 1px solid transparent;
+                    border-radius: 3px;
+                    &:hover:not(.t_focused):not(.t_selected) {
+                        background: var(--dd-p-bg-hover);
+                        color: var(--dd-p-clr-hover);
+                    }
+                    &.t_focused, &.t_selected {
+                        background: var(--dd-p-bg-focus);
+                        color: var(--dd-p-clr-focus);
+                        box-shadow: var(--dd-p-shadow-focus);
+                    }
+                }
+            }
+        }
     }
 }
