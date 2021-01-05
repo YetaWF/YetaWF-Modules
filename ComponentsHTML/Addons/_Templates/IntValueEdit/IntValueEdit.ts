@@ -14,7 +14,7 @@ namespace YetaWF_ComponentsHTML {
     export class IntValueEditComponent extends YetaWF.ComponentBaseDataImpl {
 
         public static readonly TEMPLATE: string = "yt_intvalue_base";
-        public static readonly SELECTOR: string = "input.yt_intvalue_base.t_edit.k-input[name]";
+        public static readonly SELECTOR: string = "input.yt_intvalue_base.t_edit[name]";
         public static readonly EVENT: string = "intvalue_changespin";// combines change and spin
         public static readonly EVENTCHANGE: string = "intvalue_change";
         public static readonly EVENTSPIN: string = "intvalue_spin";

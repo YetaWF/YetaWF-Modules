@@ -21,6 +21,9 @@ textarea.yt_textareasourceonly {
     &:disabled {
         opacity: .6;
     }
+    &:read-only {
+        opacity:0.6;
+    }
 
     &::placeholder {
         opacity:0.6;

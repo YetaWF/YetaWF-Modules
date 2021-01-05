@@ -33,13 +33,11 @@ namespace YetaWF_ComponentsHTML {
                     let editor = CKEDITOR.instances[control.id];
                     if (enable) {
                         control.removeAttribute("readonly");
-                        $YetaWF.elementRemoveClass(control, "k-state-disabled");
                         try {
                             editor.setReadOnly(false);
                         } catch (e) {}
                     } else {
                         control.setAttribute("readonly", "readonly");
-                        $YetaWF.elementAddClass(control, "k-state-disabled");
                         try {
                             editor.setReadOnly(true);
                         } catch (e) { }

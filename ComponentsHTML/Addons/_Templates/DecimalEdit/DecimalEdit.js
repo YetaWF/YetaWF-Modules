@@ -79,7 +79,7 @@ var YetaWF_ComponentsHTML;
             this.kendoNumericTextBox.enable(enabled);
         };
         DecimalEditComponent.TEMPLATE = "yt_decimal";
-        DecimalEditComponent.SELECTOR = "input.yt_decimal.t_edit.k-input[name]";
+        DecimalEditComponent.SELECTOR = "input.yt_decimal.t_edit[name]";
         return DecimalEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.DecimalEditComponent = DecimalEditComponent;

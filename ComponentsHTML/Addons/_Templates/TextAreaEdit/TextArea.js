@@ -29,7 +29,6 @@ var YetaWF_ComponentsHTML;
                     var editor = CKEDITOR.instances[control.id];
                     if (enable) {
                         control.removeAttribute("readonly");
-                        $YetaWF.elementRemoveClass(control, "k-state-disabled");
                         try {
                             editor.setReadOnly(false);
                         }
@@ -37,7 +36,6 @@ var YetaWF_ComponentsHTML;
                     }
                     else {
                         control.setAttribute("readonly", "readonly");
-                        $YetaWF.elementAddClass(control, "k-state-disabled");
                         try {
                             editor.setReadOnly(true);
                         }

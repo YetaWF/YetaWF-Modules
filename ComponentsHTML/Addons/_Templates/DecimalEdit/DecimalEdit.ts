@@ -13,7 +13,7 @@ namespace YetaWF_ComponentsHTML {
     export class DecimalEditComponent extends YetaWF.ComponentBaseDataImpl {
 
         public static readonly TEMPLATE: string = "yt_decimal";
-        public static readonly SELECTOR: string = "input.yt_decimal.t_edit.k-input[name]";
+        public static readonly SELECTOR: string = "input.yt_decimal.t_edit[name]";
 
         kendoNumericTextBox: kendo.ui.NumericTextBox;
 

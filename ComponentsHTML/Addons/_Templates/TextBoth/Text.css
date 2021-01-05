@@ -21,6 +21,9 @@
   .yt_text_base.t_edit:disabled,
   .yt_text_base.t_display:disabled {
     opacity: .6; }
+  .yt_text_base.t_edit:read-only,
+  .yt_text_base.t_display:read-only {
+    opacity: 0.6; }
   .yt_text_base.t_edit.yt_text10,
   .yt_text_base.t_display.yt_text10 {
     max-width: 100%;

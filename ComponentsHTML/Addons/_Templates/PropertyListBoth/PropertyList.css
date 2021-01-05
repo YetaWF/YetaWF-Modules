@@ -69,7 +69,7 @@
     display: block; }
     .yCondense .yt_propertylist .t_vals .yt_url.t_edit .t_local {
       width: 100%; }
-      .yCondense .yt_propertylist .t_vals .yt_url.t_edit .t_local .k-widget.k-dropdown.yt_dropdownlist_base {
+      .yCondense .yt_propertylist .t_vals .yt_url.t_edit .t_local .yt_dropdownlist_base {
         width: 100% !important; }
     .yCondense .yt_propertylist .t_vals .yt_url.t_edit .t_remote {
       width: 100%; }

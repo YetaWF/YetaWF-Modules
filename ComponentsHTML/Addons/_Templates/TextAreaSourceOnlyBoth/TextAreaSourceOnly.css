@@ -16,6 +16,8 @@ textarea.yt_textareasourceonly {
     border: var(--inp-border-focus); }
   textarea.yt_textareasourceonly:disabled {
     opacity: .6; }
+  textarea.yt_textareasourceonly:read-only {
+    opacity: 0.6; }
   textarea.yt_textareasourceonly::-webkit-input-placeholder {
     opacity: 0.6; }
   textarea.yt_textareasourceonly:-ms-input-placeholder {

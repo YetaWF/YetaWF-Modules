@@ -24,6 +24,9 @@
     &:disabled {
         opacity: .6;
     }
+    &:read-only {
+        opacity:0.6;
+    }
 
     &.yt_text10 {
         max-width:100%;

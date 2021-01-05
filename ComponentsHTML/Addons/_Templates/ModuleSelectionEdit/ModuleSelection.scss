@@ -8,8 +8,8 @@ div.yt_moduleselection.t_edit {
             width:12ch;
         }
     }
-    .t_packages .k-widget.yt_dropdownlist_base,
-    .t_select .k-widget.yt_dropdownlist_base { /* set min-width because we replace via ajax, so no autosize */
+    .t_packages .yt_dropdownlist_base,
+    .t_select .yt_dropdownlist_base { /* set min-width because we replace via ajax, so no autosize */
         min-width:30ch;
     }
     .t_select,

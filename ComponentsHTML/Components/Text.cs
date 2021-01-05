@@ -279,8 +279,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             bool rdonly = PropData.GetAdditionalAttributeValue<bool>("ReadOnly", false);
 
             string css = string.Empty;
-            if (!rdonly)
-                css = CssManager.CombineCss(css, "k-state-disabled"); // USE KENDO style
 
             string readOnly = string.Empty;
             string disabled = string.Empty;

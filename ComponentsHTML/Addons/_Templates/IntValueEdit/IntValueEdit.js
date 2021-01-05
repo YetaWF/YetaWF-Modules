@@ -105,7 +105,7 @@ var YetaWF_ComponentsHTML;
             }
         };
         IntValueEditComponent.TEMPLATE = "yt_intvalue_base";
-        IntValueEditComponent.SELECTOR = "input.yt_intvalue_base.t_edit.k-input[name]";
+        IntValueEditComponent.SELECTOR = "input.yt_intvalue_base.t_edit[name]";
         IntValueEditComponent.EVENT = "intvalue_changespin"; // combines change and spin
         IntValueEditComponent.EVENTCHANGE = "intvalue_change";
         IntValueEditComponent.EVENTSPIN = "intvalue_spin";
