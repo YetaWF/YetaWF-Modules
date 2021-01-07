@@ -63,19 +63,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         /// <summary>
-        /// Called by the framework when the component is used so the component can add component specific addons.
-        /// </summary>
-        public override async Task IncludeAsync() {
-            //await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
-            await KendoUICore.AddFileAsync("kendo.button.min.js");
-
-            // dropdown button
-            await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, DropDownButtonComponent.TemplateName, ComponentType.Display);
-
-            await base.IncludeAsync();
-        }
-
-        /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
@@ -112,6 +99,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         string menuHTML = await CoreRendering.RenderMenuAsync(model, setup.MenuId, Globals.CssGridActionMenu, HtmlHelper: HtmlHelper, Hidden: true);
 
                         if (!string.IsNullOrWhiteSpace(menuHTML)) {
+
+                            //// dropdown button support
+                            //await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, DropDownButtonComponent.TemplateName, ComponentType.Display);
 
                             DropDownButtonComponent.Model ddModel = new DropDownButtonComponent.Model {
                                 Text = __ResStr("dropdownText", "Manage"),

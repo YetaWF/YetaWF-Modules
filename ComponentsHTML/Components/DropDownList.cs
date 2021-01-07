@@ -118,7 +118,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Adds all addons for the DropDownList component to the current page.
         /// </summary>
         public static async Task IncludeExplicitAsync() { // this component is reusable so we need to explicitly include all js/css
-            await KendoUICore.UseAsync();// needed for css
             await Manager.AddOnManager.AddTemplateAsync(AreaRegistration.CurrentPackage.AreaName, "DropDownList",  ComponentType.Edit);
         }
         /// <summary>
