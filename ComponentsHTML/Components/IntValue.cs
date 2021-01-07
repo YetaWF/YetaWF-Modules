@@ -2,6 +2,7 @@
 
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -235,21 +236,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             TemplateClass = templateClass;
         }
 
-        internal class IntValueSetup {
-            public int Min { get; set; }
-            public int Max { get; set; }
-            public int Step { get; set; }
-            public string PlaceHolder { get; set; }
-        }
-
-        /// <summary>
-        /// Called by the framework when the component is used so the component can add component specific addons.
-        /// </summary>
+        /// <inheritdoc/>
         public override async Task IncludeAsync() {
-            await KendoUICore.AddFileAsync("kendo.userevents.min.js");
-            await KendoUICore.AddFileAsync("kendo.numerictextbox.min.js");
+            await Manager.AddOnManager.AddTemplateAsync(AreaRegistration.CurrentPackage.AreaName, "Number", ComponentType.Edit);
             await base.IncludeAsync();
         }
+
         /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.
         /// </summary>
@@ -258,6 +250,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public async Task<string> RenderAsync(int model) {
             return await RenderAsync((int?) model);
         }
+
         /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.
         /// </summary>
@@ -267,11 +260,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out string placeHolder);
 
-            IntValueSetup setup = new IntValueSetup {
+            NumberSetup setup = new NumberSetup {
                 Min = 0,
                 Max = 999999999,
-                PlaceHolder = placeHolder,
                 Step = PropData.GetAdditionalAttributeValue<int>("Step", 1),
+                Digits = 0,
+                Locale = MultiString.ActiveLanguage,
             };
 
             // handle min/max
@@ -281,7 +275,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 setup.Max = (int)rangeAttr.Maximum;
             }
 
-            string tags = $@"<input{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} id='{ControlId}' class='{TemplateClass} t_edit yt_intvalue_base{GetClasses()}' maxlength='20' value='{model?.ToString()}'>";
+            placeHolder = string.IsNullOrWhiteSpace(placeHolder) ? string.Empty : $" placeholder={HAE(placeHolder)}";
+
+            string tags = $@"<div class='yt_number_container'><input type='text'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} id='{ControlId}' class='{TemplateClass} t_edit yt_intvalue_base{GetClasses()}' maxlength='20' value='{model?.ToString()}'{placeHolder}></div>";
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.IntValueEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 

@@ -47,22 +47,22 @@ namespace YetaWF_ComponentsHTML {
 
             // capture changes in all edit controls
             if (this.InputDays) {
-                this.InputDays.Control.addEventListener("intvalue_change", (evt: Event): void => {
+                this.InputDays.Control.addEventListener(IntValueEditComponent.EVENTCHANGE, (evt: Event): void => {
                     this.updateValue();
                 });
             }
             if (this.InputHours) {
-                this.InputHours.Control.addEventListener("intvalue_change", (evt: Event): void => {
+                this.InputHours.Control.addEventListener(IntValueEditComponent.EVENTCHANGE, (evt: Event): void => {
                     this.updateValue();
                 });
             }
             if (this.InputMins) {
-                this.InputMins.Control.addEventListener("intvalue_change", (evt: Event): void => {
+                this.InputMins.Control.addEventListener(IntValueEditComponent.EVENTCHANGE, (evt: Event): void => {
                     this.updateValue();
                 });
             }
             if (this.InputSecs) {
-                this.InputSecs.Control.addEventListener("intvalue_change", (evt: Event): void => {
+                this.InputSecs.Control.addEventListener(IntValueEditComponent.EVENTCHANGE, (evt: Event): void => {
                     this.updateValue();
                 });
             }

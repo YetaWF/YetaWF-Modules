@@ -1,0 +1,90 @@
+/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+$w: 1em;
+$h: 1em;
+$spinwidth: 2em;
+
+.yt_number_container {
+
+    display: inline-block;
+    vertical-align: middle;
+
+    position:relative;
+    width: auto;
+    padding-right: $spinwidth;
+
+    background: var(--dd-bg);
+    color: var(--dd-clr);
+
+    border: var(--dd-border);
+    border-radius: var(--dd-border-radius);
+
+    input {
+        line-height: 1.5em;
+        padding: .18em 0.2em;
+        width: 100%;
+
+        background: var(--inp-bg);
+        color: var(--inp-clr);
+
+        border: var(--dd-border);
+        border-color: var(--inp-bg);
+        border-radius: var(--dd-border-radius);
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+
+        outline:none;
+        text-overflow: ellipsis;
+        &:focus {
+            text-overflow:clip;
+        }
+    }
+    &:hover:not(.t_disabled):not(.t_focused) {
+        background: var(--dd-bg-hover);
+        color: var(--dd-clr-hover);
+        border: var(--dd-border-hover);
+    }
+    &.t_focused {
+        background: var(--dd-bg-focus);
+        color: var(--dd-clr-focus);
+        border: var(--dd-border-focus);
+    }
+    &.t_disabled {
+        opacity: .6;
+    }
+    &.t_readonly {
+        opacity:0.6;
+    }
+
+    .t_updown {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: $spinwidth;
+        text-align: center;
+
+        border-left: var(--dd-border);
+        // border-radius: var(--dd-border-radius);
+        // border-top-left-radius: 0;
+        // border-bottom-left-radius: 0;
+    }
+    .t_up, .t_down {
+        height:50%;
+        svg {
+            width:$w;
+            height:$h;
+            vertical-align:top;
+        }
+    }
+    .t_warn {
+        width: 1.2em;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 2.5em;
+        bottom: 0;
+        color: var(--inp-error-clr);
+    }
+}
+

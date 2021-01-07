@@ -1,13 +1,13 @@
 @charset "UTF-8";
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
-.yt_decimal.t_edit input {
+.yt_decimal.t_edit {
   text-align: right;
   padding-right: 0.5ch; }
-  .yt_decimal.t_edit input::-webkit-input-placeholder {
+  .yt_decimal.t_edit::-webkit-input-placeholder {
     opacity: 0.6; }
-  .yt_decimal.t_edit input:-ms-input-placeholder {
+  .yt_decimal.t_edit:-ms-input-placeholder {
     opacity: 0.6; }
-  .yt_decimal.t_edit input::-ms-input-placeholder {
+  .yt_decimal.t_edit::-ms-input-placeholder {
     opacity: 0.6; }
-  .yt_decimal.t_edit input::placeholder {
+  .yt_decimal.t_edit::placeholder {
     opacity: 0.6; }

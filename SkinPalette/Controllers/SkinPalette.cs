@@ -287,7 +287,12 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [UIHint("Text40"), StringLength(MaxRadius), Required]
             public string InputBorderRadius { get; set; } = null!;
 
+            [Category("Input"), Caption("--inp-error-clr"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxRadius), Required]
+            public string InputError { get; set; } = null!;
 
+
+            
             [Category("Dropdownlist"), Caption("--dd-bg"), Description("Color")]
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string DDBg { get; set; } = null!;

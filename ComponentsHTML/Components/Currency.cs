@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -98,21 +99,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        internal class CurrencySetup {
-            public double Min { get; set; }
-            public double Max { get; set; }
-            public Boolean ReadOnly { get; set; }
-            public string PlaceHolder { get; set; }
-        }
-
-        /// <summary>
-        /// Called by the framework when the component is used so the component can add component specific addons.
-        /// </summary>
+        /// <inheritdoc/>
         public override async Task IncludeAsync() {
-            await KendoUICore.AddFileAsync("kendo.userevents.min.js");
-            await KendoUICore.AddFileAsync("kendo.numerictextbox.min.js");
+            await Manager.AddOnManager.AddTemplateAsync(AreaRegistration.CurrentPackage.AreaName, "Number", ComponentType.Edit);
             await base.IncludeAsync();
         }
+
         /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.
         /// </summary>
@@ -133,6 +125,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string dis = string.Empty;
             if (disabled)
                 dis = " disabled='disabled'";
+            string ro = string.Empty;
+            if (rdonly)
+                ro = " readonly='readonly'";
 
             TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out string placeHolder);
 
@@ -140,11 +135,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (model != null)
                 val = $" value='{Formatting.FormatAmount((decimal)model)}'";
 
-            CurrencySetup setup = new CurrencySetup {
+            NumberSetup setup = new NumberSetup {
                 Min = 0,
                 Max = 999999999.99,
-                ReadOnly = rdonly,
-                PlaceHolder = placeHolder,
+                Step = 1,
+                Digits = Manager.CurrentSite.CurrencyDecimals,
+                Currency = Manager.CurrentSite.Currency,
+                Locale = MultiString.ActiveLanguage,
             };
             // handle min/max
             RangeAttribute rangeAttr = PropData.TryGetAttribute<RangeAttribute>();
@@ -152,13 +149,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 setup.Min = (double)rangeAttr.Minimum;
                 setup.Max = (double)rangeAttr.Maximum;
             }
+
+            placeHolder = string.IsNullOrWhiteSpace(placeHolder) ? string.Empty : $" placeholder={HAE(placeHolder)}";
+
+            string tags =
+$@"<div class='yt_number_container{(disabled ? " t_disabled" : "")}{(rdonly ? " t_readonly" : "")}'>
+    <input type='text'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} id='{ControlId}' class='{GetClasses("yt_currency t_edit")}' maxlength='20' {val}{dis}{ro}{placeHolder}>
+</div>";
+
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.CurrencyEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
-            return Task.FromResult(
-$@"<div id='{ControlId}' class='yt_currency t_edit y_inline'>
-    <input{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} class='{GetClasses()}'{val}{dis}>
-</div>");
-
+            return Task.FromResult(tags);
         }
     }
 }

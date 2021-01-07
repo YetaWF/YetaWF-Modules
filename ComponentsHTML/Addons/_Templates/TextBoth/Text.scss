@@ -14,11 +14,13 @@
     border: var(--inp-border);
     border-radius: var(--inp-border-radius);
 
+    text-overflow: ellipsis;
     outline:none;
     &:hover:not(:disabled):not(:focus) {
         border: var(--inp-border-hover);
     }
     &:focus {
+        text-overflow:clip;
         border: var(--inp-border-focus);
     }
     &:disabled {

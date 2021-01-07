@@ -3,6 +3,7 @@
 using System;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -94,20 +95,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        internal class DecimalSetup {
-            public double Min { get; set; }
-            public double Max { get; set; }
-            public string PlaceHolder { get; set; }
-        }
-
-        /// <summary>
-        /// Called by the framework when the component is used so the component can add component specific addons.
-        /// </summary>
+        /// <inheritdoc/>
         public override async Task IncludeAsync() {
-            await KendoUICore.AddFileAsync("kendo.userevents.min.js");
-            await KendoUICore.AddFileAsync("kendo.numerictextbox.min.js");
+            await Manager.AddOnManager.AddTemplateAsync(AreaRegistration.CurrentPackage.AreaName, "Number", ComponentType.Edit);
             await base.IncludeAsync();
         }
+
         /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.
         /// </summary>
@@ -116,6 +109,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public async Task<string> RenderAsync(Decimal model) {
             return await RenderAsync((Decimal?) model);
         }
+
         /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.
         /// </summary>
@@ -123,18 +117,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(Decimal? model) {
 
+            TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out string placeHolder);
+
             string value = null;
             if (model != null) {
                 string format = PropData.GetAdditionalAttributeValue("Format", "0.00");
                 value = HAE(((decimal)model).ToString(format));
             }
 
-            TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out string placeHolder);
-
-            DecimalSetup setup = new DecimalSetup {
+            NumberSetup setup = new NumberSetup {
                 Min = 0,
                 Max = 999999999.99,
-                PlaceHolder = placeHolder,
+                Step = 1,
+                Digits = 2,
+                Locale = MultiString.ActiveLanguage,
             };
 
             // handle min/max
@@ -143,7 +139,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 setup.Min = Convert.ToSingle(rangeAttr.Minimum);
                 setup.Max = Convert.ToSingle(rangeAttr.Maximum);
             }
-            string tags = $@"<input{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} id='{ControlId}' class='yt_decimal t_edit{GetClasses()}' maxlength='20' value='{value}'>";
+
+            placeHolder = string.IsNullOrWhiteSpace(placeHolder) ? string.Empty : $" placeholder={HAE(placeHolder)}";
+
+            string tags = $@"<div class='yt_number_container'><input type='text'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} id='{ControlId}' class='yt_decimal t_edit{GetClasses()}' maxlength='20' value='{value}'{placeHolder}></div>";
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DecimalEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 

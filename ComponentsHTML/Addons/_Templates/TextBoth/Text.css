@@ -11,12 +11,14 @@
   color: var(--inp-clr);
   border: var(--inp-border);
   border-radius: var(--inp-border-radius);
+  text-overflow: ellipsis;
   outline: none; }
   .yt_text_base.t_edit:hover:not(:disabled):not(:focus),
   .yt_text_base.t_display:hover:not(:disabled):not(:focus) {
     border: var(--inp-border-hover); }
   .yt_text_base.t_edit:focus,
   .yt_text_base.t_display:focus {
+    text-overflow: clip;
     border: var(--inp-border-focus); }
   .yt_text_base.t_edit:disabled,
   .yt_text_base.t_display:disabled {
