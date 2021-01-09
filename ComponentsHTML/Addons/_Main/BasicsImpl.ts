@@ -1,3 +1,4 @@
+
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 /* Basics implementation required by YetaWF */
@@ -257,18 +258,18 @@ namespace YetaWF_ComponentsHTML {
             if (DropDownListEditComponent)
                 DropDownListEditComponent.closeDropdowns();
 
+            // Close any open menus
+            if (YetaWF_ComponentsHTML.MenuComponent)
+                YetaWF_ComponentsHTML.MenuComponent.closeAllMenus();
+
             // Close any open kendo menus (if any) //TODO: This is sloppy and prob unnecessary
+            //$$$ TODO: REMOVE
             const $menus = $(".k-menu"); // jQuery use
             $menus.each((index: number, element: HTMLElement): void => {
                 const menu = $(element).data("kendoMenu");
                 if (menu)
                     menu.close("li.k-item");
             });
-
-            // Close any open smartmenus
-            try {
-                ($(".YetaWF_Menus") as any).collapse("hide"); // jQuery use
-            } catch (e) { }
         }
         /**
          * Enable/disable an element.

@@ -4,10 +4,7 @@ using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Support;
-#if MVC6
-#else
-#endif
+using YetaWF.Core.Pages;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -32,24 +29,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         ///
         /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
         public override string GetTemplateName() { return TemplateName; }
-
-        /// <summary>
-        /// Defines the menu rendering engine.
-        /// </summary>
-        public enum MenuStyleEnum {
-            /// <summary>
-            /// The menu used with the page skin is used.
-            /// </summary>
-            Automatic = 0,
-            /// <summary>
-            /// A bootstrap menu is used.
-            /// </summary>
-            Bootstrap = 1,
-            /// <summary>
-            /// A Kendo UI menu is used.
-            /// </summary>
-            Kendo = 2,
-        }
 
         /// <summary>
         /// Defines the direction in which the menu opens.
@@ -129,11 +108,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// <summary>
     /// Displays a menu.
     /// </summary>
-    /// <remarks>
-    /// This is primarily used by the Menu Module and Main Menu Module (YetaWF.Menus package) and is not directly used by applications.
-    /// </remarks>
-    [UsesAdditional("Style", "MenuComponentBase.MenuStyleEnum", "Automatic", "Defines the menu rendering engine.")]
-    public class MenuDisplayComponent : MenuComponentBase, IYetaWFComponent<MenuComponentBase.MenuData> {
+    public partial class MenuDisplayComponent : MenuComponentBase, IYetaWFComponent<MenuComponentBase.MenuData> {
 
         /// <summary>
         /// Returns the component type (edit/display).
@@ -147,38 +122,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(MenuComponentBase.MenuData model) {
-
-            HtmlBuilder hb = new HtmlBuilder();
-
-            MenuStyleEnum style = PropData.GetAdditionalAttributeValue("Style", MenuStyleEnum.Automatic);
-            if (style == MenuStyleEnum.Automatic)
-                style = Manager.SkinInfo.UsingBootstrap ? MenuStyleEnum.Bootstrap : MenuStyleEnum.Kendo;
-
-            if (style == MenuStyleEnum.Bootstrap) {
-
-                string menu = (await CoreRendering.RenderMenuAsync(model.MenuList, DivId, null, RenderEngine: YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.BootstrapSmartMenu, HtmlHelper: HtmlHelper));
-                if (!string.IsNullOrWhiteSpace(menu)) {
-                    await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "github.com.vadikom.smartmenus"); // multilevel navbar
-                    hb.Append(menu);
-                }
-
-            } else {
-
-                string menu = (await CoreRendering.RenderMenuAsync(model.MenuList, DivId, model.CssClass, RenderEngine: YetaWF.Core.Modules.ModuleAction.RenderEngineEnum.KendoMenu, HtmlHelper: HtmlHelper));
-                if (!string.IsNullOrWhiteSpace(menu)) {
-
-                    //await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
-                    await KendoUICore.AddFileAsync("kendo.menu.min.js");
-
-                    hb.Append($@"
-<div id='{ControlId}' class='yt_kendomenu t_display' role='navigation'>
-    {menu}
-</div>");
-                    Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.MenuComponent('{ControlId}', {{ MenuId: '{DivId}', Style: {(int)style}, Direction: {(int)model.Direction}, Orientation: {(int)model.Orientation}, PopupCollision: 'fit flip', HoverDelay: {model.HoverDelay} }});");
-                }
+            string css = "yt_menu t_display";
+            switch (model.Orientation) {
+                default:
+                case OrientationEnum.Horizontal:
+                    css = CssManager.CombineCss(css, "t_horz");
+                    break;
+                case OrientationEnum.Vertical:
+                    css = CssManager.CombineCss(css, "t_vert");
+                    break;
             }
-
-            return hb.ToString();
+            return await RenderMenuAsync(model.MenuList, DivId, css, HtmlHelper: HtmlHelper);
         }
     }
 }

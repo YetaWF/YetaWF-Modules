@@ -33,7 +33,7 @@ namespace YetaWF.Modules.ComponentsHTML {
 
             MenuList moduleMenu = await mod.GetModuleMenuListAsync(renderMode, ModuleAction.ActionLocationEnum.ModuleLinks);
 
-            string menuContents = (await RenderMenuAsync(moduleMenu, null, Globals.CssModuleLinks));
+            string menuContents = (await MenuDisplayComponent.RenderMenuAsync(moduleMenu, null, Globals.CssModuleLinks));
             if (!string.IsNullOrWhiteSpace(menuContents)) {
 
                 await Manager.AddOnManager.AddTemplateFromUIHintAsync("ActionIcons", YetaWFComponentBase.ComponentType.Display); // action icons
@@ -58,7 +58,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             MenuList moduleMenu = await mod.GetModuleMenuListAsync(ModuleAction.RenderModeEnum.NormalMenu, ModuleAction.ActionLocationEnum.ModuleMenu);
 
             string id = Manager.UniqueId();
-            string menuContents = (await RenderMenuAsync(moduleMenu, id, Globals.CssModuleMenu));
+            string menuContents = (await MenuDisplayComponent.RenderMenuAsync(moduleMenu, id, Globals.CssModuleMenu));
             if (!string.IsNullOrWhiteSpace(menuContents)) {
 
                 //await Manager.ScriptManager.AddKendoUICoreJsFile("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
@@ -90,7 +90,8 @@ namespace YetaWF.Modules.ComponentsHTML {
         }
 
         internal static async Task<string> RenderActionAsync(ModuleAction action, ModuleAction.RenderModeEnum mode, string id,
-                ModuleAction.RenderEngineEnum RenderEngine = ModuleAction.RenderEngineEnum.KendoMenu, int BootstrapSmartMenuLevel = 0, bool HasSubmenu = false) {
+                ModuleAction.RenderEngineEnum RenderEngine = ModuleAction.RenderEngineEnum.KendoMenu, string SubMenuArrow = null) {
+            //$$$$remove renderengine
 
             // check if we're in the right mode
             if (!await action.RendersSomethingAsync()) return null;
@@ -155,16 +156,10 @@ namespace YetaWF.Modules.ComponentsHTML {
             if (!action.Displayed)
                 attrs.Add("style", "display:none");
 
-            if (HasSubmenu) {
-                if (RenderEngine == ModuleAction.RenderEngineEnum.BootstrapSmartMenu) {
-                    css = CssManager.CombineCss(css, "dropdown-toggle");
-                    attrs.Add("data-toggle", "dropdown-toggle");
-                }
+            if (SubMenuArrow != null) {
                 attrs.Add("aria-haspopup", "true");
                 attrs.Add("aria-expanded", "false");
             }
-            if (RenderEngine == ModuleAction.RenderEngineEnum.BootstrapSmartMenu)
-                css = CssManager.CombineCss(css, BootstrapSmartMenuLevel <= 1 ? "nav-link" : "dropdown-item");
 
             if (!string.IsNullOrWhiteSpace(action.CssClass))
                 css = CssManager.CombineCss(css, Manager.AddOnManager.CheckInvokedCssModule(action.CssClass));
@@ -282,10 +277,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                 }
             }
 
-            if (HasSubmenu && RenderEngine == ModuleAction.RenderEngineEnum.BootstrapSmartMenu)
-                innerHtml += " <span class='caret'></span>";
-
-            return $@"<a{(id != null ? $" id='{id}'" : null)} class='{Globals.CssModuleNoPrint}{HtmlBuilder.GetClasses(attrs, css)}'{HtmlBuilder.Attributes(attrs)}>{innerHtml}</a>";
+            return $@"<a{(id != null ? $" id='{id}'" : null)} class='{Globals.CssModuleNoPrint}{HtmlBuilder.GetClasses(attrs, css)}'{HtmlBuilder.Attributes(attrs)}>{innerHtml}{SubMenuArrow}</a>";
         }
     }
 }

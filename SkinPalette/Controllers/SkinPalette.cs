@@ -25,7 +25,9 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             public const int MaxLine = 200;
             public const int MaxFontSize = 80;
             public const int MaxPadding = 80;
-            
+            public const int MaxWidth = 80;
+            public const int MaxHeight = 80;
+
 
             [Category("Page"), Caption("--body-bg"), Description("Background")]
             [UIHint("Color"), StringLength(MaxColor), Required]
@@ -74,6 +76,208 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [Category("Overlay"), Caption("--overlay-opacity"), Description("Opacity")]
             [UIHint("Decimal"), Range(0.0, 1.0), Required]
             public decimal OverlayOpacity { get; set; }
+
+
+
+            [Category("Main Menu"), Caption("--mm-0-padding"), Description("Padding")]
+            [UIHint("Text20"), StringLength(MaxPadding), Required]
+            public string MainMenu0Padding { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-0-bg"), Description("Background")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu0Bg { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-0-clr"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu0Clr { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-0-font"), Description("Font")]
+            [UIHint("Text40"), StringLength(MaxFont), Required]
+            public string MainMenu0Font { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-0-border"), Description("Border")]
+            [UIHint("Text40"), StringLength(MaxBorder), Required]
+            public string MainMenu0Border { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-0-border-radius"), Description("Border Radius")]
+            [UIHint("Text40"), StringLength(MaxRadius), Required]
+            public string MainMenu0BorderRadius { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-0-a-padding"), Description("Padding")]
+            [UIHint("Text20"), StringLength(MaxPadding), Required]
+            public string MainMenu0APadding { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-0-a-bg"), Description("Background")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu0ABg { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-0-a-clr"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu0AClr { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-0-a-bg-hover"), Description("Background")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu0ABgHover { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-0-a-clr-hover"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu0AClrHover { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-0-a-bg-path"), Description("Background")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu0ABgPath { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-0-a-clr-path"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu0AClrPath { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-0-ddwidth"), Description("Width")]
+            [UIHint("Text20"), StringLength(MaxWidth), Required]
+            public string MainMenu0DDWidth { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-0-ddheight"), Description("Height")]
+            [UIHint("Text20"), StringLength(MaxHeight), Required]
+            public string MainMenu0DDHeight { get; set; } = null!;
+
+
+
+            [Category("Main Menu"), Caption("--mm-1-padding"), Description("Padding")]
+            [UIHint("Text20"), StringLength(MaxPadding), Required]
+            public string MainMenu1Padding { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-1-bg"), Description("Background")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu1Bg { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-1-clr"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu1Clr { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-1-font"), Description("Font")]
+            [UIHint("Text40"), StringLength(MaxFont), Required]
+            public string MainMenu1Font { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-1-border"), Description("Border")]
+            [UIHint("Text40"), StringLength(MaxBorder), Required]
+            public string MainMenu1Border { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-1-border-radius"), Description("Border Radius")]
+            [UIHint("Text40"), StringLength(MaxRadius), Required]
+            public string MainMenu1BorderRadius { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-1-a-padding"), Description("Padding")]
+            [UIHint("Text20"), StringLength(MaxPadding), Required]
+            public string MainMenu1APadding { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-1-a-bg"), Description("Background")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu1ABg { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-1-a-clr"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu1AClr { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-1-a-bg-hover"), Description("Background")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu1ABgHover { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-1-a-clr-hover"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu1AClrHover { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-1-a-bg-path"), Description("Background")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu1ABgPath { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-1-a-clr-path"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu1AClrPath { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-1-ddwidth"), Description("Width")]
+            [UIHint("Text20"), StringLength(MaxWidth), Required]
+            public string MainMenu1DDWidth { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-1-ddheight"), Description("Height")]
+            [UIHint("Text20"), StringLength(MaxHeight), Required]
+            public string MainMenu1DDHeight { get; set; } = null!;
+
+
+            [Category("Main Menu"), Caption("--mm-1-mm-width"), Description("Width")]
+            [UIHint("Text20"), StringLength(MaxWidth), Required]
+            public string MainMenu1MMWidth { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-1-mm-bg"), Description("Background")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu1MMBg { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-1-mm-clr"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu1MMClr { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-1-mm-font"), Description("Font")]
+            [UIHint("Text40"), StringLength(MaxFont), Required]
+            public string MainMenu1MMFont { get; set; } = null!;
+
+
+            [Category("Main Menu"), Caption("--mm-2-padding"), Description("Padding")]
+            [UIHint("Text20"), StringLength(MaxPadding), Required]
+            public string MainMenu2Padding { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-2-bg"), Description("Background")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu2Bg { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-2-clr"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu2Clr { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-2-font"), Description("Font")]
+            [UIHint("Text40"), StringLength(MaxFont), Required]
+            public string MainMenu2Font { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-2-border"), Description("Border")]
+            [UIHint("Text40"), StringLength(MaxBorder), Required]
+            public string MainMenu2Border { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-2-border-radius"), Description("Border Radius")]
+            [UIHint("Text40"), StringLength(MaxRadius), Required]
+            public string MainMenu2BorderRadius { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-2-a-padding"), Description("Padding")]
+            [UIHint("Text20"), StringLength(MaxPadding), Required]
+            public string MainMenu2APadding { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-2-a-bg"), Description("Background")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu2ABg { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-2-a-clr"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu2AClr { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-2-a-bg-hover"), Description("Background")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu2ABgHover { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-2-a-clr-hover"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu2AClrHover { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-2-a-bg-path"), Description("Background")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu2ABgPath { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-2-a-clr-path"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string MainMenu2AClrPath { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-2-ddwidth"), Description("Width")]
+            [UIHint("Text20"), StringLength(MaxWidth), Required]
+            public string MainMenu2DDWidth { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-2-ddheight"), Description("Height")]
+            [UIHint("Text20"), StringLength(MaxHeight), Required]
+            public string MainMenu2DDHeight { get; set; } = null!;
 
 
 

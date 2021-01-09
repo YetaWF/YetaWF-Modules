@@ -85,7 +85,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 default:
                 case Grid.GridActionsEnum.Icons:
                     hb.Append($@"
-{await CoreRendering.RenderMenuAsync(model, null, Addons.Templates.ActionIcons.CssActionIcons, HtmlHelper: HtmlHelper)}");
+{await MenuDisplayComponent.RenderMenuAsync(model, null, Addons.Templates.ActionIcons.CssActionIcons, HtmlHelper: HtmlHelper)}");
                     break;
 
                 case Grid.GridActionsEnum.DropdownMenu:
@@ -96,7 +96,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         ActionIconsSetup setup = new ActionIconsSetup {
                             MenuId = ControlId + "_menu",
                         };
-                        string menuHTML = await CoreRendering.RenderMenuAsync(model, setup.MenuId, Globals.CssGridActionMenu, HtmlHelper: HtmlHelper, Hidden: true);
+                        string menuHTML = await MenuDisplayComponent.RenderMenuAsync(model, setup.MenuId, Globals.CssGridActionMenu, HtmlHelper: HtmlHelper, Hidden: true);
 
                         if (!string.IsNullOrWhiteSpace(menuHTML)) {
 

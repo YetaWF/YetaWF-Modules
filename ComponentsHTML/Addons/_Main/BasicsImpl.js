@@ -244,18 +244,17 @@ var YetaWF_ComponentsHTML;
             // dropdowns
             if (YetaWF_ComponentsHTML.DropDownListEditComponent)
                 YetaWF_ComponentsHTML.DropDownListEditComponent.closeDropdowns();
+            // Close any open menus
+            if (YetaWF_ComponentsHTML.MenuComponent)
+                YetaWF_ComponentsHTML.MenuComponent.closeAllMenus();
             // Close any open kendo menus (if any) //TODO: This is sloppy and prob unnecessary
+            //$$$ TODO: REMOVE
             var $menus = $(".k-menu"); // jQuery use
             $menus.each(function (index, element) {
                 var menu = $(element).data("kendoMenu");
                 if (menu)
                     menu.close("li.k-item");
             });
-            // Close any open smartmenus
-            try {
-                $(".YetaWF_Menus").collapse("hide"); // jQuery use
-            }
-            catch (e) { }
         };
         /**
          * Enable/disable an element.

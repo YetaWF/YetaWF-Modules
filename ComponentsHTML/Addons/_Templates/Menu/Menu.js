@@ -13,14 +13,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-/// <reference types="kendo-ui" />
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
-    var StyleEnum;
-    (function (StyleEnum) {
-        StyleEnum[StyleEnum["Bootstrap"] = 1] = "Bootstrap";
-        StyleEnum[StyleEnum["Kendo"] = 2] = "Kendo";
-    })(StyleEnum || (StyleEnum = {}));
     var DirectionEnum;
     (function (DirectionEnum) {
         DirectionEnum[DirectionEnum["Bottom"] = 0] = "Bottom";
@@ -36,46 +30,256 @@ var YetaWF_ComponentsHTML;
     var MenuComponent = /** @class */ (function (_super) {
         __extends(MenuComponent, _super);
         function MenuComponent(controlId, setup) {
-            var _a, _b;
             var _this = _super.call(this, controlId, MenuComponent.TEMPLATE, MenuComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Div,
                 ChangeEvent: null,
                 GetValue: null,
                 Enable: null,
             }) || this;
-            _this.Setup = setup;
-            _this.MenuDiv = $YetaWF.getElementById(_this.Setup.MenuId);
-            if (_this.Setup.Style === StyleEnum.Kendo) {
-                $(_this.MenuDiv).kendoMenu({
-                    direction: _this.GetDirectionKendo(),
-                    orientation: _this.GetOrientationKendo(),
-                    popupCollision: (_a = _this.Setup.PopupCollision) !== null && _a !== void 0 ? _a : "fit flip",
-                    hoverDelay: (_b = _this.Setup.HoverDelay) !== null && _b !== void 0 ? _b : 0,
-                });
-            }
+            // private Setup: MenuSetup;
+            // private HoverElements: HTMLElement[] = [];
+            _this.Levels = [];
+            _this.CloseTimeout = 0;
+            _this.CloseSublevelsTimout = 0;
+            // this.Setup = setup;
+            var liSubs = $YetaWF.getElementsBySelector("li > a", [_this.Control]);
+            $YetaWF.registerMultipleEventHandlers(liSubs, ["mouseenter"], null, function (ev) {
+                var owningAnchor = ev.__YetaWFElem;
+                var owningLI = $YetaWF.elementClosest(owningAnchor, "li");
+                if ($YetaWF.elementHasClass(owningLI, "t_megamenu_content"))
+                    return true; //we're within a megamenu (can't have menus within megamenu)
+                var owningUL = $YetaWF.elementClosest(owningAnchor, "ul");
+                var subUL = $YetaWF.getElement1BySelectorCond("ul", [owningLI]);
+                if (!subUL) {
+                    _this.scheduleCloseSublevelsStartingAt(owningUL);
+                    return true;
+                }
+                var subLI = $YetaWF.getElement1BySelector("li", [subUL]);
+                var levelInfo = { owningUL: owningUL, owningLI: owningLI, owningAnchor: owningAnchor, subUL: subUL, subLI: subLI };
+                if (_this.closeSublevelsForNewSublevel(levelInfo))
+                    _this.openSublevel(levelInfo);
+                return false;
+            });
+            $YetaWF.registerMultipleEventHandlers(liSubs, ["mouseup"], null, function (ev) {
+                var owningAnchor = ev.__YetaWFElem;
+                var owningLI = $YetaWF.elementClosestCond(owningAnchor, "li");
+                if (!owningLI)
+                    return true;
+                var owningUL = $YetaWF.elementClosestCond(owningAnchor, "ul");
+                if (!owningUL)
+                    return true;
+                // we're in a menu and someone clicked on an anchor
+                _this.closeAll(); // close the menu
+                return true;
+            });
+            $YetaWF.registerMultipleEventHandlers(liSubs, ["keydown"], null, function (ev) {
+                var key = ev.key;
+                if (key === "Enter") {
+                    var owningAnchor = ev.__YetaWFElem;
+                    var owningLI = $YetaWF.elementClosestCond(owningAnchor, "li");
+                    if (!owningLI)
+                        return true;
+                    var owningUL = $YetaWF.elementClosestCond(owningAnchor, "ul");
+                    if (!owningUL)
+                        return true;
+                    var subUL = $YetaWF.getElement1BySelectorCond("ul", [owningLI]);
+                    if (!subUL)
+                        return true; // no submenus
+                    var subLI = $YetaWF.getElement1BySelector("li", [subUL]);
+                    // we're in a menu and someone hit Enter on an anchor
+                    var levelInfo = { owningUL: owningUL, owningLI: owningLI, owningAnchor: owningAnchor, subUL: subUL, subLI: subLI };
+                    if (_this.closeSublevelsForNewSublevel(levelInfo))
+                        _this.openSublevel(levelInfo);
+                    else
+                        _this.closeSublevelsStartingAt(owningUL);
+                    return false;
+                }
+                return true;
+            });
             return _this;
         }
-        MenuComponent.prototype.GetDirectionKendo = function () {
-            switch (this.Setup.Direction) {
-                default: return "default";
-                case DirectionEnum.Top: return "top";
-                case DirectionEnum.Bottom: return "bottom";
-                case DirectionEnum.Left: return "left";
-                case DirectionEnum.Right: return "right";
+        MenuComponent.prototype.openSublevel = function (levelInfo) {
+            var level = this.Levels.length;
+            levelInfo.subUL.style.display = ""; // open new sublevel
+            var subUL = levelInfo.subUL;
+            var owningLI = levelInfo.owningLI;
+            var owningRect = owningLI.getBoundingClientRect();
+            // position the sublevel
+            switch (level) {
+                case 0:
+                    subUL.style.left = "0";
+                    subUL.style.top = owningRect.height + "px";
+                    break;
+                case 1:
+                    subUL.style.left = owningRect.width - 3 + "px"; // slight overlap
+                    subUL.style.top = "-3px";
+                    break;
+                case 2:
+                    subUL.style.left = owningRect.width - 3 + "px"; // slight overlap
+                    subUL.style.top = "-3px";
+                    break;
+                default:
+                    throw "Too many menu levels";
+            }
+            this.clearPath();
+            this.Levels.push(levelInfo);
+            this.setPath();
+        };
+        MenuComponent.prototype.scheduleCloseSublevelsStartingAt = function (newOwningUL) {
+            var _this = this;
+            var closing = false; // defines whether any sublevels are to be closed
+            if (!this.CloseSublevelsTimout) {
+                for (var _i = 0, _a = this.Levels; _i < _a.length; _i++) {
+                    var levelInfo = _a[_i];
+                    if (!closing) {
+                        if (levelInfo.owningUL === newOwningUL)
+                            closing = true;
+                    }
+                }
+                if (closing) {
+                    this.CloseSublevelsTimout = setTimeout(function () {
+                        _this.closeSublevelsStartingAt(newOwningUL);
+                    }, MenuComponent.MouseOutTimeout);
+                }
+            }
+            return closing;
+        };
+        MenuComponent.prototype.closeSublevelsStartingAt = function (newOwningUL) {
+            var newLevels = [];
+            var closing = false;
+            clearTimeout(this.CloseSublevelsTimout);
+            this.CloseSublevelsTimout = 0;
+            for (var _i = 0, _a = this.Levels; _i < _a.length; _i++) {
+                var levelInfo = _a[_i];
+                if (!closing) {
+                    if (levelInfo.owningUL === newOwningUL)
+                        closing = true;
+                    else
+                        newLevels.push(levelInfo);
+                }
+                if (closing)
+                    levelInfo.subUL.style.display = "none";
+            }
+            this.clearPath();
+            this.Levels = newLevels;
+            this.setPath();
+            return closing; // returns whether any sublevels were closed
+        };
+        MenuComponent.prototype.closeSublevelsForNewSublevel = function (newLevel) {
+            var newLevels = [];
+            var closing = false;
+            clearTimeout(this.CloseSublevelsTimout);
+            this.CloseSublevelsTimout = 0;
+            for (var _i = 0, _a = this.Levels; _i < _a.length; _i++) {
+                var levelInfo = _a[_i];
+                if (!closing) {
+                    if (levelInfo.owningUL === newLevel.owningUL) {
+                        if (levelInfo.subUL === newLevel.subUL) // the new sublevel is already open
+                            return false;
+                        closing = true;
+                    }
+                    else
+                        newLevels.push(levelInfo);
+                }
+                if (closing)
+                    levelInfo.subUL.style.display = "none";
+            }
+            this.clearPath();
+            this.Levels = newLevels;
+            this.setPath();
+            return true; // we closed all necessary sublevels
+        };
+        MenuComponent.prototype.handleMouseMove = function (cursorX, cursorY) {
+            if (this.Levels.length > 0) {
+                var rect = this.Levels[0].owningLI.getBoundingClientRect();
+                if (rect.left <= cursorX && cursorX < rect.right && rect.top <= cursorY && cursorY < rect.bottom) {
+                    this.killTimeout();
+                    return true;
+                }
+                for (var _i = 0, _a = this.Levels; _i < _a.length; _i++) {
+                    var levelInfo = _a[_i];
+                    rect = levelInfo.subUL.getBoundingClientRect();
+                    if (rect.left <= cursorX && cursorX < rect.right && rect.top <= cursorY && cursorY < rect.bottom) {
+                        this.killTimeout();
+                        return true;
+                    }
+                }
+                this.startTimeout();
+            }
+            return true;
+        };
+        MenuComponent.prototype.killTimeout = function () {
+            if (this.CloseTimeout) {
+                clearTimeout(this.CloseTimeout);
+                this.CloseTimeout = 0;
             }
         };
-        MenuComponent.prototype.GetOrientationKendo = function () {
-            switch (this.Setup.Orientation) {
-                default:
-                case OrientationEnum.Horizontal: return "horizontal";
-                case OrientationEnum.Vertical: return "vertical";
+        MenuComponent.prototype.startTimeout = function () {
+            var _this = this;
+            if (!this.CloseTimeout) {
+                this.CloseTimeout = setTimeout(function () {
+                    for (var _i = 0, _a = _this.Levels; _i < _a.length; _i++) {
+                        var levelInfo = _a[_i];
+                        levelInfo.subUL.style.display = "none";
+                    }
+                    _this.clearPath();
+                    _this.Levels = [];
+                }, MenuComponent.MouseOutTimeout);
+            }
+        };
+        MenuComponent.prototype.setPath = function () {
+            for (var _i = 0, _a = this.Levels; _i < _a.length; _i++) {
+                var levelInfo = _a[_i];
+                $YetaWF.elementAddClass(levelInfo.owningUL, "t_path");
+                $YetaWF.elementAddClass(levelInfo.owningLI, "t_path");
+                $YetaWF.elementAddClass(levelInfo.owningAnchor, "t_path");
+            }
+        };
+        MenuComponent.prototype.clearPath = function () {
+            for (var _i = 0, _a = this.Levels; _i < _a.length; _i++) {
+                var levelInfo = _a[_i];
+                $YetaWF.elementRemoveClass(levelInfo.owningUL, "t_path");
+                $YetaWF.elementRemoveClass(levelInfo.owningLI, "t_path");
+                $YetaWF.elementRemoveClass(levelInfo.owningAnchor, "t_path");
+            }
+        };
+        // API
+        MenuComponent.prototype.closeAll = function () {
+            for (var _i = 0, _a = this.Levels; _i < _a.length; _i++) {
+                var levelInfo = _a[_i];
+                levelInfo.subUL.style.display = "none";
+            }
+            this.clearPath();
+            this.Levels = [];
+        };
+        MenuComponent.closeAllMenus = function () {
+            var controls = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR);
+            for (var _i = 0, controls_1 = controls; _i < controls_1.length; _i++) {
+                var control = controls_1[_i];
+                control.closeAll();
             }
         };
         MenuComponent.TEMPLATE = "yt_menu";
-        MenuComponent.SELECTOR = "yt_menu.t_display";
+        MenuComponent.SELECTOR = ".yt_menu.t_display";
+        MenuComponent.MouseOutTimeout = 300; // close menu when mouse leaves
         return MenuComponent;
-    }(YetaWF.ComponentBaseNoDataImpl));
+    }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.MenuComponent = MenuComponent;
+    $YetaWF.registerEventHandlerBody("mousemove", null, function (ev) {
+        var controls = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR);
+        for (var _i = 0, controls_2 = controls; _i < controls_2.length; _i++) {
+            var control = controls_2[_i];
+            control.handleMouseMove(ev.clientX, ev.clientY);
+        }
+        return true;
+    });
+    // $YetaWF.registerEventHandlerBody("mousedown", null, (ev: MouseEvent): boolean => {
+    //     let controls: MenuComponent[] = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR);
+    //     for (let control of controls) {
+    //         control.closeAll();
+    //     }
+    //     return true;
+    // });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=Menu.js.map
