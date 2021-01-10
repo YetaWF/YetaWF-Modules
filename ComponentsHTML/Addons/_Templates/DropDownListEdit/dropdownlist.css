@@ -33,6 +33,8 @@
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden; }
+      .yt_dropdownlist_base.t_edit .t_container .t_input:after {
+        content: '\200b'; }
     .yt_dropdownlist_base.t_edit .t_container .t_select {
       position: absolute;
       top: 0;

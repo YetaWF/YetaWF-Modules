@@ -116,17 +116,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        /// <summary>
-        /// Called by the framework when the component is used so the component can add component specific addons.
-        /// </summary>
+        /// <inheritdoc/>
         public override async Task IncludeAsync() {
             await Manager.AddOnManager.AddAddOnNamedAsync(YetaWF.Core.AreaRegistration.CurrentPackage.AreaName, "fontawesome.com.fontawesome");
-            //await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
-
             // Add required menu support
-            await KendoUICore.AddFileAsync("kendo.menu.min.js");
             await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, "MenuUL", ComponentType.Display);
-
             await base.IncludeAsync();
         }
 

@@ -478,6 +478,7 @@ namespace YetaWF_ComponentsHTML {
             // extra for dropdown selector
             elem.innerText = "MMM";// 3 characters
             width += elem.clientWidth;
+            width += 4;// fudge factor
 
             elem.remove();
             return width;

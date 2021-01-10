@@ -34,8 +34,6 @@ namespace YetaWF_ComponentsHTML {
         private static MouseOutTimeout: number = 300;// close menu when mouse leaves
 
         private Setup: MenuSetup;
-        // private HoverElements: HTMLElement[] = [];
-
         private Levels: LevelInfo[] = [];
         private CloseTimeout: number = 0;
 
@@ -60,6 +58,9 @@ namespace YetaWF_ComponentsHTML {
                 else
                     // icon used: fa-caret-right
                     aSub.innerHTML += "<svg class='t_right' aria-hidden='true' focusable='false' role='img' viewBox='0 0 192 512'><path fill='currentColor' d='M0 384.662V127.338c0-17.818 21.543-26.741 34.142-14.142l128.662 128.662c7.81 7.81 7.81 20.474 0 28.284L34.142 398.804C21.543 411.404 0 402.48 0 384.662z'></path></svg>";
+
+                aSub.setAttribute("aria-haspopup", "true");
+                aSub.setAttribute("aria-expanded", "false");
             }
 
             let liSubs = $YetaWF.getElementsBySelector("li > a", [this.Control]);
@@ -388,8 +389,17 @@ namespace YetaWF_ComponentsHTML {
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: CustomEvent<YetaWF.DetailsEventNavPageLoaded>): boolean => {
         let menus = YetaWF.ComponentBaseDataImpl.getControls<MenuComponent>(MenuComponent.SELECTOR, ev.detail.containers);
         for (let menu of menus) {
-            if (menu.isSmall)
-                menu.hide();
+            menu.closeAll();
+        }
+        return true;
+    });
+
+    // Handle Escape key to close any open menus
+    $YetaWF.registerEventHandlerBody("keydown", null, (ev: KeyboardEvent): boolean => {
+        if (ev.key !== "Escape") return true;
+        let menus = YetaWF.ComponentBaseDataImpl.getControls<MenuComponent>(MenuComponent.SELECTOR);
+        for (let menu of menus) {
+            menu.closeAll();
         }
         return true;
     });

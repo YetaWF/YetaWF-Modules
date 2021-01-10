@@ -53,9 +53,6 @@ namespace YetaWF_ComponentsHTML {
                     elem = $YetaWF.elementClosestCond(elem, noTTASel);
                     if (!elem)
                         return true;
-                    // if the a link is a menu, don't show a tooltip for the image because the tooltip would be in a bad location
-                    if ($YetaWF.elementClosestCond(elem, ".k-menu"))
-                        return true;
                 }
                 // nothing so far, check <a> to external site
                 if (elem.tagName === "A") {

@@ -10,7 +10,7 @@ ul.yt_menu.t_display.t_large {
   padding: var(--mm-0-padding);
   margin: 0;
   list-style: none;
-  background-color: var(--mm-0-bg);
+  background: var(--mm-0-bg);
   color: var(--mm-0-clr);
   border: var(--mm-0-border);
   border-radius: var(--mm-0-border-radius); }
@@ -18,7 +18,7 @@ ul.yt_menu.t_display.t_large {
     position: relative;
     list-style: none;
     line-height: 1;
-    background-color: var(--mm-0-bg);
+    background: var(--mm-0-bg);
     color: var(--mm-0-clr);
     font: var(--mm-0-font); }
     ul.yt_menu.t_display.t_large > li > a {
@@ -26,13 +26,14 @@ ul.yt_menu.t_display.t_large {
       outline: none;
       text-decoration: none;
       padding: var(--mm-0-a-padding);
-      background-color: var(--mm-0-a-bg);
-      color: var(--mm-0-a-clr); }
+      background: var(--mm-0-a-bg);
+      color: var(--mm-0-a-clr);
+      font: var(--mm-0-font); }
       ul.yt_menu.t_display.t_large > li > a.t_path {
-        background-color: var(--mm-0-a-bg-path);
+        background: var(--mm-0-a-bg-path);
         color: var(--mm-0-a-clr-path); }
       ul.yt_menu.t_display.t_large > li > a:hover, ul.yt_menu.t_display.t_large > li > a:focus {
-        background-color: var(--mm-0-a-bg-hover);
+        background: var(--mm-0-a-bg-hover);
         color: var(--mm-0-a-clr-hover); }
       ul.yt_menu.t_display.t_large > li > a svg {
         vertical-align: top;
@@ -51,7 +52,7 @@ ul.yt_menu.t_display.t_large {
       padding: var(--mm-1-padding);
       margin: 0;
       list-style: none;
-      background-color: var(--mm-1-bg);
+      background: var(--mm-1-bg);
       color: var(--mm-1-clr);
       border: var(--mm-1-border);
       border-radius: var(--mm-1-border-radius); }
@@ -65,11 +66,11 @@ ul.yt_menu.t_display.t_large {
         padding: 0;
         height: auto;
         width: auto;
-        background-color: var(--mm-1-bg);
+        background: var(--mm-1-bg);
         color: var(--mm-1-clr);
         font: var(--mm-1-font); }
         ul.yt_menu.t_display.t_large > li > ul > li.t_megamenu_content {
-          background-color: var(--mm-1-mm-bg);
+          background: var(--mm-1-mm-bg);
           color: var(--mm-1-mm-clr);
           font: var(--mm-1-mm-font); }
         ul.yt_menu.t_display.t_large > li > ul > li > a {
@@ -77,15 +78,16 @@ ul.yt_menu.t_display.t_large {
           outline: none;
           padding: var(--mm-1-a-padding);
           text-decoration: none;
-          background-color: var(--mm-1-a-bg);
-          color: var(--mm-1-a-clr); }
+          background: var(--mm-1-a-bg);
+          color: var(--mm-1-a-clr);
+          font: var(--mm-1-font); }
           ul.yt_menu.t_display.t_large > li > ul > li > a.t_path {
-            background-color: var(--mm-1-a-bg-path);
+            background: var(--mm-1-a-bg-path);
             color: var(--mm-1-a-clr-path); }
           ul.yt_menu.t_display.t_large > li > ul > li > a:hover, ul.yt_menu.t_display.t_large > li > ul > li > a:focus {
-            background-color: var(--mm-1-a-bg-hover);
+            background: var(--mm-1-a-bg-hover);
             color: var(--mm-1-a-clr-hover); }
-          ul.yt_menu.t_display.t_large > li > ul > li > a i {
+          ul.yt_menu.t_display.t_large > li > ul > li > a i, ul.yt_menu.t_display.t_large > li > ul > li > a img {
             margin-right: .5ch; }
           ul.yt_menu.t_display.t_large > li > ul > li > a svg {
             vertical-align: top;
@@ -104,7 +106,7 @@ ul.yt_menu.t_display.t_large {
           padding: var(--mm-2-padding);
           margin: 0;
           list-style: none;
-          background-color: var(--mm-2-bg);
+          background: var(--mm-2-bg);
           color: var(--mm-2-clr);
           border: var(--mm-2-border);
           border-radius: var(--mm-2-border-radius); }
@@ -116,7 +118,7 @@ ul.yt_menu.t_display.t_large {
             padding: 0;
             height: auto;
             width: auto;
-            background-color: var(--mm-2-bg);
+            background: var(--mm-2-bg);
             color: var(--mm-2-clr);
             font: var(--mm-2-font); }
             ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a {
@@ -124,15 +126,16 @@ ul.yt_menu.t_display.t_large {
               outline: none;
               padding: var(--mm-2-a-padding);
               text-decoration: none;
-              background-color: var(--mm-2-a-bg);
-              color: var(--mm-2-a-clr); }
+              background: var(--mm-2-a-bg);
+              color: var(--mm-2-a-clr);
+              font: var(--mm-2-font); }
               ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a.t_path {
-                background-color: var(--mm-2-a-bg-path);
+                background: var(--mm-2-a-bg-path);
                 color: var(--mm-2-a-clr-path); }
               ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a:hover, ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a:focus {
-                background-color: var(--mm-2-a-bg-hover);
+                background: var(--mm-2-a-bg-hover);
                 color: var(--mm-2-a-clr-hover); }
-              ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a i {
+              ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a i, ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a img {
                 margin-right: .5ch; }
               ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a svg {
                 vertical-align: top;
@@ -150,14 +153,14 @@ ul.yt_menu.t_display.t_small {
   padding: var(--mm-0-padding);
   margin: 0;
   list-style: none;
-  background-color: var(--mm-0-bg);
+  background: var(--mm-0-bg);
   color: var(--mm-0-clr);
   border: var(--mm-0-border);
   border-radius: var(--mm-0-border-radius); }
   ul.yt_menu.t_display.t_small > li {
     list-style: none;
     line-height: 1;
-    background-color: var(--mm-0-bg);
+    background: var(--mm-0-bg);
     color: var(--mm-0-clr);
     font: var(--mm-0-font); }
     ul.yt_menu.t_display.t_small > li > a {
@@ -165,13 +168,13 @@ ul.yt_menu.t_display.t_small {
       outline: none;
       text-decoration: none;
       padding: var(--mm-0-a-small-padding);
-      background-color: var(--mm-0-a-bg);
+      background: var(--mm-0-a-bg);
       color: var(--mm-0-a-clr); }
       ul.yt_menu.t_display.t_small > li > a.t_path {
-        background-color: var(--mm-0-a-bg-path);
+        background: var(--mm-0-a-bg-path);
         color: var(--mm-0-a-clr-path); }
       ul.yt_menu.t_display.t_small > li > a:hover, ul.yt_menu.t_display.t_small > li > a:focus {
-        background-color: var(--mm-0-a-bg-hover);
+        background: var(--mm-0-a-bg-hover);
         color: var(--mm-0-a-clr-hover); }
       ul.yt_menu.t_display.t_small > li > a svg {
         border: var(--mm-svg-small-border);
@@ -192,7 +195,7 @@ ul.yt_menu.t_display.t_small {
       margin: var(--mm-1-small-margin);
       padding: var(--mm-1-small-padding);
       list-style: none;
-      background-color: var(--mm-1-bg);
+      background: var(--mm-1-bg);
       color: var(--mm-1-clr);
       border: var(--mm-1-border);
       border-radius: var(--mm-1-border-radius); }
@@ -205,11 +208,11 @@ ul.yt_menu.t_display.t_small {
         padding: 0;
         height: auto;
         width: auto;
-        background-color: var(--mm-1-bg);
+        background: var(--mm-1-bg);
         color: var(--mm-1-clr);
         font: var(--mm-1-font); }
         ul.yt_menu.t_display.t_small > li > ul > li.t_megamenu_content {
-          background-color: var(--mm-1-mm-bg);
+          background: var(--mm-1-mm-bg);
           color: var(--mm-1-mm-clr);
           font: var(--mm-1-mm-font); }
         ul.yt_menu.t_display.t_small > li > ul > li > a {
@@ -217,15 +220,15 @@ ul.yt_menu.t_display.t_small {
           outline: none;
           padding: var(--mm-1-a-small-padding);
           text-decoration: none;
-          background-color: var(--mm-1-a-bg);
+          background: var(--mm-1-a-bg);
           color: var(--mm-1-a-clr); }
           ul.yt_menu.t_display.t_small > li > ul > li > a.t_path {
-            background-color: var(--mm-1-a-bg-path);
+            background: var(--mm-1-a-bg-path);
             color: var(--mm-1-a-clr-path); }
           ul.yt_menu.t_display.t_small > li > ul > li > a:hover, ul.yt_menu.t_display.t_small > li > ul > li > a:focus {
-            background-color: var(--mm-1-a-bg-hover);
+            background: var(--mm-1-a-bg-hover);
             color: var(--mm-1-a-clr-hover); }
-          ul.yt_menu.t_display.t_small > li > ul > li > a i {
+          ul.yt_menu.t_display.t_small > li > ul > li > a i, ul.yt_menu.t_display.t_small > li > ul > li > a img {
             margin-right: .5ch; }
           ul.yt_menu.t_display.t_small > li > ul > li > a svg {
             border: var(--mm-svg-small-border);
@@ -245,7 +248,7 @@ ul.yt_menu.t_display.t_small {
           margin: var(--mm-2-small-margin);
           padding: var(--mm-2-small-padding);
           list-style: none;
-          background-color: var(--mm-2-bg);
+          background: var(--mm-2-bg);
           color: var(--mm-2-clr);
           border: var(--mm-2-border);
           border-radius: var(--mm-2-border-radius); }
@@ -256,7 +259,7 @@ ul.yt_menu.t_display.t_small {
             padding: 0;
             height: auto;
             width: auto;
-            background-color: var(--mm-2-bg);
+            background: var(--mm-2-bg);
             color: var(--mm-2-clr);
             font: var(--mm-2-font); }
             ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a {
@@ -264,15 +267,15 @@ ul.yt_menu.t_display.t_small {
               outline: none;
               padding: var(--mm-2-a-small-padding);
               text-decoration: none;
-              background-color: var(--mm-2-a-bg);
+              background: var(--mm-2-a-bg);
               color: var(--mm-2-a-clr); }
               ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a.t_path {
-                background-color: var(--mm-2-a-bg-path);
+                background: var(--mm-2-a-bg-path);
                 color: var(--mm-2-a-clr-path); }
               ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a:hover, ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a:focus {
-                background-color: var(--mm-2-a-bg-hover);
+                background: var(--mm-2-a-bg-hover);
                 color: var(--mm-2-a-clr-hover); }
-              ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a i {
+              ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a i, ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a img {
                 margin-right: .5ch; }
               ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a svg {
                 border: var(--mm-svg-small-border);

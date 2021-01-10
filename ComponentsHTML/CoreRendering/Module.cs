@@ -61,9 +61,6 @@ namespace YetaWF.Modules.ComponentsHTML {
             string menuContents = (await MenuDisplayComponent.RenderMenuAsync(moduleMenu, id, Globals.CssModuleMenu));
             if (!string.IsNullOrWhiteSpace(menuContents)) {
 
-                //await Manager.ScriptManager.AddKendoUICoreJsFile("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
-                await KendoUICore.AddFileAsync("kendo.menu.min.js");
-
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "Modules");// various module support
                 await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, "MenuUL", YetaWFComponentBase.ComponentType.Display);
 
@@ -89,9 +86,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             return await RenderActionAsync(action, mode, id);
         }
 
-        internal static async Task<string> RenderActionAsync(ModuleAction action, ModuleAction.RenderModeEnum mode, string id,
-                ModuleAction.RenderEngineEnum RenderEngine = ModuleAction.RenderEngineEnum.KendoMenu, string SubMenuArrow = null) {
-            //$$$$remove renderengine
+        internal static async Task<string> RenderActionAsync(ModuleAction action, ModuleAction.RenderModeEnum mode, string id) {
 
             // check if we're in the right mode
             if (!await action.RendersSomethingAsync()) return null;
@@ -155,11 +150,6 @@ namespace YetaWF.Modules.ComponentsHTML {
                 attrs.Add("data-name", action.Name);
             if (!action.Displayed)
                 attrs.Add("style", "display:none");
-
-            if (SubMenuArrow != null) {
-                attrs.Add("aria-haspopup", "true");
-                attrs.Add("aria-expanded", "false");
-            }
 
             if (!string.IsNullOrWhiteSpace(action.CssClass))
                 css = CssManager.CombineCss(css, Manager.AddOnManager.CheckInvokedCssModule(action.CssClass));
@@ -249,11 +239,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             string innerHtml = string.Empty;
             if (mode != ModuleAction.RenderModeEnum.LinksOnly && mode != ModuleAction.RenderModeEnum.ButtonOnly && !string.IsNullOrWhiteSpace(action.ImageUrlFinal)) {
                 string text = mode == ModuleAction.RenderModeEnum.NormalMenu ? action.MenuText : action.LinkText;
-                if (RenderEngine == ModuleAction.RenderEngineEnum.KendoMenu) {
-                    innerHtml = ImageHTML.BuildKnownIcon(action.ImageUrlFinal, alt: text, cssClass: Basics.CssNoTooltip + " k-image"); // k-image is needed to align <i> and <img> correctly
-                } else {
-                    innerHtml = ImageHTML.BuildKnownIcon(action.ImageUrlFinal, alt: text, cssClass: Basics.CssNoTooltip);
-                }
+                innerHtml = ImageHTML.BuildKnownIcon(action.ImageUrlFinal, alt: text, cssClass: Basics.CssNoTooltip);
                 hasImg = true;
             }
 
@@ -277,7 +263,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                 }
             }
 
-            return $@"<a{(id != null ? $" id='{id}'" : null)} class='{Globals.CssModuleNoPrint}{HtmlBuilder.GetClasses(attrs, css)}'{HtmlBuilder.Attributes(attrs)}>{innerHtml}{SubMenuArrow}</a>";
+            return $@"<a{(id != null ? $" id='{id}'" : null)} class='{Globals.CssModuleNoPrint}{HtmlBuilder.GetClasses(attrs, css)}'{HtmlBuilder.Attributes(attrs)}>{innerHtml}</a>";
         }
     }
 }

@@ -318,6 +318,129 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
 
 
 
+            [Category("Popup Menu"), Caption("--pm-1-padding"), Description("Padding")]
+            [UIHint("Text20"), StringLength(MaxPadding), Required]
+            public string PopupMenu1Padding { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-1-bg"), Description("Background")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string PopupMenu1Bg { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-1-clr"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string PopupMenu1Clr { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-1-font"), Description("Font")]
+            [UIHint("Text40"), StringLength(MaxFont), Required]
+            public string PopupMenu1Font { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-1-border"), Description("Border")]
+            [UIHint("Text40"), StringLength(MaxBorder), Required]
+            public string PopupMenu1Border { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-1-border-radius"), Description("Border Radius")]
+            [UIHint("Text40"), StringLength(MaxRadius), Required]
+            public string PopupMenu1BorderRadius { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-1-a-padding"), Description("Padding")]
+            [UIHint("Text20"), StringLength(MaxPadding), Required]
+            public string PopupMenu1APadding { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-1-a-bg"), Description("Background")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string PopupMenu1ABg { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-1-a-clr"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string PopupMenu1AClr { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-1-a-bg-hover"), Description("Background")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string PopupMenu1ABgHover { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-1-a-clr-hover"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string PopupMenu1AClrHover { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-1-a-bg-path"), Description("Background")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string PopupMenu1ABgPath { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-1-a-clr-path"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string PopupMenu1AClrPath { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-1-ddwidth"), Description("Width")]
+            [UIHint("Text20"), StringLength(MaxWidth), Required]
+            public string PopupMenu1DDWidth { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-1-ddheight"), Description("Height")]
+            [UIHint("Text20"), StringLength(MaxHeight), Required]
+            public string PopupMenu1DDHeight { get; set; } = null!;
+
+
+            [Category("Popup Menu"), Caption("--pm-2-padding"), Description("Padding")]
+            [UIHint("Text20"), StringLength(MaxPadding), Required]
+            public string PopupMenu2Padding { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-2-bg"), Description("Background")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string PopupMenu2Bg { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-2-clr"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string PopupMenu2Clr { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-2-font"), Description("Font")]
+            [UIHint("Text40"), StringLength(MaxFont), Required]
+            public string PopupMenu2Font { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-2-border"), Description("Border")]
+            [UIHint("Text40"), StringLength(MaxBorder), Required]
+            public string PopupMenu2Border { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-2-border-radius"), Description("Border Radius")]
+            [UIHint("Text40"), StringLength(MaxRadius), Required]
+            public string PopupMenu2BorderRadius { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-2-a-padding"), Description("Padding")]
+            [UIHint("Text20"), StringLength(MaxPadding), Required]
+            public string PopupMenu2APadding { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-2-a-bg"), Description("Background")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string PopupMenu2ABg { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-2-a-clr"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string PopupMenu2AClr { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-2-a-bg-hover"), Description("Background")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string PopupMenu2ABgHover { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-2-a-clr-hover"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string PopupMenu2AClrHover { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-2-a-bg-path"), Description("Background")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string PopupMenu2ABgPath { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-2-a-clr-path"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string PopupMenu2AClrPath { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-2-ddwidth"), Description("Width")]
+            [UIHint("Text20"), StringLength(MaxWidth), Required]
+            public string PopupMenu2DDWidth { get; set; } = null!;
+
+            [Category("Popup Menu"), Caption("--pm-2-ddheight"), Description("Height")]
+            [UIHint("Text20"), StringLength(MaxHeight), Required]
+            public string PopupMenu2DDHeight { get; set; } = null!;
+
+
+
             [Category("Tooltip"), Caption("--tt-bg"), Description("Background")]
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string TTBg { get; set; } = null!;

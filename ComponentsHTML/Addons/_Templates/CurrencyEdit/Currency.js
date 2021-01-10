@@ -13,7 +13,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-/// <reference types="kendo-ui" />
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     var CurrencyEditComponent = /** @class */ (function (_super) {

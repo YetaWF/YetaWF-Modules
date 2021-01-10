@@ -41,7 +41,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// Displays the model as a Kendo UI skin name. If the model is null, nothing is rendered.
     /// </summary>
     /// <example>
-    /// [Category("Skin"), Caption("Kendo UI Skin"), Description("The skin for Kendo UI elements (buttons, modal dialogs, etc.) used on this page")]
+    /// [Category("Skin"), Caption("Kendo UI Skin"), Description("The skin for Kendo UI elements (date, time, datetime) used on this page")]
     /// [UIHint("KendoUISkin"), ReadOnly]
     /// public string KendoUISkin { get; set; }
     /// </example>

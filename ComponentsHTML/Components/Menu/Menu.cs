@@ -1,5 +1,6 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Models.Attributes;
@@ -136,7 +137,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     css = CssManager.CombineCss(css, "t_vert");
                     break;
             }
-            return await RenderMenuAsync(model.MenuList, DivId, css, HtmlHelper: HtmlHelper, SmallMenuMaxWidth: model.SmallMenuMaxWidth);
+            string menuHTML = await RenderMenuAsync(model.MenuList, DivId, css, HtmlHelper: HtmlHelper);
+            if (string.IsNullOrWhiteSpace(menuHTML))
+                return string.Empty;
+
+            MenuSetup setup = new MenuSetup {
+                SmallMenuMaxWidth = model.SmallMenuMaxWidth,
+            };
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.MenuComponent('{DivId}', {JsonConvert.SerializeObject(setup)});");
+
+            return menuHTML;
         }
     }
 }

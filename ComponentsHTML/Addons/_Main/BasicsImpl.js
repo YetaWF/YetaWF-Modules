@@ -247,14 +247,6 @@ var YetaWF_ComponentsHTML;
             // Close any open menus
             if (YetaWF_ComponentsHTML.MenuComponent)
                 YetaWF_ComponentsHTML.MenuComponent.closeAllMenus();
-            // Close any open kendo menus (if any) //TODO: This is sloppy and prob unnecessary
-            //$$$ TODO: REMOVE
-            var $menus = $(".k-menu"); // jQuery use
-            $menus.each(function (index, element) {
-                var menu = $(element).data("kendoMenu");
-                if (menu)
-                    menu.close("li.k-item");
-            });
         };
         /**
          * Enable/disable an element.

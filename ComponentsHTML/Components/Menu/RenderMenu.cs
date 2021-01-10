@@ -1,6 +1,5 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -21,20 +20,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public OrientationEnum Orientation { get; set; }//ignored
             public int SmallMenuMaxWidth { get; set; }
         }   
-        internal static async Task<string> RenderMenuAsync(MenuList menu, string id = null, string cssClass = null, bool Hidden = false, YHtmlHelper HtmlHelper = null, int SmallMenuMaxWidth = 0) {
-
-            int level = 0;
+        internal static async Task<string> RenderMenuAsync(MenuList menu, string id = null, string cssClass = null, bool Hidden = false, YHtmlHelper HtmlHelper = null) {
 
             if (menu.Count == 0)
                 return string.Empty;
-            string menuContents = await RenderLIAsync(HtmlHelper, menu, null, menu.RenderMode, menu.LICssClass, level);
+            string menuContents = await RenderLIAsync(HtmlHelper, menu, null, menu.RenderMode, menu.LICssClass, 0);
             if (string.IsNullOrWhiteSpace(menuContents))
                 return string.Empty;
 
             string style = string.Empty;
-
             if (Hidden)
-                style = " style=display:none;";
+                style = " style='display:none;'";
 
             string css = "t_lvl0";
             css = CssManager.CombineCss(css, Manager.AddOnManager.CheckInvokedCssModule(cssClass));
@@ -42,14 +38,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (id == null)
                 id = Manager.UniqueId();
         
-            string tags = $@"<ul {(id != null ? $" id='{id}'" : "")} class='{css}'{style}>{menuContents}</ul>";
-
-            MenuSetup setup = new MenuSetup {
-                SmallMenuMaxWidth = SmallMenuMaxWidth,
-            };
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.MenuComponent('{id}', {JsonConvert.SerializeObject(setup)});");
-
-            return tags;
+            return $@"<ul{(id != null ? $" id='{id}'" : "")} class='{css}'{style}>{menuContents}</ul>";
         }
 
         private static async Task<string> RenderMenuAsync(YHtmlHelper htmlHelper, List<ModuleAction> subMenu, Guid? subGuid, string cssClass, ModuleAction.RenderModeEnum renderMode, int level) {
@@ -108,7 +97,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                     css = CssManager.CombineCss(css, "t_megamenu_hassub");
                                 css = CssManager.CombineCss(css, liCss);
                                 css = CssManager.CombineCss(css, "t_hassub");
-                                string menuContents = await CoreRendering.RenderActionAsync(menuEntry, renderMode, null, RenderEngine: ModuleAction.RenderEngineEnum.BootstrapSmartMenu);
+                                string menuContents = await CoreRendering.RenderActionAsync(menuEntry, renderMode, null);
 
                                 hb.Append($"<li class='t_lvl{level} {css}'>\n{menuContents}\n{subMenuContents}</li>\n");
                                 rendered = true;
@@ -119,7 +108,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                             string css = string.Empty;
                             css = CssManager.CombineCss(css, liCss);
 
-                            string menuContents = await CoreRendering.RenderActionAsync(menuEntry, renderMode, null, RenderEngine: ModuleAction.RenderEngineEnum.BootstrapSmartMenu);
+                            string menuContents = await CoreRendering.RenderActionAsync(menuEntry, renderMode, null);
 
                             hb.Append($"<li class='t_lvl{level} {css}'>{menuContents}</li>\n");
                         }

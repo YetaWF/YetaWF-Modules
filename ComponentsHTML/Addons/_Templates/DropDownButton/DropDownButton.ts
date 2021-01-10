@@ -1,7 +1,5 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-/// <reference types="kendo-ui" />
-
 namespace YetaWF_ComponentsHTML {
 
     export class DropDownButtonComponent extends YetaWF.ComponentBaseDataImpl {
@@ -18,16 +16,11 @@ namespace YetaWF_ComponentsHTML {
                 ChangeEvent: null,
                 GetValue: null,
                 Enable: null,
-            }, false, (tag: HTMLElement, control: DropDownButtonComponent): void => {
-                let btn = $(control.Control).data("kendoButton");
-                btn.destroy();
             });
 
-            $(this.Control).kendoButton({ // kendo use
-                click: (ev: kendo.ui.ButtonClickEvent): void => {
-                    ev.preventDefault();
-                    $YetaWF.sendCustomEvent(this.Control, DropDownButtonComponent.CLICKEDEVENT);
-                }
+            $YetaWF.registerEventHandler(this.Control, "click", null, (ev: MouseEvent): boolean =>{
+                $YetaWF.sendCustomEvent(this.Control, DropDownButtonComponent.CLICKEDEVENT);
+                return false;
             });
             $YetaWF.registerMultipleEventHandlers([this.Control], ["click", "mousedown"], null, (ev: Event):boolean => {
                 return false;

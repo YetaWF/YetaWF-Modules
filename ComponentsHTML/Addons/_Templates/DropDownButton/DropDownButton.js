@@ -13,7 +13,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-/// <reference types="kendo-ui" />
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     var DropDownButtonComponent = /** @class */ (function (_super) {
@@ -24,15 +23,10 @@ var YetaWF_ComponentsHTML;
                 ChangeEvent: null,
                 GetValue: null,
                 Enable: null,
-            }, false, function (tag, control) {
-                var btn = $(control.Control).data("kendoButton");
-                btn.destroy();
             }) || this;
-            $(_this.Control).kendoButton({
-                click: function (ev) {
-                    ev.preventDefault();
-                    $YetaWF.sendCustomEvent(_this.Control, DropDownButtonComponent.CLICKEDEVENT);
-                }
+            $YetaWF.registerEventHandler(_this.Control, "click", null, function (ev) {
+                $YetaWF.sendCustomEvent(_this.Control, DropDownButtonComponent.CLICKEDEVENT);
+                return false;
             });
             $YetaWF.registerMultipleEventHandlers([_this.Control], ["click", "mousedown"], null, function (ev) {
                 return false;

@@ -6,7 +6,7 @@ using YetaWF.Core.Packages;
 using YetaWF.PackageAttributes;
 
 [assembly: AssemblyTitle("ComponentsHTML")]
-[assembly: AssemblyDescription("Components based on HTML (some jQuery & Kendo UI)")]
+[assembly: AssemblyDescription("Components based on HTML")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Softel vdm, Inc.")]
 [assembly: AssemblyProduct("ComponentsHTML")]

@@ -13,12 +13,24 @@ namespace YetaWF_ComponentsHTML {
         Click?: (liElem: HTMLLIElement) => void;
     }
 
+    interface LevelInfo {
+        owningUL: HTMLUListElement;
+        owningLI: HTMLLIElement;
+        owningAnchor: HTMLAnchorElement;
+        subUL: HTMLUListElement;
+        subLI: HTMLLIElement;
+    }
+
     export class MenuULComponent extends YetaWF.ComponentBaseDataImpl {
 
         public static readonly TEMPLATE: string = "yt_menuul";
         public static readonly SELECTOR: string = ".yt_menuul";
 
+        private static MouseOutTimeout: number = 300;// close menu when mouse leaves
+
         public Setup: MenuULSetup;
+        private Levels: LevelInfo[] = [];
+        private CloseTimeout: number = 0;
 
         private isOpen: boolean = false;
 
@@ -39,6 +51,36 @@ namespace YetaWF_ComponentsHTML {
             if (this.Setup.Dynamic)
                 $YetaWF.elementAddClass(this.Control, "t_dynamic");
 
+            // add icons to all items with submenu
+            let aSubs = $YetaWF.getElementsBySelector("li.t_hassub > a", [this.Control]);
+            for (let aSub of aSubs) {
+                // icon used: fa-caret-right
+                aSub.innerHTML += "<svg class='t_right' aria-hidden='true' focusable='false' role='img' viewBox='0 0 192 512'><path fill='currentColor' d='M0 384.662V127.338c0-17.818 21.543-26.741 34.142-14.142l128.662 128.662c7.81 7.81 7.81 20.474 0 28.284L34.142 398.804C21.543 411.404 0 402.48 0 384.662z'></path></svg>";
+
+                aSub.setAttribute("aria-haspopup", "true");
+                aSub.setAttribute("aria-expanded", "false");
+            }
+
+            let liSubs = $YetaWF.getElementsBySelector("li > a", [this.Control]);
+            $YetaWF.registerMultipleEventHandlers(liSubs, ["mouseenter"], null, (ev: Event): boolean => {
+                let owningAnchor = ev.__YetaWFElem as HTMLAnchorElement;
+                let owningLI = $YetaWF.elementClosest(owningAnchor, "li") as HTMLLIElement;
+                let owningUL = $YetaWF.elementClosest(owningAnchor, "ul") as HTMLUListElement;
+
+                let subUL = $YetaWF.getElement1BySelectorCond("ul", [owningLI]) as HTMLUListElement;
+                if (!subUL) {
+                    this.scheduleCloseSublevelsStartingAt(owningUL);
+                    return true;
+                }
+                let subLI = $YetaWF.getElement1BySelector("li", [subUL]) as HTMLLIElement;
+
+                let levelInfo = { owningUL: owningUL, owningLI: owningLI, owningAnchor: owningAnchor, subUL: subUL, subLI: subLI };
+                if (this.closeSublevelsForNewSublevel(levelInfo))
+                    this.openSublevel(levelInfo);
+                return false;
+            });
+
+
             if (this.Setup.AutoOpen)
                 this.open();
         }
@@ -48,21 +90,13 @@ namespace YetaWF_ComponentsHTML {
 
                 MenuULComponent.closeMenus();
 
-                let $menu = $(this.Control);
-                $menu.kendoMenu({
-                    orientation: "vertical"
-                });
-
-                let menu = $menu.data("kendoMenu");
                 if (this.Setup.Click) {
-                    let me = this;
-                    menu.setOptions({
-                        // eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-                        select: function(ev: any): void {
-                            MenuULComponent.closeMenus();
-                            me.Setup.Click!(ev.item);
-                        }
-                    });
+
+                    // select: function(ev: any): void {
+                    //     MenuULComponent.closeMenus();
+                    //     me.Setup.Click!(ev.item);
+                    // }
+
                 }
                 this.Control.style.display = "block";
 
@@ -72,19 +106,164 @@ namespace YetaWF_ComponentsHTML {
             }
         }
 
+        private openSublevel(levelInfo: LevelInfo): void {
+            let level = this.Levels.length;
+            levelInfo.subUL.style.display = "";// open new sublevel
+
+            let subUL = levelInfo.subUL;
+            let owningLI = levelInfo.owningLI;
+
+            let owningRect = owningLI.getBoundingClientRect();
+
+            // position the sublevel
+            switch (level) {
+                case 0: // really t_lvl1
+                    subUL.style.left = `${owningRect.width - 3}px`;// slight overlap
+                    subUL.style.top = "-3px";
+                    break;
+                case 1: // really t_lvl2
+                    subUL.style.left = `${owningRect.width - 3}px`;// slight overlap
+                    subUL.style.top = "-3px";
+                    break;
+                default:
+                    throw "Too many menu levels";
+            }
+
+            this.clearPath();
+            this.Levels.push(levelInfo);
+            this.setPath();
+        }
+
         private positionMenu(): void {
             if (this.Setup.AttachTo)
                 $YetaWF.positionLeftAlignedBelow(this.Setup.AttachTo, this.Control);
         }
 
+        private CloseSublevelsTimout: number = 0;
+
+        private scheduleCloseSublevelsStartingAt(newOwningUL: HTMLUListElement): boolean {
+            let closing = false;// defines whether any sublevels are to be closed
+            if (!this.CloseSublevelsTimout) {
+                for (let levelInfo of this.Levels) {
+                    if (!closing) {
+                        if (levelInfo.owningUL === newOwningUL)
+                            closing = true;
+                    }
+                }
+                if (closing) {
+                    this.CloseSublevelsTimout = setTimeout((): void => {
+                        this.closeSublevelsStartingAt(newOwningUL);
+                    }, MenuULComponent.MouseOutTimeout);
+                }
+            }
+            return closing;
+        }
+
+        private closeSublevelsStartingAt(newOwningUL: HTMLUListElement): boolean {
+            let newLevels: LevelInfo[] = [];
+            let closing = false;
+
+            clearTimeout(this.CloseSublevelsTimout);
+            this.CloseSublevelsTimout = 0;
+
+            for (let levelInfo of this.Levels) {
+                if (!closing) {
+                    if (levelInfo.owningUL === newOwningUL)
+                        closing = true;
+                    else
+                        newLevels.push(levelInfo);
+                }
+                if (closing)
+                    levelInfo.subUL.style.display = "none";
+            }
+            this.clearPath();
+            this.Levels = newLevels;
+            this.setPath();
+            return closing; // returns whether any sublevels were closed
+        }
+
+        private closeSublevelsForNewSublevel(newLevel: LevelInfo): boolean {
+            let newLevels: LevelInfo[] = [];
+            let closing = false;
+
+            clearTimeout(this.CloseSublevelsTimout);
+            this.CloseSublevelsTimout = 0;
+
+            for (let levelInfo of this.Levels) {
+                if (!closing) {
+                    if (levelInfo.owningUL === newLevel.owningUL) {
+                        if (levelInfo.subUL === newLevel.subUL) // the new sublevel is already open
+                            return false;
+                        closing = true;
+                    } else
+                        newLevels.push(levelInfo);
+                }
+                if (closing)
+                    levelInfo.subUL.style.display = "none";
+            }
+            this.clearPath();
+            this.Levels = newLevels;
+            this.setPath();
+            return true; // we closed all necessary sublevels
+        }
+
+        public handleMouseMove(cursorX: number, cursorY: number): boolean {
+
+            if (this.Levels.length > 0) {
+                let rect = this.Levels[0].owningLI.getBoundingClientRect();
+                if (rect.left <= cursorX && cursorX < rect.right && rect.top <= cursorY && cursorY < rect.bottom) {
+                    this.killTimeout();
+                    return true;
+                }
+                for (let levelInfo of this.Levels) {
+                    rect = levelInfo.subUL.getBoundingClientRect();
+                    if (rect.left <= cursorX && cursorX < rect.right && rect.top <= cursorY && cursorY < rect.bottom) {
+                        this.killTimeout();
+                        return true;
+                    }
+                }
+                this.startTimeout();
+            }
+            return true;
+        }
+        private killTimeout():void {
+            if (this.CloseTimeout) {
+                clearTimeout(this.CloseTimeout);
+                this.CloseTimeout = 0;
+            }
+        }
+        private startTimeout():void {
+            if (!this.CloseTimeout) {
+                this.CloseTimeout = setTimeout((): void => {
+                    for (let levelInfo of this.Levels) {
+                        levelInfo.subUL.style.display = "none";
+                    }
+                    this.clearPath();
+                    this.Levels = [];
+                }, MenuULComponent.MouseOutTimeout);
+            }
+        }
+
+        private setPath(): void {
+            for (let levelInfo of this.Levels) {
+                $YetaWF.elementAddClass(levelInfo.owningUL, "t_path");
+                $YetaWF.elementAddClass(levelInfo.owningLI, "t_path");
+                $YetaWF.elementAddClass(levelInfo.owningAnchor, "t_path");
+            }
+        }
+        private clearPath(): void {
+            for (let levelInfo of this.Levels) {
+                $YetaWF.elementRemoveClass(levelInfo.owningUL, "t_path");
+                $YetaWF.elementRemoveClass(levelInfo.owningLI, "t_path");
+                $YetaWF.elementRemoveClass(levelInfo.owningAnchor, "t_path");
+            }
+        }
+
+        // API
+
         public close(): boolean {
 
             if (this.isOpen) {
-
-                let $menu = $(this.Control);
-                $menu.hide();
-                let menu = $menu.data("kendoMenu");
-                menu.destroy();
 
                 this.isOpen = false;
 
@@ -112,8 +291,15 @@ namespace YetaWF_ComponentsHTML {
                 return menu.Setup.Owner;
             return null;
         }
+
     }
 
+    $YetaWF.registerEventHandlerBody("mousemove", null, (ev: MouseEvent): boolean => {
+        let controls: MenuULComponent[] = YetaWF.ComponentBaseDataImpl.getControls(MenuULComponent.SELECTOR);
+        for (let control of controls)
+            control.handleMouseMove(ev.clientX, ev.clientY);
+        return true;
+    });
     // Handle clicks elsewhere so we can close the menus
     $YetaWF.registerMultipleEventHandlersBody(["mousedown"], MenuULComponent.SELECTOR, (ev: Event): boolean => {
         // prevent event from reaching body

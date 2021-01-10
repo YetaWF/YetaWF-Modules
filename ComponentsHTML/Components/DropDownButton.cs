@@ -71,17 +71,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public string CssClass { get; set; }
         }
 
-        /// <summary>
-        /// Called by the framework when the component is used so the component can add component specific addons.
-        /// </summary>
+        /// <inheritdoc/>
         public override async Task IncludeAsync() {
-            //await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
-            await KendoUICore.AddFileAsync("kendo.button.min.js");
-
             // Add required menu support
-            await KendoUICore.AddFileAsync("kendo.menu.min.js");
             await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, "MenuUL", ComponentType.Display);
-
             await base.IncludeAsync();
         }
 
@@ -96,24 +89,25 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             string cssStyle = null;
             if (model.CssClass != null)
-                cssStyle = $" {model.CssClass}";
+                cssStyle += $" {model.CssClass}";
+            if (model.Mini)
+                cssStyle += $" t_mini";
+
+            hb.Append($@"
+<button id='{model.ButtonId}' class='yt_dropdownbutton{cssStyle}' {Basics.CssTooltip}='{HAE(model.Tooltip)}'>");
 
             if (!model.Mini) {
-
                 hb.Append($@"
-<button id='{model.ButtonId}' type='button' class='yt_dropdownbutton{cssStyle}' {Basics.CssTooltip}='{HAE(model.Tooltip)}'>
-    {HE(model.Text)}<span class='k-icon k-i-arrow-60-down'></span>
-    {model.MenuHTML}
-</button>");
-
-            } else {
-
-                hb.Append($@"
-<button id='{model.ButtonId}' href='#' class='yt_dropdownbutton t_mini{cssStyle}'><span class='k-icon k-i-arrow-60-down'></span>
-    {model.MenuHTML}
-</button>");
-
+    {HE(model.Text)}");
             }
+
+            // icon used: fa-caret-down
+            hb.Append($@"
+        <svg aria-hidden='true' focusable='false' role='img' viewBox='0 0 320 512'>
+            <path fill='currentColor' d='M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z'></path>
+        </svg>
+    {model.MenuHTML}
+</button>");
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DropDownButtonComponent('{model.ButtonId}');");
 

@@ -18,7 +18,7 @@ namespace YetaWF.Modules.Basics.Controllers {
             [UIHint("Skin")]
             public SkinDefinition SiteSelectedSkin { get; set; }
 
-            [Caption("Site Defined Kendo UI Skin"), Description("The skin for Kendo UI elements (buttons, modal dialogs, etc.)")]
+            [Caption("Site Defined Kendo UI Skin"), Description("The skin for Kendo UI elements (date, time, datetime)")]
             [UIHint("KendoUISkin")]
             public string SiteKendoUISkin { get; set; }
 

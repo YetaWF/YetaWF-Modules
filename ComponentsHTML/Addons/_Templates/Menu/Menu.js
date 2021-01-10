@@ -36,7 +36,6 @@ var YetaWF_ComponentsHTML;
                 GetValue: null,
                 Enable: null,
             }) || this;
-            // private HoverElements: HTMLElement[] = [];
             _this.Levels = [];
             _this.CloseTimeout = 0;
             _this.CloseSublevelsTimout = 0;
@@ -53,6 +52,8 @@ var YetaWF_ComponentsHTML;
                 else
                     // icon used: fa-caret-right
                     aSub.innerHTML += "<svg class='t_right' aria-hidden='true' focusable='false' role='img' viewBox='0 0 192 512'><path fill='currentColor' d='M0 384.662V127.338c0-17.818 21.543-26.741 34.142-14.142l128.662 128.662c7.81 7.81 7.81 20.474 0 28.284L34.142 398.804C21.543 411.404 0 402.48 0 384.662z'></path></svg>";
+                aSub.setAttribute("aria-haspopup", "true");
+                aSub.setAttribute("aria-expanded", "false");
             }
             var liSubs = $YetaWF.getElementsBySelector("li > a", [_this.Control]);
             $YetaWF.registerMultipleEventHandlers(liSubs, ["mouseenter"], null, function (ev) {
@@ -377,8 +378,18 @@ var YetaWF_ComponentsHTML;
         var menus = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR, ev.detail.containers);
         for (var _i = 0, menus_2 = menus; _i < menus_2.length; _i++) {
             var menu = menus_2[_i];
-            if (menu.isSmall)
-                menu.hide();
+            menu.closeAll();
+        }
+        return true;
+    });
+    // Handle Escape key to close any open menus
+    $YetaWF.registerEventHandlerBody("keydown", null, function (ev) {
+        if (ev.key !== "Escape")
+            return true;
+        var menus = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR);
+        for (var _i = 0, menus_3 = menus; _i < menus_3.length; _i++) {
+            var menu = menus_3[_i];
+            menu.closeAll();
         }
         return true;
     });
@@ -390,18 +401,5 @@ var YetaWF_ComponentsHTML;
     //     return true;
     // });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
-// if (level == 0) {
-//     // icon used: fa-caret-down
-//     subMenuArrow =
-// @"<svg class='t_down' aria-hidden='true' focusable='false' role='img' viewBox='0 0 320 512'>
-//     <path fill='currentColor' d='M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z'></path>
-// </svg>";
-// } else {
-//     // icon used: fa-caret-right
-//     subMenuArrow =
-// @"<svg class='t_right' aria-hidden='true' focusable='false' role='img' viewBox='0 0 192 512'>
-//     <path fill='currentColor' d='M0 384.662V127.338c0-17.818 21.543-26.741 34.142-14.142l128.662 128.662c7.81 7.81 7.81 20.474 0 28.284L34.142 398.804C21.543 411.404 0 402.48 0 384.662z'></path>
-// </svg>";
-// }
 
 //# sourceMappingURL=Menu.js.map
