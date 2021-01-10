@@ -42,6 +42,18 @@ var YetaWF_ComponentsHTML;
             _this.CloseSublevelsTimout = 0;
             _this.Setup = setup;
             _this.updateSize();
+            // add icons to all items with submenu
+            var aSubs = $YetaWF.getElementsBySelector("li.t_hassub > a", [_this.Control]);
+            for (var _i = 0, aSubs_1 = aSubs; _i < aSubs_1.length; _i++) {
+                var aSub = aSubs_1[_i];
+                var li = aSub.parentElement;
+                if ($YetaWF.elementHasClass(li, "t_lvl0"))
+                    // icon used: fa-caret-down
+                    aSub.innerHTML += "<svg class='t_down' aria-hidden='true' focusable='false' role='img' viewBox='0 0 320 512'><path fill='currentColor' d='M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z'></path></svg>";
+                else
+                    // icon used: fa-caret-right
+                    aSub.innerHTML += "<svg class='t_right' aria-hidden='true' focusable='false' role='img' viewBox='0 0 192 512'><path fill='currentColor' d='M0 384.662V127.338c0-17.818 21.543-26.741 34.142-14.142l128.662 128.662c7.81 7.81 7.81 20.474 0 28.284L34.142 398.804C21.543 411.404 0 402.48 0 384.662z'></path></svg>";
+            }
             var liSubs = $YetaWF.getElementsBySelector("li > a", [_this.Control]);
             $YetaWF.registerMultipleEventHandlers(liSubs, ["mouseenter"], null, function (ev) {
                 if (_this.isSmall)
@@ -69,6 +81,26 @@ var YetaWF_ComponentsHTML;
                 var owningLI = $YetaWF.elementClosest(owningAnchor, "li");
                 if ($YetaWF.elementHasClass(owningLI, "t_megamenu_content"))
                     return true; //we're within a megamenu (can't have menus within megamenu)
+                var owningUL = $YetaWF.elementClosest(owningAnchor, "ul");
+                var subUL = $YetaWF.getElement1BySelectorCond("ul", [owningLI]);
+                if (!subUL) {
+                    _this.closeSublevelsStartingAt(owningUL);
+                    return true;
+                }
+                var subLI = $YetaWF.getElement1BySelector("li", [subUL]);
+                var levelInfo = { owningUL: owningUL, owningLI: owningLI, owningAnchor: owningAnchor, subUL: subUL, subLI: subLI };
+                if (_this.closeSublevelsForNewSublevel(levelInfo))
+                    _this.openSublevel(levelInfo);
+                else
+                    return true; // allow anchor processing
+                return false;
+            });
+            $YetaWF.registerEventHandler(_this.Control, "click", "li > a > svg", function (ev) {
+                if (!_this.isSmall)
+                    return true;
+                var svg = ev.__YetaWFElem;
+                var owningAnchor = svg.parentElement;
+                var owningLI = $YetaWF.elementClosest(owningAnchor, "li");
                 var owningUL = $YetaWF.elementClosest(owningAnchor, "ul");
                 var subUL = $YetaWF.getElement1BySelectorCond("ul", [owningLI]);
                 if (!subUL) {
@@ -270,6 +302,7 @@ var YetaWF_ComponentsHTML;
                 $YetaWF.elementAddClass(this.Control, "t_large");
                 this.show();
             }
+            this.closeAll();
         };
         // API
         MenuComponent.prototype.closeAll = function () {
@@ -357,5 +390,18 @@ var YetaWF_ComponentsHTML;
     //     return true;
     // });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
+// if (level == 0) {
+//     // icon used: fa-caret-down
+//     subMenuArrow =
+// @"<svg class='t_down' aria-hidden='true' focusable='false' role='img' viewBox='0 0 320 512'>
+//     <path fill='currentColor' d='M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z'></path>
+// </svg>";
+// } else {
+//     // icon used: fa-caret-right
+//     subMenuArrow =
+// @"<svg class='t_right' aria-hidden='true' focusable='false' role='img' viewBox='0 0 192 512'>
+//     <path fill='currentColor' d='M0 384.662V127.338c0-17.818 21.543-26.741 34.142-14.142l128.662 128.662c7.81 7.81 7.81 20.474 0 28.284L34.142 398.804C21.543 411.404 0 402.48 0 384.662z'></path>
+// </svg>";
+// }
 
 //# sourceMappingURL=Menu.js.map

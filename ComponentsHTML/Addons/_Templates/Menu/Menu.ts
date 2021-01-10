@@ -50,6 +50,18 @@ namespace YetaWF_ComponentsHTML {
 
             this.updateSize();
 
+            // add icons to all items with submenu
+            let aSubs = $YetaWF.getElementsBySelector("li.t_hassub > a", [this.Control]);
+            for (let aSub of aSubs) {
+                let li = aSub.parentElement!;
+                if ($YetaWF.elementHasClass(li, "t_lvl0"))
+                    // icon used: fa-caret-down
+                    aSub.innerHTML += "<svg class='t_down' aria-hidden='true' focusable='false' role='img' viewBox='0 0 320 512'><path fill='currentColor' d='M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z'></path></svg>";
+                else
+                    // icon used: fa-caret-right
+                    aSub.innerHTML += "<svg class='t_right' aria-hidden='true' focusable='false' role='img' viewBox='0 0 192 512'><path fill='currentColor' d='M0 384.662V127.338c0-17.818 21.543-26.741 34.142-14.142l128.662 128.662c7.81 7.81 7.81 20.474 0 28.284L34.142 398.804C21.543 411.404 0 402.48 0 384.662z'></path></svg>";
+            }
+
             let liSubs = $YetaWF.getElementsBySelector("li > a", [this.Control]);
             $YetaWF.registerMultipleEventHandlers(liSubs, ["mouseenter"], null, (ev: Event): boolean => {
 
@@ -79,6 +91,29 @@ namespace YetaWF_ComponentsHTML {
                 let owningAnchor = ev.__YetaWFElem as HTMLAnchorElement;
                 let owningLI = $YetaWF.elementClosest(owningAnchor, "li") as HTMLLIElement;
                 if ($YetaWF.elementHasClass(owningLI, "t_megamenu_content")) return true;//we're within a megamenu (can't have menus within megamenu)
+                let owningUL = $YetaWF.elementClosest(owningAnchor, "ul") as HTMLUListElement;
+
+                let subUL = $YetaWF.getElement1BySelectorCond("ul", [owningLI]) as HTMLUListElement;
+                if (!subUL) {
+                    this.closeSublevelsStartingAt(owningUL);
+                    return true;
+                }
+                let subLI = $YetaWF.getElement1BySelector("li", [subUL]) as HTMLLIElement;
+
+                let levelInfo = { owningUL: owningUL, owningLI: owningLI, owningAnchor: owningAnchor, subUL: subUL, subLI: subLI };
+                if (this.closeSublevelsForNewSublevel(levelInfo))
+                    this.openSublevel(levelInfo);
+                else
+                    return true; // allow anchor processing
+                return false;
+            });
+            $YetaWF.registerEventHandler(this.Control, "click", "li > a > svg", (ev: Event): boolean => {
+
+                if (!this.isSmall) return true;
+
+                let svg = ev.__YetaWFElem;
+                let owningAnchor = svg.parentElement! as HTMLAnchorElement;
+                let owningLI = $YetaWF.elementClosest(owningAnchor, "li") as HTMLLIElement;
                 let owningUL = $YetaWF.elementClosest(owningAnchor, "ul") as HTMLUListElement;
 
                 let subUL = $YetaWF.getElement1BySelectorCond("ul", [owningLI]) as HTMLUListElement;
@@ -289,6 +324,7 @@ namespace YetaWF_ComponentsHTML {
                 $YetaWF.elementAddClass(this.Control, "t_large");
                 this.show();
             }
+            this.closeAll();
         }
 
         // API

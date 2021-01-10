@@ -24,6 +24,7 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             public const int MaxShadow = 80;
             public const int MaxLine = 200;
             public const int MaxFontSize = 80;
+            public const int MaxMargin = 80;
             public const int MaxPadding = 80;
             public const int MaxWidth = 80;
             public const int MaxHeight = 80;
@@ -107,6 +108,10 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [UIHint("Text20"), StringLength(MaxPadding), Required]
             public string MainMenu0APadding { get; set; } = null!;
 
+            [Category("Main Menu"), Caption("--mm-0-a-small-padding"), Description("Padding")]
+            [UIHint("Text20"), StringLength(MaxPadding), Required]
+            public string MainMenu0ASmallPadding { get; set; } = null!;
+
             [Category("Main Menu"), Caption("--mm-0-a-bg"), Description("Background")]
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string MainMenu0ABg { get; set; } = null!;
@@ -153,6 +158,14 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string MainMenu1Clr { get; set; } = null!;
 
+            [Category("Main Menu"), Caption("--mm-1-small-margin"), Description("Margin")]
+            [UIHint("Text20"), StringLength(MaxMargin), Required]
+            public string MainMenu1SmallMargin { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-1-small-padding"), Description("Padding")]
+            [UIHint("Text20"), StringLength(MaxPadding), Required]
+            public string MainMenu1SmallPadding { get; set; } = null!;
+
             [Category("Main Menu"), Caption("--mm-1-font"), Description("Font")]
             [UIHint("Text40"), StringLength(MaxFont), Required]
             public string MainMenu1Font { get; set; } = null!;
@@ -168,6 +181,10 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [Category("Main Menu"), Caption("--mm-1-a-padding"), Description("Padding")]
             [UIHint("Text20"), StringLength(MaxPadding), Required]
             public string MainMenu1APadding { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-1-a-small-padding"), Description("Padding")]
+            [UIHint("Text20"), StringLength(MaxPadding), Required]
+            public string MainMenu1ASmallPadding { get; set; } = null!;
 
             [Category("Main Menu"), Caption("--mm-1-a-bg"), Description("Background")]
             [UIHint("Color"), StringLength(MaxColor), Required]
@@ -231,6 +248,14 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string MainMenu2Clr { get; set; } = null!;
 
+            [Category("Main Menu"), Caption("--mm-2-small-margin"), Description("Margin")]
+            [UIHint("Text20"), StringLength(MaxMargin), Required]
+            public string MainMenu2SmallMargin { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-2-small-padding"), Description("Padding")]
+            [UIHint("Text20"), StringLength(MaxPadding), Required]
+            public string MainMenu2SmallPadding { get; set; } = null!;
+
             [Category("Main Menu"), Caption("--mm-2-font"), Description("Font")]
             [UIHint("Text40"), StringLength(MaxFont), Required]
             public string MainMenu2Font { get; set; } = null!;
@@ -246,6 +271,10 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [Category("Main Menu"), Caption("--mm-2-a-padding"), Description("Padding")]
             [UIHint("Text20"), StringLength(MaxPadding), Required]
             public string MainMenu2APadding { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-2-a-small-padding"), Description("Padding")]
+            [UIHint("Text20"), StringLength(MaxPadding), Required]
+            public string MainMenu2ASmallPadding { get; set; } = null!;
 
             [Category("Main Menu"), Caption("--mm-2-a-bg"), Description("Background")]
             [UIHint("Color"), StringLength(MaxColor), Required]
@@ -278,6 +307,14 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [Category("Main Menu"), Caption("--mm-2-ddheight"), Description("Height")]
             [UIHint("Text20"), StringLength(MaxHeight), Required]
             public string MainMenu2DDHeight { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-svg-small-border"), Description("Border")]
+            [UIHint("Text40"), StringLength(MaxBorder), Required]
+            public string MainMenuSVGSmallBorder { get; set; } = null!;
+
+            [Category("Main Menu"), Caption("--mm-svg-small-border-radius"), Description("Border Radius")]
+            [UIHint("Text40"), StringLength(MaxRadius), Required]
+            public string MainMenu2SVGSmallBorderRadius { get; set; } = null!;
 
 
 

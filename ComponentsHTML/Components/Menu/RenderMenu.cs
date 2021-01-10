@@ -42,7 +42,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (id == null)
                 id = Manager.UniqueId();
         
-            string tags = $@"<div {(id != null ? $" id='{id}'" : "")} class='{css}' style='display:none'><ul{style}>{menuContents}</ul></div>";
+            string tags = $@"<ul {(id != null ? $" id='{id}'" : "")} class='{css}'{style}>{menuContents}</ul>";
 
             MenuSetup setup = new MenuSetup {
                 SmallMenuMaxWidth = SmallMenuMaxWidth,
@@ -107,23 +107,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                 if (subModGuid != null)
                                     css = CssManager.CombineCss(css, "t_megamenu_hassub");
                                 css = CssManager.CombineCss(css, liCss);
-
-                                string subMenuArrow;
-
-                                if (level == 0) {
-                                    // icon used: fa-caret-down
-                                    subMenuArrow =
-@"<svg class='t_down' aria-hidden='true' focusable='false' role='img' viewBox='0 0 320 512'>
-    <path fill='currentColor' d='M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z'></path>
-</svg>";
-                                } else {
-                                    // icon used: fa-caret-right
-                                    subMenuArrow =
-@"<svg class='t_right' aria-hidden='true' focusable='false' role='img' viewBox='0 0 192 512'>
-    <path fill='currentColor' d='M0 384.662V127.338c0-17.818 21.543-26.741 34.142-14.142l128.662 128.662c7.81 7.81 7.81 20.474 0 28.284L34.142 398.804C21.543 411.404 0 402.48 0 384.662z'></path>
-</svg>";
-                                }
-                                string menuContents = await CoreRendering.RenderActionAsync(menuEntry, renderMode, null, SubMenuArrow: subMenuArrow, RenderEngine: ModuleAction.RenderEngineEnum.BootstrapSmartMenu);
+                                css = CssManager.CombineCss(css, "t_hassub");
+                                string menuContents = await CoreRendering.RenderActionAsync(menuEntry, renderMode, null, RenderEngine: ModuleAction.RenderEngineEnum.BootstrapSmartMenu);
 
                                 hb.Append($"<li class='t_lvl{level} {css}'>\n{menuContents}\n{subMenuContents}</li>\n");
                                 rendered = true;
@@ -141,7 +126,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     }
                 }
             }
-
             return hb.ToString();
         }
     }

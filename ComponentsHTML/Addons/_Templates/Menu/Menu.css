@@ -1,6 +1,6 @@
 @charset "UTF-8";
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
-.yt_menu.t_display.t_large > ul {
+ul.yt_menu.t_display.t_large {
   display: -webkit-box;
   display: flex;
   -webkit-box-orient: horizontal;
@@ -14,32 +14,32 @@
   color: var(--mm-0-clr);
   border: var(--mm-0-border);
   border-radius: var(--mm-0-border-radius); }
-  .yt_menu.t_display.t_large > ul > li {
+  ul.yt_menu.t_display.t_large > li {
     position: relative;
     list-style: none;
     line-height: 1;
     background-color: var(--mm-0-bg);
     color: var(--mm-0-clr);
     font: var(--mm-0-font); }
-    .yt_menu.t_display.t_large > ul > li > a {
+    ul.yt_menu.t_display.t_large > li > a {
       display: block;
       outline: none;
       text-decoration: none;
       padding: var(--mm-0-a-padding);
       background-color: var(--mm-0-a-bg);
       color: var(--mm-0-a-clr); }
-      .yt_menu.t_display.t_large > ul > li > a.t_path {
+      ul.yt_menu.t_display.t_large > li > a.t_path {
         background-color: var(--mm-0-a-bg-path);
         color: var(--mm-0-a-clr-path); }
-      .yt_menu.t_display.t_large > ul > li > a:hover, .yt_menu.t_display.t_large > ul > li > a:focus {
+      ul.yt_menu.t_display.t_large > li > a:hover, ul.yt_menu.t_display.t_large > li > a:focus {
         background-color: var(--mm-0-a-bg-hover);
         color: var(--mm-0-a-clr-hover); }
-      .yt_menu.t_display.t_large > ul > li > a svg {
+      ul.yt_menu.t_display.t_large > li > a svg {
         vertical-align: top;
-        padding-left: 1ch;
+        margin-left: 1ch;
         width: var(--mm-0-ddwidth);
         height: var(--mm-0-ddheight); }
-    .yt_menu.t_display.t_large > ul > li > ul {
+    ul.yt_menu.t_display.t_large > li > ul {
       position: absolute;
       z-index: 1000;
       display: -webkit-box;
@@ -55,9 +55,9 @@
       color: var(--mm-1-clr);
       border: var(--mm-1-border);
       border-radius: var(--mm-1-border-radius); }
-      .yt_menu.t_display.t_large > ul > li > ul.t_megamenu_content {
+      ul.yt_menu.t_display.t_large > li > ul.t_megamenu_content {
         width: var(--mm-1-mm-width); }
-      .yt_menu.t_display.t_large > ul > li > ul > li {
+      ul.yt_menu.t_display.t_large > li > ul > li {
         position: relative;
         list-style: none;
         line-height: 1;
@@ -68,31 +68,31 @@
         background-color: var(--mm-1-bg);
         color: var(--mm-1-clr);
         font: var(--mm-1-font); }
-        .yt_menu.t_display.t_large > ul > li > ul > li.t_megamenu_content {
+        ul.yt_menu.t_display.t_large > li > ul > li.t_megamenu_content {
           background-color: var(--mm-1-mm-bg);
           color: var(--mm-1-mm-clr);
           font: var(--mm-1-mm-font); }
-        .yt_menu.t_display.t_large > ul > li > ul > li > a {
+        ul.yt_menu.t_display.t_large > li > ul > li > a {
           display: block;
           outline: none;
           padding: var(--mm-1-a-padding);
           text-decoration: none;
           background-color: var(--mm-1-a-bg);
           color: var(--mm-1-a-clr); }
-          .yt_menu.t_display.t_large > ul > li > ul > li > a.t_path {
+          ul.yt_menu.t_display.t_large > li > ul > li > a.t_path {
             background-color: var(--mm-1-a-bg-path);
             color: var(--mm-1-a-clr-path); }
-          .yt_menu.t_display.t_large > ul > li > ul > li > a:hover, .yt_menu.t_display.t_large > ul > li > ul > li > a:focus {
+          ul.yt_menu.t_display.t_large > li > ul > li > a:hover, ul.yt_menu.t_display.t_large > li > ul > li > a:focus {
             background-color: var(--mm-1-a-bg-hover);
             color: var(--mm-1-a-clr-hover); }
-          .yt_menu.t_display.t_large > ul > li > ul > li > a i {
+          ul.yt_menu.t_display.t_large > li > ul > li > a i {
             margin-right: .5ch; }
-          .yt_menu.t_display.t_large > ul > li > ul > li > a svg {
+          ul.yt_menu.t_display.t_large > li > ul > li > a svg {
             vertical-align: top;
             float: right;
             width: var(--mm-1-ddwidth);
             height: var(--mm-1-ddheight); }
-        .yt_menu.t_display.t_large > ul > li > ul > li > ul {
+        ul.yt_menu.t_display.t_large > li > ul > li > ul {
           position: absolute;
           z-index: 1000;
           display: -webkit-box;
@@ -108,7 +108,7 @@
           color: var(--mm-2-clr);
           border: var(--mm-2-border);
           border-radius: var(--mm-2-border-radius); }
-          .yt_menu.t_display.t_large > ul > li > ul > li > ul > li {
+          ul.yt_menu.t_display.t_large > li > ul > li > ul > li {
             position: relative;
             list-style: none;
             line-height: 1;
@@ -119,28 +119,28 @@
             background-color: var(--mm-2-bg);
             color: var(--mm-2-clr);
             font: var(--mm-2-font); }
-            .yt_menu.t_display.t_large > ul > li > ul > li > ul > li > a {
+            ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a {
               display: block;
               outline: none;
               padding: var(--mm-2-a-padding);
               text-decoration: none;
               background-color: var(--mm-2-a-bg);
               color: var(--mm-2-a-clr); }
-              .yt_menu.t_display.t_large > ul > li > ul > li > ul > li > a.t_path {
+              ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a.t_path {
                 background-color: var(--mm-2-a-bg-path);
                 color: var(--mm-2-a-clr-path); }
-              .yt_menu.t_display.t_large > ul > li > ul > li > ul > li > a:hover, .yt_menu.t_display.t_large > ul > li > ul > li > ul > li > a:focus {
+              ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a:hover, ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a:focus {
                 background-color: var(--mm-2-a-bg-hover);
                 color: var(--mm-2-a-clr-hover); }
-              .yt_menu.t_display.t_large > ul > li > ul > li > ul > li > a i {
+              ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a i {
                 margin-right: .5ch; }
-              .yt_menu.t_display.t_large > ul > li > ul > li > ul > li > a svg {
+              ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a svg {
                 vertical-align: top;
                 float: right;
                 width: var(--mm-2-ddwidth);
                 height: var(--mm-2-ddheight); }
 
-.yt_menu.t_display.t_small > ul {
+ul.yt_menu.t_display.t_small {
   display: -webkit-box;
   display: flex;
   -webkit-box-orient: vertical;
@@ -154,32 +154,34 @@
   color: var(--mm-0-clr);
   border: var(--mm-0-border);
   border-radius: var(--mm-0-border-radius); }
-  .yt_menu.t_display.t_small > ul > li {
+  ul.yt_menu.t_display.t_small > li {
     list-style: none;
     line-height: 1;
     background-color: var(--mm-0-bg);
     color: var(--mm-0-clr);
     font: var(--mm-0-font); }
-    .yt_menu.t_display.t_small > ul > li > a {
+    ul.yt_menu.t_display.t_small > li > a {
       display: block;
       outline: none;
       text-decoration: none;
       padding: var(--mm-0-a-small-padding);
       background-color: var(--mm-0-a-bg);
       color: var(--mm-0-a-clr); }
-      .yt_menu.t_display.t_small > ul > li > a.t_path {
+      ul.yt_menu.t_display.t_small > li > a.t_path {
         background-color: var(--mm-0-a-bg-path);
         color: var(--mm-0-a-clr-path); }
-      .yt_menu.t_display.t_small > ul > li > a:hover, .yt_menu.t_display.t_small > ul > li > a:focus {
+      ul.yt_menu.t_display.t_small > li > a:hover, ul.yt_menu.t_display.t_small > li > a:focus {
         background-color: var(--mm-0-a-bg-hover);
         color: var(--mm-0-a-clr-hover); }
-      .yt_menu.t_display.t_small > ul > li > a svg {
+      ul.yt_menu.t_display.t_small > li > a svg {
+        border: var(--mm-svg-small-border);
+        border-radius: var(--mm-svg-small-border-radius);
         float: right;
         vertical-align: top;
-        padding-left: 1ch;
+        margin-left: 1ch;
         width: var(--mm-0-ddwidth);
         height: var(--mm-0-ddheight); }
-    .yt_menu.t_display.t_small > ul > li > ul {
+    ul.yt_menu.t_display.t_small > li > ul {
       display: -webkit-box;
       display: flex;
       -webkit-box-orient: vertical;
@@ -194,9 +196,9 @@
       color: var(--mm-1-clr);
       border: var(--mm-1-border);
       border-radius: var(--mm-1-border-radius); }
-      .yt_menu.t_display.t_small > ul > li > ul.t_megamenu_content {
+      ul.yt_menu.t_display.t_small > li > ul.t_megamenu_content {
         width: 85%; }
-      .yt_menu.t_display.t_small > ul > li > ul > li {
+      ul.yt_menu.t_display.t_small > li > ul > li {
         list-style: none;
         line-height: 1;
         margin: 0;
@@ -206,31 +208,33 @@
         background-color: var(--mm-1-bg);
         color: var(--mm-1-clr);
         font: var(--mm-1-font); }
-        .yt_menu.t_display.t_small > ul > li > ul > li.t_megamenu_content {
+        ul.yt_menu.t_display.t_small > li > ul > li.t_megamenu_content {
           background-color: var(--mm-1-mm-bg);
           color: var(--mm-1-mm-clr);
           font: var(--mm-1-mm-font); }
-        .yt_menu.t_display.t_small > ul > li > ul > li > a {
+        ul.yt_menu.t_display.t_small > li > ul > li > a {
           display: block;
           outline: none;
           padding: var(--mm-1-a-small-padding);
           text-decoration: none;
           background-color: var(--mm-1-a-bg);
           color: var(--mm-1-a-clr); }
-          .yt_menu.t_display.t_small > ul > li > ul > li > a.t_path {
+          ul.yt_menu.t_display.t_small > li > ul > li > a.t_path {
             background-color: var(--mm-1-a-bg-path);
             color: var(--mm-1-a-clr-path); }
-          .yt_menu.t_display.t_small > ul > li > ul > li > a:hover, .yt_menu.t_display.t_small > ul > li > ul > li > a:focus {
+          ul.yt_menu.t_display.t_small > li > ul > li > a:hover, ul.yt_menu.t_display.t_small > li > ul > li > a:focus {
             background-color: var(--mm-1-a-bg-hover);
             color: var(--mm-1-a-clr-hover); }
-          .yt_menu.t_display.t_small > ul > li > ul > li > a i {
+          ul.yt_menu.t_display.t_small > li > ul > li > a i {
             margin-right: .5ch; }
-          .yt_menu.t_display.t_small > ul > li > ul > li > a svg {
+          ul.yt_menu.t_display.t_small > li > ul > li > a svg {
+            border: var(--mm-svg-small-border);
+            border-radius: var(--mm-svg-small-border-radius);
             vertical-align: top;
             float: right;
             width: var(--mm-1-ddwidth);
             height: var(--mm-1-ddheight); }
-        .yt_menu.t_display.t_small > ul > li > ul > li > ul {
+        ul.yt_menu.t_display.t_small > li > ul > li > ul {
           display: -webkit-box;
           display: flex;
           -webkit-box-orient: vertical;
@@ -245,7 +249,7 @@
           color: var(--mm-2-clr);
           border: var(--mm-2-border);
           border-radius: var(--mm-2-border-radius); }
-          .yt_menu.t_display.t_small > ul > li > ul > li > ul > li {
+          ul.yt_menu.t_display.t_small > li > ul > li > ul > li {
             list-style: none;
             line-height: 1;
             margin: 0;
@@ -255,22 +259,24 @@
             background-color: var(--mm-2-bg);
             color: var(--mm-2-clr);
             font: var(--mm-2-font); }
-            .yt_menu.t_display.t_small > ul > li > ul > li > ul > li > a {
+            ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a {
               display: block;
               outline: none;
               padding: var(--mm-2-a-small-padding);
               text-decoration: none;
               background-color: var(--mm-2-a-bg);
               color: var(--mm-2-a-clr); }
-              .yt_menu.t_display.t_small > ul > li > ul > li > ul > li > a.t_path {
+              ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a.t_path {
                 background-color: var(--mm-2-a-bg-path);
                 color: var(--mm-2-a-clr-path); }
-              .yt_menu.t_display.t_small > ul > li > ul > li > ul > li > a:hover, .yt_menu.t_display.t_small > ul > li > ul > li > ul > li > a:focus {
+              ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a:hover, ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a:focus {
                 background-color: var(--mm-2-a-bg-hover);
                 color: var(--mm-2-a-clr-hover); }
-              .yt_menu.t_display.t_small > ul > li > ul > li > ul > li > a i {
+              ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a i {
                 margin-right: .5ch; }
-              .yt_menu.t_display.t_small > ul > li > ul > li > ul > li > a svg {
+              ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a svg {
+                border: var(--mm-svg-small-border);
+                border-radius: var(--mm-svg-small-border-radius);
                 vertical-align: top;
                 float: right;
                 width: var(--mm-2-ddwidth);
