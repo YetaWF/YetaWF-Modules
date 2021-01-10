@@ -84,10 +84,12 @@ namespace YetaWF_ComponentsHTML {
                 let key = ev.key;
                 if (key === "ArrowDown" || key === "Down") {
                     this.setNewSpinValue(false);
+                    return false;
                 } else if (key === "ArrowUp" || key === "Up") {
                     this.setNewSpinValue(true);
+                    return false;
                 }
-                return false;
+                return true;
             });
 
             $YetaWF.registerEventHandler(this.Container, "mousedown", ".t_up", (ev: Event): boolean => {

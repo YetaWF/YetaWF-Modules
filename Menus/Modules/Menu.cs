@@ -14,10 +14,6 @@ using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Menus.DataProvider;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Menus.Modules {
 
@@ -49,6 +45,7 @@ namespace YetaWF.Modules.Menus.Modules {
             //CloseAnimation = AnimationEnum.ExpandsUp;
             //CloseDuration = 300;
             Print = false;
+            SmallMenuMaxWidth = 750;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new MenuModuleDataProvider(); }
@@ -105,6 +102,11 @@ namespace YetaWF.Modules.Menus.Modules {
         [Category("General"), Caption("Edit Url"), Description("The Url used to edit this menu - If omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string EditUrl { get; set; }
+
+        [Category("General"), Caption("Small Screen Maximum Size"), Description("Defines the largest screen size where the small menu is used - If the screen is wider, the large menu is shown.")]
+        [UIHint("IntValue4"), Range(0, 999999), Required]
+        [Data_NewValue]
+        public int SmallMenuMaxWidth { get; set; }
 
         [Category("General"), Caption("<LI> Css Class"), Description("The optional Css class added to every <LI> tag in the menu")]
         [UIHint("Text40"), StringLength(MaxLICssClass)]

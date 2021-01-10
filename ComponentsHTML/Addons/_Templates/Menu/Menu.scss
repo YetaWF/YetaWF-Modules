@@ -2,7 +2,7 @@
 
 // Max menu sublevels 2
 
-.yt_menu.t_display {
+.yt_menu.t_display.t_large {
 
     > ul {
         display: flex;
@@ -190,3 +190,188 @@
         }
     }
 }
+.yt_menu.t_display.t_small {
+
+    > ul {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+
+        padding: var(--mm-0-padding);
+        margin:0;
+        list-style:none;
+
+        background-color: var(--mm-0-bg);
+        color: var(--mm-0-clr);
+        border: var(--mm-0-border);
+        border-radius: var(--mm-0-border-radius);
+
+        > li { // Main level
+
+            list-style: none;
+            line-height:1;
+
+            background-color: var(--mm-0-bg);
+            color: var(--mm-0-clr);
+            font: var(--mm-0-font);
+
+            > a {
+                display:block;
+                outline:none;
+                text-decoration: none;
+
+                padding: var(--mm-0-a-small-padding);
+
+                background-color: var(--mm-0-a-bg);
+                color: var(--mm-0-a-clr);
+
+                &.t_path {
+                    background-color: var(--mm-0-a-bg-path);
+                    color: var(--mm-0-a-clr-path);
+                }
+                &:hover, &:focus {
+                    background-color: var(--mm-0-a-bg-hover);
+                    color: var(--mm-0-a-clr-hover);
+                }
+                svg {
+                    float:right;
+                    vertical-align: top;
+                    padding-left: 1ch;
+                    width: var(--mm-0-ddwidth);
+                    height: var(--mm-0-ddheight);
+                }
+            }
+            > ul {
+
+                display: flex;
+                flex-direction: column;
+                flex-wrap: nowrap;
+                width: 85%;
+
+                margin: var(--mm-1-small-margin);
+                padding: var(--mm-1-small-padding);
+                list-style:none;
+
+                background-color: var(--mm-1-bg);
+                color: var(--mm-1-clr);
+                border: var(--mm-1-border);
+                border-radius: var(--mm-1-border-radius);
+
+                &.t_megamenu_content {
+                    width: 85%;
+                }
+
+                > li {
+
+                    list-style: none;
+                    line-height:1;
+
+                    margin:0;
+                    padding:0;
+
+                    height:auto;
+                    width:auto;
+
+                    background-color: var(--mm-1-bg);
+                    color: var(--mm-1-clr);
+                    font: var(--mm-1-font);
+
+                    &.t_megamenu_content {
+                        background-color: var(--mm-1-mm-bg);
+                        color: var(--mm-1-mm-clr);
+                        font: var(--mm-1-mm-font);
+                    }
+
+                    > a {
+                        display:block;
+                        outline:none;
+                        padding: var(--mm-1-a-small-padding);
+                        text-decoration: none;
+
+                        background-color: var(--mm-1-a-bg);
+                        color: var(--mm-1-a-clr);
+
+                        &.t_path {
+                            background-color: var(--mm-1-a-bg-path);
+                            color: var(--mm-1-a-clr-path);
+                        }
+                        &:hover, &:focus {
+                            background-color: var(--mm-1-a-bg-hover);
+                            color: var(--mm-1-a-clr-hover);
+                        }
+                        i {
+                            margin-right:.5ch;
+                        }
+                        svg {
+                            vertical-align: top;
+                            float: right;
+                            width: var(--mm-1-ddwidth);
+                            height: var(--mm-1-ddheight);
+                        }
+                    }
+                    > ul {
+
+                        display: flex;
+                        flex-direction: column;
+                        flex-wrap: nowrap;
+                        width: 70%;
+
+                        margin: var(--mm-2-small-margin);
+                        padding:var(--mm-2-small-padding);
+                        list-style:none;
+
+                        background-color: var(--mm-2-bg);
+                        color: var(--mm-2-clr);
+                        border: var(--mm-2-border);
+                        border-radius: var(--mm-2-border-radius);
+
+                        > li {
+
+                            list-style: none;
+                            line-height:1;
+
+                            margin:0;
+                            padding:0;
+
+                            height:auto;
+                            width:auto;
+
+                            background-color: var(--mm-2-bg);
+                            color: var(--mm-2-clr);
+                            font: var(--mm-2-font);
+
+                            > a {
+                                display:block;
+                                outline:none;
+                                padding: var(--mm-2-a-small-padding);
+                                text-decoration: none;
+
+                                background-color: var(--mm-2-a-bg);
+                                color: var(--mm-2-a-clr);
+
+                                &.t_path {
+                                    background-color: var(--mm-2-a-bg-path);
+                                    color: var(--mm-2-a-clr-path);
+                                }
+                                &:hover, &:focus {
+                                    background-color: var(--mm-2-a-bg-hover);
+                                    color: var(--mm-2-a-clr-hover);
+                                }
+                                i {
+                                    margin-right:.5ch;
+                                }
+                                svg {
+                                    vertical-align: top;
+                                    float: right;
+                                    width: var(--mm-2-ddwidth);
+                                    height: var(--mm-2-ddheight);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

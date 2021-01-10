@@ -64,11 +64,13 @@ var YetaWF_ComponentsHTML;
                 var key = ev.key;
                 if (key === "ArrowDown" || key === "Down") {
                     _this.setNewSpinValue(false);
+                    return false;
                 }
                 else if (key === "ArrowUp" || key === "Up") {
                     _this.setNewSpinValue(true);
+                    return false;
                 }
-                return false;
+                return true;
             });
             $YetaWF.registerEventHandler(_this.Container, "mousedown", ".t_up", function (ev) {
                 _this.InputControl.focus();

@@ -1,17 +1,16 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
 
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
-using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Support;
-using YetaWF.Modules.Menus.Modules;
-using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Core.Pages;
-using YetaWF.Core.Modules;
 using YetaWF.Core.IO;
-using Microsoft.AspNetCore.Mvc;
+using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Modules;
+using YetaWF.Core.Support;
+using YetaWF.Modules.ComponentsHTML.Components;
+using YetaWF.Modules.Menus.Modules;
 
 namespace YetaWF.Modules.Menus.Controllers {
 
@@ -28,6 +27,7 @@ namespace YetaWF.Modules.Menus.Controllers {
                     HoverDelay = Module.HoverDelay,
                     CssClass = Module.CssClass,
                     ShowPath = Module.ShowPath,
+                    SmallMenuMaxWidth = Module.SmallMenuMaxWidth
                 },
             };
             model.Menu.MenuList.LICssClass = Module.LICssClass;
@@ -52,6 +52,7 @@ namespace YetaWF.Modules.Menus.Controllers {
                     HoverDelay = Module.HoverDelay,
                     CssClass = Module.CssClass,
                     ShowPath = Module.ShowPath,
+                    SmallMenuMaxWidth = Module.SmallMenuMaxWidth
                 },
             };
             model.Menu.MenuList.LICssClass = Module.LICssClass;

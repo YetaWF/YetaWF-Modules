@@ -1,5 +1,6 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -15,7 +16,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     public partial class MenuDisplayComponent {
 
-        internal static async Task<string> RenderMenuAsync(MenuList menu, string id = null, string cssClass = null, bool Hidden = false, YHtmlHelper HtmlHelper = null) {
+        internal class MenuSetup {
+            public DirectionEnum Direction { get; set; }//ignored
+            public OrientationEnum Orientation { get; set; }//ignored
+            public int SmallMenuMaxWidth { get; set; }
+        }   
+        internal static async Task<string> RenderMenuAsync(MenuList menu, string id = null, string cssClass = null, bool Hidden = false, YHtmlHelper HtmlHelper = null, int SmallMenuMaxWidth = 0) {
 
             int level = 0;
 
@@ -36,10 +42,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (id == null)
                 id = Manager.UniqueId();
         
-            string tags = $@"<div {(id != null ? $" id='{id}'" : "")} class='{css}'><ul{style}>{menuContents}</ul></div>";
+            string tags = $@"<div {(id != null ? $" id='{id}'" : "")} class='{css}' style='display:none'><ul{style}>{menuContents}</ul></div>";
 
-            //Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.MenuComponent('{id}', {JsonConvert.SerializeObject(setup, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeHtml })});");
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.MenuComponent('{id}');");
+            MenuSetup setup = new MenuSetup {
+                SmallMenuMaxWidth = SmallMenuMaxWidth,
+            };
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.MenuComponent('{id}', {JsonConvert.SerializeObject(setup)});");
 
             return tags;
         }

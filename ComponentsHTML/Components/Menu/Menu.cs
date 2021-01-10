@@ -102,6 +102,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// This is not currently implemented.
             /// </summary>
             public bool ShowPath { get; set; }
+            /// <summary>
+            /// Defines the largest screen size for which the small menu is shown. If the screen is wider, the large menu is shown.
+            /// </summary>
+            public int SmallMenuMaxWidth { get; set; }
         }
     }
 
@@ -132,7 +136,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     css = CssManager.CombineCss(css, "t_vert");
                     break;
             }
-            return await RenderMenuAsync(model.MenuList, DivId, css, HtmlHelper: HtmlHelper);
+            return await RenderMenuAsync(model.MenuList, DivId, css, HtmlHelper: HtmlHelper, SmallMenuMaxWidth: model.SmallMenuMaxWidth);
         }
     }
 }

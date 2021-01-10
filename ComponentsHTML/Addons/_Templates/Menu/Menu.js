@@ -36,14 +36,16 @@ var YetaWF_ComponentsHTML;
                 GetValue: null,
                 Enable: null,
             }) || this;
-            // private Setup: MenuSetup;
             // private HoverElements: HTMLElement[] = [];
             _this.Levels = [];
             _this.CloseTimeout = 0;
             _this.CloseSublevelsTimout = 0;
-            // this.Setup = setup;
+            _this.Setup = setup;
+            _this.updateSize();
             var liSubs = $YetaWF.getElementsBySelector("li > a", [_this.Control]);
             $YetaWF.registerMultipleEventHandlers(liSubs, ["mouseenter"], null, function (ev) {
+                if (_this.isSmall)
+                    return true;
                 var owningAnchor = ev.__YetaWFElem;
                 var owningLI = $YetaWF.elementClosest(owningAnchor, "li");
                 if ($YetaWF.elementHasClass(owningLI, "t_megamenu_content"))
@@ -60,17 +62,26 @@ var YetaWF_ComponentsHTML;
                     _this.openSublevel(levelInfo);
                 return false;
             });
-            $YetaWF.registerMultipleEventHandlers(liSubs, ["mouseup"], null, function (ev) {
+            $YetaWF.registerMultipleEventHandlers(liSubs, ["click"], null, function (ev) {
+                if (!_this.isSmall)
+                    return true;
                 var owningAnchor = ev.__YetaWFElem;
-                var owningLI = $YetaWF.elementClosestCond(owningAnchor, "li");
-                if (!owningLI)
+                var owningLI = $YetaWF.elementClosest(owningAnchor, "li");
+                if ($YetaWF.elementHasClass(owningLI, "t_megamenu_content"))
+                    return true; //we're within a megamenu (can't have menus within megamenu)
+                var owningUL = $YetaWF.elementClosest(owningAnchor, "ul");
+                var subUL = $YetaWF.getElement1BySelectorCond("ul", [owningLI]);
+                if (!subUL) {
+                    _this.closeSublevelsStartingAt(owningUL);
                     return true;
-                var owningUL = $YetaWF.elementClosestCond(owningAnchor, "ul");
-                if (!owningUL)
-                    return true;
-                // we're in a menu and someone clicked on an anchor
-                _this.closeAll(); // close the menu
-                return true;
+                }
+                var subLI = $YetaWF.getElement1BySelector("li", [subUL]);
+                var levelInfo = { owningUL: owningUL, owningLI: owningLI, owningAnchor: owningAnchor, subUL: subUL, subLI: subLI };
+                if (_this.closeSublevelsForNewSublevel(levelInfo))
+                    _this.openSublevel(levelInfo);
+                else
+                    _this.closeSublevelsStartingAt(owningUL);
+                return false;
             });
             $YetaWF.registerMultipleEventHandlers(liSubs, ["keydown"], null, function (ev) {
                 var key = ev.key;
@@ -104,22 +115,26 @@ var YetaWF_ComponentsHTML;
             var subUL = levelInfo.subUL;
             var owningLI = levelInfo.owningLI;
             var owningRect = owningLI.getBoundingClientRect();
-            // position the sublevel
-            switch (level) {
-                case 0:
-                    subUL.style.left = "0";
-                    subUL.style.top = owningRect.height + "px";
-                    break;
-                case 1:
-                    subUL.style.left = owningRect.width - 3 + "px"; // slight overlap
-                    subUL.style.top = "-3px";
-                    break;
-                case 2:
-                    subUL.style.left = owningRect.width - 3 + "px"; // slight overlap
-                    subUL.style.top = "-3px";
-                    break;
-                default:
-                    throw "Too many menu levels";
+            if (this.isSmall) {
+            }
+            else {
+                // position the sublevel
+                switch (level) {
+                    case 0:
+                        subUL.style.left = "0";
+                        subUL.style.top = owningRect.height + "px";
+                        break;
+                    case 1:
+                        subUL.style.left = owningRect.width - 3 + "px"; // slight overlap
+                        subUL.style.top = "-3px";
+                        break;
+                    case 2:
+                        subUL.style.left = owningRect.width - 3 + "px"; // slight overlap
+                        subUL.style.top = "-3px";
+                        break;
+                    default:
+                        throw "Too many menu levels";
+                }
             }
             this.clearPath();
             this.Levels.push(levelInfo);
@@ -190,6 +205,8 @@ var YetaWF_ComponentsHTML;
             return true; // we closed all necessary sublevels
         };
         MenuComponent.prototype.handleMouseMove = function (cursorX, cursorY) {
+            if (this.isSmall)
+                return true;
             if (this.Levels.length > 0) {
                 var rect = this.Levels[0].owningLI.getBoundingClientRect();
                 if (rect.left <= cursorX && cursorX < rect.right && rect.top <= cursorY && cursorY < rect.bottom) {
@@ -243,6 +260,17 @@ var YetaWF_ComponentsHTML;
                 $YetaWF.elementRemoveClass(levelInfo.owningAnchor, "t_path");
             }
         };
+        MenuComponent.prototype.updateSize = function () {
+            $YetaWF.elementRemoveClasses(this.Control, ["t_large", "t_small"]);
+            if (this.isSmall) {
+                $YetaWF.elementAddClass(this.Control, "t_small");
+                this.hide();
+            }
+            else {
+                $YetaWF.elementAddClass(this.Control, "t_large");
+                this.show();
+            }
+        };
         // API
         MenuComponent.prototype.closeAll = function () {
             for (var _i = 0, _a = this.Levels; _i < _a.length; _i++) {
@@ -251,6 +279,8 @@ var YetaWF_ComponentsHTML;
             }
             this.clearPath();
             this.Levels = [];
+            if (this.isSmall)
+                this.hide();
         };
         MenuComponent.closeAllMenus = function () {
             var controls = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR);
@@ -258,6 +288,34 @@ var YetaWF_ComponentsHTML;
                 var control = controls_1[_i];
                 control.closeAll();
             }
+        };
+        Object.defineProperty(MenuComponent.prototype, "isSmall", {
+            get: function () {
+                var small = false;
+                if (this.Setup.SmallMenuMaxWidth !== 0) {
+                    if (window.outerWidth <= this.Setup.SmallMenuMaxWidth)
+                        small = true;
+                }
+                else {
+                    small = false;
+                }
+                return small;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(MenuComponent.prototype, "isShown", {
+            get: function () {
+                return this.Control.style.display !== "none";
+            },
+            enumerable: false,
+            configurable: true
+        });
+        MenuComponent.prototype.show = function () {
+            this.Control.style.display = "";
+        };
+        MenuComponent.prototype.hide = function () {
+            this.Control.style.display = "none";
         };
         MenuComponent.TEMPLATE = "yt_menu";
         MenuComponent.SELECTOR = ".yt_menu.t_display";
@@ -270,6 +328,24 @@ var YetaWF_ComponentsHTML;
         for (var _i = 0, controls_2 = controls; _i < controls_2.length; _i++) {
             var control = controls_2[_i];
             control.handleMouseMove(ev.clientX, ev.clientY);
+        }
+        return true;
+    });
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, function (ev) {
+        var menus = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR, [ev.detail.container]);
+        for (var _i = 0, menus_1 = menus; _i < menus_1.length; _i++) {
+            var menu = menus_1[_i];
+            menu.updateSize();
+        }
+        return true;
+    });
+    // handle new content
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
+        var menus = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR, ev.detail.containers);
+        for (var _i = 0, menus_2 = menus; _i < menus_2.length; _i++) {
+            var menu = menus_2[_i];
+            if (menu.isSmall)
+                menu.hide();
         }
         return true;
     });

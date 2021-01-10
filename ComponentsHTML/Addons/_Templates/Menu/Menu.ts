@@ -3,9 +3,9 @@
 namespace YetaWF_ComponentsHTML {
 
     interface MenuSetup {
-        MenuId: string;
         Direction: DirectionEnum;
         Orientation: OrientationEnum;
+        SmallMenuMaxWidth: number;
     }
     enum DirectionEnum {
         Bottom = 0,
@@ -33,7 +33,7 @@ namespace YetaWF_ComponentsHTML {
 
         private static MouseOutTimeout: number = 300;// close menu when mouse leaves
 
-        // private Setup: MenuSetup;
+        private Setup: MenuSetup;
         // private HoverElements: HTMLElement[] = [];
 
         private Levels: LevelInfo[] = [];
@@ -46,11 +46,15 @@ namespace YetaWF_ComponentsHTML {
                 GetValue: null,
                 Enable: null,
             });
+            this.Setup = setup;
 
-            // this.Setup = setup;
+            this.updateSize();
 
             let liSubs = $YetaWF.getElementsBySelector("li > a", [this.Control]);
             $YetaWF.registerMultipleEventHandlers(liSubs, ["mouseenter"], null, (ev: Event): boolean => {
+
+                if (this.isSmall) return true;
+
                 let owningAnchor = ev.__YetaWFElem as HTMLAnchorElement;
                 let owningLI = $YetaWF.elementClosest(owningAnchor, "li") as HTMLLIElement;
                 if ($YetaWF.elementHasClass(owningLI, "t_megamenu_content")) return true;//we're within a megamenu (can't have menus within megamenu)
@@ -68,17 +72,31 @@ namespace YetaWF_ComponentsHTML {
                     this.openSublevel(levelInfo);
                 return false;
             });
-            $YetaWF.registerMultipleEventHandlers(liSubs, ["mouseup"], null, (ev: Event): boolean => {
+            $YetaWF.registerMultipleEventHandlers(liSubs, ["click"], null, (ev: Event): boolean => {
+
+                if (!this.isSmall) return true;
+
                 let owningAnchor = ev.__YetaWFElem as HTMLAnchorElement;
-                let owningLI = $YetaWF.elementClosestCond(owningAnchor, "li") as HTMLLIElement;
-                if (!owningLI) return true;
-                let owningUL = $YetaWF.elementClosestCond(owningAnchor, "ul") as HTMLUListElement;
-                if (!owningUL) return true;
-                // we're in a menu and someone clicked on an anchor
-                this.closeAll(); // close the menu
-                return true;
+                let owningLI = $YetaWF.elementClosest(owningAnchor, "li") as HTMLLIElement;
+                if ($YetaWF.elementHasClass(owningLI, "t_megamenu_content")) return true;//we're within a megamenu (can't have menus within megamenu)
+                let owningUL = $YetaWF.elementClosest(owningAnchor, "ul") as HTMLUListElement;
+
+                let subUL = $YetaWF.getElement1BySelectorCond("ul", [owningLI]) as HTMLUListElement;
+                if (!subUL) {
+                    this.closeSublevelsStartingAt(owningUL);
+                    return true;
+                }
+                let subLI = $YetaWF.getElement1BySelector("li", [subUL]) as HTMLLIElement;
+
+                let levelInfo = { owningUL: owningUL, owningLI: owningLI, owningAnchor: owningAnchor, subUL: subUL, subLI: subLI };
+                if (this.closeSublevelsForNewSublevel(levelInfo))
+                    this.openSublevel(levelInfo);
+                else
+                    this.closeSublevelsStartingAt(owningUL);
+                return false;
             });
             $YetaWF.registerMultipleEventHandlers(liSubs, ["keydown"], null, (ev: Event): boolean => {
+
                 let key = (ev as KeyboardEvent).key;
                 if (key === "Enter") {
                     let owningAnchor = ev.__YetaWFElem as HTMLAnchorElement;
@@ -112,22 +130,27 @@ namespace YetaWF_ComponentsHTML {
 
             let owningRect = owningLI.getBoundingClientRect();
 
-            // position the sublevel
-            switch (level) {
-                case 0:
-                    subUL.style.left = "0";
-                    subUL.style.top = `${owningRect.height}px`;
-                    break;
-                case 1:
-                    subUL.style.left = `${owningRect.width - 3}px`;// slight overlap
-                    subUL.style.top = "-3px";
-                    break;
-                case 2:
-                    subUL.style.left = `${owningRect.width - 3}px`;// slight overlap
-                    subUL.style.top = "-3px";
-                    break;
-                default:
-                    throw "Too many menu levels";
+            if (this.isSmall) {
+
+
+            } else {
+                // position the sublevel
+                switch (level) {
+                    case 0:
+                        subUL.style.left = "0";
+                        subUL.style.top = `${owningRect.height}px`;
+                        break;
+                    case 1:
+                        subUL.style.left = `${owningRect.width - 3}px`;// slight overlap
+                        subUL.style.top = "-3px";
+                        break;
+                    case 2:
+                        subUL.style.left = `${owningRect.width - 3}px`;// slight overlap
+                        subUL.style.top = "-3px";
+                        break;
+                    default:
+                        throw "Too many menu levels";
+                }
             }
             this.clearPath();
             this.Levels.push(levelInfo);
@@ -204,6 +227,9 @@ namespace YetaWF_ComponentsHTML {
         }
 
         public handleMouseMove(cursorX: number, cursorY: number): boolean {
+
+            if (this.isSmall) return true;
+
             if (this.Levels.length > 0) {
                 let rect = this.Levels[0].owningLI.getBoundingClientRect();
                 if (rect.left <= cursorX && cursorX < rect.right && rect.top <= cursorY && cursorY < rect.bottom) {
@@ -254,6 +280,17 @@ namespace YetaWF_ComponentsHTML {
             }
         }
 
+        public updateSize(): void {
+            $YetaWF.elementRemoveClasses(this.Control, ["t_large", "t_small"]);
+            if (this.isSmall) {
+                $YetaWF.elementAddClass(this.Control, "t_small");
+                this.hide();
+            } else {
+                $YetaWF.elementAddClass(this.Control, "t_large");
+                this.show();
+            }
+        }
+
         // API
 
         public closeAll(): void {
@@ -262,6 +299,9 @@ namespace YetaWF_ComponentsHTML {
             }
             this.clearPath();
             this.Levels = [];
+
+            if (this.isSmall)
+                this.hide();
         }
 
         public static closeAllMenus(): void {
@@ -269,6 +309,28 @@ namespace YetaWF_ComponentsHTML {
             for (let control of controls) {
                 control.closeAll();
             }
+        }
+
+        public get isSmall(): boolean {
+            let small = false;
+            if (this.Setup.SmallMenuMaxWidth !== 0) {
+                if (window.outerWidth <= this.Setup.SmallMenuMaxWidth)
+                    small = true;
+            } else {
+                small = false;
+            }
+            return small;
+        }
+
+        public get isShown(): boolean {
+            return this.Control.style.display !== "none";
+        }
+
+        public show(): void {
+            this.Control.style.display = "";
+        }
+        public hide(): void {
+            this.Control.style.display = "none";
         }
 
     }
@@ -279,6 +341,23 @@ namespace YetaWF_ComponentsHTML {
         }
         return true;
     });
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: CustomEvent<YetaWF.DetailsEventContainerResize>): boolean => {
+        let menus = YetaWF.ComponentBaseDataImpl.getControls<MenuComponent>(MenuComponent.SELECTOR, [ev.detail.container]);
+        for (let menu of menus) {
+            menu.updateSize();
+        }
+        return true;
+    });
+    // handle new content
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: CustomEvent<YetaWF.DetailsEventNavPageLoaded>): boolean => {
+        let menus = YetaWF.ComponentBaseDataImpl.getControls<MenuComponent>(MenuComponent.SELECTOR, ev.detail.containers);
+        for (let menu of menus) {
+            if (menu.isSmall)
+                menu.hide();
+        }
+        return true;
+    });
+
     // $YetaWF.registerEventHandlerBody("mousedown", null, (ev: MouseEvent): boolean => {
     //     let controls: MenuComponent[] = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR);
     //     for (let control of controls) {
