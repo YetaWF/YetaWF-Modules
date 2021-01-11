@@ -33,7 +33,6 @@ namespace YetaWF.Modules.ComponentsHTML {
         /// Adds any addons that are required by the package rendering components and views.
         /// </summary>
         public async Task AddStandardAddOnsAsync() {
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "necolas.github.io.normalize");
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "jquery");
 
             await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Icons");

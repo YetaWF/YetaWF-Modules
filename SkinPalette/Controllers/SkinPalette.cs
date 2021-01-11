@@ -1,11 +1,16 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SkinPalette#License */
 
 using Microsoft.AspNetCore.Mvc;
+using System.IO;
+using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
+using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
+using YetaWF.Core.Site;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.SkinPalette.Controllers {
@@ -17,17 +22,17 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
         [Trim]
         public class Model {
 
-            public const int MaxColor = 80;
+            public const int MaxColor = 200;
             public const int MaxFont = 200;
-            public const int MaxBorder = 80;
-            public const int MaxRadius = 80;
-            public const int MaxShadow = 80;
+            public const int MaxBorder = 200;
+            public const int MaxRadius = 200;
+            public const int MaxShadow = 200;
             public const int MaxLine = 200;
-            public const int MaxFontSize = 80;
-            public const int MaxMargin = 80;
-            public const int MaxPadding = 80;
-            public const int MaxWidth = 80;
-            public const int MaxHeight = 80;
+            public const int MaxFontSize = 200;
+            public const int MaxMargin = 200;
+            public const int MaxPadding = 200;
+            public const int MaxWidth = 200;
+            public const int MaxHeight = 200;
 
 
             [Category("Page"), Caption("--body-bg"), Description("Background")]
@@ -595,10 +600,6 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [UIHint("Text40"), StringLength(MaxBorder), Required]
             public string BarBorder { get; set; } = null!;
 
-            [Category("Sidebar"), Caption("--bar-border-radius"), Description("Border Radius")]
-            [UIHint("Text40"), StringLength(MaxRadius), Required]
-            public string BarBorderRadius { get; set; } = null!;
-
             [Category("Sidebar"), Caption("--bar-h1-font-size"), Description("Font Size")]
             [UIHint("Text20"), StringLength(MaxFontSize), Required]
             public string SidebarH1FontSize { get; set; } = null!;
@@ -1025,21 +1026,26 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
 
 
 
+            [Category("Config"), Caption("Theme"), Description("The current theme used for all pages of the site")]
+            [UIHint("Theme"), StringLength(SiteDefinition.MaxTheme), ReadOnly]
+            public string Theme { get; set; } = null!;
+
             [Category("Config"), Caption("CSS Variables"), Description("Paste your settings to edit further or copy to skin SCSS file to use in a skin")]
             [UIHint("TextAreaSourceOnly"), AdditionalMetadata("Spellcheck", false), AdditionalMetadata("EmHeight", 30), AdditionalMetadata("Copy", true), StringLength(0)]
-            public string? CSSVariables { get; set; }
+            public string CSSVariables { get; set; } = null!;
 
             [Category("Config"), Caption(""), Description("")]
             [UIHint("ModuleAction"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.ButtonOnly), ReadOnly]
             public ModuleAction Load { get; set; }
 
             public Model() {
+                Theme = Manager.CurrentSite.Theme;
                 Load = new ModuleAction {
-                    LinkText = this.__ResStr("apply", "Apply"),
+                    LinkText = this.__ResStr("save", "Save"),
                     Mode = ModuleAction.ActionModeEnum.Any,
-                    Name = "Apply",
+                    Name = "Save",
                     Style = ModuleAction.ActionStyleEnum.Nothing,
-                    Tooltip = this.__ResStr("applyTT", "Apply the CSS Variables to the current skin"),
+                    Tooltip = this.__ResStr("saveTT", "Save the CSS Variables for the current theme"),
                 };
             }
         }
@@ -1053,11 +1059,18 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             Model model = new Model {};
             return View(model);
         }
+
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public ActionResult SkinPalette_Partial(Model model) {
+        public async Task<ActionResult> SkinPalette_Partial(Model model) {
+
             if (!ModelState.IsValid)
                 return PartialView(model);
+
+            SkinAccess skinAccess = new SkinAccess();
+            SkinCollectionInfo skinInfo = skinAccess.GetSkinCollectionInfo();
+            await FileSystem.FileSystemProvider.WriteAllTextAsync(Path.Combine(skinInfo.Folder, "Themes", $"{Manager.CurrentSite.Theme}.css"), model.CSSVariables);
+
             return FormProcessed(model);
         }
     }

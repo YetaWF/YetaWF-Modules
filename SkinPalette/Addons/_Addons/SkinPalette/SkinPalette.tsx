@@ -21,7 +21,7 @@ namespace YetaWF_SkinPalette {
         private Contents: HTMLElement;
 
         private Config: HTMLTextAreaElement;
-        private ConfigApply: HTMLElement;
+        private ConfigSave: HTMLElement;
 
         constructor(id: string, setup: Setup) {
             super(id, SkinPaletteModule.SELECTOR, null);
@@ -31,7 +31,7 @@ namespace YetaWF_SkinPalette {
             this.Tabs = YetaWF_ComponentsHTML.TabsComponent.getControlFromSelector(".yt_tabs", YetaWF_ComponentsHTML.TabsComponent.SELECTOR, [this.Module]);
             this.Contents = $YetaWF.getElement1BySelector(".t_contents", [this.Module]);
             this.Config = $YetaWF.getElement1BySelector("textarea[name='CSSVariables']", [this.Module]) as HTMLTextAreaElement;
-            this.ConfigApply = $YetaWF.getElement1BySelector("a[data-name='Apply']", [this.Module]);
+            this.ConfigSave = $YetaWF.getElement1BySelector("a[data-name='Save']", [this.Module]);
 
             this.populate();
 
@@ -43,7 +43,7 @@ namespace YetaWF_SkinPalette {
                 }
                 return false;
             });
-            $YetaWF.registerEventHandler(this.ConfigApply, "click", null, (ev: MouseEvent): boolean => {
+            $YetaWF.registerEventHandler(this.ConfigSave, "click", null, (ev: MouseEvent): boolean => {
                 this.updateSkin();
                 return false;
             });
@@ -116,6 +116,9 @@ namespace YetaWF_SkinPalette {
             div.remove();
             // update all fields with changes
             this.populate();
+
+            let form = $YetaWF.Forms.getInnerForm(this.Module);
+            $YetaWF.Forms.submit(form, true);
         }
     }
 }

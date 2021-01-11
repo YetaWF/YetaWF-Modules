@@ -4,24 +4,26 @@
 
     &.t_display {
         background: var(--step-bg);
+        color: var(--step-clr);
         overflow: hidden;
-        .t_step {
+        a.t_step, a.t_step:hover, a.t_step:focus {
             display: inline-block;
             position:relative;
             text-decoration:none;
+            background: var(--step-bg);
+            color: var(--step-clr);
             padding: 20px 0px 20px 40px;
             &.t_active, &.t_enabled {
                 background: var(--step-bg-active);
+                color: var(--step-clr-active);
             }
             .t_caption {
-                color: var(--step-clr);
                 font-size:15px;
                 font-weight: bold;
                 display:block;
                 user-select:none;
             }
             .t_description {
-                color: var(--step-clr);
                 font-size:13px;
                 font-weight: normal;
                 display:block;

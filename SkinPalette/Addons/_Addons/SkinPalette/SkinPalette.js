@@ -24,7 +24,7 @@ var YetaWF_SkinPalette;
             _this.Tabs = YetaWF_ComponentsHTML.TabsComponent.getControlFromSelector(".yt_tabs", YetaWF_ComponentsHTML.TabsComponent.SELECTOR, [_this.Module]);
             _this.Contents = $YetaWF.getElement1BySelector(".t_contents", [_this.Module]);
             _this.Config = $YetaWF.getElement1BySelector("textarea[name='CSSVariables']", [_this.Module]);
-            _this.ConfigApply = $YetaWF.getElement1BySelector("a[data-name='Apply']", [_this.Module]);
+            _this.ConfigSave = $YetaWF.getElement1BySelector("a[data-name='Save']", [_this.Module]);
             _this.populate();
             $YetaWF.registerEventHandler(_this.ExpandCollapse, "click", null, function (ev) {
                 if (_this.Contents.style.display === "") {
@@ -35,7 +35,7 @@ var YetaWF_SkinPalette;
                 }
                 return false;
             });
-            $YetaWF.registerEventHandler(_this.ConfigApply, "click", null, function (ev) {
+            $YetaWF.registerEventHandler(_this.ConfigSave, "click", null, function (ev) {
                 _this.updateSkin();
                 return false;
             });
@@ -111,6 +111,8 @@ var YetaWF_SkinPalette;
             div.remove();
             // update all fields with changes
             this.populate();
+            var form = $YetaWF.Forms.getInnerForm(this.Module);
+            $YetaWF.Forms.submit(form, true);
         };
         SkinPaletteModule.SELECTOR = ".YetaWF_SkinPalette_SkinPalette";
         return SkinPaletteModule;
