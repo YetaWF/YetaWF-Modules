@@ -24,8 +24,8 @@
   top: -.7em;
   left: .5em;
   font-size: .7em;
-  background: var(--mod-current-bg);
-  color: var(--elem-clr);
+  background: var(--prop-cat-bg);
+  color: var(--prop-cat-clr);
   padding: 0 0.2em; }
 
 .yModule-current {

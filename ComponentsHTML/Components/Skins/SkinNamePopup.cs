@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
@@ -14,6 +15,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// Base class for the SkinNamePopup component implementation.
     /// </summary>
     public abstract class SkinNamePopupComponentBase : YetaWFComponent {
+
+        internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(SkinNamePopupComponentBase), name, defaultValue, parms); }
 
         internal const string TemplateName = "SkinNamePopup";
 
@@ -70,6 +73,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// Internal component used by the Skin component. Not intended for application use.
     /// </summary>
     [PrivateComponent]
+    [UsesAdditional("NoDefault", "bool", "true", "Defines whether a \"(Site Default)\" entry is automatically added as the first entry, with a value of null")]
     public class SkinNamePopupEditComponent : SkinNamePopupComponentBase, IYetaWFComponent<string> {
 
         /// <summary>
@@ -94,6 +98,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 Tooltip = skin.Description,
                 Value = skin.ViewName,
             }).ToList();
+
+            bool useDefault = !PropData.GetAdditionalAttributeValue<bool>("NoDefault");
+            if (useDefault)
+                list.Insert(0, new SelectionItem<string> {
+                    Text = __ResStr("default", "(Site Default)"),
+                    Tooltip = __ResStr("defaultTT", "Use the site defined default"),
+                    Value = "",
+                });
+
             // display the skins in a drop down
             return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_skinname");
         }

@@ -1,10 +1,14 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core;
+using YetaWF.Core.Addons;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
+using YetaWF.Core.Identity;
 using YetaWF.Core.Language;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -14,10 +18,6 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Site;
 using YetaWF.Core.Support;
-using YetaWF.Core.Components;
-using YetaWF.Core.Addons;
-using YetaWF.Core.Identity;
-using Microsoft.AspNetCore.Mvc;
 
 namespace YetaWF.Modules.PageEdit.Controllers {
 
@@ -53,7 +53,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public bool WantSearch { get; set; }
 
             [Category("Variables"), Caption("Temporary"), Description("Defines whether the current page is a temporary (generated) page")]
-            [UIHint("Boolean"), ReadOnly, SuppressIf("Debug", false)]
+            [UIHint("Boolean"), ReadOnly, SuppressIf(nameof(Debug), false)]
             public bool Temporary { get; set; }
 
             public bool Debug {
@@ -139,6 +139,11 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [Category("References"), Caption("Skin Modules"), Description("Defines modules which must be injected into this page")]
             [UIHint("ReferencedModules")]
             public SerializableList<ModuleDefinition.ReferencedModule> ReferencedModules { get; set; }
+
+            [Category("Skin"), Caption("Popup Page"), Description("The popup page used for the popup window when this page is shown in a popup")]
+            [UIHint("SkinNamePopup"), AdditionalMetadata("NoDefault", false), StringLength(SiteDefinition.MaxPopupPage)]
+            public string PopupPage { get; set; }
+            public string PopupPage_Collection { get { return Manager.CurrentSite.Skin.Collection; } }
 
             [Category("Skin"), Caption("Template"), Description("The local designed page used as a template for this page - All modules from the template are copied and rendered on this page in their defined pane - Modules in panes that are not available are not shown - Any page can be used as a template")]
             [UIHint("PageSelection"), Trim]

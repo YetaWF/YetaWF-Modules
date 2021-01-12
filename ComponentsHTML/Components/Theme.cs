@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Site;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 
@@ -101,7 +102,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }).ToList();
 
             if (model == null)
-                model = "Default";
+                model = SiteDefinition.DefaultTheme;
 
             // display the skins in a drop down
             return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_theme");

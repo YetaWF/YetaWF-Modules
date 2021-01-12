@@ -609,6 +609,13 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             public string SidebarH1PaddingBottom { get; set; } = null!;
 
 
+            [Category("PropertyList"), Caption("--prop-border"), Description("Border")]
+            [UIHint("Text40"), StringLength(MaxBorder), Required]
+            public string PropBorder { get; set; } = null!;
+
+            [Category("PropertyList"), Caption("--prop-border-radius"), Description("Border Radius")]
+            [UIHint("Text40"), StringLength(MaxRadius), Required]
+            public string PropBorderRadius { get; set; } = null!;
 
             [Category("PropertyList"), Caption("--prop-cat-bg"), Description("Color")]
             [UIHint("Color"), StringLength(MaxColor), Required]
@@ -824,6 +831,13 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string PbarValueBg { get; set; } = null!;
 
+            [Category("Progressbar"), Caption("--pbar-border"), Description("Border")]
+            [UIHint("Text40"), StringLength(MaxBorder), Required]
+            public string PbarBorder { get; set; } = null!;
+
+            [Category("Progressbar"), Caption("--pbar-border-radius"), Description("Border Radius")]
+            [UIHint("Text40"), StringLength(MaxRadius), Required]
+            public string PbarBorderRadius { get; set; } = null!;
 
 
             [Category("Table"), Caption("--tbl-bg"), Description("Color")]
