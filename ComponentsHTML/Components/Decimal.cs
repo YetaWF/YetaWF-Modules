@@ -86,6 +86,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [UIHint("Decimal"), Range(0.0, 100.0), Required]
     /// public decimal SalesTaxRate { get; set; }
     /// </example>
+    [UsesAdditional("Step", "double", "1.0", "The increment/decrement used when clicking on the up/down arrows of the edit control.")]
     [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
     public class DecimalEditComponent : DecimalComponentBase, IYetaWFComponent<Decimal>, IYetaWFComponent<Decimal?> {
 
@@ -128,7 +129,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             NumberSetup setup = new NumberSetup {
                 Min = 0,
                 Max = 999999999.99,
-                Step = 1,
+                Step = PropData.GetAdditionalAttributeValue<double>("Step", 1.0),
                 Digits = 2,
                 Locale = MultiString.ActiveLanguage,
             };

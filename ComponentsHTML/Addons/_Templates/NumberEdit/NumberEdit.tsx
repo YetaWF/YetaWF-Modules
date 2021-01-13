@@ -50,7 +50,7 @@ namespace YetaWF_ComponentsHTML {
             this.InputControl = this.Control as HTMLInputElement;
             this.Container = $YetaWF.elementClosest(this.Control, ".yt_number_container");
 
-            this.internalValue = this.InputControl.value;
+            this.setInternalValue(this.InputControl.value);
 
             // icons used: fas-exclamation-triangle
             let warn = <div class="t_warn" style="display:none"></div>;
@@ -71,11 +71,11 @@ namespace YetaWF_ComponentsHTML {
 
             $YetaWF.registerMultipleEventHandlers([this.InputControl], ["change", "input"], null, (ev: Event): boolean => {
                 if (!this.isValid(this.InputControl.value)) {
-                    this.internalValue = this.Value;
+                    this.setInternalValue(this.Value);
                     this.flashError();
                     return false;
                 }
-                this.internalValue = this.InputControl.value;
+                this.setInternalValue(this.InputControl.value, false);
                 this.sendChangeEvent();
                 return true;
             });
@@ -112,14 +112,14 @@ namespace YetaWF_ComponentsHTML {
                 if (this.enabled) {
                     $YetaWF.elementRemoveClass(this.Container, "t_focused");
                     $YetaWF.elementAddClass(this.Container, "t_focused");
-                    this.internalValue = this.Value;
+                    this.setInternalValue(this.Value);
                 }
                 return true;
             });
             $YetaWF.registerEventHandler(this.InputControl, "focusout", null, (ev: FocusEvent): boolean => {
                 $YetaWF.elementRemoveClass(this.Container, "t_focused");
                 this.clearSpin();
-                this.internalValue = this.Value;
+                this.setInternalValue(this.Value);
                 return true;
             });
         }
@@ -150,7 +150,7 @@ namespace YetaWF_ComponentsHTML {
                 value = this.Setup.Min;
             }
             if (value !== this.Value) {
-                this.value = value;
+                this.setControlValue(value);
                 this.sendSpinEvent();
             } else {
                 this.clearSpin();
@@ -193,17 +193,34 @@ namespace YetaWF_ComponentsHTML {
                 }
             }
         }
-        private set internalValue(val: number|null|string) {
+        private setInternalValue(val: number|null|string, updateIfValid?: boolean): void {
             if (typeof val === "string") {
                 val = Number(val);
                 if (isNaN(val))
                     val = null;
             }
             if (val != null) {
-                this.value = val;
+                if (updateIfValid === undefined || updateIfValid === true)
+                    this.value = val;
+                else
+                    this.Value = val;
             } else {
                 this.InputControl.value = "";
                 this.Value = val;
+            }
+        }
+        private setControlValue(val: number): void {
+            this.Value = val;
+            if (this.Setup.Currency && this.Setup.Locale) {
+                let v  = val.toLocaleString(this.Setup.Locale, { style: "currency", currency: this.Setup.Currency });
+                // special case for $US
+                if (v.startsWith("$"))
+                    v = `$ ${v.substring(1)}`;
+                this.InputControl.value = v;
+            } else {
+                let l = this.Setup.Lead ? `${this.Setup.Lead} ` : "";
+                let t = this.Setup.Trail ? ` ${this.Setup.Trail}` : "";
+                this.InputControl.value = `${l}${val.toLocaleString(this.Setup.Locale, { style: "decimal", minimumFractionDigits: this.Setup.Digits, maximumFractionDigits: this.Setup.Digits })}${t}`;
             }
         }
         private isValid(text: string): boolean {
@@ -218,7 +235,7 @@ namespace YetaWF_ComponentsHTML {
             return this.Value != null ? this.value.toString() : "";
         }
         public clear(): void {
-            this.internalValue = null;
+            this.setInternalValue(null);
         }
         public enable(enabled: boolean): void {
             $YetaWF.elementEnableToggle(this.InputControl, enabled);

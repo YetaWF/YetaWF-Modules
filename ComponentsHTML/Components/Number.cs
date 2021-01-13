@@ -5,7 +5,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     internal class NumberSetup {
         public double Min { get; set; }
         public double Max { get; set; }
-        public int Step { get; set; }
+        public double Step { get; set; }
         public string Lead { get; set; }
         public string Trail { get; set; }
         public int Digits { get; set; }

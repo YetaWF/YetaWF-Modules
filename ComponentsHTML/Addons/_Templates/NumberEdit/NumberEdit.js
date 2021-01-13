@@ -38,7 +38,7 @@ var YetaWF_ComponentsHTML;
             _this.Setup = setup;
             _this.InputControl = _this.Control;
             _this.Container = $YetaWF.elementClosest(_this.Control, ".yt_number_container");
-            _this.internalValue = _this.InputControl.value;
+            _this.setInternalValue(_this.InputControl.value);
             // icons used: fas-exclamation-triangle
             var warn = $YetaWF.createElement("div", { class: "t_warn", style: "display:none" });
             warn.innerHTML = "<svg aria-hidden='true' focusable='false' role='img' viewBox='0 0 576 512' xmlns='http://www.w3.org/2000/svg'><path fill='currentColor' d='M569.517 440.013C587.975 472.007 564.806 512 527.94 512H48.054c-36.937 0-59.999-40.055-41.577-71.987L246.423 23.985c18.467-32.009 64.72-31.951 83.154 0l239.94 416.028zM288 354c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z'></path></svg>";
@@ -52,11 +52,11 @@ var YetaWF_ComponentsHTML;
             _this.Control.insertAdjacentElement("afterend", warn);
             $YetaWF.registerMultipleEventHandlers([_this.InputControl], ["change", "input"], null, function (ev) {
                 if (!_this.isValid(_this.InputControl.value)) {
-                    _this.internalValue = _this.Value;
+                    _this.setInternalValue(_this.Value);
                     _this.flashError();
                     return false;
                 }
-                _this.internalValue = _this.InputControl.value;
+                _this.setInternalValue(_this.InputControl.value, false);
                 _this.sendChangeEvent();
                 return true;
             });
@@ -92,14 +92,14 @@ var YetaWF_ComponentsHTML;
                 if (_this.enabled) {
                     $YetaWF.elementRemoveClass(_this.Container, "t_focused");
                     $YetaWF.elementAddClass(_this.Container, "t_focused");
-                    _this.internalValue = _this.Value;
+                    _this.setInternalValue(_this.Value);
                 }
                 return true;
             });
             $YetaWF.registerEventHandler(_this.InputControl, "focusout", null, function (ev) {
                 $YetaWF.elementRemoveClass(_this.Container, "t_focused");
                 _this.clearSpin();
-                _this.internalValue = _this.Value;
+                _this.setInternalValue(_this.Value);
                 return true;
             });
             return _this;
@@ -131,7 +131,7 @@ var YetaWF_ComponentsHTML;
                 value = this.Setup.Min;
             }
             if (value !== this.Value) {
-                this.value = value;
+                this.setControlValue(value);
                 this.sendSpinEvent();
             }
             else {
@@ -177,24 +177,38 @@ var YetaWF_ComponentsHTML;
             enumerable: false,
             configurable: true
         });
-        Object.defineProperty(NumberEditComponentBase.prototype, "internalValue", {
-            set: function (val) {
-                if (typeof val === "string") {
-                    val = Number(val);
-                    if (isNaN(val))
-                        val = null;
-                }
-                if (val != null) {
+        NumberEditComponentBase.prototype.setInternalValue = function (val, updateIfValid) {
+            if (typeof val === "string") {
+                val = Number(val);
+                if (isNaN(val))
+                    val = null;
+            }
+            if (val != null) {
+                if (updateIfValid === undefined || updateIfValid === true)
                     this.value = val;
-                }
-                else {
-                    this.InputControl.value = "";
+                else
                     this.Value = val;
-                }
-            },
-            enumerable: false,
-            configurable: true
-        });
+            }
+            else {
+                this.InputControl.value = "";
+                this.Value = val;
+            }
+        };
+        NumberEditComponentBase.prototype.setControlValue = function (val) {
+            this.Value = val;
+            if (this.Setup.Currency && this.Setup.Locale) {
+                var v = val.toLocaleString(this.Setup.Locale, { style: "currency", currency: this.Setup.Currency });
+                // special case for $US
+                if (v.startsWith("$"))
+                    v = "$ " + v.substring(1);
+                this.InputControl.value = v;
+            }
+            else {
+                var l = this.Setup.Lead ? this.Setup.Lead + " " : "";
+                var t = this.Setup.Trail ? " " + this.Setup.Trail : "";
+                this.InputControl.value = "" + l + val.toLocaleString(this.Setup.Locale, { style: "decimal", minimumFractionDigits: this.Setup.Digits, maximumFractionDigits: this.Setup.Digits }) + t;
+            }
+        };
         NumberEditComponentBase.prototype.isValid = function (text) {
             var val = Number(text);
             if (isNaN(val))
@@ -211,7 +225,7 @@ var YetaWF_ComponentsHTML;
             configurable: true
         });
         NumberEditComponentBase.prototype.clear = function () {
-            this.internalValue = null;
+            this.setInternalValue(null);
         };
         NumberEditComponentBase.prototype.enable = function (enabled) {
             $YetaWF.elementEnableToggle(this.InputControl, enabled);
