@@ -190,8 +190,8 @@ var YetaWF_SkinPalette;
                     GenTheme: BasicThemeEnum.Dark,
                     GenBg: "#5c5c5c",
                     GenClr: "#FFFFFF",
-                    GenBgActive: "#FFFFFF",
-                    GenClrActive: "#2fa4e7",
+                    GenBgActive: "#787878",
+                    GenClrActive: "#ffffff",
                     GenBgShaded: "#454545",
                     GenClrShaded: "#f6f6f6",
                     GenBgShadedActive: "#a6a6a6",
@@ -222,9 +222,9 @@ var YetaWF_SkinPalette;
             this.getInput("BodyFont").value = values.GenFont;
             this.getColor("AnchorClr").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenClr, 20) : this.Lighten(values.GenClr, 20);
             this.getInput("AnchorDec").value = "none";
-            this.getColor("AnchorClrHover").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenClr, 40) : this.Lighten(values.GenClr, 40);
+            this.getColor("AnchorClrHover").value = this.ToHover(values.GenTheme, values.GenClr);
             this.getInput("AnchorDecHover").value = "underline";
-            this.getColor("AnchorClrFocus").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenClr, 40) : this.Lighten(values.GenClr, 40);
+            this.getColor("AnchorClrFocus").value = values.GenClrActive;
             this.getInput("AnchorDecFocus").value = "underline";
             this.getColor("OverlayBg").value = values.GenTheme === BasicThemeEnum.Light ? "#aaaaaa" : "#444444";
             this.getDecimal("OverlayOpacity").value = values.GenTheme === BasicThemeEnum.Light ? 0.5 : 0.8;
@@ -236,10 +236,10 @@ var YetaWF_SkinPalette;
             this.getColor("MainMenu0Bg").value = values.GenBg;
             this.getColor("MainMenu0ABg").value = values.GenBg;
             this.getColor("MainMenu0AClr").value = values.GenClr;
-            this.getColor("MainMenu0ABgHover").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenBg, 40) : this.Lighten(values.GenBg, 40);
-            this.getColor("MainMenu0AClrHover").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenClr, 40) : this.Lighten(values.GenClr, 40);
-            this.getColor("MainMenu0ABgPath").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenBg, 40) : this.Lighten(values.GenBg, 40);
-            this.getColor("MainMenu0AClrPath").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenClr, 40) : this.Lighten(values.GenClr, 40);
+            this.getColor("MainMenu0ABgHover").value = this.ToHover(values.GenTheme, values.GenBg);
+            this.getColor("MainMenu0AClrHover").value = this.ToHover(values.GenTheme, values.GenClr);
+            this.getColor("MainMenu0ABgPath").value = this.ToHover(values.GenTheme, values.GenBg);
+            this.getColor("MainMenu0AClrPath").value = this.ToHover(values.GenTheme, values.GenClr);
             this.getInput("MainMenu0APadding").value = "0.7em 1.5em";
             this.getInput("MainMenu0ASmallPadding").value = "0.7em 1.5em";
             this.getInput("MainMenu0DDWidth").value = "16px";
@@ -254,10 +254,10 @@ var YetaWF_SkinPalette;
             this.getInput("MainMenu1SmallPadding").value = "0.5em 0 0.5em 0";
             this.getColor("MainMenu1ABg").value = values.GenBg;
             this.getColor("MainMenu1AClr").value = values.GenClr;
-            this.getColor("MainMenu1ABgHover").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenBg, 40) : this.Lighten(values.GenBg, 40);
-            this.getColor("MainMenu1AClrHover").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenClr, 40) : this.Lighten(values.GenClr, 40);
-            this.getColor("MainMenu1ABgPath").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenBg, 40) : this.Lighten(values.GenBg, 40);
-            this.getColor("MainMenu1AClrPath").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenClr, 40) : this.Lighten(values.GenClr, 40);
+            this.getColor("MainMenu1ABgHover").value = this.ToHover(values.GenTheme, values.GenBg);
+            this.getColor("MainMenu1AClrHover").value = this.ToHover(values.GenTheme, values.GenClr);
+            this.getColor("MainMenu1ABgPath").value = this.ToHover(values.GenTheme, values.GenBg);
+            this.getColor("MainMenu1AClrPath").value = this.ToHover(values.GenTheme, values.GenClr);
             this.getInput("MainMenu1APadding").value = "0.1em 1.5em 0.1em 1.5em";
             this.getInput("MainMenu1ASmallPadding").value = "0.4em 0.5em 0.4em 0.75em";
             this.getInput("MainMenu1DDWidth").value = "16px";
@@ -276,10 +276,10 @@ var YetaWF_SkinPalette;
             this.getInput("MainMenu2SmallPadding").value = "0.5em 0";
             this.getColor("MainMenu2ABg").value = values.GenBg;
             this.getColor("MainMenu2AClr").value = values.GenClr;
-            this.getColor("MainMenu2ABgHover").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenBg, 40) : this.Lighten(values.GenBg, 40);
-            this.getColor("MainMenu2AClrHover").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenClr, 40) : this.Lighten(values.GenClr, 40);
-            this.getColor("MainMenu2ABgPath").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenBg, 40) : this.Lighten(values.GenBg, 40);
-            this.getColor("MainMenu2AClrPath").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenClr, 40) : this.Lighten(values.GenClr, 40);
+            this.getColor("MainMenu2ABgHover").value = this.ToHover(values.GenTheme, values.GenBg);
+            this.getColor("MainMenu2AClrHover").value = this.ToHover(values.GenTheme, values.GenClr);
+            this.getColor("MainMenu2ABgPath").value = this.ToHover(values.GenTheme, values.GenBg);
+            this.getColor("MainMenu2AClrPath").value = this.ToHover(values.GenTheme, values.GenClr);
             this.getInput("MainMenu2APadding").value = "0.1em 1em 0.1em 1em";
             this.getInput("MainMenu2ASmallPadding").value = "0.4em 0.5em 0.4em 0.75em";
             this.getInput("MainMenu2DDWidth").value = "16px";
@@ -294,10 +294,10 @@ var YetaWF_SkinPalette;
             this.getInput("PopupMenu1Padding").value = "0";
             this.getColor("PopupMenu1ABg").value = values.GenBg;
             this.getColor("PopupMenu1AClr").value = values.GenClr;
-            this.getColor("PopupMenu1ABgHover").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenBg, 40) : this.Lighten(values.GenBg, 40);
-            this.getColor("PopupMenu1AClrHover").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenClr, 40) : this.Lighten(values.GenClr, 40);
-            this.getColor("PopupMenu1ABgPath").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenBg, 40) : this.Lighten(values.GenBg, 40);
-            this.getColor("PopupMenu1AClrPath").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenClr, 40) : this.Lighten(values.GenClr, 40);
+            this.getColor("PopupMenu1ABgHover").value = this.ToHover(values.GenTheme, values.GenBg);
+            this.getColor("PopupMenu1AClrHover").value = this.ToHover(values.GenTheme, values.GenClr);
+            this.getColor("PopupMenu1ABgPath").value = this.ToHover(values.GenTheme, values.GenBg);
+            this.getColor("PopupMenu1AClrPath").value = this.ToHover(values.GenTheme, values.GenClr);
             this.getInput("PopupMenu1APadding").value = "0.4em 0.5em 0.4em 0.5em";
             this.getInput("PopupMenu1DDWidth").value = "16px";
             this.getInput("PopupMenu1DDHeight").value = "16px";
@@ -309,10 +309,10 @@ var YetaWF_SkinPalette;
             this.getInput("PopupMenu2Padding").value = "0";
             this.getColor("PopupMenu2ABg").value = values.GenBg;
             this.getColor("PopupMenu2AClr").value = values.GenClr;
-            this.getColor("PopupMenu2ABgHover").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenBg, 40) : this.Lighten(values.GenBg, 40);
-            this.getColor("PopupMenu2AClrHover").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenClr, 40) : this.Lighten(values.GenClr, 40);
-            this.getColor("PopupMenu2ABgPath").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenBg, 40) : this.Lighten(values.GenBg, 40);
-            this.getColor("PopupMenu2AClrPath").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenClr, 40) : this.Lighten(values.GenClr, 40);
+            this.getColor("PopupMenu2ABgHover").value = this.ToHover(values.GenTheme, values.GenBg);
+            this.getColor("PopupMenu2AClrHover").value = this.ToHover(values.GenTheme, values.GenClr);
+            this.getColor("PopupMenu2ABgPath").value = this.ToHover(values.GenTheme, values.GenBg);
+            this.getColor("PopupMenu2AClrPath").value = this.ToHover(values.GenTheme, values.GenClr);
             this.getInput("PopupMenu2APadding").value = "0.4em 0.5em 0.4em 0.5em";
             this.getInput("PopupMenu2DDWidth").value = "16px";
             this.getInput("PopupMenu2DDHeight").value = "16px";
@@ -348,8 +348,8 @@ var YetaWF_SkinPalette;
             this.getInput("TstErrorLine").value = values.GenBorderWidth + "px solid " + values.GenBorderClr;
             this.getColor("BarBg").value = values.GenBgShaded;
             this.getColor("BarClr").value = values.GenClrShaded;
-            this.getColor("BarBgHover").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenBgShaded, 40) : this.Lighten(values.GenBgShaded, 40);
-            this.getColor("BarClrHover").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenClrShaded, 40) : this.Lighten(values.GenClrShaded, 40);
+            this.getColor("BarBgHover").value = this.ToHover(values.GenTheme, values.GenBgShaded);
+            this.getColor("BarClrHover").value = this.ToHover(values.GenTheme, values.GenClrShaded);
             this.getColor("BarBgActive").value = values.GenBgShadedActive;
             this.getColor("BarClrActive").value = values.GenClrShadedActive;
             this.getInput("BarBorder").value = values.GenBorderWidth + "px solid " + values.GenBorderClr;
@@ -364,26 +364,66 @@ var YetaWF_SkinPalette;
             this.getColor("InputBg").value = values.GenBg;
             this.getColor("InputClr").value = values.GenClr;
             this.getInput("InputBorder").value = values.GenBorderWidth + "px solid " + values.GenBorderClr;
-            this.getInput("InputBorderHover").value = values.GenBorderWidth + "px solid " + (values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenBorderClr, 40) : this.Lighten(values.GenBorderClr, 40));
-            this.getInput("InputBorderFocus").value = values.GenBorderWidth + "px solid " + (values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenBorderClr, 80) : this.Lighten(values.GenBorderClr, 80));
+            this.getInput("InputBorderHover").value = values.GenBorderWidth + "px solid " + this.ToHover(values.GenTheme, values.GenBorderClr);
+            this.getInput("InputBorderFocus").value = values.GenBorderWidth + "px solid " + this.ToFocus(values.GenTheme, values.GenBorderClr);
             this.getInput("InputBorderRadius").value = values.GenBorderRadius + "px";
             this.getColor("InputError").value = "red";
-            this.getColor("ButtonBg").value = values.GenTheme === BasicThemeEnum.Light ?
-                "linear-gradient(" + this.Lighten(values.GenClr, 10) + ", " + values.GenClr + " 60%, " + this.Lighten(values.GenClr, 20) + ")" :
-                "linear-gradient(" + this.Darken(values.GenClr, 10) + ", " + values.GenClr + " 60%, " + this.Darken(values.GenClr, 20) + ")";
-            this.getColor("ButtonClr").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenBg, 40) : this.Lighten(values.GenBg, 40);
-            this.getColor("ButtonBgHover").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenClr, 40) : this.Lighten(values.GenClr, 40);
-            this.getColor("ButtonClrHover").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenBg, 10) : this.Lighten(values.GenBg, 10);
-            this.getColor("ButtonBgFocus").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenClr, 20) : this.Lighten(values.GenClr, 20);
-            this.getColor("ButtonClrFocus").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenBg, 10) : this.Lighten(values.GenBg, 10);
+            this.getColor("DDBg").value = values.GenBg;
+            this.getColor("DDClr").value = values.GenClr;
+            this.getColor("DDBgHover").value = values.GenBg;
+            this.getColor("DDClrHover").value = values.GenClr;
+            this.getColor("DDBgFocus").value = values.GenBg;
+            this.getColor("DDClrFocus").value = values.GenClr;
+            this.getInput("DDBorder").value = values.GenBorderWidth + "px solid " + values.GenBorderClr;
+            this.getInput("DDBorderHover").value = values.GenBorderWidth + "px solid " + this.ToHover(values.GenTheme, values.GenBorderClr);
+            this.getInput("DDBorderFocus").value = values.GenBorderWidth + "px solid " + this.ToFocus(values.GenTheme, values.GenBorderClr);
+            this.getInput("DDBorderRadius").value = values.GenBorderRadius + "px";
+            this.getColor("DDListBg").value = values.GenBg;
+            this.getColor("DDListClr").value = values.GenClr;
+            this.getColor("DDListBgHover").value = this.ToHover(values.GenTheme, values.GenBg);
+            this.getColor("DDListClrHover").value = this.ToHover(values.GenTheme, values.GenClr);
+            this.getColor("DDListBgFocus").value = this.ToFocus(values.GenTheme, values.GenBg);
+            this.getColor("DDListClrFocus").value = this.ToFocus(values.GenTheme, values.GenClr);
+            this.getInput("DDListBorder").value = values.GenBorderWidth + "px solid " + values.GenBorderClr;
+            this.getInput("DDListBorderRadius").value = values.GenBorderRadius + "px";
+            this.getInput("DDListShadow").value = "0 2px 2px 0 rgba(0,0,0,.3)";
+            this.getInput("DDListShadowFocus").value = "inset 0px 0px 3px 0px rgba(0, 0, 0, 0.25)";
+            this.getColor("ButtonBg").value = values.GenBg;
+            this.getColor("ButtonClr").value = values.GenClr;
+            this.getColor("ButtonBgHover").value = this.ToHover(values.GenTheme, values.GenBg);
+            this.getColor("ButtonClrHover").value = this.ToHover(values.GenTheme, values.GenClr);
+            this.getColor("ButtonBgFocus").value = this.ToFocus(values.GenTheme, values.GenBg);
+            this.getColor("ButtonClrFocus").value = this.ToFocus(values.GenTheme, values.GenClr);
             this.getInput("ButtonBorder").value = values.GenBorderWidth + "px solid " + values.GenBorderClr;
             this.getInput("ButtonBorderRadius").value = values.GenBorderRadius + "px";
             this.getInput("ButtonShadow").value = "0px 0px 3px 0px rgba(0, 0, 0, 0.25)";
-            this.getInput("ButtonShadowFocus").value = "0px 0px 3px 0px rgba(0, 0, 0, 0.25)";
+            this.getInput("ButtonShadowFocus").value = "inset 0px 0px 3px 0px rgba(0, 0, 0, 0.25)";
             this.getColor("PbarBg").value = values.GenBgShaded;
             this.getColor("PbarValueBg").value = values.GenClrShaded;
             this.getInput("PbarBorder").value = values.GenBorderWidth + "px solid " + values.GenBorderClr;
             this.getInput("PbarBorderRadius").value = values.GenBorderRadius + "px";
+            this.getColor("TableBg").value = values.GenBg;
+            this.getColor("TableClr").value = values.GenClr;
+            this.getColor("TableBgHover").value = this.ToHover(values.GenTheme, values.GenBg);
+            this.getColor("TableClrHover").value = this.ToHover(values.GenTheme, values.GenClr);
+            this.getColor("TableBgActive").value = values.GenBgActive;
+            this.getColor("TableClrActive").value = values.GenClrActive;
+            this.getColor("TableBgFocus").value = this.ToFocus(values.GenTheme, values.GenBg);
+            this.getColor("TableClrFocus").value = this.ToFocus(values.GenTheme, values.GenClr);
+            this.getColor("TableBgHighlight").value = "silver";
+            this.getColor("TableClrHighlight").value = "white";
+            this.getColor("TableBgLowlight").value = "ghostwhite;";
+            this.getColor("TableClrLowlight").value = "darkslategray";
+            this.getColor("TableHeaderBg").value = values.GenBgShaded;
+            this.getColor("TableHeaderClr").value = values.GenClrShaded;
+            this.getColor("TableHeaderBgHover").value = this.ToHover(values.GenTheme, values.GenBgShaded);
+            this.getColor("TableHeaderClrHover").value = this.ToHover(values.GenTheme, values.GenClrShaded);
+            this.getColor("TableHeaderBgActive").value = values.GenBgShadedActive;
+            this.getColor("TableHeaderClrActive").value = values.GenClrShadedActive;
+            this.getInput("TableBorder").value = values.GenBorderWidth + "px solid " + values.GenBorderClr;
+            this.getInput("TableBorderLite").value = values.GenBorderWidth + "px solid " + (values.GenTheme === BasicThemeEnum.Light ? this.Lighten(values.GenBorderClr, 20) : this.Darken(values.GenBorderClr, 20));
+            this.getInput("TableBorderRadius").value = values.GenBorderRadius + "px";
+            this.getInput("TableShadow").value = "0px 0px 10px 0px rgba(0,0,0,0.1)";
             this.getColor("TabsBg").value = values.GenBg;
             this.getColor("TabsClr").value = values.GenClr;
             this.getColor("TabsStripBg").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenBgShaded, 40) : this.Lighten(values.GenBgShaded, 40);
@@ -391,18 +431,23 @@ var YetaWF_SkinPalette;
             this.getInput("TabsStripBorderRadius").value = values.GenBorderRadius + "px";
             this.getColor("TabsTabBg").value = values.GenBgShaded;
             this.getColor("TabsTabClr").value = values.GenClrShaded;
-            this.getColor("TabsTabBgHover").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenBgShaded, 40) : this.Lighten(values.GenBgShaded, 40);
-            this.getColor("TabsTabClrHover").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenClrShaded, 40) : this.Lighten(values.GenClrShaded, 40);
+            this.getColor("TabsTabBgHover").value = this.ToHover(values.GenTheme, values.GenBgShaded);
+            this.getColor("TabsTabClrHover").value = this.ToHover(values.GenTheme, values.GenClrShaded);
             this.getColor("TabsTabBgActive").value = values.GenBgShadedActive;
             this.getColor("TabsTabClrActive").value = values.GenClrShadedActive;
-            this.getColor("TabsTabBgFocus").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenBgShadedActive, 40) : this.Lighten(values.GenBgShadedActive, 40);
-            this.getColor("TabsTabClrFocus").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenClrShadedActive, 40) : this.Lighten(values.GenClrShadedActive, 40);
+            this.getColor("TabsTabBgFocus").value = this.ToFocus(values.GenTheme, values.GenBgShaded);
+            this.getColor("TabsTabClrFocus").value = this.ToFocus(values.GenTheme, values.GenClrShaded);
             this.getInput("TabsTabBorder").value = values.GenBorderWidth + "px solid " + values.GenBorderClr;
             this.getInput("TabsTabBorderRadius").value = values.GenBorderRadius + "px";
             this.getColor("StepBg").value = values.GenBgShaded;
             this.getColor("StepClr").value = values.GenClrShaded;
             this.getColor("StepBgActive").value = values.GenBgShadedActive;
             this.getColor("StepClrActive").value = values.GenClrShadedActive;
+            this.getColor("PanelBg").value = values.GenBgShaded;
+            // this.getColor("PanelClr").value = values.GenClrShaded;
+            this.getInput("PanelBorder").value = values.GenBorderWidth + "px solid " + values.GenBorderClr;
+            this.getInput("PanelBorderRadius").value = ".25rem";
+            this.getInput("PanelShadow").value = "0px 0px 10px 0px rgba(0,0,0,0.1)";
         };
         SkinPaletteModule.prototype.getValues = function () {
             var ddTheme = YetaWF_ComponentsHTML.DropDownListEditComponent.getControlFromSelector("[name='GenTheme']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Form]);
@@ -421,6 +466,20 @@ var YetaWF_SkinPalette;
                 GenBorderWidth: Number(this.getInput("GenBorderWidth").value),
                 GenBorderRadius: Number(this.getInput("GenBorderRadius").value),
             };
+        };
+        /** Turn a basic color into a hover color */
+        SkinPaletteModule.prototype.ToHover = function (theme, color) {
+            if (theme === BasicThemeEnum.Light)
+                return this.Darken(color, 20);
+            else
+                return this.Lighten(color, 20);
+        };
+        /** Turn an active color into a focus color */
+        SkinPaletteModule.prototype.ToFocus = function (theme, color) {
+            if (theme === BasicThemeEnum.Light)
+                return this.Darken(color, 40);
+            else
+                return this.Lighten(color, 40);
         };
         SkinPaletteModule.prototype.getInput = function (name) {
             return $YetaWF.getElement1BySelector("input[name='" + name + "']", [this.Form]);

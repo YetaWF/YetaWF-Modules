@@ -1017,6 +1017,28 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
 
 
 
+            [Category("Panel"), Caption("--panel-bg"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string PanelBg { get; set; } = null!;
+
+            //[Category("Panel"), Caption("--panel-clr"), Description("Color")]
+            //[UIHint("Color"), StringLength(MaxColor), Required]
+            //public string PanelClr { get; set; } = null!;
+
+            [Category("Panel"), Caption("--panel-border"), Description("Border")]
+            [UIHint("Text40"), StringLength(MaxBorder), Required]
+            public string PanelBorder { get; set; } = null!;
+
+            [Category("Panel"), Caption("--panel-border-radius"), Description("Border Radius")]
+            [UIHint("Text40"), StringLength(MaxRadius), Required]
+            public string PanelBorderRadius { get; set; } = null!;
+
+            [Category("Panel"), Caption("--panel-shadow"), Description("Shadow")]
+            [UIHint("Text40"), StringLength(MaxShadow), Required]
+            public string PanelShadow { get; set; } = null!;
+
+
+
             [Category("Indicators"), Caption("--mod-current-bg"), Description("Color")]
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string ModCurrentBg { get; set; } = null!;

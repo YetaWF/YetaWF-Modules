@@ -18,6 +18,7 @@ ul.yt_menu.t_display.t_large {
     position: relative;
     list-style: none;
     line-height: 1;
+    cursor: pointer;
     background: var(--mm-0-bg);
     color: var(--mm-0-clr);
     font: var(--mm-0-font); }
@@ -62,6 +63,7 @@ ul.yt_menu.t_display.t_large {
         position: relative;
         list-style: none;
         line-height: 1;
+        cursor: pointer;
         margin: 0;
         padding: 0;
         height: auto;
@@ -114,6 +116,7 @@ ul.yt_menu.t_display.t_large {
             position: relative;
             list-style: none;
             line-height: 1;
+            cursor: pointer;
             margin: 0;
             padding: 0;
             height: auto;

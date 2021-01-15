@@ -27,6 +27,7 @@ ul.yt_menuul {
         position: relative;
         list-style: none;
         line-height:1;
+        cursor:pointer;
 
         margin:0;
         padding:0;
@@ -37,6 +38,15 @@ ul.yt_menuul {
         background: var(--pm-1-bg);
         color: var(--pm-1-clr);
         font: var(--pm-1-font);
+
+        &.t_path {
+            background: var(--pm-1-a-bg-path);
+            color: var(--pm-1-a-clr-path);
+        }
+        &:hover, &:focus {
+            background: var(--pm-1-a-bg-hover);
+            color: var(--pm-1-a-clr-hover);
+        }
 
         > a {
             display:block;
@@ -96,6 +106,7 @@ ul.yt_menuul {
                 position: relative;
                 list-style: none;
                 line-height:1;
+                cursor:pointer;
 
                 margin:0;
                 padding:0;
@@ -106,6 +117,15 @@ ul.yt_menuul {
                 background: var(--pm-2-bg);
                 color: var(--pm-2-clr);
                 font: var(--pm-2-font);
+
+                &.t_path {
+                    background: var(--pm-2-a-bg-path);
+                    color: var(--pm-2-a-clr-path);
+                }
+                &:hover, &:focus {
+                    background: var(--pm-2-a-bg-hover);
+                    color: var(--pm-2-a-clr-hover);
+                }
 
                 > a {
                     display:block;
