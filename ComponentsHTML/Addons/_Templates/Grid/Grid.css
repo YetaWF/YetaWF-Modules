@@ -11,7 +11,7 @@
         position: relative;
         overflow: hidden;
         white-space: nowrap;
-        padding: 2px 4px 2px 4px;
+        padding: 0.25em 0.25em 0.25em 0.25em;
         -webkit-user-select: none;
             -ms-user-select: none;
                 user-select: none;
@@ -31,7 +31,7 @@
           overflow: hidden; }
         .yt_grid .tg_table table .tg_header th .tg_sorticon {
           position: relative;
-          font-size: 12px; }
+          font-size: 1em; }
           .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortasc, .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortdesc, .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortboth {
             position: relative;
             display: none;
@@ -39,11 +39,11 @@
             .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortasc.tg_active, .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortdesc.tg_active, .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortboth.tg_active {
               display: inline-block; }
           .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortasc {
-            top: 3px; }
+            top: 0.25em; }
           .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortdesc {
-            top: -3px; }
+            top: -0.25em; }
           .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortboth {
-            opacity: 0.2; }
+            opacity: .2; }
       .yt_grid .tg_table table tr.tg_filter .tg_fentry {
         display: table;
         width: 100%; }
@@ -60,14 +60,14 @@
           display: inline-block;
           width: 10ch;
           text-align: center;
-          font-size: 8px;
-          margin: 2px 2px 2px 2px;
-          padding: 2px 2px 2px 2px; }
+          font-size: 0.9em;
+          margin: 0.2em 0.2em 0.2em 0.2em;
+          padding: 0.2em 0.2em 0.2em 0.2em; }
       .yt_grid .tg_table table tr.tg_filter .tg_fclear, .yt_grid .tg_table table tr.tg_filter .tg_fmenu {
         display: inline-block;
-        font-size: 8px;
-        margin: 2px 2px 2px 2px;
-        padding: 2px 2px 2px 2px; }
+        font-size: var(--pm-1-font);
+        margin: 0.2em 0.2em 0.2em 0.2em;
+        padding: 0.2em 0.2em 0.2em 0.2em; }
       .yt_grid .tg_table table tbody tr {
         outline: 0;
         /* highlighted row (with bool __highlight property) */
@@ -86,7 +86,7 @@
           background: var(--tbl-bg-hover);
           color: var(--tbl-clr-hover); }
       .yt_grid .tg_table table tbody td {
-        padding: 2px 2px 2px 2px; }
+        padding: 0.25em 0.25em 0.25em 0.25em; }
         .yt_grid .tg_table table tbody td .tg_emptydiv {
           padding: 2em 0 2em 2ch; }
           .yt_grid .yt_grid .tg_table table tbody td .tg_emptydiv {
@@ -110,16 +110,16 @@
     /* Standard syntax */ }
     .yt_grid .tg_pager .tg_pgbtns, .yt_grid .tg_pager .tg_pgctl, .yt_grid .tg_pager .tg_pgnum, .yt_grid .tg_pager .tg_pgsel, .yt_grid .tg_pager .tg_totals {
       display: inline-block;
-      margin: 3px 3px 3px 3px; }
+      margin: 0.25em 0.25em 0.25em 0.25em; }
     .yt_grid .tg_pager .tg_pgbtns, .yt_grid .tg_pager .tg_pgctl, .yt_grid .tg_pager .tg_pgsel {
       margin-right: 4ch; }
     .yt_grid .tg_pager .tg_reload, .yt_grid .tg_pager .tg_search, .yt_grid .tg_pager .tg_pgtop, .yt_grid .tg_pager .tg_pgnext, .yt_grid .tg_pager .tg_pgprev, .yt_grid .tg_pager .tg_pgbottom {
-      margin: 3px 3px 3px 3px; }
+      margin: 0.25em 0.25em 0.25em 0.25em; }
       .yt_grid .tg_pager .tg_reload .fas, .yt_grid .tg_pager .tg_search .fas, .yt_grid .tg_pager .tg_pgtop .fas, .yt_grid .tg_pager .tg_pgnext .fas, .yt_grid .tg_pager .tg_pgprev .fas, .yt_grid .tg_pager .tg_pgbottom .fas {
-        font-size: 8px;
-        padding: 2px 4px 2px 4px; }
+        font-size: 0.9em;
+        padding: 0.25em 0.25em 0.25em 0.25em; }
     .yt_grid .tg_pager label {
-      padding: 0 2px 0 2px; }
+      padding: 0 0.25em 0 0.25em; }
   .yt_grid .tg_loading {
     position: absolute;
     left: 0;
@@ -142,7 +142,7 @@
               transform: translateY(-50%); }
 
 ul.yt_grid_menu {
-  font-size: 10px;
+  font-size: 0.8em;
   overflow: auto; }
   ul.yt_grid_menu .t_fmenuicon {
     display: inline-block;
@@ -159,8 +159,7 @@ ul.yt_grid_menu {
   box-shadow: var(--tbl-shadow); }
   .yt_grid.tg_skin .tg_table table {
     border-collapse: collapse;
-    font: var(--body-font);
-    font-size: 11px; }
+    font: var(--tbl-font); }
     .yt_grid.tg_skin .tg_table table tbody {
       background: var(--tbl-bg);
       color: var(--tbl-clr); }
@@ -168,8 +167,11 @@ ul.yt_grid_menu {
       border-bottom: var(--tbl-border); }
     .yt_grid.tg_skin .tg_table table tr.tg_filter {
       border-bottom: var(--tbl-border); }
-    .yt_grid.tg_skin .tg_table table th, .yt_grid.tg_skin .tg_table table td {
-      font-size: 11px;
+    .yt_grid.tg_skin .tg_table table th {
+      font: var(--tbl-header-font);
+      border-right: var(--tbl-border-lite); }
+    .yt_grid.tg_skin .tg_table table td {
+      font: var(--tbl-font);
       border-right: var(--tbl-border-lite); }
     .yt_grid.tg_skin .tg_table table th:hover {
       background: var(--tbl-header-bg-hover);
@@ -180,24 +182,23 @@ ul.yt_grid_menu {
     background: var(--tbl-header-bg);
     color: var(--tbl-header-clr);
     border-top: var(--tbl-border);
-    font-size: 11px; }
+    font: var(--tbl-header-font); }
     .yt_grid.tg_skin .tg_pager .tg_reload .fas, .yt_grid.tg_skin .tg_pager .tg_search .fas, .yt_grid.tg_skin .tg_pager .tg_pgtop .fas, .yt_grid.tg_skin .tg_pager .tg_pgnext .fas, .yt_grid.tg_skin .tg_pager .tg_pgprev .fas, .yt_grid.tg_skin .tg_pager .tg_pgbottom .fas {
-      font-size: 8px; }
+      font-size: 0.9em; }
     .yt_grid.tg_skin .tg_pager .tg_pgbtns, .yt_grid.tg_skin .tg_pager .tg_pgctl, .yt_grid.tg_skin .tg_pager .tg_pgnum, .yt_grid.tg_skin .tg_pager .tg_pgsel, .yt_grid.tg_skin .tg_pager .tg_totals {
-      font-size: 11px; }
+      font: var(--tbl-font); }
 
 .yt_grid.tg_noskin {
   /* Skin theme not used */ }
   .yt_grid.tg_noskin .tg_table table {
-    font: var(--body-font);
-    font-size: 14px; }
+    font: var(--body-font); }
     .yt_grid.tg_noskin .tg_table table th, .yt_grid.tg_noskin .tg_table table td {
-      font-size: 14px; }
+      font: var(--body-font); }
     .yt_grid.tg_noskin .tg_table table .tg_header th {
       font-weight: bold; }
   .yt_grid.tg_noskin .tg_pager {
-    font-size: 14px; }
+    font: var(--body-font); }
     .yt_grid.tg_noskin .tg_pager .tg_reload .fas, .yt_grid.tg_noskin .tg_pager .tg_search .fas, .yt_grid.tg_noskin .tg_pager .tg_pgtop .fas, .yt_grid.tg_noskin .tg_pager .tg_pgnext .fas, .yt_grid.tg_noskin .tg_pager .tg_pgprev .fas, .yt_grid.tg_noskin .tg_pager .tg_pgbottom .fas {
-      font-size: 12px; }
+      font-size: 1em; }
     .yt_grid.tg_noskin .tg_pager .tg_pgbtns, .yt_grid.tg_noskin .tg_pager .tg_pgctl, .yt_grid.tg_noskin .tg_pager .tg_pgnum, .yt_grid.tg_noskin .tg_pager .tg_pgsel, .yt_grid.tg_noskin .tg_pager .tg_totals {
-      font-size: 14px; }
+      font: var(--body-font); }

@@ -179,9 +179,14 @@ var YetaWF_ComponentsHTML;
         });
         NumberEditComponentBase.prototype.setInternalValue = function (val, updateIfValid) {
             if (typeof val === "string") {
-                val = Number(val);
-                if (isNaN(val))
+                if (val) {
+                    val = Number(val);
+                    if (isNaN(val))
+                        val = null;
+                }
+                else {
                     val = null;
+                }
             }
             if (val != null) {
                 if (updateIfValid === undefined || updateIfValid === true)

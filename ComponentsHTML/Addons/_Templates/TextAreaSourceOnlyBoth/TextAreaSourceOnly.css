@@ -15,14 +15,18 @@ textarea.yt_textareasourceonly {
   textarea.yt_textareasourceonly:focus {
     border: var(--inp-border-focus); }
   textarea.yt_textareasourceonly:disabled {
-    opacity: .6; }
+    opacity: var(--body-dis-opacity); }
   textarea.yt_textareasourceonly:read-only {
-    opacity: 0.6; }
+    opacity: var(--body-dis-opacity); }
   textarea.yt_textareasourceonly::-webkit-input-placeholder {
-    opacity: 0.6; }
+    color: var(--inp-ph-clr);
+    opacity: var(--inp-ph-opacity); }
   textarea.yt_textareasourceonly:-ms-input-placeholder {
-    opacity: 0.6; }
+    color: var(--inp-ph-clr);
+    opacity: var(--inp-ph-opacity); }
   textarea.yt_textareasourceonly::-ms-input-placeholder {
-    opacity: 0.6; }
+    color: var(--inp-ph-clr);
+    opacity: var(--inp-ph-opacity); }
   textarea.yt_textareasourceonly::placeholder {
-    opacity: 0.6; }
+    color: var(--inp-ph-clr);
+    opacity: var(--inp-ph-opacity); }

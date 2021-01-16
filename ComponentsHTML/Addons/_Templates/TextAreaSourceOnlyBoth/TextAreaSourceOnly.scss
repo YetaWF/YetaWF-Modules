@@ -19,13 +19,14 @@ textarea.yt_textareasourceonly {
         border: var(--inp-border-focus);
     }
     &:disabled {
-        opacity: .6;
+        opacity: var(--body-dis-opacity);
     }
     &:read-only {
-        opacity:0.6;
+        opacity: var(--body-dis-opacity);
     }
 
     &::placeholder {
-        opacity:0.6;
+        color: var(--inp-ph-clr);
+        opacity: var(--inp-ph-opacity);
     }
 }

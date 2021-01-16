@@ -54,6 +54,10 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [UIHint("Text40"), StringLength(MaxFont), Required]
             public string BodyFont { get; set; } = null!;
 
+            [Category("Page"), Caption("--body-dis-opacity"), Description("Opacity")]
+            [UIHint("Decimal"), AdditionalMetadata("Step", 0.1), Range(0.0, 1.0), Required]
+            public decimal BodyDisabledOpacity { get; set; }
+
 
 
             [Category("Anchor"), Caption("--a-clr"), Description("Color")]
@@ -670,8 +674,15 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [UIHint("Color"), StringLength(MaxRadius), Required]
             public string InputError { get; set; } = null!;
 
+            [Category("Input"), Caption("--inp-ph-clr"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string InputPlaceholderClr { get; set; } = null!;
 
-            
+            [Category("Input"), Caption("--inp-ph-opacity"), Description("Opacity")]
+            [UIHint("Decimal"), AdditionalMetadata("Step", 0.1), Range(0.0, 1.0), Required]
+            public decimal InputPlaceholderOpacity { get; set; }
+
+
             [Category("Dropdownlist"), Caption("--dd-bg"), Description("Color")]
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string DDBg { get; set; } = null!;
@@ -687,6 +698,14 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [Category("Dropdownlist"), Caption("--dd-clr-hover"), Description("Color")]
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string DDClrHover { get; set; } = null!;
+
+            [Category("Dropdownlist"), Caption("--dd-bg-active"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string DDBgActive { get; set; } = null!;
+
+            [Category("Dropdownlist"), Caption("--dd-clr-active"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string DDClrActive { get; set; } = null!;
 
             [Category("Dropdownlist"), Caption("--dd-bg-focus"), Description("Color")]
             [UIHint("Color"), StringLength(MaxColor), Required]
@@ -895,6 +914,26 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string TableClrLowlight { get; set; } = null!;
 
+            [Category("Table"), Caption("--tbl-font"), Description("Font")]
+            [UIHint("Text40"), StringLength(MaxFont), Required]
+            public string TableFont { get; set; } = null!;
+
+            [Category("Table"), Caption("--tbl-border"), Description("Border")]
+            [UIHint("Text40"), StringLength(MaxBorder), Required]
+            public string TableBorder { get; set; } = null!;
+
+            [Category("Table"), Caption("--tbl-border-lite"), Description("Border")]
+            [UIHint("Text40"), StringLength(MaxBorder), Required]
+            public string TableBorderLite { get; set; } = null!;
+
+            [Category("Table"), Caption("--tbl-border-radius"), Description("Border Radius")]
+            [UIHint("Text40"), StringLength(MaxRadius), Required]
+            public string TableBorderRadius { get; set; } = null!;
+
+            [Category("Table"), Caption("--tbl-shadow"), Description("Shadow")]
+            [UIHint("Text40"), StringLength(MaxShadow), Required]
+            public string TableShadow { get; set; } = null!;
+
             [Category("Table"), Caption("--tbl-header-bg"), Description("Color")]
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string TableHeaderBg { get; set; } = null!;
@@ -919,22 +958,9 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string TableHeaderClrActive { get; set; } = null!;
 
-            [Category("Table"), Caption("--tbl-border"), Description("Border")]
-            [UIHint("Text40"), StringLength(MaxBorder), Required]
-            public string TableBorder { get; set; } = null!;
-
-            [Category("Table"), Caption("--tbl-border-lite"), Description("Border")]
-            [UIHint("Text40"), StringLength(MaxBorder), Required]
-            public string TableBorderLite { get; set; } = null!;
-
-            [Category("Table"), Caption("--tbl-border-radius"), Description("Border Radius")]
-            [UIHint("Text40"), StringLength(MaxRadius), Required]
-            public string TableBorderRadius { get; set; } = null!;
-
-            [Category("Table"), Caption("--tbl-shadow"), Description("Shadow")]
-            [UIHint("Text40"), StringLength(MaxShadow), Required]
-            public string TableShadow { get; set; } = null!;
-
+            [Category("Table"), Caption("--tbl-header-font"), Description("Font")]
+            [UIHint("Text40"), StringLength(MaxFont), Required]
+            public string TableHeaderFont { get; set; } = null!;
 
 
             [Category("Tabs"), Caption("--tabs-bg"), Description("Color")]
@@ -1069,13 +1095,13 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
 
 
 
-            [Category("Config"), Caption("Theme"), Description("The current theme used for all pages of the site")]
-            [UIHint("Theme"), StringLength(SiteDefinition.MaxTheme), ReadOnly]
-            public string Theme { get; set; } = null!;
-
             [Category("Config"), Caption("CSS Variables"), Description("Paste your settings to edit further or copy to skin SCSS file to use in a skin")]
             [UIHint("TextAreaSourceOnly"), AdditionalMetadata("Spellcheck", false), AdditionalMetadata("EmHeight", 30), AdditionalMetadata("Copy", true), StringLength(0)]
             public string CSSVariables { get; set; } = null!;
+
+            [Category("Config"), Caption("Theme"), Description("The name of the theme - Initially displays the current theme name, but can be changed beore saving the CSS variables to create a new theme")]
+            [UIHint("Text40"), StringLength(SiteDefinition.MaxTheme), Required]//TODO: validation
+            public string Theme { get; set; } = null!;
 
             [Category("Config"), Caption(""), Description("")]
             [UIHint("ModuleAction"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.ButtonOnly), ReadOnly]
@@ -1124,6 +1150,10 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [UIHint("Text40"), StringLength(MaxFont), Required]
             public string GenFont { get; set; } = null!;
 
+            [Category("Auto Gen"), Caption("SmallFont"), Description("Font")]
+            [UIHint("Text40"), StringLength(MaxFont), Required]
+            public string GenSmallFont { get; set; } = null!;
+
             [Category("Auto Gen"), Caption("Border Width"), Description("Border Width")]
             [UIHint("IntValue2"), Range(0, 20), Required]
             public int GenBorderWidth { get; set; }
@@ -1160,20 +1190,6 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
                     Style = ModuleAction.ActionStyleEnum.Nothing,
                     Tooltip = this.__ResStr("generateTT", "Auto-popuplate most CSS variables using basic settings"),
                 };
-                // autogen defaults
-                GenTheme = BasicThemeEnum.Light;
-                GenBg = "#FFFFFF";
-                GenClr = "#7e7e7e";
-                GenBgActive = "#2fa4e7";
-                GenClrActive = "#FFFFFF";
-                GenBgShaded = "#f6f6f6";
-                GenClrShaded = "#454545";
-                GenBgShadedActive = "#1a99e2";
-                GenClrShadedActive = "#FFFFFF";
-                GenFont = "normal normal normal 1rem 'Open Sans', sans-serif";
-                GenBorderWidth = 1;
-                GenBorderClr = "#c5c5c5";
-                GenBorderRadius = 3;
             }
         }
 
@@ -1196,9 +1212,18 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
 
             SkinAccess skinAccess = new SkinAccess();
             SkinCollectionInfo skinInfo = skinAccess.GetSkinCollectionInfo();
-            await FileSystem.FileSystemProvider.WriteAllTextAsync(Path.Combine(skinInfo.Folder, "Themes", $"{Manager.CurrentSite.Theme}.css"), model.CSSVariables);
 
-            return FormProcessed(model);
+            string file = Path.Combine(skinInfo.Folder, "Themes", $"{model.Theme}.css");
+            bool newFile = !await FileSystem.FileSystemProvider.FileExistsAsync(file);
+            await FileSystem.FileSystemProvider.WriteAllTextAsync(file, model.CSSVariables);
+
+            if (newFile) {
+                // when a new theme is saved, activate it for the current site
+                Manager.CurrentSite.Theme = model.Theme;
+                await Manager.CurrentSite.SaveAsync();
+                return FormProcessed(model, this.__ResStr("ok", "Theme {0} successfully saved - The current site has been updated to use the new theme", model.Theme), ForceRedirect: true);
+            } else
+                return FormProcessed(model, this.__ResStr("ok", "Theme {0} successfully saved", model.Theme));
         }
     }
 }

@@ -24,9 +24,9 @@
       color: var(--dd-clr-focus);
       border: var(--inp-border-focus); }
     .yt_dropdownlist_base.t_edit .t_container.t_disabled {
-      opacity: .6; }
+      opacity: var(--body-dis-opacity); }
       .yt_dropdownlist_base.t_edit .t_container.t_disabled .t_select {
-        opacity: .6; }
+        opacity: var(--body-dis-opacity); }
     .yt_dropdownlist_base.t_edit .t_container .t_input {
       text-indent: 0;
       padding: 0.3em 2em 0.3em 0.4em;

@@ -92,11 +92,17 @@ namespace YetaWF_ComponentsHTML {
 
                 if (this.Setup.Click) {
 
-                    // select: function(ev: any): void {
-                    //     MenuULComponent.closeMenus();
-                    //     me.Setup.Click!(ev.item);
-                    // }
+                    let liSubs = $YetaWF.getElementsBySelector("li > a", [this.Control]);
+                    $YetaWF.registerMultipleEventHandlers(liSubs, ["click"], null, (ev: Event): boolean => {
 
+                        let owningAnchor = ev.__YetaWFElem as HTMLAnchorElement;
+                        let owningLI = $YetaWF.elementClosest(owningAnchor, "li") as HTMLLIElement;
+
+                        MenuULComponent.closeMenus();
+                        this.Setup.Click!(owningLI);
+
+                        return false;
+                    });
                 }
                 this.Control.style.display = "block";
 

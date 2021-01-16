@@ -18,9 +18,9 @@
     color: var(--dd-clr-focus);
     border: var(--inp-border-focus); }
   .yt_dropdownbutton:disabled {
-    opacity: .6; }
+    opacity: var(--body-dis-opacity); }
     .yt_dropdownbutton:disabled .t_select {
-      opacity: .6; }
+      opacity: var(--body-dis-opacity); }
   .yt_dropdownbutton svg {
     width: 1em;
     height: 1em;

@@ -4,10 +4,14 @@
   text-align: right;
   padding-right: 0.5ch; }
   .yt_currency.t_edit::-webkit-input-placeholder {
-    opacity: 0.6; }
+    color: var(--inp-ph-clr);
+    opacity: var(--inp-ph-opacity); }
   .yt_currency.t_edit:-ms-input-placeholder {
-    opacity: 0.6; }
+    color: var(--inp-ph-clr);
+    opacity: var(--inp-ph-opacity); }
   .yt_currency.t_edit::-ms-input-placeholder {
-    opacity: 0.6; }
+    color: var(--inp-ph-clr);
+    opacity: var(--inp-ph-opacity); }
   .yt_currency.t_edit::placeholder {
-    opacity: 0.6; }
+    color: var(--inp-ph-clr);
+    opacity: var(--inp-ph-opacity); }

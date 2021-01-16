@@ -39,9 +39,9 @@ $ddheight: 1em;
             border: var(--inp-border-focus);
         }
         &.t_disabled {
-            opacity: .6;
+            opacity: var(--body-dis-opacity);
             .t_select {
-                opacity: .6;
+                opacity: var(--body-dis-opacity);
             }
         }
         .t_input {

@@ -34,9 +34,9 @@
     color: var(--dd-clr-focus);
     border: var(--dd-border-focus); }
   .yt_number_container.t_disabled {
-    opacity: .6; }
+    opacity: var(--body-dis-opacity); }
   .yt_number_container.t_readonly {
-    opacity: 0.6; }
+    opacity: var(--body-dis-opacity); }
   .yt_number_container .t_updown {
     position: absolute;
     top: 0;

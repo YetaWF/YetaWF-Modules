@@ -13,7 +13,7 @@ namespace YetaWF_Basics {
         static on: boolean = true;
 
         constructor() {
-            $YetaWF.registerEventHandlerBody("click", ".YetaWF_Basics_AlertDisplay .t_close img", (ev: MouseEvent): boolean =>{
+            $YetaWF.registerEventHandlerBody("click", ".YetaWF_Basics_AlertDisplay .t_close a", (ev: MouseEvent): boolean =>{
                 AlertDisplayModule.dismissed = true;
 
                 let alert = $YetaWF.getElement1BySelector(".YetaWF_Basics_AlertDisplay");

@@ -195,9 +195,13 @@ namespace YetaWF_ComponentsHTML {
         }
         private setInternalValue(val: number|null|string, updateIfValid?: boolean): void {
             if (typeof val === "string") {
-                val = Number(val);
-                if (isNaN(val))
+                if (val) {
+                    val = Number(val);
+                    if (isNaN(val))
+                        val = null;
+                } else {
                     val = null;
+                }
             }
             if (val != null) {
                 if (updateIfValid === undefined || updateIfValid === true)

@@ -66,13 +66,18 @@ var YetaWF_ComponentsHTML;
             return _this;
         }
         MenuULComponent.prototype.open = function () {
+            var _this = this;
             if (!this.isOpen) {
                 MenuULComponent.closeMenus();
                 if (this.Setup.Click) {
-                    // select: function(ev: any): void {
-                    //     MenuULComponent.closeMenus();
-                    //     me.Setup.Click!(ev.item);
-                    // }
+                    var liSubs = $YetaWF.getElementsBySelector("li > a", [this.Control]);
+                    $YetaWF.registerMultipleEventHandlers(liSubs, ["click"], null, function (ev) {
+                        var owningAnchor = ev.__YetaWFElem;
+                        var owningLI = $YetaWF.elementClosest(owningAnchor, "li");
+                        MenuULComponent.closeMenus();
+                        _this.Setup.Click(owningLI);
+                        return false;
+                    });
                 }
                 this.Control.style.display = "block";
                 this.positionMenu();

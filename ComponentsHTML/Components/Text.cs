@@ -284,7 +284,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string id = HtmlBuilder.GetIdCond(HtmlAttributes);
             if (id != null)
                 id = $" id='{id}'";
-            hb.Append($@"<input{id}{FieldSetup(FieldType.Anonymous)} type='text' value='{HAE(model ?? string.Empty)}' class='t_display {TemplateClass}{css}'{readOnly}{disabled}>");
+            hb.Append($@"<input{id}{FieldSetup(FieldType.Anonymous)} type='text' value='{HAE(model ?? string.Empty)}' class='t_display yt_text_base {TemplateClass}{css}'{readOnly}{disabled}>");
 
             if (copy) {
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "clipboardjs.com.clipboard");// add clipboard support

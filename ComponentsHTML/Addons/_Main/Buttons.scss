@@ -30,7 +30,7 @@
     &:disabled {
         text-decoration: none;
         cursor: default;
-        opacity: 0.60;
+        opacity: var(--body-dis-opacity);
     }
     &:focus {
         outline: 0;
@@ -79,7 +79,7 @@ button.y_buttonlite {
     &:disabled {
         text-decoration: none;
         cursor: default;
-        opacity: 0.60;
+        opacity: var(--body-dis-opacity);;
     }
     &:focus {
         outline: 0;

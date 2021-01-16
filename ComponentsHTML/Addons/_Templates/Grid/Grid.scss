@@ -1,26 +1,27 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-$fontsize: 11px;
-$fontsizenoskin: 14px;
-$fontsizesort: 12px;
-$menufontsize: 10px;
+$font: var(--tbl-font);
+$fontheader: var(--tbl-header-font);
 
-$headerhorzpadding: 4px;
-$headerverticalpadding: 2px;
-$cellhorzpadding: 2px;
-$cellverticalpadding: 2px;
+$fontsizesort: 1em;
+$menufontsize: .8em;
 
-$buttonfontsize: 8px;
-$buttonfontsizenoskin:12px;
-$buttonhorzpadding: 4px;
-$buttonvertpadding: 2px;
-$buttonvertmargin: 3px;
-$buttonhorzmargin: 3px;
+$headerhorzpadding: .25em;
+$headerverticalpadding: .25em;
+$cellhorzpadding: .25em;
+$cellverticalpadding: .25em;
 
-$smbuttonhorzpadding: 2px;
-$smbuttonvertpadding: 2px;
-$smbuttonvertmargin: 2px;
-$smbuttonhorzmargin: 2px;
+$buttonfontsize: .9em;
+$buttonfontsizenoskin: 1em;
+$buttonhorzpadding: .25em;
+$buttonvertpadding: .25em;
+$buttonvertmargin: .25em;
+$buttonhorzmargin: .25em;
+
+$smbuttonhorzpadding: .2em;
+$smbuttonvertpadding: .2em;
+$smbuttonvertmargin: .2em;
+$smbuttonhorzmargin: .2em;
 
 .yt_grid {
 
@@ -69,7 +70,7 @@ $smbuttonhorzmargin: 2px;
                             top:-$fontsizesort/4;
                         }
                          .tg_sortboth {
-                            opacity: 0.2;
+                            opacity: .2;
                          }
                     }
                     user-select: none; /* Standard syntax */
@@ -102,7 +103,7 @@ $smbuttonhorzmargin: 2px;
                 }
                 .tg_fclear, .tg_fmenu {
                     display:inline-block;
-                    font-size:$buttonfontsize;
+                    font-size:var(--pm-1-font);// use popup font size to match popup displayed by button
                     margin:$smbuttonvertmargin $smbuttonhorzmargin $smbuttonvertmargin $smbuttonhorzmargin;
                     padding:$smbuttonvertpadding $smbuttonhorzpadding $smbuttonvertpadding $smbuttonhorzpadding;
                 }
@@ -221,8 +222,7 @@ ul.yt_grid_menu {
     .tg_table {
         table {
             border-collapse:collapse;
-            font: var(--body-font);
-            font-size:$fontsize;
+            font: $font;
             tbody {
                 background: var(--tbl-bg);
                 color: var(--tbl-clr);
@@ -233,8 +233,12 @@ ul.yt_grid_menu {
             tr.tg_filter {
                 border-bottom: var(--tbl-border);
             }
-            th, td {
-                font-size:$fontsize;
+            th {
+                font:$fontheader;
+                border-right: var(--tbl-border-lite);
+            }
+            td {
+                font:$font;
                 border-right: var(--tbl-border-lite);
             }
             th {
@@ -252,14 +256,14 @@ ul.yt_grid_menu {
         background: var(--tbl-header-bg);
         color: var(--tbl-header-clr);
         border-top: var(--tbl-border);
-        font-size:$fontsize;
+        font:$fontheader;
         .tg_reload, .tg_search, .tg_pgtop, .tg_pgnext, .tg_pgprev, .tg_pgbottom {
             .fas {
                 font-size:$buttonfontsize;
             }
         }
         .tg_pgbtns, .tg_pgctl, .tg_pgnum, .tg_pgsel, .tg_totals {
-            font-size:$fontsize;
+            font:$font;
         }
     }
 }
@@ -268,9 +272,8 @@ ul.yt_grid_menu {
     .tg_table {
         table {
             font: var(--body-font);
-            font-size:$fontsizenoskin;
             th, td {
-                font-size:$fontsizenoskin;
+                font: var(--body-font);
             }
             .tg_header th {
                 font-weight:bold;
@@ -278,14 +281,14 @@ ul.yt_grid_menu {
         }
     }
     .tg_pager {
-        font-size:$fontsizenoskin;
+        font: var(--body-font);
         .tg_reload, .tg_search, .tg_pgtop, .tg_pgnext, .tg_pgprev, .tg_pgbottom {
             .fas {
                 font-size:$buttonfontsizenoskin;
             }
         }
         .tg_pgbtns, .tg_pgctl, .tg_pgnum, .tg_pgsel, .tg_totals {
-            font-size:$fontsizenoskin;
+            font: var(--body-font);
         }
     }
 }

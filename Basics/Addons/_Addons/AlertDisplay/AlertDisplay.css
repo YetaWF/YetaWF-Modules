@@ -8,18 +8,24 @@
   right: 0px;
   padding: 1em;
   margin: 1em;
-  border-radius: 10px;
-  border: 1px solid #ff0000;
-  background-color: #e26363;
-  color: #ffffff; }
-  .YetaWF_Basics_AlertDisplay .t_close img {
-    margin: 5px;
+  border-radius: .5em;
+  border: var(--tst-border);
+  background: var(--tst-warn-bg);
+  color: var(--tst-warn-clr);
+  box-shadow: var(--tst-info-shadow); }
+  .YetaWF_Basics_AlertDisplay .t_close a {
+    margin: .3em;
     margin-right: 1em;
-    padding: 3px;
-    border-radius: 3px;
-    background-color: #ffffff; }
-  .YetaWF_Basics_AlertDisplay .t_close img:hover {
-    background-color: #cccccc; }
+    padding: .2em;
+    line-height: 0;
+    border: var(--buttonlite-border);
+    border-radius: var(--buttonlite-border-radius);
+    background: var(--buttonlite-bg); }
+    .YetaWF_Basics_AlertDisplay .t_close a svg {
+      width: 1em;
+      height: 1em; }
+  .YetaWF_Basics_AlertDisplay .t_close a:hover {
+    background: var(--buttonlite-bg-hover); }
   .YetaWF_Basics_AlertDisplay .t_close {
     display: inline-block;
     vertical-align: top; }
@@ -27,5 +33,3 @@
     width: 90%;
     display: inline-block;
     vertical-align: top; }
-  .YetaWF_Basics_AlertDisplay .t_message a {
-    color: white; }

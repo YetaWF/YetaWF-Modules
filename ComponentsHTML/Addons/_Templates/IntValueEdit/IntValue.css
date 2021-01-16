@@ -6,13 +6,17 @@
     text-align: right;
     padding-right: 0.5ch; }
     .yt_intvalue_base.yt_intvalue_base::-webkit-input-placeholder {
-      opacity: 0.6; }
+      color: var(--inp-ph-clr);
+      opacity: var(--inp-ph-opacity); }
     .yt_intvalue_base.yt_intvalue_base:-ms-input-placeholder {
-      opacity: 0.6; }
+      color: var(--inp-ph-clr);
+      opacity: var(--inp-ph-opacity); }
     .yt_intvalue_base.yt_intvalue_base::-ms-input-placeholder {
-      opacity: 0.6; }
+      color: var(--inp-ph-clr);
+      opacity: var(--inp-ph-opacity); }
     .yt_intvalue_base.yt_intvalue_base::placeholder {
-      opacity: 0.6; }
+      color: var(--inp-ph-clr);
+      opacity: var(--inp-ph-opacity); }
   .yt_intvalue_base.yt_intvalue {
     width: 14em; }
   .yt_intvalue_base.yt_intvalue2 {

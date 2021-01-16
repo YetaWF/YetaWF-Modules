@@ -785,7 +785,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             foreach (GridColumnInfo.FilterOptionEnum option in filterOpts) {
                 string icon = GetFilterIcon(option);
                 string text = GetFilterText(option);
-                hb.Append($"<li data-sel='{(int)option}'><span class='t_fmenuicon'>{HE(icon)}</span><span class='t_fmenutext'>{HE(text)}</span></li>");
+                hb.Append($"<li data-sel='{(int)option}'><a href='#'><span class='t_fmenuicon'>{HE(icon)}</span><span class='t_fmenutext'>{HE(text)}</span></a></li>");
             }
             hb.Append("</ul>");
             return hb.ToString();

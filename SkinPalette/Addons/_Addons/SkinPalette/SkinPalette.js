@@ -45,20 +45,30 @@ var YetaWF_SkinPalette;
                 return false;
             });
             $YetaWF.registerEventHandler(_this.ConfigSave, "click", null, function (ev) {
-                if (!$YetaWF.Forms.validate(_this.Form)) {
-                    $YetaWF.Forms.showErrors(_this.Form);
-                    return false;
-                }
-                _this.updateSkin();
+                $YetaWF.setLoading(true);
+                $YetaWF.pleaseWait("Saving theme...");
+                setTimeout(function () {
+                    if (!$YetaWF.Forms.validate(_this.Form)) {
+                        $YetaWF.setLoading(false);
+                        $YetaWF.Forms.showErrors(_this.Form);
+                        return;
+                    }
+                    _this.updateSkin();
+                    $YetaWF.setLoading(false);
+                }, 1);
                 return false;
             });
             $YetaWF.registerEventHandler(_this.AutoGenerate, "click", null, function (ev) {
+                $YetaWF.setLoading(true);
                 if (!$YetaWF.Forms.validate(_this.Form)) {
+                    $YetaWF.setLoading(false);
                     $YetaWF.Forms.showErrors(_this.Form);
                     return false;
                 }
                 _this.generateSkin();
                 _this.populateFromModel();
+                $YetaWF.setLoading(false);
+                $YetaWF.message("CSS variables successfully generated and updated");
                 return false;
             });
             _this.Tabs.Control.addEventListener(YetaWF_ComponentsHTML.TabsComponent.EVENTSWITCHED, function (evt) {
@@ -87,7 +97,7 @@ var YetaWF_SkinPalette;
                     case "Decimal":
                         var decControl_1 = YetaWF_ComponentsHTML.DecimalEditComponent.getControlFromSelector("input[type=\"text\"][name=\"" + entry.ModelName + "\"]", YetaWF_ComponentsHTML.DecimalEditComponent.SELECTOR, [this_1.Module]);
                         decControl_1.value = Number(val);
-                        decControl_1.Control.addEventListener(YetaWF_ComponentsHTML.DecimalEditComponent.EVENTCHANGE, function (evt) {
+                        decControl_1.Control.addEventListener(YetaWF_ComponentsHTML.DecimalEditComponent.EVENT, function (evt) {
                             root.style.setProperty(entry.CSSVarName, decControl_1.valueText);
                         });
                         break;
@@ -174,15 +184,17 @@ var YetaWF_SkinPalette;
                     GenBg: "#FFFFFF",
                     GenClr: "#7e7e7e",
                     GenBgActive: "#2fa4e7",
-                    GenClrActive: "#FFFFFF",
+                    GenClrActive: "#9e9e9e",
                     GenBgShaded: "#f6f6f6",
                     GenClrShaded: "#454545",
                     GenBgShadedActive: "#1a99e2",
                     GenClrShadedActive: "#FFFFFF",
                     GenFont: "normal normal normal 1rem 'Open Sans', sans-serif",
+                    GenSmallFont: "normal normal normal .7rem 'Open Sans', sans-serif",
                     GenBorderWidth: 1,
                     GenBorderClr: "#c5c5c5",
                     GenBorderRadius: 3,
+                    GenOpacity: 0.5,
                 };
             }
             else {
@@ -197,9 +209,11 @@ var YetaWF_SkinPalette;
                     GenBgShadedActive: "#a6a6a6",
                     GenClrShadedActive: "#ffffff",
                     GenFont: "normal normal normal 1rem 'Open Sans', sans-serif",
+                    GenSmallFont: "normal normal normal .7rem 'Open Sans', sans-serif",
                     GenBorderWidth: 1,
                     GenBorderClr: "#777",
                     GenBorderRadius: 3,
+                    GenOpacity: 0.5,
                 };
             }
             this.getColor("GenBg").value = values.GenBg;
@@ -211,15 +225,18 @@ var YetaWF_SkinPalette;
             this.getColor("GenBgShadedActive").value = values.GenBgShadedActive;
             this.getColor("GenClrShadedActive").value = values.GenClrShadedActive;
             this.getInput("GenFont").value = values.GenFont;
+            this.getInput("GenSmallFont").value = values.GenSmallFont;
             this.getIntValue("GenBorderWidth").value = values.GenBorderWidth;
             this.getColor("GenBorderClr").value = values.GenBorderClr;
             this.getIntValue("GenBorderRadius").value = values.GenBorderRadius;
+            this.getDecimal("BodyDisabledOpacity").value = values.GenOpacity;
         };
         SkinPaletteModule.prototype.generateSkin = function () {
             var values = this.getValues();
             this.getColor("BodyBg").value = values.GenBg;
             this.getColor("BodyClr").value = values.GenClr;
             this.getInput("BodyFont").value = values.GenFont;
+            this.getDecimal("BodyDisabledOpacity").value = values.GenOpacity;
             this.getColor("AnchorClr").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenClr, 20) : this.Lighten(values.GenClr, 20);
             this.getInput("AnchorDec").value = "none";
             this.getColor("AnchorClrHover").value = this.ToHover(values.GenTheme, values.GenClr);
@@ -227,7 +244,7 @@ var YetaWF_SkinPalette;
             this.getColor("AnchorClrFocus").value = values.GenClrActive;
             this.getInput("AnchorDecFocus").value = "underline";
             this.getColor("OverlayBg").value = values.GenTheme === BasicThemeEnum.Light ? "#aaaaaa" : "#444444";
-            this.getDecimal("OverlayOpacity").value = values.GenTheme === BasicThemeEnum.Light ? 0.5 : 0.8;
+            this.getDecimal("OverlayOpacity").value = values.GenOpacity;
             this.getInput("MainMenu0Padding").value = "0";
             this.getColor("MainMenu0Clr").value = values.GenClr;
             this.getInput("MainMenu0Font").value = values.GenFont;
@@ -288,7 +305,7 @@ var YetaWF_SkinPalette;
             this.getInput("MainMenuSVGSmallBorderRadius").value = values.GenBorderRadius + "px";
             this.getColor("PopupMenu1Bg").value = values.GenBg;
             this.getColor("PopupMenu1Clr").value = values.GenClr;
-            this.getInput("PopupMenu1Font").value = values.GenFont;
+            this.getInput("PopupMenu1Font").value = values.GenSmallFont;
             this.getInput("PopupMenu1Border").value = values.GenBorderWidth + "px solid " + values.GenBorderClr;
             this.getInput("PopupMenu1BorderRadius").value = values.GenBorderRadius + "px";
             this.getInput("PopupMenu1Padding").value = "0";
@@ -303,7 +320,7 @@ var YetaWF_SkinPalette;
             this.getInput("PopupMenu1DDHeight").value = "16px";
             this.getColor("PopupMenu2Bg").value = values.GenBg;
             this.getColor("PopupMenu2Clr").value = values.GenClr;
-            this.getInput("PopupMenu2Font").value = values.GenFont;
+            this.getInput("PopupMenu2Font").value = values.GenSmallFont;
             this.getInput("PopupMenu2Border").value = values.GenBorderWidth + "px solid " + values.GenBorderClr;
             this.getInput("PopupMenu2BorderRadius").value = values.GenBorderRadius + "px";
             this.getInput("PopupMenu2Padding").value = "0";
@@ -368,12 +385,16 @@ var YetaWF_SkinPalette;
             this.getInput("InputBorderFocus").value = values.GenBorderWidth + "px solid " + this.ToFocus(values.GenTheme, values.GenBorderClr);
             this.getInput("InputBorderRadius").value = values.GenBorderRadius + "px";
             this.getColor("InputError").value = "red";
+            this.getColor("InputPlaceholderClr").value = values.GenTheme === BasicThemeEnum.Light ? "black" : "white";
+            this.getDecimal("InputPlaceholderOpacity").value = values.GenOpacity;
             this.getColor("DDBg").value = values.GenBg;
             this.getColor("DDClr").value = values.GenClr;
-            this.getColor("DDBgHover").value = values.GenBg;
-            this.getColor("DDClrHover").value = values.GenClr;
-            this.getColor("DDBgFocus").value = values.GenBg;
-            this.getColor("DDClrFocus").value = values.GenClr;
+            this.getColor("DDBgHover").value = this.ToHover(values.GenTheme, values.GenBg);
+            this.getColor("DDClrHover").value = this.ToHover(values.GenTheme, values.GenClr);
+            this.getColor("DDBgActive").value = values.GenBgActive;
+            this.getColor("DDClrActive").value = values.GenClrActive;
+            this.getColor("DDBgFocus").value = this.ToFocus(values.GenTheme, values.GenBg);
+            this.getColor("DDClrFocus").value = this.ToFocus(values.GenTheme, values.GenClr);
             this.getInput("DDBorder").value = values.GenBorderWidth + "px solid " + values.GenBorderClr;
             this.getInput("DDBorderHover").value = values.GenBorderWidth + "px solid " + this.ToHover(values.GenTheme, values.GenBorderClr);
             this.getInput("DDBorderFocus").value = values.GenBorderWidth + "px solid " + this.ToFocus(values.GenTheme, values.GenBorderClr);
@@ -398,6 +419,14 @@ var YetaWF_SkinPalette;
             this.getInput("ButtonBorderRadius").value = values.GenBorderRadius + "px";
             this.getInput("ButtonShadow").value = "0px 0px 3px 0px rgba(0, 0, 0, 0.25)";
             this.getInput("ButtonShadowFocus").value = "inset 0px 0px 3px 0px rgba(0, 0, 0, 0.25)";
+            this.getColor("ButtonLiteBg").value = values.GenBgShaded;
+            this.getColor("ButtonLiteClr").value = values.GenClrShaded;
+            this.getColor("ButtonLiteBgHover").value = this.ToHover(values.GenTheme, values.GenBgShaded);
+            this.getColor("ButtonLiteClrHover").value = this.ToHover(values.GenTheme, values.GenClrShaded);
+            this.getColor("ButtonLiteBgFocus").value = this.ToFocus(values.GenTheme, values.GenBgShaded);
+            this.getColor("ButtonLiteClrFocus").value = this.ToFocus(values.GenTheme, values.GenClrShaded);
+            this.getInput("ButtonLiteBorder").value = values.GenBorderWidth + "px solid " + values.GenBorderClr;
+            this.getInput("ButtonLiteBorderRadius").value = values.GenBorderRadius + "px";
             this.getColor("PbarBg").value = values.GenBgShaded;
             this.getColor("PbarValueBg").value = values.GenClrShaded;
             this.getInput("PbarBorder").value = values.GenBorderWidth + "px solid " + values.GenBorderClr;
@@ -410,20 +439,22 @@ var YetaWF_SkinPalette;
             this.getColor("TableClrActive").value = values.GenClrActive;
             this.getColor("TableBgFocus").value = this.ToFocus(values.GenTheme, values.GenBg);
             this.getColor("TableClrFocus").value = this.ToFocus(values.GenTheme, values.GenClr);
-            this.getColor("TableBgHighlight").value = "silver";
-            this.getColor("TableClrHighlight").value = "white";
-            this.getColor("TableBgLowlight").value = "ghostwhite;";
-            this.getColor("TableClrLowlight").value = "darkslategray";
+            this.getColor("TableBgHighlight").value = values.GenTheme === BasicThemeEnum.Light ? "silver" : "white";
+            this.getColor("TableClrHighlight").value = values.GenTheme === BasicThemeEnum.Light ? "white" : "silver";
+            this.getColor("TableBgLowlight").value = values.GenTheme === BasicThemeEnum.Light ? "ghostwhite" : "darkslategray";
+            this.getColor("TableClrLowlight").value = values.GenTheme === BasicThemeEnum.Light ? "darkslategray" : "ghostwhite";
+            this.getInput("TableFont").value = values.GenSmallFont;
+            this.getInput("TableBorder").value = values.GenBorderWidth + "px solid " + values.GenBorderClr;
+            this.getInput("TableBorderLite").value = values.GenBorderWidth + "px solid " + (values.GenTheme === BasicThemeEnum.Light ? this.Lighten(values.GenBorderClr, 20) : this.Darken(values.GenBorderClr, 20));
+            this.getInput("TableBorderRadius").value = values.GenBorderRadius + "px";
+            this.getInput("TableShadow").value = "0px 0px 10px 0px rgba(0,0,0,0.1)";
             this.getColor("TableHeaderBg").value = values.GenBgShaded;
             this.getColor("TableHeaderClr").value = values.GenClrShaded;
             this.getColor("TableHeaderBgHover").value = this.ToHover(values.GenTheme, values.GenBgShaded);
             this.getColor("TableHeaderClrHover").value = this.ToHover(values.GenTheme, values.GenClrShaded);
             this.getColor("TableHeaderBgActive").value = values.GenBgShadedActive;
             this.getColor("TableHeaderClrActive").value = values.GenClrShadedActive;
-            this.getInput("TableBorder").value = values.GenBorderWidth + "px solid " + values.GenBorderClr;
-            this.getInput("TableBorderLite").value = values.GenBorderWidth + "px solid " + (values.GenTheme === BasicThemeEnum.Light ? this.Lighten(values.GenBorderClr, 20) : this.Darken(values.GenBorderClr, 20));
-            this.getInput("TableBorderRadius").value = values.GenBorderRadius + "px";
-            this.getInput("TableShadow").value = "0px 0px 10px 0px rgba(0,0,0,0.1)";
+            this.getInput("TableHeaderFont").value = values.GenSmallFont;
             this.getColor("TabsBg").value = values.GenBg;
             this.getColor("TabsClr").value = values.GenClr;
             this.getColor("TabsStripBg").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenBgShaded, 40) : this.Lighten(values.GenBgShaded, 40);
@@ -435,8 +466,8 @@ var YetaWF_SkinPalette;
             this.getColor("TabsTabClrHover").value = this.ToHover(values.GenTheme, values.GenClrShaded);
             this.getColor("TabsTabBgActive").value = values.GenBgShadedActive;
             this.getColor("TabsTabClrActive").value = values.GenClrShadedActive;
-            this.getColor("TabsTabBgFocus").value = this.ToFocus(values.GenTheme, values.GenBgShaded);
-            this.getColor("TabsTabClrFocus").value = this.ToFocus(values.GenTheme, values.GenClrShaded);
+            this.getColor("TabsTabBgFocus").value = this.ToFocus(values.GenTheme, values.GenBgShadedActive);
+            this.getColor("TabsTabClrFocus").value = this.ToFocus(values.GenTheme, values.GenClrShadedActive);
             this.getInput("TabsTabBorder").value = values.GenBorderWidth + "px solid " + values.GenBorderClr;
             this.getInput("TabsTabBorderRadius").value = values.GenBorderRadius + "px";
             this.getColor("StepBg").value = values.GenBgShaded;
@@ -462,9 +493,11 @@ var YetaWF_SkinPalette;
                 GenBgShadedActive: this.getInput("GenBgShadedActive").value,
                 GenClrShadedActive: this.getInput("GenClrShadedActive").value,
                 GenFont: this.getInput("GenFont").value,
+                GenSmallFont: this.getInput("GenSmallFont").value,
                 GenBorderClr: this.getInput("GenBorderClr").value,
                 GenBorderWidth: Number(this.getInput("GenBorderWidth").value),
                 GenBorderRadius: Number(this.getInput("GenBorderRadius").value),
+                GenOpacity: this.getDecimal("BodyDisabledOpacity").value,
             };
         };
         /** Turn a basic color into a hover color */

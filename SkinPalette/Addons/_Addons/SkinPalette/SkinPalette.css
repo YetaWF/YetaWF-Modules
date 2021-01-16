@@ -5,7 +5,7 @@
   position: fixed;
   left: 58px;
   top: 5px;
-  z-index: 1511;
+  z-index: 901;
   padding: 4px;
   width: 16px;
   height: 16px;
@@ -16,7 +16,7 @@
     height: 16px; }
 
 .YetaWF_SkinPalette_SkinPalette .t_contents {
-  z-index: 1510;
+  z-index: 900;
   position: fixed;
   top: 0;
   right: 0;
