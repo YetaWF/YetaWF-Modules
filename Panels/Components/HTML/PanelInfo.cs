@@ -7,6 +7,7 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Panels.Models;
@@ -99,18 +100,12 @@ namespace YetaWF.Modules.Panels.Components {
                         string caption = model.Panels[panelIndex].Caption;
                         if (string.IsNullOrWhiteSpace(caption)) { caption = this.__ResStr("noCaption", "(no caption)"); }
 
-                        // svg icon used: fas-caret-down
-                        // svg icon used: fas-caret-up
                         hb.Append($@"
         <h2 class='t_accheader {(active ? "t_active" : "t_collapsed")}' role='tab'
             id='{DivId}_{panelIndex}_lb' aria-controls='{DivId}_{panelIndex}_pane' aria-selected='{(active ? "true" : "false")}' aria-expanded='{(active ? "true" : "false")}' tabindex='{(active ? "0" : "-1")}'>
             <div class='t_accicon'>
-                <svg class='t_down' aria-hidden='true' focusable='false' role='img' width='16' height='16' viewBox='0 0 320 512'>
-                    <path fill='currentColor' d='M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z'></path>
-                </svg>
-                <svg class='t_up' aria-hidden='true' focusable='false' role='img' width='16' height='16' viewBox='0 0 320 512'>
-                    <path fill='currentColor' d='M288.662 352H31.338c-17.818 0-26.741-21.543-14.142-34.142l128.662-128.662c7.81-7.81 20.474-7.81 28.284 0l128.662 128.662c12.6 12.599 3.676 34.142-14.142 34.142z'></path>
-                </svg>
+                {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-caret-down")}
+                {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-caret-up")}
             </div>
             {Utility.HE(caption)}
         </h2>

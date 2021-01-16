@@ -29,7 +29,8 @@
     font: var(--dialog-title-font); }
   #ypopup .t_close {
     float: right;
-    margin-left: .5em; }
+    margin-left: .5em;
+    padding: .2em; }
     #ypopup .t_close svg {
       width: 16px;
       height: 16px; }

@@ -13,7 +13,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-/// <reference types="kendo-ui" />
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     var MenuULComponent = /** @class */ (function (_super) {
@@ -40,8 +39,7 @@ var YetaWF_ComponentsHTML;
             var aSubs = $YetaWF.getElementsBySelector("li.t_hassub > a", [_this.Control]);
             for (var _i = 0, aSubs_1 = aSubs; _i < aSubs_1.length; _i++) {
                 var aSub = aSubs_1[_i];
-                // icon used: fa-caret-right
-                aSub.innerHTML += "<svg class='t_right' aria-hidden='true' focusable='false' role='img' viewBox='0 0 192 512'><path fill='currentColor' d='M0 384.662V127.338c0-17.818 21.543-26.741 34.142-14.142l128.662 128.662c7.81 7.81 7.81 20.474 0 28.284L34.142 398.804C21.543 411.404 0 402.48 0 384.662z'></path></svg>";
+                aSub.innerHTML += YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_right;
                 aSub.setAttribute("aria-haspopup", "true");
                 aSub.setAttribute("aria-expanded", "false");
             }

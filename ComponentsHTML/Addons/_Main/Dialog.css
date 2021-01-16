@@ -21,10 +21,11 @@
     font: var(--dialog-title-font); }
   #yDialogContainer .t_close {
     float: right;
-    margin-left: .5em; }
+    margin-left: .5em;
+    padding: .2em; }
     #yDialogContainer .t_close svg {
-      width: 16px;
-      height: 16px; }
+      width: 1em;
+      height: 1em; }
   #yDialogContainer .t_content {
     width: auto;
     min-height: 2em;

@@ -2,6 +2,17 @@
 
 /* Popups implementation required by YetaWF */
 
+namespace YetaWF {
+    export interface IConfigs {
+        YetaWF_ComponentsHTML: YetaWF_ComponentsHTML.IPackageConfigs;
+    }
+}
+namespace YetaWF_ComponentsHTML {
+    export interface IPackageConfigs {
+        SVG_fas_multiply: string; // a close button
+    }
+}
+
 interface Document {
     YPopupWindowActive: HTMLDivElement | null;
     YPopupWindowStatic: boolean;
@@ -113,7 +124,7 @@ namespace YetaWF_ComponentsHTML {
             // handle close button
             let closeButton = $YetaWF.getElement1BySelector(".t_titlebar button", [popup]);
             // icon used fas-multiply
-            closeButton.innerHTML = "<svg aria-hidden='true' focusable='false' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 352 512'><path fill='currentColor' d='M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z'></path></svg>";
+            closeButton.innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_multiply;//close button image
             $YetaWF.registerEventHandler(closeButton, "click", null, (ev: MouseEvent): boolean => {
                 PopupsImpl.internalClosePopup();
                 return false;
@@ -269,7 +280,7 @@ namespace YetaWF_ComponentsHTML {
 
             // handle close button
             let closeButton = $YetaWF.getElement1BySelector(".t_titlebar button", [popup]);
-            closeButton.innerHTML = "<svg aria-hidden='true' focusable='false' role='img' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 352 512'><path fill='currentColor' d='M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z'></path></svg>";
+            closeButton.innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_multiply;//close button image
             $YetaWF.registerEventHandler(closeButton, "click", null, (ev: MouseEvent): boolean => {
                 PopupsImpl.internalClosePopup();
                 return false;

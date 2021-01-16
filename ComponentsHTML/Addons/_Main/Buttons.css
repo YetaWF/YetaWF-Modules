@@ -51,7 +51,7 @@ a.y_button, a.y_button:hover {
 button.y_buttonlite {
   background: var(--buttonlite-bg);
   color: var(--buttonlite-clr);
-  line-height: 1;
+  line-height: 0;
   padding: 0;
   text-decoration: none;
   border: var(--buttonlite-border);

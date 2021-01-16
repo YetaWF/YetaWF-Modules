@@ -8,6 +8,7 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.SkinPalette.Controllers;
@@ -42,12 +43,9 @@ namespace YetaWF.Modules.SkinPalette.Views {
             List<FormButton> buttons = new List<FormButton>();
             buttons.Add(new FormButton() { ButtonType = ButtonTypeEnum.Apply, Text = this.__ResStr("apply", "Apply"), Title = this.__ResStr("applyTT", "Apply all changes to the current skin") });
 
-            // icons used: fas-palette
             hb.Append($@"
 <a class='t_palette y_button_outline y_button' {Basics.CssTooltip}='{HAE(this.__ResStr("coll", "Color Palette - Change skin settings and generate new CSS variables for use in skins"))}' href='javascript: void(0);' rel='nofollow' data-button=''>
-    <svg aria-hidden='true' focusable='false' role='img' viewBox='0 0 512 512'>
-        <path fill='currentColor' d='M204.3 5C104.9 24.4 24.8 104.3 5.2 203.4c-37 187 131.7 326.4 258.8 306.7 41.2-6.4 61.4-54.6 42.5-91.7-23.1-45.4 9.9-98.4 60.9-98.4h79.7c35.8 0 64.8-29.6 64.9-65.3C511.5 97.1 368.1-26.9 204.3 5zM96 320c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm32-128c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm128-64c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm128 64c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z'></path>
-    </svg>
+    {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-palette")}
 </a>
 <div class='t_contents' style='display:none'>
     {await RenderBeginFormAsync()}

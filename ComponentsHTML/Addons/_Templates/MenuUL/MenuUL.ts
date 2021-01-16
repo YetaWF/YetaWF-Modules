@@ -1,6 +1,15 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-/// <reference types="kendo-ui" />
+namespace YetaWF {
+    export interface IConfigs {
+        YetaWF_ComponentsHTML: YetaWF_ComponentsHTML.IPackageConfigs;
+    }
+}
+namespace YetaWF_ComponentsHTML {
+    export interface IPackageConfigs {
+        SVG_fas_caret_right: string;
+    }
+}
 
 namespace YetaWF_ComponentsHTML {
 
@@ -54,8 +63,7 @@ namespace YetaWF_ComponentsHTML {
             // add icons to all items with submenu
             let aSubs = $YetaWF.getElementsBySelector("li.t_hassub > a", [this.Control]);
             for (let aSub of aSubs) {
-                // icon used: fa-caret-right
-                aSub.innerHTML += "<svg class='t_right' aria-hidden='true' focusable='false' role='img' viewBox='0 0 192 512'><path fill='currentColor' d='M0 384.662V127.338c0-17.818 21.543-26.741 34.142-14.142l128.662 128.662c7.81 7.81 7.81 20.474 0 28.284L34.142 398.804C21.543 411.404 0 402.48 0 384.662z'></path></svg>";
+                aSub.innerHTML += YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_right;
 
                 aSub.setAttribute("aria-haspopup", "true");
                 aSub.setAttribute("aria-expanded", "false");

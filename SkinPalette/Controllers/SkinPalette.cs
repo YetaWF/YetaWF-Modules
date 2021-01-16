@@ -1210,10 +1210,7 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
 
-            SkinAccess skinAccess = new SkinAccess();
-            SkinCollectionInfo skinInfo = skinAccess.GetSkinCollectionInfo();
-
-            string file = Path.Combine(skinInfo.Folder, "Themes", $"{model.Theme}.css");
+            string file = Path.Combine(Manager.SkinInfo.Folder, "Themes", $"{model.Theme}.css");
             bool newFile = !await FileSystem.FileSystemProvider.FileExistsAsync(file);
             await FileSystem.FileSystemProvider.WriteAllTextAsync(file, model.CSSVariables);
 
