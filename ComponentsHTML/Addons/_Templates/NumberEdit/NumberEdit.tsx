@@ -34,7 +34,7 @@ namespace YetaWF_ComponentsHTML {
 
         private static readonly INITIALDELAY:number = 300;
         private static readonly STEPDELAY:number = 100;
-        private static readonly WARNDELAY:number = 100;
+        private static readonly WARNDELAY:number = 300;
 
         private Setup: NumberSetup;
         private Container: HTMLElement;
@@ -95,12 +95,34 @@ namespace YetaWF_ComponentsHTML {
 
             $YetaWF.registerEventHandler(this.InputControl, "keydown", null, (ev: KeyboardEvent): boolean => {
                 let key = ev.key;
-                if (key === "ArrowDown" || key === "Down") {
-                    this.setNewSpinValue(false);
-                    return false;
-                } else if (key === "ArrowUp" || key === "Up") {
-                    this.setNewSpinValue(true);
-                    return false;
+                switch(key) {
+                    case "ArrowDown":
+                    case "Down":
+                        this.setNewSpinValue(false);
+                        return false;
+                    case "ArrowUp":
+                    case "Up":
+                        this.setNewSpinValue(true);
+                        return false;
+                }
+                return true;
+            });
+            // deprecated, understood. Switch to beforeinput, but oh no IE11.
+            $YetaWF.registerEventHandler(this.InputControl, "keypress", null, (ev: KeyboardEvent): boolean => {
+                let key = ev.key;
+                switch(key) {
+                    case "0": case "1": case "2": case "3": case "4":
+                    case "5": case "6": case "7": case "8": case "9":
+                        break;
+                    case ".":
+                        if (!this.Setup.Digits) {
+                            this.flashError();
+                            return false;
+                        }
+                        break;
+                    default:
+                        this.flashError();
+                        return false;
                 }
                 return true;
             });
@@ -159,11 +181,12 @@ namespace YetaWF_ComponentsHTML {
                 value += up ? this.Setup.Step : -this.Setup.Step;
                 value = Math.min(this.Setup.Max, value);
                 value = Math.max(this.Setup.Min, value);
+                value = Number(value.toFixed(this.Setup.Digits));
             } else {
                 value = this.Setup.Min;
             }
             if (value !== this.Value) {
-                this.setControlValue(value);
+                this.value = value;
                 this.sendSpinEvent();
             } else {
                 this.clearSpin();
@@ -189,6 +212,7 @@ namespace YetaWF_ComponentsHTML {
             return this.Value ?? 0;
         }
         set value(val: number) {
+            val = Number(val.toFixed(this.Setup.Digits));
             this.Value = val;
             if (this.focused)
                 this.InputControl.value = val.toString();
@@ -224,20 +248,6 @@ namespace YetaWF_ComponentsHTML {
             } else {
                 this.InputControl.value = "";
                 this.Value = val;
-            }
-        }
-        private setControlValue(val: number): void {
-            this.Value = val;
-            if (this.Setup.Currency && this.Setup.Locale) {
-                let v  = val.toLocaleString(this.Setup.Locale, { style: "currency", currency: this.Setup.Currency });
-                // special case for $US
-                if (v.startsWith("$"))
-                    v = `$ ${v.substring(1)}`;
-                this.InputControl.value = v;
-            } else {
-                let l = this.Setup.Lead ? `${this.Setup.Lead} ` : "";
-                let t = this.Setup.Trail ? ` ${this.Setup.Trail}` : "";
-                this.InputControl.value = `${l}${val.toLocaleString(this.Setup.Locale, { style: "decimal", minimumFractionDigits: this.Setup.Digits, maximumFractionDigits: this.Setup.Digits })}${t}`;
             }
         }
         private isValid(text: string): boolean {
