@@ -21,6 +21,7 @@
 #yPageControlMod {
     display:none;
     width:800px;
+    max-width: 90vw;
     z-index:1500;
     font-size:.8em;
     .yt_tabs  {
@@ -28,12 +29,13 @@
         border-bottom-right-radius: 0;
     }
     .yt_moduleactions {
-        background-color: #e4e3e3;
+        background: var(--panel-bg);
         padding: .5em;
+        border: var(--tabs-tab-border);
+        border-top: none;
         border-bottom-left-radius: var(--tabs-tab-border-radius);
         border-bottom-right-radius: var(--tabs-tab-border-radius);
         a {
-            color: #2e2e2e;
             text-decoration: none;
             margin-bottom:.1rem;
             &:hover {
