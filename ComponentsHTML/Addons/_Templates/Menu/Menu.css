@@ -19,6 +19,8 @@ ul.yt_menu.t_display.t_large {
     list-style: none;
     line-height: 1;
     cursor: pointer;
+    padding: 0;
+    margin: 0;
     background: var(--mm-0-bg);
     color: var(--mm-0-clr);
     font: var(--mm-0-font); }

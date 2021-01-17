@@ -33,9 +33,9 @@ namespace YetaWF.Modules.Basics.Views {
 
                 hb.Append($@"
     <div class='t_close' data-ajaxurl='{Utility.HAE(ajaxUrl)}'>
-        <a class='y_button_outline y_button' {YetaWF.Core.Addons.Basics.CssTooltip}='{HAE(this.__ResStr("clsButtonTT", "Click to close alert"))}' href='#' rel='nofollow' data-button='' data-save-return=''>
+        <button class='y_buttonlite' {YetaWF.Core.Addons.Basics.CssTooltip}='{HAE(this.__ResStr("clsButtonTT", "Click to close alert"))}'>
             {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-multiply")}
-        </a>
+        </button>
     </div>");
 
             }

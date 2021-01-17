@@ -62,6 +62,10 @@ $smbuttonhorzmargin: .2em;
                             &.tg_active {
                                 display:inline-block;
                             }
+                            svg {
+                                width: 1em;
+                                height: 1em;
+                            }
                         }
                         .tg_sortasc {
                             top:$fontsizesort/4;
@@ -94,15 +98,15 @@ $smbuttonhorzmargin: .2em;
                     }
                     .tg_ffilter {
                         display:inline-block;
-                        width:10ch;
+                        vertical-align: middle;
                         text-align:center;
-                        font-size:$buttonfontsize;
                         margin:$smbuttonvertmargin $smbuttonhorzmargin $smbuttonvertmargin $smbuttonhorzmargin;
                         padding:$smbuttonvertpadding $smbuttonhorzpadding $smbuttonvertpadding $smbuttonhorzpadding;
                     }
                 }
                 .tg_fclear, .tg_fmenu {
                     display:inline-block;
+                    vertical-align: middle;
                     font-size:var(--pm-1-font);// use popup font size to match popup displayed by button
                     margin:$smbuttonvertmargin $smbuttonhorzmargin $smbuttonvertmargin $smbuttonhorzmargin;
                     padding:$smbuttonvertpadding $smbuttonhorzpadding $smbuttonvertpadding $smbuttonhorzpadding;

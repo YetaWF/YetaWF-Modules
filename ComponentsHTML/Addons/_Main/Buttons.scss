@@ -13,7 +13,7 @@
         padding-left: 0;
         padding-right: 0;
     }
-    &.y_button_outline {
+    &.y_button_outline { // use body background instead of button background
         background: var(--body-bg);
         color: var(--body-clr);
     }
@@ -60,32 +60,35 @@ a.y_button, a.y_button:hover {
     }
 }
 
-button.y_buttonlite {
+button.y_buttonlite, /* only intended with icons (no text) */
+button.y_buttonlite_text /* text only*/ {
     background: var(--buttonlite-bg);
     color: var(--buttonlite-clr);
     line-height: 0;
-    padding: 0;
-    text-decoration: none;
+    padding: .2em;
     border: var(--buttonlite-border);
     border-radius: var(--buttonlite-border-radius);
     &:not(:disabled) {
         cursor: pointer;
     }
     &:hover:not(:disabled) {
-        text-decoration: none;
         background: var(--buttonlite-bg-hover);
         color: var(--buttonlite-clr-hover);
     }
     &:disabled {
-        text-decoration: none;
         cursor: default;
         opacity: var(--body-dis-opacity);;
     }
     &:focus {
         outline: 0;
-        text-decoration: none;
         background: var(--buttonlite-bg-focus);
         color: var(--buttonlite-clr-focus);
     }
+    svg {
+        width:1em;
+        height:1em;
+    }
 }
-
+button.y_buttonlite_text /* text only*/ {
+    line-height:1em;
+}

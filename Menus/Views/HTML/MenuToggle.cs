@@ -31,7 +31,7 @@ namespace YetaWF.Modules.Menus.Views {
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append($@"
-<button class='y_button y_button_outline' id='{ControlId}' style='display:none'>
+<button class='y_buttonlite' id='{ControlId}' style='display:none'>
     {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-bars")}
 </button>");
 

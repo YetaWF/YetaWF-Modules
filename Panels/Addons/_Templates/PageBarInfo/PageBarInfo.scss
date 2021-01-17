@@ -19,28 +19,26 @@ $large-screen: 1500px;
             cursor: pointer;
             display:none;
         }
-        .t_link {
+        .t_caption {
             font-size:.6rem;
             line-height:1.2;
-            .yaction-link {
-                white-space:normal;
-            }
+            white-space:normal;
         }
         .t_entry {
+            text-decoration: none;
+            background: var(--bar-bg);
+            color: var(--bar-clr);
             &:hover {
                 background: var(--bar-bg-hover);
-                a {
-                    color: var(--bar-clr-hover);
-                }
+                color: var(--bar-clr-hover);
             }
             &.t_active {
+                text-decoration: none;
                 background: var(--bar-bg-active);
-                a {
-                    color: var(--bar-clr-active);
-                }
+                color: var(--bar-clr-active);
             }
-            a {
-                color: var(--bar-clr);
+            &:focus {
+                outline: thin dotted;
             }
         }
         .t_entry {
@@ -126,17 +124,15 @@ $large-screen: 1500px;
                     padding:5px 2px 5px 1em;
                     display:block;
                     vertical-align:initial;
-                    .t_image {
+                    img {
                         display:inline-block;
                         padding-right:.5em;
                     }
-                    .t_link {
+                    .t_caption {
                         font-size:.8rem;
                         display:inline-block;
+                        white-space:nowrap;
                         padding-bottom:0;
-                        .yaction-link {
-                            white-space:nowrap;
-                        }
                     }
                 }
             }

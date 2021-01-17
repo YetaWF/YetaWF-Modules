@@ -27,7 +27,7 @@ var YetaWF_Panels;
             _this.Setup = setup;
             _this.resize();
             // Link click, activate entry
-            $YetaWF.registerEventHandler(_this.Control, "click", ".yt_panels_pagebarinfo_list a", function (ev) {
+            $YetaWF.registerEventHandler(_this.Control, "click", ".yt_panels_pagebarinfo_list a.t_entry", function (ev) {
                 _this.activateEntry(ev.__YetaWFElem);
                 return true; // allow link click to be processed
             });
@@ -136,9 +136,8 @@ var YetaWF_Panels;
                     throw "Panel index " + index + " is invalid";
                 var entry = entries[index];
                 // and make panel active
-                var anchor = $YetaWF.getElement1BySelector(".t_link a", [entry]);
-                anchor.focus();
-                anchor.click();
+                entry.focus();
+                entry.click();
             },
             enumerable: false,
             configurable: true

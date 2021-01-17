@@ -48,26 +48,34 @@ a.y_button, a.y_button:hover {
   .y_button {
     display: none; } }
 
-button.y_buttonlite {
+button.y_buttonlite,
+button.y_buttonlite_text {
   background: var(--buttonlite-bg);
   color: var(--buttonlite-clr);
   line-height: 0;
-  padding: 0;
-  text-decoration: none;
+  padding: .2em;
   border: var(--buttonlite-border);
   border-radius: var(--buttonlite-border-radius); }
-  button.y_buttonlite:not(:disabled) {
+  button.y_buttonlite:not(:disabled),
+  button.y_buttonlite_text:not(:disabled) {
     cursor: pointer; }
-  button.y_buttonlite:hover:not(:disabled) {
-    text-decoration: none;
+  button.y_buttonlite:hover:not(:disabled),
+  button.y_buttonlite_text:hover:not(:disabled) {
     background: var(--buttonlite-bg-hover);
     color: var(--buttonlite-clr-hover); }
-  button.y_buttonlite:disabled {
-    text-decoration: none;
+  button.y_buttonlite:disabled,
+  button.y_buttonlite_text:disabled {
     cursor: default;
     opacity: var(--body-dis-opacity); }
-  button.y_buttonlite:focus {
+  button.y_buttonlite:focus,
+  button.y_buttonlite_text:focus {
     outline: 0;
-    text-decoration: none;
     background: var(--buttonlite-bg-focus);
     color: var(--buttonlite-clr-focus); }
+  button.y_buttonlite svg,
+  button.y_buttonlite_text svg {
+    width: 1em;
+    height: 1em; }
+
+button.y_buttonlite_text {
+  line-height: 1em; }

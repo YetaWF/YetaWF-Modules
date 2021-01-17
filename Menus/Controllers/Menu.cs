@@ -18,15 +18,11 @@ namespace YetaWF.Modules.Menus.Controllers {
 
         [AllowGet]
         public async Task<ActionResult> MainMenu() {
-            // add some bootstrap specific classes
             MenuModel model = new MenuModel {
                 Menu = new MenuComponentBase.MenuData {
                     MenuList = await GetMenu(Module, External: true),
-                    Direction = Module.Direction,
-                    Orientation = Module.Orientation,
                     HoverDelay = Module.HoverDelay,
                     CssClass = Module.CssClass,
-                    ShowPath = Module.ShowPath,
                     SmallMenuMaxWidth = Module.SmallMenuMaxWidth
                 },
             };
@@ -47,11 +43,8 @@ namespace YetaWF.Modules.Menus.Controllers {
             MenuModel model = new MenuModel {
                 Menu = new MenuComponentBase.MenuData {
                     MenuList = await GetMenu(Module),
-                    Direction = Module.Direction,
-                    Orientation = Module.Orientation,
                     HoverDelay = Module.HoverDelay,
                     CssClass = Module.CssClass,
-                    ShowPath = Module.ShowPath,
                     SmallMenuMaxWidth = Module.SmallMenuMaxWidth
                 },
             };

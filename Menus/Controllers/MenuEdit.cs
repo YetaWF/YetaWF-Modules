@@ -60,8 +60,7 @@ namespace YetaWF.Modules.Menus.Controllers {
                 Description("The submodule is displayed as a complete submenu - " +
                 "If a submodule is defined it replaces the entire submenu. " +
                 "Submodules should not display forms as any popup message due to invalid input would close the submenu. " +
-                "This is best used to display formatted links or images, etc. with a Text module. " +
-                "Submodules are only supported with Bootstrap skins and are ignored on non-Bootstrap skins")]
+                "This is best used to display formatted links or images, etc. with a Text module.")]
             [UIHint("ModuleSelection")]
             public Guid? SubModule { get; set; }
 

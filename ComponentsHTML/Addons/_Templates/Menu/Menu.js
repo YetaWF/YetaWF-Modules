@@ -15,18 +15,6 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
-    var DirectionEnum;
-    (function (DirectionEnum) {
-        DirectionEnum[DirectionEnum["Bottom"] = 0] = "Bottom";
-        DirectionEnum[DirectionEnum["Top"] = 1] = "Top";
-        DirectionEnum[DirectionEnum["Left"] = 2] = "Left";
-        DirectionEnum[DirectionEnum["Right"] = 3] = "Right";
-    })(DirectionEnum || (DirectionEnum = {}));
-    var OrientationEnum;
-    (function (OrientationEnum) {
-        OrientationEnum[OrientationEnum["Horizontal"] = 0] = "Horizontal";
-        OrientationEnum[OrientationEnum["Vertical"] = 1] = "Vertical";
-    })(OrientationEnum || (OrientationEnum = {}));
     var MenuComponent = /** @class */ (function (_super) {
         __extends(MenuComponent, _super);
         function MenuComponent(controlId, setup) {
@@ -41,15 +29,10 @@ var YetaWF_ComponentsHTML;
             _this.CloseSublevelsTimout = 0;
             _this.Setup = setup;
             _this.updateSize();
-            // add icons to all items with submenu
+            // update aria info
             var aSubs = $YetaWF.getElementsBySelector("li.t_hassub > a", [_this.Control]);
             for (var _i = 0, aSubs_1 = aSubs; _i < aSubs_1.length; _i++) {
                 var aSub = aSubs_1[_i];
-                var li = aSub.parentElement;
-                if ($YetaWF.elementHasClass(li, "t_lvl0"))
-                    aSub.innerHTML += YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_down;
-                else
-                    aSub.innerHTML += YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_right;
                 aSub.setAttribute("aria-haspopup", "true");
                 aSub.setAttribute("aria-expanded", "false");
             }
@@ -185,7 +168,7 @@ var YetaWF_ComponentsHTML;
                 if (closing) {
                     this.CloseSublevelsTimout = setTimeout(function () {
                         _this.closeSublevelsStartingAt(newOwningUL);
-                    }, MenuComponent.MouseOutTimeout);
+                    }, this.Setup.HoverDelay || 1);
                 }
             }
             return closing;
@@ -272,7 +255,7 @@ var YetaWF_ComponentsHTML;
                     }
                     _this.clearPath();
                     _this.Levels = [];
-                }, MenuComponent.MouseOutTimeout);
+                }, this.Setup.HoverDelay || 1);
             }
         };
         MenuComponent.prototype.setPath = function () {
@@ -292,14 +275,19 @@ var YetaWF_ComponentsHTML;
             }
         };
         MenuComponent.prototype.updateSize = function () {
-            $YetaWF.elementRemoveClasses(this.Control, ["t_large", "t_small"]);
             if (this.isSmall) {
-                $YetaWF.elementAddClass(this.Control, "t_small");
-                this.hide();
+                if (!$YetaWF.elementHasClass(this.Control, "t_small")) {
+                    $YetaWF.elementRemoveClasses(this.Control, ["t_large", "t_small"]);
+                    $YetaWF.elementAddClass(this.Control, "t_small");
+                    this.hide();
+                }
             }
             else {
-                $YetaWF.elementAddClass(this.Control, "t_large");
-                this.show();
+                if (!$YetaWF.elementHasClass(this.Control, "t_large")) {
+                    $YetaWF.elementRemoveClasses(this.Control, ["t_large", "t_small"]);
+                    $YetaWF.elementAddClass(this.Control, "t_large");
+                    this.show();
+                }
             }
             this.closeAll();
         };
@@ -351,7 +339,6 @@ var YetaWF_ComponentsHTML;
         };
         MenuComponent.TEMPLATE = "yt_menu";
         MenuComponent.SELECTOR = ".yt_menu.t_display";
-        MenuComponent.MouseOutTimeout = 300; // close menu when mouse leaves
         return MenuComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.MenuComponent = MenuComponent;

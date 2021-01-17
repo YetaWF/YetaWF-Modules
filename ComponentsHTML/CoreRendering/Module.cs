@@ -86,7 +86,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             return await RenderActionAsync(action, mode, id);
         }
 
-        internal static async Task<string> RenderActionAsync(ModuleAction action, ModuleAction.RenderModeEnum mode, string id) {
+        internal static async Task<string> RenderActionAsync(ModuleAction action, ModuleAction.RenderModeEnum mode, string id, string EndIcon = null) {
 
             // check if we're in the right mode
             if (!await action.RendersSomethingAsync()) return null;
@@ -263,7 +263,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                 }
             }
 
-            return $@"<a{(id != null ? $" id='{id}'" : null)} class='{Globals.CssModuleNoPrint}{HtmlBuilder.GetClasses(attrs, css)}'{HtmlBuilder.Attributes(attrs)}>{innerHtml}</a>";
+            return $@"<a{(id != null ? $" id='{id}'" : null)} class='{Globals.CssModuleNoPrint}{HtmlBuilder.GetClasses(attrs, css)}'{HtmlBuilder.Attributes(attrs)}>{innerHtml}{EndIcon}</a>";
         }
     }
 }

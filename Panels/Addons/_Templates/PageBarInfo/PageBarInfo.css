@@ -11,21 +11,23 @@
   .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_expcoll {
     cursor: pointer;
     display: none; }
-  .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_link {
+  .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_caption {
     font-size: .6rem;
-    line-height: 1.2; }
-    .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_link .yaction-link {
-      white-space: normal; }
-  .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_entry:hover {
-    background: var(--bar-bg-hover); }
-    .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_entry:hover a {
-      color: var(--bar-clr-hover); }
-  .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_entry.t_active {
-    background: var(--bar-bg-active); }
-    .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_entry.t_active a {
-      color: var(--bar-clr-active); }
-  .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_entry a {
+    line-height: 1.2;
+    white-space: normal; }
+  .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_entry {
+    text-decoration: none;
+    background: var(--bar-bg);
     color: var(--bar-clr); }
+    .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_entry:hover {
+      background: var(--bar-bg-hover);
+      color: var(--bar-clr-hover); }
+    .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_entry.t_active {
+      text-decoration: none;
+      background: var(--bar-bg-active);
+      color: var(--bar-clr-active); }
+    .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_entry:focus {
+      outline: thin dotted; }
   .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_entry {
     height: 80px;
     width: 120px;
@@ -88,15 +90,14 @@
       padding: 5px 2px 5px 1em;
       display: block;
       vertical-align: initial; }
-      .yt_panels_pagebarinfo.t_stylesvert.t_expanded .yt_panels_pagebarinfo_list .t_entry .t_image {
+      .yt_panels_pagebarinfo.t_stylesvert.t_expanded .yt_panels_pagebarinfo_list .t_entry img {
         display: inline-block;
         padding-right: .5em; }
-      .yt_panels_pagebarinfo.t_stylesvert.t_expanded .yt_panels_pagebarinfo_list .t_entry .t_link {
+      .yt_panels_pagebarinfo.t_stylesvert.t_expanded .yt_panels_pagebarinfo_list .t_entry .t_caption {
         font-size: .8rem;
         display: inline-block;
+        white-space: nowrap;
         padding-bottom: 0; }
-        .yt_panels_pagebarinfo.t_stylesvert.t_expanded .yt_panels_pagebarinfo_list .t_entry .t_link .yaction-link {
-          white-space: nowrap; }
   .yt_panels_pagebarinfo.t_stylesvert .yt_panels_pagebarinfo_list {
     position: relative; }
   .yt_panels_pagebarinfo.t_stylesvert .t_expcoll {

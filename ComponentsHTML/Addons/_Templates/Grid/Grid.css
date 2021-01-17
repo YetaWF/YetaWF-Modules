@@ -38,6 +38,9 @@
             padding-left: 5px; }
             .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortasc.tg_active, .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortdesc.tg_active, .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortboth.tg_active {
               display: inline-block; }
+            .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortasc svg, .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortdesc svg, .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortboth svg {
+              width: 1em;
+              height: 1em; }
           .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortasc {
             top: 0.25em; }
           .yt_grid .tg_table table .tg_header th .tg_sorticon .tg_sortdesc {
@@ -58,13 +61,13 @@
           width: 100%; }
         .yt_grid .tg_table table tr.tg_filter .tg_fctrls .tg_ffilter {
           display: inline-block;
-          width: 10ch;
+          vertical-align: middle;
           text-align: center;
-          font-size: 0.9em;
           margin: 0.2em 0.2em 0.2em 0.2em;
           padding: 0.2em 0.2em 0.2em 0.2em; }
       .yt_grid .tg_table table tr.tg_filter .tg_fclear, .yt_grid .tg_table table tr.tg_filter .tg_fmenu {
         display: inline-block;
+        vertical-align: middle;
         font-size: var(--pm-1-font);
         margin: 0.2em 0.2em 0.2em 0.2em;
         padding: 0.2em 0.2em 0.2em 0.2em; }

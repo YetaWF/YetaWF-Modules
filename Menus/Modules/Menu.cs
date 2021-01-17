@@ -12,7 +12,6 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Menus.DataProvider;
 
 namespace YetaWF.Modules.Menus.Modules {
@@ -32,18 +31,10 @@ namespace YetaWF.Modules.Menus.Modules {
             Menu = null;
 #pragma warning restore 0618 // Type or member is obsolete
             MenuVersion = 0;
-            Direction = MenuComponentBase.DirectionEnum.Bottom;
-            Orientation = MenuComponentBase.OrientationEnum.Horizontal;
             HoverDelay = 500;
             ShowTitle = false;
             WantSearch = false;
             WantFocus = false;
-            ShowPath = false;
-            //UseAnimation = true;
-            //OpenAnimation = AnimationEnum.ExpandsDown;
-            //OpenDuration = 300;
-            //CloseAnimation = AnimationEnum.ExpandsUp;
-            //CloseDuration = 300;
             Print = false;
             SmallMenuMaxWidth = 750;
         }
@@ -112,41 +103,9 @@ namespace YetaWF.Modules.Menus.Modules {
         [UIHint("Text40"), StringLength(MaxLICssClass)]
         public string LICssClass { get; set; }
 
-        [Category("General"), Caption("Opening Direction"), Description("The direction in which submenus open - Ignored for Bootstrap menus")]
-        [UIHint("Enum")]
-        public MenuComponentBase.DirectionEnum Direction { get; set; }
-
-        [Category("General"), Caption("Orientation"), Description("The basic orientation of the menu - Ignored for Bootstrap menus")]
-        [UIHint("Enum")]
-        public MenuComponentBase.OrientationEnum Orientation { get; set; }
-
-        [Category("General"), Caption("Hover Delay"), Description("Specifies the delay (in milliseconds) before the menu is opened/closed - Used to avoid accidental closure on leaving - Ignored for Bootstrap menus")]
+        [Category("General"), Caption("Hover Delay"), Description("Specifies the delay (in milliseconds) before the menu is closed - Used to avoid accidental closure on leaving")]
         [UIHint("IntValue4"), Required, Range(0, 10000)]
         public int HoverDelay { get; set; }
-
-        [Category("General"), Caption("Show Path"), Description("!!!Currently Broken!!! - Mark entries that partially or completely match the current page's Url as active (highlight)")]
-        [UIHint("Boolean")]
-        public bool ShowPath { get; set; }
-
-        //[Category("General"), Caption("Use Animations"), Description("Specifies whether open/close animations are used - if this is not selected, animation properties are ignored")]
-        //[UIHint("Boolean")]
-        //public bool UseAnimation { get; set; }
-
-        //[Category("General"), Caption("Open Animation"), Description("The animation used to open a submenu")]
-        //[UIHint("Enum")]
-        //public AnimationEnum OpenAnimation { get; set; }
-
-        //[Category("General"), Caption("Open Effect Duration"), Description("Specifies the duration of the open effect (in milliseconds) as a submenu is opened")]
-        //[UIHint("IntValue4"), Required, Range(0, 1000)]
-        //public int OpenDuration { get; set; }
-
-        //[Category("General"), Caption("Close Animation"), Description("The animation used to close a submenu")]
-        //[UIHint("Enum")]
-        //public AnimationEnum CloseAnimation { get; set; }
-
-        //[Category("General"), Caption("Close Effect Duration"), Description("Specifies the duration of the close effect (in milliseconds) as a submenu is closed")]
-        //[UIHint("IntValue4"), Required, Range(0, 1000)]
-        //public int CloseDuration { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 

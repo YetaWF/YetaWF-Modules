@@ -79,7 +79,6 @@ namespace YetaWF.Modules.Panels.Components {
                 string caption = entry.Caption.ToString();
                 if (string.IsNullOrWhiteSpace(caption))
                     caption = this.__ResStr("emptyCaption", "(no caption - Page Title)");
-                string actionLinkClass = "yaction-link";
 
                 string active = "";
                 if (model.ContentUri != null) {
@@ -90,20 +89,15 @@ namespace YetaWF.Modules.Panels.Components {
                 }
 
                 qh.Add("!ContentUrl", entry.Url, Replace: true);
-                string anchor = $"<a class='{actionLinkClass}' data-contenttarget='{DivId}' data-contentpane='{HAE(pane == "" ? "MainPane" : pane)}' {Basics.CssSaveReturnUrl}='' href='{HAE(qh.ToUrl(pageUrlOnly))}' data-tooltip='{HAE(entry.ToolTip.ToString())}'>";
+                string anchor = $"";
 
                 hb.Append($@"
-        <div class='t_entry{active}'>
-            <div class='t_image'>
-                {anchor}
-                    <img src='{HAE(entry.ImageUrl)}' alt='{HAE(caption)}' title='{HAE(entry.ToolTip.ToString())}' />
-                </a>
+        <a class='t_entry{active} yaction-link' data-contenttarget='{DivId}' data-contentpane='{HAE(pane == "" ? "MainPane" : pane)}' {Basics.CssSaveReturnUrl}='' href='{HAE(qh.ToUrl(pageUrlOnly))}' data-tooltip='{HAE(entry.ToolTip.ToString())}'>
+            <img src='{HAE(entry.ImageUrl)}' alt='{HAE(caption)}' title='{HAE(entry.ToolTip.ToString())}' />
+            <div class='t_caption'>
+                {HE(caption)}
             </div>
-            <div class='t_link'>
-                {anchor}
-                {HE(caption)}</a>
-            </div>
-        </div>");
+        </a>");
 
             }
 

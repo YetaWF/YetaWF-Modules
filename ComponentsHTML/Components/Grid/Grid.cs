@@ -14,6 +14,7 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Controllers;
 using YetaWF.Modules.ComponentsHTML.Views;
@@ -445,13 +446,13 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                     setup.CanSort = true;
                     switch (sort) {
                         case GridDefinition.SortBy.NotSpecified:
-                            sortHtml = "<span class='tg_sorticon'><span class='tg_sortboth tg_active fas fa-sort'></span><span class='tg_sortasc fas fa-sort-up'></span><span class='tg_sortdesc fas fa-sort-down'></span></span>";
+                            sortHtml = $"<span class='tg_sorticon'><span class='tg_sortboth tg_active'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-sort")}</span><span class='tg_sortasc'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-sort-up")}</span><span class='tg_sortdesc'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-sort-down")}</span></span>";
                             break;
                         case GridDefinition.SortBy.Ascending:
-                            sortHtml = "<span class='tg_sorticon'><span class='tg_sortboth fas fa-sort'></span><span class='tg_sortasc tg_active fas fa-sort-up'></span><span class='tg_sortdesc fas fa-sort-down'></span></span>";
+                            sortHtml = $"<span class='tg_sorticon'><span class='tg_sortboth'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-sort")}</span><span class='tg_sortasc tg_active'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-sort-up")}</span><span class='tg_sortdesc'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-sort-down")}</span></span>";
                             break;
                         case GridDefinition.SortBy.Descending:
-                            sortHtml = "<span class='tg_sorticon'><span class='tg_sortboth fas fa-sort'></span><span class='tg_sortasc fas fa-sort-up'></span><span class='tg_sortdesc tg_active fas fa-sort-down'></span></span>";
+                            sortHtml = $"<span class='tg_sorticon'><span class='tg_sortboth'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-sort")}</span><span class='tg_sortasc'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-sort-up")}</span><span class='tg_sortdesc tg_active'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-sort-down")}</span></span>";
                             break;
                     }
                 }
@@ -523,8 +524,8 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                     {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.Value), HtmlAttributes: new { id = idFilter })}
                     {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.Url))}
                     {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.UIHint))}
-                    <button class='tg_ffilter y_buttonlite' tabindex='0'>{HE(__ResStr("filter", "Filter"))}</button>
-                    <button class='tg_fclear y_buttonlite' tabindex='0'><span class='fas fa-times'></span></button>
+                    <button class='tg_ffilter y_buttonlite_text' tabindex='0'>{HE(__ResStr("filter", "Filter"))}</button>
+                    <button class='tg_fclear y_buttonlite' tabindex='0'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-times")}</button>
                 </ div>");
 
                         } else if (prop.PropInfo.PropertyType == typeof(bool) || prop.PropInfo.PropertyType == typeof(bool?)) {
@@ -560,11 +561,11 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                                 filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.GreaterEqual;
 
                                 filterhb.Append($@"
-                <button class='tg_fmenu y_buttonlite' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
+                <button class='tg_fmenu y_buttonlite_text' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
                 <div class='tg_fctrls'>
                     {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.Value), HtmlAttributes: new { id = idFilter })}
                 </div>
-                <button class='tg_fclear y_buttonlite' tabindex='0'><span class='fas fa-times'></span></button>");
+                <button class='tg_fclear y_buttonlite' tabindex='0'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-times")}</button>");
 
                             } else {
                                 // this is a dynamic enumerated value
@@ -588,7 +589,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                                 filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.Equal;
 
                                 filterhb.Append($@"
-                <button class='tg_fmenu y_buttonlite' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
+                <button class='tg_fmenu y_buttonlite_text' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
                 <div class='tg_fctrls'>
                     {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.Value), HtmlAttributes: new { id = idFilter })}
                 </div>");
@@ -610,11 +611,11 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                             filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.GreaterEqual;
 
                             filterhb.Append($@"
-                <button class='tg_fmenu y_buttonlite' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
+                <button class='tg_fmenu y_buttonlite_text' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
                 <div class='tg_fctrls'>
                     {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.Value), HtmlAttributes: new { id = idFilter })}
                 </div>
-                <button class='tg_fclear y_buttonlite' tabindex='0'><span class='fas fa-times'></span></button>");
+                <button class='tg_fclear y_buttonlite' tabindex='0'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-times")}</button>");
 
                         } else if (prop.PropInfo.PropertyType == typeof(DateTime) || prop.PropInfo.PropertyType == typeof(DateTime?)) {
 
@@ -634,11 +635,11 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                                 filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.GreaterEqual;
 
                                 filterhb.Append($@"
-                <button class='tg_fmenu y_buttonlite' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
+                <button class='tg_fmenu y_buttonlite_text' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
                 <div class='tg_fctrls'>
                     {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.Value), HtmlAttributes: new { id = idFilter })}
                 </div>
-                <button class='tg_fclear y_buttonlite' tabindex='0'><span class='fas fa-times'></span></button>");
+                <button class='tg_fclear y_buttonlite' tabindex='0'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-times")}</button>");
 
                             } else if (prop.UIHint == "Date" || prop.UIHint.EndsWith("_Date")) {
                                 filterType = "date";
@@ -652,11 +653,11 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                                 filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.GreaterEqual;
 
                                 filterhb.Append($@"
-                <button class='tg_fmenu y_buttonlite' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
+                <button class='tg_fmenu y_buttonlite_text' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
                 <div class='tg_fctrls'>
                     {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.Value), HtmlAttributes: new { id = idFilter })}
                 </div>
-                <button class='tg_fclear y_buttonlite' tabindex='0'><span class='fas fa-times'></span></button>");
+                <button class='tg_fclear y_buttonlite' tabindex='0'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-times")}</button>");
 
                             } else {
                                 throw new InternalError("Need DateTime or Date UIHint for DateTime data");
@@ -674,11 +675,11 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                             filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.Contains;
 
                             filterhb.Append($@"
-                <button class='tg_fmenu y_buttonlite' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
+                <button class='tg_fmenu y_buttonlite_text' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
                 <div class='tg_fctrls'>
                     {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.Value), HtmlAttributes: new { id = idFilter })}
                 </div>
-                <button class='tg_fclear y_buttonlite' tabindex='0'><span class='fas fa-times'></span></button>");
+                <button class='tg_fclear y_buttonlite' tabindex='0'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-times")}</button>");
 
                         } else if (prop.PropInfo.PropertyType.IsEnum) {
 
@@ -709,7 +710,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                             filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.Equal;
 
                             filterhb.Append($@"
-                <button class='tg_fmenu y_buttonlite' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
+                <button class='tg_fmenu y_buttonlite_text' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
                 <div class='tg_fctrls'>
                     {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.Value), HtmlAttributes: new { id = idFilter })}
                 </div>");
@@ -723,11 +724,11 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                             filterOp = filterOp ?? filterOpts.First();
 
                             filterhb.Append($@"
-                <button class='tg_fmenu y_buttonlite' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
+                <button class='tg_fmenu y_buttonlite_text' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
                 <div class='tg_fctrls'>
                     {await HtmlHelper.ForEditAsync(filterUI, nameof(filterUI.Value), HtmlAttributes: new { id = idFilter })}
                 </div>
-                <button class='tg_fclear y_buttonlite' tabindex='0'><span class='fas fa-times'></span></button>");
+                <button class='tg_fclear y_buttonlite' tabindex='0'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-times")}</button>");
                         }
 
                     } else {
@@ -1054,9 +1055,9 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             string reloadHTML = "";
             string searchHTML = "";
             if (!gridModel.IsStatic && gridModel.SupportReload)
-                reloadHTML = $@"<button class='tg_reload y_buttonlite' {Basics.CssTooltip}='{HAE(__ResStr("btnTop", "Reload the current page"))}'><span class='fas fa-sync-alt'></span></button>";
+                reloadHTML = $@"<button class='tg_reload y_buttonlite' {Basics.CssTooltip}='{HAE(__ResStr("btnTop", "Reload the current page"))}'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-sync-alt")}</button>";
             if (setup.CanFilter)
-                searchHTML = $@"<button class='tg_search y_buttonlite' {Basics.CssTooltip}='{HAE(__ResStr("btnFilter", "Turn the filter bar on or off"))}'><span class='fas fa-search'></span></button>";
+                searchHTML = $@"<button class='tg_search y_buttonlite' {Basics.CssTooltip}='{HAE(__ResStr("btnFilter", "Turn the filter bar on or off"))}'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-search")}</button>";
 
             if (!string.IsNullOrEmpty(reloadHTML) || !string.IsNullOrEmpty(searchHTML)) {
                 hb.Append($@"
@@ -1067,10 +1068,10 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
 
             if (setup.PageSize != 0) {
 
-                string topHTML = $@"<button class='tg_pgtop y_buttonlite' {Basics.CssTooltip}='{HAE(__ResStr("btnFirst", "Go to the first page"))}'><span class='fas fa-fast-backward'></span></button>";
-                string prevHTML = $@"<button class='tg_pgprev y_buttonlite' {Basics.CssTooltip}='{HAE(__ResStr("btnPrev", "Go to the previous page"))}'><span class='fas fa-backward'></span></button>";
-                string nextHTML = $@"<button class='tg_pgnext y_buttonlite' {Basics.CssTooltip}='{HAE(__ResStr("btnNext", "Go to the next page"))}'><span class='fas fa-forward'></span></button>";
-                string bottomHTML = $@"<button class='tg_pgbottom y_buttonlite' {Basics.CssTooltip}='{HAE(__ResStr("btnLast", "Go to the last page"))}'><span class='fas fa-fast-forward'></span></button>";
+                string topHTML = $@"<button class='tg_pgtop y_buttonlite' {Basics.CssTooltip}='{HAE(__ResStr("btnFirst", "Go to the first page"))}'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-fast-backward")}</button>";
+                string prevHTML = $@"<button class='tg_pgprev y_buttonlite' {Basics.CssTooltip}='{HAE(__ResStr("btnPrev", "Go to the previous page"))}'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-backward")}</span></button>";
+                string nextHTML = $@"<button class='tg_pgnext y_buttonlite' {Basics.CssTooltip}='{HAE(__ResStr("btnNext", "Go to the next page"))}'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-forward")}</button>";
+                string bottomHTML = $@"<button class='tg_pgbottom y_buttonlite' {Basics.CssTooltip}='{HAE(__ResStr("btnLast", "Go to the last page"))}'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-fast-forward")}</button>";
 
                 hb.Append($@"
     <div class='tg_pgctl'>

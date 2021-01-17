@@ -6,6 +6,7 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
+using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -82,28 +83,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// </summary>
             public MenuList MenuList { get; set; }
             /// <summary>
-            /// The direction in which the menu opens.
-            /// </summary>
-            public DirectionEnum Direction { get; set; }
-            /// <summary>
-            /// The orientation of the menu.
-            /// </summary>
-            public OrientationEnum Orientation { get; set; }
-            /// <summary>
             /// The CSS class added to the top-level HTML tag representing the menu. May be null.
             /// </summary>
             public string CssClass { get; set; }
             /// <summary>
-            /// Defines the delay (in milliseconds) before the menu is opened/closed, which is used to avoid accidental closure on leaving the menu.
-            /// This is ignored for Bootstrap menus.
+            /// Defines the delay (in milliseconds) before the menu is closed, which is used to avoid accidental closure on leaving the menu.
             /// </summary>
             public int HoverDelay { get; set; }
-            /// <summary>
-            /// Defines whether the menu entries representing the active page are highlighted.
-            /// This is not currently implemented.
-            /// </summary>
-            public bool ShowPath { get; set; }
-            /// <summary>
             /// Defines the largest screen size for which the small menu is shown. If the screen is wider, the large menu is shown.
             /// </summary>
             public int SmallMenuMaxWidth { get; set; }
@@ -127,26 +113,34 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(MenuComponentBase.MenuData model) {
-            string css = "yt_menu t_display";
-            switch (model.Orientation) {
-                default:
-                case OrientationEnum.Horizontal:
-                    css = CssManager.CombineCss(css, "t_horz");
-                    break;
-                case OrientationEnum.Vertical:
-                    css = CssManager.CombineCss(css, "t_vert");
-                    break;
-            }
-            string menuHTML = await RenderMenuAsync(model.MenuList, DivId, css, HtmlHelper: HtmlHelper);
+
+            string css = "yt_menu t_display t_large"; // start out with a large menu
+            string menuHTML = await RenderMenuAsync(model.MenuList, DivId, css, WantArrows: true, HtmlHelper: HtmlHelper);
             if (string.IsNullOrWhiteSpace(menuHTML))
                 return string.Empty;
 
+            HtmlBuilder hb = new HtmlBuilder();
+            // Help menu out so the FOUC is minimized on small screen
+            // we generate a large menu (not knowing the screen size).
+            // on small screens the large menu is hidden by javascript, which is a bit too late
+            // (explicit selector (specificity) below needed for specificity to hide large menu on small sreen during full page load)
+            hb.Append($@"
+<style>
+    @media (max-width: {model.SmallMenuMaxWidth}px) {{
+        .yPageMenu ul.yt_menu.t_display.t_large {{
+            display: none;
+        }}
+    }}
+</style>
+{menuHTML}");
+
             MenuSetup setup = new MenuSetup {
                 SmallMenuMaxWidth = model.SmallMenuMaxWidth,
+                HoverDelay = model.HoverDelay,
             };
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.MenuComponent('{DivId}', {JsonConvert.SerializeObject(setup)});");
 
-            return menuHTML;
+            return hb.ToString();
         }
     }
 }

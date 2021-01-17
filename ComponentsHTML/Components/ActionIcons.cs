@@ -16,9 +16,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// Displays a menu consisting of ModuleActions (YetaWF.Core.Menus.MenuList). A menu consists of zero, one or more ModuleActions. May be null, in which case nothing is rendered.
     /// ModuleActions are used throughout YetaWF and define a specific action a user can take, typically a link or button which directs to a URL.
     /// </summary>
-    /// <remarks>
-    /// If a Bootstrap skin is used, the menu is rendered as a Bootstrap navbar.
-    /// </remarks>
     /// <example>
     /// [Caption("Actions"), Description("All available actions")]
     /// [UIHint("ActionIcons"), ReadOnly]
