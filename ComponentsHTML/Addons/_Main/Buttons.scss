@@ -71,7 +71,7 @@ button.y_buttonlite_text /* text only*/ {
     &:not(:disabled) {
         cursor: pointer;
     }
-    &:hover:not(:disabled) {
+    &:hover:not(:disabled):not(:focus) {
         background: var(--buttonlite-bg-hover);
         color: var(--buttonlite-clr-hover);
     }

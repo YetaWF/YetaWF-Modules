@@ -1201,6 +1201,7 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
         [AllowGet]
         public ActionResult SkinPalette() {
 
+            if (YetaWFManager.Deployed) return new EmptyResult();
             if (CssLegacy.IsLegacyBrowser()) return new EmptyResult();
             if (Manager.IsInPopup) return new EmptyResult();
 
@@ -1227,7 +1228,7 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
                 // when a new theme is saved, activate it for the current site
                 Manager.CurrentSite.Theme = model.Theme;
                 await Manager.CurrentSite.SaveAsync();
-                return FormProcessed(model, this.__ResStr("ok", "Theme {0} successfully saved - The current site has been updated to use the new theme", model.Theme), ForceRedirect: true);
+                return FormProcessed(model, this.__ResStr("okUpdated", "Theme {0} successfully saved - The current site has been updated to use the new theme", model.Theme), ForceRedirect: true);
             } else
                 return FormProcessed(model, this.__ResStr("ok", "Theme {0} successfully saved", model.Theme));
         }
