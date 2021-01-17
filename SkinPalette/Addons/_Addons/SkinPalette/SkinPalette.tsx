@@ -405,6 +405,7 @@ namespace YetaWF_SkinPalette {
             this.getColor("BarBgActive").value = values.GenBgShadedActive;
             this.getColor("BarClrActive").value = values.GenClrShadedActive;
             this.getInput("BarBorder").value = `${values.GenBorderWidth}px solid ${values.GenBorderClr}`;
+            this.getInput("BarBorderRadius").value = `${values.GenBorderRadius}px`;
             this.getInput("BarH1FontSize").value = "1.25rem";
             this.getInput("BarH1PaddingBottom").value = ".7rem";
 

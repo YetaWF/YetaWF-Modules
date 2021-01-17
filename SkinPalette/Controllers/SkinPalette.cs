@@ -611,6 +611,10 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [UIHint("Text40"), StringLength(MaxBorder), Required]
             public string BarBorder { get; set; } = null!;
 
+            [Category("Sidebar"), Caption("--bar-border-radius"), Description("Border Radius")]
+            [UIHint("Text40"), StringLength(MaxRadius), Required]
+            public string BarBorderRadius { get; set; } = null!;
+
             [Category("Sidebar"), Caption("--bar-h1-font-size"), Description("Font Size")]
             [UIHint("Text20"), StringLength(MaxFontSize), Required]
             public string BarH1FontSize { get; set; } = null!;
@@ -618,6 +622,7 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [Category("Sidebar"), Caption("--bar-h1-padding-bottom"), Description("Padding")]
             [UIHint("Text20"), StringLength(MaxPadding), Required]
             public string BarH1PaddingBottom { get; set; } = null!;
+
 
 
             [Category("PropertyList"), Caption("--prop-border"), Description("Border")]
@@ -1204,11 +1209,15 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
         }
 
         [AllowPost]
+        [ExcludeDemoMode]
         [ConditionalAntiForgeryToken]
         public async Task<ActionResult> SkinPalette_Partial(Model model) {
 
             if (!ModelState.IsValid)
                 return PartialView(model);
+
+            if (string.Compare(model.Theme, "Default", true) == 0)
+                throw new Error(this.__ResStr("notDefault", "The Default theme cannot be changed - It has to be saved using a different theme name"));
 
             string file = Path.Combine(Manager.SkinInfo.Folder, "Themes", $"{model.Theme}.css");
             bool newFile = !await FileSystem.FileSystemProvider.FileExistsAsync(file);
