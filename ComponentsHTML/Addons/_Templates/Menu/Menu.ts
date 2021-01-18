@@ -301,15 +301,16 @@ namespace YetaWF_ComponentsHTML {
                     $YetaWF.elementRemoveClasses(this.Control, ["t_large", "t_small"]);
                     $YetaWF.elementAddClass(this.Control, "t_small");
                     this.hide();
+                    this.closeAll();
                 }
             } else {
                 if (!$YetaWF.elementHasClass(this.Control, "t_large")) {
                     $YetaWF.elementRemoveClasses(this.Control, ["t_large", "t_small"]);
                     $YetaWF.elementAddClass(this.Control, "t_large");
                     this.show();
+                    this.closeAll();
                 }
             }
-            this.closeAll();
         }
 
         // API
@@ -387,12 +388,4 @@ namespace YetaWF_ComponentsHTML {
         }
         return true;
     });
-
-    // $YetaWF.registerEventHandlerBody("mousedown", null, (ev: MouseEvent): boolean => {
-    //     let controls: MenuComponent[] = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR);
-    //     for (let control of controls) {
-    //         control.closeAll();
-    //     }
-    //     return true;
-    // });
 }

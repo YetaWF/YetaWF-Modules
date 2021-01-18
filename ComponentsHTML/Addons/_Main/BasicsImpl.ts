@@ -252,9 +252,6 @@ namespace YetaWF_ComponentsHTML {
          */
         public closeOverlays(): void {
 
-            // Close open bootstrap nav menus (if any) by clicking on the page
-            $("body").trigger("click"); // jQuery use
-
             // all MenuUL menus
             if (MenuULComponent)
                 MenuULComponent.closeMenus();
