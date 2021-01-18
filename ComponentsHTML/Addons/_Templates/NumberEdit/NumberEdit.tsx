@@ -38,7 +38,7 @@ namespace YetaWF_ComponentsHTML {
 
         private Setup: NumberSetup;
         private Container: HTMLElement;
-        private InputControl: HTMLInputElement;
+        public InputControl: HTMLInputElement;//$$$ this is public for validation
         private Value: number|null = null;
 
         private Interval: number = 0;
