@@ -44,7 +44,7 @@ namespace YetaWF.Modules.SkinPalette.Views {
             buttons.Add(new FormButton() { ButtonType = ButtonTypeEnum.Apply, Text = this.__ResStr("apply", "Apply"), Title = this.__ResStr("applyTT", "Apply all changes to the current skin") });
 
             hb.Append($@"
-<a class='t_palette y_button_outline y_button' {Basics.CssTooltip}='{HAE(this.__ResStr("coll", "Color Palette - Change skin settings and generate new CSS variables for use in skins"))}' href='javascript: void(0);' rel='nofollow' data-button=''>
+<a class='t_palette y_button_outline y_button' {Basics.CssTooltip}='{HAE(this.__ResStr("coll", "Skin Palette - Change skin settings and generate new CSS variables for use in skins"))}' href='javascript: void(0);' rel='nofollow' data-button=''>
     {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-palette")}
 </a>
 <div class='t_contents' style='display:none'>
