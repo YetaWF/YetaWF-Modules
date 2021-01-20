@@ -81,7 +81,7 @@
         border-bottom: 10px solid transparent;
         opacity: .5;
         transition: opacity .6s ease;
-        &:hover {
+        &:hover, &.t_active {
             opacity:.9;
         }
     }

@@ -76,5 +76,5 @@
     opacity: .5;
     -webkit-transition: opacity .6s ease;
     transition: opacity .6s ease; }
-    .yt_bootstrapcarousel_slideshow.t_display .t_indicators li:hover {
+    .yt_bootstrapcarousel_slideshow.t_display .t_indicators li:hover, .yt_bootstrapcarousel_slideshow.t_display .t_indicators li.t_active {
       opacity: .9; }

@@ -23,11 +23,15 @@ var YetaWF_BootstrapCarousel;
                 ChangeEvent: null,
                 GetValue: null,
                 Enable: null,
+            }, false, function (tag, control) {
+                control.stopAutoScroll();
             }) || this;
             _this.currentImage = 0;
+            _this.ScrollInterval = 0;
             _this.Setup = setup;
             _this.List = $YetaWF.getElement1BySelector(".t_inner", [_this.Control]);
             _this.Images = $YetaWF.getElementsBySelector(".t_item", [_this.List]);
+            _this.startAutoScroll();
             $YetaWF.registerEventHandler(_this.Control, "click", ".t_prev", function (ev) {
                 _this.scroll(false);
                 return false;
@@ -58,6 +62,16 @@ var YetaWF_BootstrapCarousel;
                     return true;
                 });
             }
+            if (_this.Setup.Pause) {
+                $YetaWF.registerEventHandler(_this.Control, "mouseenter", null, function (ev) {
+                    _this.stopAutoScroll();
+                    return true;
+                });
+                $YetaWF.registerEventHandler(_this.Control, "mouseleave", null, function (ev) {
+                    _this.startAutoScroll();
+                    return true;
+                });
+            }
             $YetaWF.registerEventHandler(_this.Control, "mousedown", ".t_indicators li", function (ev) {
                 var li = ev.__YetaWFElem;
                 var inds = $YetaWF.getElementsBySelector(".t_indicators li");
@@ -67,6 +81,23 @@ var YetaWF_BootstrapCarousel;
             });
             return _this;
         }
+        CarouselComponent.prototype.startAutoScroll = function () {
+            var _this = this;
+            if (this.Setup.Interval) {
+                this.stopAutoScroll();
+                this.ScrollInterval = setInterval(function () {
+                    if (_this.ScrollInterval) {
+                        _this.scroll(true);
+                    }
+                }, this.Setup.Interval);
+            }
+        };
+        CarouselComponent.prototype.stopAutoScroll = function () {
+            if (this.ScrollInterval) {
+                clearInterval(this.ScrollInterval);
+                this.ScrollInterval = 0;
+            }
+        };
         CarouselComponent.prototype.updateIndicators = function () {
             var inds = $YetaWF.getElementsBySelector(".t_indicators li");
             for (var _i = 0, inds_1 = inds; _i < inds_1.length; _i++) {
@@ -77,9 +108,11 @@ var YetaWF_BootstrapCarousel;
         };
         CarouselComponent.prototype.startScroll = function (offset) {
             var _this = this;
+            this.stopAutoScroll();
             var incr = (offset - this.List.scrollLeft) / CarouselComponent.STEPS;
             if (incr === 0) {
                 this.List.scrollLeft = offset;
+                this.startAutoScroll();
                 return;
             }
             var interval = setInterval(function () {
@@ -98,6 +131,7 @@ var YetaWF_BootstrapCarousel;
                 }
                 _this.List.scrollLeft = offset;
                 clearInterval(interval);
+                _this.startAutoScroll();
             }, CarouselComponent.SCROLLTIME / CarouselComponent.STEPS + 1);
         };
         // API

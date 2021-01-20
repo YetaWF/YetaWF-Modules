@@ -21,6 +21,7 @@ namespace YetaWF_BootstrapCarousel {
         private List: HTMLElement;
         private Images: HTMLElement[];
         private currentImage: number = 0;
+        private ScrollInterval: number = 0;
 
         constructor(controlId: string, setup: CarouselSetup) {
             super(controlId, CarouselComponent.TEMPLATE, CarouselComponent.SELECTOR, {
@@ -28,10 +29,15 @@ namespace YetaWF_BootstrapCarousel {
                 ChangeEvent: null,
                 GetValue: null,
                 Enable: null,
+            }, false, (tag: HTMLElement, control: CarouselComponent): void => {
+                control.stopAutoScroll();
             });
             this.Setup = setup;
             this.List = $YetaWF.getElement1BySelector(".t_inner", [this.Control]);
             this.Images = $YetaWF.getElementsBySelector(".t_item", [this.List]);
+
+            this.startAutoScroll();
+
             $YetaWF.registerEventHandler(this.Control, "click", ".t_prev", (ev: MouseEvent): boolean => {
                 this.scroll(false);
                 return false;
@@ -59,6 +65,16 @@ namespace YetaWF_BootstrapCarousel {
                     return true;
                 });
             }
+            if (this.Setup.Pause) {
+                $YetaWF.registerEventHandler(this.Control, "mouseenter", null, (ev: MouseEvent): boolean => {
+                    this.stopAutoScroll();
+                    return true;
+                });
+                $YetaWF.registerEventHandler(this.Control, "mouseleave", null, (ev: MouseEvent): boolean => {
+                    this.startAutoScroll();
+                    return true;
+                });
+            }
             $YetaWF.registerEventHandler(this.Control, "mousedown", ".t_indicators li", (ev: MouseEvent): boolean => {
                 let li = ev.__YetaWFElem;
                 let inds = $YetaWF.getElementsBySelector(".t_indicators li");
@@ -68,6 +84,22 @@ namespace YetaWF_BootstrapCarousel {
             });
         }
 
+        private startAutoScroll(): void {
+            if (this.Setup.Interval) {
+                this.stopAutoScroll();
+                this.ScrollInterval = setInterval((): void => {
+                    if (this.ScrollInterval) {
+                        this.scroll(true);
+                    }
+                }, this.Setup.Interval);
+            }
+        }
+        private stopAutoScroll(): void {
+            if (this.ScrollInterval) {
+                clearInterval(this.ScrollInterval);
+                this.ScrollInterval = 0;
+            }
+        }
         private updateIndicators(): void {
             let inds = $YetaWF.getElementsBySelector(".t_indicators li");
             for (let ind of inds) {
@@ -77,9 +109,13 @@ namespace YetaWF_BootstrapCarousel {
         }
 
         private startScroll(offset: number): void {
+
+            this.stopAutoScroll();
+
             let incr = (offset - this.List.scrollLeft) / CarouselComponent.STEPS;
             if (incr === 0) {
                 this.List.scrollLeft = offset;
+                this.startAutoScroll();
                 return;
             }
             let interval = setInterval((): void => {
@@ -97,6 +133,8 @@ namespace YetaWF_BootstrapCarousel {
                 }
                 this.List.scrollLeft = offset;
                 clearInterval(interval);
+                this.startAutoScroll();
+
             }, CarouselComponent.SCROLLTIME / CarouselComponent.STEPS + 1);
         }
 
