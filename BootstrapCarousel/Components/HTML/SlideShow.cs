@@ -6,6 +6,7 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Modules.BootstrapCarousel.Models;
 using YetaWF.Modules.ComponentsHTML.Components;
@@ -27,35 +28,41 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
+        public class CarouselSetup {
+            public int Interval { get; set; }
+            public bool Keyboard { get; set; }
+            public bool Pause { get; set; }
+            public bool Wrap { get; set; }
+
+            public int ImageCount { get; set; }
+        }
+
         public async Task<string> RenderAsync(CarouselInfo model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append($@"
-<div id='{ControlId}' class='yt_bootstrapcarousel_slideshow t_display carousel slide' data-interval='{model.Interval}'
-            data-wrap='{(model.Wrap ? "true" : "false")}' data-pause='{(model.Pause ? "hover" : "false")}' data-keyboard='{(model.Keyboard ? "true" : "false")}'>
-    <!-- Indicators -->
-    <ol class='carousel-indicators'>");
+<div id='{ControlId}' class='yt_bootstrapcarousel_slideshow t_display'>
+    <ol class='t_indicators'>");
 
             int index = 0;
             foreach(CarouselInfo.CarouselItem slide in model.Slides) {
                 if (index == 0)
                     hb.Append($@"
-        <li data-target='#{ControlId}' data-slide-to='{index}' class='active'></li>");
+        <li class='t_active'></li>");
                 else
                     hb.Append($@"
-        <li data-target='#{ControlId}' data-slide-to='{index}'></li>");
+        <li></li>");
                 ++index;
             }
             hb.Append($@"
     </ol>
-    <!-- Wrapper for slides -->
-    <div class='carousel-inner' role='listbox'>");
+    <div class='t_inner' role='listbox'>");
 
             index = 0;
             foreach (CarouselInfo.CarouselItem slide in model.Slides) {
-                hb.Append($@"
-        <div class='carousel-item{(index == 0 ? " active" : "")}'>");
+                // can't have white-space between divs
+                hb.Append($@"<div class='t_item'>");
 
                 using (Manager.StartNestedComponent($"{FieldNamePrefix}.{nameof(model.Slides)}[{index}]")) {
 
@@ -81,18 +88,22 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
             }
             hb.Append($@"
     </div>
-    <!-- Controls -->
-    <a class='carousel-control-prev' href='#{ControlId}' role='button' data-slide='prev'>
-        <span class='carousel-control-prev-icon' aria-hidden='true'></span>
-        <span class='sr-only'>Previous</span>
+    <a class='t_prev' href='#' role='button' data-slide='prev'>
+        <span class='t_prev_icon' aria-hidden='true'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-angle-left")}</span>
     </a>
-    <a class='carousel-control-next' href='#{ControlId}' role='button' data-slide='next'>
-        <span class='carousel-control-next-icon' aria-hidden='true'></span>
-        <span class='sr-only'>Next</span>
+    <a class='t_next' href='#' role='button' data-slide='next'>
+        <span class='t_next_icon' aria-hidden='true'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-angle-right")}</span>
     </a>
 </div>");
 
-            Manager.ScriptManager.AddLast($@"$('#{ControlId}').carousel();");
+            CarouselSetup setup = new CarouselSetup {
+                Interval = model.Interval,
+                Wrap = model.Wrap,
+                Keyboard = model.Keyboard,
+                Pause = model.Pause,
+                ImageCount = model.Slides.Count,
+            };
+            Manager.ScriptManager.AddLast($@"new YetaWF_BootstrapCarousel.CarouselComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
             return hb.ToString();
         }

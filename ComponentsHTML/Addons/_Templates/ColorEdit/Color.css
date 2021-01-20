@@ -6,4 +6,5 @@
     display: inline;
     width: 30ch; }
   .yt_color.t_edit .t_selector {
-    width: 2em; }
+    vertical-align: middle;
+    width: 3em; }

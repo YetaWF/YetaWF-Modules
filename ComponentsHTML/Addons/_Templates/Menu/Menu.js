@@ -280,6 +280,7 @@ var YetaWF_ComponentsHTML;
                     $YetaWF.elementRemoveClasses(this.Control, ["t_large", "t_small"]);
                     $YetaWF.elementAddClass(this.Control, "t_small");
                     this.hide();
+                    this.closeAll();
                 }
             }
             else {
@@ -287,9 +288,9 @@ var YetaWF_ComponentsHTML;
                     $YetaWF.elementRemoveClasses(this.Control, ["t_large", "t_small"]);
                     $YetaWF.elementAddClass(this.Control, "t_large");
                     this.show();
+                    this.closeAll();
                 }
             }
-            this.closeAll();
         };
         // API
         MenuComponent.prototype.closeAll = function () {
@@ -378,13 +379,6 @@ var YetaWF_ComponentsHTML;
         }
         return true;
     });
-    // $YetaWF.registerEventHandlerBody("mousedown", null, (ev: MouseEvent): boolean => {
-    //     let controls: MenuComponent[] = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR);
-    //     for (let control of controls) {
-    //         control.closeAll();
-    //     }
-    //     return true;
-    // });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=Menu.js.map
