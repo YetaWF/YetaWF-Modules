@@ -57,11 +57,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// </remarks>
             public List<PropertyListColumnDef> ColumnStyles { get; set; }
             /// <summary>
-            /// Categories (boxes) that are expandable/collapsible. May be null or an empty collection, which means no categories are expandable.
+            /// For Boxed and BoxedWithCategories styles, categories (boxes) are expandable/collapsible. May be null or an empty collection, which means no categories are expandable.
             /// </summary>
             public List<string> ExpandableList { get; set; }
             /// <summary>
-            /// Category that is initially expanded. May be null which means no category is initially expanded.
+            /// For Boxed and BoxedWithCategories styles, defines the category that is initially expanded. May be null which means no category is initially expanded.
             /// </summary>
             public string InitialExpanded { get; set; }
             /// <summary>

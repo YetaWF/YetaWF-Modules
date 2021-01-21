@@ -5,6 +5,7 @@
   position: relative; }
   .yt_bootstrapcarousel_slideshow.t_display .yt_image img {
     max-width: 100%;
+    width: 100%;
     height: auto;
     margin: 0;
     padding: 0;
