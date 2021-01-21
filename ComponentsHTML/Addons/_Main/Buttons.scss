@@ -41,8 +41,7 @@
 }
 
 .y_buttonform {
-    margin-right:3px;// so outline,shadow is not clipped
-    margin-left:3px;// so outline,shadow is not clipped
+    margin:3px;// so outline,shadow is not clipped
     box-shadow: var(--button-shadow);
     &:focus {
         box-shadow: var(--button-focus-shadow);

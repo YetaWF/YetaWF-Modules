@@ -30,13 +30,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// </summary>
             Tabbed = 0,
             /// <summary>
-            /// Render a boxed property list (if there are multiple categories) or a simple list (0 or 1 category), to be styled using CSS.
+            /// Render a boxed property list (if there are multiple categories) or a simple list (0 or 1 category).
             /// </summary>
             Boxed = 1,
             /// <summary>
-            /// Render a boxed property list with category labels (if there are multiple categories) or a simple list (0 or 1 category), to be styled using CSS.
+            /// Render a boxed property list with category labels (if there are multiple categories) or a simple list (0 or 1 category).
             /// </summary>
             BoxedWithCategories = 2,
+            /// <summary>
+            /// Render a boxed property list with category headers (1 or more categories). If there are no categories, a simple property list is rendered.
+            /// </summary>
+            BoxedWithHeaders = 3,
         }
 
         /// <summary>
@@ -124,7 +128,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 controller = s[len-2];
                 objClass = s[len-1];
             }
-            string file = controller + "." + objClass;
+            string file = $"{controller}.{objClass}.json";
 
             Package package = Package.GetPackageFromType(model);
             string predefUrl = VersionManager.GetAddOnPackageUrl(package.AreaName) + "PropertyLists/" + file;

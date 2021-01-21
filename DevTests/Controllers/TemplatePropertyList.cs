@@ -53,7 +53,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [AllowGet]
         public ActionResult TemplatePropertyList() {
             Model model = new Model {
-                Style = PropertyList.PropertyListStyleEnum.BoxedWithCategories,
+                Style = PropertyList.PropertyListStyleEnum.BoxedWithHeaders,
             };
             ObjectSupport.CopyData(Manager.CurrentSite, model.Site);
             model.Site.Style = model.Style;

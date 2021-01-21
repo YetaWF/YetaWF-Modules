@@ -34,8 +34,7 @@
     color: var(--button-clr-focus); }
 
 .y_buttonform {
-  margin-right: 3px;
-  margin-left: 3px;
+  margin: 3px;
   box-shadow: var(--button-shadow); }
   .y_buttonform:focus {
     box-shadow: var(--button-focus-shadow); }

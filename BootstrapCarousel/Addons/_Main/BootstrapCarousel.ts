@@ -11,9 +11,8 @@ namespace YetaWF_BootstrapCarousel {
     }
 
     export class CarouselComponent extends YetaWF.ComponentBaseDataImpl {
-
-        public static readonly TEMPLATE: string = "yt_carousel";
-        public static readonly SELECTOR: string = ".yt_carousel.t_display";
+        public static readonly TEMPLATE: string = "yt_bootstrapcarousel_slideshow";
+        public static readonly SELECTOR: string = ".yt_bootstrapcarousel_slideshow.t_display";
         public static readonly SCROLLTIME: number = 300;
         public static readonly STEPS: number = 20;
 
@@ -77,7 +76,7 @@ namespace YetaWF_BootstrapCarousel {
             }
             $YetaWF.registerEventHandler(this.Control, "mousedown", ".t_indicators li", (ev: MouseEvent): boolean => {
                 let li = ev.__YetaWFElem;
-                let inds = $YetaWF.getElementsBySelector(".t_indicators li");
+                let inds = $YetaWF.getElementsBySelector(".t_indicators li", [this.Control]);
                 let index = inds.indexOf(li);
                 this.setImage(index);
                 return true;

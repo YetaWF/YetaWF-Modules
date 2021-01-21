@@ -2,7 +2,7 @@
 
 .yt_propertylist {
     .t_proptable {
-        padding-top: 10px;
+        padding-top: .7em;
         width: auto;
     }
 
@@ -122,8 +122,26 @@
     }
 }
 
-.yt_propertylist.t_boxedcat {
-    margin-top:2ch;
+/* Masonry styles */
+
+.yt_propertylist.t_boxed,
+.yt_propertylist.t_boxedcat,
+.yt_propertylist.t_boxedhdr {
+    .t_proptable {
+        position:relative;
+        border: var(--prop-border);
+        border-radius: var(--prop-border-radius);
+        margin:0 0 2em 0;
+        padding:0;
+        .t_proptablehidden {
+            display:none;
+        }
+    }
+}
+
+.yt_propertylist.t_boxedcat,
+.yt_propertylist.t_boxed {
+    margin-top:2em;
     .t_proptable {
         .t_boxlabel {
             position: absolute;
@@ -133,50 +151,54 @@
             color: var(--prop-cat-clr);
             border: var (--prop-cat-border);
             border-radius: var(--prop-cat-border-radius);
-            padding:0 3px;
+            padding:0 .2em;
+        }
+        .t_propcontents {
+            padding:2em 1em 1em 1em;
         }
     }
 }
-.yt_propertylist.t_boxed,
-.yt_propertylist.t_boxedcat {
-    .t_proptablehidden {
-        display:none;
-    }
+.yt_propertylist.t_boxedhdr {
     .t_proptable {
-        position:relative;
-        border: var(--prop-border);
-        border-radius: var(--prop-border-radius);
-        padding:3ch 2ch 2ch 2ch;
-        margin-bottom:2ch;
-        margin-right:0;
-        &.t_propexpanded {
-            .t_boxexpcoll {
-                &.t_show {
-                    background-image:url(images/Collapse16.png);
-                    position: absolute;
-                    top:5px;
-                    right:5px;
-                    width:16px;
-                    height:16px;
-                }
-                &.t_hide {
-                    display: none;
-                }
-            }
+        .t_boxlabel {
+            width:100%;
+            background: var(--prop-cat-bg);
+            color: var(--prop-cat-clr);
+            border-bottom: var(--prop-cat-border);
+            border-radius: 0;
+            padding:0 1em;
+            line-height:1.7;
+            text-align: left;
         }
-        &.t_propcollapsed {
-            .t_boxexpcoll {
-                &.t_show {
-                    background-image:url(images/Expand16.png);
-                    position: absolute;
-                    top:5px;
-                    right:5px;
-                    width:16px;
-                    height:16px;
-                }
-                &.t_hide {
-                    display: none;
-                }
+        .t_propcontents {
+            padding:1em;
+        }
+    }
+}
+
+.yt_propertylist.t_boxed,
+.yt_propertylist.t_boxedcat,
+.yt_propertylist.t_boxedhdr {
+    .t_proptable {
+        &.t_propexpandable.t_propexpanded .t_boxexpcoll .t_hideimg {
+            display: initial;
+        }
+        &.t_propexpandable.t_propcollapsed .t_boxexpcoll .t_showimg {
+            display: initial;
+        }
+        .t_boxexpcoll {
+            position: absolute;
+            top:5px;
+            right:5px;
+            width:16px;
+            height:16px;
+            .t_showimg, .t_hideimg {
+                display:none;
+            }
+            svg {
+                vertical-align: top;
+                width:16px;
+                height:16px;
             }
         }
         &.t_prophide,

@@ -90,6 +90,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// Defines the delay (in milliseconds) before the menu is closed, which is used to avoid accidental closure on leaving the menu.
             /// </summary>
             public int HoverDelay { get; set; }
+            /// <summary>
             /// Defines the largest screen size for which the small menu is shown. If the screen is wider, the large menu is shown.
             /// </summary>
             public int SmallMenuMaxWidth { get; set; }

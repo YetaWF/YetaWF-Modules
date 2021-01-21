@@ -74,7 +74,7 @@ var YetaWF_BootstrapCarousel;
             }
             $YetaWF.registerEventHandler(_this.Control, "mousedown", ".t_indicators li", function (ev) {
                 var li = ev.__YetaWFElem;
-                var inds = $YetaWF.getElementsBySelector(".t_indicators li");
+                var inds = $YetaWF.getElementsBySelector(".t_indicators li", [_this.Control]);
                 var index = inds.indexOf(li);
                 _this.setImage(index);
                 return true;
@@ -152,8 +152,8 @@ var YetaWF_BootstrapCarousel;
             this.currentImage = nextIndex;
             this.updateIndicators();
         };
-        CarouselComponent.TEMPLATE = "yt_carousel";
-        CarouselComponent.SELECTOR = ".yt_carousel.t_display";
+        CarouselComponent.TEMPLATE = "yt_bootstrapcarousel_slideshow";
+        CarouselComponent.SELECTOR = ".yt_bootstrapcarousel_slideshow.t_display";
         CarouselComponent.SCROLLTIME = 300;
         CarouselComponent.STEPS = 20;
         return CarouselComponent;
