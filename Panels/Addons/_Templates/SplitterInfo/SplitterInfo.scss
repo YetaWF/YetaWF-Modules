@@ -126,4 +126,9 @@ $smallscreen: 900px;
          overflow: visible;
          height:auto;
     }
+    .yt_panels_splitterinfo_left,
+    .yt_panels_splitterinfo_resize,
+    .yt_panels_splitterinfo_exp {
+        display: none;
+    }
 }

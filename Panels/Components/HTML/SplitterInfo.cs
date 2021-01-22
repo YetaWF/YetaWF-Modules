@@ -82,7 +82,7 @@ namespace YetaWF.Modules.Panels.Components {
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
 <div class='yt_panels_splitterinfo t_display t_expanded' id='{ControlId}'{heightStyle}>
-    <div class='yt_panels_splitterinfo_left d-print-none yNoPrint'{leftStyle}>
+    <div class='yt_panels_splitterinfo_left'{leftStyle}>
         <div class='t_area'>");
 
             if (!string.IsNullOrWhiteSpace(titleText)) {
@@ -108,9 +108,9 @@ namespace YetaWF.Modules.Panels.Components {
         <div class='t_area' id='{contentId}'>
             {hbRight.ToString()}
         </div>
-        <div class='yt_panels_splitterinfo_resize d-print-none yNoPrint'></div>
+        <div class='yt_panels_splitterinfo_resize'></div>
     </div>
-    <div class='yt_panels_splitterinfo_exp d-print-none yNoPrint' {Basics.CssTooltip}='{HAE(model.ExpandToolTip)}'>
+    <div class='yt_panels_splitterinfo_exp' {Basics.CssTooltip}='{HAE(model.ExpandToolTip)}'>
         {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-expand-arrows-alt")}
     </div>
 </div>");

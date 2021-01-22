@@ -109,3 +109,7 @@
     background-image: url(images/Expand.png); }
   .yt_panels_pagebarinfo.t_stylesvert.t_expanded .t_expcoll {
     background-image: url(images/Collapse.png); } }
+
+@media print {
+  .yt_panels_pagebarinfo_list {
+    display: none; } }

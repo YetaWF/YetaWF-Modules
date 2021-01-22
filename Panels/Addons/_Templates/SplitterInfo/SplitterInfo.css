@@ -92,4 +92,8 @@
   .yt_panels_splitterinfo {
     display: block;
     overflow: visible;
-    height: auto; } }
+    height: auto; }
+  .yt_panels_splitterinfo_left,
+  .yt_panels_splitterinfo_resize,
+  .yt_panels_splitterinfo_exp {
+    display: none; } }

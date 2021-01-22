@@ -163,3 +163,8 @@ $large-screen: 1500px;
     }
 }
 
+@media print {
+    .yt_panels_pagebarinfo_list {
+        display: none;
+    }
+}

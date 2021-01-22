@@ -25,7 +25,7 @@ namespace YetaWF.Modules.PageEdit.Views {
             hb.Append($@"
         {await RenderBeginFormAsync()}
             {await PartialForm(async () => await RenderPartialViewAsync(module, model), UsePartialFormCss: false)}
-            <div class='t_detailsbuttons yNoPrint'>
+            <div class='t_detailsbuttons'>
                 <input type='submit' class='y_button' value='{this.__ResStr("addNewModule", "Add")}' />
             </div>
         {await RenderEndFormAsync()}");

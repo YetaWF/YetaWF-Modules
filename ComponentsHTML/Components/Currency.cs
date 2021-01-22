@@ -140,7 +140,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 Max = 999999999.99,
                 Step = 1,
                 Digits = Manager.CurrentSite.CurrencyDecimals,
-                Currency = Manager.CurrentSite.Currency,
                 Locale = MultiString.ActiveLanguage,
             };
             // handle min/max
