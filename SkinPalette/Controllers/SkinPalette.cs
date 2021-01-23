@@ -60,32 +60,6 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
 
 
 
-            [Category("Anchor"), Caption("--a-clr"), Description("Color")]
-            [UIHint("Color"), StringLength(MaxColor), Required]
-            public string AnchorClr { get; set; } = null!;
-            
-            [Category("Anchor"), Caption("--a-dec"), Description("Decoration")]
-            [UIHint("Text20"), StringLength(MaxFont), Required]
-            public string AnchorDec { get; set; } = null!;
-            
-            [Category("Anchor"), Caption("--a-clr-hover"), Description("Color, Hover")]
-            [UIHint("Color"), StringLength(MaxColor), Required]
-            public string AnchorClrHover { get; set; } = null!;
-            
-            [Category("Anchor"), Caption("--a-dec-hover"), Description("Decoration, Hover")]
-            [UIHint("Text20"), StringLength(MaxFont), Required]
-            public string AnchorDecHover { get; set; } = null!;
-            
-            [Category("Anchor"), Caption("--a-clr-focus"), Description("Color, Focus")]
-            [UIHint("Color"), StringLength(MaxColor), Required]
-            public string AnchorClrFocus { get; set; } = null!;
-            
-            [Category("Anchor"), Caption("--a-dec-focus"), Description("Decoration, Focus")]
-            [UIHint("Text20"), StringLength(MaxFont), Required]
-            public string AnchorDecFocus { get; set; } = null!;
-
-
-
             [Category("Overlay"), Caption("--overlay-bg"), Description("Background")]
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string OverlayBg { get; set; } = null!;
@@ -94,6 +68,38 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [UIHint("Decimal"), AdditionalMetadata("Step", 0.1), Range(0.0, 1.0), Required]
             public decimal OverlayOpacity { get; set; }
 
+
+
+            [Category("modStandard"), Caption("--mstd-title-font"), Description("Font")]
+            [UIHint("Text40"), StringLength(MaxFont), Required]
+            public string ModStandardTitleFont { get; set; } = null!;
+
+
+
+            [Category("modPanel"), Caption("--mpnl-bg"), Description("Background")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string ModPanelBg { get; set; } = null!;
+
+            [Category("modPanel"), Caption("--mpnl-clr"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string ModPanelClr { get; set; } = null!;
+
+            [Category("modPanel"), Caption("--mpnl-border"), Description("Border")]
+            [UIHint("Text40"), StringLength(MaxBorder), Required]
+            public string ModPanelBorder { get; set; } = null!;
+
+            [Category("modPanel"), Caption("--mpnl-border-radius"), Description("Border Radius")]
+            [UIHint("Text40"), StringLength(MaxRadius), Required]
+            public string ModPanelBorderRadius { get; set; } = null!;
+
+            [Category("modPanel"), Caption("--mpnl-title-font"), Description("Font")]
+            [UIHint("Text40"), StringLength(MaxFont), Required]
+            public string ModPanelTitleFont { get; set; } = null!;
+
+            [Category("modPanel"), Caption("--mpnl-link-font"), Description("Font")]
+            [UIHint("Text40"), StringLength(MaxFont), Required]
+            public string ModPanelLinkFont { get; set; } = null!;
+                        
 
 
             [Category("Main Menu"), Caption("--mm-0-bg"), Description("Background")]
@@ -619,10 +625,6 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [UIHint("Text20"), StringLength(MaxFontSize), Required]
             public string BarH1FontSize { get; set; } = null!;
 
-            [Category("Sidebar"), Caption("--bar-h1-padding-bottom"), Description("Padding")]
-            [UIHint("Text20"), StringLength(MaxPadding), Required]
-            public string BarH1PaddingBottom { get; set; } = null!;
-
 
 
             [Category("PropertyList"), Caption("--prop-border"), Description("Border")]
@@ -775,6 +777,32 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [Category("Dropdownlist"), Caption("--dd-p-shadow-focus"), Description("Shadow")]
             [UIHint("Text40"), StringLength(MaxShadow), Required]
             public string DDListShadowFocus { get; set; } = null!;
+
+
+
+            [Category("Anchor"), Caption("--a-clr"), Description("Color")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string AnchorClr { get; set; } = null!;
+
+            [Category("Anchor"), Caption("--a-dec"), Description("Decoration")]
+            [UIHint("Text20"), StringLength(MaxFont), Required]
+            public string AnchorDec { get; set; } = null!;
+
+            [Category("Anchor"), Caption("--a-clr-hover"), Description("Color, Hover")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string AnchorClrHover { get; set; } = null!;
+
+            [Category("Anchor"), Caption("--a-dec-hover"), Description("Decoration, Hover")]
+            [UIHint("Text20"), StringLength(MaxFont), Required]
+            public string AnchorDecHover { get; set; } = null!;
+
+            [Category("Anchor"), Caption("--a-clr-focus"), Description("Color, Focus")]
+            [UIHint("Color"), StringLength(MaxColor), Required]
+            public string AnchorClrFocus { get; set; } = null!;
+
+            [Category("Anchor"), Caption("--a-dec-focus"), Description("Decoration, Focus")]
+            [UIHint("Text20"), StringLength(MaxFont), Required]
+            public string AnchorDecFocus { get; set; } = null!;
 
 
 

@@ -1,10 +1,18 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-/* action menu in grids */
+/* action menu in grids */ //$$$ should not be here
 ul.yGridActionMenu { /* ul needed for specificity */
     z-index:50000;
     font-size:11px;
     position:absolute;
+}
+
+.yt_grid .yActionIcons {//$$$ should not be here
+    a img,
+    a i {
+        margin-left:.3ch;
+        margin-right:.3ch;
+    }
 }
 
 /* one action link should never break into two lines */
@@ -19,16 +27,7 @@ ul.yGridActionMenu { /* ul needed for specificity */
     }
 }
 
-.yt_grid .yActionIcons {
-    a img,
-    a i {
-        margin-left:.3ch;
-        margin-right:.3ch;
-    }
-}
-
-/* align the module action links and grid action up next to each other */
-.yActionIcons, .yModuleLinks {
+.yActionIcons {
     margin:0;
     padding:0;
     list-style-type: none;
@@ -37,41 +36,4 @@ ul.yGridActionMenu { /* ul needed for specificity */
     }
 }
 
-/* a bit of extra space above the module action links */
-.yModuleLinks {
-    margin-top:.5em;
-    .yaction-link {
-        i, img {/* a bit of extra space around the image in a module action link */
-            margin-right:.4ch;
-        }
-        margin-right:1ch;
-    }
-}
-
-
-/* Module title */
-.yModuleTitle {
-    h1 {
-        float:left
-    }
-    .yModuleLinks {
-        margin-top:0;
-        .yaction-link {
-            i, img {
-                margin-right:0;
-                margin-left:.5ch;
-            }
-            margin-right:0;
-        }
-    }
-    .yModuleLinksContainer {
-        float:right;
-        clear:none;
-    }
-}
-@media print {
-    .yModuleLinksContainer {
-        display: none;
-    }
-}
 

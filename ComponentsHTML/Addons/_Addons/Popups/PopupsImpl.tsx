@@ -52,7 +52,7 @@ namespace YetaWF_ComponentsHTML {
             let win = window.parent;
             let popup = win.document.YPopupWindowActive;
 
-            let overlay = $YetaWF.getElementByIdCond("ypopupOverlay");
+            let overlay = $YetaWF.getElement1BySelectorCond("#ypopupOverlay", [window.parent.document.body]);
             if (overlay)
                 overlay.remove();
 

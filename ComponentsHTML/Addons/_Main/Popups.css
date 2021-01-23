@@ -58,6 +58,9 @@
   left: 0;
   width: 100%;
   height: 100%; }
+  @media print {
+    #ypopupOverlay {
+      display: none; } }
 
 body.yPopup {
   padding: .5em 1em;

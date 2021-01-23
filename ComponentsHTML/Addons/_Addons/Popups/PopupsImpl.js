@@ -27,7 +27,7 @@ var YetaWF_ComponentsHTML;
             // with unified page sets there may actually not be a parent, but window.parent returns itself in this case anyway
             var win = window.parent;
             var popup = win.document.YPopupWindowActive;
-            var overlay = $YetaWF.getElementByIdCond("ypopupOverlay");
+            var overlay = $YetaWF.getElement1BySelectorCond("#ypopupOverlay", [window.parent.document.body]);
             if (overlay)
                 overlay.remove();
             win.document.body.style.overflow = "";

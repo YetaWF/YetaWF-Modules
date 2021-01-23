@@ -39,11 +39,11 @@
 .yt_panels_pagebarinfo .t_area {
   padding: .7em 1.3em .7em 1.3em;
   width: 100%; }
-  .yt_panels_pagebarinfo .t_area h1 {
+  .yt_panels_pagebarinfo .t_area .modStandard h1 {
     font-size: var(--bar-h1-font-size);
     margin: 0;
     padding: 0;
-    padding-bottom: var(--bar-h1-padding-bottom); }
+    padding-bottom: .5em; }
 
 /* Wide Content */
 .widecontentfill .yt_panels_pagebarinfo .t_area .yModule {

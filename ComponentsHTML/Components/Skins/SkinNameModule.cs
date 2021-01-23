@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
@@ -11,11 +12,13 @@ using YetaWF.Core.Skins;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// Base class for the SkinNamePage component implementation.
+    /// Base class for the SkinNameModule component implementation.
     /// </summary>
-    public abstract class SkinNamePageComponentBase : YetaWFComponent {
+    public abstract class SkinNameModuleComponentBase : YetaWFComponent {
 
-        internal const string TemplateName = "SkinNamePage";
+        internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(SkinNameModuleComponentBase), name, defaultValue, parms); }
+
+        internal const string TemplateName = "SkinNameModule";
 
         /// <summary>
         /// Returns the package implementing the component.
@@ -37,7 +40,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// Internal component used by the Skin component. Not intended for application use.
     /// </summary>
     [PrivateComponent]
-    public class SkinNamePageDisplayComponent : SkinNamePageComponentBase, IYetaWFComponent<string> {
+    public class SkinNameModuleDisplayComponent : SkinNameModuleComponentBase, IYetaWFComponent<string> {
 
         /// <summary>
         /// Returns the component type (edit/display).
@@ -52,17 +55,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(string model) {
 
-            // get all available page skins for this collection
+            // get all available module skins for this collection
             SkinAccess skinAccess = new SkinAccess();
             string collection = GetSiblingProperty<string>($"{PropertyName}_Collection");
-            PageSkinList skinList = skinAccess.GetAllPageSkins(collection);
+            ModuleSkinList skinList = skinAccess.GetAllModuleSkins(collection);
 
-            string desc = (from skin in skinList where skin.ViewName == model select skin.Name).FirstOrDefault();
-            if (desc == null)
-                desc = skinList.First().Description;
-            if (string.IsNullOrWhiteSpace(desc))
-                return Task.FromResult<string>(null);
-            return Task.FromResult(HE(desc));
+            ModuleSkinEntry entry = (from skin in skinList where skin.CSS == model select skin).FirstOrDefault();
+            string name = null;
+            if (entry == null)
+                name = skinList.First().Name;
+            else
+                name = entry.Name;
+            return Task.FromResult(HE(name));
         }
     }
 
@@ -70,7 +74,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// Internal component used by the Skin component. Not intended for application use.
     /// </summary>
     [PrivateComponent]
-    public class SkinNamePageEditComponent : SkinNamePageComponentBase, IYetaWFComponent<string> {
+    [UsesAdditional("NoDefault", "bool", "true", "Defines whether a \"(Site Default)\" entry is automatically added as the first entry, with a value of null")]
+    public class SkinNameModuleEditComponent : SkinNameModuleComponentBase, IYetaWFComponent<string> {
 
         /// <summary>
         /// Returns the component type (edit/display).
@@ -85,26 +90,27 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(string model) {
 
-            // get all available page skins for this collection
+            // get all available module skins for this collection
             SkinAccess skinAccess = new SkinAccess();
             string collection = GetSiblingProperty<string>($"{PropertyName}_Collection");
-            PageSkinList skinList = skinAccess.GetAllPageSkins(collection);
+            ModuleSkinList skinList = skinAccess.GetAllModuleSkins(collection);
             List<SelectionItem<string>> list = (from skin in skinList orderby skin.Description select new SelectionItem<string>() {
                 Text = skin.Name,
                 Tooltip = skin.Description,
-                Value = skin.ViewName,
+                Value = skin.CSS,
             }).ToList();
+
             // display the skins in a drop down
-            return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_skinnamepage");
+            return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_skinnamemodule");
         }
 
         internal static string RenderReplacementSkinsForCollection(string skinCollection) {
             SkinAccess skinAccess = new SkinAccess();
-            PageSkinList skinList = skinAccess.GetAllPageSkins(skinCollection);
+            ModuleSkinList skinList = skinAccess.GetAllModuleSkins(skinCollection);
             List<SelectionItem<string>> list = (from skin in skinList orderby skin.Description select new SelectionItem<string>() {
                 Text = skin.Name,
                 Tooltip = skin.Description,
-                Value = skin.ViewName,
+                Value = skin.CSS,
             }).ToList();
             // render a new dropdown list
             return DropDownListEditComponentBase<string>.GetOptionsHTML(list);

@@ -265,15 +265,17 @@ namespace YetaWF_SkinPalette {
             this.getInput("BodyFont").value = values.GenFont;
             this.getDecimal("BodyDisabledOpacity").value = values.GenOpacity;
 
-            this.getColor("AnchorClr").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenClr, 20) : this.Lighten(values.GenClr, 20);
-            this.getInput("AnchorDec").value = "none";
-            this.getColor("AnchorClrHover").value = this.ToHover(values.GenTheme, values.GenClr);
-            this.getInput("AnchorDecHover").value = "underline";
-            this.getColor("AnchorClrFocus").value = values.GenClrActive;
-            this.getInput("AnchorDecFocus").value = "underline";
-
             this.getColor("OverlayBg").value = values.GenTheme === BasicThemeEnum.Light ? "#aaaaaa" : "#444444";
             this.getDecimal("OverlayOpacity").value = values.GenOpacity;
+
+            this.getInput("ModStandardTitleFont").value = values.GenFont;
+
+            this.getColor("ModPanelBg").value = values.GenBgShaded;
+            this.getColor("ModPanelClr").value = values.GenClrShaded;
+            this.getInput("ModPanelBorder").value = `${values.GenBorderWidth}px solid ${values.GenBorderClr}`;
+            this.getInput("ModPanelBorderRadius").value = `${values.GenBorderRadius}px`;
+            this.getInput("ModPanelTitleFont").value = values.GenFont;
+            this.getInput("ModPanelLinkFont").value = values.GenSmallFont;
 
             this.getInput("MainMenu0Padding").value = "0";
             this.getColor("MainMenu0Clr").value = values.GenClr;
@@ -407,7 +409,6 @@ namespace YetaWF_SkinPalette {
             this.getInput("BarBorder").value = `${values.GenBorderWidth}px solid ${values.GenBorderClr}`;
             this.getInput("BarBorderRadius").value = `${values.GenBorderRadius}px`;
             this.getInput("BarH1FontSize").value = "1.25rem";
-            this.getInput("BarH1PaddingBottom").value = ".7rem";
 
             this.getInput("PropBorder").value = `${values.GenBorderWidth}px solid ${values.GenBorderClr}`;
             this.getInput("PropBorderRadius").value = `${values.GenBorderRadius}px`;
@@ -449,6 +450,13 @@ namespace YetaWF_SkinPalette {
             this.getInput("DDListBorderRadius").value = `${values.GenBorderRadius}px`;
             this.getInput("DDListShadow").value = "0 2px 2px 0 rgba(0,0,0,.3)";
             this.getInput("DDListShadowFocus").value ="inset 0px 0px 3px 0px rgba(0, 0, 0, 0.25)";
+
+            this.getColor("AnchorClr").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenClr, 20) : this.Lighten(values.GenClr, 20);
+            this.getInput("AnchorDec").value = "none";
+            this.getColor("AnchorClrHover").value = this.ToHover(values.GenTheme, values.GenClr);
+            this.getInput("AnchorDecHover").value = "underline";
+            this.getColor("AnchorClrFocus").value = values.GenClrActive;
+            this.getInput("AnchorDecFocus").value = "underline";
 
             this.getColor("ButtonBg").value = values.GenBg;
             this.getColor("ButtonClr").value = values.GenClr;
