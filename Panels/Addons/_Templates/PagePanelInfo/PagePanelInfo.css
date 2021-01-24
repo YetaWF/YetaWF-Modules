@@ -45,3 +45,15 @@
   float: none;
   display: block;
   overflow: hidden; }
+
+body.yCondense .yt_panels_pagepanelinfo.t_stylesmalltable .t_image {
+  float: none;
+  display: inline-block; }
+
+body.yCondense .yt_panels_pagepanelinfo.t_stylesmalltable .t_link {
+  float: none;
+  width: auto;
+  display: inline-block; }
+
+body.yCondense .yt_panels_pagepanelinfo.t_stylesmalltable .t_desc {
+  padding-left: 10ch; }

@@ -57,3 +57,22 @@
         }
     }
 }
+
+body.yCondense {
+    .yt_panels_pagepanelinfo {
+        &.t_stylesmalltable {
+            .t_image {
+                float:none;
+                display:inline-block;
+            }
+            .t_link {
+                float:none;
+                width:auto;
+                display:inline-block;
+            }
+            .t_desc {
+                padding-left: 10ch;
+            }
+        }
+    }
+}
