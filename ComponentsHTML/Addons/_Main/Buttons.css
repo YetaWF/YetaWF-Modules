@@ -3,6 +3,7 @@
 .y_button, .y_buttonform {
   background: var(--button-bg);
   color: var(--button-clr);
+  margin-bottom: .2em;
   padding-left: 1em;
   padding-right: 1em;
   line-height: 1.8em;
@@ -19,19 +20,19 @@
     color: var(--body-clr); }
   .y_button:not(:disabled), .y_buttonform:not(:disabled) {
     cursor: pointer; }
-  .y_button:hover:not(:disabled), .y_buttonform:hover:not(:disabled) {
+  .y_button:hover, .y_buttonform:hover {
     text-decoration: none;
     background: var(--button-bg-hover);
     color: var(--button-clr-hover); }
-  .y_button:disabled, .y_buttonform:disabled {
-    text-decoration: none;
-    cursor: default;
-    opacity: var(--body-dis-opacity); }
   .y_button:focus, .y_buttonform:focus {
     outline: 0;
     text-decoration: none;
     background: var(--button-bg-focus);
     color: var(--button-clr-focus); }
+  .y_button:disabled, .y_buttonform:disabled {
+    text-decoration: none;
+    cursor: default;
+    opacity: var(--body-dis-opacity); }
 
 .y_buttonform {
   margin: 3px;
@@ -58,19 +59,19 @@ button.y_buttonlite_text {
   button.y_buttonlite:not(:disabled),
   button.y_buttonlite_text:not(:disabled) {
     cursor: pointer; }
-  button.y_buttonlite:hover:not(:disabled):not(:focus),
-  button.y_buttonlite_text:hover:not(:disabled):not(:focus) {
+  button.y_buttonlite:hover,
+  button.y_buttonlite_text:hover {
     background: var(--buttonlite-bg-hover);
     color: var(--buttonlite-clr-hover); }
-  button.y_buttonlite:disabled,
-  button.y_buttonlite_text:disabled {
-    cursor: default;
-    opacity: var(--body-dis-opacity); }
   button.y_buttonlite:focus,
   button.y_buttonlite_text:focus {
     outline: 0;
     background: var(--buttonlite-bg-focus);
     color: var(--buttonlite-clr-focus); }
+  button.y_buttonlite:disabled,
+  button.y_buttonlite_text:disabled {
+    cursor: default;
+    opacity: var(--body-dis-opacity); }
   button.y_buttonlite svg,
   button.y_buttonlite_text svg {
     width: 1em;

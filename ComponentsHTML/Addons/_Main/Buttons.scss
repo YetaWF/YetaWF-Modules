@@ -3,11 +3,14 @@
 .y_button, .y_buttonform {
     background: var(--button-bg);
     color: var(--button-clr);
+    margin-bottom:.2em;// in case multiple wrap around
     padding-left: 1em;
     padding-right: 1em;
     line-height:1.8em;
     text-shadow: 0 1px 0 rgba(0,0,0,0.05);
     text-decoration: none;
+    border: var(--button-border);
+    border-radius: var(--button-border-radius);
     &.y_button_sm {
         line-height: 1;
         padding-left: 0;
@@ -17,26 +20,24 @@
         background: var(--body-bg);
         color: var(--body-clr);
     }
-    border: var(--button-border);
-    border-radius: var(--button-border-radius);
     &:not(:disabled) {
         cursor: pointer;
     }
-    &:hover:not(:disabled) {
+    &:hover {
         text-decoration: none;
         background: var(--button-bg-hover);
         color: var(--button-clr-hover);
-    }
-    &:disabled {
-        text-decoration: none;
-        cursor: default;
-        opacity: var(--body-dis-opacity);
     }
     &:focus {
         outline: 0;
         text-decoration: none;
         background: var(--button-bg-focus);
         color: var(--button-clr-focus);
+    }
+    &:disabled {
+        text-decoration: none;
+        cursor: default;
+        opacity: var(--body-dis-opacity);
     }
 }
 
@@ -70,18 +71,18 @@ button.y_buttonlite_text /* text only*/ {
     &:not(:disabled) {
         cursor: pointer;
     }
-    &:hover:not(:disabled):not(:focus) {
+    &:hover {
         background: var(--buttonlite-bg-hover);
         color: var(--buttonlite-clr-hover);
-    }
-    &:disabled {
-        cursor: default;
-        opacity: var(--body-dis-opacity);;
     }
     &:focus {
         outline: 0;
         background: var(--buttonlite-bg-focus);
         color: var(--buttonlite-clr-focus);
+    }
+    &:disabled {
+        cursor: default;
+        opacity: var(--body-dis-opacity);;
     }
     svg {
         width:1em;
