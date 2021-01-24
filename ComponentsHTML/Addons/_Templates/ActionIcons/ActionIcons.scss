@@ -1,20 +1,5 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-/* action menu in grids */ //$$$ should not be here
-ul.yGridActionMenu { /* ul needed for specificity */
-    z-index:50000;
-    font-size:11px;
-    position:absolute;
-}
-
-.yt_grid .yActionIcons {//$$$ should not be here
-    a img,
-    a i {
-        margin-left:.3ch;
-        margin-right:.3ch;
-    }
-}
-
 /* one action link should never break into two lines */
 .yaction-link {
     white-space:nowrap;

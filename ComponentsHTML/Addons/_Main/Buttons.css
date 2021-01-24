@@ -15,6 +15,9 @@
     line-height: 1;
     padding-left: 0;
     padding-right: 0; }
+  .y_button.y_button_narrow, .y_buttonform.y_button_narrow {
+    padding-left: 0.5em;
+    padding-right: 0.5em; }
   .y_button.y_button_outline, .y_buttonform.y_button_outline {
     background: var(--body-bg);
     color: var(--body-clr); }

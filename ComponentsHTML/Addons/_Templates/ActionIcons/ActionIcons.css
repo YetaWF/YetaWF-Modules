@@ -1,17 +1,5 @@
 @charset "UTF-8";
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
-/* action menu in grids */
-ul.yGridActionMenu {
-  /* ul needed for specificity */
-  z-index: 50000;
-  font-size: 11px;
-  position: absolute; }
-
-.yt_grid .yActionIcons a img,
-.yt_grid .yActionIcons a i {
-  margin-left: .3ch;
-  margin-right: .3ch; }
-
 /* one action link should never break into two lines */
 .yaction-link {
   white-space: nowrap; }

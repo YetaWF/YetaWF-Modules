@@ -16,6 +16,10 @@
         padding-left: 0;
         padding-right: 0;
     }
+    &.y_button_narrow {
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+    }
     &.y_button_outline { // use body background instead of button background
         background: var(--body-bg);
         color: var(--body-clr);

@@ -205,3 +205,14 @@ ul.yt_grid_menu {
       font-size: 1em; }
     .yt_grid.tg_noskin .tg_pager .tg_pgbtns, .yt_grid.tg_noskin .tg_pager .tg_pgctl, .yt_grid.tg_noskin .tg_pager .tg_pgnum, .yt_grid.tg_noskin .tg_pager .tg_pgsel, .yt_grid.tg_noskin .tg_pager .tg_totals {
       font: var(--body-font); }
+
+/* action menu in grids (added to body) */
+ul.yGridActionMenu {
+  /* ul needed for specificity */
+  z-index: 50000;
+  font: var(--pm-1-font);
+  position: absolute; }
+
+/* action icons within grid */
+.yt_grid .yActionIcons a img, .yt_grid .yActionIcons a i {
+  margin: .2em; }

@@ -159,7 +159,7 @@ namespace YetaWF_SkinPalette {
             }
         }
         private updateConfig(): void {
-            let text = ":root {\n";
+            let text = "@media screen {\n\n:root {\n";
             let root = document.documentElement;
             let styles = getComputedStyle(root);
             for (let entry of this.Setup.Properties) {
@@ -167,7 +167,7 @@ namespace YetaWF_SkinPalette {
                 val = val.trim();
                 text += `   ${entry.CSSVarName}: ${val};\n`;
             }
-            text = text + "}\n";
+            text = text + "}\n\n}\n";
             this.Config.value = text;
         }
         private updateSkin(): void {

@@ -296,3 +296,20 @@ ul.yt_grid_menu {
         }
     }
 }
+
+/* action menu in grids (added to body) */
+ul.yGridActionMenu { /* ul needed for specificity */
+    z-index:50000;
+    font: var(--pm-1-font);
+    position:absolute;
+}
+
+/* action icons within grid */
+.yt_grid .yActionIcons {
+    a {
+        img, i {
+            margin: .2em;
+        }
+    }
+}
+

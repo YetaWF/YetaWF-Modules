@@ -138,7 +138,7 @@ var YetaWF_SkinPalette;
             }
         };
         SkinPaletteModule.prototype.updateConfig = function () {
-            var text = ":root {\n";
+            var text = "@media screen {\n\n:root {\n";
             var root = document.documentElement;
             var styles = getComputedStyle(root);
             for (var _i = 0, _a = this.Setup.Properties; _i < _a.length; _i++) {
@@ -147,7 +147,7 @@ var YetaWF_SkinPalette;
                 val = val.trim();
                 text += "   " + entry.CSSVarName + ": " + val + ";\n";
             }
-            text = text + "}\n";
+            text = text + "}\n\n}\n";
             this.Config.value = text;
         };
         SkinPaletteModule.prototype.updateSkin = function () {
