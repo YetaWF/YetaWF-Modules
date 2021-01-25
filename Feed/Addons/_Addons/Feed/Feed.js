@@ -27,7 +27,6 @@ var YetaWF_Feed;
             }) || this;
             _this.NextEntry = 0;
             _this.EntryTimer = null;
-            setup.Interval = 0; //$$$
             _this.DivHeader = $YetaWF.getElement1BySelector(".t_headerentry", [_this.Module]);
             _this.Entries = $YetaWF.getElementsBySelector(".t_entry a", [_this.Module]);
             _this.changeEntry();
