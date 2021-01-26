@@ -55,6 +55,7 @@ $large-screen: 1500px;
         width:100%;
         .modStandard h1 {
             font-size:var(--bar-h1-font-size);
+            line-height: 1;// we don't want to use the standard h1 line-height from --mstd-title-font
             margin:0;
             padding:0;
             padding-bottom: .5em;

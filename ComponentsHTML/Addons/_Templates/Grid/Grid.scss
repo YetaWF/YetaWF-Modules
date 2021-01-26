@@ -27,6 +27,79 @@ $smbuttonhorzmargin: .2em;
 
     position:relative;
 
+    .yGridPanelTitle {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: left;
+        align-items: center;
+        border-bottom: var(--mpnl-border);
+        padding:.2em;
+        h1 {
+            font: var(--mpnl-title-font);
+            padding: 0;
+            margin: 0 .5em;
+            vertical-align: middle;
+        }
+        .yModuleLinksContainer {
+            flex: 1 1;
+            display: inline-block;
+            padding-right: .5em;
+            padding-left: .5em;
+            padding-top:.1em;
+            @media print {
+                display: none;
+            }
+            .yModuleLinks {
+                margin:0;
+                padding:0;
+                list-style-type: none;
+                li {
+                    display:inline-block;
+                    line-height:1;
+                    vertical-align: middle;
+                }
+                .yaction-link {
+                    i, img {
+                        margin-right:.4ch;
+                    }
+                    margin-right:.5ch;
+                    margin-bottom:.2em;
+                }
+                .y_button { // smaller buttons
+                    font: var(--mpnl-link-font);
+                    padding:.3em;
+                }
+            }
+        }
+        .yPanelActionsContainer {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            margin-left: auto;// forces to the right even when wrapped around
+            .tg_pgbtns {
+                .tg_reload {
+                    margin-right:1ch;
+                }
+            }
+            .tg_searchinput {
+                input {
+                    min-width:10ch;
+                }
+                margin-right:2ch;
+                font: var(--mpnl-link-font);
+            }
+            .tg_pgsel {
+                margin-right:2ch;
+                font: var(--mpnl-link-font);
+            }
+            .yModuleExpColl {
+                flex: 0 0;
+                margin:.2em;
+            }
+        }
+    }
+
     .tg_table {  // general rendering
         overflow-x:auto;
 
@@ -89,7 +162,7 @@ $smbuttonhorzmargin: .2em;
                     display: table-cell;
                     width:100%;
                     .yt_text_base,
-                    .yt_number_container,
+                     .yt_number_container,
                     .k-widget {//TODO: Remove
                         width:100%;
                     }
@@ -201,6 +274,27 @@ $smbuttonhorzmargin: .2em;
             position: relative;
             top: 50%;
             transform: translateY(-50%);
+        }
+    }
+}
+
+.yt_grid {
+    &.t_expanded {
+        .yGridPanelExpColl {
+            .t_exp {
+                display:none;
+            }
+        }
+    }
+    &.t_collapsed {
+        .yGridPanelExpColl {
+            .t_coll {
+                display:none;
+            }
+        }
+        .tg_table,
+        .tg_pager {
+            display:none;
         }
     }
 }

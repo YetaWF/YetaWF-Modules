@@ -111,17 +111,17 @@ namespace YetaWF_ComponentsHTML {
                         }
                     } else {
                         if (key === "ArrowDown" || key === "Down" || key === "ArrowRight" || key === "Right") {
-                            ++this.selectedIndex;
+                            this.setSelectedIndex(this.selectedIndex+ 1);
                             return false;
                         } else if (key === "ArrowUp" || key === "Up" || key === "ArrowLeft" || key === "Left") {
-                            --this.selectedIndex;
+                            this.setSelectedIndex(this.selectedIndex-1);
                             return false;
                         } else if (key === "Home") {
-                            this.selectedIndex = 0;
+                            this.setSelectedIndex(0);
                             return false;
                         } else if (key === "End") {
                             let total = this.totalItems;
-                            this.selectedIndex = total - 1;
+                            this.setSelectedIndex(total - 1);
                             return false;
                         } else if (key === "Escape") {
                             if (this.isOpen) {
@@ -142,7 +142,7 @@ namespace YetaWF_ComponentsHTML {
                             for (let i = this.selectedIndex + 1 ; i < len; ++i) {
                                 key = key.toLowerCase();
                                 if (opts[i].text.toLowerCase().startsWith(key)) {
-                                    this.selectedIndex = i;
+                                    this.setSelectedIndex(i);
                                     return true;
                                 }
                             }
@@ -151,7 +151,7 @@ namespace YetaWF_ComponentsHTML {
                                 for (let i = 0; i < end; ++i) {
                                     key = key.toLowerCase();
                                     if (opts[i].text.toLowerCase().startsWith(key)) {
-                                        this.selectedIndex = i;
+                                        this.setSelectedIndex(i);
                                         return true;
                                     }
                                 }
@@ -177,7 +177,7 @@ namespace YetaWF_ComponentsHTML {
         get selectedIndex(): number {
             return this.Select.selectedIndex;
         }
-        set selectedIndex(index: number) {
+        private setSelectedIndex(index: number, event?: boolean): void {
             let total = this.totalItems;
             if (index < 0 || index >= total)
                 return;
@@ -188,7 +188,7 @@ namespace YetaWF_ComponentsHTML {
             this.selectPopupItem();
             this.Input.innerText = this.Select.options[index].text;
 
-            if (!this.isOpen)
+            if (event !== false && !this.isOpen)
                 this.sendChangeEvent();
         }
         get totalItems(): number {
@@ -203,7 +203,7 @@ namespace YetaWF_ComponentsHTML {
             this.Select.innerHTML = optionsHTML;
             this.optionsUpdated();
 
-            this.selectedIndex = 0;
+            this.setSelectedIndex(0);
         }
 
         // retrieve the tooltip for the nth item (index) in the dropdown list
@@ -216,7 +216,7 @@ namespace YetaWF_ComponentsHTML {
         }
         public clear(): void {
             this.closePopup(SendSelectEnum.No);
-            this.selectedIndex = 0;
+            this.setSelectedIndex(0, false);
         }
         public enable(enabled: boolean): void {
             this.closePopup(SendSelectEnum.No);
@@ -304,7 +304,7 @@ namespace YetaWF_ComponentsHTML {
                 let li = ev.__YetaWFElem as HTMLLIElement;
                 let index = Number($YetaWF.getAttribute(li, "data-index"));
                 if (this.MouseSelectedIndex === index) {
-                    this.selectedIndex = index;
+                    this.setSelectedIndex(index);
                     this.closePopup(SendSelectEnum.Yes);
                 } else {
                     this.MouseSelectedIndex = -1;

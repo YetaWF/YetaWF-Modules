@@ -8,6 +8,7 @@ using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.Extensions;
 using YetaWF.Core.IO;
+using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -64,10 +65,14 @@ namespace YetaWF.Modules.Messenger.DataProvider {
         // API
         // API
 
+        public bool Usable { get { return DataProvider != null; } }
+
         public async Task<ActiveUser?> GetItemAsync(int key) {
+            if (!Usable) return null;
             return await DataProvider.GetByIdentityAsync(key);
         }
         public async Task AddConnectionAsync(string connectionId, int userId) {
+            if (!Usable) return;
             try { // ignore errors if database table not yet defined
                 await AddItemAsync(new ActiveUser {
                     ConnectionId = connectionId,
@@ -77,17 +82,21 @@ namespace YetaWF.Modules.Messenger.DataProvider {
             } catch (Exception) { }
         }
         public async Task<bool> AddItemAsync(ActiveUser data) {
+            if (!Usable) return false;
             return await DataProvider.AddAsync(data);
         }
 
         public async Task<bool> RemoveItemAsync(int key) {
+            if (!Usable) return false;
             return await DataProvider.RemoveByIdentityAsync(key);
         }
         public async Task<DataProviderGetRecords<ActiveUser>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
+            if (!Usable) throw new Error(this.__ResStr("notEnabled", "Active users are not tracked - not enabled"));
             return await DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
 
         public async Task RemoveConnectionAsync(string connectionId) {
+            if (!Usable) return;
             try { // ignore errors if database table not yet defined
                 List<DataProviderFilterInfo>? filters = null;
                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(ActiveUser.ConnectionId), Operator = "==", Value = connectionId });
@@ -95,6 +104,7 @@ namespace YetaWF.Modules.Messenger.DataProvider {
             } catch (Exception) { }
         }
         public Task<int> RemoveItemsAsync(List<DataProviderFilterInfo>? filters) {
+            if (!Usable) return Task.FromResult(0);
             return DataProvider.RemoveRecordsAsync(filters);
         }
     }

@@ -8,8 +8,10 @@ using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Support;
 using YetaWF.Modules.Messenger.DataProvider;
 
 namespace YetaWF.Modules.Messenger.Controllers {
@@ -76,6 +78,10 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
         [AllowGet]
         public ActionResult BrowseActiveUsers() {
+            using (ActiveUsersDataProvider userDP = new ActiveUsersDataProvider()) {
+                if (!userDP.Usable)
+                    throw new Error(this.__ResStr("notEnabled", "Active users are not tracked - not enabled"));
+            }
             BrowseModel model = new BrowseModel {
                 GridDef = GetGridModel()
             };

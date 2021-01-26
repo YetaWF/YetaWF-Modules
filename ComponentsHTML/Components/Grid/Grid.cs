@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YetaWF.Core;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider;
@@ -75,6 +76,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public Guid? SettingsModuleGuid { get; set; }
         public bool HighlightOnClick { get; set; }
 
+        public List<string> PanelHeaderSearchColumns { get; set; }
+
         public string DeletedMessage { get; set; }
         public string DeleteConfirmationMessage { get; set; }
         public string DeletedColumnDisplay { get; set; }
@@ -86,6 +89,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         public GridSetup() {
             Columns = new List<GridColumnDefinition>();
+            PanelHeaderSearchColumns = new List<string>();
         }
     }
 
@@ -99,6 +103,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public string FilterType { get; set; }
         public string FilterId { get; set; }
         public string MenuId { get; set; }
+    }
+
+    internal class SearchUI {
+        [Caption(""), Description("")]
+        [UIHint("Search"), StringLength(80)]
+        public string __Search { get; set; }
     }
 
     /// <summary>
@@ -202,6 +212,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 DeletedColumnDisplay = model.DeletedColumnDisplay,
                 CanReorder = model.Reorderable,
                 HighlightOnClick = model.HighlightOnClick,
+                PanelHeaderSearchColumns = model.PanelHeaderSearchColumns,
             };
 
             // Data
@@ -272,7 +283,69 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
 
             hb.Append($@"
-<div id='{model.Id}' name='{FieldName}' class='yt_grid t_display{noSubmitClass} {(model.UseSkinFormatting ? "tg_skin" : "tg_noskin")}'>
+<div id='{model.Id}' name='{FieldName}' class='yt_grid t_display{noSubmitClass} {(model.UseSkinFormatting ? "tg_skin" : "tg_noskin")} {(gridSavedSettings.Collapsed ? "t_collapsed" : "t_expanded")}'>");
+
+            if (model.PanelHeader) {
+                string actions = (await MenuDisplayComponent.RenderMenuAsync(model.PanelHeaderActions, null, Globals.CssModuleLinks));
+
+                hb.Append($@"
+    <div class='yGridPanelTitle'>
+         <h1>{Utility.HE(model.PanelHeaderTitle)}</h1>
+         <div class='yModuleLinksContainer'>
+            {actions}
+         </div>
+         <div class='yPanelActionsContainer'>");
+
+                if (model.PanelHeaderSearch) {
+
+                    SearchUI searchUI = new SearchUI();
+
+                    hb.Append($@"
+            <div class='tg_searchinput' {Basics.CssTooltip}='{HAE(model.PanelHeaderSearchTT)}'>
+                {await HtmlHelper.ForEditAsync(searchUI, nameof(SearchUI.__Search), HtmlAttributes: new { AutoDelay = model.PanelHeaderAutoSearch})}
+            </div>");
+                }
+
+                string reloadHTML = "";
+                if (!model.IsStatic && model.SupportReload)
+                    reloadHTML = $@"<button class='tg_reload y_buttonlite' {Basics.CssTooltip}='{HAE(__ResStr("btnTop", "Reload the current page"))}'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-sync-alt")}</button>";
+
+                if (!string.IsNullOrEmpty(reloadHTML)) {
+                    hb.Append($@"
+            <div class='tg_pgbtns'>
+                {reloadHTML}
+            </div>");
+                }
+
+                if (setup.PageSize != 0) {
+
+                    PagerUI pagerUI = GetPagerUI(model, setup);
+
+                    hb.Append($@"
+            <div class='tg_pgsel'>
+                {await HtmlHelper.ForEditAsync(pagerUI, nameof(PagerUI.__PageSelection))}
+            </div>");
+                }
+
+                if (model.PanelCanMinimize) {
+
+                    hb.Append($@"
+            <div class='yGridPanelExpColl'>
+                <button class='y_buttonlite t_exp' {Basics.CssTooltip}='{Utility.HAE(__ResStr("exp", "Click to expand this panel"))}'>
+                    {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-window-maximize")}
+                </button>
+                <button class='y_buttonlite t_coll' {Basics.CssTooltip}='{Utility.HAE(__ResStr("coll", "Click to collapse this panel"))}'>
+                    {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-window-minimize")}
+                </button>
+            </div>");
+                }
+
+                hb.Append($@"
+        </div>
+    </div>");
+            }
+
+            hb.Append($@"
     <div class='tg_table'>
         <table role='presentation'{cssTableStyle}>
             {setup.HeaderHTML}
@@ -1037,24 +1110,11 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            List<SelectionItem<int>> selList = new List<SelectionItem<int>>();
-            foreach (int size in gridModel.PageSizes) {
-                selList.Add(new SelectionItem<int> {
-                    Text = size.ToString(),
-                    Tooltip = __ResStr("pages", "Show {0} entries", size),
-                    Value = size,
-                });
-            }
-
-            PagerUI pagerUI = new PagerUI {
-                __Page = setup.Page + 1,
-                __PageSelection = setup.PageSize,
-                __PageSelection_List = selList,
-            };
+            PagerUI pagerUI = GetPagerUI(gridModel, setup);
 
             string reloadHTML = "";
             string searchHTML = "";
-            if (!gridModel.IsStatic && gridModel.SupportReload)
+            if (!gridModel.PanelHeader && !gridModel.IsStatic && gridModel.SupportReload)
                 reloadHTML = $@"<button class='tg_reload y_buttonlite' {Basics.CssTooltip}='{HAE(__ResStr("btnTop", "Reload the current page"))}'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-sync-alt")}</button>";
             if (setup.CanFilter)
                 searchHTML = $@"<button class='tg_search y_buttonlite' {Basics.CssTooltip}='{HAE(__ResStr("btnFilter", "Turn the filter bar on or off"))}'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-search")}</button>";
@@ -1081,11 +1141,15 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             {await HtmlHelper.ForEditAsync(pagerUI, nameof(PagerUI.__Page))}
         </div>
         {nextHTML}{bottomHTML}
-    </div>
+    </div>");
+
+                if (!gridModel.ShowHeader) {
+                    hb.Append($@"
     <div class='tg_pgsel'>
         {await HtmlHelper.ForLabelAsync(pagerUI, nameof(PagerUI.__PageSelection))}
         {await HtmlHelper.ForEditAsync(pagerUI, nameof(PagerUI.__PageSelection))}
     </div>");
+                }
             }
 
             hb.Append($@"
@@ -1093,6 +1157,32 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
     </div>");
 
             return hb.ToString();
+        }
+
+        private static PagerUI GetPagerUI(GridDefinition gridModel, GridSetup setup) {
+            List<SelectionItem<int>> selList = new List<SelectionItem<int>>();
+            foreach (int size in gridModel.PageSizes) {
+                if (size == GridDefinition.AllPages) {
+                    selList.Add(new SelectionItem<int> {
+                        Text = __ResStr("allPages", "All"),
+                        Tooltip = __ResStr("allPagesTT", "Show all entries"),
+                        Value = size,
+                    });
+                } else {
+                    selList.Add(new SelectionItem<int> {
+                        Text = size.ToString(),
+                        Tooltip = __ResStr("pagesTT", "Show {0} entries", size),
+                        Value = size,
+                    });
+                }
+            }
+
+            PagerUI pagerUI = new PagerUI {
+                __Page = setup.Page + 1,
+                __PageSelection = setup.PageSize,
+                __PageSelection_List = selList,
+            };
+            return pagerUI;
         }
 
         internal int GetDropdownActionWidthInChars() {

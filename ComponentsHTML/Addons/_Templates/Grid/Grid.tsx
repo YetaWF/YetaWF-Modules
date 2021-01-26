@@ -34,6 +34,8 @@ namespace YetaWF_ComponentsHTML {
         SettingsModuleGuid: string;
         HighlightOnClick: boolean;
 
+        PanelHeaderSearchColumns: string[];
+
         DeletedMessage: string;
         DeleteConfirmationMessage: string;
         DeletedColumnDisplay: string;
@@ -121,6 +123,8 @@ namespace YetaWF_ComponentsHTML {
         private PagerTotals: HTMLDivElement | null = null;
         private InputPage: YetaWF_ComponentsHTML.IntValueEditComponent | null = null;
         private SelectPageSize: YetaWF_ComponentsHTML.DropDownListEditComponent | null = null;
+        private SelectPanelPageSize: YetaWF_ComponentsHTML.DropDownListEditComponent | null = null;
+        private InputPanelSearch: YetaWF_ComponentsHTML.SearchEditComponent | null = null;
         private ColumnResizeBar: HTMLElement | null = null;
         private ColumnResizeHeader: HTMLTableHeaderCellElement | null = null;
         private TBody: HTMLElement;
@@ -161,8 +165,11 @@ namespace YetaWF_ComponentsHTML {
                 this.PagerTotals = $YetaWF.getElement1BySelectorCond(".tg_totals", [this.Control]) as HTMLDivElement | null;
                 if (this.Setup.PageSize) {
                     this.InputPage = YetaWF.ComponentBaseDataImpl.getControlFromSelector<IntValueEditComponent>("input[name$='.__Page']", IntValueEditComponent.SELECTOR, [this.Control]);
-                    this.SelectPageSize = YetaWF.ComponentBaseDataImpl.getControlFromSelector<DropDownListEditComponent>("select[name$='.__PageSelection']", DropDownListEditComponent.SELECTOR, [this.Control]);
+                    this.SelectPageSize = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond<DropDownListEditComponent>(".tg_pager select[name$='.__PageSelection']", DropDownListEditComponent.SELECTOR, [this.Control]);
+                    this.SelectPanelPageSize = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond<DropDownListEditComponent>(".yGridPanelTitle select[name='__PageSelection']", DropDownListEditComponent.SELECTOR, [this.Control]);
                 }
+                if (SearchEditComponent) // searchedit may not be in use
+                    this.InputPanelSearch =  YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond<SearchEditComponent>(".yGridPanelTitle [name='__Search']", SearchEditComponent.SELECTOR, [this.Control]);
             }
             this.FilterBar = $YetaWF.getElement1BySelectorCond(".tg_filter", [this.Control]) as HTMLDivElement | null;
 
@@ -251,11 +258,26 @@ namespace YetaWF_ComponentsHTML {
                     return true;
                 });
             }
+            //  search input
+            if (this.InputPanelSearch && this.Setup.PanelHeaderSearchColumns) {
+                this.InputPanelSearch.Control.addEventListener(SearchEditComponent.EVENTCLICK, (evt: Event): void => {
+                    if (this.InputPanelSearch) {
+                        this.clearFilters();
+                        this.reload(0, undefined, undefined, undefined, undefined, undefined, this.Setup.PanelHeaderSearchColumns, this.InputPanelSearch.value);
+                    }
+                });
+            }
             // pagesize selection
             if (this.SelectPageSize) {
                 this.SelectPageSize.Control.addEventListener(DropDownListEditComponent.EVENTCHANGE, (evt: Event): void => {
                     if (this.SelectPageSize)
                         this.reload(0, Number(this.SelectPageSize.value));
+                });
+            }
+            if (this.SelectPanelPageSize) {
+                this.SelectPanelPageSize.Control.addEventListener(DropDownListEditComponent.EVENTCHANGE, (evt: Event): void => {
+                    if (this.SelectPanelPageSize)
+                        this.reload(0, Number(this.SelectPanelPageSize.value));
                 });
             }
             // Column resizing
@@ -460,6 +482,40 @@ namespace YetaWF_ComponentsHTML {
                         return false;
                     });
                 }
+            }
+            $YetaWF.registerEventHandler(this.Control, "click",".yGridPanelExpColl button", (ev: MouseEvent): boolean => {
+                if ($YetaWF.elementHasClass(this.Control, "t_expanded")) {
+                    this.setExpandCollapseStatus(false);
+                    return false;
+                } else if ($YetaWF.elementHasClass(this.Control, "t_collapsed")) {
+                    this.setExpandCollapseStatus(true);
+                    return false;
+                }
+                return true;
+            });
+        }
+
+        private saveExpandCollapseStatus(expanded: boolean) : void {
+            // send save request, we don't care about the response
+            let uri = $YetaWF.parseUrl("/YetaWF_ComponentsHTML/GridPanelSaveSettings/SaveExpandCollapse");
+            uri.addSearch("SettingsModuleGuid", this.Setup.SettingsModuleGuid);
+            uri.addSearch("Expanded", expanded.toString());
+
+            let request: XMLHttpRequest = new XMLHttpRequest();
+            request.open("POST", uri.toUrl(), true);
+            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            request.send(/*uri.toFormData()*/);
+        }
+        private setExpandCollapseStatus(expand: boolean) : void {
+            if (!expand && $YetaWF.elementHasClass(this.Control, "t_expanded")) {
+                $YetaWF.elementRemoveClasses(this.Control, ["t_expanded", "t_collapsed"]);
+                $YetaWF.elementAddClass(this.Control, "t_collapsed");
+                this.saveExpandCollapseStatus(false);
+            } else if (expand && $YetaWF.elementHasClass(this.Control, "t_collapsed")) {
+                $YetaWF.elementRemoveClasses(this.Control, ["t_expanded", "t_collapsed"]);
+                $YetaWF.elementAddClass(this.Control, "t_expanded");
+                this.saveExpandCollapseStatus(true);
             }
         }
 
@@ -725,7 +781,7 @@ namespace YetaWF_ComponentsHTML {
         }
 
         // reloading
-        private reload(page: number, newPageSize?: number, overrideColFilter?: OverrideColumnFilter, overrideExtraData?: any|null|undefined, sort?: boolean, done?: () => void): void {
+        private reload(page: number, newPageSize?: number, overrideColFilter?: OverrideColumnFilter, overrideExtraData?: any|null|undefined, sort?: boolean, done?: () => void, searchCols?: string[], searchText?: string): void {
 
             if (!this.reloadInProgress) {
 
@@ -756,6 +812,7 @@ namespace YetaWF_ComponentsHTML {
                         this.InputPage.value = this.Setup.Page + 1;
                     this.updateStatus();
                     this.setReloading(false);
+                    this.setExpandCollapseStatus(true);
                 } else {
                     // fetch data from servers
                     let uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
@@ -774,29 +831,40 @@ namespace YetaWF_ComponentsHTML {
                         uri.addSearch("sorts[0].order", (col.Sort === SortByEnum.Descending ? 1 : 0));
                     }
                     // filters
-                    let colIndex = 0;
-                    let fcount = 0;
-                    for (let col of this.Setup.Columns) {
-                        let val = this.getColSortValue(colIndex);
-                        if (val) {
-                            if (col.FilterType === "complex") {
-                                uri.addSearch(`filters[${fcount}].field`, col.Name);
-                                uri.addSearch(`filters[${fcount}].operator`, "Complex");
-                                uri.addSearch(`filters[${fcount}].valueAsString`, val);
-                                ++fcount;
-                            } else {
-                                let oper = col.FilterOp;
-                                if (overrideColFilter && overrideColFilter.ColIndex === colIndex)
-                                    oper = overrideColFilter.FilterOp;
-                                if (oper != null) {
-                                    uri.addSearch(`filters[${fcount}].field`, col.Name);
-                                    uri.addSearch(`filters[${fcount}].operator`, this.GetFilterOpString(oper));
-                                    uri.addSearch(`filters[${fcount}].valueAsString`, val);
-                                    ++fcount;
-                                }
+                    if (searchCols) {
+                        let fcount = 0;
+                        for (let searchCol of searchCols) {
+                            if (searchText) {
+                                uri.addSearch(`filters[${fcount}].field`, searchCol);
+                                uri.addSearch(`filters[${fcount}].operator`, "Contains");
+                                uri.addSearch(`filters[${fcount}].valueAsString`, searchText);
                             }
                         }
-                        ++colIndex;
+                    } else {
+                        let colIndex = 0;
+                        let fcount = 0;
+                        for (let col of this.Setup.Columns) {
+                            let val = this.getColSortValue(colIndex);
+                            if (val) {
+                                if (col.FilterType === "complex") {
+                                    uri.addSearch(`filters[${fcount}].field`, col.Name);
+                                    uri.addSearch(`filters[${fcount}].operator`, "Complex");
+                                    uri.addSearch(`filters[${fcount}].valueAsString`, val);
+                                    ++fcount;
+                                } else {
+                                    let oper = col.FilterOp;
+                                    if (overrideColFilter && overrideColFilter.ColIndex === colIndex)
+                                        oper = overrideColFilter.FilterOp;
+                                    if (oper != null) {
+                                        uri.addSearch(`filters[${fcount}].field`, col.Name);
+                                        uri.addSearch(`filters[${fcount}].operator`, this.GetFilterOpString(oper));
+                                        uri.addSearch(`filters[${fcount}].valueAsString`, val);
+                                        ++fcount;
+                                    }
+                                }
+                            }
+                            ++colIndex;
+                        }
                     }
                     uri.addFormInfo(this.Control);
                     let uniqueIdCounters: YetaWF.UniqueIdInfo = { UniqueIdPrefix: `${this.ControlId}gr`, UniqueIdPrefixCounter: 0, UniqueIdCounter: 0 };
@@ -831,6 +899,7 @@ namespace YetaWF_ComponentsHTML {
                                 this.updateStatus();
                                 if (done)
                                     done();
+                                this.setExpandCollapseStatus(true);
                                 this.sendEventSelect();
                             });
                         }

@@ -94,20 +94,20 @@ var YetaWF_ComponentsHTML;
                     }
                     else {
                         if (key === "ArrowDown" || key === "Down" || key === "ArrowRight" || key === "Right") {
-                            ++_this.selectedIndex;
+                            _this.setSelectedIndex(_this.selectedIndex + 1);
                             return false;
                         }
                         else if (key === "ArrowUp" || key === "Up" || key === "ArrowLeft" || key === "Left") {
-                            --_this.selectedIndex;
+                            _this.setSelectedIndex(_this.selectedIndex - 1);
                             return false;
                         }
                         else if (key === "Home") {
-                            _this.selectedIndex = 0;
+                            _this.setSelectedIndex(0);
                             return false;
                         }
                         else if (key === "End") {
                             var total = _this.totalItems;
-                            _this.selectedIndex = total - 1;
+                            _this.setSelectedIndex(total - 1);
                             return false;
                         }
                         else if (key === "Escape") {
@@ -132,7 +132,7 @@ var YetaWF_ComponentsHTML;
                             for (var i = _this.selectedIndex + 1; i < len; ++i) {
                                 key = key.toLowerCase();
                                 if (opts[i].text.toLowerCase().startsWith(key)) {
-                                    _this.selectedIndex = i;
+                                    _this.setSelectedIndex(i);
                                     return true;
                                 }
                             }
@@ -141,7 +141,7 @@ var YetaWF_ComponentsHTML;
                                 for (var i = 0; i < end; ++i) {
                                     key = key.toLowerCase();
                                     if (opts[i].text.toLowerCase().startsWith(key)) {
-                                        _this.selectedIndex = i;
+                                        _this.setSelectedIndex(i);
                                         return true;
                                     }
                                 }
@@ -171,21 +171,21 @@ var YetaWF_ComponentsHTML;
             get: function () {
                 return this.Select.selectedIndex;
             },
-            set: function (index) {
-                var total = this.totalItems;
-                if (index < 0 || index >= total)
-                    return;
-                this.Select.selectedIndex = index;
-                this.Select.options[index].selected = true;
-                this.clearSelectedPopupItem();
-                this.selectPopupItem();
-                this.Input.innerText = this.Select.options[index].text;
-                if (!this.isOpen)
-                    this.sendChangeEvent();
-            },
             enumerable: false,
             configurable: true
         });
+        DropDownListEditComponent.prototype.setSelectedIndex = function (index, event) {
+            var total = this.totalItems;
+            if (index < 0 || index >= total)
+                return;
+            this.Select.selectedIndex = index;
+            this.Select.options[index].selected = true;
+            this.clearSelectedPopupItem();
+            this.selectPopupItem();
+            this.Input.innerText = this.Select.options[index].text;
+            if (event !== false && !this.isOpen)
+                this.sendChangeEvent();
+        };
         Object.defineProperty(DropDownListEditComponent.prototype, "totalItems", {
             get: function () {
                 return this.Select.options.length;
@@ -203,7 +203,7 @@ var YetaWF_ComponentsHTML;
         DropDownListEditComponent.prototype.setOptionsHTML = function (optionsHTML) {
             this.Select.innerHTML = optionsHTML;
             this.optionsUpdated();
-            this.selectedIndex = 0;
+            this.setSelectedIndex(0);
         };
         // retrieve the tooltip for the nth item (index) in the dropdown list
         DropDownListEditComponent.prototype.getToolTip = function (index) {
@@ -216,7 +216,7 @@ var YetaWF_ComponentsHTML;
         };
         DropDownListEditComponent.prototype.clear = function () {
             this.closePopup(SendSelectEnum.No);
-            this.selectedIndex = 0;
+            this.setSelectedIndex(0, false);
         };
         DropDownListEditComponent.prototype.enable = function (enabled) {
             this.closePopup(SendSelectEnum.No);
@@ -293,7 +293,7 @@ var YetaWF_ComponentsHTML;
                 var li = ev.__YetaWFElem;
                 var index = Number($YetaWF.getAttribute(li, "data-index"));
                 if (_this.MouseSelectedIndex === index) {
-                    _this.selectedIndex = index;
+                    _this.setSelectedIndex(index);
                     _this.closePopup(SendSelectEnum.Yes);
                 }
                 else {

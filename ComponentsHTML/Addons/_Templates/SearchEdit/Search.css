@@ -1,0 +1,51 @@
+@charset "UTF-8";
+/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+.yt_search_container {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  width: auto;
+  padding-right: 2em;
+  background: var(--dd-bg);
+  color: var(--dd-clr);
+  border: var(--dd-border);
+  border-radius: var(--dd-border-radius); }
+  .yt_search_container input {
+    line-height: 1.5em;
+    padding: .18em 0.2em;
+    width: 100%;
+    background: var(--inp-bg);
+    color: var(--inp-clr);
+    border: var(--dd-border);
+    border-color: var(--inp-bg);
+    border-radius: var(--dd-border-radius);
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    outline: none;
+    text-overflow: ellipsis; }
+    .yt_search_container input:focus {
+      text-overflow: clip; }
+  .yt_search_container:hover:not(.t_disabled):not(.t_focused) {
+    background: var(--dd-bg-hover);
+    color: var(--dd-clr-hover);
+    border: var(--dd-border-hover); }
+  .yt_search_container.t_focused {
+    background: var(--dd-bg-focus);
+    color: var(--dd-clr-focus);
+    border: var(--dd-border-focus); }
+  .yt_search_container.t_disabled {
+    opacity: var(--body-dis-opacity); }
+  .yt_search_container.t_readonly {
+    opacity: var(--body-dis-opacity); }
+  .yt_search_container .t_search {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 2em;
+    text-align: center;
+    border-left: var(--dd-border); }
+    .yt_search_container .t_search svg {
+      width: 1em;
+      height: 100%;
+      vertical-align: top; }

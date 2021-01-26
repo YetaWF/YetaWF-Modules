@@ -77,6 +77,8 @@ var YetaWF_ComponentsHTML;
             _this.PagerTotals = null;
             _this.InputPage = null;
             _this.SelectPageSize = null;
+            _this.SelectPanelPageSize = null;
+            _this.InputPanelSearch = null;
             _this.ColumnResizeBar = null;
             _this.ColumnResizeHeader = null;
             _this.LoadingDiv = null;
@@ -97,8 +99,11 @@ var YetaWF_ComponentsHTML;
                 _this.PagerTotals = $YetaWF.getElement1BySelectorCond(".tg_totals", [_this.Control]);
                 if (_this.Setup.PageSize) {
                     _this.InputPage = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name$='.__Page']", YetaWF_ComponentsHTML.IntValueEditComponent.SELECTOR, [_this.Control]);
-                    _this.SelectPageSize = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name$='.__PageSelection']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
+                    _this.SelectPageSize = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond(".tg_pager select[name$='.__PageSelection']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
+                    _this.SelectPanelPageSize = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond(".yGridPanelTitle select[name='__PageSelection']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
                 }
+                if (YetaWF_ComponentsHTML.SearchEditComponent) // searchedit may not be in use
+                    _this.InputPanelSearch = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond(".yGridPanelTitle [name='__Search']", YetaWF_ComponentsHTML.SearchEditComponent.SELECTOR, [_this.Control]);
             }
             _this.FilterBar = $YetaWF.getElement1BySelectorCond(".tg_filter", [_this.Control]);
             _this.updateStatus();
@@ -185,11 +190,26 @@ var YetaWF_ComponentsHTML;
                     return true;
                 });
             }
+            //  search input
+            if (_this.InputPanelSearch && _this.Setup.PanelHeaderSearchColumns) {
+                _this.InputPanelSearch.Control.addEventListener(YetaWF_ComponentsHTML.SearchEditComponent.EVENTCLICK, function (evt) {
+                    if (_this.InputPanelSearch) {
+                        _this.clearFilters();
+                        _this.reload(0, undefined, undefined, undefined, undefined, undefined, _this.Setup.PanelHeaderSearchColumns, _this.InputPanelSearch.value);
+                    }
+                });
+            }
             // pagesize selection
             if (_this.SelectPageSize) {
                 _this.SelectPageSize.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, function (evt) {
                     if (_this.SelectPageSize)
                         _this.reload(0, Number(_this.SelectPageSize.value));
+                });
+            }
+            if (_this.SelectPanelPageSize) {
+                _this.SelectPanelPageSize.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, function (evt) {
+                    if (_this.SelectPanelPageSize)
+                        _this.reload(0, Number(_this.SelectPanelPageSize.value));
                 });
             }
             // Column resizing
@@ -396,8 +416,42 @@ var YetaWF_ComponentsHTML;
                     });
                 }
             }
+            $YetaWF.registerEventHandler(_this.Control, "click", ".yGridPanelExpColl button", function (ev) {
+                if ($YetaWF.elementHasClass(_this.Control, "t_expanded")) {
+                    _this.setExpandCollapseStatus(false);
+                    return false;
+                }
+                else if ($YetaWF.elementHasClass(_this.Control, "t_collapsed")) {
+                    _this.setExpandCollapseStatus(true);
+                    return false;
+                }
+                return true;
+            });
             return _this;
         }
+        Grid.prototype.saveExpandCollapseStatus = function (expanded) {
+            // send save request, we don't care about the response
+            var uri = $YetaWF.parseUrl("/YetaWF_ComponentsHTML/GridPanelSaveSettings/SaveExpandCollapse");
+            uri.addSearch("SettingsModuleGuid", this.Setup.SettingsModuleGuid);
+            uri.addSearch("Expanded", expanded.toString());
+            var request = new XMLHttpRequest();
+            request.open("POST", uri.toUrl(), true);
+            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            request.send( /*uri.toFormData()*/);
+        };
+        Grid.prototype.setExpandCollapseStatus = function (expand) {
+            if (!expand && $YetaWF.elementHasClass(this.Control, "t_expanded")) {
+                $YetaWF.elementRemoveClasses(this.Control, ["t_expanded", "t_collapsed"]);
+                $YetaWF.elementAddClass(this.Control, "t_collapsed");
+                this.saveExpandCollapseStatus(false);
+            }
+            else if (expand && $YetaWF.elementHasClass(this.Control, "t_collapsed")) {
+                $YetaWF.elementRemoveClasses(this.Control, ["t_expanded", "t_collapsed"]);
+                $YetaWF.elementAddClass(this.Control, "t_expanded");
+                this.saveExpandCollapseStatus(true);
+            }
+        };
         // handle submit local data
         Grid.prototype.handlePreSubmitLocalData = function (form) {
             if (this.Setup.StaticData && this.Setup.NoSubmitContents) {
@@ -659,7 +713,7 @@ var YetaWF_ComponentsHTML;
             return false;
         };
         // reloading
-        Grid.prototype.reload = function (page, newPageSize, overrideColFilter, overrideExtraData, sort, done) {
+        Grid.prototype.reload = function (page, newPageSize, overrideColFilter, overrideExtraData, sort, done, searchCols, searchText) {
             var _this = this;
             if (!this.reloadInProgress) {
                 this.setReloading(true);
@@ -689,6 +743,7 @@ var YetaWF_ComponentsHTML;
                         this.InputPage.value = this.Setup.Page + 1;
                     this.updateStatus();
                     this.setReloading(false);
+                    this.setExpandCollapseStatus(true);
                 }
                 else {
                     // fetch data from servers
@@ -708,31 +763,44 @@ var YetaWF_ComponentsHTML;
                         uri.addSearch("sorts[0].order", (col.Sort === SortByEnum.Descending ? 1 : 0));
                     }
                     // filters
-                    var colIndex = 0;
-                    var fcount = 0;
-                    for (var _a = 0, _b = this.Setup.Columns; _a < _b.length; _a++) {
-                        var col_2 = _b[_a];
-                        var val = this.getColSortValue(colIndex);
-                        if (val) {
-                            if (col_2.FilterType === "complex") {
-                                uri.addSearch("filters[" + fcount + "].field", col_2.Name);
-                                uri.addSearch("filters[" + fcount + "].operator", "Complex");
-                                uri.addSearch("filters[" + fcount + "].valueAsString", val);
-                                ++fcount;
+                    if (searchCols) {
+                        var fcount = 0;
+                        for (var _a = 0, searchCols_1 = searchCols; _a < searchCols_1.length; _a++) {
+                            var searchCol = searchCols_1[_a];
+                            if (searchText) {
+                                uri.addSearch("filters[" + fcount + "].field", searchCol);
+                                uri.addSearch("filters[" + fcount + "].operator", "Contains");
+                                uri.addSearch("filters[" + fcount + "].valueAsString", searchText);
                             }
-                            else {
-                                var oper = col_2.FilterOp;
-                                if (overrideColFilter && overrideColFilter.ColIndex === colIndex)
-                                    oper = overrideColFilter.FilterOp;
-                                if (oper != null) {
+                        }
+                    }
+                    else {
+                        var colIndex = 0;
+                        var fcount = 0;
+                        for (var _b = 0, _c = this.Setup.Columns; _b < _c.length; _b++) {
+                            var col_2 = _c[_b];
+                            var val = this.getColSortValue(colIndex);
+                            if (val) {
+                                if (col_2.FilterType === "complex") {
                                     uri.addSearch("filters[" + fcount + "].field", col_2.Name);
-                                    uri.addSearch("filters[" + fcount + "].operator", this.GetFilterOpString(oper));
+                                    uri.addSearch("filters[" + fcount + "].operator", "Complex");
                                     uri.addSearch("filters[" + fcount + "].valueAsString", val);
                                     ++fcount;
                                 }
+                                else {
+                                    var oper = col_2.FilterOp;
+                                    if (overrideColFilter && overrideColFilter.ColIndex === colIndex)
+                                        oper = overrideColFilter.FilterOp;
+                                    if (oper != null) {
+                                        uri.addSearch("filters[" + fcount + "].field", col_2.Name);
+                                        uri.addSearch("filters[" + fcount + "].operator", this.GetFilterOpString(oper));
+                                        uri.addSearch("filters[" + fcount + "].valueAsString", val);
+                                        ++fcount;
+                                    }
+                                }
                             }
+                            ++colIndex;
                         }
-                        ++colIndex;
                     }
                     uri.addFormInfo(this.Control);
                     var uniqueIdCounters = { UniqueIdPrefix: this.ControlId + "gr", UniqueIdPrefixCounter: 0, UniqueIdCounter: 0 };
@@ -765,6 +833,7 @@ var YetaWF_ComponentsHTML;
                                 _this.updateStatus();
                                 if (done)
                                     done();
+                                _this.setExpandCollapseStatus(true);
                                 _this.sendEventSelect();
                             });
                         }

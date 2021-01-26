@@ -2,6 +2,73 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 .yt_grid {
   position: relative; }
+  .yt_grid .yGridPanelTitle {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+            flex-direction: row;
+    flex-wrap: wrap;
+    -webkit-box-pack: left;
+            justify-content: left;
+    -webkit-box-align: center;
+            align-items: center;
+    border-bottom: var(--mpnl-border);
+    padding: .2em; }
+    .yt_grid .yGridPanelTitle h1 {
+      font: var(--mpnl-title-font);
+      padding: 0;
+      margin: 0 .5em;
+      vertical-align: middle; }
+    .yt_grid .yGridPanelTitle .yModuleLinksContainer {
+      -webkit-box-flex: 1;
+              flex: 1 1;
+      display: inline-block;
+      padding-right: .5em;
+      padding-left: .5em;
+      padding-top: .1em; }
+      @media print {
+        .yt_grid .yGridPanelTitle .yModuleLinksContainer {
+          display: none; } }
+      .yt_grid .yGridPanelTitle .yModuleLinksContainer .yModuleLinks {
+        margin: 0;
+        padding: 0;
+        list-style-type: none; }
+        .yt_grid .yGridPanelTitle .yModuleLinksContainer .yModuleLinks li {
+          display: inline-block;
+          line-height: 1;
+          vertical-align: middle; }
+        .yt_grid .yGridPanelTitle .yModuleLinksContainer .yModuleLinks .yaction-link {
+          margin-right: .5ch;
+          margin-bottom: .2em; }
+          .yt_grid .yGridPanelTitle .yModuleLinksContainer .yModuleLinks .yaction-link i, .yt_grid .yGridPanelTitle .yModuleLinksContainer .yModuleLinks .yaction-link img {
+            margin-right: .4ch; }
+        .yt_grid .yGridPanelTitle .yModuleLinksContainer .yModuleLinks .y_button {
+          font: var(--mpnl-link-font);
+          padding: .3em; }
+    .yt_grid .yGridPanelTitle .yPanelActionsContainer {
+      display: -webkit-box;
+      display: flex;
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: normal;
+              flex-direction: row;
+      -webkit-box-pack: end;
+              justify-content: flex-end;
+      margin-left: auto; }
+      .yt_grid .yGridPanelTitle .yPanelActionsContainer .tg_pgbtns .tg_reload {
+        margin-right: 1ch; }
+      .yt_grid .yGridPanelTitle .yPanelActionsContainer .tg_searchinput {
+        margin-right: 2ch;
+        font: var(--mpnl-link-font); }
+        .yt_grid .yGridPanelTitle .yPanelActionsContainer .tg_searchinput input {
+          min-width: 10ch; }
+      .yt_grid .yGridPanelTitle .yPanelActionsContainer .tg_pgsel {
+        margin-right: 2ch;
+        font: var(--mpnl-link-font); }
+      .yt_grid .yGridPanelTitle .yPanelActionsContainer .yModuleExpColl {
+        -webkit-box-flex: 0;
+                flex: 0 0;
+        margin: .2em; }
   .yt_grid .tg_table {
     overflow-x: auto; }
     .yt_grid .tg_table table {
@@ -143,6 +210,16 @@
       top: 50%;
       -webkit-transform: translateY(-50%);
               transform: translateY(-50%); }
+
+.yt_grid.t_expanded .yGridPanelExpColl .t_exp {
+  display: none; }
+
+.yt_grid.t_collapsed .yGridPanelExpColl .t_coll {
+  display: none; }
+
+.yt_grid.t_collapsed .tg_table,
+.yt_grid.t_collapsed .tg_pager {
+  display: none; }
 
 ul.yt_grid_menu {
   font-size: 0.8em;

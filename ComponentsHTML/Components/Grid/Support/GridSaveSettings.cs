@@ -5,11 +5,7 @@ using System.Collections.Generic;
 using YetaWF.Core.Models;
 using YetaWF.Core.Controllers;
 using YetaWF.Modules.ComponentsHTML.Components;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.ComponentsHTML.Controllers {
 

@@ -39,6 +39,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public int CurrentPage { get; set; }
 
             /// <summary>
+            /// Defines whether the current grid is collapsed (only applies to grids with a panel header).
+            /// </summary>
+            public bool Collapsed { get; set; }
+
+            /// <summary>
             /// Constructor.
             /// </summary>
             public GridSavedSettings() {

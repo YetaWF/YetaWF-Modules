@@ -41,6 +41,7 @@
   width: 100%; }
   .yt_panels_pagebarinfo .t_area .modStandard h1 {
     font-size: var(--bar-h1-font-size);
+    line-height: 1;
     margin: 0;
     padding: 0;
     padding-bottom: .5em; }
