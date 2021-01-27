@@ -30,7 +30,7 @@ namespace YetaWF_ComponentsHTML {
             // icons used is fas-times
             let dialog = <div id="yDialogContainer" tabindex="-1" role="dialog" aria-describedby="yAlert" aria-labelledby="yAlertTitle">
                 <div class="t_titlebar">
-                    <span id="yAlertTitle" class="t_title">{setup.title}</span>
+                    <div id="yAlertTitle" class="t_title">{setup.title}</div>
                     <button type="button" class="y_buttonlite t_close" data-tooltip={setup.closeText??""}></button>
                 </div>
                 <div id="yAlert" class="t_content" style="width: auto; min-height: 25px; max-height: none; height: auto;"></div>
@@ -105,7 +105,7 @@ namespace YetaWF_ComponentsHTML {
             DialogClass.DragDropInProgress = false;
             let dialog = <div id="yDialogContainer" tabindex="-1" role="dialog" aria-describedby="yAlert" aria-labelledby="yAlertTitle">
                 <div class="t_titlebar">
-                    <span id="yAlertTitle" class="t_title">{setup.title}</span>
+                    <div id="yAlertTitle" class="t_title">{setup.title}</div>
                 </div>
                 <div id="yAlert" class="t_content" style="width: auto; min-height: 25px; max-height: none; height: auto;"></div>
             </div> as HTMLDivElement;

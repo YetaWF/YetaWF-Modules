@@ -22,6 +22,9 @@
     overflow:hidden;
 
     .t_titlebar {
+        display:flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
         background: var(--dialog-title-bg);
         color: var(--dialog-title-clr);
         cursor: move;
@@ -30,14 +33,19 @@
         border: var(--dialog-border);
         border-radius: var(--dialog-border-radius);
         font: var(--dialog-title-font);
-    }
-    .t_close {
-        float:right;
-        margin-left:.5em;
-        padding: .2em;
-        svg {
-            width:16px;
-            height:16px;
+        #ypopupTitle {
+            flex: 1 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .t_close {
+            margin-left: auto;
+            padding: .2em;
+            svg {
+                width:1rem;
+                height:1rem;
+            }
         }
     }
     .t_content {

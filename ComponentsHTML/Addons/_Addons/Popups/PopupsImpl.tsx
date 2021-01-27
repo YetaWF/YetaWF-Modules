@@ -79,7 +79,7 @@ namespace YetaWF_ComponentsHTML {
 
             let popup = <div id={PopupsImpl.POPUPID} tabindex="-1" role="dialog" class="yPopupDyn" aria-describedby="ypopupContent" aria-labelledby="ypopupTitle" style="display:none">
                 <div class="t_titlebar">
-                    <span id="ypopupTitle" class="t_title">{result.PageTitle}</span>
+                    <div id="ypopupTitle" class="t_title">{result.PageTitle}</div>
                     <button type="button" class="y_buttonlite t_close"></button>
                 </div>
                 <div id="ypopupContent" class="t_content"></div>

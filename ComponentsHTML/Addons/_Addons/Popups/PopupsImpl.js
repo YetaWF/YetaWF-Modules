@@ -49,7 +49,7 @@ var YetaWF_ComponentsHTML;
             PopupsImpl.internalClosePopup();
             var popup = $YetaWF.createElement("div", { id: PopupsImpl.POPUPID, tabindex: "-1", role: "dialog", class: "yPopupDyn", "aria-describedby": "ypopupContent", "aria-labelledby": "ypopupTitle", style: "display:none" },
                 $YetaWF.createElement("div", { class: "t_titlebar" },
-                    $YetaWF.createElement("span", { id: "ypopupTitle", class: "t_title" }, result.PageTitle),
+                    $YetaWF.createElement("div", { id: "ypopupTitle", class: "t_title" }, result.PageTitle),
                     $YetaWF.createElement("button", { type: "button", class: "y_buttonlite t_close" })),
                 $YetaWF.createElement("div", { id: "ypopupContent", class: "t_content" }));
             $YetaWF.elementAddClass(popup, YVolatile.Skin.PopupCss);

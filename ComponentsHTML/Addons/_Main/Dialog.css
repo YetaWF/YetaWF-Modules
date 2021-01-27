@@ -11,6 +11,12 @@
   width: 400px;
   padding: .2em; }
   #yDialogContainer .t_titlebar {
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+            flex-direction: row;
+    flex-wrap: nowrap;
     background: var(--dialog-title-bg);
     color: var(--dialog-title-clr);
     cursor: move;
@@ -19,13 +25,19 @@
     border: var(--dialog-border);
     border-radius: var(--dialog-border-radius);
     font: var(--dialog-title-font); }
-  #yDialogContainer .t_close {
-    float: right;
-    margin-left: .5em;
-    padding: .2em; }
-    #yDialogContainer .t_close svg {
-      width: 1em;
-      height: 1em; }
+    #yDialogContainer .t_titlebar #yAlertTitle {
+      -webkit-box-flex: 1;
+              flex: 1 1;
+      margin-left: auto;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; }
+    #yDialogContainer .t_titlebar .t_close {
+      margin-left: auto;
+      padding: .2em; }
+      #yDialogContainer .t_titlebar .t_close svg {
+        width: 1em;
+        height: 1em; }
   #yDialogContainer .t_content {
     width: auto;
     min-height: 2em;

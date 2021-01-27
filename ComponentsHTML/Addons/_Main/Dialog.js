@@ -12,7 +12,7 @@ var YetaWF_ComponentsHTML;
             // icons used is fas-times
             var dialog = $YetaWF.createElement("div", { id: "yDialogContainer", tabindex: "-1", role: "dialog", "aria-describedby": "yAlert", "aria-labelledby": "yAlertTitle" },
                 $YetaWF.createElement("div", { class: "t_titlebar" },
-                    $YetaWF.createElement("span", { id: "yAlertTitle", class: "t_title" }, setup.title),
+                    $YetaWF.createElement("div", { id: "yAlertTitle", class: "t_title" }, setup.title),
                     $YetaWF.createElement("button", { type: "button", class: "y_buttonlite t_close", "data-tooltip": (_a = setup.closeText) !== null && _a !== void 0 ? _a : "" })),
                 $YetaWF.createElement("div", { id: "yAlert", class: "t_content", style: "width: auto; min-height: 25px; max-height: none; height: auto;" }),
                 $YetaWF.createElement("div", { class: "t_buttonpane" },
@@ -79,7 +79,7 @@ var YetaWF_ComponentsHTML;
             DialogClass.DragDropInProgress = false;
             var dialog = $YetaWF.createElement("div", { id: "yDialogContainer", tabindex: "-1", role: "dialog", "aria-describedby": "yAlert", "aria-labelledby": "yAlertTitle" },
                 $YetaWF.createElement("div", { class: "t_titlebar" },
-                    $YetaWF.createElement("span", { id: "yAlertTitle", class: "t_title" }, setup.title)),
+                    $YetaWF.createElement("div", { id: "yAlertTitle", class: "t_title" }, setup.title)),
                 $YetaWF.createElement("div", { id: "yAlert", class: "t_content", style: "width: auto; min-height: 25px; max-height: none; height: auto;" }));
             $YetaWF.getElement1BySelector("#yAlert", [dialog]).innerHTML = setup.textHTML;
             dialog.style.display = "none";
