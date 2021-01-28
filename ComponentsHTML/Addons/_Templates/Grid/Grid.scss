@@ -86,12 +86,15 @@ $smbuttonhorzmargin: .2em;
                 input {
                     min-width:10ch;
                 }
-                margin-right:2ch;
+                margin-right:1ch;
                 font: var(--mpnl-link-font);
             }
             .tg_pgsel {
-                margin-right:2ch;
+                margin-right:1ch;
                 font: var(--mpnl-link-font);
+            }
+            .tg_pgcolsel {
+                margin-right:1ch;
             }
             .yModuleExpColl {
                 flex: 0 0;

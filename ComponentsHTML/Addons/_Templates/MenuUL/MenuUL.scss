@@ -66,8 +66,15 @@ ul.yt_menuul {
                 background: var(--pm-1-a-bg-hover);
                 color: var(--pm-1-a-clr-hover);
             }
+            &.t_disabled {
+                opacity: var(--body-dis-opacity);
+            }
             i, img {
                 margin-right:.5ch;
+            }
+            input { // checkbox
+                margin-right:.5ch;
+                vertical-align: middle;
             }
             svg {
                 vertical-align: top;
@@ -144,6 +151,9 @@ ul.yt_menuul {
                     &:hover, &:focus {
                         background: var(--pm-2-a-bg-hover);
                         color: var(--pm-2-a-clr-hover);
+                    }
+                    &.t_disabled {
+                        opacity: var(--body-dis-opacity);
                     }
                     i, img {
                         margin-right:.5ch;

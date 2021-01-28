@@ -58,13 +58,15 @@
       .yt_grid .yGridPanelTitle .yPanelActionsContainer .tg_pgbtns .tg_reload {
         margin-right: 1ch; }
       .yt_grid .yGridPanelTitle .yPanelActionsContainer .tg_searchinput {
-        margin-right: 2ch;
+        margin-right: 1ch;
         font: var(--mpnl-link-font); }
         .yt_grid .yGridPanelTitle .yPanelActionsContainer .tg_searchinput input {
           min-width: 10ch; }
       .yt_grid .yGridPanelTitle .yPanelActionsContainer .tg_pgsel {
-        margin-right: 2ch;
+        margin-right: 1ch;
         font: var(--mpnl-link-font); }
+      .yt_grid .yGridPanelTitle .yPanelActionsContainer .tg_pgcolsel {
+        margin-right: 1ch; }
       .yt_grid .yGridPanelTitle .yPanelActionsContainer .yModuleExpColl {
         -webkit-box-flex: 0;
                 flex: 0 0;

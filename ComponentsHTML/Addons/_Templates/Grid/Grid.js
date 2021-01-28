@@ -79,6 +79,7 @@ var YetaWF_ComponentsHTML;
             _this.SelectPageSize = null;
             _this.SelectPanelPageSize = null;
             _this.InputPanelSearch = null;
+            _this.ColumnSelection = null;
             _this.ColumnResizeBar = null;
             _this.ColumnResizeHeader = null;
             _this.LoadingDiv = null;
@@ -104,6 +105,8 @@ var YetaWF_ComponentsHTML;
                 }
                 if (YetaWF_ComponentsHTML.SearchEditComponent) // searchedit may not be in use
                     _this.InputPanelSearch = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond(".yGridPanelTitle [name='__Search']", YetaWF_ComponentsHTML.SearchEditComponent.SELECTOR, [_this.Control]);
+                if (YetaWF_ComponentsHTML.CheckListEditComponent) // checklist may not be in use
+                    _this.ColumnSelection = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond(".yGridPanelTitle [name='__ColumnSelection']", YetaWF_ComponentsHTML.CheckListEditComponent.SELECTOR, [_this.Control]);
             }
             _this.FilterBar = $YetaWF.getElement1BySelectorCond(".tg_filter", [_this.Control]);
             _this.updateStatus();
@@ -193,10 +196,49 @@ var YetaWF_ComponentsHTML;
             //  search input
             if (_this.InputPanelSearch && _this.Setup.PanelHeaderSearchColumns) {
                 _this.InputPanelSearch.Control.addEventListener(YetaWF_ComponentsHTML.SearchEditComponent.EVENTCLICK, function (evt) {
-                    if (_this.InputPanelSearch) {
-                        _this.clearFilters();
-                        _this.reload(0, undefined, undefined, undefined, undefined, undefined, _this.Setup.PanelHeaderSearchColumns, _this.InputPanelSearch.value);
+                    _this.clearFilters();
+                    _this.reload(0, undefined, undefined, undefined, undefined, undefined, _this.Setup.PanelHeaderSearchColumns, _this.InputPanelSearch.value);
+                });
+            }
+            // column selection
+            if (_this.Setup.SettingsModuleGuid && _this.ColumnSelection) {
+                _this.ColumnSelection.Control.addEventListener(YetaWF_ComponentsHTML.CheckListEditComponent.EVENTCHANGE, function (evt) {
+                    var uri = $YetaWF.parseUrl(_this.Setup.SaveSettingsColumnSelectionUrl);
+                    uri.addSearch("SettingsModuleGuid", _this.Setup.SettingsModuleGuid);
+                    // build query args
+                    var entries = _this.ColumnSelection.getValues();
+                    var colIndex = 0;
+                    for (var _i = 0, entries_1 = entries; _i < entries_1.length; _i++) {
+                        var entry = entries_1[_i];
+                        if (!entry.Checked)
+                            uri.addSearch("Columns[" + colIndex++ + "]", entry.Name);
                     }
+                    // show/hide columns
+                    var ths = $YetaWF.getElementsBySelector(".tg_header th", [_this.Control]);
+                    colIndex = 0;
+                    for (var _a = 0, entries_2 = entries; _a < entries_2.length; _a++) {
+                        var entry = entries_2[_a];
+                        if (!entry.Checked) {
+                            _this.Setup.Columns[colIndex].Visible = false;
+                            ths[colIndex].style.display = "none";
+                        }
+                        else {
+                            _this.Setup.Columns[colIndex].Visible = true;
+                            ths[colIndex].style.display = "";
+                        }
+                        ++colIndex;
+                    }
+                    var request = new XMLHttpRequest();
+                    request.open("POST", _this.Setup.SaveSettingsColumnSelectionUrl, true);
+                    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                    request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                    request.onreadystatechange = function (ev) {
+                        if (request.readyState === 4 /*DONE*/) {
+                            _this.setReloading(false);
+                            _this.reload(0);
+                        }
+                    };
+                    request.send(uri.toFormData());
                 });
             }
             // pagesize selection
@@ -771,8 +813,11 @@ var YetaWF_ComponentsHTML;
                                 uri.addSearch("filters[" + fcount + "].field", searchCol);
                                 uri.addSearch("filters[" + fcount + "].operator", "Contains");
                                 uri.addSearch("filters[" + fcount + "].valueAsString", searchText);
+                                ++fcount;
                             }
                         }
+                        if (fcount > 0)
+                            uri.addSearch("Search", "True");
                     }
                     else {
                         var colIndex = 0;

@@ -50,8 +50,13 @@ ul.yt_menuul {
       ul.yt_menuul > li > a:hover, ul.yt_menuul > li > a:focus {
         background: var(--pm-1-a-bg-hover);
         color: var(--pm-1-a-clr-hover); }
+      ul.yt_menuul > li > a.t_disabled {
+        opacity: var(--body-dis-opacity); }
       ul.yt_menuul > li > a i, ul.yt_menuul > li > a img {
         margin-right: .5ch; }
+      ul.yt_menuul > li > a input {
+        margin-right: .5ch;
+        vertical-align: middle; }
       ul.yt_menuul > li > a svg {
         vertical-align: top;
         float: right;
@@ -109,6 +114,8 @@ ul.yt_menuul {
           ul.yt_menuul > li > ul > li > a:hover, ul.yt_menuul > li > ul > li > a:focus {
             background: var(--pm-2-a-bg-hover);
             color: var(--pm-2-a-clr-hover); }
+          ul.yt_menuul > li > ul > li > a.t_disabled {
+            opacity: var(--body-dis-opacity); }
           ul.yt_menuul > li > ul > li > a i, ul.yt_menuul > li > ul > li > a img {
             margin-right: .5ch; }
           ul.yt_menuul > li > ul > li > a svg {

@@ -67,6 +67,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public List<GridColumnDefinition> Columns { get; set; }
         public int MinColumnWidth { get; set; }
         public string SaveSettingsColumnWidthsUrl { get; set; }
+        public string SaveSettingsColumnSelectionUrl { get; set; }
         public object ExtraData { get; set; }
         public string HighlightCss { get; set; }
         public string DisabledCss { get; set; }
@@ -103,12 +104,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public string FilterType { get; set; }
         public string FilterId { get; set; }
         public string MenuId { get; set; }
+        public bool Visible { get; set; }
     }
 
     internal class SearchUI {
         [Caption(""), Description("")]
         [UIHint("Search"), StringLength(80)]
         public string __Search { get; set; }
+    }
+    internal class ColumnSelectionUI {
+        [Caption(""), Description("")]
+        [UIHint("CheckList")]
+        public Dictionary<string, bool> __ColumnSelection { get; set; }
+        public List<SelectionCheckListItem> __ColumnSelection_List { get; set; }
+        public string __ColumnSelection_SVG { get { return "fas-columns"; } }
     }
 
     /// <summary>
@@ -178,7 +187,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             int pageSize = model.InitialPageSize;
             int initialPage = 0;
             int page = 0;
-            if (model.SettingsModuleGuid != null && model.SettingsModuleGuid != Guid.Empty) {
+            if (GridLoadSave.UseGridSettings(model.SettingsModuleGuid)) {
                 gridSavedSettings = GridLoadSave.LoadModuleSettings((Guid)model.SettingsModuleGuid, initialPage + 1, pageSize);
                 pageSize = gridSavedSettings.PageSize;
                 initialPage = gridSavedSettings.CurrentPage - 1;
@@ -207,6 +216,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 SortActiveCss = "tg_active",
                 SettingsModuleGuid = model.SettingsModuleGuid,
                 SaveSettingsColumnWidthsUrl = dictInfo.SaveColumnWidths != false ? Utility.UrlFor(typeof(GridSaveSettingsController), nameof(GridSaveSettingsController.GridSaveColumnWidths)) : null,
+                SaveSettingsColumnSelectionUrl = model.PanelHeaderColumnSelection ? Utility.UrlFor(typeof(GridSaveSettingsController), nameof(GridSaveSettingsController.GridSaveHiddenColumns)) : null,
                 DeletedMessage = model.DeletedMessage,
                 DeleteConfirmationMessage = model.DeleteConfirmationMessage != null && UserSettings.GetProperty<bool>("ConfirmDelete") ? model.DeleteConfirmationMessage : null,
                 DeletedColumnDisplay = model.DeletedColumnDisplay,
@@ -261,7 +271,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             else
                 setup.Pages = 0;
 
-            string tableHTML = await RenderTableHTML(HtmlHelper, model, data, setup.StaticData, dictInfo, FieldName, true, page * pageSize, pageSize);
+            string tableHTML = await RenderTableHTML(HtmlHelper, model, data, setup.StaticData, dictInfo, gridSavedSettings.Columns, FieldName, true, page * pageSize, pageSize);
 
             string noSubmitClass = "";
             if (model.IsStatic) {
@@ -324,6 +334,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     hb.Append($@"
             <div class='tg_pgsel'>
                 {await HtmlHelper.ForEditAsync(pagerUI, nameof(PagerUI.__PageSelection))}
+            </div>");
+                }
+
+                if (model.PanelHeaderColumnSelection) {
+
+                    List<SelectionCheckListItem> list = GetColumnSelection(model, dictInfo, gridSavedSettings, out Dictionary<string, bool> checkList);
+                    ColumnSelectionUI colSelUI = new ColumnSelectionUI() {
+                        __ColumnSelection = checkList,
+                        __ColumnSelection_List = list,
+                    };
+                    hb.Append($@"
+            <div class='tg_pgcolsel'>
+                {await HtmlHelper.ForEditAsync(colSelUI, nameof(ColumnSelectionUI.__ColumnSelection))}
             </div>");
                 }
 
@@ -458,6 +481,11 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
 
                 PropertyData prop = ObjectSupport.GetPropertyData(gridDef.RecordType, propName);
 
+                gridSavedSettings.Columns.TryGetValue(prop.Name, out GridDefinition.ColumnInfo columnInfo);
+
+                // Visible
+                bool colVisible = columnInfo != null ? columnInfo.Visible : dictInfo.GetColumnStatus(propName) != ColumnShowStatus.NotShown;
+
                 // Caption
                 string caption = prop.GetCaption(gridDef.ResourceRedirect);
                 if (!gridCol.Hidden && gridDef.ResourceRedirect != null && string.IsNullOrWhiteSpace(caption))
@@ -489,8 +517,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                     widthCh = gridCol.ChWidth;
 
                 GridDefinition.SortBy sort = GridDefinition.SortBy.NotSpecified;
-                if (gridSavedSettings.Columns.ContainsKey(prop.Name)) {
-                    GridDefinition.ColumnInfo columnInfo = gridSavedSettings.Columns[prop.Name];
+                if (columnInfo != null) {
                     if (columnInfo.Width >= 0)
                         widthPix = columnInfo.Width; // override calculated width
 
@@ -530,25 +557,28 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                     }
                 }
 
-                string resizeHTML = "";
-                if (!gridCol.Locked) {
+                string resizeHTML = string.Empty;
+                if (!gridCol.Locked)
                     resizeHTML = "<span class='tg_resize'>&nbsp;</span>";
-                }
 
-                string cssWidth = "";
+                string cssStyle = string.Empty;
                 if (gridDef.SizeStyle == GridDefinition.SizeStyleEnum.SizeGiven || gridDef.SizeStyle == GridDefinition.SizeStyleEnum.SizeToFit) {
                     if (widthPix > 0) {
                         widthPix = (widthPix < MIN_COL_WIDTHPIX) ? MIN_COL_WIDTHPIX : widthPix;
-                        cssWidth = $" style='width:{widthPix}px'";
+                        cssStyle = $"width:{widthPix}px;";
                     } else {
                         widthCh = (widthCh < MIN_COL_WIDTHCH) ? MIN_COL_WIDTHCH : widthCh;
-                        cssWidth = $" style='width:{widthCh}ch'";
+                        cssStyle = $"width:{widthCh}ch;";
                     }
                 }
+                if (!colVisible)
+                    cssStyle += "display:none;";
+                if (!string.IsNullOrWhiteSpace(cssStyle))
+                    cssStyle = $" style='{cssStyle}";
 
                 // Render column header
                 hb.Append($@"
-        <th class='{alignCss} tg_c_{propName.ToLower()}'{cssWidth}>
+        <th class='{alignCss} tg_c_{propName.ToLower()}'{cssStyle}>
             <span {Basics.CssTooltipSpan}='{HAE(description ?? "")}'>{HE(caption)}</span>{sortHtml}{resizeHTML}
         </th>");
 
@@ -566,8 +596,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
 
                     if (gridCol.FilterOptions.Count > 0) {
 
-                        if (gridSavedSettings.Columns.ContainsKey(prop.Name)) {
-                            GridDefinition.ColumnInfo columnInfo = gridSavedSettings.Columns[prop.Name];
+                        if (columnInfo != null) {
                             if (!string.IsNullOrWhiteSpace(columnInfo.FilterOperator)) {
                                 filterOp = GetFilterOptionEnum(columnInfo.FilterOperator);
                                 filterValue = columnInfo.FilterValue;
@@ -825,6 +854,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                     FilterType = filterType,
                     FilterId = idFilter,
                     MenuId = idMenu,
+                    Visible = colVisible,
                 });
 
                 ++colIndex;
@@ -926,8 +956,43 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             return gridCol.FilterOptions.ToList();
         }
 
+        private List<SelectionCheckListItem> GetColumnSelection(GridDefinition gridDef, GridDictionaryInfo.ReadGridDictionaryInfo dictInfo, GridLoadSave.GridSavedSettings gridSavedSettings, out Dictionary<string, bool> checkList) {
+
+            List<SelectionCheckListItem> list = new List<SelectionCheckListItem>();
+            checkList = new Dictionary<string, bool>();
+
+            foreach (KeyValuePair<string, GridColumnInfo> d in dictInfo.ColumnInfo) {
+
+                string propName = d.Key;
+                GridColumnInfo gridCol = d.Value;
+
+                if (gridCol.Hidden)
+                    continue;
+
+                PropertyData prop = ObjectSupport.GetPropertyData(gridDef.RecordType, propName);
+
+                gridSavedSettings.Columns.TryGetValue(propName, out GridDefinition.ColumnInfo columnInfo);
+                ColumnShowStatus colStatus = dictInfo.GetColumnStatus(propName);
+
+                // Caption
+                string caption = prop.GetCaption(gridDef.ResourceRedirect);
+                if (!gridCol.Hidden && gridDef.ResourceRedirect != null && string.IsNullOrWhiteSpace(caption))
+                    continue;// we need a caption if we're using resource redirects
+
+                // Description
+                string description = prop.GetDescription(gridDef.ResourceRedirect);
+
+                list.Add(new SelectionCheckListItem { Text = caption, Tooltip = description, Enabled = colStatus != ColumnShowStatus.AlwaysShown });
+
+                // Visible
+                bool colVisible = columnInfo != null ? columnInfo.Visible : colStatus != ColumnShowStatus.NotShown;
+                checkList.Add(propName, colVisible);
+            }
+            return list;
+        }
+
         internal static async Task<string> RenderTableHTML(YHtmlHelper htmlHelper,
-                GridDefinition model, DataSourceResult data, List<object> staticData, GridDictionaryInfo.ReadGridDictionaryInfo dictInfo, string fieldPrefix, bool readOnly, int skip, int take) {
+                GridDefinition model, DataSourceResult data, List<object> staticData, GridDictionaryInfo.ReadGridDictionaryInfo dictInfo, GridDefinition.ColumnDictionary colDict, string fieldPrefix, bool readOnly, int skip, int take) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -964,7 +1029,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                     }
                     bool hide = model.IsStatic && !(recordCount >= first && recordCount < last);
 
-                    hb.Append(await RenderRecordHTMLAsync(htmlHelper, model, dictInfo, fieldPrefix, record, recordCount, origin, hide));
+                    hb.Append(await RenderRecordHTMLAsync(htmlHelper, model, dictInfo, colDict, fieldPrefix, record, recordCount, origin, hide));
                     ++recordCount;
                 }
             } else {
@@ -978,7 +1043,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
         }
 
         internal static async Task<string> RenderRecordHTMLAsync(YHtmlHelper htmlHelper,
-                GridDefinition gridModel, GridDictionaryInfo.ReadGridDictionaryInfo dictInfo, string fieldPrefix, object record, int recordCount, int origin, bool hide) {
+                GridDefinition gridModel, GridDictionaryInfo.ReadGridDictionaryInfo dictInfo, GridDefinition.ColumnDictionary colDict, string fieldPrefix, object record, int recordCount, int origin, bool hide) {
 
             HtmlBuilder hbHidden = new HtmlBuilder();
 
@@ -1037,57 +1102,62 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                     GridColumnInfo gridCol = dictInfo.ColumnInfo[colName];
                     if (!gridCol.Hidden) {
 
-                        PropertyData prop = ObjectSupport.GetPropertyData(recordType, colName);
-                        object value = prop.GetPropertyValue<object>(record);
+                        colDict.TryGetValue(colName, out GridDefinition.ColumnInfo columnInfo);
+                        bool colVisible = columnInfo != null ? columnInfo.Visible : dictInfo.GetColumnStatus(colName) != ColumnShowStatus.NotShown;
 
-                        if (gridModel.ResourceRedirect != null && string.IsNullOrWhiteSpace(prop.GetCaption(gridModel.ResourceRedirect)))
-                            continue;// we need a caption if we're using resource redirects
+                        if (colVisible) {
+                            PropertyData prop = ObjectSupport.GetPropertyData(recordType, colName);
+                            object value = prop.GetPropertyValue<object>(record);
 
-                        // Alignment
-                        string tdCss = null;
-                        switch (gridCol.Alignment) {
-                            case GridHAlignmentEnum.Unspecified:
-                            case GridHAlignmentEnum.Left:
-                                tdCss = "tg_left";
-                                break;
-                            case GridHAlignmentEnum.Center:
-                                tdCss = "tg_center";
-                                break;
-                            case GridHAlignmentEnum.Right:
-                                tdCss = "tg_right";
-                                break;
-                        }
+                            if (gridModel.ResourceRedirect != null && string.IsNullOrWhiteSpace(prop.GetCaption(gridModel.ResourceRedirect)))
+                                continue;// we need a caption if we're using resource redirects
 
-                        // Truncate
-                        if (gridCol.Truncate)
-                            tdCss = CssManager.CombineCss(tdCss, "tg_truncate");
+                            // Alignment
+                            string tdCss = null;
+                            switch (gridCol.Alignment) {
+                                case GridHAlignmentEnum.Unspecified:
+                                case GridHAlignmentEnum.Left:
+                                    tdCss = "tg_left";
+                                    break;
+                                case GridHAlignmentEnum.Center:
+                                    tdCss = "tg_center";
+                                    break;
+                                case GridHAlignmentEnum.Right:
+                                    tdCss = "tg_right";
+                                    break;
+                            }
 
-                        hb.Append($@"
+                            // Truncate
+                            if (gridCol.Truncate)
+                                tdCss = CssManager.CombineCss(tdCss, "tg_truncate");
+
+                            hb.Append($@"
     <td role='gridcell' class='{tdCss} tg_c_{colName.ToLower()}'>");
 
-                        if (hbHidden.Length > 0) { // add all hidden fields to first cell
-                            hb.Append(hbHidden.ToString());
-                            hbHidden = new HtmlBuilder();
-                        }
+                            if (hbHidden.Length > 0) { // add all hidden fields to first cell
+                                hb.Append(hbHidden.ToString());
+                                hbHidden = new HtmlBuilder();
+                            }
 
-                        string output;
-                        if ((YetaWFManager.IsDemo || Manager.IsDemoUser) && prop.HasAttribute(nameof(ExcludeDemoModeAttribute))) {
-                            output = __ResStr("demo", "(Demo - N/A)");
-                        } else if (recordEnabled && !prop.ReadOnly) {
-                            output = await htmlHelper.ForEditComponentAsync(record, colName, value, prop.UIHint);
-                            output += htmlHelper.ValidationMessage(Manager.NestedComponentPrefix, colName);
-                        } else {
-                            output = await htmlHelper.ForDisplayComponentAsync(record, colName, value, prop.UIHint);
-                        }
-                        if (!string.IsNullOrWhiteSpace(output))
-                            output = output.Trim(new char[] { '\r', '\n' }); // templates can generate a lot of extra \r\n which breaks filtering
-                        if (string.IsNullOrWhiteSpace(output))
-                            output = "&nbsp;";
+                            string output;
+                            if ((YetaWFManager.IsDemo || Manager.IsDemoUser) && prop.HasAttribute(nameof(ExcludeDemoModeAttribute))) {
+                                output = __ResStr("demo", "(Demo - N/A)");
+                            } else if (recordEnabled && !prop.ReadOnly) {
+                                output = await htmlHelper.ForEditComponentAsync(record, colName, value, prop.UIHint);
+                                output += htmlHelper.ValidationMessage(Manager.NestedComponentPrefix, colName);
+                            } else {
+                                output = await htmlHelper.ForDisplayComponentAsync(record, colName, value, prop.UIHint);
+                            }
+                            if (!string.IsNullOrWhiteSpace(output))
+                                output = output.Trim(new char[] { '\r', '\n' }); // templates can generate a lot of extra \r\n which breaks filtering
+                            if (string.IsNullOrWhiteSpace(output))
+                                output = "&nbsp;";
 
-                        hb.Append(output);
+                            hb.Append(output);
 
-                        hb.Append($@"
+                            hb.Append($@"
     </td>");
+                        }
                     }
                 }
                 hb.Append($@"

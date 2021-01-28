@@ -19,7 +19,9 @@ namespace YetaWF_ComponentsHTML {
         AutoRemove: boolean;
         AttachTo: HTMLElement | null;
         Dynamic?: boolean;
-        Click?: (liElem: HTMLLIElement) => void;
+        Click?: (liElem: HTMLLIElement, target?: HTMLElement|null) => void;
+        CloseOnClick?: boolean;// defaults to true
+        RightAlign?: boolean;// defaults to false
     }
 
     interface LevelInfo {
@@ -63,15 +65,19 @@ namespace YetaWF_ComponentsHTML {
             // add icons to all items with submenu
             let aSubs = $YetaWF.getElementsBySelector("li.t_hassub > a", [this.Control]);
             for (let aSub of aSubs) {
-                aSub.innerHTML += YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_right;
+                if (!$YetaWF.elementHasClass(aSub, "t_disabled")) {
+                    aSub.innerHTML += YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_right;
 
-                aSub.setAttribute("aria-haspopup", "true");
-                aSub.setAttribute("aria-expanded", "false");
+                    aSub.setAttribute("aria-haspopup", "true");
+                    aSub.setAttribute("aria-expanded", "false");
+                }
             }
 
             let liSubs = $YetaWF.getElementsBySelector("li > a", [this.Control]);
             $YetaWF.registerMultipleEventHandlers(liSubs, ["mouseenter"], null, (ev: Event): boolean => {
                 let owningAnchor = ev.__YetaWFElem as HTMLAnchorElement;
+                if ($YetaWF.elementHasClass(owningAnchor, "t_disabled"))
+                    return false;
                 let owningLI = $YetaWF.elementClosest(owningAnchor, "li") as HTMLLIElement;
                 let owningUL = $YetaWF.elementClosest(owningAnchor, "ul") as HTMLUListElement;
 
@@ -88,7 +94,6 @@ namespace YetaWF_ComponentsHTML {
                 return false;
             });
 
-
             if (this.Setup.AutoOpen)
                 this.open();
         }
@@ -103,12 +108,16 @@ namespace YetaWF_ComponentsHTML {
                     let liSubs = $YetaWF.getElementsBySelector("li > a", [this.Control]);
                     $YetaWF.registerMultipleEventHandlers(liSubs, ["click"], null, (ev: Event): boolean => {
 
+                        let target = ev.target as HTMLElement|null;
+
                         let owningAnchor = ev.__YetaWFElem as HTMLAnchorElement;
+                        if ($YetaWF.elementHasClass(owningAnchor, "t_disabled"))
+                            return false;
                         let owningLI = $YetaWF.elementClosest(owningAnchor, "li") as HTMLLIElement;
 
-                        MenuULComponent.closeMenus();
-                        this.Setup.Click!(owningLI);
-
+                        if (this.Setup.CloseOnClick !== false)
+                            MenuULComponent.closeMenus();
+                        this.Setup.Click!(owningLI, target);
                         return false;
                     });
                 }
@@ -149,8 +158,12 @@ namespace YetaWF_ComponentsHTML {
         }
 
         private positionMenu(): void {
-            if (this.Setup.AttachTo)
-                $YetaWF.positionLeftAlignedBelow(this.Setup.AttachTo, this.Control);
+            if (this.Setup.AttachTo) {
+                if (this.Setup.RightAlign === true)
+                    $YetaWF.positionRightAlignedBelow(this.Setup.AttachTo, this.Control);
+                else
+                    $YetaWF.positionLeftAlignedBelow(this.Setup.AttachTo, this.Control);
+            }
         }
 
         private CloseSublevelsTimout: number = 0;

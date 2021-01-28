@@ -1,5 +1,6 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using System;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Models;
@@ -54,8 +55,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             GridDictionaryInfo.ReadGridDictionaryInfo dictInfo = await GridDictionaryInfo.LoadGridColumnDefinitionsAsync(model.GridDef);
 
+            GridDefinition.ColumnDictionary colDict = new GridDefinition.ColumnDictionary();
+            if (GridLoadSave.UseGridSettings(model.GridDef.SettingsModuleGuid)) {
+                GridLoadSave.GridSavedSettings gridSavedSettings = GridLoadSave.LoadModuleSettings((Guid)model.GridDef.SettingsModuleGuid, 1, 10);
+                colDict = gridSavedSettings.Columns;
+            }
+
             // render record
-            string tr = await GridDisplayComponent.RenderRecordHTMLAsync(HtmlHelper, model.GridDef, dictInfo, model.FieldPrefix, model.Data, 0, 0, false);
+            string tr = await GridDisplayComponent.RenderRecordHTMLAsync(HtmlHelper, model.GridDef, dictInfo, colDict, model.FieldPrefix, model.Data, 0, 0, false);
 
             GridRecordResult result = new GridRecordResult {
                 TR = tr,

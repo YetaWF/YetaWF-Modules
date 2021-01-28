@@ -38,8 +38,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     return (from c in ColumnInfo.Values where !c.Hidden select c).Count();
                 }
             }
+
+            public ColumnShowStatus GetColumnStatus(string name) {
+                if (!ColumnInfo.TryGetValue(name, out GridColumnInfo colInfo))
+                    return ColumnShowStatus.Shown;
+                return colInfo.ShowStatus;
+            }
+
             public ReadGridDictionaryInfo() {
                 PageSizes = new List<int>();
+                ColumnInfo = new Dictionary<string, GridColumnInfo>();
             }
         }
 
@@ -185,6 +193,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                     add = false;
                                     break;
                                 }
+                            } else if (string.Compare(part, "notshown", true) == 0) {
+                                gridCol.ShowStatus = ColumnShowStatus.NotShown;
+                            } else if (string.Compare(part, "alwaysshown", true) == 0) {
+                                gridCol.ShowStatus = ColumnShowStatus.AlwaysShown;
                             } else if (string.Compare(part, "filter", true) == 0) {
                                 if (gridCol.FilterOptions.Count > 0) throw new InternalError("Multiple filter options in {0} for {1}", file, name);
                                 gridCol.FilterOptions = GetAllFilterOptions();

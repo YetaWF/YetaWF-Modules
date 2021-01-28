@@ -11,7 +11,7 @@ using YetaWF.Core.Support.Repository;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// This static class defines basic services offered by the Grid component.
+    /// This static class defines basic services offered by the Grid component used to save the current state of a grid, like column widths, sort order, visible columns, etc.
     /// </summary>
     internal static class GridLoadSave {
 
@@ -91,6 +91,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 return list.Count > 0 ? list : null;
             }
         }
+
+        public static bool UseGridSettings(Guid? moduleGuid) {
+            return moduleGuid != null && moduleGuid != Guid.Empty;
+        }
+
         /// <summary>
         /// Loads grid settings that have been previously saved for a specific module.
         /// If no saved settings are available, default settings are returned.
@@ -103,14 +108,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         ///
         /// This method is not used by applications. It is reserved for component implementation.</remarks>
         public static GridSavedSettings LoadModuleSettings(Guid moduleGuid, int defaultInitialPage = 1, int defaultPageSize = 10) {
-            SettingsDictionary modSettings = Manager.SessionSettings.GetModuleSettings(moduleGuid);
-            GridSavedSettings gridSavedSettings = modSettings.GetValue<GridSavedSettings>("GridSavedSettings");
-            if (gridSavedSettings == null) {
-                gridSavedSettings = new GridSavedSettings() {
-                    CurrentPage = defaultInitialPage,
-                    PageSize = defaultPageSize,
-                };
-            }
+            GridSavedSettings gridSavedSettings;
+            if (UseGridSettings(moduleGuid)) {
+                SettingsDictionary modSettings = Manager.SessionSettings.GetModuleSettings(moduleGuid);
+                gridSavedSettings = modSettings.GetValue<GridSavedSettings>("GridSavedSettings");
+                if (gridSavedSettings == null) {
+                    gridSavedSettings = new GridSavedSettings() {
+                        CurrentPage = defaultInitialPage,
+                        PageSize = defaultPageSize,
+                    };
+                }
+            } else
+                throw new InternalError($"{nameof(moduleGuid)} not available to load grid settings");
             return gridSavedSettings;
         }
         /// <summary>
@@ -120,17 +129,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="gridSavedSettings">The grid settings to be saved.</param>
         /// <remarks>This method is not used by applications. It is reserved for component implementation.</remarks>
         public static void SaveModuleSettings(Guid moduleGuid, GridSavedSettings gridSavedSettings) {
-            SettingsDictionary modSettings = Manager.SessionSettings.GetModuleSettings(moduleGuid);
-            if (modSettings != null) {
-                modSettings.SetValue<GridSavedSettings>("GridSavedSettings", gridSavedSettings);
-                modSettings.Save();
-            }
+            if (UseGridSettings(moduleGuid)) {
+                SettingsDictionary modSettings = Manager.SessionSettings.GetModuleSettings(moduleGuid);
+                if (modSettings != null) {
+                    modSettings.SetValue<GridSavedSettings>("GridSavedSettings", gridSavedSettings);
+                    modSettings.Save();
+                }
+            } else
+                throw new InternalError($"{nameof(moduleGuid)} not available to save grid settings");
         }
 
         public static async Task SaveSettingsAsync(GridPartialData gridData) {
 
             // save the current sort order and page size
-            if (gridData.GridDef.SettingsModuleGuid != null && gridData.GridDef.SettingsModuleGuid != Guid.Empty) {
+            if (UseGridSettings(gridData.GridDef.SettingsModuleGuid)) {
                 GridLoadSave.GridSavedSettings gridSavedSettings = GridLoadSave.LoadModuleSettings((Guid)gridData.GridDef.SettingsModuleGuid);
                 gridSavedSettings.PageSize = gridData.Take;
                 if (gridData.Take == 0)

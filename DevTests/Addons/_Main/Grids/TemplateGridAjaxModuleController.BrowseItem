@@ -1,5 +1,5 @@
-Commands            icons 2
-Id                  sort filter 8 right
+Commands            icons 2 alwaysshown
+Id                  sort filter 8 right notshown
 BoolVal             sort filter 10 center
 Decimal             sort filter 20 right
 SomeDateTime        sort filter 20

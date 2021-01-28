@@ -39,13 +39,17 @@ var YetaWF_ComponentsHTML;
             var aSubs = $YetaWF.getElementsBySelector("li.t_hassub > a", [_this.Control]);
             for (var _i = 0, aSubs_1 = aSubs; _i < aSubs_1.length; _i++) {
                 var aSub = aSubs_1[_i];
-                aSub.innerHTML += YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_right;
-                aSub.setAttribute("aria-haspopup", "true");
-                aSub.setAttribute("aria-expanded", "false");
+                if (!$YetaWF.elementHasClass(aSub, "t_disabled")) {
+                    aSub.innerHTML += YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_right;
+                    aSub.setAttribute("aria-haspopup", "true");
+                    aSub.setAttribute("aria-expanded", "false");
+                }
             }
             var liSubs = $YetaWF.getElementsBySelector("li > a", [_this.Control]);
             $YetaWF.registerMultipleEventHandlers(liSubs, ["mouseenter"], null, function (ev) {
                 var owningAnchor = ev.__YetaWFElem;
+                if ($YetaWF.elementHasClass(owningAnchor, "t_disabled"))
+                    return false;
                 var owningLI = $YetaWF.elementClosest(owningAnchor, "li");
                 var owningUL = $YetaWF.elementClosest(owningAnchor, "ul");
                 var subUL = $YetaWF.getElement1BySelectorCond("ul", [owningLI]);
@@ -70,10 +74,14 @@ var YetaWF_ComponentsHTML;
                 if (this.Setup.Click) {
                     var liSubs = $YetaWF.getElementsBySelector("li > a", [this.Control]);
                     $YetaWF.registerMultipleEventHandlers(liSubs, ["click"], null, function (ev) {
+                        var target = ev.target;
                         var owningAnchor = ev.__YetaWFElem;
+                        if ($YetaWF.elementHasClass(owningAnchor, "t_disabled"))
+                            return false;
                         var owningLI = $YetaWF.elementClosest(owningAnchor, "li");
-                        MenuULComponent.closeMenus();
-                        _this.Setup.Click(owningLI);
+                        if (_this.Setup.CloseOnClick !== false)
+                            MenuULComponent.closeMenus();
+                        _this.Setup.Click(owningLI, target);
                         return false;
                     });
                 }
@@ -106,8 +114,12 @@ var YetaWF_ComponentsHTML;
             this.setPath();
         };
         MenuULComponent.prototype.positionMenu = function () {
-            if (this.Setup.AttachTo)
-                $YetaWF.positionLeftAlignedBelow(this.Setup.AttachTo, this.Control);
+            if (this.Setup.AttachTo) {
+                if (this.Setup.RightAlign === true)
+                    $YetaWF.positionRightAlignedBelow(this.Setup.AttachTo, this.Control);
+                else
+                    $YetaWF.positionLeftAlignedBelow(this.Setup.AttachTo, this.Control);
+            }
         };
         MenuULComponent.prototype.scheduleCloseSublevelsStartingAt = function (newOwningUL) {
             var _this = this;

@@ -20,9 +20,11 @@ namespace YetaWF.Modules.ComponentsHTML.Controllers {
         /// Used in conjunction with client-side code.</remarks>
         [AllowPost]
         public ActionResult SaveExpandCollapse(Guid settingsModuleGuid, bool expanded) {
-            GridLoadSave.GridSavedSettings gridSavedSettings = GridLoadSave.LoadModuleSettings(settingsModuleGuid);
-            gridSavedSettings.Collapsed = !expanded;
-            GridLoadSave.SaveModuleSettings(settingsModuleGuid, gridSavedSettings);
+            if (GridLoadSave.UseGridSettings(settingsModuleGuid)) {
+                GridLoadSave.GridSavedSettings gridSavedSettings = GridLoadSave.LoadModuleSettings(settingsModuleGuid);
+                gridSavedSettings.Collapsed = !expanded;
+                GridLoadSave.SaveModuleSettings(settingsModuleGuid, gridSavedSettings);
+            }
             return new EmptyResult();
         }
     }

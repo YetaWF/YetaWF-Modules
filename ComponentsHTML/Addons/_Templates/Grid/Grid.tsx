@@ -25,6 +25,7 @@ namespace YetaWF_ComponentsHTML {
         SizeStyle: SizeStyleEnum;
         Columns: GridColumnDefinition[];
         SaveSettingsColumnWidthsUrl: string;
+        SaveSettingsColumnSelectionUrl: string;
         ExtraData: any;
         HighlightCss: string;
         DisabledCss: string;
@@ -57,6 +58,7 @@ namespace YetaWF_ComponentsHTML {
         FilterType: string;
         FilterId: string;
         MenuId: string;
+        Visible: boolean;
     }
     enum SortByEnum {
         NotSpecified = 0,
@@ -125,6 +127,7 @@ namespace YetaWF_ComponentsHTML {
         private SelectPageSize: YetaWF_ComponentsHTML.DropDownListEditComponent | null = null;
         private SelectPanelPageSize: YetaWF_ComponentsHTML.DropDownListEditComponent | null = null;
         private InputPanelSearch: YetaWF_ComponentsHTML.SearchEditComponent | null = null;
+        private ColumnSelection: YetaWF_ComponentsHTML.CheckListEditComponent | null = null;
         private ColumnResizeBar: HTMLElement | null = null;
         private ColumnResizeHeader: HTMLTableHeaderCellElement | null = null;
         private TBody: HTMLElement;
@@ -169,7 +172,9 @@ namespace YetaWF_ComponentsHTML {
                     this.SelectPanelPageSize = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond<DropDownListEditComponent>(".yGridPanelTitle select[name='__PageSelection']", DropDownListEditComponent.SELECTOR, [this.Control]);
                 }
                 if (SearchEditComponent) // searchedit may not be in use
-                    this.InputPanelSearch =  YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond<SearchEditComponent>(".yGridPanelTitle [name='__Search']", SearchEditComponent.SELECTOR, [this.Control]);
+                    this.InputPanelSearch = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond<SearchEditComponent>(".yGridPanelTitle [name='__Search']", SearchEditComponent.SELECTOR, [this.Control]);
+                if (CheckListEditComponent) // checklist may not be in use
+                    this.ColumnSelection = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond<CheckListEditComponent>(".yGridPanelTitle [name='__ColumnSelection']", CheckListEditComponent.SELECTOR, [this.Control]);
             }
             this.FilterBar = $YetaWF.getElement1BySelectorCond(".tg_filter", [this.Control]) as HTMLDivElement | null;
 
@@ -195,6 +200,8 @@ namespace YetaWF_ComponentsHTML {
                     if ($YetaWF.isVisible(filterBar)) {
                         filterBar.style.display = "none";
                         this.clearFilters();
+                        if (this.InputPanelSearch)
+                            this.InputPanelSearch.value = "";
                         this.reload(0);
                     } else {
                         filterBar.style.display = "";
@@ -261,10 +268,50 @@ namespace YetaWF_ComponentsHTML {
             //  search input
             if (this.InputPanelSearch && this.Setup.PanelHeaderSearchColumns) {
                 this.InputPanelSearch.Control.addEventListener(SearchEditComponent.EVENTCLICK, (evt: Event): void => {
-                    if (this.InputPanelSearch) {
-                        this.clearFilters();
-                        this.reload(0, undefined, undefined, undefined, undefined, undefined, this.Setup.PanelHeaderSearchColumns, this.InputPanelSearch.value);
+                    this.clearFilters();
+                    this.reload(0, undefined, undefined, undefined, undefined, undefined, this.Setup.PanelHeaderSearchColumns, this.InputPanelSearch!.value);
+                });
+            }
+            // column selection
+            if (this.Setup.SettingsModuleGuid && this.ColumnSelection) {
+                this.ColumnSelection.Control.addEventListener(CheckListEditComponent.EVENTCHANGE, (evt: Event): void => {
+
+                    let uri = $YetaWF.parseUrl(this.Setup.SaveSettingsColumnSelectionUrl);
+                    uri.addSearch("SettingsModuleGuid", this.Setup.SettingsModuleGuid);
+
+                    // build query args
+                    let entries = this.ColumnSelection!.getValues();
+                    let colIndex = 0;
+                    for (let entry of entries) {
+                        if (!entry.Checked)
+                            uri.addSearch(`Columns[${colIndex++}]`, entry.Name);
                     }
+
+                    // show/hide columns
+                    let ths = $YetaWF.getElementsBySelector(".tg_header th", [this.Control]);
+                    colIndex = 0;
+                    for (let entry of entries) {
+                        if (!entry.Checked) {
+                            this.Setup.Columns[colIndex].Visible = false;
+                            ths[colIndex].style.display = "none";
+                        } else {
+                            this.Setup.Columns[colIndex].Visible = true;
+                            ths[colIndex].style.display = "";
+                        }
+                        ++colIndex;
+                    }
+
+                    let request: XMLHttpRequest = new XMLHttpRequest();
+                    request.open("POST", this.Setup.SaveSettingsColumnSelectionUrl, true);
+                    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                    request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                    request.onreadystatechange = (ev: Event): any => {
+                        if (request.readyState === 4 /*DONE*/) {
+                            this.setReloading(false);
+                            this.reload(0);
+                        }
+                    };
+                    request.send(uri.toFormData());
                 });
             }
             // pagesize selection
@@ -349,6 +396,8 @@ namespace YetaWF_ComponentsHTML {
                     let colIndex = Array.prototype.indexOf.call(filter.children, head);
                     this.clearColSortValue(colIndex);
                     this.reload(0);
+                    if (this.InputPanelSearch)
+                        this.InputPanelSearch.value = "";
                     return false;
                 });
                 this.addDirectFilterHandlers();
@@ -838,8 +887,11 @@ namespace YetaWF_ComponentsHTML {
                                 uri.addSearch(`filters[${fcount}].field`, searchCol);
                                 uri.addSearch(`filters[${fcount}].operator`, "Contains");
                                 uri.addSearch(`filters[${fcount}].valueAsString`, searchText);
+                                ++fcount;
                             }
                         }
+                        if (fcount > 0)
+                            uri.addSearch("Search", "True");
                     } else {
                         let colIndex = 0;
                         let fcount = 0;
@@ -1036,6 +1088,8 @@ namespace YetaWF_ComponentsHTML {
                         // handle selection change
                         $YetaWF.registerCustomEventHandlerDocument(DropDownListEditComponent.EVENTCHANGE, `#${col.FilterId}`, (ev: Event): boolean => {
                             this.reload(0);
+                            if (this.InputPanelSearch)
+                                this.InputPanelSearch.value = "";
                             return false;
                         });
                         break;
@@ -1050,6 +1104,8 @@ namespace YetaWF_ComponentsHTML {
                         $YetaWF.registerEventHandler(elem, "keydown", null, (ev: KeyboardEvent): boolean => {
                             if (ev.keyCode === 13) { // Return
                                 this.reload(0);
+                                if (this.InputPanelSearch)
+                                    this.InputPanelSearch.value = "";
                                 return false;
                             }
                             return true;
@@ -1090,6 +1146,8 @@ namespace YetaWF_ComponentsHTML {
             } else
                 elem.value = "";
             let grid: Grid = YetaWF.ComponentBaseDataImpl.getControlFromTag(elem, YetaWF_ComponentsHTML.Grid.SELECTOR);
+            if (grid.InputPanelSearch)
+                grid.InputPanelSearch.value = "";
             grid.reload(0);
         }
 
