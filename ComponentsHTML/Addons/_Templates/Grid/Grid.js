@@ -129,6 +129,8 @@ var YetaWF_ComponentsHTML;
                     if ($YetaWF.isVisible(filterBar)) {
                         filterBar.style.display = "none";
                         _this.clearFilters();
+                        if (_this.InputPanelSearch)
+                            _this.InputPanelSearch.value = "";
                         _this.reload(0);
                     }
                     else {
@@ -214,17 +216,20 @@ var YetaWF_ComponentsHTML;
                             uri.addSearch("Columns[" + colIndex++ + "]", entry.Name);
                     }
                     // show/hide columns
-                    var ths = $YetaWF.getElementsBySelector(".tg_header th", [_this.Control]);
+                    var thsH = $YetaWF.getElementsBySelector(".tg_header th", [_this.Control]);
+                    var thsF = $YetaWF.getElementsBySelector(".tg_filter th", [_this.Control]);
                     colIndex = 0;
                     for (var _a = 0, entries_2 = entries; _a < entries_2.length; _a++) {
                         var entry = entries_2[_a];
                         if (!entry.Checked) {
                             _this.Setup.Columns[colIndex].Visible = false;
-                            ths[colIndex].style.display = "none";
+                            thsH[colIndex].style.display = "none";
+                            thsF[colIndex].style.display = "none";
                         }
                         else {
                             _this.Setup.Columns[colIndex].Visible = true;
-                            ths[colIndex].style.display = "";
+                            thsH[colIndex].style.display = "";
+                            thsF[colIndex].style.display = "";
                         }
                         ++colIndex;
                     }
@@ -324,6 +329,8 @@ var YetaWF_ComponentsHTML;
                     var colIndex = Array.prototype.indexOf.call(filter.children, head);
                     _this.clearColSortValue(colIndex);
                     _this.reload(0);
+                    if (_this.InputPanelSearch)
+                        _this.InputPanelSearch.value = "";
                     return false;
                 });
                 _this.addDirectFilterHandlers();
@@ -1023,6 +1030,8 @@ var YetaWF_ComponentsHTML;
                         // handle selection change
                         $YetaWF.registerCustomEventHandlerDocument(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, "#" + col.FilterId, function (ev) {
                             _this.reload(0);
+                            if (_this.InputPanelSearch)
+                                _this.InputPanelSearch.value = "";
                             return false;
                         });
                         break;
@@ -1037,6 +1046,8 @@ var YetaWF_ComponentsHTML;
                         $YetaWF.registerEventHandler(elem, "keydown", null, function (ev) {
                             if (ev.keyCode === 13) { // Return
                                 _this.reload(0);
+                                if (_this.InputPanelSearch)
+                                    _this.InputPanelSearch.value = "";
                                 return false;
                             }
                             return true;
@@ -1082,6 +1093,8 @@ var YetaWF_ComponentsHTML;
             else
                 elem.value = "";
             var grid = YetaWF.ComponentBaseDataImpl.getControlFromTag(elem, YetaWF_ComponentsHTML.Grid.SELECTOR);
+            if (grid.InputPanelSearch)
+                grid.InputPanelSearch.value = "";
             grid.reload(0);
         };
         Grid.prototype.getColSortValue = function (colIndex) {

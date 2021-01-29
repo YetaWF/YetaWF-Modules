@@ -592,7 +592,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 if (!gridDef.IsStatic) {
 
                     filterhb.Append($@"
-        <th class='tg_f_{propName.ToLower()}'>");
+        <th class='tg_f_{propName.ToLower()}'{(colVisible ? string.Empty : " style='display:none;'")}>");
 
                     if (gridCol.FilterOptions.Count > 0) {
 

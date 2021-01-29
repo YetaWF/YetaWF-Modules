@@ -288,15 +288,18 @@ namespace YetaWF_ComponentsHTML {
                     }
 
                     // show/hide columns
-                    let ths = $YetaWF.getElementsBySelector(".tg_header th", [this.Control]);
+                    let thsH = $YetaWF.getElementsBySelector(".tg_header th", [this.Control]);
+                    let thsF = $YetaWF.getElementsBySelector(".tg_filter th", [this.Control]);
                     colIndex = 0;
                     for (let entry of entries) {
                         if (!entry.Checked) {
                             this.Setup.Columns[colIndex].Visible = false;
-                            ths[colIndex].style.display = "none";
+                            thsH[colIndex].style.display = "none";
+                            thsF[colIndex].style.display = "none";
                         } else {
                             this.Setup.Columns[colIndex].Visible = true;
-                            ths[colIndex].style.display = "";
+                            thsH[colIndex].style.display = "";
+                            thsF[colIndex].style.display = "";
                         }
                         ++colIndex;
                     }
