@@ -28,19 +28,34 @@ namespace YetaWF.Modules.DevTests.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_Display(string url) {
+        public ModuleAction GetAction_User() {
             return new ModuleAction(this) {
-                Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
+                Url = "/User",
                 Image = "#Display",
-                LinkText = this.__ResStr("displayLink", "Grid (Ajax)"),
-                MenuText = this.__ResStr("displayText", "Grid (Ajax)"),
-                Tooltip = this.__ResStr("displayTooltip", "Display a sample grid"),
-                Legend = this.__ResStr("displayLegend", "Displays a sample grid"),
-                Style = ModuleAction.ActionStyleEnum.Normal,
+                LinkText = this.__ResStr("displayLink", "User"),
+                MenuText = this.__ResStr("displayText", "User"),
+                Tooltip = this.__ResStr("displayTooltip", "Display user account page"),
+                Legend = this.__ResStr("displayLegend", "Displays the user account page"),
+                Style = ModuleAction.ActionStyleEnum.NewWindow,
                 Category = ModuleAction.ActionCategoryEnum.Read,
                 Mode = ModuleAction.ActionModeEnum.Any,
-                Location = ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
-                SaveReturnUrl = true,
+                Location = ModuleAction.ActionLocationEnum.NoAuto,
+                SaveReturnUrl = false,
+            };
+        }
+        public ModuleAction GetAction_Dashboard() {
+            return new ModuleAction(this) {
+                Url = "/Admin/Bar/Dashboard",
+                Image = "#Display",
+                LinkText = this.__ResStr("displayLink", "Dashboard"),
+                MenuText = this.__ResStr("displayText", "Dashboard"),
+                Tooltip = this.__ResStr("displayTooltip", "Display administrator dashboard page"),
+                Legend = this.__ResStr("displayLegend", "Displays the administrator dashboard page"),
+                Style = ModuleAction.ActionStyleEnum.NewWindow,
+                Category = ModuleAction.ActionCategoryEnum.Read,
+                Mode = ModuleAction.ActionModeEnum.Any,
+                Location = ModuleAction.ActionLocationEnum.NoAuto,
+                SaveReturnUrl = false,
             };
         }
     }

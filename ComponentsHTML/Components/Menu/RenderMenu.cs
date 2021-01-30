@@ -22,7 +22,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }   
         internal static async Task<string> RenderMenuAsync(MenuList menu, string id = null, string cssClass = null, bool Hidden = false, YHtmlHelper HtmlHelper = null, bool WantArrows = false) {
 
-            if (menu.Count == 0)
+            if (menu == null || menu.Count == 0)
                 return string.Empty;
             string menuContents = await RenderLIAsync(HtmlHelper, menu, null, menu.RenderMode, menu.LICssClass, 0, WantArrows);
             if (string.IsNullOrWhiteSpace(menuContents))

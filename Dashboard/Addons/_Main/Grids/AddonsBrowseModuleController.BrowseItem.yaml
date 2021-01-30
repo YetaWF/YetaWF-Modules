@@ -1,0 +1,40 @@
+# Generated from flat grid definition file on 1/30/2021 1:55:17 PM
+
+SizeStyle: SizeToFit
+Panel: {}
+Columns:
+- Name: Commands
+  Icons: 1
+  FilterOptions: []
+  Align: Center
+- Name: Type
+  Sort: true
+  FilterOptions: []
+  Width: 20
+  Align: Unspecified
+- Name: Domain
+  DefaultSort: Ascending
+  Sort: true
+  Filter: true
+  Width: 25
+  Align: Unspecified
+- Name: Product
+  Sort: true
+  Filter: true
+  Width: 20
+  Align: Unspecified
+- Name: Version
+  Sort: true
+  Filter: true
+  Width: 8
+  Align: Unspecified
+- Name: Name
+  Sort: true
+  Filter: true
+  Width: 20
+  Align: Unspecified
+- Name: Url
+  Sort: true
+  Filter: true
+  Width: 100
+  Align: Unspecified

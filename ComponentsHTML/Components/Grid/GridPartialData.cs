@@ -1,6 +1,8 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Models;
@@ -45,6 +47,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public int Pages { get; set; }
             public int Page { get; set; }
             public int PageSize { get; set; }
+            public List<Boolean> ColumnVisibility { get; set; }
         }
 
         /// <summary>
@@ -54,7 +57,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderContainerAsync(GridPartialData model) {
 
-        ScriptBuilder sb = new ScriptBuilder();
+            ScriptBuilder sb = new ScriptBuilder();
 
             GridDictionaryInfo.ReadGridDictionaryInfo dictInfo = await GridDictionaryInfo.LoadGridColumnDefinitionsAsync(model.GridDef);
 
@@ -81,12 +84,22 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 }
             }
 
+            List<bool> colVisible = new List<bool>();
+            foreach (string colName in dictInfo.ColumnInfo.Keys) {
+                GridColumnInfo columnInfo = dictInfo.ColumnInfo[colName];
+                if (!columnInfo.Hidden) {
+                    colDict.TryGetValue(colName, out GridDefinition.ColumnInfo colInfo);
+                    colVisible.Add(colInfo != null ? colInfo.Visible : dictInfo.GetColumnStatus(colName) != ColumnVisibilityStatus.NotShown);
+                }
+            }
+
             GridPartialResult result = new GridPartialResult {
                 Records = model.Data.Total,
                 TBody = data,
                 Pages = pages,
                 Page = page,
                 PageSize = pageSize,
+                ColumnVisibility = colVisible,
             };
 
             sb.Append(Utility.JsonSerialize(result));

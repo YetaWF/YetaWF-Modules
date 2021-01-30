@@ -76,7 +76,7 @@ var YetaWF_ComponentsHTML;
             $YetaWF.sendCustomEvent(this.Control, CheckListEditComponent.EVENTCHANGE);
         };
         // API
-        CheckListEditComponent.prototype.getValues = function () {
+        CheckListEditComponent.prototype.getValueEntries = function () {
             var entries = [];
             var lis = $YetaWF.getElementsBySelector("li", [this.Menu]);
             for (var _i = 0, lis_2 = lis; _i < lis_2.length; _i++) {
@@ -86,6 +86,19 @@ var YetaWF_ComponentsHTML;
                 entries.push({ Name: name_2, Checked: input.value === "True" });
             }
             return entries;
+        };
+        CheckListEditComponent.prototype.replaceValues = function (values) {
+            var lis = $YetaWF.getElementsBySelector("li", [this.Menu]);
+            if (lis.length !== values.length)
+                throw "replaceValues expected " + lis.length + " values, received " + values.length;
+            var valIndex = 0;
+            for (var _i = 0, lis_3 = lis; _i < lis_3.length; _i++) {
+                var li = lis_3[_i];
+                var name_3 = $YetaWF.getAttribute(li, "data-name");
+                var input = $YetaWF.getElement1BySelector("input[name='" + this.Setup.FieldName + "[\"" + name_3 + "\"]']", [this.Control]);
+                input.value = values[valIndex] ? "True" : "False";
+                ++valIndex;
+            }
         };
         CheckListEditComponent.TEMPLATE = "yt_checklist";
         CheckListEditComponent.SELECTOR = ".yt_checklist.t_edit";

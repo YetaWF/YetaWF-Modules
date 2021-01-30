@@ -11,11 +11,8 @@ using YetaWF.Core.Modules;
 using System.Linq;
 using System;
 using YetaWF.Modules.DevTests.Modules;
-#if MVC6
+using YetaWF.Core.Localize;
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.DevTests.Controllers {
 
@@ -31,10 +28,9 @@ namespace YetaWF.Modules.DevTests.Controllers {
                 get {
                     MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
 
-                    TemplateGridModule gridMod = new TemplateGridModule();
                     TemplateGridAjaxModule gridAjaxMod = new TemplateGridAjaxModule();
-                    actions.New(gridMod.GetAction_Display(null), ModuleAction.ActionLocationEnum.GridLinks);
-                    actions.New(gridAjaxMod.GetAction_Display(null), ModuleAction.ActionLocationEnum.GridLinks);
+                    actions.New(gridAjaxMod.GetAction_Dashboard(), ModuleAction.ActionLocationEnum.GridLinks);
+                    actions.New(gridAjaxMod.GetAction_User(), ModuleAction.ActionLocationEnum.GridLinks);
 
                     return actions;
                 }
@@ -107,8 +103,25 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public Guid Guid { get; set; }
             public ButtonTypeEnum SomeEnum { get; set; }
         }
+
         private GridDefinition GetGridModel() {
+
+            MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.Button};
+            TemplateGridAjaxModule gridAjaxMod = new TemplateGridAjaxModule();
+            actions.New(gridAjaxMod.GetAction_Dashboard(), ModuleAction.ActionLocationEnum.GridLinks);
+            actions.New(gridAjaxMod.GetAction_User(), ModuleAction.ActionLocationEnum.GridLinks);
+            actions.New(gridAjaxMod.GetAction_Dashboard(), ModuleAction.ActionLocationEnum.GridLinks);
+            actions.New(gridAjaxMod.GetAction_User(), ModuleAction.ActionLocationEnum.GridLinks);
+#if NOT
+            actions.New(gridAjaxMod.GetAction_Dashboard(), ModuleAction.ActionLocationEnum.GridLinks);
+            actions.New(gridAjaxMod.GetAction_User(), ModuleAction.ActionLocationEnum.GridLinks);
+            actions.New(gridAjaxMod.GetAction_Dashboard(), ModuleAction.ActionLocationEnum.GridLinks);
+            actions.New(gridAjaxMod.GetAction_User(), ModuleAction.ActionLocationEnum.GridLinks);
+            actions.New(gridAjaxMod.GetAction_Dashboard(), ModuleAction.ActionLocationEnum.GridLinks);
+            actions.New(gridAjaxMod.GetAction_User(), ModuleAction.ActionLocationEnum.GridLinks);
+#endif
             return new GridDefinition {
+                InitialPageSize = 10,
                 ModuleGuid = Module.ModuleGuid,
                 SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
@@ -120,6 +133,16 @@ namespace YetaWF.Modules.DevTests.Controllers {
                         Total = browseItems.Total
                     });
                 },
+                PageSizes = new List<int> { 10, 20, GridDefinition.AllPages },
+                PanelHeader = true,
+                PanelHeaderTitle = "Test Grid",
+                PanelCanMinimize = true,
+                PanelHeaderAutoSearch = 300,
+                PanelHeaderColumnSelection = true,
+                PanelHeaderActions = actions,
+                PanelHeaderSearch = true,
+                PanelHeaderSearchColumns = new List<string> { nameof(BrowseItem.ShortName), nameof(BrowseItem.Description) },
+                PanelHeaderSearchTT = this.__ResStr("searchTT", "Enter text to search in the ShortName and Description column"),
             };
         }
 
@@ -137,7 +160,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             return await GridPartialViewAsync(GetGridModel(), gridPVData);
         }
 
-        const int MaxRecords = 300;
+        const int MaxRecords = 100;
         private static List<Guid> Guids = null;
 
         private List<EntryElement> GetRandomData() {

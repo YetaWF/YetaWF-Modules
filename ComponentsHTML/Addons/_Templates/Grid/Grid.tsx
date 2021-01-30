@@ -97,6 +97,7 @@ namespace YetaWF_ComponentsHTML {
         Pages: number;
         Page: number;
         PageSize: number;
+        ColumnVisibility: boolean[];
     }
     enum FilterBoolEnum {
         All = 0,
@@ -280,28 +281,11 @@ namespace YetaWF_ComponentsHTML {
                     uri.addSearch("SettingsModuleGuid", this.Setup.SettingsModuleGuid);
 
                     // build query args
-                    let entries = this.ColumnSelection!.getValues();
+                    let entries = this.ColumnSelection!.getValueEntries();
                     let colIndex = 0;
                     for (let entry of entries) {
                         if (!entry.Checked)
                             uri.addSearch(`Columns[${colIndex++}]`, entry.Name);
-                    }
-
-                    // show/hide columns
-                    let thsH = $YetaWF.getElementsBySelector(".tg_header th", [this.Control]);
-                    let thsF = $YetaWF.getElementsBySelector(".tg_filter th", [this.Control]);
-                    colIndex = 0;
-                    for (let entry of entries) {
-                        if (!entry.Checked) {
-                            this.Setup.Columns[colIndex].Visible = false;
-                            thsH[colIndex].style.display = "none";
-                            thsF[colIndex].style.display = "none";
-                        } else {
-                            this.Setup.Columns[colIndex].Visible = true;
-                            thsH[colIndex].style.display = "";
-                            thsF[colIndex].style.display = "";
-                        }
-                        ++colIndex;
                     }
 
                     let request: XMLHttpRequest = new XMLHttpRequest();
@@ -311,7 +295,16 @@ namespace YetaWF_ComponentsHTML {
                     request.onreadystatechange = (ev: Event): any => {
                         if (request.readyState === 4 /*DONE*/) {
                             this.setReloading(false);
-                            this.reload(0);
+                            $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, (result: string): void => {
+                                if (!this.Setup.StaticData) {
+                                    this.reload(0);
+                                } else {
+                                    let colVis:boolean[] = [];
+                                    for (let entry of entries)
+                                        colVis.push(entry.Checked);
+                                    this.updateColumnHeaders(colVis);
+                                }
+                            });
                         }
                     };
                     request.send(uri.toFormData());
@@ -940,6 +933,8 @@ namespace YetaWF_ComponentsHTML {
                                 $YetaWF.processClearDiv(this.TBody);
                                 this.TBody.innerHTML = "";
                                 $YetaWF.appendMixedHTML(this.TBody, partial.TBody, true);
+                                // We have to update column headers based on the data we got in case of a reload as the user may have multiple windows for the same session
+                                this.updateColumnHeaders(partial.ColumnVisibility);// for visibility
                                 this.Setup.Records = partial.Records;
                                 this.Setup.Pages = partial.Pages;
                                 this.Setup.Page = partial.Page;
@@ -973,6 +968,44 @@ namespace YetaWF_ComponentsHTML {
                 else
                     this.LoadingDiv.setAttribute("style", "display:none");
             }
+        }
+        private updateColumnHeaders(columnVisibility: boolean[]): void {
+            // show/hide columns
+            let thsH = $YetaWF.getElementsBySelector(".tg_header th", [this.Control]);
+            let thsF = $YetaWF.getElementsBySelector(".tg_filter th", [this.Control]);
+            if (this.Setup.StaticData) {
+                let trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
+                for (let tr of trs) {
+                    let tds = $YetaWF.getElementsBySelector("td", [tr]);
+                    let colIndex = 0;
+                    for (let entry of columnVisibility) {
+                        if (!entry) {
+                            tds[colIndex].style.display = "none";
+                        } else {
+                            tds[colIndex].style.display = "";
+                        }
+                        ++colIndex;
+                    }
+                }
+            }
+            let colIndex = 0;
+            for (let entry of columnVisibility) {
+                this.Setup.Columns[colIndex].Visible = entry;
+                if (!entry) {
+                    if (thsH.length)
+                        thsH[colIndex].style.display = "none";
+                    if (thsF.length)
+                        thsF[colIndex].style.display = "none";
+                } else {
+                    if (thsH.length)
+                        thsH[colIndex].style.display = "";
+                    if (thsF.length)
+                        thsF[colIndex].style.display = "";
+                }
+                ++colIndex;
+            }
+            if (this.ColumnSelection)
+                this.ColumnSelection!.replaceValues(columnVisibility);
         }
         private updateStatus(): void {
             if (this.PagerTotals) {

@@ -208,30 +208,12 @@ var YetaWF_ComponentsHTML;
                     var uri = $YetaWF.parseUrl(_this.Setup.SaveSettingsColumnSelectionUrl);
                     uri.addSearch("SettingsModuleGuid", _this.Setup.SettingsModuleGuid);
                     // build query args
-                    var entries = _this.ColumnSelection.getValues();
+                    var entries = _this.ColumnSelection.getValueEntries();
                     var colIndex = 0;
                     for (var _i = 0, entries_1 = entries; _i < entries_1.length; _i++) {
                         var entry = entries_1[_i];
                         if (!entry.Checked)
                             uri.addSearch("Columns[" + colIndex++ + "]", entry.Name);
-                    }
-                    // show/hide columns
-                    var thsH = $YetaWF.getElementsBySelector(".tg_header th", [_this.Control]);
-                    var thsF = $YetaWF.getElementsBySelector(".tg_filter th", [_this.Control]);
-                    colIndex = 0;
-                    for (var _a = 0, entries_2 = entries; _a < entries_2.length; _a++) {
-                        var entry = entries_2[_a];
-                        if (!entry.Checked) {
-                            _this.Setup.Columns[colIndex].Visible = false;
-                            thsH[colIndex].style.display = "none";
-                            thsF[colIndex].style.display = "none";
-                        }
-                        else {
-                            _this.Setup.Columns[colIndex].Visible = true;
-                            thsH[colIndex].style.display = "";
-                            thsF[colIndex].style.display = "";
-                        }
-                        ++colIndex;
                     }
                     var request = new XMLHttpRequest();
                     request.open("POST", _this.Setup.SaveSettingsColumnSelectionUrl, true);
@@ -240,7 +222,19 @@ var YetaWF_ComponentsHTML;
                     request.onreadystatechange = function (ev) {
                         if (request.readyState === 4 /*DONE*/) {
                             _this.setReloading(false);
-                            _this.reload(0);
+                            $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, function (result) {
+                                if (!_this.Setup.StaticData) {
+                                    _this.reload(0);
+                                }
+                                else {
+                                    var colVis = [];
+                                    for (var _i = 0, entries_2 = entries; _i < entries_2.length; _i++) {
+                                        var entry = entries_2[_i];
+                                        colVis.push(entry.Checked);
+                                    }
+                                    _this.updateColumnHeaders(colVis);
+                                }
+                            });
                         }
                     };
                     request.send(uri.toFormData());
@@ -871,6 +865,8 @@ var YetaWF_ComponentsHTML;
                                 $YetaWF.processClearDiv(_this.TBody);
                                 _this.TBody.innerHTML = "";
                                 $YetaWF.appendMixedHTML(_this.TBody, partial.TBody, true);
+                                // We have to update column headers based on the data we got in case of a reload as the user may have multiple windows for the same session
+                                _this.updateColumnHeaders(partial.ColumnVisibility); // for visibility
                                 _this.Setup.Records = partial.Records;
                                 _this.Setup.Pages = partial.Pages;
                                 _this.Setup.Page = partial.Page;
@@ -904,6 +900,49 @@ var YetaWF_ComponentsHTML;
                 else
                     this.LoadingDiv.setAttribute("style", "display:none");
             }
+        };
+        Grid.prototype.updateColumnHeaders = function (columnVisibility) {
+            // show/hide columns
+            var thsH = $YetaWF.getElementsBySelector(".tg_header th", [this.Control]);
+            var thsF = $YetaWF.getElementsBySelector(".tg_filter th", [this.Control]);
+            if (this.Setup.StaticData) {
+                var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
+                for (var _i = 0, trs_4 = trs; _i < trs_4.length; _i++) {
+                    var tr = trs_4[_i];
+                    var tds = $YetaWF.getElementsBySelector("td", [tr]);
+                    var colIndex_1 = 0;
+                    for (var _a = 0, columnVisibility_1 = columnVisibility; _a < columnVisibility_1.length; _a++) {
+                        var entry = columnVisibility_1[_a];
+                        if (!entry) {
+                            tds[colIndex_1].style.display = "none";
+                        }
+                        else {
+                            tds[colIndex_1].style.display = "";
+                        }
+                        ++colIndex_1;
+                    }
+                }
+            }
+            var colIndex = 0;
+            for (var _b = 0, columnVisibility_2 = columnVisibility; _b < columnVisibility_2.length; _b++) {
+                var entry = columnVisibility_2[_b];
+                this.Setup.Columns[colIndex].Visible = entry;
+                if (!entry) {
+                    if (thsH.length)
+                        thsH[colIndex].style.display = "none";
+                    if (thsF.length)
+                        thsF[colIndex].style.display = "none";
+                }
+                else {
+                    if (thsH.length)
+                        thsH[colIndex].style.display = "";
+                    if (thsF.length)
+                        thsF[colIndex].style.display = "";
+                }
+                ++colIndex;
+            }
+            if (this.ColumnSelection)
+                this.ColumnSelection.replaceValues(columnVisibility);
         };
         Grid.prototype.updateStatus = function () {
             if (this.PagerTotals) {
@@ -1233,8 +1272,8 @@ var YetaWF_ComponentsHTML;
         Grid.prototype.resequenceDelete = function (recNum) {
             // resequence origin
             var trs = $YetaWF.getElementsBySelector("tr[data-origin]", [this.TBody]);
-            for (var _i = 0, trs_4 = trs; _i < trs_4.length; _i++) {
-                var tr = trs_4[_i];
+            for (var _i = 0, trs_5 = trs; _i < trs_5.length; _i++) {
+                var tr = trs_5[_i];
                 var orig = Number($YetaWF.getAttribute(tr, "data-origin"));
                 if (orig >= recNum) {
                     $YetaWF.setAttribute(tr, "data-origin", (orig - 1).toString());
@@ -1247,8 +1286,8 @@ var YetaWF_ComponentsHTML;
             // resequence origin
             var trs = $YetaWF.getElementsBySelector("tr[data-origin]", [this.TBody]);
             var index = 0;
-            for (var _i = 0, trs_5 = trs; _i < trs_5.length; _i++) {
-                var tr = trs_5[_i];
+            for (var _i = 0, trs_6 = trs; _i < trs_6.length; _i++) {
+                var tr = trs_6[_i];
                 var orig = Number($YetaWF.getAttribute(tr, "data-origin"));
                 $YetaWF.setAttribute(tr, "data-origin", index.toString());
                 // update all indexes for input/select fields to match record origin (TODO: check whether we should only update last index in field)
@@ -1313,8 +1352,8 @@ var YetaWF_ComponentsHTML;
         Grid.prototype.AddRecords = function (trs, staticData) {
             if (!this.Setup.StaticData)
                 throw "Static grids only";
-            for (var _i = 0, trs_6 = trs; _i < trs_6.length; _i++) {
-                var tr = trs_6[_i];
+            for (var _i = 0, trs_7 = trs; _i < trs_7.length; _i++) {
+                var tr = trs_7[_i];
                 $YetaWF.appendMixedHTML(this.TBody, tr, true);
                 var lastTr = this.TBody.lastChild;
                 var origin_1 = this.Setup.StaticData.length;
@@ -1367,8 +1406,8 @@ var YetaWF_ComponentsHTML;
             if (!this.Setup.StaticData)
                 throw "Static grids only";
             var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
-            for (var _i = 0, trs_7 = trs; _i < trs_7.length; _i++) {
-                var tr = trs_7[_i];
+            for (var _i = 0, trs_8 = trs; _i < trs_8.length; _i++) {
+                var tr = trs_8[_i];
                 tr.remove();
             }
             this.Setup.StaticData = [];
@@ -1452,8 +1491,8 @@ var YetaWF_ComponentsHTML;
                 throw "Static grids only";
             var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
             var index = 0;
-            for (var _i = 0, trs_8 = trs; _i < trs_8.length; _i++) {
-                var tr = trs_8[_i];
+            for (var _i = 0, trs_9 = trs; _i < trs_9.length; _i++) {
+                var tr = trs_9[_i];
                 var rect = tr.getBoundingClientRect();
                 if (x < rect.left || x > rect.left + rect.width)
                     return -1;
@@ -1470,8 +1509,8 @@ var YetaWF_ComponentsHTML;
                 throw "Static grids only";
             var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
             var index = 0;
-            for (var _i = 0, trs_9 = trs; _i < trs_9.length; _i++) {
-                var tr = trs_9[_i];
+            for (var _i = 0, trs_10 = trs; _i < trs_10.length; _i++) {
+                var tr = trs_10[_i];
                 var rect = tr.getBoundingClientRect();
                 if (x < rect.left || x > rect.left + rect.width)
                     return -1;

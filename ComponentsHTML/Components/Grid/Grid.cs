@@ -164,25 +164,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             GridDictionaryInfo.ReadGridDictionaryInfo dictInfo = await GridDictionaryInfo.LoadGridColumnDefinitionsAsync(model);
 
-            // set dictionary overrides
-            if (dictInfo.InitialPageSize != null && dictInfo.PageSizes != null) {
-                model.InitialPageSize = (int)dictInfo.InitialPageSize;
-                model.PageSizes = dictInfo.PageSizes;
-            }
-            if (dictInfo.ShowHeader != null && model.ShowHeader)
-                model.ShowHeader = (bool)dictInfo.ShowHeader;
-            if (dictInfo.ShowFilter != null)
-                model.ShowFilter = (bool)dictInfo.ShowFilter;
-            if (dictInfo.ShowPager != null && model.ShowPager)
-                model.ShowPager = (bool)dictInfo.ShowPager;
-            if (dictInfo.SizeStyle != null)
-                model.SizeStyle = (GridDefinition.SizeStyleEnum)dictInfo.SizeStyle;
-
-            if (model.Reorderable) {
-                if (model.InitialPageSize != 0 || !model.IsStatic)
-                    throw new InternalError("Unsupported options used for reorderable grid");
-            }
-
             GridLoadSave.GridSavedSettings gridSavedSettings;
             int pageSize = model.InitialPageSize;
             int initialPage = 0;
@@ -484,7 +465,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 gridSavedSettings.Columns.TryGetValue(prop.Name, out GridDefinition.ColumnInfo columnInfo);
 
                 // Visible
-                bool colVisible = columnInfo != null ? columnInfo.Visible : dictInfo.GetColumnStatus(propName) != ColumnShowStatus.NotShown;
+                bool colVisible = columnInfo != null ? columnInfo.Visible : dictInfo.GetColumnStatus(propName) != ColumnVisibilityStatus.NotShown;
 
                 // Caption
                 string caption = prop.GetCaption(gridDef.ResourceRedirect);
@@ -500,7 +481,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 // Width
                 int widthPix = 0, widthCh = 0;
                 if (gridCol.Icons != 0) {
-                    gridCol.Sortable = false;
+                    gridCol.Sort = false;
                     Grid.GridActionsEnum actionStyle = Grid.GridActionsEnum.Icons;
                     if (gridCol.Icons > 1)
                         actionStyle = UserSettings.GetProperty<Grid.GridActionsEnum>("GridActions");
@@ -521,7 +502,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                     if (columnInfo.Width >= 0)
                         widthPix = columnInfo.Width; // override calculated width
 
-                    if (gridCol.Sortable) {
+                    if (gridCol.Sort) {
                         if (columnInfo.Sort == GridDefinition.SortBy.Ascending || columnInfo.Sort == GridDefinition.SortBy.Descending)
                             sort = columnInfo.Sort;
                     }
@@ -529,7 +510,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
 
                 // Alignment
                 string alignCss = null;
-                switch (gridCol.Alignment) {
+                switch (gridCol.Align) {
                     case GridHAlignmentEnum.Unspecified:
                     case GridHAlignmentEnum.Left:
                         alignCss = "tg_left";
@@ -542,7 +523,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                         break;
                 }
                 string sortHtml = "";
-                if (gridCol.Sortable) {
+                if (gridCol.Sort) {
                     setup.CanSort = true;
                     switch (sort) {
                         case GridDefinition.SortBy.NotSpecified:
@@ -846,7 +827,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 // Build column definition
                 setup.Columns.Add(new GridColumnDefinition {
                     Name = prop.Name,
-                    Sortable = gridCol.Sortable,
+                    Sortable = gridCol.Sort,
                     Sort = sort,
                     OnlySubmitWhenChecked = gridCol.OnlySubmitWhenChecked,
                     Locked = gridCol.Locked,
@@ -972,7 +953,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 PropertyData prop = ObjectSupport.GetPropertyData(gridDef.RecordType, propName);
 
                 gridSavedSettings.Columns.TryGetValue(propName, out GridDefinition.ColumnInfo columnInfo);
-                ColumnShowStatus colStatus = dictInfo.GetColumnStatus(propName);
+                ColumnVisibilityStatus colStatus = dictInfo.GetColumnStatus(propName);
 
                 // Caption
                 string caption = prop.GetCaption(gridDef.ResourceRedirect);
@@ -982,10 +963,10 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 // Description
                 string description = prop.GetDescription(gridDef.ResourceRedirect);
 
-                list.Add(new SelectionCheckListItem { Text = caption, Tooltip = description, Enabled = colStatus != ColumnShowStatus.AlwaysShown });
+                list.Add(new SelectionCheckListItem { Text = caption, Tooltip = description, Enabled = colStatus != ColumnVisibilityStatus.AlwaysShown });
 
                 // Visible
-                bool colVisible = columnInfo != null ? columnInfo.Visible : colStatus != ColumnShowStatus.NotShown;
+                bool colVisible = columnInfo != null ? columnInfo.Visible : colStatus != ColumnVisibilityStatus.NotShown;
                 checkList.Add(propName, colVisible);
             }
             return list;
@@ -1103,9 +1084,9 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                     if (!gridCol.Hidden) {
 
                         colDict.TryGetValue(colName, out GridDefinition.ColumnInfo columnInfo);
-                        bool colVisible = columnInfo != null ? columnInfo.Visible : dictInfo.GetColumnStatus(colName) != ColumnShowStatus.NotShown;
+                        bool colVisible = columnInfo != null ? columnInfo.Visible : dictInfo.GetColumnStatus(colName) != ColumnVisibilityStatus.NotShown;
 
-                        if (colVisible) {
+                        if (colVisible || gridModel.IsStatic) {
                             PropertyData prop = ObjectSupport.GetPropertyData(recordType, colName);
                             object value = prop.GetPropertyValue<object>(record);
 
@@ -1114,7 +1095,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
 
                             // Alignment
                             string tdCss = null;
-                            switch (gridCol.Alignment) {
+                            switch (gridCol.Align) {
                                 case GridHAlignmentEnum.Unspecified:
                                 case GridHAlignmentEnum.Left:
                                     tdCss = "tg_left";
@@ -1132,7 +1113,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                                 tdCss = CssManager.CombineCss(tdCss, "tg_truncate");
 
                             hb.Append($@"
-    <td role='gridcell' class='{tdCss} tg_c_{colName.ToLower()}'>");
+    <td role='gridcell' class='{tdCss} tg_c_{colName.ToLower()}'{(!colVisible ? " style='display:none;'" : null)}>");
 
                             if (hbHidden.Length > 0) { // add all hidden fields to first cell
                                 hb.Append(hbHidden.ToString());

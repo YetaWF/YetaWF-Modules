@@ -86,7 +86,7 @@ namespace YetaWF_ComponentsHTML {
 
         // API
 
-        public getValues(): ValueEntry[] {
+        public getValueEntries(): ValueEntry[] {
             let entries: ValueEntry[] = [];
             let lis = $YetaWF.getElementsBySelector("li", [this.Menu]) as HTMLLIElement[];
             for (let li of lis) {
@@ -95,6 +95,21 @@ namespace YetaWF_ComponentsHTML {
                 entries.push({Name: name, Checked: input.value === "True" });
             }
             return entries;
+        }
+
+        public replaceValues(values: boolean[]): void {
+
+            let lis = $YetaWF.getElementsBySelector("li", [this.Menu]) as HTMLLIElement[];
+            if (lis.length !== values.length)
+                throw `replaceValues expected ${lis.length} values, received ${values.length}`;
+
+            let valIndex = 0;
+            for (let li of lis) {
+                let name = $YetaWF.getAttribute(li, "data-name");
+                let input = $YetaWF.getElement1BySelector(`input[name='${this.Setup.FieldName}["${name}"]']`, [this.Control]) as HTMLInputElement;
+                input.value = values[valIndex] ? "True" : "False";
+                ++valIndex;
+            }
         }
     }
 }

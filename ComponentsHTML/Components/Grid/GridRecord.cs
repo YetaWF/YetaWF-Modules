@@ -50,8 +50,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderContainerAsync(GridRecordData model) {
-
-        ScriptBuilder sb = new ScriptBuilder();
+            
+            ScriptBuilder sb = new ScriptBuilder();
 
             GridDictionaryInfo.ReadGridDictionaryInfo dictInfo = await GridDictionaryInfo.LoadGridColumnDefinitionsAsync(model.GridDef);
 
