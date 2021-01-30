@@ -209,11 +209,20 @@ var YetaWF_ComponentsHTML;
                     uri.addSearch("SettingsModuleGuid", _this.Setup.SettingsModuleGuid);
                     // build query args
                     var entries = _this.ColumnSelection.getValueEntries();
+                    var colOffIndex = 0;
+                    var colOnIndex = 0;
                     var colIndex = 0;
                     for (var _i = 0, entries_1 = entries; _i < entries_1.length; _i++) {
                         var entry = entries_1[_i];
-                        if (!entry.Checked)
-                            uri.addSearch("Columns[" + colIndex++ + "]", entry.Name);
+                        if (entry.Checked) {
+                            if (!_this.Setup.Columns[colIndex].Visible)
+                                uri.addSearch("ColumnsOn[" + colOnIndex++ + "]", entry.Name);
+                        }
+                        else {
+                            if (_this.Setup.Columns[colIndex].Visible)
+                                uri.addSearch("ColumnsOff[" + colOffIndex++ + "]", entry.Name);
+                        }
+                        colIndex++;
                     }
                     var request = new XMLHttpRequest();
                     request.open("POST", _this.Setup.SaveSettingsColumnSelectionUrl, true);

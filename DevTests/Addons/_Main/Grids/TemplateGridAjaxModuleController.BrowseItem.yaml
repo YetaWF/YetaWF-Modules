@@ -28,7 +28,7 @@ Panel:
 Columns:
     - Name: Commands
       Icons: 2
-      Visibility: 2
+      Visibility: AlwaysShown
     - Name: Id
       Sort: true
       Filter: true

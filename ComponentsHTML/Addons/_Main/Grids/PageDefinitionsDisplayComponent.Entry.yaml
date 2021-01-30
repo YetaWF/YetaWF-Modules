@@ -1,0 +1,21 @@
+# Generated from flat grid definition file on 1/30/2021 4:39:05 PM
+
+SizeStyle: SizeToFit
+Panel: {}
+Columns:
+- Name: Url
+  DefaultSort: Ascending
+  Sort: true
+  Filter: true
+  Width: <Globals.ChUrl>
+  Align: Unspecified
+- Name: Title
+  Sort: true
+  Filter: true
+  Width: 50
+  Align: Unspecified
+- Name: Description
+  Sort: true
+  Filter: true
+  Width: 100
+  Align: Unspecified

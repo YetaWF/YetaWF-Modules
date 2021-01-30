@@ -5,11 +5,13 @@ Columns:
 - Name: Commands
   Icons: 2
   Align: Center
+  Visibility: AlwaysShown
 - Name: Id
   Sort: true
   Filter: true
   Width: 8
   Align: Right
+  Visibility: NotShown
 - Name: BoolVal
   Sort: true
   Filter: true

@@ -282,10 +282,18 @@ namespace YetaWF_ComponentsHTML {
 
                     // build query args
                     let entries = this.ColumnSelection!.getValueEntries();
+                    let colOffIndex = 0;
+                    let colOnIndex = 0;
                     let colIndex = 0;
                     for (let entry of entries) {
-                        if (!entry.Checked)
-                            uri.addSearch(`Columns[${colIndex++}]`, entry.Name);
+                        if (entry.Checked) {
+                            if (!this.Setup.Columns[colIndex].Visible)
+                                uri.addSearch(`ColumnsOn[${colOnIndex++}]`, entry.Name);
+                        } else {
+                            if (this.Setup.Columns[colIndex].Visible)
+                                uri.addSearch(`ColumnsOff[${colOffIndex++}]`, entry.Name);
+                        }
+                        colIndex++;
                     }
 
                     let request: XMLHttpRequest = new XMLHttpRequest();

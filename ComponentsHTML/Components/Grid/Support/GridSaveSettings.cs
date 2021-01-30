@@ -39,26 +39,29 @@ namespace YetaWF.Modules.ComponentsHTML.Controllers {
         /// Saves a grid's hidden columns.
         /// </summary>
         /// <param name="settingsModuleGuid">The module Guid used to save the settings.</param>
-        /// <param name="columns">A list of hidden columns. All other columns are considered visible.</param>
+        /// <param name="columnsOff">A list of columns becoming hidden.</param>
+        /// <param name="columnsOn">A list of columns becoming visible.</param>
         /// <remarks>This is invoked by client-side code via Ajax whenever a grid's visible/hidden columns change.
         ///
-        /// Used in conjunction with client-side code.</remarks>
+        /// Used in conjunction with client-side code5</remarks>
         [AllowPost]
-        public ActionResult GridSaveHiddenColumns(Guid settingsModuleGuid, List<string> columns) {
+        public ActionResult GridSaveHiddenColumns(Guid settingsModuleGuid, List<string> columnsOn, List<string> columnsOff) {
             if (GridLoadSave.UseGridSettings(settingsModuleGuid)) {
                 GridLoadSave.GridSavedSettings gridSavedSettings = GridLoadSave.LoadModuleSettings(settingsModuleGuid);
-                foreach (string col in gridSavedSettings.Columns.Keys) {
-                    gridSavedSettings.Columns[col].Visible = true;
-                }
-                foreach (var col in columns) {
-                    if (gridSavedSettings.Columns.ContainsKey(col))
-                        gridSavedSettings.Columns[col].Visible = false;
-                    else
-                        gridSavedSettings.Columns.Add(col, new GridDefinition.ColumnInfo() { Visible = false });
-                }
+                ToggleColumns(gridSavedSettings, columnsOn, true);
+                ToggleColumns(gridSavedSettings, columnsOff, false);
                 GridLoadSave.SaveModuleSettings(settingsModuleGuid, gridSavedSettings);
             }
             return new EmptyResult();
+        }
+
+        private static void ToggleColumns(GridLoadSave.GridSavedSettings gridSavedSettings, List<string> columns, bool on) {
+            foreach (var col in columns) {
+                if (gridSavedSettings.Columns.ContainsKey(col))
+                    gridSavedSettings.Columns[col].Visible = on;
+                else
+                    gridSavedSettings.Columns.Add(col, new GridDefinition.ColumnInfo() { Visible = on });
+            }
         }
     }
 }

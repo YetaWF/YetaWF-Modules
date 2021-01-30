@@ -1,0 +1,25 @@
+# Generated from flat grid definition file on 1/30/2021 4:33:59 PM
+
+SizeStyle: SizeToFit
+Panel: {}
+Columns:
+- Name: UserName
+  DefaultSort: Ascending
+  Sort: true
+  Filter: true
+  Width: <Globals.ChUserName>
+  Align: Unspecified
+- Name: Email
+  Sort: true
+  Filter: true
+  Width: <Globals.ChEmail>
+  Align: Unspecified
+- Name: UserStatus
+  Sort: true
+  Filter: true
+  Width: 20
+  Align: Unspecified
+- Name: UserId
+  FilterOptions: []
+  Align: Unspecified
+  Hidden: true
