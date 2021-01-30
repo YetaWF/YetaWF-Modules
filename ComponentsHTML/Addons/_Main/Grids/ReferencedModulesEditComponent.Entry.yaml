@@ -1,0 +1,31 @@
+# Generated from flat grid definition file on 1/30/2021 3:49:27 PM
+
+SizeStyle: SizeToFit
+Panel: {}
+Columns:
+- Name: UsesModule
+  Sort: true
+  FilterOptions: []
+  Width: <Globals.ChBoolean>
+  Align: Center
+  OnlySubmitWhenChecked: true
+- Name: Name
+  DefaultSort: Ascending
+  Sort: true
+  FilterOptions: []
+  Width: 20
+  Align: Unspecified
+- Name: Description
+  Sort: true
+  FilterOptions: []
+  Width: 40
+  Align: Unspecified
+- Name: PermanentName
+  Sort: true
+  FilterOptions: []
+  Width: 40
+  Align: Unspecified
+- Name: ModuleGuid
+  FilterOptions: []
+  Align: Unspecified
+  Hidden: true
