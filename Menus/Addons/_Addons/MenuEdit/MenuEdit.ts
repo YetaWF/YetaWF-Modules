@@ -116,13 +116,14 @@ namespace YetaWF_Menus {
             this.ExpandAllButton = $YetaWF.getElement1BySelector("input[name='t_expandall']", [this.Details]) as HTMLInputElement;
             this.CollapseAllButton = $YetaWF.getElement1BySelector("input[name='t_collapseall']", [this.Details]) as HTMLInputElement;
 
-            this.Tree.Control.addEventListener("tree_click", (evt: Event): void => {
+            $YetaWF.registerCustomEventHandler(this.Tree.Control, YetaWF_ComponentsHTML.TreeComponent.EVENTCLICK, null, (ev: CustomEvent): boolean => {
+                this.changeSelection();
+                return false;
+            });
+            this.Tree.Control.addEventListener(YetaWF_ComponentsHTML.TreeComponent.EVENTSELECT, (evt: Event): void => {
                 this.changeSelection();
             });
-            this.Tree.Control.addEventListener("tree_select", (evt: Event): void => {
-                this.changeSelection();
-            });
-            this.Tree.Control.addEventListener("tree_drop", (evt: Event): void => {
+            this.Tree.Control.addEventListener(YetaWF_ComponentsHTML.TreeComponent.EVENTDROP, (evt: Event): void => {
                 this.sendEntireMenu();
             });
 

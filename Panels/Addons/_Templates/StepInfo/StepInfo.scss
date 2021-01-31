@@ -6,7 +6,7 @@
         background: var(--step-bg);
         color: var(--step-clr);
         overflow: hidden;
-        a.t_step, a.t_step:hover, a.t_step:focus {
+        a.t_step {
             display: inline-block;
             position:relative;
             text-decoration:none;

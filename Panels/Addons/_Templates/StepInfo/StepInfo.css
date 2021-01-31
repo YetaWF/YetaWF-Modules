@@ -4,24 +4,24 @@
   background: var(--step-bg);
   color: var(--step-clr);
   overflow: hidden; }
-  .yt_panels_stepinfo.t_display a.t_step, .yt_panels_stepinfo.t_display a.t_step:hover, .yt_panels_stepinfo.t_display a.t_step:focus {
+  .yt_panels_stepinfo.t_display a.t_step {
     display: inline-block;
     position: relative;
     text-decoration: none;
     background: var(--step-bg);
     color: var(--step-clr);
     padding: 20px 0px 20px 40px; }
-    .yt_panels_stepinfo.t_display a.t_step.t_active, .yt_panels_stepinfo.t_display a.t_step.t_enabled, .yt_panels_stepinfo.t_display a.t_step:hover.t_active, .yt_panels_stepinfo.t_display a.t_step:hover.t_enabled, .yt_panels_stepinfo.t_display a.t_step:focus.t_active, .yt_panels_stepinfo.t_display a.t_step:focus.t_enabled {
+    .yt_panels_stepinfo.t_display a.t_step.t_active, .yt_panels_stepinfo.t_display a.t_step.t_enabled {
       background: var(--step-bg-active);
       color: var(--step-clr-active); }
-    .yt_panels_stepinfo.t_display a.t_step .t_caption, .yt_panels_stepinfo.t_display a.t_step:hover .t_caption, .yt_panels_stepinfo.t_display a.t_step:focus .t_caption {
+    .yt_panels_stepinfo.t_display a.t_step .t_caption {
       font-size: 15px;
       font-weight: bold;
       display: block;
       -webkit-user-select: none;
           -ms-user-select: none;
               user-select: none; }
-    .yt_panels_stepinfo.t_display a.t_step .t_description, .yt_panels_stepinfo.t_display a.t_step:hover .t_description, .yt_panels_stepinfo.t_display a.t_step:focus .t_description {
+    .yt_panels_stepinfo.t_display a.t_step .t_description {
       font-size: 13px;
       font-weight: normal;
       display: block;

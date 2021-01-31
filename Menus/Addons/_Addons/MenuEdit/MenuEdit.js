@@ -24,13 +24,14 @@ var YetaWF_Menus;
             this.DeleteButton = $YetaWF.getElement1BySelector("input[name='t_delete']", [this.Details]);
             this.ExpandAllButton = $YetaWF.getElement1BySelector("input[name='t_expandall']", [this.Details]);
             this.CollapseAllButton = $YetaWF.getElement1BySelector("input[name='t_collapseall']", [this.Details]);
-            this.Tree.Control.addEventListener("tree_click", function (evt) {
+            $YetaWF.registerCustomEventHandler(this.Tree.Control, YetaWF_ComponentsHTML.TreeComponent.EVENTCLICK, null, function (ev) {
+                _this.changeSelection();
+                return false;
+            });
+            this.Tree.Control.addEventListener(YetaWF_ComponentsHTML.TreeComponent.EVENTSELECT, function (evt) {
                 _this.changeSelection();
             });
-            this.Tree.Control.addEventListener("tree_select", function (evt) {
-                _this.changeSelection();
-            });
-            this.Tree.Control.addEventListener("tree_drop", function (evt) {
+            this.Tree.Control.addEventListener(YetaWF_ComponentsHTML.TreeComponent.EVENTDROP, function (evt) {
                 _this.sendEntireMenu();
             });
             $YetaWF.registerEventHandler(this.AddButton, "click", null, function (ev) {
