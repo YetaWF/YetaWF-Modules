@@ -35,14 +35,20 @@ namespace YetaWF_Menus {
 
         public updateButton(): void {
             let menus = YetaWF.ComponentBaseDataImpl.getControls<YetaWF_ComponentsHTML.MenuComponent>(YetaWF_ComponentsHTML.MenuComponent.SELECTOR, $YetaWF.getElementsBySelector(this.Setup.Target));
-            for (let menu of menus) {
-                this.Button.style.display = menu.isSmall ? "" : "none";
-            }
+            if (menus.length > 0)
+                this.Button.style.display = menus[0].isSmall ? "" : "none";
         }
     }
 
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: CustomEvent<YetaWF.DetailsEventContainerResize>): boolean => {
         let toggleMods = YetaWF.ModuleBaseDataImpl.getModules<MenuToggleModule>(MenuToggleModule.SELECTOR, [ev.detail.container]);
+        for (let toggleMod of toggleMods) {
+            toggleMod.updateButton();
+        }
+        return true;
+    });
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: CustomEvent<YetaWF.DetailsEventNavPageLoaded>): boolean => {
+        let toggleMods = YetaWF.ModuleBaseDataImpl.getModules<MenuToggleModule>(MenuToggleModule.SELECTOR, ev.detail.containers);
         for (let toggleMod of toggleMods) {
             toggleMod.updateButton();
         }

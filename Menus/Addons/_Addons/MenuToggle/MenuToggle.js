@@ -37,10 +37,8 @@ var YetaWF_Menus;
         }
         MenuToggleModule.prototype.updateButton = function () {
             var menus = YetaWF.ComponentBaseDataImpl.getControls(YetaWF_ComponentsHTML.MenuComponent.SELECTOR, $YetaWF.getElementsBySelector(this.Setup.Target));
-            for (var _i = 0, menus_2 = menus; _i < menus_2.length; _i++) {
-                var menu = menus_2[_i];
-                this.Button.style.display = menu.isSmall ? "" : "none";
-            }
+            if (menus.length > 0)
+                this.Button.style.display = menus[0].isSmall ? "" : "none";
         };
         MenuToggleModule.SELECTOR = ".YetaWF_Menus_MenuToggle";
         return MenuToggleModule;
@@ -50,6 +48,14 @@ var YetaWF_Menus;
         var toggleMods = YetaWF.ModuleBaseDataImpl.getModules(MenuToggleModule.SELECTOR, [ev.detail.container]);
         for (var _i = 0, toggleMods_1 = toggleMods; _i < toggleMods_1.length; _i++) {
             var toggleMod = toggleMods_1[_i];
+            toggleMod.updateButton();
+        }
+        return true;
+    });
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
+        var toggleMods = YetaWF.ModuleBaseDataImpl.getModules(MenuToggleModule.SELECTOR, ev.detail.containers);
+        for (var _i = 0, toggleMods_2 = toggleMods; _i < toggleMods_2.length; _i++) {
+            var toggleMod = toggleMods_2[_i];
             toggleMod.updateButton();
         }
         return true;

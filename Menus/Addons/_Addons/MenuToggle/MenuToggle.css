@@ -1,10 +1,9 @@
 @charset "UTF-8";
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEar#License */
-.YetaWF_Menus_MenuToggle {
+.YetaWF_Menus_MenuToggle button {
   width: 40px;
-  height: 40px; }
-  .YetaWF_Menus_MenuToggle button {
-    padding: .2em; }
-    .YetaWF_Menus_MenuToggle button svg {
-      width: 30px;
-      height: 30px; }
+  height: 40px;
+  padding: .2em; }
+  .YetaWF_Menus_MenuToggle button svg {
+    width: 30px;
+    height: 30px; }

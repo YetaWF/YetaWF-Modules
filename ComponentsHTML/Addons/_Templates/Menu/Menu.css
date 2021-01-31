@@ -78,6 +78,7 @@ ul.yt_menu.t_display.t_large {
           color: var(--mm-1-mm-clr);
           font: var(--mm-1-mm-font); }
         ul.yt_menu.t_display.t_large > li > ul > li > a {
+          position: relative;
           display: block;
           outline: none;
           padding: var(--mm-1-a-padding);
@@ -94,8 +95,9 @@ ul.yt_menu.t_display.t_large {
           ul.yt_menu.t_display.t_large > li > ul > li > a i, ul.yt_menu.t_display.t_large > li > ul > li > a img {
             margin-right: .5ch; }
           ul.yt_menu.t_display.t_large > li > ul > li > a svg {
-            vertical-align: top;
-            float: right;
+            position: absolute;
+            vertical-align: middle;
+            right: .5em;
             width: var(--mm-1-ddwidth);
             height: var(--mm-1-ddheight); }
         ul.yt_menu.t_display.t_large > li > ul > li > ul {
@@ -127,6 +129,7 @@ ul.yt_menu.t_display.t_large {
             color: var(--mm-2-clr);
             font: var(--mm-2-font); }
             ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a {
+              position: relative;
               display: block;
               outline: none;
               padding: var(--mm-2-a-padding);
@@ -143,8 +146,9 @@ ul.yt_menu.t_display.t_large {
               ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a i, ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a img {
                 margin-right: .5ch; }
               ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a svg {
-                vertical-align: top;
-                float: right;
+                position: absolute;
+                vertical-align: middle;
+                right: .5em;
                 width: var(--mm-2-ddwidth);
                 height: var(--mm-2-ddheight); }
 
@@ -196,7 +200,8 @@ ul.yt_menu.t_display.t_small {
       -webkit-box-direction: normal;
               flex-direction: column;
       flex-wrap: nowrap;
-      width: 85%;
+      width: 95%;
+      overflow: hidden;
       margin: var(--mm-1-small-margin);
       padding: var(--mm-1-small-padding);
       list-style: none;
@@ -221,6 +226,7 @@ ul.yt_menu.t_display.t_small {
           color: var(--mm-1-mm-clr);
           font: var(--mm-1-mm-font); }
         ul.yt_menu.t_display.t_small > li > ul > li > a {
+          position: relative;
           display: block;
           outline: none;
           padding: var(--mm-1-a-small-padding);
@@ -236,12 +242,13 @@ ul.yt_menu.t_display.t_small {
           ul.yt_menu.t_display.t_small > li > ul > li > a i, ul.yt_menu.t_display.t_small > li > ul > li > a img {
             margin-right: .5ch; }
           ul.yt_menu.t_display.t_small > li > ul > li > a svg {
-            border: var(--mm-svg-small-border);
-            border-radius: var(--mm-svg-small-border-radius);
-            vertical-align: top;
-            float: right;
+            position: absolute;
+            vertical-align: middle;
+            right: .5em;
             width: var(--mm-1-ddwidth);
-            height: var(--mm-1-ddheight); }
+            height: var(--mm-1-ddheight);
+            border: var(--mm-svg-small-border);
+            border-radius: var(--mm-svg-small-border-radius); }
         ul.yt_menu.t_display.t_small > li > ul > li > ul {
           display: -webkit-box;
           display: flex;
@@ -249,7 +256,8 @@ ul.yt_menu.t_display.t_small {
           -webkit-box-direction: normal;
                   flex-direction: column;
           flex-wrap: nowrap;
-          width: 70%;
+          width: 90%;
+          overflow: hidden;
           margin: var(--mm-2-small-margin);
           padding: var(--mm-2-small-padding);
           list-style: none;
@@ -268,6 +276,7 @@ ul.yt_menu.t_display.t_small {
             color: var(--mm-2-clr);
             font: var(--mm-2-font); }
             ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a {
+              position: relative;
               display: block;
               outline: none;
               padding: var(--mm-2-a-small-padding);
@@ -283,9 +292,10 @@ ul.yt_menu.t_display.t_small {
               ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a i, ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a img {
                 margin-right: .5ch; }
               ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a svg {
-                border: var(--mm-svg-small-border);
-                border-radius: var(--mm-svg-small-border-radius);
-                vertical-align: top;
-                float: right;
+                position: absolute;
+                vertical-align: middle;
+                right: .5em;
                 width: var(--mm-2-ddwidth);
-                height: var(--mm-2-ddheight); }
+                height: var(--mm-2-ddheight);
+                border: var(--mm-svg-small-border);
+                border-radius: var(--mm-svg-small-border-radius); }

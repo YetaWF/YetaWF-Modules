@@ -1,0 +1,21 @@
+# Generated from flat grid definition file on 1/30/2021 7:35:27 PM
+
+SizeStyle: SizeToFit
+Panel: {}
+Columns:
+- Name: Key
+  DefaultSort: Ascending
+  Sort: true
+  Filter: true
+  Width: 30
+  Align: Unspecified
+- Name: Value
+  Sort: true
+  Filter: true
+  Width: 50
+  Align: Unspecified
+- Name: Size
+  Sort: true
+  FilterOptions: []
+  Width: 10
+  Align: Right

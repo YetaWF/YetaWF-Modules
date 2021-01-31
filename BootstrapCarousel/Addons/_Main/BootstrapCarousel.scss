@@ -32,6 +32,33 @@
         width: 100%;
         overflow: hidden;
         white-space: nowrap;
+        .t_item {
+            display: inline-block;
+            a {
+                width:100%;
+            }
+        }
+        .t_caption {
+            position:absolute;
+            left: 0;
+            top: 75%;
+            width:100%;
+            color:white;
+            text-align: center;
+            padding:0 10em;
+            font-weight: bold;
+            white-space: normal;
+        }
+        .t_description {
+            position:absolute;
+            left: 0;
+            top: 85%;
+            width:100%;
+            color:white;
+            text-align: center;
+            font-weight: normal;
+            white-space: normal;
+        }
     }
     .t_next, .t_prev {
         position: absolute;
@@ -49,9 +76,6 @@
         &:hover {
             opacity:.9;
         }
-    }
-    .t_item {
-        display: inline-block;
     }
     .t_prev {
         left: 0;

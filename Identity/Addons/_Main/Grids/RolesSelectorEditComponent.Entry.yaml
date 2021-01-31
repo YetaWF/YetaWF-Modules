@@ -1,0 +1,25 @@
+# Generated from flat grid definition file on 1/30/2021 7:42:59 PM
+
+SizeStyle: SizeToFit
+Panel: {}
+Columns:
+- Name: Used
+  Sort: true
+  FilterOptions: []
+  Width: <Globals.ChBoolean>
+  Align: Center
+  OnlySubmitWhenChecked: true
+- Name: Name
+  DefaultSort: Ascending
+  Sort: true
+  FilterOptions: []
+  Width: 25
+  Align: Unspecified
+- Name: Description
+  FilterOptions: []
+  Width: 60
+  Align: Unspecified
+- Name: RoleId
+  FilterOptions: []
+  Align: Unspecified
+  Hidden: true

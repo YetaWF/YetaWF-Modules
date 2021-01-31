@@ -1,0 +1,11 @@
+# Generated from flat grid definition file on 1/31/2021 9:56:02 AM
+
+SizeStyle: SizeToFit
+Panel: {}
+Columns:
+- Name: EmailAddress
+  DefaultSort: Ascending
+  Sort: true
+  FilterOptions: []
+  Width: 80
+  Align: Unspecified

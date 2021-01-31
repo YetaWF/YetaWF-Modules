@@ -102,6 +102,7 @@ ul.yt_menu.t_display.t_large {
                 }
 
                 > a {
+                    position:relative;
                     display:block;
                     outline:none;
                     padding: var(--mm-1-a-padding);
@@ -123,8 +124,9 @@ ul.yt_menu.t_display.t_large {
                         margin-right:.5ch;
                     }
                     svg {
-                        vertical-align: top;
-                        float: right;
+                        position: absolute;
+                        vertical-align: middle;
+                        right: .5em;
                         width: var(--mm-1-ddwidth);
                         height: var(--mm-1-ddheight);
                     }
@@ -164,6 +166,7 @@ ul.yt_menu.t_display.t_large {
                         font: var(--mm-2-font);
 
                         > a {
+                            position:relative;
                             display:block;
                             outline:none;
                             padding: var(--mm-2-a-padding);
@@ -185,8 +188,9 @@ ul.yt_menu.t_display.t_large {
                                 margin-right:.5ch;
                             }
                             svg {
-                                vertical-align: top;
-                                float: right;
+                                position: absolute;
+                                vertical-align: middle;
+                                right: .5em;
                                 width: var(--mm-2-ddwidth);
                                 height: var(--mm-2-ddheight);
                             }
@@ -255,7 +259,8 @@ ul.yt_menu.t_display.t_small {
             display: flex;
             flex-direction: column;
             flex-wrap: nowrap;
-            width: 85%;
+            width: 95%;
+            overflow: hidden;
 
             margin: var(--mm-1-small-margin);
             padding: var(--mm-1-small-padding);
@@ -292,8 +297,9 @@ ul.yt_menu.t_display.t_small {
                 }
 
                 > a {
-                    display:block;
-                    outline:none;
+                    position: relative;
+                    display: block;
+                    outline: none;
                     padding: var(--mm-1-a-small-padding);
                     text-decoration: none;
 
@@ -312,12 +318,13 @@ ul.yt_menu.t_display.t_small {
                         margin-right:.5ch;
                     }
                     svg {
-                        border: var(--mm-svg-small-border);
-                        border-radius: var(--mm-svg-small-border-radius);
-                        vertical-align: top;
-                        float: right;
+                        position: absolute;
+                        vertical-align: middle;
+                        right: .5em;
                         width: var(--mm-1-ddwidth);
                         height: var(--mm-1-ddheight);
+                        border: var(--mm-svg-small-border);
+                        border-radius: var(--mm-svg-small-border-radius);
                     }
                 }
                 > ul {
@@ -325,7 +332,8 @@ ul.yt_menu.t_display.t_small {
                     display: flex;
                     flex-direction: column;
                     flex-wrap: nowrap;
-                    width: 70%;
+                    width: 90%;
+                    overflow: hidden;
 
                     margin: var(--mm-2-small-margin);
                     padding:var(--mm-2-small-padding);
@@ -352,6 +360,7 @@ ul.yt_menu.t_display.t_small {
                         font: var(--mm-2-font);
 
                         > a {
+                            position: relative;
                             display:block;
                             outline:none;
                             padding: var(--mm-2-a-small-padding);
@@ -372,12 +381,13 @@ ul.yt_menu.t_display.t_small {
                                 margin-right:.5ch;
                             }
                             svg {
-                                border: var(--mm-svg-small-border);
-                                border-radius: var(--mm-svg-small-border-radius);
-                                vertical-align: top;
-                                float: right;
+                                position: absolute;
+                                vertical-align: middle;
+                                right: .5em;
                                 width: var(--mm-2-ddwidth);
                                 height: var(--mm-2-ddheight);
+                                border: var(--mm-svg-small-border);
+                                border-radius: var(--mm-svg-small-border-radius);
                             }
                         }
                     }
