@@ -123,7 +123,7 @@ namespace YetaWF_ComponentsHTML {
         public validateFieldFully(form: HTMLFormElement, elem: HTMLElement, setMessage?: boolean): boolean {
             if ($YetaWF.getAttributeCond(elem, "disabled") || // don't validate disabled fields
                 $YetaWF.getAttributeCond(elem, "readonly") || // don't validate readonly fields
-                $YetaWF.elementHasClass(elem, ".yform-novalidate") || // don't validate novalidate fields
+                $YetaWF.elementHasClass(elem, "yform-novalidate") || // don't validate novalidate fields
                 $YetaWF.elementClosestCond(elem, `.${YConfigs.Forms.CssFormNoSubmitContents}`) ) {// don't validate input fields in containers (usually grids)
                 return true;
             }
