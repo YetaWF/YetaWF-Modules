@@ -18,6 +18,8 @@ ul.yt_menuul {
   ul.yt_menuul.t_dynamic {
     position: absolute;
     z-index: 50000; }
+  ul.yt_menuul input[type="checkbox"] {
+    margin: 0; }
   ul.yt_menuul > li {
     position: relative;
     list-style: none;

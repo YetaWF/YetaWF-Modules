@@ -21,7 +21,7 @@ var YetaWF_ComponentsHTML;
             return _super.call(this, controlId, setup, CurrencyEditComponent.TEMPLATE, CurrencyEditComponent.SELECTOR) || this;
         }
         CurrencyEditComponent.TEMPLATE = "yt_currency";
-        CurrencyEditComponent.SELECTOR = "yt_currency.t_edit";
+        CurrencyEditComponent.SELECTOR = ".yt_currency.t_edit";
         // events duplicated from NumberEditComponentBase to avoid changes in component users
         CurrencyEditComponent.EVENT = "number_changespin"; // combines change and spin
         CurrencyEditComponent.EVENTCHANGE = "number_change";

@@ -21,7 +21,9 @@ ul.yt_menuul {
         position:absolute;
         z-index:50000;
     }
-
+    input[type="checkbox"] {
+        margin:0;// remove default margin from checkbox
+    }
     > li {
 
         position: relative;

@@ -5,7 +5,7 @@ namespace YetaWF_ComponentsHTML {
     export class CurrencyEditComponent extends NumberEditComponentBase {
 
         public static readonly TEMPLATE: string = "yt_currency";
-        public static readonly SELECTOR: string = "yt_currency.t_edit";
+        public static readonly SELECTOR: string = ".yt_currency.t_edit";
 
         // events duplicated from NumberEditComponentBase to avoid changes in component users
         public static readonly EVENT: string = "number_changespin";// combines change and spin
