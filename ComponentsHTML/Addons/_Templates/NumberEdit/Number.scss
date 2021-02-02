@@ -19,7 +19,7 @@ $spinwidth: 2em;
     border: var(--dd-border);
     border-radius: var(--dd-border-radius);
 
-    input {
+    input[type='text'] {
         line-height: 1.5em;
         padding: .18em 0.2em;
         width: 100%;
@@ -51,7 +51,7 @@ $spinwidth: 2em;
     }
     &.t_disabled {
         opacity: var(--body-dis-opacity);
-}
+    }
     &.t_readonly {
         opacity: var(--body-dis-opacity);
     }

@@ -23,11 +23,11 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string, setup: SearchEditSetup) {
             super(controlId, SearchEditComponent.TEMPLATE, SearchEditComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
-                ChangeEvent: NumberEditComponentBase.EVENT,
+                ChangeEvent: SearchEditComponent.EVENTCHANGE,
                 GetValue: (control: SearchEditComponent): string | null => {
                     return control.value;
                 },
-                Enable: (control: NumberEditComponentBase, enable: boolean, clearOnDisable: boolean): void => {
+                Enable: (control: SearchEditComponent, enable: boolean, clearOnDisable: boolean): void => {
                     control.enable(enable);
                     if (!enable && clearOnDisable)
                         control.clear();

@@ -5,7 +5,7 @@ namespace YetaWF_ComponentsHTML {
     export class IntValueEditComponent extends NumberEditComponentBase {
 
         public static readonly TEMPLATE: string = "yt_intvalue_base";
-        public static readonly SELECTOR: string = "input.yt_intvalue_base.t_edit[name]";
+        public static readonly SELECTOR: string = ".yt_intvalue_base.t_edit";
 
         // events duplicated from NumberEditComponentBase to avoid changes in component users
         public static readonly EVENT: string = "number_changespin";// combines change and spin

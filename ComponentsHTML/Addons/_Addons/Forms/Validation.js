@@ -65,7 +65,7 @@ var YetaWF_ComponentsHTML;
                 testFully = !hasValue(value); // only fully test if there is no value (for required, mostly)
             }
             else {
-                testFully = !value;
+                testFully = !!value;
             }
             if (testFully) {
                 return this.validateFieldFully(form, elem, setMessage);

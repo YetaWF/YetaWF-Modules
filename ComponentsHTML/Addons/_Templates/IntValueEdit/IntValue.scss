@@ -2,7 +2,7 @@
 
 .yt_intvalue_base {
     max-width:100%;
-    &.yt_intvalue_base {
+    input {
         text-align: right;
         padding-right: 0.5ch;
         &::placeholder {

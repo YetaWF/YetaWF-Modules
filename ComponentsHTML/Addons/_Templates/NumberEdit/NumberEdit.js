@@ -22,10 +22,8 @@ var YetaWF_ComponentsHTML;
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: NumberEditComponentBase.EVENT,
                 GetValue: function (control) {
-                    var v = control.Value;
-                    if (!v)
-                        return null;
-                    return v.toString();
+                    var v = control.InputHidden.value;
+                    return v;
                 },
                 Enable: function (control, enable, clearOnDisable) {
                     control.enable(enable);
@@ -36,8 +34,8 @@ var YetaWF_ComponentsHTML;
             _this.Value = null;
             _this.Interval = 0;
             _this.Setup = setup;
-            _this.InputControl = _this.Control;
-            _this.Container = $YetaWF.elementClosest(_this.Control, ".yt_number_container");
+            _this.InputControl = $YetaWF.getElement1BySelector("input[type='text']", [_this.Control]);
+            _this.InputHidden = $YetaWF.getElement1BySelector("input[type='hidden']", [_this.Control]);
             _this.setInternalValue(_this.InputControl.value);
             // icons used: fas-exclamation-triangle
             var warn = $YetaWF.createElement("div", { class: "t_warn", style: "display:none" });
@@ -48,8 +46,8 @@ var YetaWF_ComponentsHTML;
                 $YetaWF.createElement("div", { class: "t_down" }));
             $YetaWF.getElement1BySelector(".t_up", [updown]).innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_up;
             $YetaWF.getElement1BySelector(".t_down", [updown]).innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_down;
-            _this.Control.insertAdjacentElement("afterend", updown);
-            _this.Control.insertAdjacentElement("afterend", warn);
+            _this.InputControl.insertAdjacentElement("afterend", updown);
+            _this.InputControl.insertAdjacentElement("afterend", warn);
             $YetaWF.registerMultipleEventHandlers([_this.InputControl], ["change", "input"], null, function (ev) {
                 if (!_this.isValid(_this.InputControl.value)) {
                     _this.setInternalValue(_this.Value);
@@ -101,32 +99,32 @@ var YetaWF_ComponentsHTML;
                 }
                 return true;
             });
-            $YetaWF.registerEventHandler(_this.Container, "mousedown", ".t_up", function (ev) {
+            $YetaWF.registerEventHandler(_this.Control, "mousedown", ".t_up", function (ev) {
                 _this.InputControl.focus();
                 _this.setNewSpinValue(true);
                 _this.startSpin(true);
                 return false;
             });
-            $YetaWF.registerEventHandler(_this.Container, "mousedown", ".t_down", function (ev) {
+            $YetaWF.registerEventHandler(_this.Control, "mousedown", ".t_down", function (ev) {
                 _this.InputControl.focus();
                 _this.setNewSpinValue(false);
                 _this.startSpin(false);
                 return false;
             });
-            $YetaWF.registerMultipleEventHandlers([_this.Container], ["mouseup", "mouseout"], ".t_down,.t_up", function (ev) {
+            $YetaWF.registerMultipleEventHandlers([_this.Control], ["mouseup", "mouseout"], ".t_down,.t_up", function (ev) {
                 _this.clearSpin();
                 return false;
             });
             $YetaWF.registerEventHandler(_this.InputControl, "focusin", null, function (ev) {
                 if (_this.enabled) {
-                    $YetaWF.elementRemoveClass(_this.Container, "t_focused");
-                    $YetaWF.elementAddClass(_this.Container, "t_focused");
+                    $YetaWF.elementRemoveClass(_this.Control, "t_focused");
+                    $YetaWF.elementAddClass(_this.Control, "t_focused");
                     _this.setInternalValue(_this.Value);
                 }
                 return true;
             });
             $YetaWF.registerEventHandler(_this.InputControl, "focusout", null, function (ev) {
-                $YetaWF.elementRemoveClass(_this.Container, "t_focused");
+                $YetaWF.elementRemoveClass(_this.Control, "t_focused");
                 _this.clearSpin();
                 _this.setInternalValue(_this.Value);
                 return true;
@@ -170,10 +168,9 @@ var YetaWF_ComponentsHTML;
         };
         // events
         NumberEditComponentBase.prototype.sendChangeEvent = function () {
-            // $(this.Control).trigger("change");
             $YetaWF.sendCustomEvent(this.Control, NumberEditComponentBase.EVENT);
             $YetaWF.sendCustomEvent(this.Control, NumberEditComponentBase.EVENTCHANGE);
-            FormsSupport.validateElement(this.Control);
+            FormsSupport.validateElement(this.InputHidden);
         };
         NumberEditComponentBase.prototype.sendSpinEvent = function () {
             $YetaWF.sendCustomEvent(this.Control, NumberEditComponentBase.EVENT);
@@ -188,6 +185,7 @@ var YetaWF_ComponentsHTML;
             set: function (val) {
                 val = Number(val.toFixed(this.Setup.Digits));
                 this.Value = val;
+                this.InputHidden.value = val.toString();
                 if (this.focused)
                     this.InputControl.value = val.toString();
                 else {
@@ -227,6 +225,7 @@ var YetaWF_ComponentsHTML;
             }
             else {
                 this.InputControl.value = "";
+                this.InputHidden.value = "";
                 this.Value = val;
             }
         };
@@ -250,26 +249,27 @@ var YetaWF_ComponentsHTML;
         };
         NumberEditComponentBase.prototype.enable = function (enabled) {
             $YetaWF.elementEnableToggle(this.InputControl, enabled);
-            $YetaWF.elementRemoveClass(this.Container, "t_disabled");
+            $YetaWF.elementEnableToggle(this.InputHidden, enabled);
+            $YetaWF.elementRemoveClass(this.Control, "t_disabled");
             if (!enabled)
-                $YetaWF.elementAddClass(this.Container, "t_disabled");
+                $YetaWF.elementAddClass(this.Control, "t_disabled");
         };
         Object.defineProperty(NumberEditComponentBase.prototype, "enabled", {
             get: function () {
-                return !$YetaWF.elementHasClass(this.Container, "t_disabled");
+                return !$YetaWF.elementHasClass(this.Control, "t_disabled");
             },
             enumerable: false,
             configurable: true
         });
         Object.defineProperty(NumberEditComponentBase.prototype, "focused", {
             get: function () {
-                return $YetaWF.elementHasClass(this.Container, "t_focused");
+                return $YetaWF.elementHasClass(this.Control, "t_focused");
             },
             enumerable: false,
             configurable: true
         });
         NumberEditComponentBase.prototype.flashError = function () {
-            var warn = $YetaWF.getElement1BySelector(".t_warn", [this.Container]);
+            var warn = $YetaWF.getElement1BySelector(".t_warn", [this.Control]);
             warn.style.display = "";
             setTimeout(function () {
                 warn.style.display = "none";

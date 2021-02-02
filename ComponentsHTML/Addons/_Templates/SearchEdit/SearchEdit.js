@@ -20,7 +20,7 @@ var YetaWF_ComponentsHTML;
         function SearchEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId, SearchEditComponent.TEMPLATE, SearchEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: YetaWF_ComponentsHTML.NumberEditComponentBase.EVENT,
+                ChangeEvent: SearchEditComponent.EVENTCHANGE,
                 GetValue: function (control) {
                     return control.value;
                 },

@@ -2,19 +2,19 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 .yt_intvalue_base {
   max-width: 100%; }
-  .yt_intvalue_base.yt_intvalue_base {
+  .yt_intvalue_base input {
     text-align: right;
     padding-right: 0.5ch; }
-    .yt_intvalue_base.yt_intvalue_base::-webkit-input-placeholder {
+    .yt_intvalue_base input::-webkit-input-placeholder {
       color: var(--inp-ph-clr);
       opacity: var(--inp-ph-opacity); }
-    .yt_intvalue_base.yt_intvalue_base:-ms-input-placeholder {
+    .yt_intvalue_base input:-ms-input-placeholder {
       color: var(--inp-ph-clr);
       opacity: var(--inp-ph-opacity); }
-    .yt_intvalue_base.yt_intvalue_base::-ms-input-placeholder {
+    .yt_intvalue_base input::-ms-input-placeholder {
       color: var(--inp-ph-clr);
       opacity: var(--inp-ph-opacity); }
-    .yt_intvalue_base.yt_intvalue_base::placeholder {
+    .yt_intvalue_base input::placeholder {
       color: var(--inp-ph-clr);
       opacity: var(--inp-ph-opacity); }
   .yt_intvalue_base.yt_intvalue {

@@ -152,8 +152,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             placeHolder = string.IsNullOrWhiteSpace(placeHolder) ? string.Empty : $" placeholder={HAE(placeHolder)}";
 
             string tags =
-$@"<div class='yt_number_container{(disabled ? " t_disabled" : "")}{(rdonly ? " t_readonly" : "")}'>
-    <input type='text'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} id='{ControlId}' class='{GetClasses("yt_currency t_edit")}' maxlength='20' {val}{dis}{ro}{placeHolder}>
+$@"<div id='{ControlId}'{GetClassAttribute("yt_number_container yt_currency t_edit")}>
+    <input type='hidden'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} {val}>
+    <input type='text' maxlength='20' {dis}{ro}{placeHolder}{(disabled ? " t_disabled" : "")}{(rdonly ? " t_readonly" : "")} {val}>
 </div>";
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.CurrencyEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");

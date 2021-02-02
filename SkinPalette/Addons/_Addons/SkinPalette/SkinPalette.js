@@ -88,21 +88,21 @@ var YetaWF_SkinPalette;
                 val = val.trim();
                 switch (entry.UIHint) {
                     case "Color":
-                        var clrControl_1 = YetaWF_ComponentsHTML.ColorEditComponent.getControlFromSelector("input[type=\"text\"][name=\"" + entry.ModelName + "\"]", YetaWF_ComponentsHTML.ColorEditComponent.SELECTOR, [this_1.Module]);
+                        var clrControl_1 = YetaWF_ComponentsHTML.ColorEditComponent.getControlFromSelector("[name=\"" + entry.ModelName + "\"]", YetaWF_ComponentsHTML.ColorEditComponent.SELECTOR, [this_1.Module]);
                         clrControl_1.value = val;
                         clrControl_1.Control.addEventListener(YetaWF_ComponentsHTML.ColorEditComponent.EVENTCHANGE, function (evt) {
                             root.style.setProperty(entry.CSSVarName, clrControl_1.value);
                         });
                         break;
                     case "Decimal":
-                        var decControl_1 = YetaWF_ComponentsHTML.DecimalEditComponent.getControlFromSelector("input[type=\"text\"][name=\"" + entry.ModelName + "\"]", YetaWF_ComponentsHTML.DecimalEditComponent.SELECTOR, [this_1.Module]);
+                        var decControl_1 = YetaWF_ComponentsHTML.DecimalEditComponent.getControlFromSelector("[name=\"" + entry.ModelName + "\"]", YetaWF_ComponentsHTML.DecimalEditComponent.SELECTOR, [this_1.Module]);
                         decControl_1.value = Number(val);
                         decControl_1.Control.addEventListener(YetaWF_ComponentsHTML.DecimalEditComponent.EVENT, function (evt) {
                             root.style.setProperty(entry.CSSVarName, decControl_1.valueText);
                         });
                         break;
                     default:
-                        var elem_1 = $YetaWF.getElement1BySelector("input[type=\"text\"][name=\"" + entry.ModelName + "\"]", [this_1.Module]);
+                        var elem_1 = $YetaWF.getElement1BySelector("[name=\"" + entry.ModelName + "\"]", [this_1.Module]);
                         elem_1.value = val;
                         $YetaWF.registerEventHandler(elem_1, "change", null, function (ev) {
                             root.style.setProperty(entry.CSSVarName, elem_1.value);
@@ -123,15 +123,15 @@ var YetaWF_SkinPalette;
                 var entry = _a[_i];
                 switch (entry.UIHint) {
                     case "Color":
-                        var clrControl = YetaWF_ComponentsHTML.ColorEditComponent.getControlFromSelector("input[type=\"text\"][name=\"" + entry.ModelName + "\"]", YetaWF_ComponentsHTML.ColorEditComponent.SELECTOR, [this.Module]);
+                        var clrControl = YetaWF_ComponentsHTML.ColorEditComponent.getControlFromSelector("[name=\"" + entry.ModelName + "\"]", YetaWF_ComponentsHTML.ColorEditComponent.SELECTOR, [this.Module]);
                         root.style.setProperty(entry.CSSVarName, clrControl.value);
                         break;
                     case "Decimal":
-                        var decControl = YetaWF_ComponentsHTML.DecimalEditComponent.getControlFromSelector("input[type=\"text\"][name=\"" + entry.ModelName + "\"]", YetaWF_ComponentsHTML.DecimalEditComponent.SELECTOR, [this.Module]);
+                        var decControl = YetaWF_ComponentsHTML.DecimalEditComponent.getControlFromSelector("[name=\"" + entry.ModelName + "\"]", YetaWF_ComponentsHTML.DecimalEditComponent.SELECTOR, [this.Module]);
                         root.style.setProperty(entry.CSSVarName, decControl.valueText);
                         break;
                     default:
-                        var elem = $YetaWF.getElement1BySelector("input[type=\"text\"][name=\"" + entry.ModelName + "\"]", [this.Module]);
+                        var elem = $YetaWF.getElement1BySelector("[name=\"" + entry.ModelName + "\"]", [this.Module]);
                         root.style.setProperty(entry.CSSVarName, elem.value);
                         break;
                 }
@@ -522,7 +522,7 @@ var YetaWF_SkinPalette;
                 return this.Lighten(color, 40);
         };
         SkinPaletteModule.prototype.getInput = function (name) {
-            return $YetaWF.getElement1BySelector("input[name='" + name + "']", [this.Form]);
+            return $YetaWF.getElement1BySelector("[name='" + name + "']", [this.Form]);
         };
         SkinPaletteModule.prototype.getColor = function (name) {
             var control = YetaWF_ComponentsHTML.ColorEditComponent.getControlFromSelector("[name='" + name + "']", YetaWF_ComponentsHTML.ColorEditComponent.SELECTOR, [this.Form]);

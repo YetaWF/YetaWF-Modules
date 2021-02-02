@@ -37,8 +37,8 @@ namespace YetaWF_ComponentsHTML {
         private static readonly WARNDELAY:number = 300;
 
         private Setup: NumberSetup;
-        private Container: HTMLElement;
-        public InputControl: HTMLInputElement;//$$$ this is public for validation
+        private InputControl: HTMLInputElement;
+        private InputHidden: HTMLInputElement;
         private Value: number|null = null;
 
         private Interval: number = 0;
@@ -48,9 +48,8 @@ namespace YetaWF_ComponentsHTML {
                 ControlType: ControlTypeEnum.Template,
                 ChangeEvent: NumberEditComponentBase.EVENT,
                 GetValue: (control: NumberEditComponentBase): string | null => {
-                    let v = control.Value;
-                    if (!v) return null;
-                    return v.toString();
+                    let v = control.InputHidden.value;
+                    return v;
                 },
                 Enable: (control: NumberEditComponentBase, enable: boolean, clearOnDisable: boolean): void => {
                     control.enable(enable);
@@ -60,8 +59,8 @@ namespace YetaWF_ComponentsHTML {
             });
             this.Setup = setup;
 
-            this.InputControl = this.Control as HTMLInputElement;
-            this.Container = $YetaWF.elementClosest(this.Control, ".yt_number_container");
+            this.InputControl = $YetaWF.getElement1BySelector("input[type='text']", [this.Control]) as HTMLInputElement;
+            this.InputHidden = $YetaWF.getElement1BySelector("input[type='hidden']", [this.Control]) as HTMLInputElement;
 
             this.setInternalValue(this.InputControl.value);
 
@@ -79,8 +78,8 @@ namespace YetaWF_ComponentsHTML {
             $YetaWF.getElement1BySelector(".t_up", [updown]).innerHTML =  YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_up;
             $YetaWF.getElement1BySelector(".t_down", [updown]).innerHTML =  YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_down;
 
-            this.Control.insertAdjacentElement("afterend", updown);
-            this.Control.insertAdjacentElement("afterend", warn);
+            this.InputControl.insertAdjacentElement("afterend", updown);
+            this.InputControl.insertAdjacentElement("afterend", warn);
 
             $YetaWF.registerMultipleEventHandlers([this.InputControl], ["change", "input"], null, (ev: Event): boolean => {
                 if (!this.isValid(this.InputControl.value)) {
@@ -127,32 +126,32 @@ namespace YetaWF_ComponentsHTML {
                 return true;
             });
 
-            $YetaWF.registerEventHandler(this.Container, "mousedown", ".t_up", (ev: Event): boolean => {
+            $YetaWF.registerEventHandler(this.Control, "mousedown", ".t_up", (ev: Event): boolean => {
                 this.InputControl.focus();
                 this.setNewSpinValue(true);
                 this.startSpin(true);
                 return false;
             });
-            $YetaWF.registerEventHandler(this.Container, "mousedown", ".t_down", (ev: Event): boolean => {
+            $YetaWF.registerEventHandler(this.Control, "mousedown", ".t_down", (ev: Event): boolean => {
                 this.InputControl.focus();
                 this.setNewSpinValue(false);
                 this.startSpin(false);
                 return false;
             });
-            $YetaWF.registerMultipleEventHandlers([this.Container], ["mouseup", "mouseout"], ".t_down,.t_up", (ev: Event): boolean => {
+            $YetaWF.registerMultipleEventHandlers([this.Control], ["mouseup", "mouseout"], ".t_down,.t_up", (ev: Event): boolean => {
                 this.clearSpin();
                 return false;
             });
             $YetaWF.registerEventHandler(this.InputControl, "focusin", null, (ev: FocusEvent): boolean => {
                 if (this.enabled) {
-                    $YetaWF.elementRemoveClass(this.Container, "t_focused");
-                    $YetaWF.elementAddClass(this.Container, "t_focused");
+                    $YetaWF.elementRemoveClass(this.Control, "t_focused");
+                    $YetaWF.elementAddClass(this.Control, "t_focused");
                     this.setInternalValue(this.Value);
                 }
                 return true;
             });
             $YetaWF.registerEventHandler(this.InputControl, "focusout", null, (ev: FocusEvent): boolean => {
-                $YetaWF.elementRemoveClass(this.Container, "t_focused");
+                $YetaWF.elementRemoveClass(this.Control, "t_focused");
                 this.clearSpin();
                 this.setInternalValue(this.Value);
                 return true;
@@ -196,10 +195,9 @@ namespace YetaWF_ComponentsHTML {
         // events
 
         private sendChangeEvent(): void {
-            // $(this.Control).trigger("change");
             $YetaWF.sendCustomEvent(this.Control, NumberEditComponentBase.EVENT);
             $YetaWF.sendCustomEvent(this.Control, NumberEditComponentBase.EVENTCHANGE);
-            FormsSupport.validateElement(this.Control);
+            FormsSupport.validateElement(this.InputHidden);
         }
         private sendSpinEvent(): void {
             $YetaWF.sendCustomEvent(this.Control, NumberEditComponentBase.EVENT);
@@ -214,6 +212,7 @@ namespace YetaWF_ComponentsHTML {
         set value(val: number) {
             val = Number(val.toFixed(this.Setup.Digits));
             this.Value = val;
+            this.InputHidden.value = val.toString();
             if (this.focused)
                 this.InputControl.value = val.toString();
             else {
@@ -247,6 +246,7 @@ namespace YetaWF_ComponentsHTML {
                     this.Value = val;
             } else {
                 this.InputControl.value = "";
+                this.InputHidden.value = "";
                 this.Value = val;
             }
         }
@@ -266,19 +266,20 @@ namespace YetaWF_ComponentsHTML {
         }
         public enable(enabled: boolean): void {
             $YetaWF.elementEnableToggle(this.InputControl, enabled);
-            $YetaWF.elementRemoveClass(this.Container, "t_disabled");
+            $YetaWF.elementEnableToggle(this.InputHidden, enabled);
+            $YetaWF.elementRemoveClass(this.Control, "t_disabled");
             if (!enabled)
-                $YetaWF.elementAddClass(this.Container, "t_disabled");
+                $YetaWF.elementAddClass(this.Control, "t_disabled");
         }
         public get enabled(): boolean {
-            return !$YetaWF.elementHasClass(this.Container, "t_disabled");
+            return !$YetaWF.elementHasClass(this.Control, "t_disabled");
         }
         public get focused(): boolean {
-            return $YetaWF.elementHasClass(this.Container, "t_focused");
+            return $YetaWF.elementHasClass(this.Control, "t_focused");
         }
 
         public flashError(): void {
-            let warn = $YetaWF.getElement1BySelector(".t_warn", [this.Container]);
+            let warn = $YetaWF.getElement1BySelector(".t_warn", [this.Control]);
             warn.style.display = "";
             setTimeout(():void => {
                 warn.style.display = "none";

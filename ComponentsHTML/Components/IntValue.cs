@@ -277,7 +277,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             placeHolder = string.IsNullOrWhiteSpace(placeHolder) ? string.Empty : $" placeholder={HAE(placeHolder)}";
 
-            string tags = $@"<div class='yt_number_container'><input type='text'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} id='{ControlId}' class='{TemplateClass} t_edit yt_intvalue_base{GetClasses()}' maxlength='20' value='{model?.ToString()}'{placeHolder}></div>";
+            string tags =
+$@"<div id='{ControlId}'{GetClassAttribute($"{TemplateClass} yt_number_container yt_intvalue_base t_edit")}>
+    <input type='hidden'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} value='{model?.ToString()}'>
+    <input type='text' maxlength='20' value='{model?.ToString()}'{placeHolder}>
+</div>";
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.IntValueEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 

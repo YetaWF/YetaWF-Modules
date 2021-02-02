@@ -143,7 +143,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             placeHolder = string.IsNullOrWhiteSpace(placeHolder) ? string.Empty : $" placeholder={HAE(placeHolder)}";
 
-            string tags = $@"<div class='yt_number_container'><input type='text'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} id='{ControlId}' class='yt_decimal t_edit{GetClasses()}' maxlength='20' value='{value}'{placeHolder}></div>";
+            string tags =
+$@"<div id='{ControlId}'{GetClassAttribute("yt_number_container yt_decimal t_edit")}>
+    <input type='hidden'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} value='{value}'>
+    <input type='text' maxlength='20' value='{value}'{placeHolder}>
+</div>";
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DecimalEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 

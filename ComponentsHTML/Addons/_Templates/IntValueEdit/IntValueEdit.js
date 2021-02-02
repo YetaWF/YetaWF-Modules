@@ -21,7 +21,7 @@ var YetaWF_ComponentsHTML;
             return _super.call(this, controlId, setup, IntValueEditComponent.TEMPLATE, IntValueEditComponent.SELECTOR) || this;
         }
         IntValueEditComponent.TEMPLATE = "yt_intvalue_base";
-        IntValueEditComponent.SELECTOR = "input.yt_intvalue_base.t_edit[name]";
+        IntValueEditComponent.SELECTOR = ".yt_intvalue_base.t_edit";
         // events duplicated from NumberEditComponentBase to avoid changes in component users
         IntValueEditComponent.EVENT = "number_changespin"; // combines change and spin
         IntValueEditComponent.EVENTCHANGE = "number_change";
