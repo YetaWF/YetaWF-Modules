@@ -207,7 +207,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-caret-down")}
         </div>
     </div>
-    <select{component.FieldSetup(disabled ? (component.Validation ? FieldType.Validated : FieldType.Normal) : FieldType.Normal)}{component.GetClassAttribute(css)}>{tagHtml.ToString()}</select>
+    <select{component.FieldSetup(disabled ? FieldType.Normal : (component.Validation ? FieldType.Validated : FieldType.Normal))}{component.GetClassAttribute(css)}>{tagHtml.ToString()}</select>
 </div>";
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DropDownListEditComponent('{component.ControlId}', {Utility.JsonSerialize(setup)});");

@@ -49,7 +49,7 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             [Category("Page"), Caption("--body-clr"), Description("Color")]
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string BodyClr { get; set; } = null!;
-
+           
             [Category("Page"), Caption("--body-font"), Description("Font")]
             [UIHint("Text40"), StringLength(MaxFont), Required]
             public string BodyFont { get; set; } = null!;

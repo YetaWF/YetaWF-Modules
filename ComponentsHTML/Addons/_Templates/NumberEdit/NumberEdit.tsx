@@ -240,10 +240,12 @@ namespace YetaWF_ComponentsHTML {
                 }
             }
             if (val != null) {
-                if (updateIfValid === undefined || updateIfValid === true)
+                if (updateIfValid === undefined || updateIfValid === true) {
                     this.value = val;
-                else
+                } else {
                     this.Value = val;
+                    this.InputHidden.value = val.toString();
+                }
             } else {
                 this.InputControl.value = "";
                 this.InputHidden.value = "";
