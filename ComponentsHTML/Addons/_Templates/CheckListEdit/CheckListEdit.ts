@@ -18,7 +18,7 @@ namespace YetaWF_ComponentsHTML {
 
         public static readonly EVENTCHANGE: string = "checklist_change";
 
-        private Setup: CheckListSetup;
+        //private Setup: CheckListSetup;
         private Button: HTMLButtonElement;
         private Menu: HTMLElement;
 
@@ -29,7 +29,7 @@ namespace YetaWF_ComponentsHTML {
                 GetValue: null,
                 Enable: null,
             });
-            this.Setup = setup;
+            //this.Setup = setup;
             this.Button = $YetaWF.getElement1BySelector("button", [this.Control]) as HTMLButtonElement;
             this.Menu = $YetaWF.getElement1BySelector("ul", [this.Control]);
 
@@ -51,7 +51,7 @@ namespace YetaWF_ComponentsHTML {
             let lis = $YetaWF.getElementsBySelector("li", [menu]) as HTMLLIElement[];
             for (let li of lis) {
                 let name = $YetaWF.getAttribute(li, "data-name");
-                let input = $YetaWF.getElement1BySelector(`input[name='${this.Setup.FieldName}["${name}"]']`, [this.Control]) as HTMLInputElement;
+                let input = $YetaWF.getElement1BySelector(`input[name$='.Value'][data-name='${name}']`, [this.Control]) as HTMLInputElement;
                 let check = $YetaWF.getElement1BySelector(`li[data-name='${name}'] input[type="checkbox"]`, [menu]) as HTMLInputElement;
                 check.checked = input.value === "True";
             }
@@ -72,7 +72,7 @@ namespace YetaWF_ComponentsHTML {
                             check.checked = !check.checked;
                             // update hidden field
                             let name = $YetaWF.getAttribute(liElem, "data-name");
-                            let input = $YetaWF.getElement1BySelector(`input[name='${this.Setup.FieldName}["${name}"]']`, [this.Control]) as HTMLInputElement;
+                            let input = $YetaWF.getElement1BySelector(`input[name$='.Value'][data-name='${name}']`, [this.Control]) as HTMLInputElement;
                             input.value = check.checked ? "True" : "False";
                             this.sendChangeEvent();
                         }, 1);
@@ -91,7 +91,7 @@ namespace YetaWF_ComponentsHTML {
             let lis = $YetaWF.getElementsBySelector("li", [this.Menu]) as HTMLLIElement[];
             for (let li of lis) {
                 let name = $YetaWF.getAttribute(li, "data-name");
-                let input = $YetaWF.getElement1BySelector(`input[name='${this.Setup.FieldName}["${name}"]']`, [this.Control]) as HTMLInputElement;
+                let input = $YetaWF.getElement1BySelector(`input[name$='.Value'][data-name='${name}']`, [this.Control]) as HTMLInputElement;
                 entries.push({Name: name, Checked: input.value === "True" });
             }
             return entries;
@@ -106,7 +106,7 @@ namespace YetaWF_ComponentsHTML {
             let valIndex = 0;
             for (let li of lis) {
                 let name = $YetaWF.getAttribute(li, "data-name");
-                let input = $YetaWF.getElement1BySelector(`input[name='${this.Setup.FieldName}["${name}"]']`, [this.Control]) as HTMLInputElement;
+                let input = $YetaWF.getElement1BySelector(`input[name$='.Value'][data-name='${name}']`, [this.Control]) as HTMLInputElement;
                 input.value = values[valIndex] ? "True" : "False";
                 ++valIndex;
             }

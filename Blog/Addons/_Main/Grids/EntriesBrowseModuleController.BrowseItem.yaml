@@ -1,0 +1,64 @@
+# Generated from flat grid definition file on 2/2/2021 8:28:38 AM
+
+SizeStyle: SizeToFit
+Panel: {}
+Columns:
+- Name: Commands
+  Icons: 3
+  FilterOptions: []
+  Align: Center
+- Name: Identity
+  Sort: true
+  Filter: true
+  Width: <Globals.ChID>
+  Align: Right
+- Name: Title
+  DefaultSort: Ascending
+  Sort: true
+  Filter: true
+  Width: 25
+  Align: Unspecified
+- Name: Author
+  Sort: true
+  Filter: true
+  Width: 25
+  Align: Unspecified
+- Name: OpenForComments
+  Sort: true
+  Filter: true
+  Width: <Globals.ChBoolean>
+  Align: Center
+- Name: Comments
+  Sort: true
+  FilterOptions: []
+  Width: <Globals.ChIntValue4>
+  Align: Right
+- Name: CommentsUnapproved
+  Sort: true
+  FilterOptions: []
+  Width: <Globals.ChIntValue4>
+  Align: Right
+- Name: Published
+  Sort: true
+  Filter: true
+  Width: <Globals.ChBoolean>
+  Align: Center
+- Name: DatePublished
+  Sort: true
+  Filter: true
+  Width: <Globals.ChDateTime>
+  Align: Unspecified
+- Name: DateCreated
+  Sort: true
+  Filter: true
+  Width: <Globals.ChDateTime>
+  Align: Unspecified
+- Name: DateUpdated
+  Sort: true
+  Filter: true
+  Width: <Globals.ChDateTime>
+  Align: Unspecified
+- Name: Category
+  FilterOptions: []
+  Width: 25
+  Align: Unspecified

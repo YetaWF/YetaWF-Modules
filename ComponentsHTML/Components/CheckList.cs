@@ -1,6 +1,7 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
@@ -14,9 +15,13 @@ using YetaWF.Core.Support;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// An instance of the SelectionItem class represents an entry suitable for use with the CheckList template.
+    /// An instance of the SelectionCheckListDetail class represents the detail information for a SelectionCheckListEntry for use with the CheckList template and CheckListPanel template.
     /// </summary>
-    public class SelectionCheckListItem {
+    public class SelectionCheckListDetail {
+        /// <summary>
+        /// The key value.
+        /// </summary>
+        public string Key { get; set; } = null!;
         /// <summary>
         /// The text displayed in the dropdown menu for the entry.
         /// </summary> 
@@ -32,29 +37,29 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
+    /// An instance of the SelectionItem class represents an entry suitable for use with the CheckList template and CheckListPanel template.
+    /// </summary>
+    public class SelectionCheckListEntry {
+        /// <summary>
+        /// The key value.
+        /// </summary>
+        public string Key { get; set; } = null!;
+        /// <summary>
+        /// The selection status (checked/unchecked).
+        /// </summary>
+        public bool Value { get; set; }
+    }
+
+    /// <summary>
     /// Allows selection of multiple checkboxes from a list using a dropdown menu. The dropdown menu supports optional tooltips.
     /// </summary>
-    public class CheckListComponent : YetaWFComponent, IYetaWFComponent<Dictionary<string, bool>> {
+    public class CheckListComponent : YetaWFComponent, IYetaWFComponent<List<SelectionCheckListEntry>> {
 
-        /// <summary>
-        /// Returns the component type (edit/display).
-        /// </summary>
-        /// <returns>Returns the component type.</returns>
+        /// <inheritdoc/>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
-
-        /// <summary>
-        /// Returns the package implementing the component.
-        /// </summary>
-        /// <returns>Returns the package implementing the component.</returns>
+        /// <inheritdoc/>
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        /// <summary>
-        /// Returns the component name.
-        /// </summary>
-        /// <returns>Returns the component name.</returns>
-        /// <remarks>Components in packages whose product name starts with "Component" use the exact name returned by GetTemplateName when used in UIHint attributes. These are considered core components.
-        /// Components in other packages use the package's area name as a prefix. E.g., the UserId component in the YetaWF.Identity package is named "YetaWF_Identity_UserId" when used in UIHint attributes.
-        ///
-        /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
+        /// <inheritdoc/>
         public override string GetTemplateName() { return TemplateName; }
 
         internal string TemplateName { get { return "CheckList"; } }
@@ -70,18 +75,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             await base.IncludeAsync();
         }
 
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
-        public Task<string> RenderAsync(Dictionary<string, bool> model) {
+        /// <inheritdoc/>
+        public Task<string> RenderAsync(List<SelectionCheckListEntry> model) {
 
-            List<SelectionCheckListItem>? list;
-            if (!TryGetSiblingProperty($"{PropertyName}_List", out list))
-                list = new List<SelectionCheckListItem>();
+            List<SelectionCheckListDetail>? details;
+            if (!TryGetSiblingProperty($"{PropertyName}_List", out details))
+                details = new List<SelectionCheckListDetail>();
+
             string? svg;
-            TryGetSiblingProperty($"{PropertyName}_SVG", out svg);
+            TryGetSiblingProperty($"{PropertyName}_DDSVG", out svg);
 
             HtmlBuilder hb = new HtmlBuilder();
             HtmlBuilder tagHtml = new HtmlBuilder();
@@ -90,27 +92,30 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 <div id='{ControlId}'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} class='yt_checklist t_edit{GetClasses()}'>
     <button class='y_buttonlite'>{(svg != null ? SkinSVGs.Get(AreaRegistration.CurrentPackage, svg) : null)}{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-caret-down")}</button>");
 
-            int listLength = list!.Count;
+            int listLength = details!.Count;
             int index = 0;
-            foreach (string key in model.Keys) {
+            foreach (SelectionCheckListEntry entry in model) {
                 if (index >= listLength)
-                    throw new InternalError($"{FieldName}: provided List is smaller than the list of checkboxes");
+                    throw new InternalError($"{FieldName}: provided List is smaller than the detail list of checkboxes");
 
-                SelectionCheckListItem item = list[index];
-                bool dis = !item.Enabled;
+                SelectionCheckListDetail? detail = (from l in details where l.Key == entry.Key select l).FirstOrDefault();
+                if (detail == null)
+                    throw new InternalError($"Missing detail entry in {FieldName} for key {entry.Key}");
+                bool dis = !detail.Enabled;
 
-                hb.Append($@"<input type='hidden' name='{FieldName}[""{key}""]' value='{(model[key] ? "True" : "False")}'>");
+                hb.Append($@"<input type='hidden' name='{FieldName}[{index}].Key' value='{entry.Key}'>");
+                hb.Append($@"<input type='hidden' name='{FieldName}[{index}].Value' data-name='{entry.Key}' value='{(entry.Value ? "True" : "False")}'>");
 
-                string? t = item.Tooltip?.ToString();
+                string? t = detail.Tooltip?.ToString();
                 string desc = string.Empty;
                 if (!string.IsNullOrWhiteSpace(t))
                     desc = $" {Basics.CssTooltip}='{HAE(t)}'";
 
                 tagHtml.Append($@"
-        <li data-name='{key}'>
+        <li data-name='{entry.Key}'>
             <a href='#' {desc}{(dis ? " class='t_disabled'" : null)}>
-                <input type='checkbox' {(model[key] ? " checked" : null)}{(dis ? " disabled='disabled'" : null)}>
-                {HE(item.Text.ToString())}
+                <input type='checkbox' {(entry.Value ? " checked" : null)}{(dis ? " disabled='disabled'" : null)}>
+                {HE(detail.Text.ToString())}
             </a>
         </li>");
 

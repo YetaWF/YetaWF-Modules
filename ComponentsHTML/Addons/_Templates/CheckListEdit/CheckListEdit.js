@@ -24,7 +24,7 @@ var YetaWF_ComponentsHTML;
                 GetValue: null,
                 Enable: null,
             }) || this;
-            _this.Setup = setup;
+            //this.Setup = setup;
             _this.Button = $YetaWF.getElement1BySelector("button", [_this.Control]);
             _this.Menu = $YetaWF.getElement1BySelector("ul", [_this.Control]);
             $YetaWF.registerEventHandler(_this.Button, "mousedown", null, function (ev) {
@@ -46,7 +46,7 @@ var YetaWF_ComponentsHTML;
             for (var _i = 0, lis_1 = lis; _i < lis_1.length; _i++) {
                 var li = lis_1[_i];
                 var name_1 = $YetaWF.getAttribute(li, "data-name");
-                var input = $YetaWF.getElement1BySelector("input[name='" + this.Setup.FieldName + "[\"" + name_1 + "\"]']", [this.Control]);
+                var input = $YetaWF.getElement1BySelector("input[name$='.Value'][data-name='" + name_1 + "']", [this.Control]);
                 var check = $YetaWF.getElement1BySelector("li[data-name='" + name_1 + "'] input[type=\"checkbox\"]", [menu]);
                 check.checked = input.value === "True";
             }
@@ -65,7 +65,7 @@ var YetaWF_ComponentsHTML;
                         check.checked = !check.checked;
                         // update hidden field
                         var name = $YetaWF.getAttribute(liElem, "data-name");
-                        var input = $YetaWF.getElement1BySelector("input[name='" + _this.Setup.FieldName + "[\"" + name + "\"]']", [_this.Control]);
+                        var input = $YetaWF.getElement1BySelector("input[name$='.Value'][data-name='" + name + "']", [_this.Control]);
                         input.value = check.checked ? "True" : "False";
                         _this.sendChangeEvent();
                     }, 1);
@@ -82,7 +82,7 @@ var YetaWF_ComponentsHTML;
             for (var _i = 0, lis_2 = lis; _i < lis_2.length; _i++) {
                 var li = lis_2[_i];
                 var name_2 = $YetaWF.getAttribute(li, "data-name");
-                var input = $YetaWF.getElement1BySelector("input[name='" + this.Setup.FieldName + "[\"" + name_2 + "\"]']", [this.Control]);
+                var input = $YetaWF.getElement1BySelector("input[name$='.Value'][data-name='" + name_2 + "']", [this.Control]);
                 entries.push({ Name: name_2, Checked: input.value === "True" });
             }
             return entries;
@@ -95,7 +95,7 @@ var YetaWF_ComponentsHTML;
             for (var _i = 0, lis_3 = lis; _i < lis_3.length; _i++) {
                 var li = lis_3[_i];
                 var name_3 = $YetaWF.getAttribute(li, "data-name");
-                var input = $YetaWF.getElement1BySelector("input[name='" + this.Setup.FieldName + "[\"" + name_3 + "\"]']", [this.Control]);
+                var input = $YetaWF.getElement1BySelector("input[name$='.Value'][data-name='" + name_3 + "']", [this.Control]);
                 input.value = values[valIndex] ? "True" : "False";
                 ++valIndex;
             }

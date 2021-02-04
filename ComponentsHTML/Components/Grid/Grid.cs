@@ -115,9 +115,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     internal class ColumnSelectionUI {
         [Caption(""), Description("")]
         [UIHint("CheckList")]
-        public Dictionary<string, bool> __ColumnSelection { get; set; }
-        public List<SelectionCheckListItem> __ColumnSelection_List { get; set; }
-        public string __ColumnSelection_SVG { get { return "fas-columns"; } }
+        public List<SelectionCheckListEntry> __ColumnSelection { get; set; }
+        public List<SelectionCheckListDetail> __ColumnSelection_List { get; set; }
+        public string __ColumnSelection_DDSVG { get { return "fas-columns"; } }
     }
 
     /// <summary>
@@ -320,7 +320,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 if (model.PanelHeaderColumnSelection) {
 
-                    List<SelectionCheckListItem> list = GetColumnSelection(model, dictInfo, gridSavedSettings, out Dictionary<string, bool> checkList);
+                    List<SelectionCheckListDetail> list = GetColumnSelection(model, dictInfo, gridSavedSettings, out List<SelectionCheckListEntry> checkList);
                     ColumnSelectionUI colSelUI = new ColumnSelectionUI() {
                         __ColumnSelection = checkList,
                         __ColumnSelection_List = list,
@@ -937,10 +937,10 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             return gridCol.FilterOptions.ToList();
         }
 
-        private List<SelectionCheckListItem> GetColumnSelection(GridDefinition gridDef, GridDictionaryInfo.ReadGridDictionaryInfo dictInfo, GridLoadSave.GridSavedSettings gridSavedSettings, out Dictionary<string, bool> checkList) {
+        private List<SelectionCheckListDetail> GetColumnSelection(GridDefinition gridDef, GridDictionaryInfo.ReadGridDictionaryInfo dictInfo, GridLoadSave.GridSavedSettings gridSavedSettings, out List<SelectionCheckListEntry> checkList) {
 
-            List<SelectionCheckListItem> list = new List<SelectionCheckListItem>();
-            checkList = new Dictionary<string, bool>();
+            List<SelectionCheckListDetail> list = new List<SelectionCheckListDetail>();
+            checkList = new List<SelectionCheckListEntry>();
 
             foreach (KeyValuePair<string, GridColumnInfo> d in dictInfo.ColumnInfo) {
 
@@ -963,11 +963,11 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 // Description
                 string description = prop.GetDescription(gridDef.ResourceRedirect);
 
-                list.Add(new SelectionCheckListItem { Text = caption, Tooltip = description, Enabled = colStatus != ColumnVisibilityStatus.AlwaysShown });
+                list.Add(new SelectionCheckListDetail { Key = propName, Text = caption, Tooltip = description, Enabled = colStatus != ColumnVisibilityStatus.AlwaysShown });
 
                 // Visible
                 bool colVisible = columnInfo != null ? columnInfo.Visible : colStatus != ColumnVisibilityStatus.NotShown;
-                checkList.Add(propName, colVisible);
+                checkList.Add(new SelectionCheckListEntry { Key = propName, Value = colVisible });
             }
             return list;
         }
@@ -1194,7 +1194,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
         {nextHTML}{bottomHTML}
     </div>");
 
-                if (!gridModel.ShowHeader) {
+                if (!gridModel.PanelHeader) {
                     hb.Append($@"
     <div class='tg_pgsel'>
         {await HtmlHelper.ForLabelAsync(pagerUI, nameof(PagerUI.__PageSelection))}

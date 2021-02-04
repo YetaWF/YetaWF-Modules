@@ -4,6 +4,7 @@ using YetaWF.Core.Models.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using YetaWF.Modules.ComponentsHTML.Components;
+using YetaWF.Core.Support;
 
 #nullable enable
 
@@ -17,20 +18,35 @@ namespace YetaWF.Modules.DevTests.Controllers {
         public class Model {
 
             [Caption("CheckList"), Description("CheckList")]
-            [UIHint("CheckList"), Trim]
-            public Dictionary<string, bool> Prop1 { get; set; } = null!;
-            public List<SelectionCheckListItem> Prop1_List {
+            [UIHint("CheckList")]
+            public List<SelectionCheckListEntry> Prop1 { get; set; } = null!;
+            public string Prop1_DDSVG { get { return "fas-columns"; } }
+            public List<SelectionCheckListDetail> Prop1_List {
                 get {
-                    return new List<SelectionCheckListItem> {
-                        new SelectionCheckListItem{ Text = "Item 1", Tooltip = "Tooltip for item 1", Enabled = false },
-                        new SelectionCheckListItem{ Text = "Item 2", Tooltip = "Tooltip for item 2", Enabled = true },
-                        new SelectionCheckListItem{ Text = "Item 3", Tooltip = "Tooltip for item 3", Enabled = true },
-                        new SelectionCheckListItem{ Text = "Item 4", Tooltip = "Tooltip for item 4", Enabled = true },
-                        new SelectionCheckListItem{ Text = "Item 5", Tooltip = "Tooltip for item 5", Enabled = true },
-                    };
+                    return new List<SelectionCheckListDetail> {
+                        new SelectionCheckListDetail { Key = "Checkbox1", Text = "Item 1", Tooltip = "Description for item 1", Enabled = false },
+                        new SelectionCheckListDetail { Key = "Checkbox2", Text = "Item 2", Tooltip = "Description for item 2", Enabled = true },
+                        new SelectionCheckListDetail { Key = "Checkbox3", Text = "Item 3", Tooltip = "Description for item 3", Enabled = true },
+                        new SelectionCheckListDetail { Key = "Checkbox4", Text = "Item 4", Tooltip = "Description for item 4", Enabled = true },
+                        new SelectionCheckListDetail { Key = "Checkbox5", Text = "Item 5", Tooltip = "Description for item 5", Enabled = true },
+                    };;
                 }
             }
-            public string Prop1_SVG { get { return "fas-columns"; } }
+
+            [Caption("CheckList Panel"), Description("CheckList Panel")]
+            [UIHint("CheckListPanel")]
+            public List<SelectionCheckListEntry> Prop2 { get; set; } = null!;
+            public List<SelectionCheckListDetail> Prop2_List {
+                get {
+                    List<SelectionCheckListDetail> list = new List<SelectionCheckListDetail>();
+                    for (int i = 1; i < 100; ++i) {
+                        list.Add(new SelectionCheckListDetail { Key = $"Checkbox{i}", Text = $"Item {i:D4}", Tooltip = $"Description for item {i}", Enabled = true });
+                    }
+                    list[3].Enabled = false;
+                    list[8].Enabled = false;
+                    return list;
+                }
+            }
 
             public Model() { }
         }
@@ -38,8 +54,18 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [AllowGet]
         public ActionResult TemplateCheckList() {
             Model model = new Model {
-                Prop1 = new Dictionary<string, bool> { { "Checkbox1", true }, { "Checkbox2", true }, { "Checkbox3", false }, { "Checkbox4", false }, { "Checkbox5", true } },
+                Prop1 = new List<SelectionCheckListEntry> {
+                    new SelectionCheckListEntry { Key = "Checkbox1", Value = true },
+                    new SelectionCheckListEntry { Key = "Checkbox2", Value = true },
+                    new SelectionCheckListEntry { Key = "Checkbox3", Value = true },
+                    new SelectionCheckListEntry { Key = "Checkbox4", Value = true },
+                    new SelectionCheckListEntry { Key = "Checkbox5", Value = true },
+                },
+                Prop2 = new List<SelectionCheckListEntry>(),
             };
+            for (int i = 1; i < 100; ++i) {
+                model.Prop2.Add(new SelectionCheckListEntry { Key = $"Checkbox{i}", Value = false });
+            }
             return View(model);
         }
 

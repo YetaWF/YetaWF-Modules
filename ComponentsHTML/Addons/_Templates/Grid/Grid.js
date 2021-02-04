@@ -781,8 +781,12 @@ var YetaWF_ComponentsHTML;
                         }
                         var len = trs.length;
                         var count = 0;
+                        if (!newPageSize)
+                            newPageSize = this.Setup.PageSize;
+                        else
+                            this.Setup.PageSize = newPageSize;
                         for (var i = page * this.Setup.PageSize; i < len; ++i) {
-                            if (count >= (newPageSize || this.Setup.PageSize))
+                            if (count >= newPageSize)
                                 break;
                             trs[i].removeAttribute("style");
                             // init any controls that just became visible
@@ -793,6 +797,7 @@ var YetaWF_ComponentsHTML;
                     this.Setup.Page = page;
                     if (this.InputPage)
                         this.InputPage.value = this.Setup.Page + 1;
+                    this.updatePage();
                     this.updateStatus();
                     this.setReloading(false);
                     this.setExpandCollapseStatus(true);
