@@ -105,8 +105,8 @@ var YetaWF_ComponentsHTML;
                 }
                 if (YetaWF_ComponentsHTML.SearchEditComponent) // searchedit may not be in use
                     _this.InputPanelSearch = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond(".yGridPanelTitle [name='__Search']", YetaWF_ComponentsHTML.SearchEditComponent.SELECTOR, [_this.Control]);
-                if (YetaWF_ComponentsHTML.CheckListEditComponent) // checklist may not be in use
-                    _this.ColumnSelection = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond(".yGridPanelTitle [name='__ColumnSelection']", YetaWF_ComponentsHTML.CheckListEditComponent.SELECTOR, [_this.Control]);
+                if (YetaWF_ComponentsHTML.CheckListMenuEditComponent) // checklist may not be in use
+                    _this.ColumnSelection = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond(".yGridPanelTitle [name='__ColumnSelection']", YetaWF_ComponentsHTML.CheckListMenuEditComponent.SELECTOR, [_this.Control]);
             }
             _this.FilterBar = $YetaWF.getElement1BySelectorCond(".tg_filter", [_this.Control]);
             _this.updateStatus();
@@ -204,7 +204,7 @@ var YetaWF_ComponentsHTML;
             }
             // column selection
             if (_this.Setup.SettingsModuleGuid && _this.ColumnSelection) {
-                _this.ColumnSelection.Control.addEventListener(YetaWF_ComponentsHTML.CheckListEditComponent.EVENTCHANGE, function (evt) {
+                _this.ColumnSelection.Control.addEventListener(YetaWF_ComponentsHTML.CheckListMenuEditComponent.EVENTCHANGE, function (evt) {
                     var uri = $YetaWF.parseUrl(_this.Setup.SaveSettingsColumnSelectionUrl);
                     uri.addSearch("SettingsModuleGuid", _this.Setup.SettingsModuleGuid);
                     // build query args

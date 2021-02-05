@@ -27,9 +27,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary> 
         public MultiString Text { get; set; } = null!;
         /// <summary>
-        /// The tooltip displayed in the CheckList for the entry.
+        /// The description for the entry.
         /// </summary>
-        public MultiString? Tooltip { get; set; }
+        public MultiString? Description { get; set; }
         /// <summary>
         /// Defines whether the entry is enabled so it can be checked/unchecked.
         /// </summary>
@@ -53,7 +53,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// <summary>
     /// Allows selection of multiple checkboxes from a list using a dropdown menu. The dropdown menu supports optional tooltips.
     /// </summary>
-    public class CheckListComponent : YetaWFComponent, IYetaWFComponent<List<SelectionCheckListEntry>> {
+    public class CheckListMenuComponent : YetaWFComponent, IYetaWFComponent<List<SelectionCheckListEntry>> {
 
         /// <inheritdoc/>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
@@ -62,7 +62,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <inheritdoc/>
         public override string GetTemplateName() { return TemplateName; }
 
-        internal string TemplateName { get { return "CheckList"; } }
+        internal string TemplateName { get { return "CheckListMenu"; } }
 
         internal class CheckListSetup {
             public string FieldName { get; set; } = null!;
@@ -89,7 +89,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder tagHtml = new HtmlBuilder();
 
             hb.Append($@"
-<div id='{ControlId}'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} class='yt_checklist t_edit{GetClasses()}'>
+<div id='{ControlId}'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} class='yt_checklistmenu t_edit{GetClasses()}'>
     <button class='y_buttonlite'>{(svg != null ? SkinSVGs.Get(AreaRegistration.CurrentPackage, svg) : null)}{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-caret-down")}</button>");
 
             int listLength = details!.Count;
@@ -106,7 +106,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 hb.Append($@"<input type='hidden' name='{FieldName}[{index}].Key' value='{entry.Key}'>");
                 hb.Append($@"<input type='hidden' name='{FieldName}[{index}].Value' data-name='{entry.Key}' value='{(entry.Value ? "True" : "False")}'>");
 
-                string? t = detail.Tooltip?.ToString();
+                string? t = detail.Description?.ToString();
                 string desc = string.Empty;
                 if (!string.IsNullOrWhiteSpace(t))
                     desc = $" {Basics.CssTooltip}='{HAE(t)}'";
@@ -131,7 +131,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             CheckListSetup setup = new CheckListSetup {
                 FieldName = FieldName,
             };
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.CheckListEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.CheckListMenuEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
             return Task.FromResult(hb.ToString());
         }

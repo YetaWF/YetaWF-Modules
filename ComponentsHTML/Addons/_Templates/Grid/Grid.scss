@@ -165,11 +165,9 @@ $smbuttonhorzmargin: .2em;
                     display: table-cell;
                     width:100%;
                     .yt_text_base,
+                    .yt_dropdownlist_base,
                      .yt_number_container,
-                    .k-widget {//TODO: Remove
-                        width:100%;
-                    }
-                    select {
+                    .k-widget {//TODO: Remove k-widget, eventually
                         width:100%;
                     }
                     .tg_ffilter {

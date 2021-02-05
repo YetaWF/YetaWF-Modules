@@ -15,10 +15,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
-    var CheckListEditComponent = /** @class */ (function (_super) {
-        __extends(CheckListEditComponent, _super);
-        function CheckListEditComponent(controlId, setup) {
-            var _this = _super.call(this, controlId, CheckListEditComponent.TEMPLATE, CheckListEditComponent.SELECTOR, {
+    var CheckListMenuEditComponent = /** @class */ (function (_super) {
+        __extends(CheckListMenuEditComponent, _super);
+        function CheckListMenuEditComponent(controlId, setup) {
+            var _this = _super.call(this, controlId, CheckListMenuEditComponent.TEMPLATE, CheckListMenuEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: null,
                 GetValue: null,
@@ -37,7 +37,7 @@ var YetaWF_ComponentsHTML;
             });
             return _this;
         }
-        CheckListEditComponent.prototype.openMenu = function () {
+        CheckListMenuEditComponent.prototype.openMenu = function () {
             var _this = this;
             var menu = this.Menu.cloneNode(true);
             menu.id = this.Menu.id + "_live";
@@ -72,11 +72,11 @@ var YetaWF_ComponentsHTML;
                 }
             });
         };
-        CheckListEditComponent.prototype.sendChangeEvent = function () {
-            $YetaWF.sendCustomEvent(this.Control, CheckListEditComponent.EVENTCHANGE);
+        CheckListMenuEditComponent.prototype.sendChangeEvent = function () {
+            $YetaWF.sendCustomEvent(this.Control, CheckListMenuEditComponent.EVENTCHANGE);
         };
         // API
-        CheckListEditComponent.prototype.getValueEntries = function () {
+        CheckListMenuEditComponent.prototype.getValueEntries = function () {
             var entries = [];
             var lis = $YetaWF.getElementsBySelector("li", [this.Menu]);
             for (var _i = 0, lis_2 = lis; _i < lis_2.length; _i++) {
@@ -87,7 +87,7 @@ var YetaWF_ComponentsHTML;
             }
             return entries;
         };
-        CheckListEditComponent.prototype.replaceValues = function (values) {
+        CheckListMenuEditComponent.prototype.replaceValues = function (values) {
             var lis = $YetaWF.getElementsBySelector("li", [this.Menu]);
             if (lis.length !== values.length)
                 throw "replaceValues expected " + lis.length + " values, received " + values.length;
@@ -100,12 +100,12 @@ var YetaWF_ComponentsHTML;
                 ++valIndex;
             }
         };
-        CheckListEditComponent.TEMPLATE = "yt_checklist";
-        CheckListEditComponent.SELECTOR = ".yt_checklist.t_edit";
-        CheckListEditComponent.EVENTCHANGE = "checklist_change";
-        return CheckListEditComponent;
+        CheckListMenuEditComponent.TEMPLATE = "yt_checklistmenu";
+        CheckListMenuEditComponent.SELECTOR = ".yt_checklistmenu.t_edit";
+        CheckListMenuEditComponent.EVENTCHANGE = "checklistmenu_change";
+        return CheckListMenuEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
-    YetaWF_ComponentsHTML.CheckListEditComponent = CheckListEditComponent;
+    YetaWF_ComponentsHTML.CheckListMenuEditComponent = CheckListMenuEditComponent;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
-//# sourceMappingURL=CheckListEdit.js.map
+//# sourceMappingURL=CheckListMenuEdit.js.map

@@ -114,7 +114,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
     internal class ColumnSelectionUI {
         [Caption(""), Description("")]
-        [UIHint("CheckList")]
+        [UIHint("CheckListMenu")]
         public List<SelectionCheckListEntry> __ColumnSelection { get; set; }
         public List<SelectionCheckListDetail> __ColumnSelection_List { get; set; }
         public string __ColumnSelection_DDSVG { get { return "fas-columns"; } }
@@ -555,7 +555,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 if (!colVisible)
                     cssStyle += "display:none;";
                 if (!string.IsNullOrWhiteSpace(cssStyle))
-                    cssStyle = $" style='{cssStyle}";
+                    cssStyle = $" style='{cssStyle}'";
 
                 // Render column header
                 hb.Append($@"
@@ -963,7 +963,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 // Description
                 string description = prop.GetDescription(gridDef.ResourceRedirect);
 
-                list.Add(new SelectionCheckListDetail { Key = propName, Text = caption, Tooltip = description, Enabled = colStatus != ColumnVisibilityStatus.AlwaysShown });
+                list.Add(new SelectionCheckListDetail { Key = propName, Text = caption, Description = description, Enabled = colStatus != ColumnVisibilityStatus.AlwaysShown });
 
                 // Visible
                 bool colVisible = columnInfo != null ? columnInfo.Visible : colStatus != ColumnVisibilityStatus.NotShown;

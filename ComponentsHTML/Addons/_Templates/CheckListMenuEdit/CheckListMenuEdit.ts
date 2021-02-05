@@ -11,19 +11,19 @@ namespace YetaWF_ComponentsHTML {
     }
 
 
-    export class CheckListEditComponent extends YetaWF.ComponentBaseDataImpl {
+    export class CheckListMenuEditComponent extends YetaWF.ComponentBaseDataImpl {
 
-        public static readonly TEMPLATE: string = "yt_checklist";
-        public static readonly SELECTOR: string = ".yt_checklist.t_edit";
+        public static readonly TEMPLATE: string = "yt_checklistmenu";
+        public static readonly SELECTOR: string = ".yt_checklistmenu.t_edit";
 
-        public static readonly EVENTCHANGE: string = "checklist_change";
+        public static readonly EVENTCHANGE: string = "checklistmenu_change";
 
         //private Setup: CheckListSetup;
         private Button: HTMLButtonElement;
         private Menu: HTMLElement;
 
         constructor(controlId: string, setup: CheckListSetup) {
-            super(controlId, CheckListEditComponent.TEMPLATE, CheckListEditComponent.SELECTOR, {
+            super(controlId, CheckListMenuEditComponent.TEMPLATE, CheckListMenuEditComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
                 ChangeEvent: null,
                 GetValue: null,
@@ -81,7 +81,7 @@ namespace YetaWF_ComponentsHTML {
         }
 
         private sendChangeEvent(): void {
-            $YetaWF.sendCustomEvent(this.Control, CheckListEditComponent.EVENTCHANGE);
+            $YetaWF.sendCustomEvent(this.Control, CheckListMenuEditComponent.EVENTCHANGE);
         }
 
         // API

@@ -128,7 +128,7 @@ namespace YetaWF_ComponentsHTML {
         private SelectPageSize: YetaWF_ComponentsHTML.DropDownListEditComponent | null = null;
         private SelectPanelPageSize: YetaWF_ComponentsHTML.DropDownListEditComponent | null = null;
         private InputPanelSearch: YetaWF_ComponentsHTML.SearchEditComponent | null = null;
-        private ColumnSelection: YetaWF_ComponentsHTML.CheckListEditComponent | null = null;
+        private ColumnSelection: YetaWF_ComponentsHTML.CheckListMenuEditComponent | null = null;
         private ColumnResizeBar: HTMLElement | null = null;
         private ColumnResizeHeader: HTMLTableHeaderCellElement | null = null;
         private TBody: HTMLElement;
@@ -174,8 +174,8 @@ namespace YetaWF_ComponentsHTML {
                 }
                 if (SearchEditComponent) // searchedit may not be in use
                     this.InputPanelSearch = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond<SearchEditComponent>(".yGridPanelTitle [name='__Search']", SearchEditComponent.SELECTOR, [this.Control]);
-                if (CheckListEditComponent) // checklist may not be in use
-                    this.ColumnSelection = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond<CheckListEditComponent>(".yGridPanelTitle [name='__ColumnSelection']", CheckListEditComponent.SELECTOR, [this.Control]);
+                if (CheckListMenuEditComponent) // checklist may not be in use
+                    this.ColumnSelection = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond<CheckListMenuEditComponent>(".yGridPanelTitle [name='__ColumnSelection']", CheckListMenuEditComponent.SELECTOR, [this.Control]);
             }
             this.FilterBar = $YetaWF.getElement1BySelectorCond(".tg_filter", [this.Control]) as HTMLDivElement | null;
 
@@ -275,7 +275,7 @@ namespace YetaWF_ComponentsHTML {
             }
             // column selection
             if (this.Setup.SettingsModuleGuid && this.ColumnSelection) {
-                this.ColumnSelection.Control.addEventListener(CheckListEditComponent.EVENTCHANGE, (evt: Event): void => {
+                this.ColumnSelection.Control.addEventListener(CheckListMenuEditComponent.EVENTCHANGE, (evt: Event): void => {
 
                     let uri = $YetaWF.parseUrl(this.Setup.SaveSettingsColumnSelectionUrl);
                     uri.addSearch("SettingsModuleGuid", this.Setup.SettingsModuleGuid);

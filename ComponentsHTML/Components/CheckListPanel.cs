@@ -43,7 +43,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             [UIHint("Boolean"), ReadOnly]
             public bool Value { get; set; }
 
-            [Caption("Entry")]
+            [Caption("Name")]
             [UIHint("String"), ReadOnly]
             public string Text { get; set; } = null!;
 
@@ -89,7 +89,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         throw new InternalError($"Missing detail entry in {FieldName} for key {selEntry.Key}");
                     list.Add(new Entry {
                         Text = detail.Text.ToString(),
-                        Tooltip = detail.Tooltip?.ToString(),
+                        Tooltip = detail.Description?.ToString(),
                         Value = selEntry.Value
                     });
                 }
@@ -120,11 +120,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal class Entry {
 
-            [Caption("Check")]
+            [Caption("Selected")]
             [UIHint("Boolean")]
             public bool Value { get; set; }
 
-            [Caption("Entry")]
+            [Caption("Name")]
             [UIHint("String"), ReadOnly]
             public string Text { get; set; } = null!;
 
@@ -173,7 +173,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         throw new InternalError($"Missing detail entry in {FieldName} for key {selEntry.Key}");
                     list.Add(new Entry {
                         Text = detail.Text.ToString(),
-                        Tooltip = detail.Tooltip?.ToString(),
+                        Tooltip = detail.Description?.ToString(),
                         //Enabled = detail.Enabled,
                         Key = selEntry.Key,
                         Value = selEntry.Value

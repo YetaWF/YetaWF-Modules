@@ -123,10 +123,9 @@
         display: table-cell;
         width: 100%; }
         .yt_grid .tg_table table tr.tg_filter .tg_fctrls .yt_text_base,
+        .yt_grid .tg_table table tr.tg_filter .tg_fctrls .yt_dropdownlist_base,
         .yt_grid .tg_table table tr.tg_filter .tg_fctrls .yt_number_container,
         .yt_grid .tg_table table tr.tg_filter .tg_fctrls .k-widget {
-          width: 100%; }
-        .yt_grid .tg_table table tr.tg_filter .tg_fctrls select {
           width: 100%; }
         .yt_grid .tg_table table tr.tg_filter .tg_fctrls .tg_ffilter {
           display: inline-block;
