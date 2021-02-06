@@ -20,7 +20,6 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Site;
-using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Core.Support.Zip;
 using YetaWF.Core.Upload;
@@ -189,11 +188,6 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [UIHint("Theme"), StringLength(SiteDefinition.MaxTheme), SelectionRequired]
             public string Theme { get; set; }
 
-            [Category("Skin"), Caption("Kendo UI Skin"), Description("The skin for Kendo UI elements (buttons, modal dialogs, etc.)")]
-            [HelpLink("http://demos.telerik.com/kendo-ui/themebuilder/")]
-            [UIHint("KendoUISkin"), StringLength(SiteDefinition.MaxKendoUISkin), AdditionalMetadata("NoDefault", true), Trim]
-            public string KendoUISkin { get; set; }
-
             public SkinSelectionModel() { }
         }
         [Trim]
@@ -299,7 +293,6 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                     CurrentPageGuid = Manager.CurrentPage.PageGuid,
                 },
                 SkinSelectionModel = new SkinSelectionModel {
-                    KendoUISkin = Manager.CurrentSite.KendoUISkin,
                     Theme = Manager.CurrentSite.Theme,
                 },
                 LoginSiteSelectionModel = new LoginSiteSelectionModel(),
@@ -399,7 +392,6 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             SiteDefinition origSite = new SiteDefinition();
             ObjectSupport.CopyData(Manager.CurrentSite, origSite);// make a copy of original site
             SiteDefinition site = Manager.CurrentSite;// update new settings
-            site.KendoUISkin = model.KendoUISkin;
             site.Theme = model.Theme;
             ObjectSupport.ModelDisposition modelDisp = ObjectSupport.EvaluateModelChanges(origSite, site);
             switch (modelDisp) {

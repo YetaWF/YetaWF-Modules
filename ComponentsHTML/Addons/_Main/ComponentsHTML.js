@@ -20,7 +20,7 @@ var YetaWF_ComponentsHTML;
             if (!YVolatile.YetaWF_ComponentsHTML.kendoUI) {
                 YVolatile.YetaWF_ComponentsHTML.kendoUI = true;
                 $YetaWF.ContentHandling.loadAddons([
-                    { AreaName: "YetaWF_ComponentsHTML", ShortName: "telerik.com.Kendo_UI_Core", Argument1: YVolatile.YetaWF_ComponentsHTML.kendoUITheme }
+                    { AreaName: "YetaWF_ComponentsHTML", ShortName: "telerik.com.Kendo_UI_Core", Argument1: null }
                 ], function () {
                     run();
                 });

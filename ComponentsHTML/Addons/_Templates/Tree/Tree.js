@@ -13,7 +13,6 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-// Kendo UI menu use
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     //export interface IPackageLocs {

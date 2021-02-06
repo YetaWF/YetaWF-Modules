@@ -18,10 +18,6 @@ namespace YetaWF.Modules.Basics.Controllers {
             [UIHint("Skin")]
             public SkinDefinition SiteSelectedSkin { get; set; }
 
-            [Caption("Site Defined Kendo UI Skin"), Description("The skin for Kendo UI elements (date, time, datetime)")]
-            [UIHint("KendoUISkin")]
-            public string SiteKendoUISkin { get; set; }
-
             [Caption("Letters"), Description("The letters used to calculate the average character width and height")]
             [UIHint("TextArea"), AdditionalMetadata("Encode", false), ReadOnly]
             public string Characters { get; set; }
@@ -45,7 +41,6 @@ namespace YetaWF.Modules.Basics.Controllers {
         public ActionResult ModuleSkinInfo() {
             DisplayModel model = new DisplayModel();
             model.SiteSelectedSkin = Manager.CurrentSite.Skin;
-            model.SiteKendoUISkin = Manager.CurrentSite.KendoUISkin;
             model.Characters = "<span class='t_chars'>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<br/>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</span>";
             return View(model);
         }

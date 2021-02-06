@@ -8,7 +8,7 @@ using YetaWF.Core.Support;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// This static class implements adding Kendo UI and Kendo UI files to a page.
+    /// This static class implements adding Kendo UI and its files to a page.
     /// </summary>
     public static class KendoUICore {
 
@@ -25,11 +25,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (!cData.KendoUIUsed) {
                 cData.KendoUIUsed = true;
 
-                // Find Kendo UI theme
-                SkinAccess skinAccess = new SkinAccess();
-                string kendoUITheme = await skinAccess.FindKendoUISkinAsync(Manager.CurrentSite.KendoUISkin);
-                await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.AreaName, "telerik.com.Kendo_UI_Core", kendoUITheme);
-
+                await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.AreaName, "telerik.com.Kendo_UI_Core");
                 Manager.ScriptManager.AddVolatileOption(AreaRegistration.CurrentPackage.AreaName, "kendoUI", true, Replace: true);
             }
         }

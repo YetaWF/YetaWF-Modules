@@ -136,12 +136,6 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public int IntValue6 { get; set; }
 
-            [Category("Core"), Caption("KendoUISkin"), Description("KendoUISkin (Required)")]
-            [UIHint("KendoUISkin"), AdditionalMetadata("NoDefault", false)]
-            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
-            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string KendoUISkin { get; set; }
-
             [Category("Core"), Caption("LanguageId"), Description("LanguageId (Required)")]
             [UIHint("LanguageId"), AdditionalMetadata("NoDefault", false), AdditionalMetadata("AllLanguages", true)]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]

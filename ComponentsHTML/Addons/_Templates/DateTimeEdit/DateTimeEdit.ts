@@ -47,6 +47,9 @@ namespace YetaWF_ComponentsHTML {
                 format: YVolatile.YetaWF_ComponentsHTML.DateTimeFormat,
                 min: setup.Min, max: setup.Max,
                 culture: YVolatile.Basics.Language,
+                // close: (e: kendo.ui.DateTimePickerCloseEvent): void => {//used for css debugging only
+                //     e.preventDefault();
+                // },
                 change: (ev: kendo.ui.DateTimePickerEvent): void => {
                     var kdPicker: kendo.ui.DateTimePicker = ev.sender;
                     var val: Date = kdPicker.value();

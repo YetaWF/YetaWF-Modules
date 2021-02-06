@@ -1,7 +1,5 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-// Kendo UI menu use
-
 namespace YetaWF_ComponentsHTML {
 
     export interface IPackageLocs {

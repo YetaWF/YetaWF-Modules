@@ -11,7 +11,6 @@ namespace YetaWF {
 namespace YetaWF_ComponentsHTML {
     export interface IPackageVolatiles {
         kendoUI: boolean; // defines whether kendoui has been loaded
-        kendoUITheme: string; // the theme in use
     }
     export interface IPackageConfigs {
 
@@ -46,7 +45,7 @@ namespace YetaWF_ComponentsHTML {
                 YVolatile.YetaWF_ComponentsHTML.kendoUI = true;
 
                 $YetaWF.ContentHandling.loadAddons([
-                    { AreaName: "YetaWF_ComponentsHTML", ShortName: "telerik.com.Kendo_UI_Core", Argument1: YVolatile.YetaWF_ComponentsHTML.kendoUITheme }
+                    { AreaName: "YetaWF_ComponentsHTML", ShortName: "telerik.com.Kendo_UI_Core", Argument1: null }
                 ], (): void => {
                     run();
                 });

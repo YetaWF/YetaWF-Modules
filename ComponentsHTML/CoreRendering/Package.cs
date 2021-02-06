@@ -46,13 +46,7 @@ namespace YetaWF.Modules.ComponentsHTML {
         /// <summary>
         /// Adds any skin-specific addons for the current page that are required by the package rendering components and views.
         /// </summary>
-        public async Task AddSkinAddOnsAsync() {
-            // add kendoui theme folder in case we need to dynamically load kendoui from the client
-            // Find the kendo theme
-            SkinAccess skinAccess = new SkinAccess();
-            string kendoUITheme = await skinAccess.FindKendoUISkinAsync(Manager.CurrentSite.KendoUISkin);
-            Manager.ScriptManager.AddVolatileOption(AreaRegistration.CurrentPackage.AreaName, "kendoUITheme", kendoUITheme);
-        }
+        public Task AddSkinAddOnsAsync() { return Task.CompletedTask; }
 
         /// <summary>
         /// Adds any form-specific addons for the current page that are required by the package rendering components and views.
