@@ -41,6 +41,9 @@ var YetaWF_ComponentsHTML;
                 format: YVolatile.YetaWF_ComponentsHTML.DateFormat,
                 min: setup.Min, max: setup.Max,
                 culture: YVolatile.Basics.Language,
+                close: function (e) {
+                    e.preventDefault();
+                },
                 change: function (ev) {
                     var kdPicker = ev.sender;
                     var val = kdPicker.value();

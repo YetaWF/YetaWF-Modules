@@ -13,9 +13,31 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-/// <reference types="kendo-ui" />
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
+    var DateFormatEnum;
+    (function (DateFormatEnum) {
+        DateFormatEnum[DateFormatEnum["MMDDYYYY"] = 0] = "MMDDYYYY";
+        DateFormatEnum[DateFormatEnum["MMDDYYYYdash"] = 1] = "MMDDYYYYdash";
+        DateFormatEnum[DateFormatEnum["MMDDYYYYdot"] = 2] = "MMDDYYYYdot";
+        DateFormatEnum[DateFormatEnum["DDMMYYYY"] = 10] = "DDMMYYYY";
+        DateFormatEnum[DateFormatEnum["DDMMYYYYdash"] = 11] = "DDMMYYYYdash";
+        DateFormatEnum[DateFormatEnum["DDMMYYYYdot"] = 12] = "DDMMYYYYdot";
+        DateFormatEnum[DateFormatEnum["YYYYMMDD"] = 20] = "YYYYMMDD";
+        DateFormatEnum[DateFormatEnum["YYYYMMDDdash"] = 21] = "YYYYMMDDdash";
+        DateFormatEnum[DateFormatEnum["YYYYMMDDdot"] = 22] = "YYYYMMDDdot";
+    })(DateFormatEnum || (DateFormatEnum = {}));
+    var TimeFormatEnum;
+    (function (TimeFormatEnum) {
+        TimeFormatEnum[TimeFormatEnum["HHMMAM"] = 0] = "HHMMAM";
+        TimeFormatEnum[TimeFormatEnum["HHMMAMdot"] = 1] = "HHMMAMdot";
+        TimeFormatEnum[TimeFormatEnum["HHMM"] = 10] = "HHMM";
+        TimeFormatEnum[TimeFormatEnum["HHMMdot"] = 11] = "HHMMdot";
+        TimeFormatEnum[TimeFormatEnum["HHMMSSAM"] = 20] = "HHMMSSAM";
+        TimeFormatEnum[TimeFormatEnum["HHMMSSAMdot"] = 21] = "HHMMSSAMdot";
+        TimeFormatEnum[TimeFormatEnum["HHMMSS"] = 30] = "HHMMSS";
+        TimeFormatEnum[TimeFormatEnum["HHMMSSdot"] = 31] = "HHMMSSdot";
+    })(TimeFormatEnum || (TimeFormatEnum = {}));
     var DateTimeEditComponent = /** @class */ (function (_super) {
         __extends(DateTimeEditComponent, _super);
         function DateTimeEditComponent(controlId, setup) {
@@ -26,78 +48,863 @@ var YetaWF_ComponentsHTML;
                     return control.valueText;
                 },
                 Enable: function (control, enable, clearOnDisable) {
-                    YetaWF_BasicsImpl.elementEnableToggle(control.Hidden, enable);
+                    YetaWF_BasicsImpl.elementEnableToggle(control.InputHidden, enable);
                     control.enable(enable);
                     if (!enable && clearOnDisable)
                         control.clear();
                 },
-            }, false, function (tag, control) {
-                control.kendoDateTimePicker.destroy();
             }) || this;
-            _this.Hidden = $YetaWF.getElement1BySelector("input[type=\"hidden\"]", [_this.Control]);
-            _this.Date = $YetaWF.getElement1BySelector("input[name=\"dtpicker\"]", [_this.Control]);
-            $(_this.Date).kendoDateTimePicker({
-                animation: false,
-                format: YVolatile.YetaWF_ComponentsHTML.DateTimeFormat,
-                min: setup.Min, max: setup.Max,
-                culture: YVolatile.Basics.Language,
-                // close: (e: kendo.ui.DateTimePickerCloseEvent): void => {//used for css debugging only
-                //     e.preventDefault();
-                // },
-                change: function (ev) {
-                    var kdPicker = ev.sender;
-                    var val = kdPicker.value();
-                    if (val == null)
-                        _this.setHiddenText(kdPicker.element.val());
-                    else
-                        _this.setHidden(val);
-                    FormsSupport.validateElement(_this.Hidden);
-                    var event = document.createEvent("Event");
-                    event.initEvent("datetime_change", true, true);
-                    _this.Control.dispatchEvent(event);
+            _this.TimePopup = null;
+            _this.CalendarPopup = null;
+            _this.YearPopup = null;
+            _this.MonthPopup = null;
+            _this.tempTimeSelectedValue = null;
+            _this.tempCalSelectedValue = null;
+            _this.tempArrow = null;
+            _this.tempYearSelectedValue = null;
+            _this.tempMonthSelectedValue = null;
+            _this.Setup = setup;
+            _this.InputHidden = $YetaWF.getElement1BySelector("input[type='hidden']", [_this.Control]);
+            _this.InputControl = $YetaWF.getElement1BySelector("input[type='text']", [_this.Control]);
+            _this.Selected = new Date(_this.InputHidden.value);
+            _this.tempCalCurrentDate = new Date(_this.Selected);
+            $YetaWF.registerEventHandler(_this.Control, "mousedown", ".t_time", function (ev) {
+                if (_this.enabled) {
+                    if (_this.TimePopup) {
+                        _this.closeTimeList();
+                    }
+                    else {
+                        _this.InputControl.focus();
+                        _this.openTimeList();
+                    }
                 }
+                return false;
             });
-            _this.kendoDateTimePicker = $(_this.Date).data("kendoDateTimePicker");
-            _this.setHidden(_this.kendoDateTimePicker.value());
+            $YetaWF.registerEventHandler(_this.Control, "mousedown", ".t_date", function (ev) {
+                if (_this.enabled) {
+                    if (_this.CalendarPopup) {
+                        _this.closeCalendar();
+                    }
+                    else {
+                        _this.InputControl.focus();
+                        _this.openCalendar();
+                    }
+                }
+                return false;
+            });
+            $YetaWF.registerEventHandler(_this.InputControl, "focusin", null, function (ev) {
+                if (_this.enabled) {
+                    $YetaWF.elementRemoveClass(_this.Control, "t_focused");
+                    $YetaWF.elementAddClass(_this.Control, "t_focused");
+                }
+                return true;
+            });
+            $YetaWF.registerEventHandler(_this.InputControl, "focusout", null, function (ev) {
+                $YetaWF.elementRemoveClass(_this.Control, "t_focused");
+                _this.close();
+                return true;
+            });
+            $YetaWF.registerEventHandler(_this.InputControl, "keydown", null, function (ev) {
+                var key = ev.key;
+                if (_this.TimePopup) {
+                    if (key === "ArrowDown" || key === "ArrowRight") {
+                        _this.setSelectedIndex(_this.TimePopup, _this.getSelectedIndex(_this.TimePopup) + 1);
+                        return false;
+                    }
+                    else if (key === "ArrowUp" || key === "Up" || key === "ArrowLeft" || key === "Left") {
+                        _this.setSelectedIndex(_this.TimePopup, _this.getSelectedIndex(_this.TimePopup) - 1);
+                        return false;
+                    }
+                    else if (key === "Home") {
+                        _this.setSelectedIndex(_this.TimePopup, 0);
+                        return false;
+                    }
+                    else if (key === "End") {
+                        _this.setSelectedIndex(_this.TimePopup, 9999999);
+                        return false;
+                    }
+                    else if (key === "Escape") {
+                        _this.closeTimeList();
+                        return false;
+                    }
+                    else if (key === "Enter") {
+                        var time = _this.getSelectedValue(_this.TimePopup);
+                        if (time)
+                            _this.timeSelectedValue = Number(time);
+                        _this.closeTimeList();
+                        _this.sendChangeEvent();
+                        return false;
+                    }
+                }
+                else if (_this.CalendarPopup) {
+                    if (_this.MonthPopup) {
+                        if (key === "ArrowDown" || key === "ArrowRight") {
+                            _this.setSelectedIndex(_this.MonthPopup, _this.getSelectedIndex(_this.MonthPopup) + 1);
+                            return false;
+                        }
+                        else if (key === "ArrowUp" || key === "Up" || key === "ArrowLeft" || key === "Left") {
+                            _this.setSelectedIndex(_this.MonthPopup, _this.getSelectedIndex(_this.MonthPopup) - 1);
+                            return false;
+                        }
+                        else if (key === "Home") {
+                            _this.setSelectedIndex(_this.MonthPopup, 0);
+                            return false;
+                        }
+                        else if (key === "End") {
+                            _this.setSelectedIndex(_this.MonthPopup, 9999999);
+                            return false;
+                        }
+                        else if (key === "Escape") {
+                            _this.closeTimeList();
+                            return false;
+                        }
+                        else if (key === "Enter") {
+                            var month = _this.getSelectedValue(_this.MonthPopup);
+                            var date = _this.tempCalCurrentDate;
+                            date.setFullYear(Number(month));
+                            var tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [_this.CalendarPopup]);
+                            _this.buildCalendarMonthPage(tbody, date);
+                            _this.updateCalendarTitle();
+                            _this.closeYearList();
+                            return false;
+                        }
+                    }
+                    else if (_this.YearPopup) {
+                        if (key === "ArrowDown" || key === "ArrowRight") {
+                            _this.setSelectedIndex(_this.YearPopup, _this.getSelectedIndex(_this.YearPopup) + 1);
+                            return false;
+                        }
+                        else if (key === "ArrowUp" || key === "Up" || key === "ArrowLeft" || key === "Left") {
+                            _this.setSelectedIndex(_this.YearPopup, _this.getSelectedIndex(_this.YearPopup) - 1);
+                            return false;
+                        }
+                        else if (key === "Home") {
+                            _this.setSelectedIndex(_this.YearPopup, 0);
+                            return false;
+                        }
+                        else if (key === "End") {
+                            _this.setSelectedIndex(_this.YearPopup, 9999999);
+                            return false;
+                        }
+                        else if (key === "Escape") {
+                            _this.closeTimeList();
+                            return false;
+                        }
+                        else if (key === "Enter") {
+                            var year = _this.getSelectedValue(_this.YearPopup);
+                            var date = _this.tempCalCurrentDate;
+                            date.setFullYear(Number(year));
+                            var tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [_this.CalendarPopup]);
+                            _this.buildCalendarMonthPage(tbody, date);
+                            _this.updateCalendarTitle();
+                            _this.closeYearList();
+                            return false;
+                        }
+                    }
+                    else {
+                        var date = _this.tempCalCurrentDate;
+                        if (ev.altKey) {
+                            if (key === "ArrowUp") {
+                                _this.close();
+                                return false;
+                            }
+                        }
+                        else {
+                            if (key === "Enter") {
+                                _this.tempCalCurrentDate = new Date(date);
+                                _this.dateSelectedValue = _this.tempCalCurrentDate;
+                                _this.close();
+                                _this.sendChangeEvent();
+                                return false;
+                            }
+                            else if (key === "ArrowUp") {
+                                date.setDate(date.getDate() - 7);
+                            }
+                            else if (key === "ArrowDown") {
+                                date.setDate(date.getDate() + 7);
+                            }
+                            else if (key === "ArrowLeft") {
+                                date.setDate(date.getDate() - 1);
+                            }
+                            else if (key === "ArrowRight") {
+                                date.setDate(date.getDate() + 1);
+                            }
+                            else if (key === "PageUp") {
+                                var dom = date.getDate(); // day of month current month
+                                date.setDate(0); // last day of last month
+                                var daysInMonth = date.getDate();
+                                if (dom >= daysInMonth)
+                                    dom = daysInMonth;
+                                date.setDate(dom);
+                            }
+                            else if (key === "PageDown") {
+                                var dom = date.getDate(); // day of month current month
+                                date.setDate(1); // first day of this month
+                                date.setMonth(date.getMonth() + 2); // first day of next-next month
+                                date.setDate(0); // last day of next month
+                                var daysInMonth = date.getDate();
+                                if (dom >= daysInMonth)
+                                    dom = daysInMonth;
+                                date.setDate(dom);
+                            }
+                            else if (key === "Home") {
+                                date.setDate(1);
+                            }
+                            else if (key === "End") {
+                                date.setMonth(date.getMonth() + 1);
+                                date.setDate(date.getDate() - 1);
+                            }
+                            else
+                                return true;
+                            var tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [_this.CalendarPopup]);
+                            _this.buildCalendarMonthPage(tbody, date);
+                            _this.updateCalendarTitle();
+                            return false;
+                        }
+                    }
+                }
+                else {
+                    if (ev.altKey) {
+                        if (key === "ArrowDown") {
+                            _this.openCalendar();
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            });
             return _this;
         }
+        DateTimeEditComponent.prototype.sendChangeEvent = function () {
+            $YetaWF.sendCustomEvent(this.Control, DateTimeEditComponent.EVENTCHANGE);
+            FormsSupport.validateElement(this.InputHidden);
+        };
+        DateTimeEditComponent.prototype.openTimeList = function () {
+            var _this = this;
+            this.closeCalendar();
+            this.closeTimeList();
+            var times = [];
+            for (var i = 0; i < 24 * 60; i += 30) {
+                if (this.Setup.MinTime <= i && i <= this.Setup.MaxTime)
+                    times.push(i);
+            }
+            this.TimePopup =
+                $YetaWF.createElement("div", { id: DateTimeEditComponent.TIMEPOPUPID, "data-owner": this.ControlId, "aria-hidden": "false" },
+                    $YetaWF.createElement("div", { class: "t_container", "data-role": "popup", "aria-hidden": "false" },
+                        $YetaWF.createElement("div", { class: "t_scroller", unselectable: "on" },
+                            $YetaWF.createElement("ul", { unselectable: "on", class: "t_list", tabindex: "-1", "aria-hidden": "true", "aria-live": "off", "data-role": "staticlist", role: "listbox" }))));
+            var ul = $YetaWF.getElement1BySelector("ul", [this.TimePopup]);
+            var len = times.length;
+            var html = "";
+            var selValue = this.timeSelectedValue;
+            for (var i = 0; i < len; ++i) {
+                var val = times[i];
+                var o = this.getFormattedTime(val);
+                var extra = "";
+                if (val === selValue)
+                    extra = " t_selected";
+                html += "<li tabindex=\"-1\" role=\"option\" unselectable=\"on\" class=\"t_item" + extra + "\" data-value=\"" + val + "\">" + o + "</li>"; //Format
+            }
+            ul.innerHTML = html;
+            var style = window.getComputedStyle(this.Control);
+            this.TimePopup.style.font = style.font;
+            this.TimePopup.style.fontStyle = style.fontStyle;
+            this.TimePopup.style.fontWeight = style.fontWeight;
+            this.TimePopup.style.fontSize = style.fontSize;
+            var ctrlRect = this.Control.getBoundingClientRect();
+            this.TimePopup.style.width = ctrlRect.width + "px";
+            $YetaWF.positionLeftAlignedBelow(this.Control, this.TimePopup);
+            document.body.appendChild(this.TimePopup);
+            this.Control.setAttribute("aria-expanded", "true");
+            var sel = $YetaWF.getElement1BySelectorCond(".t_list .t_selected", [this.TimePopup]);
+            if (sel) {
+                var selRect = sel.getBoundingClientRect();
+                var list = $YetaWF.getElement1BySelector(".t_scroller", [this.TimePopup]);
+                var listRect = list.getBoundingClientRect();
+                list.scrollTop = selRect.top - listRect.top;
+                //sel.scrollIntoView({ behavior: "auto", block: "nearest", inline: "start" }); // causes outer page jump
+            }
+            $YetaWF.registerEventHandler(this.TimePopup, "mousedown", "ul li", function (ev) {
+                var li = ev.__YetaWFElem;
+                var value = Number($YetaWF.getAttribute(li, "data-value"));
+                _this.tempTimeSelectedValue = value;
+                return false;
+            });
+            $YetaWF.registerEventHandler(this.TimePopup, "mouseup", "ul li", function (ev) {
+                var li = ev.__YetaWFElem;
+                var value = Number($YetaWF.getAttribute(li, "data-value"));
+                if (_this.tempTimeSelectedValue === value) {
+                    _this.timeSelectedValue = _this.tempTimeSelectedValue;
+                    _this.tempTimeSelectedValue = null;
+                    _this.closeTimeList();
+                    _this.sendChangeEvent();
+                }
+                return false;
+            });
+            $YetaWF.registerEventHandler(this.TimePopup, "mouseover", "ul li", function (ev) {
+                var li = ev.__YetaWFElem;
+                $YetaWF.elementRemoveClass(li, "t_hover");
+                $YetaWF.elementAddClass(li, "t_hover");
+                return true;
+            });
+            $YetaWF.registerEventHandler(this.TimePopup, "mouseout", "ul li", function (ev) {
+                var li = ev.__YetaWFElem;
+                $YetaWF.elementRemoveClass(li, "t_hover");
+                return true;
+            });
+        };
+        DateTimeEditComponent.prototype.closeTimeList = function () {
+            if (this.TimePopup) {
+                this.TimePopup.remove();
+                this.TimePopup = null;
+                this.Control.setAttribute("aria-expanded", "false");
+            }
+        };
+        DateTimeEditComponent.prototype.openCalendar = function () {
+            var _this = this;
+            this.closeTimeList();
+            this.closeCalendar();
+            var month = this.Setup.Months[this.tempCalCurrentDate.getMonth()];
+            var year = this.tempCalCurrentDate.getFullYear().toFixed(0);
+            this.CalendarPopup =
+                $YetaWF.createElement("div", { id: DateTimeEditComponent.CALENDARPOPUPID, "data-owner": this.ControlId, "aria-hidden": "false" },
+                    $YetaWF.createElement("div", { class: "t_container", "data-role": "popup", "aria-hidden": "false" },
+                        $YetaWF.createElement("div", { "data-role": "calendar", class: "t_calendar" },
+                            $YetaWF.createElement("div", { class: "t_header" },
+                                $YetaWF.createElement("a", { href: "#", "data-action": "prev", role: "button", class: "t_prev", "aria-label": "Previous", "aria-disabled": "false" }),
+                                $YetaWF.createElement("div", { class: "t_title", "aria-disabled": "false" },
+                                    $YetaWF.createElement("span", { class: "t_month" }, month),
+                                    " ",
+                                    $YetaWF.createElement("span", { class: "t_year" }, year)),
+                                $YetaWF.createElement("a", { href: "#", "data-action": "next", role: "button", class: "t_next", "aria-label": "Next", "aria-disabled": "false" })),
+                            $YetaWF.createElement("div", { class: "t_calendarbody" },
+                                $YetaWF.createElement("table", { tabindex: "0", role: "grid" },
+                                    $YetaWF.createElement("thead", null,
+                                        $YetaWF.createElement("tr", { role: "row" },
+                                            $YetaWF.createElement("th", { scope: "col", "data-tooltip": this.Setup.WeekDays[0] }, this.Setup.WeekDays2[0]),
+                                            $YetaWF.createElement("th", { scope: "col", "data-tooltip": this.Setup.WeekDays[1] }, this.Setup.WeekDays2[1]),
+                                            $YetaWF.createElement("th", { scope: "col", "data-tooltip": this.Setup.WeekDays[2] }, this.Setup.WeekDays2[2]),
+                                            $YetaWF.createElement("th", { scope: "col", "data-tooltip": this.Setup.WeekDays[3] }, this.Setup.WeekDays2[3]),
+                                            $YetaWF.createElement("th", { scope: "col", "data-tooltip": this.Setup.WeekDays[4] }, this.Setup.WeekDays2[4]),
+                                            $YetaWF.createElement("th", { scope: "col", "data-tooltip": this.Setup.WeekDays[5] }, this.Setup.WeekDays2[5]),
+                                            $YetaWF.createElement("th", { scope: "col", "data-tooltip": this.Setup.WeekDays[6] }, this.Setup.WeekDays2[6]))),
+                                    $YetaWF.createElement("tbody", null))),
+                            $YetaWF.createElement("div", { class: "t_footer" },
+                                $YetaWF.createElement("a", { href: "#", class: "t_today" }, this.Setup.TodayString)))));
+            var prev = $YetaWF.getElement1BySelector(".t_prev", [this.CalendarPopup]);
+            prev.innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_left;
+            var next = $YetaWF.getElement1BySelector(".t_next", [this.CalendarPopup]);
+            next.innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_right;
+            var tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [this.CalendarPopup]);
+            this.buildCalendarMonthPage(tbody, this.tempCalCurrentDate || new Date());
+            var style = window.getComputedStyle(this.Control);
+            this.CalendarPopup.style.font = style.font;
+            this.CalendarPopup.style.fontStyle = style.fontStyle;
+            this.CalendarPopup.style.fontWeight = style.fontWeight;
+            this.CalendarPopup.style.fontSize = style.fontSize;
+            $YetaWF.positionLeftAlignedBelow(this.Control, this.CalendarPopup);
+            document.body.appendChild(this.CalendarPopup);
+            this.Control.setAttribute("aria-expanded", "true");
+            $YetaWF.registerEventHandler(this.CalendarPopup, "mouseover", "table td", function (ev) {
+                var td = ev.__YetaWFElem;
+                $YetaWF.elementRemoveClass(td, "t_hover");
+                $YetaWF.elementAddClass(td, "t_hover");
+                return true;
+            });
+            $YetaWF.registerEventHandler(this.CalendarPopup, "mouseout", "table td", function (ev) {
+                var td = ev.__YetaWFElem;
+                $YetaWF.elementRemoveClass(td, "t_hover");
+                return true;
+            });
+            $YetaWF.registerEventHandler(this.CalendarPopup, "mousedown", "table td .t_link", function (ev) {
+                var anchor = ev.__YetaWFElem;
+                var value = $YetaWF.getAttribute(anchor, "data-value");
+                _this.tempCalSelectedValue = value;
+                return false;
+            });
+            $YetaWF.registerEventHandler(this.CalendarPopup, "mouseup", "table td .t_link", function (ev) {
+                var anchor = ev.__YetaWFElem;
+                var value = $YetaWF.getAttribute(anchor, "data-value");
+                if (_this.tempCalSelectedValue === value) {
+                    _this.dateSelectedValue = new Date(_this.tempCalSelectedValue);
+                    _this.tempCalSelectedValue = null;
+                    _this.close();
+                    _this.sendChangeEvent();
+                }
+                return false;
+            });
+            $YetaWF.registerEventHandler(this.CalendarPopup, "mousedown", ".t_header .t_prev svg, .t_header .t_next svg", function (ev) {
+                var anchor = $YetaWF.elementClosest(ev.__YetaWFElem, "a");
+                _this.tempArrow = anchor;
+                _this.closeMonthList();
+                _this.closeYearList();
+                return false;
+            });
+            $YetaWF.registerEventHandler(this.CalendarPopup, "mouseup", ".t_header .t_prev svg, .t_header .t_next svg", function (ev) {
+                var anchor = $YetaWF.elementClosest(ev.__YetaWFElem, "a");
+                if (_this.tempArrow === anchor) {
+                    var date = _this.tempCalCurrentDate;
+                    if ($YetaWF.elementHasClass(anchor, "t_prev")) {
+                        date.setMonth(date.getMonth() - 1);
+                    }
+                    else {
+                        date.setMonth(date.getMonth() + 1);
+                    }
+                    var tbody_1 = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [_this.CalendarPopup]);
+                    _this.buildCalendarMonthPage(tbody_1, date);
+                    _this.updateCalendarTitle();
+                    _this.tempArrow = null;
+                }
+                return false;
+            });
+            $YetaWF.registerEventHandler(this.CalendarPopup, "click", ".t_header .t_prev svg, .t_header .t_next svg", function (ev) {
+                return false;
+            });
+            $YetaWF.registerEventHandler(this.CalendarPopup, "click", ".t_footer .t_today", function (ev) {
+                _this.dateSelectedValue = new Date(_this.Setup.Today);
+                _this.tempCalSelectedValue = null;
+                _this.close();
+                _this.sendChangeEvent();
+                return false;
+            });
+            $YetaWF.registerEventHandler(this.CalendarPopup, "mousedown", ".t_header .t_month", function (ev) {
+                if (_this.MonthPopup) {
+                    _this.closeMonthList();
+                }
+                else {
+                    _this.openMonthList();
+                }
+                return false;
+            });
+            $YetaWF.registerEventHandler(this.CalendarPopup, "mousedown", ".t_header .t_year", function (ev) {
+                if (_this.YearPopup) {
+                    _this.closeYearList();
+                }
+                else {
+                    _this.openYearList();
+                }
+                return false;
+            });
+        };
+        DateTimeEditComponent.prototype.closeCalendar = function () {
+            if (this.CalendarPopup) {
+                this.CalendarPopup.remove();
+                this.CalendarPopup = null;
+                this.Control.setAttribute("aria-expanded", "false");
+            }
+        };
+        DateTimeEditComponent.prototype.buildCalendarMonthPage = function (tbody, startDate) {
+            this.tempCalCurrentDate = new Date(startDate);
+            var date = new Date(startDate);
+            var startMonth = startDate.getMonth();
+            date.setDate(1); // set the first day
+            date.setDate(-date.getDay() + 1); // get to the start of the week (Sunday)
+            var today = new Date();
+            tbody.innerHTML = "";
+            var selDate = this.tempCalCurrentDate;
+            for (var last = false; !last;) {
+                var row = $YetaWF.createElement("tr", { role: "row" });
+                for (var day = 0; day < 7; ++day) {
+                    var css = "";
+                    if (day === 0 || day === 6) // Saturday, Sunday
+                        css += " t_weekend";
+                    if (date < startDate && date.getMonth() !== startMonth)
+                        css += " t_othermonth";
+                    else if (date > startDate && date.getMonth() !== startMonth) {
+                        css += " t_othermonth";
+                        last = true;
+                    }
+                    if (date.getFullYear() === selDate.getFullYear() && date.getMonth() === selDate.getMonth() && date.getDate() === selDate.getDate())
+                        css += " t_selected";
+                    if (date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear())
+                        css += " t_today";
+                    css = css.trim();
+                    var tt = this.getLongFormattedDate(date);
+                    var cell = $YetaWF.createElement("td", { class: css, role: "gridcell" },
+                        $YetaWF.createElement("a", { tabindex: "-1", class: "t_link", href: "#", "data-value": date.toISOString(), title: tt }, date.getDate()));
+                    row.appendChild(cell);
+                    date.setDate(date.getDate() + 1);
+                }
+                tbody.appendChild(row);
+                if (!last && date.getMonth() !== startMonth)
+                    last = true;
+            }
+        };
+        DateTimeEditComponent.prototype.openYearList = function () {
+            var _this = this;
+            this.closeMonthList();
+            this.closeYearList();
+            if (!this.CalendarPopup)
+                return;
+            this.YearPopup =
+                $YetaWF.createElement("div", { id: DateTimeEditComponent.YEARPOPUPID, "data-owner": this.ControlId, "aria-hidden": "false" },
+                    $YetaWF.createElement("div", { class: "t_container", "data-role": "popup", "aria-hidden": "false" },
+                        $YetaWF.createElement("div", { class: "t_scroller", unselectable: "on" },
+                            $YetaWF.createElement("ul", { unselectable: "on", class: "t_list", tabindex: "-1", "aria-hidden": "true", "aria-live": "off", "data-role": "staticlist", role: "listbox" }))));
+            var minDate = new Date(this.Setup.MinDate);
+            var maxDate = new Date(this.Setup.MaxDate);
+            var ul = $YetaWF.getElement1BySelector("ul", [this.YearPopup]);
+            var startYear = minDate.getFullYear();
+            var endYear = maxDate.getFullYear();
+            var selValue = this.tempCalCurrentDate.getFullYear();
+            var html = "";
+            for (var i = startYear; i <= endYear; ++i) {
+                var extra = "";
+                if (i === selValue)
+                    extra = " t_selected";
+                html += "<li tabindex=\"-1\" role=\"option\" unselectable=\"on\" class=\"t_item" + extra + "\" data-value=\"" + i + "\">" + i + "</li>"; //Format
+            }
+            ul.innerHTML = html;
+            var yearSel = $YetaWF.getElement1BySelector(".t_header .t_year", [this.CalendarPopup]);
+            var style = window.getComputedStyle(yearSel);
+            this.YearPopup.style.font = style.font;
+            this.YearPopup.style.fontStyle = style.fontStyle;
+            this.YearPopup.style.fontWeight = style.fontWeight;
+            this.YearPopup.style.fontSize = style.fontSize;
+            $YetaWF.positionLeftAlignedBelow(yearSel, this.YearPopup);
+            document.body.appendChild(this.YearPopup);
+            var sel = $YetaWF.getElement1BySelectorCond(".t_list .t_selected", [this.YearPopup]);
+            if (sel) {
+                var selRect = sel.getBoundingClientRect();
+                var list = $YetaWF.getElement1BySelector(".t_scroller", [this.YearPopup]);
+                var listRect = list.getBoundingClientRect();
+                list.scrollTop = selRect.top - listRect.top;
+                //sel.scrollIntoView({ behavior: "auto", block: "nearest", inline: "start" }); // causes outer page jump
+            }
+            $YetaWF.registerEventHandler(this.YearPopup, "mousedown", "ul li", function (ev) {
+                var li = ev.__YetaWFElem;
+                var value = Number($YetaWF.getAttribute(li, "data-value"));
+                _this.tempYearSelectedValue = value;
+                return false;
+            });
+            $YetaWF.registerEventHandler(this.YearPopup, "mouseup", "ul li", function (ev) {
+                var li = ev.__YetaWFElem;
+                var value = Number($YetaWF.getAttribute(li, "data-value"));
+                if (_this.tempYearSelectedValue === value) {
+                    var date = _this.tempCalCurrentDate;
+                    date.setFullYear(value);
+                    var tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [_this.CalendarPopup]);
+                    _this.buildCalendarMonthPage(tbody, date);
+                    _this.updateCalendarTitle();
+                    _this.tempYearSelectedValue = null;
+                    _this.closeYearList();
+                }
+                return false;
+            });
+            $YetaWF.registerEventHandler(this.YearPopup, "click", "ul li", function (ev) {
+                return false;
+            });
+            $YetaWF.registerEventHandler(this.YearPopup, "mouseover", "ul li", function (ev) {
+                var li = ev.__YetaWFElem;
+                $YetaWF.elementRemoveClass(li, "t_hover");
+                $YetaWF.elementAddClass(li, "t_hover");
+                return true;
+            });
+            $YetaWF.registerEventHandler(this.YearPopup, "mouseout", "ul li", function (ev) {
+                var li = ev.__YetaWFElem;
+                $YetaWF.elementRemoveClass(li, "t_hover");
+                return true;
+            });
+        };
+        DateTimeEditComponent.prototype.closeYearList = function () {
+            if (this.YearPopup) {
+                this.YearPopup.remove();
+                this.YearPopup = null;
+            }
+        };
+        DateTimeEditComponent.prototype.openMonthList = function () {
+            var _this = this;
+            this.closeMonthList();
+            this.closeYearList();
+            if (!this.CalendarPopup)
+                return;
+            this.MonthPopup =
+                $YetaWF.createElement("div", { id: DateTimeEditComponent.MONTHPOPUPID, "data-owner": this.ControlId, "aria-hidden": "false" },
+                    $YetaWF.createElement("div", { class: "t_container", "data-role": "popup", "aria-hidden": "false" },
+                        $YetaWF.createElement("div", { class: "t_scroller", unselectable: "on" },
+                            $YetaWF.createElement("ul", { unselectable: "on", class: "t_list", tabindex: "-1", "aria-hidden": "true", "aria-live": "off", "data-role": "staticlist", role: "listbox" }))));
+            var ul = $YetaWF.getElement1BySelector("ul", [this.MonthPopup]);
+            var startMonth = 0;
+            var endMonth = 11;
+            var selValue = this.tempCalCurrentDate.getMonth();
+            var html = "";
+            for (var i = startMonth; i <= endMonth; ++i) {
+                var extra = "";
+                if (i === selValue)
+                    extra = " t_selected";
+                html += "<li tabindex=\"-1\" role=\"option\" unselectable=\"on\" class=\"t_item" + extra + "\" data-value=\"" + i + "\">" + this.Setup.Months[i] + "</li>"; //Format
+            }
+            ul.innerHTML = html;
+            var monthSel = $YetaWF.getElement1BySelector(".t_header .t_month", [this.CalendarPopup]);
+            var style = window.getComputedStyle(monthSel);
+            this.MonthPopup.style.font = style.font;
+            this.MonthPopup.style.fontStyle = style.fontStyle;
+            this.MonthPopup.style.fontWeight = style.fontWeight;
+            this.MonthPopup.style.fontSize = style.fontSize;
+            $YetaWF.positionLeftAlignedBelow(monthSel, this.MonthPopup);
+            document.body.appendChild(this.MonthPopup);
+            var sel = $YetaWF.getElement1BySelectorCond(".t_list .t_selected", [this.MonthPopup]);
+            if (sel) {
+                var selRect = sel.getBoundingClientRect();
+                var list = $YetaWF.getElement1BySelector(".t_scroller", [this.MonthPopup]);
+                var listRect = list.getBoundingClientRect();
+                list.scrollTop = selRect.top - listRect.top;
+                //sel.scrollIntoView({ behavior: "auto", block: "nearest", inline: "start" }); // causes outer page jump
+            }
+            $YetaWF.registerEventHandler(this.MonthPopup, "mousedown", "ul li", function (ev) {
+                var li = ev.__YetaWFElem;
+                var value = Number($YetaWF.getAttribute(li, "data-value"));
+                _this.tempMonthSelectedValue = value;
+                return false;
+            });
+            $YetaWF.registerEventHandler(this.MonthPopup, "mouseup", "ul li", function (ev) {
+                var li = ev.__YetaWFElem;
+                var value = Number($YetaWF.getAttribute(li, "data-value"));
+                if (_this.tempMonthSelectedValue === value) {
+                    var date = _this.tempCalCurrentDate;
+                    date.setMonth(value);
+                    var tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [_this.CalendarPopup]);
+                    _this.buildCalendarMonthPage(tbody, date);
+                    _this.updateCalendarTitle();
+                    _this.tempMonthSelectedValue = null;
+                    _this.closeMonthList();
+                }
+                return false;
+            });
+            $YetaWF.registerEventHandler(this.MonthPopup, "click", "ul li", function (ev) {
+                return false;
+            });
+            $YetaWF.registerEventHandler(this.MonthPopup, "mouseover", "ul li", function (ev) {
+                var li = ev.__YetaWFElem;
+                $YetaWF.elementRemoveClass(li, "t_hover");
+                $YetaWF.elementAddClass(li, "t_hover");
+                return true;
+            });
+            $YetaWF.registerEventHandler(this.MonthPopup, "mouseout", "ul li", function (ev) {
+                var li = ev.__YetaWFElem;
+                $YetaWF.elementRemoveClass(li, "t_hover");
+                return true;
+            });
+        };
+        DateTimeEditComponent.prototype.closeMonthList = function () {
+            if (this.MonthPopup) {
+                this.MonthPopup.remove();
+                this.MonthPopup = null;
+            }
+        };
+        DateTimeEditComponent.prototype.updateCalendarTitle = function () {
+            if (!this.CalendarPopup)
+                return;
+            var month = this.Setup.Months[this.tempCalCurrentDate.getMonth()];
+            var year = this.tempCalCurrentDate.getFullYear();
+            var monthSpan = $YetaWF.getElement1BySelector(".t_header .t_month", [this.CalendarPopup]);
+            monthSpan.innerHTML = month;
+            var yearSpan = $YetaWF.getElement1BySelector(".t_header .t_year", [this.CalendarPopup]);
+            yearSpan.innerHTML = year.toFixed(0);
+        };
+        DateTimeEditComponent.prototype.getFormattedDateTime = function (date) {
+            var time = date.getHours() * 60 + date.getMinutes();
+            return this.getFormattedDate(date) + " " + this.getFormattedTime(time);
+        };
+        DateTimeEditComponent.prototype.getFormattedDate = function (date) {
+            var d = date.getDate();
+            var m = date.getMonth() + 1;
+            var y = date.getFullYear();
+            switch (this.Setup.DateFormat) {
+                default:
+                case DateFormatEnum.MMDDYYYY:
+                    return this.zeroPad(m, 2) + "/" + this.zeroPad(d, 2) + "/" + y;
+                case DateFormatEnum.MMDDYYYYdash:
+                    return this.zeroPad(m, 2) + "-" + this.zeroPad(d, 2) + "-" + y;
+                case DateFormatEnum.MMDDYYYYdot:
+                    return this.zeroPad(m, 2) + "." + this.zeroPad(d, 2) + "." + y;
+                case DateFormatEnum.DDMMYYYY:
+                    return this.zeroPad(d, 2) + "/" + this.zeroPad(m, 2) + "/" + y;
+                case DateFormatEnum.DDMMYYYYdash:
+                    return this.zeroPad(d, 2) + "-" + this.zeroPad(m, 2) + "-" + y;
+                case DateFormatEnum.DDMMYYYYdot:
+                    return this.zeroPad(d, 2) + "." + this.zeroPad(m, 2) + "." + y;
+                case DateFormatEnum.YYYYMMDD:
+                    return y + "/" + this.zeroPad(m, 2) + "/" + this.zeroPad(d, 2);
+                case DateFormatEnum.YYYYMMDDdash:
+                    return y + "-" + this.zeroPad(m, 2) + "-" + this.zeroPad(d, 2);
+                case DateFormatEnum.YYYYMMDDdot:
+                    return y + "." + this.zeroPad(m, 2) + "." + this.zeroPad(d, 2);
+            }
+        };
+        DateTimeEditComponent.prototype.getFormattedTime = function (time) {
+            var h = Math.floor(time / 60);
+            var m = time % 60;
+            switch (this.Setup.TimeFormat) {
+                default:
+                case TimeFormatEnum.HHMMAM:
+                case TimeFormatEnum.HHMMSSAM:
+                case TimeFormatEnum.HHMMAMdot:
+                case TimeFormatEnum.HHMMSSAMdot:
+                    var hour = h % 12;
+                    if (hour === 0)
+                        hour += 12;
+                    switch (this.Setup.TimeFormat) {
+                        default:
+                        case TimeFormatEnum.HHMMAM:
+                        case TimeFormatEnum.HHMMSSAM:
+                            return this.zeroPad(hour, 2) + ":" + this.zeroPad(m, 2) + " " + (h < 12 ? "AM" : "PM");
+                        case TimeFormatEnum.HHMMAMdot:
+                        case TimeFormatEnum.HHMMSSAMdot:
+                            return this.zeroPad(hour, 2) + "." + this.zeroPad(m, 2) + " " + (h < 12 ? "AM" : "PM");
+                    }
+                case TimeFormatEnum.HHMM:
+                case TimeFormatEnum.HHMMSS:
+                    return this.zeroPad(h, 2) + ":" + this.zeroPad(m, 2);
+                case TimeFormatEnum.HHMMdot:
+                case TimeFormatEnum.HHMMSSdot:
+                    return this.zeroPad(h, 2) + "." + this.zeroPad(m, 2);
+            }
+        };
+        DateTimeEditComponent.prototype.zeroPad = function (val, pos) {
+            if (val < 0)
+                return val.toFixed();
+            var s = val.toFixed(0);
+            while (s.length < pos)
+                s = "0" + s;
+            return s;
+        };
+        DateTimeEditComponent.prototype.getLongFormattedDate = function (date) {
+            var day = date.getDay();
+            var dom = date.getDate();
+            var m = date.getMonth();
+            var y = date.getFullYear();
+            switch (this.Setup.DateFormat) {
+                default:
+                case DateFormatEnum.MMDDYYYY:
+                case DateFormatEnum.MMDDYYYYdash:
+                case DateFormatEnum.MMDDYYYYdot:
+                    return this.Setup.WeekDays[day] + ", " + this.Setup.Months[m] + " " + dom + ", " + y;
+                case DateFormatEnum.DDMMYYYY:
+                case DateFormatEnum.DDMMYYYYdash:
+                case DateFormatEnum.DDMMYYYYdot:
+                    return this.Setup.WeekDays[day] + ", " + dom + " " + this.Setup.Months[m] + ", " + y;
+                case DateFormatEnum.YYYYMMDD:
+                case DateFormatEnum.YYYYMMDDdash:
+                case DateFormatEnum.YYYYMMDDdot:
+                    return y + ", " + this.Setup.Months[m] + " " + dom + ", " + this.Setup.WeekDays[day];
+            }
+        };
+        DateTimeEditComponent.prototype.setSelectedIndex = function (popup, index) {
+            var list = $YetaWF.getElement1BySelector(".t_list", [popup]);
+            var entries = $YetaWF.getElementsBySelector("li", [list]);
+            var active = $YetaWF.getElement1BySelectorCond("li.t_selected", [list]);
+            if (active)
+                $YetaWF.elementRemoveClass(active, "t_selected");
+            if (index < 0)
+                index = 0;
+            if (index >= entries.length)
+                index = entries.length - 1;
+            if (index >= 0)
+                $YetaWF.elementAddClass(entries[index], "t_selected");
+            entries[index].scrollIntoView({ behavior: "auto", block: "nearest", inline: "start" });
+        };
+        DateTimeEditComponent.prototype.getSelectedIndex = function (popup) {
+            var list = $YetaWF.getElement1BySelector(".t_list", [popup]);
+            var entries = $YetaWF.getElementsBySelector("li", [list]);
+            var active = $YetaWF.getElement1BySelectorCond("li.t_selected", [list]);
+            if (!active)
+                return -1;
+            var index = entries.indexOf(active);
+            return index;
+        };
+        DateTimeEditComponent.prototype.getSelectedValue = function (popup) {
+            var active = $YetaWF.getElement1BySelectorCond("li.t_selected", [popup]);
+            if (!active)
+                return null;
+            var value = $YetaWF.getAttribute(active, "data-value");
+            return value;
+        };
         DateTimeEditComponent.prototype.setHidden = function (dateVal) {
             var s = "";
             if (dateVal != null)
                 s = dateVal.toISOString();
-            this.Hidden.setAttribute("value", s);
-        };
-        DateTimeEditComponent.prototype.setHiddenText = function (dateVal) {
-            this.Hidden.setAttribute("value", dateVal ? dateVal : "");
+            this.InputHidden.setAttribute("value", s);
         };
         Object.defineProperty(DateTimeEditComponent.prototype, "value", {
+            // API
             get: function () {
-                return new Date(this.Hidden.value);
+                return this.dateSelectedValue;
             },
             set: function (val) {
-                this.setHidden(val);
-                this.kendoDateTimePicker.value(val);
+                this.dateSelectedValue = val;
+                this.tempCalCurrentDate = val;
             },
             enumerable: false,
             configurable: true
         });
         Object.defineProperty(DateTimeEditComponent.prototype, "valueText", {
             get: function () {
-                return this.Hidden.value;
+                return this.InputHidden.value;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(DateTimeEditComponent.prototype, "timeSelectedValue", {
+            get: function () {
+                return this.Selected.getHours() * 60 + this.Selected.getMinutes();
+            },
+            set: function (value) {
+                this.Selected.setHours(value / 60);
+                this.Selected.setMinutes(value % 60);
+                this.Selected.setSeconds(0);
+                this.Selected.setMilliseconds(0);
+                this.InputControl.value = this.getFormattedDateTime(this.Selected);
+                this.setHidden(this.Selected);
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(DateTimeEditComponent.prototype, "dateSelectedValue", {
+            get: function () {
+                return this.Selected;
+            },
+            set: function (date) {
+                var time = this.timeSelectedValue;
+                this.Selected = date;
+                this.timeSelectedValue = time;
             },
             enumerable: false,
             configurable: true
         });
         DateTimeEditComponent.prototype.clear = function () {
-            this.setHiddenText("");
-            this.kendoDateTimePicker.value("");
+            this.Selected = new Date();
+            this.InputControl.value = "";
+            this.setHidden(null);
         };
         DateTimeEditComponent.prototype.enable = function (enabled) {
-            this.kendoDateTimePicker.enable(enabled);
+            this.closeTimeList();
+            $YetaWF.elementEnableToggle(this.InputControl, enabled);
+            $YetaWF.elementEnableToggle(this.InputHidden, enabled);
+            $YetaWF.elementRemoveClass(this.Control, "t_disabled");
+            if (!enabled)
+                $YetaWF.elementAddClass(this.Control, "t_disabled");
         };
+        Object.defineProperty(DateTimeEditComponent.prototype, "enabled", {
+            get: function () {
+                return !$YetaWF.elementHasClass(this.Control, "t_disabled");
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(DateTimeEditComponent.prototype, "focused", {
+            get: function () {
+                return $YetaWF.elementHasClass(this.Control, "t_focused");
+            },
+            enumerable: false,
+            configurable: true
+        });
         DateTimeEditComponent.prototype.close = function () {
-            this.kendoDateTimePicker.close("date");
-            this.kendoDateTimePicker.close("time");
+            ToolTipsHTMLHelper.removeTooltips();
+            this.closeMonthList();
+            this.closeYearList();
+            this.closeTimeList();
+            this.closeCalendar();
         };
         DateTimeEditComponent.closeAll = function () {
             var ctrls = $YetaWF.getElementsBySelector(DateTimeEditComponent.SELECTOR);
@@ -109,15 +916,20 @@ var YetaWF_ComponentsHTML;
         };
         DateTimeEditComponent.TEMPLATE = "yt_datetime";
         DateTimeEditComponent.SELECTOR = ".yt_datetime.t_edit";
+        DateTimeEditComponent.EVENTCHANGE = "datetime_change";
+        DateTimeEditComponent.TIMEPOPUPID = "yt_datetime_popup";
+        DateTimeEditComponent.CALENDARPOPUPID = "yDCalPopup";
+        DateTimeEditComponent.YEARPOPUPID = "yt_datetime_popup";
+        DateTimeEditComponent.MONTHPOPUPID = "yt_datetime_popup";
         return DateTimeEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.DateTimeEditComponent = DateTimeEditComponent;
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, function (ev) {
-        DateTimeEditComponent.closeAll();
+        //      DateTimeEditComponent.closeAll();
         return true;
     });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, function (ev) {
-        DateTimeEditComponent.closeAll();
+        //      DateTimeEditComponent.closeAll();
         return true;
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));

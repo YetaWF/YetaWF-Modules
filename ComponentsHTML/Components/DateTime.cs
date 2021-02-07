@@ -7,6 +7,7 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
@@ -88,7 +89,40 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [UIHint("DateTime")]
     /// public DateTime? FeedPublishDate { get; set; }
     /// </example>
+    [UsesSibling("_Setup", nameof(DateTimeSetup), "Defines setup options for the DateTime edit component")]
     public class DateTimeEditComponent : DateTimeComponentBase, IYetaWFComponent<DateTime>, IYetaWFComponent<DateTime?> {
+
+        /// <summary>
+        /// Setup information for DateTime edit component. Setup information is only used foer rendereing. Does not affect validation.
+        /// </summary>
+        public class DateTimeSetup {
+            /// <summary>
+            /// The oldest date than can be selected. Default is 1/1/1900.
+            /// </summary>
+            public DateTime MinDate { get; set; }
+            /// <summary>
+            /// The latest date than can be selected. Default is 12/31/2199.
+            /// </summary>
+            public DateTime MaxDate { get; set; }
+            /// <summary>
+            /// The oldest time than can be selected. Default is 0:00 AM.
+            /// </summary>
+            public double MinTime { get; set; }
+            /// <summary>
+            /// The latest time than can be selected. Default is 12:00 AM.
+            /// </summary>
+            public double MaxTime { get; set; }
+
+            /// <summary>
+            ///  Constructor.
+            /// </summary>
+            public DateTimeSetup() {
+                MinDate = new DateTime(1900, 1, 1);
+                MaxDate = new DateTime(2199, 12, 31);
+                MinTime = new TimeSpan(0, 0, 0).TotalMinutes;
+                MaxTime = new TimeSpan(23, 59, 0).TotalMinutes;
+            }
+        }
 
         /// <summary>
         /// Returns the component type (edit/display).
@@ -96,9 +130,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        internal class DateTimeSetup {
-            public DateTime Min { get; set; }
-            public DateTime Max { get; set; }
+        internal class Setup {
+            public DateTime MinDate { get; set; }
+            public DateTime MaxDate { get; set; }
+            public double MinTime { get; set; }
+            public double MaxTime { get; set; }
+            public Formatting.DateFormatEnum DateFormat { get; set; }
+            public Formatting.TimeFormatEnum TimeFormat { get; set; }
+            public List<string> WeekDays { get; set; }
+            public List<string> WeekDays2 { get; set; }
+            public List<string> Months { get; set; }
+            public string TodayString { get; set; }
+            public DateTime Today { get; set; }
         }
 
         /// <summary>
@@ -118,37 +161,88 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(DateTime model) {
-            return await RenderAsync((DateTime?) model);
+            return await RenderAsync((DateTime?)model);
         }
         /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<string> RenderAsync(DateTime? model) {
+        public Task<string> RenderAsync(DateTime? model) {
+
+            TryGetSiblingProperty($"{PropertyName}_Setup", out DateTimeSetup dateTimeSetup);
 
             // handle min/max date
-            DateTimeSetup setup = new DateTimeSetup {
-                Min = new DateTime(1900, 1, 1),
-                Max = new DateTime(2199, 12, 31),
+            Setup setup = new Setup {
+                MinDate = dateTimeSetup?.MinDate ?? new DateTime(1900, 1, 1),
+                MaxDate = dateTimeSetup?.MaxDate ?? new DateTime(2199, 12, 31),
+                MinTime = dateTimeSetup?.MinTime ?? new TimeSpan(0, 0, 0).TotalMinutes,
+                MaxTime = dateTimeSetup?.MaxTime ?? new TimeSpan(23, 59, 0).TotalMinutes,
+                DateFormat = UserSettings.GetProperty<Formatting.DateFormatEnum>("DateFormat"),
+                TimeFormat = UserSettings.GetProperty<Formatting.TimeFormatEnum>("TimeFormat"),
+                WeekDays2 = new List<string> {
+                    Formatting.GetDayName2Chars(DayOfWeek.Sunday),
+                    Formatting.GetDayName2Chars(DayOfWeek.Monday),
+                    Formatting.GetDayName2Chars(DayOfWeek.Tuesday),
+                    Formatting.GetDayName2Chars(DayOfWeek.Wednesday),
+                    Formatting.GetDayName2Chars(DayOfWeek.Thursday),
+                    Formatting.GetDayName2Chars(DayOfWeek.Friday),
+                    Formatting.GetDayName2Chars(DayOfWeek.Saturday),
+                },
+                WeekDays = new List<string> {
+                    Formatting.GetDayName(DayOfWeek.Sunday),
+                    Formatting.GetDayName(DayOfWeek.Monday),
+                    Formatting.GetDayName(DayOfWeek.Tuesday),
+                    Formatting.GetDayName(DayOfWeek.Wednesday),
+                    Formatting.GetDayName(DayOfWeek.Thursday),
+                    Formatting.GetDayName(DayOfWeek.Friday),
+                    Formatting.GetDayName(DayOfWeek.Saturday),
+                },
+                Months = new List<string> {
+                    Formatting.GetMonthName(1),
+                    Formatting.GetMonthName(2),
+                    Formatting.GetMonthName(3),
+                    Formatting.GetMonthName(4),
+                    Formatting.GetMonthName(5),
+                    Formatting.GetMonthName(6),
+                    Formatting.GetMonthName(7),
+                    Formatting.GetMonthName(8),
+                    Formatting.GetMonthName(9),
+                    Formatting.GetMonthName(10),
+                    Formatting.GetMonthName(11),
+                    Formatting.GetMonthName(12),
+                },
+                TodayString = Formatting.FormatLongDate(DateTime.UtcNow),
+                Today = DateTime.UtcNow,
             };
+            // attributes (like MinimumDateAttribute) override setup and defaults
             MinimumDateAttribute minAttr = PropData.TryGetAttribute<MinimumDateAttribute>();
             if (minAttr != null)
-                setup.Min = minAttr.MinDate;
+                setup.MinDate = minAttr.MinDate;
             MaximumDateAttribute maxAttr = PropData.TryGetAttribute<MaximumDateAttribute>();
             if (maxAttr != null)
-                setup.Max = maxAttr.MaxDate;
+                setup.MaxDate = maxAttr.MaxDate;
 
-            Dictionary<string, object> hiddenAttributes = new Dictionary<string, object>(HtmlAttributes) {
-                { "__NoTemplate", true }
-            };
-            string hidden = await HtmlHelper.ForEditComponentAsync(Container, PropertyName, null, "Hidden", HtmlAttributes: hiddenAttributes, Validation: Validation);
+            HtmlBuilder hb = new HtmlBuilder();
+            hb.Append($@"
+<div id='{DivId}' class='yt_datetime t_edit'>
+    <input type='hidden'{FieldSetup(FieldType.Validated)} value='{HAE($"{model:o}")}'>
+    <input type='text'{GetClassAttribute()} maxlength='20' value='{HAE(Formatting.FormatDateTime((DateTime)model))}'>
+    <div class='t_sels'>
+        <div class='t_date'>
+            {SkinSVGs.Get(AreaRegistration.CurrentPackage, "far-calendar-alt")}
+        </div>
+        <div class='t_time'>
+            {SkinSVGs.Get(AreaRegistration.CurrentPackage, "far-clock")}
+        </div>
+    </div>
+</div>");
 
-            string tags = $"<div id='{DivId}' class='yt_datetime t_edit'>{hidden}<input{FieldSetup(FieldType.Anonymous)} name='dtpicker' value='{(model != null ? HAE(Formatting.FormatDateTime((DateTime)model)) : null)}'></div>";
+            string tags = hb.ToString();
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DateTimeEditComponent('{DivId}', {Utility.JsonSerialize(setup)});");
 
-            return tags;
+            return Task.FromResult(tags);
         }
     }
 }

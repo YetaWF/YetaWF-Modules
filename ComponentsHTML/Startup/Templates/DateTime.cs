@@ -2,7 +2,9 @@
 
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
+using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Addons.Templates {
@@ -20,9 +22,11 @@ namespace YetaWF.Modules.ComponentsHTML.Addons.Templates {
         public Task AddSupportAsync(YetaWFManager manager) {
 
             ScriptManager scripts = manager.ScriptManager;
-            string area = AreaRegistration.CurrentPackage.AreaName;
-            scripts.AddVolatileOption(area, "DateTimeFormat", YetaWF.Core.Localize.Formatting.GetFormatDateTimeFormat());
+            Package package = AreaRegistration.CurrentPackage;
+            string area = package.AreaName;
 
+            scripts.AddConfigOption(area, "SVG_fas_caret_left", SkinSVGs.Get(package, "fas-caret-left"));
+            scripts.AddConfigOption(area, "SVG_fas_caret_right", SkinSVGs.Get(package, "fas-caret-right"));
             return Task.CompletedTask;
         }
     }
