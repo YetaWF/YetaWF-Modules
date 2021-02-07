@@ -36,7 +36,7 @@ var YetaWF_Scheduler;
             _this.ElemImplementingType = $YetaWF.getElement1BySelector(".t_impltype", [_this.Control]);
             _this.ElemDescription = $YetaWF.getElement1BySelector(".t_description", [_this.Control]);
             _this.update();
-            _this.DropDown.Control.addEventListener("dropdownlist_change", function (evt) {
+            _this.DropDown.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, function (evt) {
                 _this.update();
             });
             return _this;

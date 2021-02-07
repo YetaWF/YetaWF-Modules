@@ -2,7 +2,7 @@
 
 $w: 1em;
 $h: 1em;
-$selwidth: 4em;
+$selwidth: 2em;
 
 
 .yt_datetime.t_edit {
@@ -13,7 +13,7 @@ $selwidth: 4em;
 
     position:relative;
     width: auto;
-    padding-right: $selwidth;
+    padding-right: $selwidth * 2;
 
     background: var(--dd-bg);
     color: var(--dd-clr);
@@ -62,7 +62,7 @@ $selwidth: 4em;
         position: absolute;
         top: 0; bottom: 0;
         right:0;
-        width: $selwidth;
+        width: $selwidth * 2;
         text-align: center;
         border-left: var(--dd-border);
         .t_date {
@@ -87,6 +87,25 @@ $selwidth: 4em;
         }
     }
 }
+
+.yt_date.t_edit,
+.yt_time.t_edit {
+    padding-right: $selwidth;
+    .t_sels {
+        width: $selwidth;
+    }
+}
+.yt_date.t_edit {
+    input[type='text'] {
+        width: 14ch;
+    }
+}
+.yt_time.t_edit {
+    input[type='text'] {
+        width: 10ch;
+    }
+}
+
 
 #yt_datetime_popup {
     position: absolute;
@@ -131,7 +150,7 @@ $selwidth: 4em;
     }
 }
 
-#yDCalPopup {
+#yt_datetime_calendarpopup {
     position: absolute;
     z-index:2500;
     box-sizing: content-box;

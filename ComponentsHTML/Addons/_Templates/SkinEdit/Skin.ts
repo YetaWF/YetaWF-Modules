@@ -36,7 +36,7 @@ namespace YetaWF_ComponentsHTML {
             this.SelectPageFile = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name$='.PageFileName']", DropDownListEditComponent.SELECTOR, [this.Control]);
             this.SelectPopupFile = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name$='.PopupFileName']", DropDownListEditComponent.SELECTOR, [this.Control]);
 
-            this.SelectCollection.Control.addEventListener("dropdownlist_change", (evt: Event): void => {
+            this.SelectCollection.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, (evt: Event): void => {
                 var data = { SkinCollection: this.SelectCollection.value };
 
                 $YetaWF.setLoading(true);

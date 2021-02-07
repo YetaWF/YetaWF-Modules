@@ -13,6 +13,7 @@ namespace YetaWF_ComponentsHTML {
     }
 
     interface DateTimeEditSetup {
+        Style: DateTimeStyleEnum;
         MinDate: string;
         MaxDate: string;
         MinTime: number;
@@ -24,6 +25,11 @@ namespace YetaWF_ComponentsHTML {
         Months: string[];
         TodayString: string;
         Today: Date;
+    }
+    enum DateTimeStyleEnum {
+        DateTime = 0,
+        Date = 1,
+        Time = 2,
     }
     enum DateFormatEnum {
         MMDDYYYY = 0,
@@ -54,7 +60,7 @@ namespace YetaWF_ComponentsHTML {
         public static readonly EVENTCHANGE: string = "datetime_change";
 
         public static readonly TIMEPOPUPID: string = "yt_datetime_popup";
-        public static readonly CALENDARPOPUPID: string = "yDCalPopup";
+        public static readonly CALENDARPOPUPID: string = "yt_datetime_calendarpopup";
         public static readonly YEARPOPUPID: string = "yt_datetime_popup";
         public static readonly MONTHPOPUPID: string = "yt_datetime_popup";
 
@@ -76,7 +82,7 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string, setup: DateTimeEditSetup) {
             super(controlId, DateTimeEditComponent.TEMPLATE, DateTimeEditComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
-                ChangeEvent: "datetime_change",
+                ChangeEvent: DateTimeEditComponent.EVENTCHANGE,
                 GetValue: (control: DateTimeEditComponent): string | null => {
                     return control.valueText;
                 },
@@ -91,7 +97,10 @@ namespace YetaWF_ComponentsHTML {
             this.InputHidden = $YetaWF.getElement1BySelector("input[type='hidden']", [this.Control]) as HTMLInputElement;
             this.InputControl = $YetaWF.getElement1BySelector("input[type='text']", [this.Control]) as HTMLInputElement;
 
-            this.Selected = new Date(this.InputHidden.value);
+            if (this.InputHidden.value)
+                this.Selected = new Date(this.InputHidden.value);
+            else
+                this.Selected = new Date();
             this.tempCalCurrentDate = new Date(this.Selected);
 
             $YetaWF.registerEventHandler(this.Control, "mousedown", ".t_time", (ev: Event): boolean => {
@@ -765,7 +774,15 @@ namespace YetaWF_ComponentsHTML {
 
         private getFormattedDateTime(date: Date): string {
             let time = date.getHours()* 60 + date.getMinutes();
-            return this.getFormattedDate(date) + " " + this.getFormattedTime(time);
+            switch (this.Setup.Style) {
+                default:
+                case DateTimeStyleEnum.DateTime:
+                    return this.getFormattedDate(date) + " " + this.getFormattedTime(time);
+                case DateTimeStyleEnum.Date:
+                    return this.getFormattedDate(date);
+                case DateTimeStyleEnum.Time:
+                    return this.getFormattedTime(time);
+            }
         }
         private getFormattedDate(date: Date): string {
             let d = date.getDate();

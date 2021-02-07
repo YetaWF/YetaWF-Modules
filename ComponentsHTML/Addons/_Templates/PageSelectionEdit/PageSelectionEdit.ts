@@ -17,7 +17,7 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string/*, setup: Setup*/) {
             super(controlId, PageSelectionEditComponent.TEMPLATE, PageSelectionEditComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
-                ChangeEvent: "dropdownlist_change",
+                ChangeEvent: null,
                 GetValue: (control: PageSelectionEditComponent): string | null => {
                     return control.SelectPage.value;
                 },
@@ -34,7 +34,7 @@ namespace YetaWF_ComponentsHTML {
             this.DivLink = $YetaWF.getElement1BySelector(".t_link", [this.Control]) as HTMLDivElement;
             this.APage = $YetaWF.getElement1BySelector("a", [this.DivLink]) as HTMLAnchorElement;
 
-            this.SelectPage.Control.addEventListener("dropdownlist_change", (evt: Event): void => {
+            this.SelectPage.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, (evt: Event): void => {
                 this.updatePage(this.SelectPage.value, "");
             });
             this.updatePage(this.SelectPage.value, "");

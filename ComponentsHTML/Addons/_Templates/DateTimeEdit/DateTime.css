@@ -63,6 +63,19 @@
         height: 100%;
         vertical-align: middle; }
 
+.yt_date.t_edit,
+.yt_time.t_edit {
+  padding-right: 2em; }
+  .yt_date.t_edit .t_sels,
+  .yt_time.t_edit .t_sels {
+    width: 2em; }
+
+.yt_date.t_edit input[type='text'] {
+  width: 14ch; }
+
+.yt_time.t_edit input[type='text'] {
+  width: 10ch; }
+
 #yt_datetime_popup {
   position: absolute;
   z-index: 2500; }
@@ -99,18 +112,18 @@
             color: var(--dd-p-clr-focus);
             box-shadow: var(--dd-p-shadow-focus); }
 
-#yDCalPopup {
+#yt_datetime_calendarpopup {
   position: absolute;
   z-index: 2500;
   box-sizing: content-box; }
-  #yDCalPopup .t_container {
+  #yt_datetime_calendarpopup .t_container {
     padding: .12em;
     background: var(--dd-p-bg);
     color: var(--dd-p-clr);
     border: var(--dd-p-border);
     border-radius: var(--dd-p-border-radius);
     box-shadow: var(--dd-p-shadow); }
-    #yDCalPopup .t_container .t_header {
+    #yt_datetime_calendarpopup .t_container .t_header {
       position: relative;
       width: 100%;
       background: var(--tbl-header-bg);
@@ -118,14 +131,14 @@
       border: none;
       text-align: center;
       padding: .3em 0; }
-      #yDCalPopup .t_container .t_header .t_title {
+      #yt_datetime_calendarpopup .t_container .t_header .t_title {
         text-decoration: none; }
-        #yDCalPopup .t_container .t_header .t_title .t_month, #yDCalPopup .t_container .t_header .t_title .t_year {
+        #yt_datetime_calendarpopup .t_container .t_header .t_title .t_month, #yt_datetime_calendarpopup .t_container .t_header .t_title .t_year {
           padding: .1em .2em; }
-          #yDCalPopup .t_container .t_header .t_title .t_month:hover, #yDCalPopup .t_container .t_header .t_title .t_year:hover {
+          #yt_datetime_calendarpopup .t_container .t_header .t_title .t_month:hover, #yt_datetime_calendarpopup .t_container .t_header .t_title .t_year:hover {
             background: var(--tbl-header-bg-hover);
             color: var(--tbl-header-clr-hover); }
-      #yDCalPopup .t_container .t_header .t_prev svg, #yDCalPopup .t_container .t_header .t_next svg {
+      #yt_datetime_calendarpopup .t_container .t_header .t_prev svg, #yt_datetime_calendarpopup .t_container .t_header .t_next svg {
         position: absolute;
         top: 0;
         bottom: 0px;
@@ -133,17 +146,17 @@
         height: 1em;
         margin: .1em;
         padding: .3em; }
-        #yDCalPopup .t_container .t_header .t_prev svg:hover, #yDCalPopup .t_container .t_header .t_next svg:hover {
+        #yt_datetime_calendarpopup .t_container .t_header .t_prev svg:hover, #yt_datetime_calendarpopup .t_container .t_header .t_next svg:hover {
           background: var(--tbl-header-bg-hover);
           color: var(--tbl-header-clr-hover); }
-      #yDCalPopup .t_container .t_header .t_prev svg {
+      #yt_datetime_calendarpopup .t_container .t_header .t_prev svg {
         left: 0; }
-      #yDCalPopup .t_container .t_header .t_next svg {
+      #yt_datetime_calendarpopup .t_container .t_header .t_next svg {
         right: 0; }
-    #yDCalPopup .t_container .t_calendarbody table {
+    #yt_datetime_calendarpopup .t_container .t_calendarbody table {
       outline: none;
       width: 100%; }
-      #yDCalPopup .t_container .t_calendarbody table th {
+      #yt_datetime_calendarpopup .t_container .t_calendarbody table th {
         padding: .25em .15px;
         text-align: center;
         font-weight: 400;
@@ -154,16 +167,16 @@
         border-top: var(--dd-p-border);
         border-bottom: var(--dd-p-border);
         border-radius: 0 0 var(--dd-p-border-radius) var(--dd-p-border-radius); }
-      #yDCalPopup .t_container .t_calendarbody table tr {
+      #yt_datetime_calendarpopup .t_container .t_calendarbody table tr {
         height: 2.5em; }
-      #yDCalPopup .t_container .t_calendarbody table td {
+      #yt_datetime_calendarpopup .t_container .t_calendarbody table td {
         font-weight: 400;
         cursor: default;
         text-align: center;
         background: var(--dd-p-bg);
         color: var(--dd-p-clr);
         border-radius: var(--buttonlite-border-radius); }
-        #yDCalPopup .t_container .t_calendarbody table td .t_link {
+        #yt_datetime_calendarpopup .t_container .t_calendarbody table td .t_link {
           background: var(--dd-p-bg);
           color: var(--dd-p-clr);
           width: 2.5em;
@@ -171,23 +184,23 @@
           margin: auto;
           padding: .5em .5em;
           text-decoration: none; }
-        #yDCalPopup .t_container .t_calendarbody table td.t_selected,
-        #yDCalPopup .t_container .t_calendarbody table td.t_selected .t_link {
+        #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_selected,
+        #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_selected .t_link {
           background: var(--dd-p-bg-focus);
           color: var(--dd-p-clr-focus); }
-        #yDCalPopup .t_container .t_calendarbody table td.t_today,
-        #yDCalPopup .t_container .t_calendarbody table td.t_today .t_link {
+        #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_today,
+        #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_today .t_link {
           background: var(--dd-p-bg-focus);
           color: var(--dd-p-clr-focus); }
-        #yDCalPopup .t_container .t_calendarbody table td.t_hover,
-        #yDCalPopup .t_container .t_calendarbody table td.t_hover .t_link {
+        #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_hover,
+        #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_hover .t_link {
           background: var(--dd-p-bg-hover);
           color: var(--dd-p-clr-hover);
           box-shadow: none; }
-        #yDCalPopup .t_container .t_calendarbody table td.t_othermonth:not(.t_today) {
+        #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_othermonth:not(.t_today) {
           opacity: .7; }
-        #yDCalPopup .t_container .t_calendarbody table td.t_weekend:not(.t_today) {
+        #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_weekend:not(.t_today) {
           opacity: .5; }
-    #yDCalPopup .t_container .t_footer {
+    #yt_datetime_calendarpopup .t_container .t_footer {
       padding: .3em;
       text-align: center; }

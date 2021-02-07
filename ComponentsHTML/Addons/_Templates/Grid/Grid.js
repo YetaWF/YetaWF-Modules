@@ -1183,7 +1183,7 @@ var YetaWF_ComponentsHTML;
                     var datetime = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, YetaWF_ComponentsHTML.DateTimeEditComponent.SELECTOR);
                     return datetime.valueText;
                 case "date":
-                    var date = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, YetaWF_ComponentsHTML.DateEditComponent.SELECTOR);
+                    var date = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, YetaWF_ComponentsHTML.DateTimeEditComponent.SELECTOR);
                     return date.valueText;
                 case "enum": {
                     var dd = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR);
@@ -1230,7 +1230,7 @@ var YetaWF_ComponentsHTML;
                     datetime.clear();
                     break;
                 case "date":
-                    var date = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, YetaWF_ComponentsHTML.DateEditComponent.SELECTOR);
+                    var date = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, YetaWF_ComponentsHTML.DateTimeEditComponent.SELECTOR);
                     date.clear();
                     break;
                 case "enum": {

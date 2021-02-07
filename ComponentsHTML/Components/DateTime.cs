@@ -19,19 +19,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal const string TemplateName = "DateTime";
 
-        /// <summary>
-        /// Returns the package implementing the component.
-        /// </summary>
-        /// <returns>Returns the package implementing the component.</returns>
+        /// <inheritdoc/>
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        /// <summary>
-        /// Returns the component name.
-        /// </summary>
-        /// <returns>Returns the component name.</returns>
-        /// <remarks>Components in packages whose product name starts with "Component" use the exact name returned by GetTemplateName when used in UIHint attributes. These are considered core components.
-        /// Components in other packages use the package's area name as a prefix. E.g., the UserId component in the YetaWF.Identity package is named "YetaWF_Identity_UserId" when used in UIHint attributes.
-        ///
-        /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
+        /// <inheritdoc/>
         public override string GetTemplateName() { return TemplateName; }
     }
 
@@ -49,25 +39,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </example>
     public class DateTimeDisplayComponent : DateTimeComponentBase, IYetaWFComponent<DateTime?> {
 
-        /// <summary>
-        /// Returns the component type (edit/display).
-        /// </summary>
-        /// <returns>Returns the component type.</returns>
+        /// <inheritdoc/>
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
-        public async Task<string> RenderAsync(DateTime model) {
-            return await RenderAsync((DateTime?)model);
-        }
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
+        /// <inheritdoc/>
         public Task<string> RenderAsync(DateTime? model) {
             if (model != null && (DateTime)model > DateTime.MinValue && (DateTime)model < DateTime.MaxValue) {
                 return Task.FromResult($@"<div{FieldSetup(FieldType.Anonymous)} class='yt_date t_display{GetClasses()}'>{HE(YetaWF.Core.Localize.Formatting.FormatDateTime(model))}</div>");
@@ -92,10 +67,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     [UsesSibling("_Setup", nameof(DateTimeSetup), "Defines setup options for the DateTime edit component")]
     public class DateTimeEditComponent : DateTimeComponentBase, IYetaWFComponent<DateTime>, IYetaWFComponent<DateTime?> {
 
+        /// <inheritdoc/>
+        public override ComponentType GetComponentType() { return ComponentType.Edit; }
+
         /// <summary>
         /// Setup information for DateTime edit component. Setup information is only used foer rendereing. Does not affect validation.
         /// </summary>
         public class DateTimeSetup {
+    
             /// <summary>
             /// The oldest date than can be selected. Default is 1/1/1900.
             /// </summary>
@@ -124,13 +103,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
         }
 
-        /// <summary>
-        /// Returns the component type (edit/display).
-        /// </summary>
-        /// <returns>Returns the component type.</returns>
-        public override ComponentType GetComponentType() { return ComponentType.Edit; }
-
         internal class Setup {
+
+            public enum DateTimeStyleEnum {
+                DateTime = 0,
+                Date = 1,
+                Time = 2,
+            }
+
+            public DateTimeStyleEnum Style { get; set; }
             public DateTime MinDate { get; set; }
             public DateTime MaxDate { get; set; }
             public double MinTime { get; set; }
@@ -142,44 +123,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public List<string> Months { get; set; }
             public string TodayString { get; set; }
             public DateTime Today { get; set; }
-        }
 
-        /// <summary>
-        /// Called by the framework when the component is used so the component can add component specific addons.
-        /// </summary>
-        public override async Task IncludeAsync() {
-            await KendoUICore.AddFileAsync("kendo.calendar.min.js");
-            //await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
-            await KendoUICore.AddFileAsync("kendo.datepicker.min.js");
-            await KendoUICore.AddFileAsync("kendo.timepicker.min.js");
-            await KendoUICore.AddFileAsync("kendo.datetimepicker.min.js");
-            await base.IncludeAsync();
-        }
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
-        public async Task<string> RenderAsync(DateTime model) {
-            return await RenderAsync((DateTime?)model);
-        }
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
-        public Task<string> RenderAsync(DateTime? model) {
-
-            TryGetSiblingProperty($"{PropertyName}_Setup", out DateTimeSetup dateTimeSetup);
-
-            // handle min/max date
-            Setup setup = new Setup {
-                MinDate = dateTimeSetup?.MinDate ?? new DateTime(1900, 1, 1),
-                MaxDate = dateTimeSetup?.MaxDate ?? new DateTime(2199, 12, 31),
-                MinTime = dateTimeSetup?.MinTime ?? new TimeSpan(0, 0, 0).TotalMinutes,
-                MaxTime = dateTimeSetup?.MaxTime ?? new TimeSpan(23, 59, 0).TotalMinutes,
-                DateFormat = UserSettings.GetProperty<Formatting.DateFormatEnum>("DateFormat"),
-                TimeFormat = UserSettings.GetProperty<Formatting.TimeFormatEnum>("TimeFormat"),
+            public Setup() {
+                Style = DateTimeStyleEnum.DateTime;
+                MinDate = new DateTime(1900, 1, 1);
+                MaxDate = new DateTime(2199, 12, 31);
+                MinTime = new TimeSpan(0, 0, 0).TotalMinutes;
+                MaxTime = new TimeSpan(23, 59, 0).TotalMinutes;
+                DateFormat = UserSettings.GetProperty<Formatting.DateFormatEnum>("DateFormat");
+                TimeFormat = UserSettings.GetProperty<Formatting.TimeFormatEnum>("TimeFormat");
                 WeekDays2 = new List<string> {
                     Formatting.GetDayName2Chars(DayOfWeek.Sunday),
                     Formatting.GetDayName2Chars(DayOfWeek.Monday),
@@ -188,7 +140,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     Formatting.GetDayName2Chars(DayOfWeek.Thursday),
                     Formatting.GetDayName2Chars(DayOfWeek.Friday),
                     Formatting.GetDayName2Chars(DayOfWeek.Saturday),
-                },
+                };
                 WeekDays = new List<string> {
                     Formatting.GetDayName(DayOfWeek.Sunday),
                     Formatting.GetDayName(DayOfWeek.Monday),
@@ -197,7 +149,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     Formatting.GetDayName(DayOfWeek.Thursday),
                     Formatting.GetDayName(DayOfWeek.Friday),
                     Formatting.GetDayName(DayOfWeek.Saturday),
-                },
+                };
                 Months = new List<string> {
                     Formatting.GetMonthName(1),
                     Formatting.GetMonthName(2),
@@ -211,10 +163,30 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     Formatting.GetMonthName(10),
                     Formatting.GetMonthName(11),
                     Formatting.GetMonthName(12),
-                },
-                TodayString = Formatting.FormatLongDate(DateTime.UtcNow),
-                Today = DateTime.UtcNow,
+                };
+                TodayString = Formatting.FormatLongDate(DateTime.UtcNow);
+                Today = DateTime.UtcNow;
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<string> RenderAsync(DateTime model) {
+            return await RenderAsync((DateTime?)model);
+        }
+        /// <inheritdoc/>
+        public Task<string> RenderAsync(DateTime? model) {
+
+            Setup setup = new Setup {
+                Style = Setup.DateTimeStyleEnum.DateTime,
             };
+            if (TryGetSiblingProperty($"{PropertyName}_Setup", out DateTimeSetup dateTimeSetup)) {
+                setup.MinDate = dateTimeSetup.MinDate;
+                setup.MaxDate = dateTimeSetup.MaxDate;
+                setup.MinTime = dateTimeSetup.MinTime;
+                setup.MaxTime = dateTimeSetup.MaxTime;
+            }
+
+            // handle min/max date
             // attributes (like MinimumDateAttribute) override setup and defaults
             MinimumDateAttribute minAttr = PropData.TryGetAttribute<MinimumDateAttribute>();
             if (minAttr != null)
@@ -226,8 +198,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
 <div id='{DivId}' class='yt_datetime t_edit'>
-    <input type='hidden'{FieldSetup(FieldType.Validated)} value='{HAE($"{model:o}")}'>
-    <input type='text'{GetClassAttribute()} maxlength='20' value='{HAE(Formatting.FormatDateTime((DateTime)model))}'>
+    <input type='hidden'{FieldSetup(FieldType.Validated)} value='{(model != null ? HAE($"{model:o}") : null)}'>
+    <input type='text'{GetClassAttribute()} maxlength='20' value='{(model != null ? HAE(Formatting.FormatDateTime((DateTime)model)) : null)}'>
     <div class='t_sels'>
         <div class='t_date'>
             {SkinSVGs.Get(AreaRegistration.CurrentPackage, "far-calendar-alt")}

@@ -14,7 +14,7 @@ namespace YetaWF_ComponentsHTML {
 
         public static readonly TEMPLATE: string = "yt_url";
         public static readonly SELECTOR: string = ".yt_url.t_edit";
-        public static readonly EVENT: string = "url_change";
+        public static readonly EVENTCHANGE: string = "url_change";
 
         private Setup: UrlEditSetup;
         private inputHidden: HTMLInputElement;
@@ -28,7 +28,7 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string, setup: UrlEditSetup) {
             super(controlId, UrlEditComponent.TEMPLATE, UrlEditComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
-                ChangeEvent: UrlEditComponent.EVENT,
+                ChangeEvent: UrlEditComponent.EVENTCHANGE,
                 GetValue: (control: UrlEditComponent): string | null => {
                     return control.value;
                 },
@@ -60,12 +60,12 @@ namespace YetaWF_ComponentsHTML {
             if (!this.inputUrl || !this.selectPage)
                 this.selectType.enable(false);
 
-            this.selectType.Control.addEventListener("dropdownlist_change", (evt: Event): void => {
+            this.selectType.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, (evt: Event): void => {
                 this.updateStatus();
                 this.sendEvent();
             });
             if (this.selectPage) {
-                this.selectPage.Control.addEventListener("dropdownlist_change", (evt: Event): void => {
+                this.selectPage.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, (evt: Event): void => {
                     this.updateStatus();
                     this.sendEvent();
                 });
@@ -119,7 +119,7 @@ namespace YetaWF_ComponentsHTML {
         private sendEvent(): void {
             FormsSupport.validateElement(this.inputHidden);
             var event = document.createEvent("Event");
-            event.initEvent(UrlEditComponent.EVENT, true, true);
+            event.initEvent(UrlEditComponent.EVENTCHANGE, true, true);
             this.Control.dispatchEvent(event);
         }
 

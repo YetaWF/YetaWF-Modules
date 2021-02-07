@@ -76,7 +76,7 @@ namespace YetaWF_Pages {
                 return false;
             });
 
-            this.SelectUrl.Control.addEventListener("url_change", (evt: Event): void => {
+            this.SelectUrl.Control.addEventListener(YetaWF_ComponentsHTML.UrlEditComponent.EVENTCHANGE, (evt: Event): void => {
                 this.toggleButton();
             });
             this.GridAll.Control.addEventListener("grid_selectionchange", (evt: Event): void => {

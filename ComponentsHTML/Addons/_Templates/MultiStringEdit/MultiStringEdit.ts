@@ -44,7 +44,7 @@ namespace YetaWF_ComponentsHTML {
             this.InputText = $YetaWF.getElement1BySelector("input.t_multistring_text", [this.Control]) as HTMLInputElement;
 
             // selection change (put language specific text into text box)
-            this.SelectLang.Control.addEventListener("dropdownlist_change", (evt: Event): void => {
+            this.SelectLang.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, (evt: Event): void => {
                 let sel = this.SelectLang.selectedIndex;
                 let hid = $YetaWF.getElement1BySelector(`input[name$='[${sel}].value']`, [this.Control]) as HTMLInputElement;
                 let newText = hid.value;

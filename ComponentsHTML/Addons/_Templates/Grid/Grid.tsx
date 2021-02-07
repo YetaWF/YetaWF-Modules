@@ -1232,7 +1232,7 @@ namespace YetaWF_ComponentsHTML {
                     let datetime: YetaWF_ComponentsHTML.DateTimeEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DateTimeEditComponent.SELECTOR);
                     return datetime.valueText;
                 case "date":
-                    let date: YetaWF_ComponentsHTML.DateEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DateEditComponent.SELECTOR);
+                    let date: YetaWF_ComponentsHTML.DateTimeEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DateTimeEditComponent.SELECTOR);
                     return date.valueText;
                 case "enum": {
                     let dd: YetaWF_ComponentsHTML.DropDownListEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DropDownListEditComponent.SELECTOR);
@@ -1279,7 +1279,7 @@ namespace YetaWF_ComponentsHTML {
                     datetime.clear();
                     break;
                 case "date":
-                    let date: YetaWF_ComponentsHTML.DateEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DateEditComponent.SELECTOR);
+                    let date: YetaWF_ComponentsHTML.DateTimeEditComponent = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, DateTimeEditComponent.SELECTOR);
                     date.clear();
                     break;
                 case "enum": {

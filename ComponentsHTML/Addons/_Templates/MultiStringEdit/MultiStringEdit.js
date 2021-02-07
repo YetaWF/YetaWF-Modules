@@ -37,7 +37,7 @@ var YetaWF_ComponentsHTML;
             _this.SelectLang = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
             _this.InputText = $YetaWF.getElement1BySelector("input.t_multistring_text", [_this.Control]);
             // selection change (put language specific text into text box)
-            _this.SelectLang.Control.addEventListener("dropdownlist_change", function (evt) {
+            _this.SelectLang.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, function (evt) {
                 var sel = _this.SelectLang.selectedIndex;
                 var hid = $YetaWF.getElement1BySelector("input[name$='[" + sel + "].value']", [_this.Control]);
                 var newText = hid.value;

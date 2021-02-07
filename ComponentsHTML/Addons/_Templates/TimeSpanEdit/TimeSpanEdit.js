@@ -22,7 +22,7 @@ var YetaWF_ComponentsHTML;
         function TimeSpanEditComponent(controlId /*, setup: Setup*/) {
             var _this = _super.call(this, controlId, TimeSpanEditComponent.TEMPLATE, TimeSpanEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "timespan_change",
+                ChangeEvent: TimeSpanEditComponent.EVENTCHANGE,
                 GetValue: function (control) {
                     return control.Hidden.value;
                 },
@@ -78,7 +78,7 @@ var YetaWF_ComponentsHTML;
         }
         TimeSpanEditComponent.prototype.sendUpdateEvent = function () {
             var event = document.createEvent("Event");
-            event.initEvent("timespan_change", false, true);
+            event.initEvent(TimeSpanEditComponent.EVENTCHANGE, false, true);
             this.Control.dispatchEvent(event);
         };
         TimeSpanEditComponent.prototype.updateValue = function () {
@@ -101,6 +101,7 @@ var YetaWF_ComponentsHTML;
         };
         TimeSpanEditComponent.TEMPLATE = "yt_timespan";
         TimeSpanEditComponent.SELECTOR = ".yt_timespan.t_edit";
+        TimeSpanEditComponent.EVENTCHANGE = "timespan_change";
         return TimeSpanEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.TimeSpanEditComponent = TimeSpanEditComponent;

@@ -64,7 +64,7 @@ var YetaWF_Pages;
                 request.send(uri.toFormData());
                 return false;
             });
-            _this.SelectUrl.Control.addEventListener("url_change", function (evt) {
+            _this.SelectUrl.Control.addEventListener(YetaWF_ComponentsHTML.UrlEditComponent.EVENTCHANGE, function (evt) {
                 _this.toggleButton();
             });
             _this.GridAll.Control.addEventListener("grid_selectionchange", function (evt) {

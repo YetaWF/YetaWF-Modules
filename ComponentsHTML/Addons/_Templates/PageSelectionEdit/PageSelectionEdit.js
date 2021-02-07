@@ -22,7 +22,7 @@ var YetaWF_ComponentsHTML;
         function PageSelectionEditComponent(controlId /*, setup: Setup*/) {
             var _this = _super.call(this, controlId, PageSelectionEditComponent.TEMPLATE, PageSelectionEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "dropdownlist_change",
+                ChangeEvent: null,
                 GetValue: function (control) {
                     return control.SelectPage.value;
                 },
@@ -36,7 +36,7 @@ var YetaWF_ComponentsHTML;
             _this.SelectPage = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
             _this.DivLink = $YetaWF.getElement1BySelector(".t_link", [_this.Control]);
             _this.APage = $YetaWF.getElement1BySelector("a", [_this.DivLink]);
-            _this.SelectPage.Control.addEventListener("dropdownlist_change", function (evt) {
+            _this.SelectPage.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, function (evt) {
                 _this.updatePage(_this.SelectPage.value, "");
             });
             _this.updatePage(_this.SelectPage.value, "");

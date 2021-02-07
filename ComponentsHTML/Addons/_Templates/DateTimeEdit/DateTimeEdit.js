@@ -15,6 +15,12 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
+    var DateTimeStyleEnum;
+    (function (DateTimeStyleEnum) {
+        DateTimeStyleEnum[DateTimeStyleEnum["DateTime"] = 0] = "DateTime";
+        DateTimeStyleEnum[DateTimeStyleEnum["Date"] = 1] = "Date";
+        DateTimeStyleEnum[DateTimeStyleEnum["Time"] = 2] = "Time";
+    })(DateTimeStyleEnum || (DateTimeStyleEnum = {}));
     var DateFormatEnum;
     (function (DateFormatEnum) {
         DateFormatEnum[DateFormatEnum["MMDDYYYY"] = 0] = "MMDDYYYY";
@@ -43,7 +49,7 @@ var YetaWF_ComponentsHTML;
         function DateTimeEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId, DateTimeEditComponent.TEMPLATE, DateTimeEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "datetime_change",
+                ChangeEvent: DateTimeEditComponent.EVENTCHANGE,
                 GetValue: function (control) {
                     return control.valueText;
                 },
@@ -66,7 +72,10 @@ var YetaWF_ComponentsHTML;
             _this.Setup = setup;
             _this.InputHidden = $YetaWF.getElement1BySelector("input[type='hidden']", [_this.Control]);
             _this.InputControl = $YetaWF.getElement1BySelector("input[type='text']", [_this.Control]);
-            _this.Selected = new Date(_this.InputHidden.value);
+            if (_this.InputHidden.value)
+                _this.Selected = new Date(_this.InputHidden.value);
+            else
+                _this.Selected = new Date();
             _this.tempCalCurrentDate = new Date(_this.Selected);
             $YetaWF.registerEventHandler(_this.Control, "mousedown", ".t_time", function (ev) {
                 if (_this.enabled) {
@@ -704,7 +713,15 @@ var YetaWF_ComponentsHTML;
         };
         DateTimeEditComponent.prototype.getFormattedDateTime = function (date) {
             var time = date.getHours() * 60 + date.getMinutes();
-            return this.getFormattedDate(date) + " " + this.getFormattedTime(time);
+            switch (this.Setup.Style) {
+                default:
+                case DateTimeStyleEnum.DateTime:
+                    return this.getFormattedDate(date) + " " + this.getFormattedTime(time);
+                case DateTimeStyleEnum.Date:
+                    return this.getFormattedDate(date);
+                case DateTimeStyleEnum.Time:
+                    return this.getFormattedTime(time);
+            }
         };
         DateTimeEditComponent.prototype.getFormattedDate = function (date) {
             var d = date.getDate();
@@ -918,7 +935,7 @@ var YetaWF_ComponentsHTML;
         DateTimeEditComponent.SELECTOR = ".yt_datetime.t_edit";
         DateTimeEditComponent.EVENTCHANGE = "datetime_change";
         DateTimeEditComponent.TIMEPOPUPID = "yt_datetime_popup";
-        DateTimeEditComponent.CALENDARPOPUPID = "yDCalPopup";
+        DateTimeEditComponent.CALENDARPOPUPID = "yt_datetime_calendarpopup";
         DateTimeEditComponent.YEARPOPUPID = "yt_datetime_popup";
         DateTimeEditComponent.MONTHPOPUPID = "yt_datetime_popup";
         return DateTimeEditComponent;

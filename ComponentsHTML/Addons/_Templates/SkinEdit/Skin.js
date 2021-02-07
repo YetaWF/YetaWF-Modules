@@ -30,7 +30,7 @@ var YetaWF_ComponentsHTML;
             _this.SelectCollection = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name$='.Collection']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
             _this.SelectPageFile = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name$='.PageFileName']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
             _this.SelectPopupFile = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name$='.PopupFileName']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
-            _this.SelectCollection.Control.addEventListener("dropdownlist_change", function (evt) {
+            _this.SelectCollection.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, function (evt) {
                 var data = { SkinCollection: _this.SelectCollection.value };
                 $YetaWF.setLoading(true);
                 var uri = $YetaWF.parseUrl(_this.Setup.AjaxUrl);

@@ -270,7 +270,7 @@ namespace YetaWF_Menus {
             this.NeedsModuleContext = $YetaWF.getElement1BySelector("input[name='ModEntry.NeedsModuleContext']", [this.Details]) as HTMLInputElement;
             this.DontFollow = $YetaWF.getElement1BySelector("input[name='ModEntry.DontFollow']", [this.Details]) as HTMLInputElement;
 
-            $YetaWF.registerCustomEventHandler(this.EntryType.Control, "dropdownlist_change", null, (ev: Event): boolean => {
+            $YetaWF.registerCustomEventHandler(this.EntryType.Control, YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, null, (ev: Event): boolean => {
                 if (this.ActiveData) {
                     let data = this.ActiveData;
                     data.EntryType = Number(this.EntryType.value);

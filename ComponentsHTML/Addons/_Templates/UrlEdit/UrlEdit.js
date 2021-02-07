@@ -25,7 +25,7 @@ var YetaWF_ComponentsHTML;
         function UrlEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId, UrlEditComponent.TEMPLATE, UrlEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: UrlEditComponent.EVENT,
+                ChangeEvent: UrlEditComponent.EVENTCHANGE,
                 GetValue: function (control) {
                     return control.value;
                 },
@@ -56,12 +56,12 @@ var YetaWF_ComponentsHTML;
             _this.value = _this.Setup.Url;
             if (!_this.inputUrl || !_this.selectPage)
                 _this.selectType.enable(false);
-            _this.selectType.Control.addEventListener("dropdownlist_change", function (evt) {
+            _this.selectType.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, function (evt) {
                 _this.updateStatus();
                 _this.sendEvent();
             });
             if (_this.selectPage) {
-                _this.selectPage.Control.addEventListener("dropdownlist_change", function (evt) {
+                _this.selectPage.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, function (evt) {
                     _this.updateStatus();
                     _this.sendEvent();
                 });
@@ -116,7 +116,7 @@ var YetaWF_ComponentsHTML;
         UrlEditComponent.prototype.sendEvent = function () {
             FormsSupport.validateElement(this.inputHidden);
             var event = document.createEvent("Event");
-            event.initEvent(UrlEditComponent.EVENT, true, true);
+            event.initEvent(UrlEditComponent.EVENTCHANGE, true, true);
             this.Control.dispatchEvent(event);
         };
         Object.defineProperty(UrlEditComponent.prototype, "value", {
@@ -173,7 +173,7 @@ var YetaWF_ComponentsHTML;
         };
         UrlEditComponent.TEMPLATE = "yt_url";
         UrlEditComponent.SELECTOR = ".yt_url.t_edit";
-        UrlEditComponent.EVENT = "url_change";
+        UrlEditComponent.EVENTCHANGE = "url_change";
         return UrlEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.UrlEditComponent = UrlEditComponent;
