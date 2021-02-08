@@ -1,3 +1,5 @@
+/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
+
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using YetaWF.Core.Controllers;
