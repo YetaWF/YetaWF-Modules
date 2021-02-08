@@ -84,7 +84,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 hb.Append($@"
         <li data-tab='{count}' role='tab' tabindex='{(active ? "0" : "-1")}' class='t_tab {tabCss}' aria-controls='{tabId}' aria-labelledby='{tabId}_lb' aria-selected='{(active ? "true" : "false")}' aria-expanded='{(active ? "true" : "false")}'>
-            <a href='#{tabId}' {Basics.CssTooltip}='{Utility.HAE(tabEntry.ToolTip?.ToString())}' role='presentation' tabindex='-1' class='t_tabanchor' id='{tabId}_lb'>
+            <a {Basics.CssTooltip}='{Utility.HAE(tabEntry.ToolTip?.ToString())}' role='presentation' tabindex='-1' class='t_tabanchor' id='{tabId}_lb'>
                 {Utility.HE(tabEntry.Caption?.ToString())}
             </a>
         </li>");

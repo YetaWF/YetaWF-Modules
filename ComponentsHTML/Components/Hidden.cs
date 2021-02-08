@@ -78,13 +78,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     value = model.ToString();
             }
 
-            StringLengthAttribute lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
-#if NOTYET
-            if (lenAttr == null)
-                throw new InternalError($"No max string length given using StringLengthAttribute - {FieldName}");
-#endif
-            if (lenAttr != null && lenAttr.MaximumLength > 0 && lenAttr.MaximumLength <= 8000)
-                HtmlAttributes.Add("maxlength", lenAttr.MaximumLength.ToString());
+            // maxlength not allowed on input type=hidden
+//            StringLengthAttribute lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
+//#if NOTYET
+//            if (lenAttr == null)
+//                throw new InternalError($"No max string length given using StringLengthAttribute - {FieldName}");
+//#endif
+//            if (lenAttr != null && lenAttr.MaximumLength > 0 && lenAttr.MaximumLength <= 8000)
+//                HtmlAttributes.Add("maxlength", lenAttr.MaximumLength.ToString());
 
             string id = HtmlBuilder.GetIdCond(HtmlAttributes);
             if (id != null)
