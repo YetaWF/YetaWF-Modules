@@ -66,16 +66,19 @@
         vertical-align: middle; }
 
 .yt_date.t_edit,
-.yt_time.t_edit {
+.yt_time.t_edit,
+.yt_timeofday.t_edit {
   padding-right: 2em; }
   .yt_date.t_edit .t_sels,
-  .yt_time.t_edit .t_sels {
+  .yt_time.t_edit .t_sels,
+  .yt_timeofday.t_edit .t_sels {
     width: 2em; }
 
 .yt_date.t_edit input[type='text'] {
   width: 14ch; }
 
-.yt_time.t_edit input[type='text'] {
+.yt_time.t_edit input[type='text'],
+.yt_timeofday.t_edit input[type='text'] {
   width: 10ch; }
 
 #yt_datetime_popup {
@@ -186,19 +189,23 @@
           height: 2.5em;
           margin: auto;
           padding: .5em .5em;
-          text-decoration: none; }
-        #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_selected,
-        #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_selected .t_link {
-          background: var(--dd-p-bg-focus);
-          color: var(--dd-p-clr-focus); }
+          text-decoration: none;
+          opacity: 1; }
         #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_today,
         #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_today .t_link {
           background: var(--dd-p-bg-focus);
-          color: var(--dd-p-clr-focus); }
+          color: var(--dd-p-clr-focus);
+          opacity: .7; }
+        #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_selected,
+        #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_selected .t_link {
+          background: var(--dd-p-bg-focus);
+          color: var(--dd-p-clr-focus);
+          opacity: 1; }
         #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_hover,
         #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_hover .t_link {
           background: var(--dd-p-bg-hover);
           color: var(--dd-p-clr-hover);
+          opacity: 1;
           box-shadow: none; }
         #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_othermonth:not(.t_today) {
           opacity: .7; }

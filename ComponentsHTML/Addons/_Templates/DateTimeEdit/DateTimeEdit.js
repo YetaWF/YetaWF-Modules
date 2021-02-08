@@ -65,19 +65,23 @@ var YetaWF_ComponentsHTML;
             _this.YearPopup = null;
             _this.MonthPopup = null;
             _this.tempTimeSelectedValue = null;
-            _this.tempCalSelectedValue = null;
+            _this.tempCalSelectedValueUTC = null;
             _this.tempArrow = null;
             _this.tempYearSelectedValue = null;
             _this.tempMonthSelectedValue = null;
             _this.IgnoreResizeUntil = 0;
+            _this._SelectedUTC = new Date();
+            _this._SelectedUser = new Date();
+            _this._TempCalCurrentDateUTC = new Date();
+            _this._TempCalCurrentDateUser = new Date();
             _this.Setup = setup;
             _this.InputHidden = $YetaWF.getElement1BySelector("input[type='hidden']", [_this.Control]);
             _this.InputControl = $YetaWF.getElement1BySelector("input[type='text']", [_this.Control]);
             if (_this.InputHidden.value)
-                _this.Selected = new Date(_this.InputHidden.value);
+                _this.SelectedUTC = new Date(_this.InputHidden.value);
             else
-                _this.Selected = new Date();
-            _this.tempCalCurrentDate = new Date(_this.Selected);
+                _this.SelectedUTC = new Date();
+            _this.TempCalCurrentDateUTC = new Date(_this.SelectedUTC);
             $YetaWF.registerEventHandler(_this.Control, "mousedown", ".t_time", function (ev) {
                 if (_this.enabled) {
                     if (_this.TimePopup) {
@@ -144,7 +148,7 @@ var YetaWF_ComponentsHTML;
                     else if (key === "Enter") {
                         var time = _this.getSelectedValue(_this.TimePopup);
                         if (time)
-                            _this.timeSelectedValue = Number(time);
+                            _this.TimeSelectedUser = Number(time);
                         _this.closeTimeList();
                         _this.sendChangeEvent();
                         return false;
@@ -174,8 +178,8 @@ var YetaWF_ComponentsHTML;
                         }
                         else if (key === "Enter") {
                             var month = _this.getSelectedValue(_this.MonthPopup);
-                            var date = _this.tempCalCurrentDate;
-                            date.setMonth(Number(month));
+                            var date = _this.TempCalCurrentDateUser;
+                            date.setUTCMonth(Number(month));
                             var tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [_this.CalendarPopup]);
                             _this.buildCalendarMonthPage(tbody, date);
                             _this.updateCalendarTitle();
@@ -206,8 +210,8 @@ var YetaWF_ComponentsHTML;
                         }
                         else if (key === "Enter") {
                             var year = _this.getSelectedValue(_this.YearPopup);
-                            var date = _this.tempCalCurrentDate;
-                            date.setFullYear(Number(year));
+                            var date = _this.TempCalCurrentDateUser;
+                            date.setUTCFullYear(Number(year));
                             var tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [_this.CalendarPopup]);
                             _this.buildCalendarMonthPage(tbody, date);
                             _this.updateCalendarTitle();
@@ -216,7 +220,7 @@ var YetaWF_ComponentsHTML;
                         }
                     }
                     else {
-                        var date = _this.tempCalCurrentDate;
+                        var date = _this.TempCalCurrentDateUser;
                         if (ev.altKey) {
                             if (key === "ArrowUp") {
                                 _this.close();
@@ -225,48 +229,48 @@ var YetaWF_ComponentsHTML;
                         }
                         else {
                             if (key === "Enter") {
-                                _this.tempCalCurrentDate = new Date(date);
-                                _this.dateSelectedValue = _this.tempCalCurrentDate;
+                                _this.TempCalCurrentDateUser = new Date(date);
+                                _this.dateSelectedValueUTC = _this.TempCalCurrentDateUTC;
                                 _this.close();
                                 _this.sendChangeEvent();
                                 return false;
                             }
                             else if (key === "ArrowUp") {
-                                date.setDate(date.getDate() - 7);
+                                date.setUTCDate(date.getUTCDate() - 7);
                             }
                             else if (key === "ArrowDown") {
-                                date.setDate(date.getDate() + 7);
+                                date.setUTCDate(date.getUTCDate() + 7);
                             }
                             else if (key === "ArrowLeft") {
-                                date.setDate(date.getDate() - 1);
+                                date.setUTCDate(date.getUTCDate() - 1);
                             }
                             else if (key === "ArrowRight") {
-                                date.setDate(date.getDate() + 1);
+                                date.setUTCDate(date.getUTCDate() + 1);
                             }
                             else if (key === "PageUp") {
-                                var dom = date.getDate(); // day of month current month
-                                date.setDate(0); // last day of last month
-                                var daysInMonth = date.getDate();
+                                var dom = date.getUTCDate(); // day of month current month
+                                date.setUTCDate(0); // last day of last month
+                                var daysInMonth = date.getUTCDate();
                                 if (dom >= daysInMonth)
                                     dom = daysInMonth;
-                                date.setDate(dom);
+                                date.setUTCDate(dom);
                             }
                             else if (key === "PageDown") {
-                                var dom = date.getDate(); // day of month current month
-                                date.setDate(1); // first day of this month
-                                date.setMonth(date.getMonth() + 2); // first day of next-next month
-                                date.setDate(0); // last day of next month
-                                var daysInMonth = date.getDate();
+                                var dom = date.getUTCDate(); // day of month current month
+                                date.setUTCDate(1); // first day of this month
+                                date.setUTCMonth(date.getUTCMonth() + 2); // first day of next-next month
+                                date.setUTCDate(0); // last day of next month
+                                var daysInMonth = date.getUTCDate();
                                 if (dom >= daysInMonth)
                                     dom = daysInMonth;
-                                date.setDate(dom);
+                                date.setUTCDate(dom);
                             }
                             else if (key === "Home") {
-                                date.setDate(1);
+                                date.setUTCDate(1);
                             }
                             else if (key === "End") {
-                                date.setMonth(date.getMonth() + 1);
-                                date.setDate(date.getDate() - 1);
+                                date.setUTCMonth(date.getUTCMonth() + 1);
+                                date.setUTCDate(date.getUTCDate() - 1);
                             }
                             else
                                 return true;
@@ -310,7 +314,7 @@ var YetaWF_ComponentsHTML;
             var ul = $YetaWF.getElement1BySelector("ul", [this.TimePopup]);
             var len = times.length;
             var html = "";
-            var selValue = this.timeSelectedValue;
+            var selValue = this.TimeSelectedUser;
             for (var i = 0; i < len; ++i) {
                 var val = times[i];
                 var o = this.getFormattedTime(val);
@@ -348,7 +352,7 @@ var YetaWF_ComponentsHTML;
                 var li = ev.__YetaWFElem;
                 var value = Number($YetaWF.getAttribute(li, "data-value"));
                 if (_this.tempTimeSelectedValue === value) {
-                    _this.timeSelectedValue = _this.tempTimeSelectedValue;
+                    _this.TimeSelectedUser = _this.tempTimeSelectedValue;
                     _this.tempTimeSelectedValue = null;
                     _this.closeTimeList();
                     _this.sendChangeEvent();
@@ -378,8 +382,8 @@ var YetaWF_ComponentsHTML;
             var _this = this;
             this.closeTimeList();
             this.closeCalendar();
-            var month = this.Setup.Months[this.tempCalCurrentDate.getMonth()];
-            var year = this.tempCalCurrentDate.getFullYear().toFixed(0);
+            var month = this.Setup.Months[this.TempCalCurrentDateUser.getUTCMonth()];
+            var year = this.TempCalCurrentDateUser.getUTCFullYear().toFixed(0);
             this.CalendarPopup =
                 $YetaWF.createElement("div", { id: DateTimeEditComponent.CALENDARPOPUPID, "data-owner": this.ControlId, "aria-hidden": "false" },
                     $YetaWF.createElement("div", { class: "t_container", "data-role": "popup", "aria-hidden": "false" },
@@ -410,7 +414,7 @@ var YetaWF_ComponentsHTML;
             var next = $YetaWF.getElement1BySelector(".t_next", [this.CalendarPopup]);
             next.innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_right;
             var tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [this.CalendarPopup]);
-            this.buildCalendarMonthPage(tbody, this.tempCalCurrentDate || new Date());
+            this.buildCalendarMonthPage(tbody, this.TempCalCurrentDateUser || new Date());
             var style = window.getComputedStyle(this.Control);
             this.CalendarPopup.style.font = style.font;
             this.CalendarPopup.style.fontStyle = style.fontStyle;
@@ -433,15 +437,15 @@ var YetaWF_ComponentsHTML;
             $YetaWF.registerEventHandler(this.CalendarPopup, "mousedown", "table td .t_link", function (ev) {
                 var anchor = ev.__YetaWFElem;
                 var value = $YetaWF.getAttribute(anchor, "data-value");
-                _this.tempCalSelectedValue = value;
+                _this.tempCalSelectedValueUTC = value;
                 return false;
             });
             $YetaWF.registerEventHandler(this.CalendarPopup, "mouseup", "table td .t_link", function (ev) {
                 var anchor = ev.__YetaWFElem;
                 var value = $YetaWF.getAttribute(anchor, "data-value");
-                if (_this.tempCalSelectedValue === value) {
-                    _this.dateSelectedValue = new Date(_this.tempCalSelectedValue);
-                    _this.tempCalSelectedValue = null;
+                if (_this.tempCalSelectedValueUTC === value) {
+                    _this.dateSelectedValueUTC = _this.TempCalCurrentDateUTC = new Date(_this.tempCalSelectedValueUTC);
+                    _this.tempCalSelectedValueUTC = null;
                     _this.close();
                     _this.sendChangeEvent();
                 }
@@ -457,12 +461,12 @@ var YetaWF_ComponentsHTML;
             $YetaWF.registerEventHandler(this.CalendarPopup, "mouseup", ".t_header .t_prev svg, .t_header .t_next svg", function (ev) {
                 var anchor = $YetaWF.elementClosest(ev.__YetaWFElem, "a");
                 if (_this.tempArrow === anchor) {
-                    var date = _this.tempCalCurrentDate;
+                    var date = _this.TempCalCurrentDateUser;
                     if ($YetaWF.elementHasClass(anchor, "t_prev")) {
-                        date.setMonth(date.getMonth() - 1);
+                        date.setUTCMonth(date.getUTCMonth() - 1);
                     }
                     else {
-                        date.setMonth(date.getMonth() + 1);
+                        date.setUTCMonth(date.getUTCMonth() + 1);
                     }
                     var tbody_1 = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [_this.CalendarPopup]);
                     _this.buildCalendarMonthPage(tbody_1, date);
@@ -471,12 +475,12 @@ var YetaWF_ComponentsHTML;
                 }
                 return false;
             });
-            $YetaWF.registerEventHandler(this.CalendarPopup, "click", ".t_header .t_prev svg, .t_header .t_next svg", function (ev) {
+            $YetaWF.registerEventHandler(this.CalendarPopup, "click", "table td .t_link, .t_header .t_prev svg, .t_header .t_next svg", function (ev) {
                 return false;
             });
             $YetaWF.registerEventHandler(this.CalendarPopup, "click", ".t_footer .t_today", function (ev) {
-                _this.dateSelectedValue = new Date(_this.Setup.Today);
-                _this.tempCalSelectedValue = null;
+                _this.dateSelectedValueUTC = new Date(_this.Setup.Today);
+                _this.tempCalSelectedValueUTC = null;
                 _this.close();
                 _this.sendChangeEvent();
                 return false;
@@ -508,39 +512,39 @@ var YetaWF_ComponentsHTML;
             }
         };
         DateTimeEditComponent.prototype.buildCalendarMonthPage = function (tbody, startDate) {
-            this.tempCalCurrentDate = new Date(startDate);
+            this.TempCalCurrentDateUser = new Date(startDate);
             var date = new Date(startDate);
-            var startMonth = startDate.getMonth();
-            date.setDate(1); // set the first day
-            date.setDate(-date.getDay() + 1); // get to the start of the week (Sunday)
+            var startMonth = startDate.getUTCMonth();
+            date.setUTCDate(1); // set the first day
+            date.setUTCDate(-date.getUTCDay() + 1); // get to the start of the week (Sunday)
             var today = new Date();
             tbody.innerHTML = "";
-            var selDate = this.tempCalCurrentDate;
+            var selDate = this.TempCalCurrentDateUser;
             for (var last = false; !last;) {
                 var row = $YetaWF.createElement("tr", { role: "row" });
                 for (var day = 0; day < 7; ++day) {
                     var css = "";
                     if (day === 0 || day === 6) // Saturday, Sunday
                         css += " t_weekend";
-                    if (date < startDate && date.getMonth() !== startMonth)
+                    if (date < startDate && date.getUTCMonth() !== startMonth)
                         css += " t_othermonth";
-                    else if (date > startDate && date.getMonth() !== startMonth) {
+                    else if (date > startDate && date.getUTCMonth() !== startMonth) {
                         css += " t_othermonth";
                         last = true;
                     }
-                    if (date.getFullYear() === selDate.getFullYear() && date.getMonth() === selDate.getMonth() && date.getDate() === selDate.getDate())
+                    if (date.getUTCFullYear() === selDate.getUTCFullYear() && date.getUTCMonth() === selDate.getUTCMonth() && date.getUTCDate() === selDate.getUTCDate())
                         css += " t_selected";
-                    if (date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear())
+                    if (date.getUTCDate() === today.getUTCDate() && date.getUTCMonth() === today.getUTCMonth() && date.getUTCFullYear() === today.getUTCFullYear())
                         css += " t_today";
                     css = css.trim();
                     var tt = this.getLongFormattedDate(date);
                     var cell = $YetaWF.createElement("td", { class: css, role: "gridcell" },
-                        $YetaWF.createElement("a", { tabindex: "-1", class: "t_link", href: "#", "data-value": date.toISOString(), title: tt }, date.getDate()));
+                        $YetaWF.createElement("a", { tabindex: "-1", class: "t_link", href: "#", "data-value": this.UserToUTC(date).toISOString(), title: tt }, date.getUTCDate()));
                     row.appendChild(cell);
-                    date.setDate(date.getDate() + 1);
+                    date.setUTCDate(date.getUTCDate() + 1);
                 }
                 tbody.appendChild(row);
-                if (!last && date.getMonth() !== startMonth)
+                if (!last && date.getUTCMonth() !== startMonth)
                     last = true;
             }
         };
@@ -558,9 +562,9 @@ var YetaWF_ComponentsHTML;
             var minDate = new Date(this.Setup.MinDate);
             var maxDate = new Date(this.Setup.MaxDate);
             var ul = $YetaWF.getElement1BySelector("ul", [this.YearPopup]);
-            var startYear = minDate.getFullYear();
-            var endYear = maxDate.getFullYear();
-            var selValue = this.tempCalCurrentDate.getFullYear();
+            var startYear = minDate.getUTCFullYear();
+            var endYear = maxDate.getUTCFullYear();
+            var selValue = this.TempCalCurrentDateUser.getUTCFullYear();
             var html = "";
             for (var i = startYear; i <= endYear; ++i) {
                 var extra = "";
@@ -595,8 +599,8 @@ var YetaWF_ComponentsHTML;
                 var li = ev.__YetaWFElem;
                 var value = Number($YetaWF.getAttribute(li, "data-value"));
                 if (_this.tempYearSelectedValue === value) {
-                    var date = _this.tempCalCurrentDate;
-                    date.setFullYear(value);
+                    var date = _this.TempCalCurrentDateUser;
+                    date.setUTCFullYear(value);
                     var tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [_this.CalendarPopup]);
                     _this.buildCalendarMonthPage(tbody, date);
                     _this.updateCalendarTitle();
@@ -640,7 +644,7 @@ var YetaWF_ComponentsHTML;
             var ul = $YetaWF.getElement1BySelector("ul", [this.MonthPopup]);
             var startMonth = 0;
             var endMonth = 11;
-            var selValue = this.tempCalCurrentDate.getMonth();
+            var selValue = this.TempCalCurrentDateUser.getUTCMonth();
             var html = "";
             for (var i = startMonth; i <= endMonth; ++i) {
                 var extra = "";
@@ -675,8 +679,8 @@ var YetaWF_ComponentsHTML;
                 var li = ev.__YetaWFElem;
                 var value = Number($YetaWF.getAttribute(li, "data-value"));
                 if (_this.tempMonthSelectedValue === value) {
-                    var date = _this.tempCalCurrentDate;
-                    date.setMonth(value);
+                    var date = _this.TempCalCurrentDateUser;
+                    date.setUTCMonth(value);
                     var tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [_this.CalendarPopup]);
                     _this.buildCalendarMonthPage(tbody, date);
                     _this.updateCalendarTitle();
@@ -709,15 +713,15 @@ var YetaWF_ComponentsHTML;
         DateTimeEditComponent.prototype.updateCalendarTitle = function () {
             if (!this.CalendarPopup)
                 return;
-            var month = this.Setup.Months[this.tempCalCurrentDate.getMonth()];
-            var year = this.tempCalCurrentDate.getFullYear();
+            var month = this.Setup.Months[this.TempCalCurrentDateUser.getUTCMonth()];
+            var year = this.TempCalCurrentDateUser.getUTCFullYear();
             var monthSpan = $YetaWF.getElement1BySelector(".t_header .t_month", [this.CalendarPopup]);
             monthSpan.innerHTML = month;
             var yearSpan = $YetaWF.getElement1BySelector(".t_header .t_year", [this.CalendarPopup]);
             yearSpan.innerHTML = year.toFixed(0);
         };
         DateTimeEditComponent.prototype.getFormattedDateTime = function (date) {
-            var time = date.getHours() * 60 + date.getMinutes();
+            var time = date.getUTCHours() * 60 + date.getUTCMinutes();
             switch (this.Setup.Style) {
                 default:
                 case DateTimeStyleEnum.DateTime:
@@ -729,9 +733,9 @@ var YetaWF_ComponentsHTML;
             }
         };
         DateTimeEditComponent.prototype.getFormattedDate = function (date) {
-            var d = date.getDate();
-            var m = date.getMonth() + 1;
-            var y = date.getFullYear();
+            var d = date.getUTCDate();
+            var m = date.getUTCMonth() + 1;
+            var y = date.getUTCFullYear();
             switch (this.Setup.DateFormat) {
                 default:
                 case DateFormatEnum.MMDDYYYY:
@@ -792,10 +796,10 @@ var YetaWF_ComponentsHTML;
             return s;
         };
         DateTimeEditComponent.prototype.getLongFormattedDate = function (date) {
-            var day = date.getDay();
-            var dom = date.getDate();
-            var m = date.getMonth();
-            var y = date.getFullYear();
+            var day = date.getUTCDay();
+            var dom = date.getUTCDate();
+            var m = date.getUTCMonth();
+            var y = date.getUTCFullYear();
             switch (this.Setup.DateFormat) {
                 default:
                 case DateFormatEnum.MMDDYYYY:
@@ -845,17 +849,96 @@ var YetaWF_ComponentsHTML;
         DateTimeEditComponent.prototype.setHidden = function (dateVal) {
             var s = "";
             if (dateVal != null)
-                s = dateVal.toISOString();
+                s = dateVal.getUTCFullYear() + "-" + this.zeroPad(dateVal.getUTCMonth() + 1, 2) + "-" + this.zeroPad(dateVal.getUTCDate(), 2) + "T" + this.zeroPad(dateVal.getUTCHours(), 2) + ":" + this.zeroPad(dateVal.getUTCMinutes(), 2) + ":00.000Z";
             this.InputHidden.setAttribute("value", s);
         };
+        Object.defineProperty(DateTimeEditComponent.prototype, "SelectedUTC", {
+            get: function () {
+                return this._SelectedUTC;
+            },
+            set: function (date) {
+                this._SelectedUTC = new Date(date);
+                this._SelectedUser = this.UTCToUser(date);
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(DateTimeEditComponent.prototype, "SelectedUser", {
+            get: function () {
+                return this._SelectedUser;
+            },
+            set: function (date) {
+                this._SelectedUser = new Date(date);
+                this._SelectedUTC = this.UserToUTC(date);
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(DateTimeEditComponent.prototype, "TempCalCurrentDateUTC", {
+            get: function () {
+                return this._TempCalCurrentDateUTC;
+            },
+            set: function (date) {
+                this._TempCalCurrentDateUTC = new Date(date);
+                this._TempCalCurrentDateUser = this.UTCToUser(date);
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(DateTimeEditComponent.prototype, "TempCalCurrentDateUser", {
+            get: function () {
+                return this._TempCalCurrentDateUser;
+            },
+            set: function (date) {
+                this._TempCalCurrentDateUser = new Date(date);
+                this._TempCalCurrentDateUTC = this.UserToUTC(date);
+            },
+            enumerable: false,
+            configurable: true
+        });
+        DateTimeEditComponent.prototype.UTCToUser = function (date) {
+            var d = new Date(date);
+            d.setUTCSeconds(d.getUTCSeconds() + this.Setup.BaseUtcOffset);
+            return d;
+        };
+        DateTimeEditComponent.prototype.UserToUTC = function (date) {
+            var d = new Date(date);
+            d.setUTCSeconds(d.getUTCSeconds() - this.Setup.BaseUtcOffset);
+            return d;
+        };
+        Object.defineProperty(DateTimeEditComponent.prototype, "TimeSelectedUser", {
+            get: function () {
+                return this.SelectedUser.getUTCHours() * 60 + this.SelectedUser.getUTCMinutes();
+            },
+            set: function (value) {
+                var d = new Date(this.SelectedUser);
+                d.setUTCHours(value / 60);
+                d.setUTCMinutes(value % 60);
+                d.setUTCSeconds(0);
+                d.setUTCMilliseconds(0);
+                this.SelectedUser = d;
+                this.InputControl.value = this.getFormattedDateTime(this.SelectedUser);
+                this.setHidden(this.SelectedUTC);
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(DateTimeEditComponent.prototype, "dateSelectedValueUTC", {
+            get: function () {
+                return this.SelectedUser;
+            },
+            set: function (date) {
+                var time = this.TimeSelectedUser;
+                this.SelectedUTC = date;
+                this.TimeSelectedUser = time;
+            },
+            enumerable: false,
+            configurable: true
+        });
         Object.defineProperty(DateTimeEditComponent.prototype, "value", {
             // API
             get: function () {
-                return this.dateSelectedValue;
-            },
-            set: function (val) {
-                this.dateSelectedValue = val;
-                this.tempCalCurrentDate = val;
+                return new Date(this.dateSelectedValueUTC);
             },
             enumerable: false,
             configurable: true
@@ -867,35 +950,8 @@ var YetaWF_ComponentsHTML;
             enumerable: false,
             configurable: true
         });
-        Object.defineProperty(DateTimeEditComponent.prototype, "timeSelectedValue", {
-            get: function () {
-                return this.Selected.getHours() * 60 + this.Selected.getMinutes();
-            },
-            set: function (value) {
-                this.Selected.setHours(value / 60);
-                this.Selected.setMinutes(value % 60);
-                this.Selected.setSeconds(0);
-                this.Selected.setMilliseconds(0);
-                this.InputControl.value = this.getFormattedDateTime(this.Selected);
-                this.setHidden(this.Selected);
-            },
-            enumerable: false,
-            configurable: true
-        });
-        Object.defineProperty(DateTimeEditComponent.prototype, "dateSelectedValue", {
-            get: function () {
-                return this.Selected;
-            },
-            set: function (date) {
-                var time = this.timeSelectedValue;
-                this.Selected = date;
-                this.timeSelectedValue = time;
-            },
-            enumerable: false,
-            configurable: true
-        });
         DateTimeEditComponent.prototype.clear = function () {
-            this.Selected = new Date();
+            this.SelectedUTC = new Date();
             this.InputControl.value = "";
             this.setHidden(null);
         };

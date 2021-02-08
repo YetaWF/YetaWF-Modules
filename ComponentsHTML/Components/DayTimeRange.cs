@@ -20,19 +20,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal const string TemplateName = "DayTimeRange";
 
-        /// <summary>
-        /// Returns the package implementing the component.
-        /// </summary>
-        /// <returns>Returns the package implementing the component.</returns>
+        /// <inheritdoc/>
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        /// <summary>
-        /// Returns the component name.
-        /// </summary>
-        /// <returns>Returns the component name.</returns>
-        /// <remarks>Components in packages whose product name starts with "Component" use the exact name returned by GetTemplateName when used in UIHint attributes. These are considered core components.
-        /// Components in other packages use the package's area name as a prefix. E.g., the UserId component in the YetaWF.Identity package is named "YetaWF_Identity_UserId" when used in UIHint attributes.
-        ///
-        /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
+        /// <inheritdoc/>
         public override string GetTemplateName() { return TemplateName; }
     }
 
@@ -46,25 +36,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </example>
     public class DayTimeRangeDisplayComponent : DayTimeRangeComponent, IYetaWFComponent<DayTimeRange> {
 
-        /// <summary>
-        /// Returns the component type (edit/display).
-        /// </summary>
-        /// <returns>Returns the component type.</returns>
+        /// <inheritdoc/>
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
+        /// <inheritdoc/>
         public Task<string> RenderAsync(DayTimeRange model) {
             if (model != null) {
                 string s = null;
                 if (model.Start != null && model.End != null) {
                     if (model.Start2 != null && model.End2 != null) {
-                        s = __ResStr("time2", "{0} - {1}, {2} - {3} ", Formatting.FormatTime(model.GetStart()), Formatting.FormatTime(model.GetEnd()), Formatting.FormatTime(model.GetStart2()), Formatting.FormatTime(model.GetEnd2()));
+                        s = __ResStr("time2", "{0} - {1}, {2} - {3} ", Formatting.FormatTimeOfDay(model.Start), Formatting.FormatTimeOfDay(model.End), Formatting.FormatTimeOfDay(model.Start2), Formatting.FormatTimeOfDay(model.End2));
                     } else {
-                        s = __ResStr("time1", "{0} - {1}", Formatting.FormatTime(model.GetStart()), Formatting.FormatTime(model.GetEnd()));
+                        s = __ResStr("time1", "{0} - {1}", Formatting.FormatTimeOfDay(model.Start), Formatting.FormatTimeOfDay(model.End));
                     }
                 } else
                     s = __ResStr("time0", "");
@@ -87,35 +70,34 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             public DayTimeRangeUI(DayTimeRange model) {
                 Closed = true;
+                Start = model.GetTimeStart();
+                End = model.GetTimeEnd();
+                Start2 = model.GetTimeStart2();
+                End2 = model.GetTimeEnd2();
                 if (model.Start != null && model.End != null) {
                     Closed = false;
-                    if (model.Start2 != null && model.End2 != null) {
-                        Start2 = model.GetStart2().Value;
-                        End2 = model.GetEnd2().Value;
+                    if (model.Start2 != null && model.End2 != null)
                         Additional = true;
-                    }
-                    Start = model.GetStart().Value;
-                    End = model.GetEnd().Value;
                 }
             }
 
             [Caption("From"), Description("Starting time")]
-            [UIHint("Time")]
+            [UIHint("TimeOfDay")]
             [RequiredIf(nameof(Closed), false)]
-            public DateTime Start { get; set; }
+            public TimeOfDay Start { get; set; }
             [Caption("To"), Description("Ending time")]
-            [UIHint("Time")]
+            [UIHint("TimeOfDay")]
             [DayTimeRangeToValidation, RequiredIf(nameof(Closed), false)]
-            public DateTime End { get; set; }
+            public TimeOfDay End { get; set; }
 
             [Caption("From"), Description("Starting time")]
-            [UIHint("Time")]
+            [UIHint("TimeOfDay")]
             [DayTimeRangeFrom2Validation, RequiredIf(nameof(Additional), true)]
-            public DateTime Start2 { get; set; }
+            public TimeOfDay Start2 { get; set; }
             [Caption("To"), Description("Ending time")]
-            [UIHint("Time")]
+            [UIHint("TimeOfDay")]
             [DayTimeRangeToValidation, RequiredIf(nameof(Additional), true)]
-            public DateTime End2 { get; set; }
+            public TimeOfDay End2 { get; set; }
 
             [ResourceRedirect(nameof(AdditionalFieldCaption), nameof(AdditionalFieldDescription))]
             [UIHint("Boolean")]
@@ -132,17 +114,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public string ClosedFieldDescription { get; set; }
         }
 
-        /// <summary>
-        /// Returns the component type (edit/display).
-        /// </summary>
-        /// <returns>Returns the component type.</returns>
+        /// <inheritdoc/>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
+        /// <inheritdoc/>
         public async Task<string> RenderAsync(DayTimeRange model) {
 
             HtmlBuilder hb = new HtmlBuilder();

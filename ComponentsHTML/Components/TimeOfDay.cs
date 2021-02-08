@@ -1,7 +1,5 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
@@ -40,7 +38,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <inheritdoc/>
         public Task<string> RenderAsync(TimeOfDay model) {
             if (model != null)
-                return Task.FromResult($"<div{FieldSetup(FieldType.Anonymous)} class='yt_timeofday t_display'>{HE(Formatting.FormatTime(model.AsDateTime()))}</div>");
+                return Task.FromResult($"<div{FieldSetup(FieldType.Anonymous)} class='yt_timeofday t_display'>{HE(Formatting.FormatTimeOfDay(model))}</div>");
             return Task.FromResult(string.Empty);
         }
     }
@@ -81,9 +79,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
-<div id='{DivId}' class='yt_datetime yt_time t_edit'>
+<div id='{DivId}' class='yt_datetime yt_timeofday t_edit'>
     <input type='hidden' id='{ControlId}' {FieldSetup(FieldType.Validated)} value='{(model != null ? HAE($"{model.AsDateTime():o}") : null)}'>
-    <input type='text'{GetClassAttribute()} maxlength='20' value='{(model != null ? HAE(Formatting.FormatTime(model.AsDateTime())) : null)}'>
+    <input type='text'{GetClassAttribute()} maxlength='20' value='{HAE(Formatting.FormatTimeOfDay(model.HasTimeOfDay ? model : null))}'>
     <div class='t_sels'>
         <div class='t_time'>
             {SkinSVGs.Get(AreaRegistration.CurrentPackage, "far-clock")}

@@ -25,6 +25,7 @@ namespace YetaWF_ComponentsHTML {
         Months: string[];
         TodayString: string;
         Today: Date;
+        BaseUtcOffset: number;
     }
     enum DateTimeStyleEnum {
         DateTime = 0,
@@ -67,14 +68,12 @@ namespace YetaWF_ComponentsHTML {
         private Setup: DateTimeEditSetup;
         private InputHidden: HTMLInputElement;
         private InputControl: HTMLInputElement;
-        private Selected: Date;
         private TimePopup: HTMLElement | null = null;
         private CalendarPopup: HTMLElement | null = null;
         private YearPopup: HTMLElement | null = null;
         private MonthPopup: HTMLElement | null = null;
         private tempTimeSelectedValue: number|null = null;
-        private tempCalSelectedValue: string|null = null;
-        private tempCalCurrentDate: Date;
+        private tempCalSelectedValueUTC: string|null = null;
         private tempArrow: HTMLAnchorElement|null = null;
         private tempYearSelectedValue: number|null = null;
         private tempMonthSelectedValue: number|null = null;
@@ -99,10 +98,10 @@ namespace YetaWF_ComponentsHTML {
             this.InputControl = $YetaWF.getElement1BySelector("input[type='text']", [this.Control]) as HTMLInputElement;
 
             if (this.InputHidden.value)
-                this.Selected = new Date(this.InputHidden.value);
+                this.SelectedUTC = new Date(this.InputHidden.value);
             else
-                this.Selected = new Date();
-            this.tempCalCurrentDate = new Date(this.Selected);
+                this.SelectedUTC = new Date();
+            this.TempCalCurrentDateUTC = new Date(this.SelectedUTC);
 
             $YetaWF.registerEventHandler(this.Control, "mousedown", ".t_time", (ev: Event): boolean => {
                 if (this.enabled) {
@@ -163,7 +162,7 @@ namespace YetaWF_ComponentsHTML {
                     } else if (key === "Enter") {
                         let time = this.getSelectedValue(this.TimePopup);
                         if (time)
-                            this.timeSelectedValue = Number(time);
+                            this.TimeSelectedUser = Number(time);
                         this.closeTimeList();
                         this.sendChangeEvent();
                         return false;
@@ -187,8 +186,8 @@ namespace YetaWF_ComponentsHTML {
                             return false;
                         } else if (key === "Enter") {
                             let month = this.getSelectedValue(this.MonthPopup);
-                            let date = this.tempCalCurrentDate;
-                            date.setMonth(Number(month));
+                            let date = this.TempCalCurrentDateUser;
+                            date.setUTCMonth(Number(month));
                             let tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [this.CalendarPopup]);
                             this.buildCalendarMonthPage(tbody, date);
                             this.updateCalendarTitle();
@@ -213,8 +212,8 @@ namespace YetaWF_ComponentsHTML {
                             return false;
                         } else if (key === "Enter") {
                             let year = this.getSelectedValue(this.YearPopup);
-                            let date = this.tempCalCurrentDate;
-                            date.setFullYear(Number(year));
+                            let date = this.TempCalCurrentDateUser;
+                            date.setUTCFullYear(Number(year));
                             let tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [this.CalendarPopup!]);
                             this.buildCalendarMonthPage(tbody, date);
                             this.updateCalendarTitle();
@@ -222,7 +221,7 @@ namespace YetaWF_ComponentsHTML {
                             return false;
                         }
                     } else {
-                        let date = this.tempCalCurrentDate;
+                        let date = this.TempCalCurrentDateUser;
                         if (ev.altKey) {
                             if (key === "ArrowUp") {
                                 this.close();
@@ -230,40 +229,40 @@ namespace YetaWF_ComponentsHTML {
                             }
                         } else {
                             if (key === "Enter") {
-                                this.tempCalCurrentDate = new Date(date);
-                                this.dateSelectedValue = this.tempCalCurrentDate;
+                                this.TempCalCurrentDateUser = new Date(date);
+                                this.dateSelectedValueUTC = this.TempCalCurrentDateUTC;
                                 this.close();
                                 this.sendChangeEvent();
                                 return false;
                             } else if (key === "ArrowUp") {
-                                date.setDate(date.getDate() - 7 );
+                                date.setUTCDate(date.getUTCDate() - 7 );
                             } else if (key === "ArrowDown") {
-                                date.setDate(date.getDate() + 7 );
+                                date.setUTCDate(date.getUTCDate() + 7 );
                             } else if (key === "ArrowLeft") {
-                                date.setDate(date.getDate() - 1 );
+                                date.setUTCDate(date.getUTCDate() - 1 );
                             } else if (key === "ArrowRight") {
-                                date.setDate(date.getDate() + 1 );
+                                date.setUTCDate(date.getUTCDate() + 1 );
                             } else if (key === "PageUp") {
-                                let dom = date.getDate();// day of month current month
-                                date.setDate(0);// last day of last month
-                                let daysInMonth = date.getDate();
+                                let dom = date.getUTCDate();// day of month current month
+                                date.setUTCDate(0);// last day of last month
+                                let daysInMonth = date.getUTCDate();
                                 if (dom >= daysInMonth)
                                     dom = daysInMonth;
-                                date.setDate(dom);
+                                date.setUTCDate(dom);
                             } else if (key === "PageDown") {
-                                let dom = date.getDate();// day of month current month
-                                date.setDate(1);// first day of this month
-                                date.setMonth(date.getMonth() + 2);// first day of next-next month
-                                date.setDate(0);// last day of next month
-                                let daysInMonth = date.getDate();
+                                let dom = date.getUTCDate();// day of month current month
+                                date.setUTCDate(1);// first day of this month
+                                date.setUTCMonth(date.getUTCMonth() + 2);// first day of next-next month
+                                date.setUTCDate(0);// last day of next month
+                                let daysInMonth = date.getUTCDate();
                                 if (dom >= daysInMonth)
                                     dom = daysInMonth;
-                                date.setDate(dom);
+                                date.setUTCDate(dom);
                             } else if (key === "Home") {
-                                date.setDate(1);
+                                date.setUTCDate(1);
                             } else if (key === "End") {
-                                date.setMonth(date.getMonth() + 1 );
-                                date.setDate(date.getDate() - 1 );
+                                date.setUTCMonth(date.getUTCMonth() + 1 );
+                                date.setUTCDate(date.getUTCDate() - 1 );
                             } else
                                 return true;
                             let tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [this.CalendarPopup]);
@@ -312,7 +311,7 @@ namespace YetaWF_ComponentsHTML {
             let ul = $YetaWF.getElement1BySelector("ul", [this.TimePopup]);
             const len = times.length;
             let html = "";
-            let selValue = this.timeSelectedValue;
+            let selValue = this.TimeSelectedUser;
             for (let i = 0; i < len; ++i) {
                 let val = times[i];
                 let o = this.getFormattedTime(val);
@@ -355,7 +354,7 @@ namespace YetaWF_ComponentsHTML {
                 let li = ev.__YetaWFElem as HTMLLIElement;
                 let value = Number($YetaWF.getAttribute(li, "data-value"));
                 if (this.tempTimeSelectedValue === value) {
-                    this.timeSelectedValue = this.tempTimeSelectedValue;
+                    this.TimeSelectedUser = this.tempTimeSelectedValue;
                     this.tempTimeSelectedValue = null;
                     this.closeTimeList();
                     this.sendChangeEvent();
@@ -387,8 +386,8 @@ namespace YetaWF_ComponentsHTML {
             this.closeTimeList();
             this.closeCalendar();
 
-            let month = this.Setup.Months[this.tempCalCurrentDate.getMonth()];
-            let year = this.tempCalCurrentDate.getFullYear().toFixed(0);
+            let month = this.Setup.Months[this.TempCalCurrentDateUser.getUTCMonth()];
+            let year = this.TempCalCurrentDateUser.getUTCFullYear().toFixed(0);
 
             this.CalendarPopup =
                 <div id={DateTimeEditComponent.CALENDARPOPUPID} data-owner={this.ControlId} aria-hidden="false">
@@ -431,7 +430,7 @@ namespace YetaWF_ComponentsHTML {
             next.innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_right;
 
             let tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [this.CalendarPopup]);
-            this.buildCalendarMonthPage(tbody, this.tempCalCurrentDate || new Date());
+            this.buildCalendarMonthPage(tbody, this.TempCalCurrentDateUser || new Date());
 
             let style = window.getComputedStyle(this.Control);
             this.CalendarPopup.style.font = style.font;
@@ -458,15 +457,15 @@ namespace YetaWF_ComponentsHTML {
             $YetaWF.registerEventHandler(this.CalendarPopup, "mousedown", "table td .t_link", (ev: MouseEvent): boolean => {
                 let anchor = ev.__YetaWFElem as HTMLAnchorElement;
                 let value = $YetaWF.getAttribute(anchor, "data-value");
-                this.tempCalSelectedValue = value;
+                this.tempCalSelectedValueUTC = value;
                 return false;
             });
             $YetaWF.registerEventHandler(this.CalendarPopup, "mouseup", "table td .t_link", (ev: MouseEvent): boolean => {
                 let anchor = ev.__YetaWFElem as HTMLAnchorElement;
                 let value = $YetaWF.getAttribute(anchor, "data-value");
-                if (this.tempCalSelectedValue === value) {
-                    this.dateSelectedValue = new Date(this.tempCalSelectedValue);
-                    this.tempCalSelectedValue = null;
+                if (this.tempCalSelectedValueUTC === value) {
+                    this.dateSelectedValueUTC = this.TempCalCurrentDateUTC = new Date(this.tempCalSelectedValueUTC);
+                    this.tempCalSelectedValueUTC = null;
                     this.close();
                     this.sendChangeEvent();
                 }
@@ -483,11 +482,11 @@ namespace YetaWF_ComponentsHTML {
             $YetaWF.registerEventHandler(this.CalendarPopup, "mouseup", ".t_header .t_prev svg, .t_header .t_next svg", (ev: MouseEvent): boolean => {
                 let anchor = $YetaWF.elementClosest(ev.__YetaWFElem, "a") as HTMLAnchorElement;
                 if (this.tempArrow === anchor) {
-                    let date = this.tempCalCurrentDate;
+                    let date = this.TempCalCurrentDateUser;
                     if ($YetaWF.elementHasClass(anchor, "t_prev")) {
-                        date.setMonth(date.getMonth()-1);
+                        date.setUTCMonth(date.getUTCMonth()-1);
                     } else {
-                        date.setMonth(date.getMonth()+1);
+                        date.setUTCMonth(date.getUTCMonth()+1);
                     }
                     let tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [this.CalendarPopup!]);
                     this.buildCalendarMonthPage(tbody, date);
@@ -496,13 +495,13 @@ namespace YetaWF_ComponentsHTML {
                 }
                 return false;
             });
-            $YetaWF.registerEventHandler(this.CalendarPopup, "click", ".t_header .t_prev svg, .t_header .t_next svg", (ev: MouseEvent): boolean => {
+            $YetaWF.registerEventHandler(this.CalendarPopup, "click", "table td .t_link, .t_header .t_prev svg, .t_header .t_next svg", (ev: MouseEvent): boolean => {
                 return false;
             });
 
             $YetaWF.registerEventHandler(this.CalendarPopup, "click", ".t_footer .t_today", (ev: MouseEvent): boolean => {
-                this.dateSelectedValue = new Date(this.Setup.Today);
-                this.tempCalSelectedValue = null;
+                this.dateSelectedValueUTC = new Date(this.Setup.Today);
+                this.tempCalSelectedValueUTC = null;
                 this.close();
                 this.sendChangeEvent();
                 return false;
@@ -533,18 +532,18 @@ namespace YetaWF_ComponentsHTML {
         }
         private buildCalendarMonthPage(tbody: HTMLElement, startDate: Date): void {
 
-            this.tempCalCurrentDate = new Date(startDate);
+            this.TempCalCurrentDateUser = new Date(startDate);
 
             let date = new Date(startDate);
-            let startMonth = startDate.getMonth();
-            date.setDate(1);// set the first day
-            date.setDate(- date.getDay() + 1); // get to the start of the week (Sunday)
+            let startMonth = startDate.getUTCMonth();
+            date.setUTCDate(1);// set the first day
+            date.setUTCDate(- date.getUTCDay() + 1); // get to the start of the week (Sunday)
 
             let today = new Date();
 
             tbody.innerHTML = "";
 
-            let selDate = this.tempCalCurrentDate;
+            let selDate = this.TempCalCurrentDateUser;
             for (let last = false ; !last ; ) {
 
                 let row = <tr role="row"></tr> as HTMLTableRowElement;
@@ -552,15 +551,15 @@ namespace YetaWF_ComponentsHTML {
                     let css = "";
                     if (day === 0 || day === 6) // Saturday, Sunday
                         css += " t_weekend";
-                    if (date < startDate && date.getMonth() !== startMonth)
+                    if (date < startDate && date.getUTCMonth() !== startMonth)
                         css += " t_othermonth";
-                    else if (date > startDate && date.getMonth() !== startMonth) {
+                    else if (date > startDate && date.getUTCMonth() !== startMonth) {
                         css += " t_othermonth";
                         last = true;
                     }
-                    if (date.getFullYear() === selDate.getFullYear() && date.getMonth() === selDate.getMonth() && date.getDate() === selDate.getDate())
+                    if (date.getUTCFullYear() === selDate.getUTCFullYear() && date.getUTCMonth() === selDate.getUTCMonth() && date.getUTCDate() === selDate.getUTCDate())
                         css += " t_selected";
-                    if (date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear())
+                    if (date.getUTCDate() === today.getUTCDate() && date.getUTCMonth() === today.getUTCMonth() && date.getUTCFullYear() === today.getUTCFullYear())
                         css += " t_today";
 
                     css = css.trim();
@@ -568,16 +567,16 @@ namespace YetaWF_ComponentsHTML {
 
                     let cell =
                         <td class={css} role="gridcell">
-                            <a tabindex="-1" class="t_link" href="#" data-value={date.toISOString()} title={tt}>{date.getDate()}</a>
+                            <a tabindex="-1" class="t_link" href="#" data-value={this.UserToUTC(date).toISOString()} title={tt}>{date.getUTCDate()}</a>
                         </td> as HTMLTableCellElement;
 
                     row.appendChild(cell);
 
-                    date.setDate(date.getDate()+1);
+                    date.setUTCDate(date.getUTCDate()+1);
                 }
                 tbody.appendChild(row);
 
-                if (!last && date.getMonth() !== startMonth)
+                if (!last && date.getUTCMonth() !== startMonth)
                     last = true;
             }
         }
@@ -602,9 +601,9 @@ namespace YetaWF_ComponentsHTML {
             let maxDate = new Date(this.Setup.MaxDate);
 
             let ul = $YetaWF.getElement1BySelector("ul", [this.YearPopup]);
-            let startYear = minDate.getFullYear();
-            let endYear = maxDate.getFullYear();
-            let selValue = this.tempCalCurrentDate.getFullYear();
+            let startYear = minDate.getUTCFullYear();
+            let endYear = maxDate.getUTCFullYear();
+            let selValue = this.TempCalCurrentDateUser.getUTCFullYear();
             let html = "";
             for (let i = startYear; i <= endYear; ++i) {
                 let extra = "";
@@ -643,8 +642,8 @@ namespace YetaWF_ComponentsHTML {
                 let li = ev.__YetaWFElem as HTMLLIElement;
                 let value = Number($YetaWF.getAttribute(li, "data-value"));
                 if (this.tempYearSelectedValue === value) {
-                    let date = this.tempCalCurrentDate;
-                    date.setFullYear(value);
+                    let date = this.TempCalCurrentDateUser;
+                    date.setUTCFullYear(value);
                     let tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [this.CalendarPopup!]);
                     this.buildCalendarMonthPage(tbody, date);
                     this.updateCalendarTitle();
@@ -695,7 +694,7 @@ namespace YetaWF_ComponentsHTML {
             let ul = $YetaWF.getElement1BySelector("ul", [this.MonthPopup]);
             let startMonth = 0;
             let endMonth = 11;
-            let selValue = this.tempCalCurrentDate.getMonth();
+            let selValue = this.TempCalCurrentDateUser.getUTCMonth();
             let html = "";
             for (let i = startMonth; i <= endMonth; ++i) {
                 let extra = "";
@@ -734,8 +733,8 @@ namespace YetaWF_ComponentsHTML {
                 let li = ev.__YetaWFElem as HTMLLIElement;
                 let value = Number($YetaWF.getAttribute(li, "data-value"));
                 if (this.tempMonthSelectedValue === value) {
-                    let date = this.tempCalCurrentDate;
-                    date.setMonth(value);
+                    let date = this.TempCalCurrentDateUser;
+                    date.setUTCMonth(value);
                     let tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [this.CalendarPopup!]);
                     this.buildCalendarMonthPage(tbody, date);
                     this.updateCalendarTitle();
@@ -769,8 +768,8 @@ namespace YetaWF_ComponentsHTML {
 
         private updateCalendarTitle(): void {
             if (!this.CalendarPopup) return;
-            let month = this.Setup.Months[this.tempCalCurrentDate.getMonth()];
-            let year = this.tempCalCurrentDate.getFullYear();
+            let month = this.Setup.Months[this.TempCalCurrentDateUser.getUTCMonth()];
+            let year = this.TempCalCurrentDateUser.getUTCFullYear();
             let monthSpan = $YetaWF.getElement1BySelector(".t_header .t_month", [this.CalendarPopup]);
             monthSpan.innerHTML = month;
             let yearSpan = $YetaWF.getElement1BySelector(".t_header .t_year", [this.CalendarPopup]);
@@ -778,7 +777,7 @@ namespace YetaWF_ComponentsHTML {
         }
 
         private getFormattedDateTime(date: Date): string {
-            let time = date.getHours()* 60 + date.getMinutes();
+            let time = date.getUTCHours()* 60 + date.getUTCMinutes();
             switch (this.Setup.Style) {
                 default:
                 case DateTimeStyleEnum.DateTime:
@@ -790,9 +789,9 @@ namespace YetaWF_ComponentsHTML {
             }
         }
         private getFormattedDate(date: Date): string {
-            let d = date.getDate();
-            let m = date.getMonth() + 1;
-            let y = date.getFullYear();
+            let d = date.getUTCDate();
+            let m = date.getUTCMonth() + 1;
+            let y = date.getUTCFullYear();
             switch (this.Setup.DateFormat) {
                 default:
                 case DateFormatEnum.MMDDYYYY:
@@ -851,10 +850,10 @@ namespace YetaWF_ComponentsHTML {
             return s;
         }
         private getLongFormattedDate(date: Date): string {
-            let day = date.getDay();
-            let dom = date.getDate();
-            let m = date.getMonth();
-            let y = date.getFullYear();
+            let day = date.getUTCDay();
+            let dom = date.getUTCDate();
+            let m = date.getUTCMonth();
+            let y = date.getUTCFullYear();
             switch (this.Setup.DateFormat) {
                 default:
                 case DateFormatEnum.MMDDYYYY:
@@ -905,46 +904,91 @@ namespace YetaWF_ComponentsHTML {
         private setHidden(dateVal: Date | null): void {
             var s: string = "";
             if (dateVal != null)
-                s = dateVal.toISOString();
+                s = `${dateVal.getUTCFullYear()}-${this.zeroPad(dateVal.getUTCMonth()+1, 2)}-${this.zeroPad(dateVal.getUTCDate(), 2)}T${this.zeroPad(dateVal.getUTCHours(), 2)}:${this.zeroPad(dateVal.getUTCMinutes(), 2)}:00.000Z`;
             this.InputHidden.setAttribute("value", s);
+        }
+
+        private get SelectedUTC(): Date {
+            return this._SelectedUTC;
+        }
+        private set SelectedUTC(date: Date) {
+            this._SelectedUTC = new Date(date);
+            this._SelectedUser = this.UTCToUser(date);
+        }
+        private _SelectedUTC: Date = new Date();
+
+        private get SelectedUser(): Date {
+            return this._SelectedUser;
+        }
+        private set SelectedUser(date: Date) {
+            this._SelectedUser = new Date(date);
+            this._SelectedUTC = this.UserToUTC(date);
+        }
+        private _SelectedUser: Date = new Date();
+
+        private get TempCalCurrentDateUTC(): Date {
+            return this._TempCalCurrentDateUTC;
+        }
+        private set TempCalCurrentDateUTC(date: Date) {
+            this._TempCalCurrentDateUTC = new Date(date);
+            this._TempCalCurrentDateUser = this.UTCToUser(date);
+        }
+        private _TempCalCurrentDateUTC: Date = new Date();
+
+        private get TempCalCurrentDateUser(): Date {
+            return this._TempCalCurrentDateUser;
+        }
+        private set TempCalCurrentDateUser(date: Date) {
+            this._TempCalCurrentDateUser = new Date(date);
+            this._TempCalCurrentDateUTC = this.UserToUTC(date);
+        }
+        private _TempCalCurrentDateUser: Date = new Date();
+
+        private UTCToUser(date: Date): Date {
+            let d = new Date(date);
+            d.setUTCSeconds(d.getUTCSeconds() + this.Setup.BaseUtcOffset);
+            return d;
+        }
+        private UserToUTC(date: Date): Date {
+            let d = new Date(date);
+            d.setUTCSeconds(d.getUTCSeconds() - this.Setup.BaseUtcOffset);
+            return d;
+        }
+
+        private get TimeSelectedUser(): number {
+            return this.SelectedUser.getUTCHours() * 60 + this.SelectedUser.getUTCMinutes();
+        }
+        private set TimeSelectedUser(value: number) {
+            let d = new Date(this.SelectedUser);
+            d.setUTCHours(value/60);
+            d.setUTCMinutes(value % 60);
+            d.setUTCSeconds(0);
+            d.setUTCMilliseconds(0);
+            this.SelectedUser = d;
+            this.InputControl.value = this.getFormattedDateTime(this.SelectedUser);
+            this.setHidden(this.SelectedUTC);
+        }
+
+        get dateSelectedValueUTC(): Date {
+            return this.SelectedUser;
+        }
+        set dateSelectedValueUTC(date: Date) {
+            let time = this.TimeSelectedUser;
+            this.SelectedUTC = date;
+            this.TimeSelectedUser = time;
         }
 
         // API
 
         get value(): Date {
-            return this.dateSelectedValue;
-        }
-        set value(val: Date) {
-            this.dateSelectedValue = val;
-            this.tempCalCurrentDate = val;
+            return new Date(this.dateSelectedValueUTC);
         }
         get valueText(): string {
             return this.InputHidden.value;
         }
 
-        get timeSelectedValue(): number {
-            return this.Selected.getHours() * 60 + this.Selected.getMinutes();
-        }
-        set timeSelectedValue(value: number) {
-            this.Selected.setHours(value/60);
-            this.Selected.setMinutes(value % 60);
-            this.Selected.setSeconds(0);
-            this.Selected.setMilliseconds(0);
-            this.InputControl.value = this.getFormattedDateTime(this.Selected);
-            this.setHidden(this.Selected);
-        }
-
-        get dateSelectedValue(): Date {
-            return this.Selected;
-        }
-        set dateSelectedValue(date: Date) {
-            let time = this.timeSelectedValue;
-            this.Selected = date;
-            this.timeSelectedValue = time;
-        }
-
         public clear(): void {
-            this.Selected = new Date();
+            this.SelectedUTC = new Date();
             this.InputControl.value = "";
             this.setHidden(null);
         }

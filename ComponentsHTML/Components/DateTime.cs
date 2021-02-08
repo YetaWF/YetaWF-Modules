@@ -123,6 +123,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public List<string> Months { get; set; }
             public string TodayString { get; set; }
             public DateTime Today { get; set; }
+            public double BaseUtcOffset { get; set; }
 
             public Setup() {
                 Style = DateTimeStyleEnum.DateTime;
@@ -166,6 +167,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 };
                 TodayString = Formatting.FormatLongDate(DateTime.UtcNow);
                 Today = DateTime.UtcNow;
+                BaseUtcOffset = Manager.GetTimeZoneInfo().BaseUtcOffset.TotalSeconds;
             }
         }
 
