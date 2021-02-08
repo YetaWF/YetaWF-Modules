@@ -1,1 +1,2 @@
+Uses YetaWF_ComponentsHTML,jquery
 Lightbox.js
