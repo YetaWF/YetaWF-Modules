@@ -12,7 +12,7 @@ namespace YetaWF.Modules.Lightbox.Controllers {
         public class Model { }
 
         [AllowGet]
-        public ActionResult SkinLightboxAsync(string url) {
+        public ActionResult SkinLightbox(string url) {
             Model model = new Model();
             return View(model);
         }
