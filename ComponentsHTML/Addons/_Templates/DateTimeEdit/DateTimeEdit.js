@@ -69,6 +69,7 @@ var YetaWF_ComponentsHTML;
             _this.tempArrow = null;
             _this.tempYearSelectedValue = null;
             _this.tempMonthSelectedValue = null;
+            _this.IgnoreResizeUntil = 0;
             _this.Setup = setup;
             _this.InputHidden = $YetaWF.getElement1BySelector("input[type='hidden']", [_this.Control]);
             _this.InputControl = $YetaWF.getElement1BySelector("input[type='text']", [_this.Control]);
@@ -84,6 +85,8 @@ var YetaWF_ComponentsHTML;
                     }
                     else {
                         _this.InputControl.focus();
+                        // ignore resize events as we're receiving the focus. On mobile this may result in resize events due to keyboard appearing.
+                        _this.IgnoreResizeUntil = Date.now() + 1000;
                         _this.openTimeList();
                     }
                 }
@@ -96,6 +99,8 @@ var YetaWF_ComponentsHTML;
                     }
                     else {
                         _this.InputControl.focus();
+                        // ignore resize events as we're receiving the focus. On mobile this may result in resize events due to keyboard appearing.
+                        _this.IgnoreResizeUntil = Date.now() + 1000;
                         _this.openCalendar();
                     }
                 }
@@ -120,7 +125,7 @@ var YetaWF_ComponentsHTML;
                         _this.setSelectedIndex(_this.TimePopup, _this.getSelectedIndex(_this.TimePopup) + 1);
                         return false;
                     }
-                    else if (key === "ArrowUp" || key === "Up" || key === "ArrowLeft" || key === "Left") {
+                    else if (key === "ArrowUp" || key === "ArrowLeft") {
                         _this.setSelectedIndex(_this.TimePopup, _this.getSelectedIndex(_this.TimePopup) - 1);
                         return false;
                     }
@@ -928,7 +933,8 @@ var YetaWF_ComponentsHTML;
             for (var _i = 0, ctrls_1 = ctrls; _i < ctrls_1.length; _i++) {
                 var ctrl = ctrls_1[_i];
                 var c = DateTimeEditComponent.getControlFromTag(ctrl, DateTimeEditComponent.SELECTOR);
-                c.close();
+                if (c.IgnoreResizeUntil < Date.now())
+                    c.close();
             }
         };
         DateTimeEditComponent.TEMPLATE = "yt_datetime";

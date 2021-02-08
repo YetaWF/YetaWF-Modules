@@ -78,6 +78,7 @@ namespace YetaWF_ComponentsHTML {
         private tempArrow: HTMLAnchorElement|null = null;
         private tempYearSelectedValue: number|null = null;
         private tempMonthSelectedValue: number|null = null;
+        private IgnoreResizeUntil: number = 0;
 
         constructor(controlId: string, setup: DateTimeEditSetup) {
             super(controlId, DateTimeEditComponent.TEMPLATE, DateTimeEditComponent.SELECTOR, {
@@ -109,11 +110,9 @@ namespace YetaWF_ComponentsHTML {
                         this.closeTimeList();
                     } else {
                         this.InputControl.focus();
-                        // delay opening calendar. On mobile devices the view may be resized on focus (keyboard) so we want to wait
-                        // until after the resize event so we don't just close the calendar.
-                        setTimeout((): void => {
-                            this.openTimeList();
-                        },100);
+                        // ignore resize events as we're receiving the focus. On mobile this may result in resize events due to keyboard appearing.
+                        this.IgnoreResizeUntil = Date.now() + 1000;
+                        this.openTimeList();
                     }
                 }
                 return false;
@@ -124,11 +123,9 @@ namespace YetaWF_ComponentsHTML {
                         this.closeCalendar();
                     } else {
                         this.InputControl.focus();
-                        // delay opening calendar. On mobile devices the view may be resized on focus (keyboard) so we want to wait
-                        // until after the resize event so we don't just close the calendar.
-                        setTimeout((): void => {
-                            this.openCalendar();
-                        },100);
+                        // ignore resize events as we're receiving the focus. On mobile this may result in resize events due to keyboard appearing.
+                        this.IgnoreResizeUntil = Date.now() + 1000;
+                        this.openCalendar();
                     }
                 }
                 return false;
@@ -151,7 +148,7 @@ namespace YetaWF_ComponentsHTML {
                     if (key === "ArrowDown" || key === "ArrowRight") {
                         this.setSelectedIndex(this.TimePopup, this.getSelectedIndex(this.TimePopup) + 1);
                         return false;
-                    } else if (key === "ArrowUp" || key === "Up" || key === "ArrowLeft" || key === "Left") {
+                    } else if (key === "ArrowUp" || key === "ArrowLeft") {
                         this.setSelectedIndex(this.TimePopup, this.getSelectedIndex(this.TimePopup) - 1);
                         return false;
                     } else if (key === "Home") {
@@ -977,7 +974,8 @@ namespace YetaWF_ComponentsHTML {
             let ctrls = $YetaWF.getElementsBySelector(DateTimeEditComponent.SELECTOR);
             for (let ctrl of ctrls) {
                 let c = DateTimeEditComponent.getControlFromTag<DateTimeEditComponent>(ctrl, DateTimeEditComponent.SELECTOR);
-                c.close();
+                if (c.IgnoreResizeUntil < Date.now())
+                    c.close();
             }
         }
     }
