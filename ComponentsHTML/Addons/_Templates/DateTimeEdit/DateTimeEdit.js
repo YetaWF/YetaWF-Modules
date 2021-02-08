@@ -84,7 +84,11 @@ var YetaWF_ComponentsHTML;
                     }
                     else {
                         _this.InputControl.focus();
-                        _this.openTimeList();
+                        // delay opening calendar. On mobile devices the view may be resized on focus (keyboard) so we want to wait
+                        // until after the resize event so we don't just close the calendar.
+                        setTimeout(function () {
+                            _this.openTimeList();
+                        }, 50);
                     }
                 }
                 return false;
@@ -96,7 +100,11 @@ var YetaWF_ComponentsHTML;
                     }
                     else {
                         _this.InputControl.focus();
-                        _this.openCalendar();
+                        // delay opening calendar. On mobile devices the view may be resized on focus (keyboard) so we want to wait
+                        // until after the resize event so we don't just close the calendar.
+                        setTimeout(function () {
+                            _this.openCalendar();
+                        }, 50);
                     }
                 }
                 return false;
@@ -941,10 +949,6 @@ var YetaWF_ComponentsHTML;
         return DateTimeEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.DateTimeEditComponent = DateTimeEditComponent;
-    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, function (ev) {
-        DateTimeEditComponent.closeAll();
-        return true;
-    });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, function (ev) {
         DateTimeEditComponent.closeAll();
         return true;
