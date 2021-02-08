@@ -138,7 +138,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         /// <inheritdoc/>
         public override async Task IncludeAsync() {
-            await Manager.AddOnManager.AddAddOnNamedAsync(YetaWF.Core.AreaRegistration.CurrentPackage.AreaName, "fontawesome.com.fontawesome");
             // Add required menu support
             await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, "MenuUL", ComponentType.Display);
             await base.IncludeAsync();

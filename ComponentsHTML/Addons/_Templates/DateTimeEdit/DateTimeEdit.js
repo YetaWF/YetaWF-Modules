@@ -84,11 +84,7 @@ var YetaWF_ComponentsHTML;
                     }
                     else {
                         _this.InputControl.focus();
-                        // delay opening calendar. On mobile devices the view may be resized on focus (keyboard) so we want to wait
-                        // until after the resize event so we don't just close the calendar.
-                        setTimeout(function () {
-                            _this.openTimeList();
-                        }, 50);
+                        _this.openTimeList();
                     }
                 }
                 return false;
@@ -100,11 +96,7 @@ var YetaWF_ComponentsHTML;
                     }
                     else {
                         _this.InputControl.focus();
-                        // delay opening calendar. On mobile devices the view may be resized on focus (keyboard) so we want to wait
-                        // until after the resize event so we don't just close the calendar.
-                        setTimeout(function () {
-                            _this.openCalendar();
-                        }, 50);
+                        _this.openCalendar();
                     }
                 }
                 return false;

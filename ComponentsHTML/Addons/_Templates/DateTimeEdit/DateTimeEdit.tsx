@@ -113,7 +113,7 @@ namespace YetaWF_ComponentsHTML {
                         // until after the resize event so we don't just close the calendar.
                         setTimeout((): void => {
                             this.openTimeList();
-                        },50);
+                        },100);
                     }
                 }
                 return false;
@@ -128,7 +128,7 @@ namespace YetaWF_ComponentsHTML {
                         // until after the resize event so we don't just close the calendar.
                         setTimeout((): void => {
                             this.openCalendar();
-                        },50);
+                        },100);
                     }
                 }
                 return false;
