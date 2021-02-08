@@ -1,0 +1,21 @@
+# Generated from flat grid definition file on 2/7/2021 7:47:14 PM
+
+SizeStyle: SizeToFit
+Panel: {}
+Columns:
+- Name: Delete
+  Icons: 1
+  FilterOptions: []
+  Align: Center
+- Name: UserNameFromId
+  FilterOptions: []
+  Width: <Globals.ChUserName>
+  Align: Unspecified
+- Name: UserId
+  FilterOptions: []
+  Align: Unspecified
+  Hidden: true
+- Name: UserName
+  FilterOptions: []
+  Align: Unspecified
+  Hidden: true

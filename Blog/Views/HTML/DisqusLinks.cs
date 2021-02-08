@@ -21,11 +21,7 @@ namespace YetaWF.Modules.Blog.Views {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            //$$$ This currently breaks jquery $ - disabled for now
-//            hb.Append($@"
-//<script id='dsq-count-scr' src='//{Utility.JserEncode(model.ShortName.ToLower())}.disqus.com/count.js' async></script>");
-
-            return Task.FromResult(hb.ToString());
+            return Task.FromResult($@"<script id='dsq-count-scr' src='//{Utility.JserEncode(model.ShortName.ToLower())}.disqus.com/count.js' async></script>");
         }
     }
 }

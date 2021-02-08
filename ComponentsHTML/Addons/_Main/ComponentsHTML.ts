@@ -10,7 +10,7 @@ namespace YetaWF {
 }
 namespace YetaWF_ComponentsHTML {
     export interface IPackageVolatiles {
-        kendoUI: boolean; // defines whether kendoui has been loaded
+        jquery: boolean; // defines whether jquery has been loaded
     }
     export interface IPackageConfigs {
 
@@ -33,19 +33,19 @@ namespace YetaWF_ComponentsHTML {
         // Loader
         // Loader
 
-        public MUSTHAVE_KENDOUI(): void {
-            if (!YVolatile.YetaWF_ComponentsHTML.kendoUI)
-                throw "Kendo UI is required but has not been loaded";
+        public MUSTHAVE_JQUERY(): void {
+            if (!YVolatile.YetaWF_ComponentsHTML.jquery)
+                throw "jquery is required but has not been loaded";
         }
 
-        public REQUIRES_KENDOUI(run: () => void): void {
+        public REQUIRES_JQUERY(run: () => void): void {
 
-            if (!YVolatile.YetaWF_ComponentsHTML.kendoUI) {
+            if (!YVolatile.YetaWF_ComponentsHTML.jquery) {
 
-                YVolatile.YetaWF_ComponentsHTML.kendoUI = true;
+                YVolatile.YetaWF_ComponentsHTML.jquery = true;
 
                 $YetaWF.ContentHandling.loadAddons([
-                    { AreaName: "YetaWF_ComponentsHTML", ShortName: "telerik.com.Kendo_UI_Core", Argument1: null }
+                    { AreaName: "YetaWF_ComponentsHTML", ShortName: "jquery", Argument1: null }
                 ], (): void => {
                     run();
                 });

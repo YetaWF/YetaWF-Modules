@@ -183,11 +183,11 @@ namespace YetaWF_ComponentsHTML {
                         } else if (key === "Enter") {
                             let month = this.getSelectedValue(this.MonthPopup);
                             let date = this.tempCalCurrentDate;
-                            date.setFullYear(Number(month));
+                            date.setMonth(Number(month));
                             let tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [this.CalendarPopup]);
                             this.buildCalendarMonthPage(tbody, date);
                             this.updateCalendarTitle();
-                            this.closeYearList();
+                            this.closeMonthList();
                             return false;
                         }
                     } else if (this.YearPopup) {
@@ -974,11 +974,11 @@ namespace YetaWF_ComponentsHTML {
         }
     }
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, (ev: CustomEvent<YetaWF.DetailsEventContainerScroll>): boolean => {
-//      DateTimeEditComponent.closeAll();
+        DateTimeEditComponent.closeAll();
         return true;
     });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: CustomEvent<YetaWF.DetailsEventContainerResize>): boolean => {
-//      DateTimeEditComponent.closeAll();
+        DateTimeEditComponent.closeAll();
         return true;
     });
 }

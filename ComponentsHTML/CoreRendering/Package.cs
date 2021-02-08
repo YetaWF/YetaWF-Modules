@@ -3,14 +3,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Skins;
 
 namespace YetaWF.Modules.ComponentsHTML {
 
     public partial class CoreRendering {
 
         internal class ComponentsData {
-            public bool KendoUIUsed { get; set; }
+            public bool jqueryUsed { get; set; }
         }
 
         internal static ComponentsData GetComponentsData() {
@@ -33,9 +32,7 @@ namespace YetaWF.Modules.ComponentsHTML {
         /// Adds any addons that are required by the package rendering components and views.
         /// </summary>
         public async Task AddStandardAddOnsAsync() {
-            await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "jquery");
-
-            await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Icons");
+           await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Icons");
             await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Basics");
 
             if (Manager.IsInPopup)

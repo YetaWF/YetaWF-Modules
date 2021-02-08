@@ -69,6 +69,7 @@ $selwidth: 2em;
             display:inline-block;
             width:1.5em;
             height:100%;
+            cursor: pointer;
             svg {
                 width:$w;
                 height:100%;
@@ -79,6 +80,7 @@ $selwidth: 2em;
             display:inline-block;
             width:1.5em;
             height:100%;
+            cursor: pointer;
             svg {
                 width:$w;
                 height:100%;
@@ -173,6 +175,7 @@ $selwidth: 2em;
                 text-decoration: none;
                 .t_month, .t_year {
                     padding: .1em .2em;
+                    cursor: pointer;
                     &:hover {
                         background: var(--tbl-header-bg-hover);
                         color: var(--tbl-header-clr-hover);

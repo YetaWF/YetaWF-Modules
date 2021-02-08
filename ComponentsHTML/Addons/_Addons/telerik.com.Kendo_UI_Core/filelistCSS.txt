@@ -1,4 +1,0 @@
-//kendo.cdn.telerik.com/2020.3.915/styles/kendo.common.min.css,CDN
-
-Folder /bower_components/kendo-ui/styles
-kendo.common.min.css,noCDN

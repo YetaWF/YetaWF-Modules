@@ -1,0 +1,45 @@
+# Generated from flat grid definition file on 2/7/2021 7:47:30 PM
+
+SizeStyle: SizeToFit
+Panel: {}
+Columns:
+- Name: Commands
+  Icons: 2
+  FilterOptions: []
+  Align: Center
+- Name: Name
+  DefaultSort: Ascending
+  Sort: true
+  Filter: true
+  Width: 25
+  Align: Unspecified
+- Name: Disabled
+  Sort: true
+  Filter: true
+  Width: <Globals.ChBoolean>
+  Align: Center
+- Name: UnifiedMode
+  Sort: true
+  Filter: true
+  Width: 15
+  Align: Unspecified
+- Name: Description
+  Sort: true
+  Filter: true
+  Width: 80
+  Align: Unspecified
+- Name: Created
+  Sort: true
+  Filter: true
+  Width: <Globals.ChDateTime>
+  Align: Unspecified
+- Name: Updated
+  Sort: true
+  Filter: true
+  Width: <Globals.ChDateTime>
+  Align: Unspecified
+- Name: MasterPageGuid
+  Sort: true
+  Filter: true
+  Width: <Globals.ChUrl>
+  Align: Unspecified

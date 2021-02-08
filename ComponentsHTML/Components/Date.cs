@@ -105,7 +105,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
 <div id='{DivId}' class='yt_datetime yt_date t_edit'>
-    <input type='hidden'{FieldSetup(FieldType.Validated)} value='{(model != null ? HAE($"{((DateTime)model).Date:o}") : null)}'>
+    <input type='hidden' id='{ControlId}' {FieldSetup(FieldType.Validated)} value='{(model != null ? HAE($"{((DateTime)model).Date:o}") : null)}'>
     <input type='text'{GetClassAttribute()} maxlength='20' value='{(model != null ? HAE(Formatting.FormatDate(((DateTime)model).Date)) : null)}'>
     <div class='t_sels'>
         <div class='t_date'>

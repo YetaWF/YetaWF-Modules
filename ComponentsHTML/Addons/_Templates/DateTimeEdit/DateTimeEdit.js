@@ -170,11 +170,11 @@ var YetaWF_ComponentsHTML;
                         else if (key === "Enter") {
                             var month = _this.getSelectedValue(_this.MonthPopup);
                             var date = _this.tempCalCurrentDate;
-                            date.setFullYear(Number(month));
+                            date.setMonth(Number(month));
                             var tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [_this.CalendarPopup]);
                             _this.buildCalendarMonthPage(tbody, date);
                             _this.updateCalendarTitle();
-                            _this.closeYearList();
+                            _this.closeMonthList();
                             return false;
                         }
                     }
@@ -942,11 +942,11 @@ var YetaWF_ComponentsHTML;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.DateTimeEditComponent = DateTimeEditComponent;
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, function (ev) {
-        //      DateTimeEditComponent.closeAll();
+        DateTimeEditComponent.closeAll();
         return true;
     });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, function (ev) {
-        //      DateTimeEditComponent.closeAll();
+        DateTimeEditComponent.closeAll();
         return true;
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));

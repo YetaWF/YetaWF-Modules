@@ -1,0 +1,26 @@
+# Generated from flat grid definition file on 2/7/2021 7:47:21 PM
+
+SizeStyle: SizeToFit
+Panel: {}
+Columns:
+- Name: Created
+  DefaultSort: Descending
+  Sort: true
+  Filter: true
+  Width: <Globals.ChDateTime>
+  Align: Unspecified
+- Name: UserId
+  Filter: true
+  Width: <Globals.ChEmail>
+  Align: Unspecified
+- Name: IPAddress
+  Sort: true
+  Filter: true
+  Width: <Globals.ChIPAddressWithLookup>
+  Align: Unspecified
+- Name: ConnectionId
+  Sort: true
+  Filter: true
+  Width: 30
+  Align: Unspecified
+  Truncate: true

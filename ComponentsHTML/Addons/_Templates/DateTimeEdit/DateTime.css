@@ -49,7 +49,8 @@
     .yt_datetime.t_edit .t_sels .t_date {
       display: inline-block;
       width: 1.5em;
-      height: 100%; }
+      height: 100%;
+      cursor: pointer; }
       .yt_datetime.t_edit .t_sels .t_date svg {
         width: 1em;
         height: 100%;
@@ -57,7 +58,8 @@
     .yt_datetime.t_edit .t_sels .t_time {
       display: inline-block;
       width: 1.5em;
-      height: 100%; }
+      height: 100%;
+      cursor: pointer; }
       .yt_datetime.t_edit .t_sels .t_time svg {
         width: 1em;
         height: 100%;
@@ -134,7 +136,8 @@
       #yt_datetime_calendarpopup .t_container .t_header .t_title {
         text-decoration: none; }
         #yt_datetime_calendarpopup .t_container .t_header .t_title .t_month, #yt_datetime_calendarpopup .t_container .t_header .t_title .t_year {
-          padding: .1em .2em; }
+          padding: .1em .2em;
+          cursor: pointer; }
           #yt_datetime_calendarpopup .t_container .t_header .t_title .t_month:hover, #yt_datetime_calendarpopup .t_container .t_header .t_title .t_year:hover {
             background: var(--tbl-header-bg-hover);
             color: var(--tbl-header-clr-hover); }

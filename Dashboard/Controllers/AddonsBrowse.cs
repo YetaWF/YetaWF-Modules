@@ -82,10 +82,6 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("String"), ReadOnly]
             public string NodeModulesUrl { get; set; }
 
-            [Caption("Bower Url"), Description("The Url containing Bower components")]
-            [UIHint("String"), ReadOnly]
-            public string BowerComponentsUrl { get; set; }
-
             [Caption("Installed AddOns"), Description("Displays all installed AddOns")]
             [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; }
@@ -123,7 +119,6 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                 AddOnsUrl = VersionManager.AddOnsUrl,
                 AddOnsCustomUrl = VersionManager.AddOnsCustomUrl,
                 NodeModulesUrl = Globals.NodeModulesUrl,
-                BowerComponentsUrl = Globals.BowerComponentsUrl,
                 GridDef = GetGridModel()
             };
             return View(model);
