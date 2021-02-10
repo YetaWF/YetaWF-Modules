@@ -120,12 +120,11 @@ var YetaWF_ComponentsHTML;
             $YetaWF.registerEventHandler(_this.InputControl, "focusout", null, function (ev) {
                 $YetaWF.elementRemoveClass(_this.Control, "t_focused");
                 _this.close();
+                _this.setHiddenInvalid(_this.InputControl.value);
                 if (_this.validateInput())
                     _this.sendChangeEvent();
-                else {
+                else
                     _this.flashError();
-                    _this.setHiddenInvalid(_this.InputControl.value);
-                }
                 return true;
             });
             $YetaWF.registerEventHandler(_this.InputControl, "keydown", null, function (ev) {

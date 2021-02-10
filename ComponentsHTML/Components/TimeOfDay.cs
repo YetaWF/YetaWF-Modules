@@ -78,8 +78,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
 
             // model binding error handling
-            string internalValue = setup.InitialCalendarDate = $"{model.AsDateTime():o}";
-            string displayValue = Formatting.FormatTimeOfDay(model.HasTimeOfDay ? model : null);
+            string internalValue = setup.InitialCalendarDate = model != null ? $"{model.AsDateTime():o}" : null;
+            string displayValue = Formatting.FormatTimeOfDay(model != null && model.HasTimeOfDay ? model : null);
             if (Manager.HasModelBindingErrorManager && Manager.ModelBindingErrorManager.TryGetAttemptedValue(PropertyName, out string attemptedValue)) {
                 displayValue = internalValue = attemptedValue;
             }

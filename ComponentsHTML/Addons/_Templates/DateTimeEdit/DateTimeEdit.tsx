@@ -162,12 +162,11 @@ namespace YetaWF_ComponentsHTML {
             $YetaWF.registerEventHandler(this.InputControl, "focusout", null, (ev: FocusEvent): boolean => {
                 $YetaWF.elementRemoveClass(this.Control, "t_focused");
                 this.close();
+                this.setHiddenInvalid(this.InputControl.value);
                 if (this.validateInput())
                     this.sendChangeEvent();
-                else {
+                else
                     this.flashError();
-                    this.setHiddenInvalid(this.InputControl.value);
-                }
                 return true;
             });
             $YetaWF.registerEventHandler(this.InputControl, "keydown", null, (ev: KeyboardEvent): boolean => {
