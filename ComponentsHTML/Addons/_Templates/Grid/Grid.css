@@ -126,6 +126,10 @@
         .yt_grid .tg_table table tr.tg_filter .tg_fctrls .yt_dropdownlist_base,
         .yt_grid .tg_table table tr.tg_filter .tg_fctrls .yt_number_container {
           width: 100%; }
+        .yt_grid .tg_table table tr.tg_filter .tg_fctrls .yt_datetime {
+          width: 100%; }
+          .yt_grid .tg_table table tr.tg_filter .tg_fctrls .yt_datetime input {
+            width: 100%; }
         .yt_grid .tg_table table tr.tg_filter .tg_fctrls .tg_ffilter {
           display: inline-block;
           vertical-align: middle;

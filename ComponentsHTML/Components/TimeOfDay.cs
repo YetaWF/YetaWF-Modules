@@ -86,8 +86,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
-<div id='{DivId}' class='yt_datetime yt_timeofday t_edit'>
-    <input type='hidden' id='{ControlId}' {FieldSetup(FieldType.Validated)} value='{HAE(internalValue)}'>
+<div id='{ControlId}' class='yt_datetime yt_timeofday t_edit'>
+    <input type='hidden' {FieldSetup(FieldType.Validated)} value='{HAE(internalValue)}'>
     <input type='text'{GetClassAttribute()} maxlength='20' value='{HAE(displayValue)}'>
     <div class='t_sels'>
         <div class='t_time'>
@@ -98,7 +98,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             string tags = hb.ToString();
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DateTimeEditComponent('{DivId}', {Utility.JsonSerialize(setup)});");
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DateTimeEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
             return Task.FromResult(tags);
         }

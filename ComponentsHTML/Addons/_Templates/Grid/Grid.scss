@@ -166,8 +166,14 @@ $smbuttonhorzmargin: .2em;
                     width:100%;
                     .yt_text_base,
                     .yt_dropdownlist_base,
-                     .yt_number_container {
+                    .yt_number_container {
                         width:100%;
+                    }
+                    .yt_datetime {
+                        width:100%;
+                        input {
+                            width:100%;
+                        }
                     }
                     .tg_ffilter {
                         display:inline-block;

@@ -1142,10 +1142,10 @@ namespace YetaWF_ComponentsHTML {
                         break;
                     case "long":
                     case "decimal":
-                    case "datetime":
-                    case "date":
                     case "text":
-                    case "guid": {
+                    case "guid":
+                    case "date":
+                    case "datetime": {
                         // handle return key
                         let elem = $YetaWF.getElementById(col.FilterId);
                         $YetaWF.registerEventHandler(elem, "keydown", null, (ev: KeyboardEvent): boolean => {

@@ -306,6 +306,8 @@ var YetaWF_ComponentsHTML;
         DateTimeEditComponent.prototype.validateInput = function () {
             // validate input control and update hidden field
             var text = this.InputControl.value.trim();
+            if (text.length === 0)
+                return true;
             switch (this.Setup.Style) {
                 default:
                 case DateTimeStyleEnum.DateTime: {

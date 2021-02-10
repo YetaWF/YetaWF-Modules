@@ -1089,10 +1089,10 @@ var YetaWF_ComponentsHTML;
                         break;
                     case "long":
                     case "decimal":
-                    case "datetime":
-                    case "date":
                     case "text":
-                    case "guid": {
+                    case "guid":
+                    case "date":
+                    case "datetime": {
                         // handle return key
                         var elem = $YetaWF.getElementById(col.FilterId);
                         $YetaWF.registerEventHandler(elem, "keydown", null, function (ev) {

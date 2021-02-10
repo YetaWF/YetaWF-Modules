@@ -35,35 +35,24 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal const string TemplateName = "ActionIcons";
 
-        /// <summary>
-        /// Returns the component type (edit/display).
-        /// </summary>
-        /// <returns>Returns the component type.</returns>
+        /// <inheritdoc/>
         public override ComponentType GetComponentType() { return ComponentType.Display; }
-        /// <summary>
-        /// Returns the package implementing the component.
-        /// </summary>
-        /// <returns>Returns the package implementing the component.</returns>
+        /// <inheritdoc/>
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        /// <summary>
-        /// Returns the component name.
-        /// </summary>
-        /// <returns>Returns the component name.</returns>
-        /// <remarks>Components in packages whose product name starts with "Component" use the exact name returned by GetTemplateName when used in UIHint attributes. These are considered core components.
-        /// Components in other packages use the package's area name as a prefix. E.g., the UserId component in the YetaWF.Identity package is named "YetaWF_Identity_UserId" when used in UIHint attributes.
-        ///
-        /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
+        /// <inheritdoc/>
         public override string GetTemplateName() { return TemplateName; }
+
+        /// <inheritdoc/>
+        public override async Task IncludeAsync() {
+            await Manager.AddOnManager.AddTemplateFromUIHintAsync(DropDownButtonComponent.TemplateName, YetaWFComponentBase.ComponentType.Display);
+            await base.IncludeAsync();
+        }
 
         internal class ActionIconsSetup {
             public string MenuId { get; set; }
         }
 
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
+        /// <inheritdoc/>
         public async Task<string> RenderAsync(MenuList model) {
 
             HtmlBuilder hb = new HtmlBuilder();
@@ -96,9 +85,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         string menuHTML = await MenuDisplayComponent.RenderMenuAsync(model, setup.MenuId, Globals.CssGridActionMenu, HtmlHelper: HtmlHelper, Hidden: true);
 
                         if (!string.IsNullOrWhiteSpace(menuHTML)) {
-
-                            //// dropdown button support
-                            //await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, DropDownButtonComponent.TemplateName, ComponentType.Display);
 
                             DropDownButtonComponent.Model ddModel = new DropDownButtonComponent.Model {
                                 Text = __ResStr("dropdownText", "Manage"),

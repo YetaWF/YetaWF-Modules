@@ -1015,7 +1015,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             } else {
                 if (!Manager.IsPostRequest) {
                     // when initially rendering a grid with 0 records, we have to prepare for all templates
-                    await YetaWFComponentExtender.AddComponentForType(model.RecordType);
+                    await YetaWFComponentExtender.AddComponentsForType(model.RecordType);
                 }
             }
 

@@ -86,15 +86,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // model binding error handling
             string internalValue = $"{model:o}";
-            string displayValue = Formatting.FormatTime((DateTime)model);
+            string displayValue = Formatting.FormatTime(model);
             if (Manager.HasModelBindingErrorManager && Manager.ModelBindingErrorManager.TryGetAttemptedValue(PropertyName, out string attemptedValue)) {
                 displayValue = internalValue = attemptedValue;
             }
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
-<div id='{DivId}' class='yt_datetime yt_time t_edit'>
-    <input type='hidden' id='{ControlId}'{FieldSetup(FieldType.Validated)} value='{HAE(internalValue)}'>
+<div id='{ControlId}' class='yt_datetime yt_time t_edit'>
+    <input type='hidden' '{FieldSetup(FieldType.Validated)} value='{HAE(internalValue)}'>
     <input type='text'{GetClassAttribute()} maxlength='20' value='{HAE(displayValue)}'>
     <div class='t_sels'>
         <div class='t_time'>
@@ -105,7 +105,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             string tags = hb.ToString();
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DateTimeEditComponent('{DivId}', {Utility.JsonSerialize(setup)});");
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DateTimeEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
             return Task.FromResult(tags);
         }

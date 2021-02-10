@@ -320,6 +320,7 @@ namespace YetaWF_ComponentsHTML {
         private validateInput(): boolean {
             // validate input control and update hidden field
             let text = this.InputControl.value.trim();
+            if (text.length === 0) return true;
             switch (this.Setup.Style) {
                 default:
                 case DateTimeStyleEnum.DateTime: {
