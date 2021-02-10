@@ -102,11 +102,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (maxAttr != null)
                 setup.MaxDate = maxAttr.MaxDate;
 
+            // model binding error handling
+            string internalValue = setup.InitialCalendarDate = $"{model:o}";
+            string displayValue = Formatting.FormatDate((DateTime)model);
+            if (Manager.HasModelBindingErrorManager && Manager.ModelBindingErrorManager.TryGetAttemptedValue(PropertyName, out string attemptedValue)) {
+                displayValue = internalValue = attemptedValue;
+                setup.InitialCalendarDate = null;
+            }
+
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
 <div id='{DivId}' class='yt_datetime yt_date t_edit'>
-    <input type='hidden' id='{ControlId}' {FieldSetup(FieldType.Validated)} value='{(model != null ? HAE($"{(DateTime)model:o}") : null)}'>
-    <input type='text'{GetClassAttribute()} maxlength='20' value='{(model != null ? HAE(Formatting.FormatDate((DateTime)model)) : null)}'>
+    <input type='hidden' id='{ControlId}' {FieldSetup(FieldType.Validated)} value='{HAE(internalValue)}'>
+    <input type='text'{GetClassAttribute()} maxlength='20' value='{HAE(displayValue)}'>
     <div class='t_sels'>
         <div class='t_date'>
             {SkinSVGs.Get(AreaRegistration.CurrentPackage, "far-calendar-alt")}

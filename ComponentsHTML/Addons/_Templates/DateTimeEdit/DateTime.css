@@ -64,6 +64,14 @@
         width: 1em;
         height: 100%;
         vertical-align: middle; }
+  .yt_datetime.t_edit .t_warn {
+    width: 1.2em;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 4.5em;
+    bottom: 0;
+    color: var(--inp-error-clr); }
 
 .yt_date.t_edit,
 .yt_time.t_edit,
@@ -73,6 +81,10 @@
   .yt_time.t_edit .t_sels,
   .yt_timeofday.t_edit .t_sels {
     width: 2em; }
+  .yt_date.t_edit .t_warn,
+  .yt_time.t_edit .t_warn,
+  .yt_timeofday.t_edit .t_warn {
+    right: 2.5em; }
 
 .yt_date.t_edit input[type='text'] {
   width: 14ch; }

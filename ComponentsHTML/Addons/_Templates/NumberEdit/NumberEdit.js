@@ -37,7 +37,6 @@ var YetaWF_ComponentsHTML;
             _this.InputControl = $YetaWF.getElement1BySelector("input[type='text']", [_this.Control]);
             _this.InputHidden = $YetaWF.getElement1BySelector("input[type='hidden']", [_this.Control]);
             _this.setInternalValue(_this.InputControl.value);
-            // icons used: fas-exclamation-triangle
             var warn = $YetaWF.createElement("div", { class: "t_warn", style: "display:none" });
             warn.innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_exclamation_triangle;
             // icons used: fas-caret-up, fas-caret-down

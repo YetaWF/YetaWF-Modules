@@ -81,7 +81,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public TimeOfDay TimeOfDayReq { get; set; }
 
-            [Category("Date/Time"), Caption("Time Of Day (Required)"), Description("Time Of Day")]
+            [Category("Date/Time"), Caption("Time Of Day"), Description("Time Of Day")]
             [UIHint("TimeOfDay")]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public TimeOfDay TimeOfDay { get; set; }

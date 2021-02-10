@@ -77,10 +77,10 @@ var YetaWF_ComponentsHTML;
             _this.Setup = setup;
             _this.InputHidden = $YetaWF.getElement1BySelector("input[type='hidden']", [_this.Control]);
             _this.InputControl = $YetaWF.getElement1BySelector("input[type='text']", [_this.Control]);
-            if (_this.InputHidden.value)
-                _this.SelectedUTC = new Date(_this.InputHidden.value);
-            else
-                _this.SelectedUTC = new Date();
+            var warn = $YetaWF.createElement("div", { class: "t_warn", style: "display:none" });
+            warn.innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_exclamation_triangle;
+            _this.InputControl.insertAdjacentElement("afterend", warn);
+            _this.SelectedUTC = new Date(_this.Setup.InitialCalendarDate || _this.Setup.Today);
             _this.TempCalCurrentDateUTC = new Date(_this.SelectedUTC);
             $YetaWF.registerEventHandler(_this.Control, "mousedown", ".t_time", function (ev) {
                 if (_this.enabled) {
@@ -120,6 +120,12 @@ var YetaWF_ComponentsHTML;
             $YetaWF.registerEventHandler(_this.InputControl, "focusout", null, function (ev) {
                 $YetaWF.elementRemoveClass(_this.Control, "t_focused");
                 _this.close();
+                if (_this.validateInput())
+                    _this.sendChangeEvent();
+                else {
+                    _this.flashError();
+                    _this.setHiddenInvalid(_this.InputControl.value);
+                }
                 return true;
             });
             $YetaWF.registerEventHandler(_this.InputControl, "keydown", null, function (ev) {
@@ -296,6 +302,321 @@ var YetaWF_ComponentsHTML;
         DateTimeEditComponent.prototype.sendChangeEvent = function () {
             $YetaWF.sendCustomEvent(this.Control, DateTimeEditComponent.EVENTCHANGE);
             FormsSupport.validateElement(this.InputHidden);
+        };
+        DateTimeEditComponent.prototype.validateInput = function () {
+            // validate input control and update hidden field
+            var text = this.InputControl.value.trim();
+            switch (this.Setup.Style) {
+                default:
+                case DateTimeStyleEnum.DateTime: {
+                    var dt_1 = this.extractInputDate(text);
+                    if (!dt_1.success)
+                        return false;
+                    text = dt_1.text;
+                    var wt = this.getWhitespace(text);
+                    if (!wt.success)
+                        return false;
+                    text = wt.text;
+                    var tt_1 = this.extractInputTime(text);
+                    if (!tt_1.success)
+                        return false;
+                    text = tt_1.text;
+                    if (text.length > 0)
+                        return false;
+                    this.SelectedUser = dt_1.token;
+                    this.TimeSelectedUser = tt_1.token;
+                    break;
+                }
+                case DateTimeStyleEnum.Date:
+                    var dt = this.extractInputDate(text);
+                    if (!dt.success)
+                        return false;
+                    text = dt.text;
+                    if (text.length > 0)
+                        return false;
+                    this.SelectedUser = dt.token;
+                    break;
+                case DateTimeStyleEnum.Time:
+                    var tt = this.extractInputTime(text);
+                    if (!tt.success)
+                        return false;
+                    text = tt.text;
+                    if (text.length > 0)
+                        return false;
+                    this.TimeSelectedUser = tt.token;
+                    break;
+            }
+            return true;
+        };
+        DateTimeEditComponent.prototype.extractInputDate = function (text) {
+            var dt = { text: text, token: new Date(), success: false };
+            var m, d, y;
+            var nt;
+            var rt;
+            var sep = "/";
+            switch (this.Setup.DateFormat) {
+                default:
+                case DateFormatEnum.MMDDYYYYdash:
+                case DateFormatEnum.MMDDYYYYdot:
+                case DateFormatEnum.MMDDYYYY:
+                    if (this.Setup.DateFormat === DateFormatEnum.MMDDYYYYdash)
+                        sep = "-";
+                    else if (this.Setup.DateFormat === DateFormatEnum.MMDDYYYYdot)
+                        sep = ".";
+                    nt = this.getNumberToken(text);
+                    if (!nt.success)
+                        return dt;
+                    text = nt.text;
+                    m = nt.token;
+                    rt = this.getRequired(text, sep);
+                    if (!rt.success)
+                        return dt;
+                    text = rt.text;
+                    nt = this.getNumberToken(text);
+                    if (!nt.success)
+                        return dt;
+                    text = nt.text;
+                    d = nt.token;
+                    rt = this.getRequired(text, sep);
+                    if (!rt.success)
+                        return dt;
+                    text = rt.text;
+                    nt = this.getNumberToken(text);
+                    if (!nt.success)
+                        return dt;
+                    text = nt.text;
+                    y = nt.token;
+                    break;
+                case DateFormatEnum.DDMMYYYY:
+                case DateFormatEnum.DDMMYYYYdash:
+                case DateFormatEnum.DDMMYYYYdot:
+                    if (this.Setup.DateFormat === DateFormatEnum.DDMMYYYYdash)
+                        sep = "-";
+                    else if (this.Setup.DateFormat === DateFormatEnum.DDMMYYYYdot)
+                        sep = ".";
+                    nt = this.getNumberToken(text);
+                    if (!nt.success)
+                        return dt;
+                    text = nt.text;
+                    d = nt.token;
+                    rt = this.getRequired(text, sep);
+                    if (!rt.success)
+                        return dt;
+                    text = rt.text;
+                    nt = this.getNumberToken(text);
+                    if (!nt.success)
+                        return dt;
+                    text = nt.text;
+                    m = nt.token;
+                    rt = this.getRequired(text, sep);
+                    if (!rt.success)
+                        return dt;
+                    text = rt.text;
+                    nt = this.getNumberToken(text);
+                    if (!nt.success)
+                        return dt;
+                    text = nt.text;
+                    y = nt.token;
+                    break;
+                case DateFormatEnum.YYYYMMDD:
+                case DateFormatEnum.YYYYMMDDdash:
+                case DateFormatEnum.YYYYMMDDdot:
+                    if (this.Setup.DateFormat === DateFormatEnum.YYYYMMDDdash)
+                        sep = "-";
+                    else if (this.Setup.DateFormat === DateFormatEnum.YYYYMMDDdot)
+                        sep = ".";
+                    nt = this.getNumberToken(text);
+                    if (!nt.success)
+                        return dt;
+                    text = nt.text;
+                    y = nt.token;
+                    rt = this.getRequired(text, sep);
+                    if (!rt.success)
+                        return dt;
+                    text = rt.text;
+                    nt = this.getNumberToken(text);
+                    if (!nt.success)
+                        return dt;
+                    text = nt.text;
+                    m = nt.token;
+                    rt = this.getRequired(text, sep);
+                    if (!rt.success)
+                        return dt;
+                    text = rt.text;
+                    nt = this.getNumberToken(text);
+                    if (!nt.success)
+                        return dt;
+                    text = nt.text;
+                    d = nt.token;
+                    break;
+            }
+            if (d < 1 || d > 31)
+                return dt;
+            if (m < 1 || m > 12)
+                return dt;
+            var minDate = new Date(this.Setup.MinDate);
+            var maxDate = new Date(this.Setup.MaxDate);
+            if (y < minDate.getUTCFullYear() || y > maxDate.getUTCFullYear())
+                return dt;
+            dt.token = new Date(y, m - 1, d);
+            dt.token.setUTCSeconds(dt.token.getUTCSeconds() - this.Setup.BaseUtcOffset);
+            dt.text = text;
+            dt.success = true;
+            return dt;
+        };
+        DateTimeEditComponent.prototype.extractInputTime = function (text) {
+            var tt = { text: text, token: 0, success: false };
+            var h, m, ampm;
+            var nt;
+            var rt;
+            var wt;
+            var sep = ":";
+            switch (this.Setup.TimeFormat) {
+                default:
+                case TimeFormatEnum.HHMMAM:
+                case TimeFormatEnum.HHMMSSAM:
+                case TimeFormatEnum.HHMMAMdot:
+                case TimeFormatEnum.HHMMSSAMdot: {
+                    if (this.Setup.TimeFormat === TimeFormatEnum.HHMMAMdot)
+                        sep = ".";
+                    nt = this.getNumberToken(text);
+                    if (!nt.success)
+                        return tt;
+                    text = nt.text;
+                    h = nt.token;
+                    if (h < 0 || h > 12)
+                        return tt;
+                    rt = this.getRequired(text, sep);
+                    if (!rt.success)
+                        return tt;
+                    text = rt.text;
+                    nt = this.getNumberToken(text);
+                    if (!nt.success)
+                        return tt;
+                    text = nt.text;
+                    m = nt.token;
+                    if (m < 0 || m > 59)
+                        return tt;
+                    wt = this.getWhitespace(text);
+                    if (!wt.success)
+                        return tt;
+                    text = wt.text;
+                    ampm = "A";
+                    if (text.length > 0) {
+                        rt = this.getRequired(text, "A");
+                        if (!rt.success) {
+                            rt = this.getRequired(text, "P");
+                            if (!rt.success)
+                                return tt;
+                        }
+                        text = rt.text;
+                        ampm = rt.token;
+                        rt = this.getRequired(text, "M");
+                        if (!rt.success)
+                            return tt;
+                        text = rt.text;
+                    }
+                    if (ampm === "P" && h < 12)
+                        h += 12;
+                    var val = (h * 60 + m) % (24 * 60);
+                    if (val < this.Setup.MinTime || val > this.Setup.MaxTime)
+                        return tt;
+                    tt.text = text;
+                    tt.token = val;
+                    tt.success = true;
+                    return tt;
+                }
+                case TimeFormatEnum.HHMM:
+                case TimeFormatEnum.HHMMSS:
+                case TimeFormatEnum.HHMMdot:
+                case TimeFormatEnum.HHMMSSdot: {
+                    if (this.Setup.TimeFormat === TimeFormatEnum.HHMMdot)
+                        sep = ".";
+                    nt = this.getNumberToken(text);
+                    if (!nt.success)
+                        return tt;
+                    text = nt.text;
+                    h = nt.token;
+                    if (h < 0 || h >= 24)
+                        return tt;
+                    rt = this.getRequired(text, sep);
+                    if (!rt.success)
+                        return tt;
+                    text = rt.text;
+                    nt = this.getNumberToken(text);
+                    if (!nt.success)
+                        return tt;
+                    text = nt.text;
+                    m = nt.token;
+                    if (m < 0 || m > 59)
+                        return tt;
+                    wt = this.getWhitespace(text);
+                    if (!wt.success)
+                        return tt;
+                    text = wt.text;
+                    var val = (h * 60 + m) % (24 * 60);
+                    if (val < this.Setup.MinTime || val > this.Setup.MaxTime)
+                        return tt;
+                    tt.text = text;
+                    tt.token = val;
+                    tt.success = true;
+                    return tt;
+                }
+            }
+        };
+        DateTimeEditComponent.prototype.getNumberToken = function (text) {
+            var t = { text: text, token: 0, success: false };
+            var num = 0;
+            var success = false;
+            while (text.length > 0) {
+                var n = text[0];
+                if (n >= "0" && n <= "9") {
+                    success = true;
+                    num = num * 10 + Number(n);
+                    text = text.substr(1);
+                }
+                else
+                    break;
+            }
+            t.text = text;
+            t.token = num;
+            t.success = success;
+            return t;
+        };
+        DateTimeEditComponent.prototype.getRequired = function (text, required) {
+            var t = { text: text, token: "", success: false };
+            if (required.length !== 1)
+                throw "required must be exact 1 character";
+            if (text.length === 0 || (text[0].toLowerCase() !== required.toLowerCase() && text[0] !== required))
+                return t;
+            t.text = text = text.length > 0 ? text.substr(1) : "";
+            t.token = required.toUpperCase();
+            t.success = true;
+            return t;
+        };
+        DateTimeEditComponent.prototype.getWhitespace = function (text) {
+            var t = { text: text, token: "", success: false };
+            var success = false;
+            while (text.length > 0) {
+                if (text[0] !== " ") {
+                    if (success)
+                        break;
+                    return t;
+                }
+                success = true;
+                text = text.substr(1);
+            }
+            t.text = text;
+            t.token = " ";
+            t.success = true;
+            return t;
+        };
+        DateTimeEditComponent.prototype.flashError = function () {
+            var warn = $YetaWF.getElement1BySelector(".t_warn", [this.Control]);
+            warn.style.display = "";
+            setTimeout(function () {
+                warn.style.display = "none";
+            }, DateTimeEditComponent.WARNDELAY);
         };
         DateTimeEditComponent.prototype.openTimeList = function () {
             var _this = this;
@@ -517,7 +838,8 @@ var YetaWF_ComponentsHTML;
             var startMonth = startDate.getUTCMonth();
             date.setUTCDate(1); // set the first day
             date.setUTCDate(-date.getUTCDay() + 1); // get to the start of the week (Sunday)
-            var today = new Date();
+            var today = new Date(this.Setup.Today);
+            today.setUTCSeconds(today.getUTCSeconds() + this.Setup.BaseUtcOffset);
             tbody.innerHTML = "";
             var selDate = this.TempCalCurrentDateUser;
             for (var last = false; !last;) {
@@ -852,6 +1174,9 @@ var YetaWF_ComponentsHTML;
                 s = dateVal.getUTCFullYear() + "-" + this.zeroPad(dateVal.getUTCMonth() + 1, 2) + "-" + this.zeroPad(dateVal.getUTCDate(), 2) + "T" + this.zeroPad(dateVal.getUTCHours(), 2) + ":" + this.zeroPad(dateVal.getUTCMinutes(), 2) + ":00.000Z";
             this.InputHidden.setAttribute("value", s);
         };
+        DateTimeEditComponent.prototype.setHiddenInvalid = function (dateVal) {
+            this.InputHidden.setAttribute("value", dateVal);
+        };
         Object.defineProperty(DateTimeEditComponent.prototype, "SelectedUTC", {
             get: function () {
                 return this._SelectedUTC;
@@ -1000,6 +1325,7 @@ var YetaWF_ComponentsHTML;
         DateTimeEditComponent.CALENDARPOPUPID = "yt_datetime_calendarpopup";
         DateTimeEditComponent.YEARPOPUPID = "yt_datetime_popup";
         DateTimeEditComponent.MONTHPOPUPID = "yt_datetime_popup";
+        DateTimeEditComponent.WARNDELAY = 300;
         return DateTimeEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.DateTimeEditComponent = DateTimeEditComponent;

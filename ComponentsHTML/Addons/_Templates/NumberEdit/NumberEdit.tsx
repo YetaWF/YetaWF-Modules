@@ -64,7 +64,6 @@ namespace YetaWF_ComponentsHTML {
 
             this.setInternalValue(this.InputControl.value);
 
-            // icons used: fas-exclamation-triangle
             let warn = <div class="t_warn" style="display:none"></div>;
             warn.innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_exclamation_triangle;
             // icons used: fas-caret-up, fas-caret-down

@@ -14,6 +14,7 @@ namespace YetaWF_ComponentsHTML {
 
     interface DateTimeEditSetup {
         Style: DateTimeStyleEnum;
+        InitialCalendarDate: string;
         MinDate: string;
         MaxDate: string;
         MinTime: number;
@@ -24,7 +25,7 @@ namespace YetaWF_ComponentsHTML {
         WeekDays: string[];
         Months: string[];
         TodayString: string;
-        Today: Date;
+        Today: string;
         BaseUtcOffset: number;
     }
     enum DateTimeStyleEnum {
@@ -53,6 +54,26 @@ namespace YetaWF_ComponentsHTML {
         HHMMSS = 30,
         HHMMSSdot = 31,
     }
+    interface NumberToken {
+        text: string;
+        token: number;
+        success: boolean;
+    }
+    interface TextToken {
+        text: string;
+        token: string;
+        success: boolean;
+    }
+    interface DateToken {
+        text: string;
+        token: Date;
+        success: boolean;
+    }
+    interface TimeToken {
+        text: string;
+        token: number;
+        success: boolean;
+    }
 
     export class DateTimeEditComponent extends YetaWF.ComponentBaseDataImpl {
 
@@ -64,6 +85,7 @@ namespace YetaWF_ComponentsHTML {
         public static readonly CALENDARPOPUPID: string = "yt_datetime_calendarpopup";
         public static readonly YEARPOPUPID: string = "yt_datetime_popup";
         public static readonly MONTHPOPUPID: string = "yt_datetime_popup";
+        private static readonly WARNDELAY:number = 300;
 
         private Setup: DateTimeEditSetup;
         private InputHidden: HTMLInputElement;
@@ -97,10 +119,11 @@ namespace YetaWF_ComponentsHTML {
             this.InputHidden = $YetaWF.getElement1BySelector("input[type='hidden']", [this.Control]) as HTMLInputElement;
             this.InputControl = $YetaWF.getElement1BySelector("input[type='text']", [this.Control]) as HTMLInputElement;
 
-            if (this.InputHidden.value)
-                this.SelectedUTC = new Date(this.InputHidden.value);
-            else
-                this.SelectedUTC = new Date();
+            let warn = <div class="t_warn" style="display:none"></div>;
+            warn.innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_exclamation_triangle;
+            this.InputControl.insertAdjacentElement("afterend", warn);
+
+            this.SelectedUTC = new Date(this.Setup.InitialCalendarDate || this.Setup.Today);
             this.TempCalCurrentDateUTC = new Date(this.SelectedUTC);
 
             $YetaWF.registerEventHandler(this.Control, "mousedown", ".t_time", (ev: Event): boolean => {
@@ -139,6 +162,12 @@ namespace YetaWF_ComponentsHTML {
             $YetaWF.registerEventHandler(this.InputControl, "focusout", null, (ev: FocusEvent): boolean => {
                 $YetaWF.elementRemoveClass(this.Control, "t_focused");
                 this.close();
+                if (this.validateInput())
+                    this.sendChangeEvent();
+                else {
+                    this.flashError();
+                    this.setHiddenInvalid(this.InputControl.value);
+                }
                 return true;
             });
             $YetaWF.registerEventHandler(this.InputControl, "keydown", null, (ev: KeyboardEvent): boolean => {
@@ -286,6 +315,273 @@ namespace YetaWF_ComponentsHTML {
         public sendChangeEvent(): void {
             $YetaWF.sendCustomEvent(this.Control, DateTimeEditComponent.EVENTCHANGE);
             FormsSupport.validateElement(this.InputHidden);
+        }
+
+        private validateInput(): boolean {
+            // validate input control and update hidden field
+            let text = this.InputControl.value.trim();
+            switch (this.Setup.Style) {
+                default:
+                case DateTimeStyleEnum.DateTime: {
+                    let dt = this.extractInputDate(text);
+                    if (!dt.success) return false;
+                    text = dt.text;
+                    let wt = this.getWhitespace(text);
+                    if (!wt.success) return false;
+                    text = wt.text;
+                    let tt = this.extractInputTime(text);
+                    if (!tt.success) return false;
+                    text = tt.text;
+                    if (text.length > 0) return false;
+                    this.SelectedUser = dt.token;
+                    this.TimeSelectedUser = tt.token;
+                    break;
+                }
+                case DateTimeStyleEnum.Date:
+                    let dt = this.extractInputDate(text);
+                    if (!dt.success) return false;
+                    text = dt.text;
+                    if (text.length > 0) return false;
+                    this.SelectedUser = dt.token;
+                    break;
+                case DateTimeStyleEnum.Time:
+                    let tt = this.extractInputTime(text);
+                    if (!tt.success) return false;
+                    text = tt.text;
+                    if (text.length > 0) return false;
+                    this.TimeSelectedUser = tt.token;
+                    break;
+            }
+            return true;
+        }
+
+        private extractInputDate(text: string): DateToken {
+            let dt: DateToken = { text: text, token: new Date(), success: false };
+            let m: number, d: number, y: number;
+            let nt: NumberToken;
+            let rt: TextToken;
+            let sep = "/";
+            switch (this.Setup.DateFormat) {
+                default:
+                case DateFormatEnum.MMDDYYYYdash:
+                case DateFormatEnum.MMDDYYYYdot:
+                case DateFormatEnum.MMDDYYYY:
+                    if (this.Setup.DateFormat === DateFormatEnum.MMDDYYYYdash) sep = "-";
+                    else if (this.Setup.DateFormat === DateFormatEnum.MMDDYYYYdot) sep = ".";
+                    nt = this.getNumberToken(text);
+                    if (!nt.success) return dt;
+                    text = nt.text;
+                    m = nt.token;
+                    rt = this.getRequired(text, sep);
+                    if (!rt.success) return dt;
+                    text = rt.text;
+                    nt = this.getNumberToken(text);
+                    if (!nt.success) return dt;
+                    text = nt.text;
+                    d = nt.token;
+                    rt = this.getRequired(text, sep);
+                    if (!rt.success) return dt;
+                    text = rt.text;
+                    nt = this.getNumberToken(text);
+                    if (!nt.success) return dt;
+                    text = nt.text;
+                    y = nt.token;
+                    break;
+
+                case DateFormatEnum.DDMMYYYY:
+                case DateFormatEnum.DDMMYYYYdash:
+                case DateFormatEnum.DDMMYYYYdot:
+                    if (this.Setup.DateFormat === DateFormatEnum.DDMMYYYYdash) sep = "-";
+                    else if (this.Setup.DateFormat === DateFormatEnum.DDMMYYYYdot) sep = ".";
+                    nt = this.getNumberToken(text);
+                    if (!nt.success) return dt;
+                    text = nt.text;
+                    d = nt.token;
+                    rt = this.getRequired(text, sep);
+                    if (!rt.success) return dt;
+                    text = rt.text;
+                    nt = this.getNumberToken(text);
+                    if (!nt.success) return dt;
+                    text = nt.text;
+                    m = nt.token;
+                    rt = this.getRequired(text, sep);
+                    if (!rt.success) return dt;
+                    text = rt.text;
+                    nt = this.getNumberToken(text);
+                    if (!nt.success) return dt;
+                    text = nt.text;
+                    y = nt.token;
+                    break;
+
+                case DateFormatEnum.YYYYMMDD:
+                case DateFormatEnum.YYYYMMDDdash:
+                case DateFormatEnum.YYYYMMDDdot:
+                    if (this.Setup.DateFormat === DateFormatEnum.YYYYMMDDdash) sep = "-";
+                    else if (this.Setup.DateFormat === DateFormatEnum.YYYYMMDDdot) sep = ".";
+                    nt = this.getNumberToken(text);
+                    if (!nt.success) return dt;
+                    text = nt.text;
+                    y = nt.token;
+                    rt = this.getRequired(text, sep);
+                    if (!rt.success) return dt;
+                    text = rt.text;
+                    nt = this.getNumberToken(text);
+                    if (!nt.success) return dt;
+                    text = nt.text;
+                    m = nt.token;
+                    rt = this.getRequired(text, sep);
+                    if (!rt.success) return dt;
+                    text = rt.text;
+                    nt = this.getNumberToken(text);
+                    if (!nt.success) return dt;
+                    text = nt.text;
+                    d = nt.token;
+                    break;
+            }
+            if (d < 1 || d > 31) return dt;
+            if (m < 1 || m > 12) return dt;
+            let minDate = new Date(this.Setup.MinDate);
+            let maxDate = new Date(this.Setup.MaxDate);
+            if (y < minDate.getUTCFullYear() || y > maxDate.getUTCFullYear()) return dt;
+            dt.token = new Date(y, m-1, d);
+            dt.token.setUTCSeconds(dt.token.getUTCSeconds() - this.Setup.BaseUtcOffset);
+            dt.text = text;
+            dt.success = true;
+            return dt;
+        }
+        private extractInputTime(text: string): TimeToken {
+            let tt: TimeToken = { text: text, token: 0, success: false };
+            let h: number, m: number, ampm: string;
+            let nt: NumberToken;
+            let rt: TextToken;
+            let wt: TextToken;
+            let sep = ":";
+            switch (this.Setup.TimeFormat) {
+                default:
+                case TimeFormatEnum.HHMMAM:
+                case TimeFormatEnum.HHMMSSAM:
+                case TimeFormatEnum.HHMMAMdot:
+                case TimeFormatEnum.HHMMSSAMdot: {
+                    if (this.Setup.TimeFormat === TimeFormatEnum.HHMMAMdot) sep = ".";
+                    nt = this.getNumberToken(text);
+                    if (!nt.success) return tt;
+                    text = nt.text;
+                    h = nt.token;
+                    if (h < 0 || h > 12) return tt;
+                    rt = this.getRequired(text, sep);
+                    if (!rt.success) return tt;
+                    text = rt.text;
+                    nt = this.getNumberToken(text);
+                    if (!nt.success) return tt;
+                    text = nt.text;
+                    m = nt.token;
+                    if (m < 0 || m > 59) return tt;
+                    wt = this.getWhitespace(text);
+                    if (!wt.success) return tt;
+                    text = wt.text;
+                    ampm = "A";
+                    if (text.length > 0) {
+                        rt = this.getRequired(text, "A");
+                        if (!rt.success) {
+                            rt = this.getRequired(text, "P");
+                            if (!rt.success)
+                                return tt;
+                        }
+                        text = rt.text;
+                        ampm = rt.token;
+                        rt = this.getRequired(text, "M");
+                        if (!rt.success) return tt;
+                        text = rt.text;
+                    }
+                    if (ampm === "P" && h < 12) h += 12;
+                    let val = (h * 60 + m) % (24*60);
+                    if (val < this.Setup.MinTime || val > this.Setup.MaxTime) return tt;
+                    tt.text = text;
+                    tt.token = val;
+                    tt.success = true;
+                    return tt;
+                }
+                case TimeFormatEnum.HHMM:
+                case TimeFormatEnum.HHMMSS:
+                case TimeFormatEnum.HHMMdot:
+                case TimeFormatEnum.HHMMSSdot: {
+                    if (this.Setup.TimeFormat === TimeFormatEnum.HHMMdot) sep = ".";
+                    nt = this.getNumberToken(text);
+                    if (!nt.success) return tt;
+                    text = nt.text;
+                    h = nt.token;
+                    if (h < 0 || h >= 24) return tt;
+                    rt = this.getRequired(text, sep);
+                    if (!rt.success) return tt;
+                    text = rt.text;
+                    nt = this.getNumberToken(text);
+                    if (!nt.success) return tt;
+                    text = nt.text;
+                    m = nt.token;
+                    if (m < 0 || m > 59) return tt;
+                    wt = this.getWhitespace(text);
+                    if (!wt.success) return tt;
+                    text = wt.text;
+                    let val = (h * 60 + m) % (24*60);
+                    if (val < this.Setup.MinTime || val > this.Setup.MaxTime) return tt;
+                    tt.text = text;
+                    tt.token = val;
+                    tt.success = true;
+                    return tt;
+                }
+            }
+        }
+        private getNumberToken(text: string): NumberToken {
+            let t: NumberToken = { text: text, token: 0, success: false };
+            let num = 0;
+            let success = false;
+            while (text.length > 0) {
+                let n = text[0];
+                if (n >= "0" && n <= "9") {
+                    success = true;
+                    num = num * 10 + Number(n);
+                    text = text.substr(1);
+                } else
+                    break;
+            }
+            t.text = text;
+            t.token = num;
+            t.success = success;
+            return t;
+        }
+        private getRequired(text: string, required: string): TextToken {
+            let t: TextToken = { text: text, token: "", success: false };
+            if (required.length !== 1) throw "required must be exact 1 character";
+            if (text.length === 0 || (text[0].toLowerCase() !== required.toLowerCase() && text[0] !== required)) return t;
+            t.text = text = text.length > 0 ? text.substr(1): "";
+            t.token = required.toUpperCase();
+            t.success = true;
+            return t;
+        }
+        private getWhitespace(text: string): TextToken {
+            let t: TextToken = { text: text, token: "", success: false };
+            let success = false;
+            while (text.length > 0) {
+                if (text[0] !== " ") {
+                    if (success)
+                        break;
+                    return t;
+                }
+                success = true;
+                text = text.substr(1);
+            }
+            t.text = text;
+            t.token = " ";
+            t.success = true;
+            return t;
+        }
+
+        private flashError(): void {
+            let warn = $YetaWF.getElement1BySelector(".t_warn", [this.Control]);
+            warn.style.display = "";
+            setTimeout(():void => {
+                warn.style.display = "none";
+            }, DateTimeEditComponent.WARNDELAY);
         }
 
         private openTimeList(): void {
@@ -539,7 +835,8 @@ namespace YetaWF_ComponentsHTML {
             date.setUTCDate(1);// set the first day
             date.setUTCDate(- date.getUTCDay() + 1); // get to the start of the week (Sunday)
 
-            let today = new Date();
+            let today = new Date(this.Setup.Today);
+            today.setUTCSeconds(today.getUTCSeconds() + this.Setup.BaseUtcOffset);
 
             tbody.innerHTML = "";
 
@@ -906,6 +1203,9 @@ namespace YetaWF_ComponentsHTML {
             if (dateVal != null)
                 s = `${dateVal.getUTCFullYear()}-${this.zeroPad(dateVal.getUTCMonth()+1, 2)}-${this.zeroPad(dateVal.getUTCDate(), 2)}T${this.zeroPad(dateVal.getUTCHours(), 2)}:${this.zeroPad(dateVal.getUTCMinutes(), 2)}:00.000Z`;
             this.InputHidden.setAttribute("value", s);
+        }
+        private setHiddenInvalid(dateVal: string): void {
+            this.InputHidden.setAttribute("value", dateVal);
         }
 
         private get SelectedUTC(): Date {

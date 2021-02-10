@@ -112,6 +112,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
 
             public DateTimeStyleEnum Style { get; set; }
+            public string? InitialCalendarDate { get; set; }
             public DateTime MinDate { get; set; }
             public DateTime MaxDate { get; set; }
             public double MinTime { get; set; }
@@ -122,7 +123,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public List<string> WeekDays2 { get; set; }
             public List<string> Months { get; set; }
             public string TodayString { get; set; }
-            public DateTime Today { get; set; }
+            public string Today { get; set; }
             public double BaseUtcOffset { get; set; }
 
             public Setup() {
@@ -166,7 +167,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     Formatting.GetMonthName(12),
                 };
                 TodayString = Formatting.FormatLongDate(DateTime.UtcNow);
-                Today = DateTime.UtcNow;
+                Today = $"{DateTime.UtcNow:o}";
                 BaseUtcOffset = Manager.GetTimeZoneInfo().BaseUtcOffset.TotalSeconds;
             }
         }
@@ -197,11 +198,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (maxAttr != null)
                 setup.MaxDate = maxAttr.MaxDate;
 
+            // model binding error handling
+            string internalValue = setup.InitialCalendarDate = $"{model:o}";
+            string displayValue = Formatting.FormatDateTime((DateTime)model);
+            if (Manager.HasModelBindingErrorManager && Manager.ModelBindingErrorManager.TryGetAttemptedValue(PropertyName, out string attemptedValue)) {
+                displayValue = internalValue = attemptedValue;
+                setup.InitialCalendarDate = null;
+            }
+
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
 <div id='{DivId}' class='yt_datetime t_edit'>
-    <input type='hidden' id='{ControlId}' {FieldSetup(FieldType.Validated)} value='{(model != null ? HAE($"{model:o}") : null)}'>
-    <input type='text'{GetClassAttribute()} maxlength='20' value='{(model != null ? HAE(Formatting.FormatDateTime((DateTime)model)) : null)}'>
+    <input type='hidden' id='{ControlId}' {FieldSetup(FieldType.Validated)} value='{HAE(internalValue)}'>
+    <input type='text'{GetClassAttribute()} maxlength='20' value='{HAE(displayValue)}'>
     <div class='t_sels'>
         <div class='t_date'>
             {SkinSVGs.Get(AreaRegistration.CurrentPackage, "far-calendar-alt")}

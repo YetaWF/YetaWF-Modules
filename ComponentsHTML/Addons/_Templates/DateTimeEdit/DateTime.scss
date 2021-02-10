@@ -88,6 +88,15 @@ $selwidth: 2em;
             }
         }
     }
+    .t_warn {
+        width: 1.2em;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 2 * $selwidth + 0.5em;
+        bottom: 0;
+        color: var(--inp-error-clr);
+    }
 }
 
 .yt_date.t_edit,
@@ -96,6 +105,9 @@ $selwidth: 2em;
     padding-right: $selwidth;
     .t_sels {
         width: $selwidth;
+    }
+    .t_warn {
+        right: $selwidth + 0.5em;
     }
 }
 .yt_date.t_edit {
@@ -109,7 +121,6 @@ $selwidth: 2em;
         width: 10ch;
     }
 }
-
 
 #yt_datetime_popup {
     position: absolute;
