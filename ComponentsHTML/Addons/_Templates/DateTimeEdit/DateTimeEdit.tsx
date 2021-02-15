@@ -191,7 +191,7 @@ namespace YetaWF_ComponentsHTML {
                         let time = this.getSelectedValue(this.TimePopup);
                         if (time)
                             this.TimeSelectedUser = Number(time);
-                        this.closeTimeList();
+                        this.close();
                         this.sendChangeEvent();
                         return false;
                     }
@@ -200,7 +200,7 @@ namespace YetaWF_ComponentsHTML {
                         if (key === "ArrowDown" || key === "ArrowRight") {
                             this.setSelectedIndex(this.MonthPopup, this.getSelectedIndex(this.MonthPopup) + 1);
                             return false;
-                        } else if (key === "ArrowUp" || key === "Up" || key === "ArrowLeft" || key === "Left") {
+                        } else if (key === "ArrowUp" || key === "ArrowLeft") {
                             this.setSelectedIndex(this.MonthPopup, this.getSelectedIndex(this.MonthPopup) - 1);
                             return false;
                         } else if (key === "Home") {
@@ -210,7 +210,7 @@ namespace YetaWF_ComponentsHTML {
                             this.setSelectedIndex(this.MonthPopup, 9999999);
                             return false;
                         } else if (key === "Escape") {
-                            this.closeTimeList();
+                            this.closeMonthList();
                             return false;
                         } else if (key === "Enter") {
                             let month = this.getSelectedValue(this.MonthPopup);
@@ -226,7 +226,7 @@ namespace YetaWF_ComponentsHTML {
                         if (key === "ArrowDown" || key === "ArrowRight") {
                             this.setSelectedIndex(this.YearPopup, this.getSelectedIndex(this.YearPopup) + 1);
                             return false;
-                        } else if (key === "ArrowUp" || key === "Up" || key === "ArrowLeft" || key === "Left") {
+                        } else if (key === "ArrowUp" || key === "ArrowLeft") {
                             this.setSelectedIndex(this.YearPopup, this.getSelectedIndex(this.YearPopup) - 1);
                             return false;
                         } else if (key === "Home") {
@@ -236,7 +236,7 @@ namespace YetaWF_ComponentsHTML {
                             this.setSelectedIndex(this.YearPopup, 9999999);
                             return false;
                         } else if (key === "Escape") {
-                            this.closeTimeList();
+                            this.closeYearList();
                             return false;
                         } else if (key === "Enter") {
                             let year = this.getSelectedValue(this.YearPopup);
@@ -261,6 +261,9 @@ namespace YetaWF_ComponentsHTML {
                                 this.dateSelectedValueUTC = this.TempCalCurrentDateUTC;
                                 this.close();
                                 this.sendChangeEvent();
+                                return false;
+                            } else if (key === "Escape") {
+                                this.close();
                                 return false;
                             } else if (key === "ArrowUp") {
                                 date.setUTCDate(date.getUTCDate() - 7 );
@@ -494,6 +497,7 @@ namespace YetaWF_ComponentsHTML {
                         text = rt.text;
                     }
                     if (ampm === "P" && h < 12) h += 12;
+                    else if (ampm === "A" && h === 12) h -= 12;
                     let val = (h * 60 + m) % (24*60);
                     if (val < this.Setup.MinTime || val > this.Setup.MaxTime) return tt;
                     tt.text = text;
@@ -586,8 +590,7 @@ namespace YetaWF_ComponentsHTML {
 
         private openTimeList(): void {
 
-            this.closeCalendar();
-            this.closeTimeList();
+            this.close();
 
             let times: number[] = [];
             for (let i = 0 ; i < 24*60 ; i += 30) {
@@ -679,8 +682,7 @@ namespace YetaWF_ComponentsHTML {
 
         private openCalendar(): void {
 
-            this.closeTimeList();
-            this.closeCalendar();
+            this.close();
 
             let month = this.Setup.Months[this.TempCalCurrentDateUser.getUTCMonth()];
             let year = this.TempCalCurrentDateUser.getUTCFullYear().toFixed(0);
@@ -974,8 +976,8 @@ namespace YetaWF_ComponentsHTML {
 
         private openMonthList(): void {
 
-            this.closeMonthList();
             this.closeYearList();
+            this.closeMonthList();
             if (!this.CalendarPopup) return;
 
             this.MonthPopup =

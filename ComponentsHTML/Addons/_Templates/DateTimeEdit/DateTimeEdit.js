@@ -154,7 +154,7 @@ var YetaWF_ComponentsHTML;
                         var time = _this.getSelectedValue(_this.TimePopup);
                         if (time)
                             _this.TimeSelectedUser = Number(time);
-                        _this.closeTimeList();
+                        _this.close();
                         _this.sendChangeEvent();
                         return false;
                     }
@@ -165,7 +165,7 @@ var YetaWF_ComponentsHTML;
                             _this.setSelectedIndex(_this.MonthPopup, _this.getSelectedIndex(_this.MonthPopup) + 1);
                             return false;
                         }
-                        else if (key === "ArrowUp" || key === "Up" || key === "ArrowLeft" || key === "Left") {
+                        else if (key === "ArrowUp" || key === "ArrowLeft") {
                             _this.setSelectedIndex(_this.MonthPopup, _this.getSelectedIndex(_this.MonthPopup) - 1);
                             return false;
                         }
@@ -178,7 +178,7 @@ var YetaWF_ComponentsHTML;
                             return false;
                         }
                         else if (key === "Escape") {
-                            _this.closeTimeList();
+                            _this.closeMonthList();
                             return false;
                         }
                         else if (key === "Enter") {
@@ -197,7 +197,7 @@ var YetaWF_ComponentsHTML;
                             _this.setSelectedIndex(_this.YearPopup, _this.getSelectedIndex(_this.YearPopup) + 1);
                             return false;
                         }
-                        else if (key === "ArrowUp" || key === "Up" || key === "ArrowLeft" || key === "Left") {
+                        else if (key === "ArrowUp" || key === "ArrowLeft") {
                             _this.setSelectedIndex(_this.YearPopup, _this.getSelectedIndex(_this.YearPopup) - 1);
                             return false;
                         }
@@ -210,7 +210,7 @@ var YetaWF_ComponentsHTML;
                             return false;
                         }
                         else if (key === "Escape") {
-                            _this.closeTimeList();
+                            _this.closeYearList();
                             return false;
                         }
                         else if (key === "Enter") {
@@ -238,6 +238,10 @@ var YetaWF_ComponentsHTML;
                                 _this.dateSelectedValueUTC = _this.TempCalCurrentDateUTC;
                                 _this.close();
                                 _this.sendChangeEvent();
+                                return false;
+                            }
+                            else if (key === "Escape") {
+                                _this.close();
                                 return false;
                             }
                             else if (key === "ArrowUp") {
@@ -519,6 +523,8 @@ var YetaWF_ComponentsHTML;
                     }
                     if (ampm === "P" && h < 12)
                         h += 12;
+                    else if (ampm === "A" && h === 12)
+                        h -= 12;
                     var val = (h * 60 + m) % (24 * 60);
                     if (val < this.Setup.MinTime || val > this.Setup.MaxTime)
                         return tt;
@@ -621,8 +627,7 @@ var YetaWF_ComponentsHTML;
         };
         DateTimeEditComponent.prototype.openTimeList = function () {
             var _this = this;
-            this.closeCalendar();
-            this.closeTimeList();
+            this.close();
             var times = [];
             for (var i = 0; i < 24 * 60; i += 30) {
                 if (this.Setup.MinTime <= i && i <= this.Setup.MaxTime)
@@ -702,8 +707,7 @@ var YetaWF_ComponentsHTML;
         };
         DateTimeEditComponent.prototype.openCalendar = function () {
             var _this = this;
-            this.closeTimeList();
-            this.closeCalendar();
+            this.close();
             var month = this.Setup.Months[this.TempCalCurrentDateUser.getUTCMonth()];
             var year = this.TempCalCurrentDateUser.getUTCFullYear().toFixed(0);
             this.CalendarPopup =
@@ -955,8 +959,8 @@ var YetaWF_ComponentsHTML;
         };
         DateTimeEditComponent.prototype.openMonthList = function () {
             var _this = this;
-            this.closeMonthList();
             this.closeYearList();
+            this.closeMonthList();
             if (!this.CalendarPopup)
                 return;
             this.MonthPopup =
