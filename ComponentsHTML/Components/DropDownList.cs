@@ -79,25 +79,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     public abstract class DropDownListEditComponentBase<TYPE> : YetaWFComponent, IYetaWFComponent<TYPE> {
 
-        /// <summary>
-        /// Returns the component type (edit/display).
-        /// </summary>
-        /// <returns>Returns the component type.</returns>
+        /// <inheritdoc/>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        /// <summary>
-        /// Returns the package implementing the component.
-        /// </summary>
-        /// <returns>Returns the package implementing the component.</returns>
+        /// <inheritdoc/>
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        /// <summary>
-        /// Returns the component name.
-        /// </summary>
-        /// <returns>Returns the component name.</returns>
-        /// <remarks>Components in packages whose product name starts with "Component" use the exact name returned by GetTemplateName when used in UIHint attributes. These are considered core components.
-        /// Components in other packages use the package's area name as a prefix. E.g., the UserId component in the YetaWF.Identity package is named "YetaWF_Identity_UserId" when used in UIHint attributes.
-        ///
-        /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
+        /// <inheritdoc/>
         public override string GetTemplateName() { return TemplateName; }
 
         internal string TemplateName { get; set; }
@@ -115,17 +102,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public DropDownListEditComponentBase(string templateName) {
             TemplateName = templateName;
         }
+
         /// <summary>
         /// Adds all addons for the DropDownList component to the current page.
         /// </summary>
         public static async Task IncludeExplicitAsync() { // this component is reusable so we need to explicitly include all js/css
             await Manager.AddOnManager.AddTemplateAsync(AreaRegistration.CurrentPackage.AreaName, "DropDownList",  ComponentType.Edit);
         }
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
+        /// <inheritdoc/>
         public Task<string> RenderAsync(TYPE model) {
 
             List<SelectionItem<TYPE>> list;

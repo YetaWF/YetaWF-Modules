@@ -54,7 +54,7 @@ namespace YetaWF_ComponentsHTML {
                         control.clear();
                 },
             }, false, (tag: HTMLElement, control: DropDownListEditComponent): void => {
-
+                control.closePopup(SendSelectEnum.No);
             });
 
             this.Setup = setup;

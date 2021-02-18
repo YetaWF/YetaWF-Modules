@@ -36,6 +36,7 @@ var YetaWF_ComponentsHTML;
                         control.clear();
                 },
             }, false, function (tag, control) {
+                control.closePopup(SendSelectEnum.No);
             }) || this;
             _this.Popup = null;
             _this.Enabled = true;

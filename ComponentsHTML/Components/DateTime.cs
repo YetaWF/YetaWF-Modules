@@ -112,7 +112,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
 
             public DateTimeStyleEnum Style { get; set; }
-            public string? InitialCalendarDate { get; set; }
+            public string InitialCalendarDate { get; set; }
             public DateTime MinDate { get; set; }
             public DateTime MaxDate { get; set; }
             public double MinTime { get; set; }
