@@ -153,6 +153,7 @@
   .yt_propertylist.t_boxed .t_proptable .t_boxexpcoll svg,
   .yt_propertylist.t_boxedcat .t_proptable .t_boxexpcoll svg,
   .yt_propertylist.t_boxedhdr .t_proptable .t_boxexpcoll svg {
+    cursor: pointer;
     vertical-align: top;
     width: 16px;
     height: 16px; }

@@ -371,16 +371,9 @@ namespace YetaWF_ComponentsHTML {
         public enable(enabled: boolean): void {
             this.closePopup(SendSelectEnum.No);
             $YetaWF.elementEnableToggle(this.Input, enabled);
-            $YetaWF.elementEnableToggle(this.Control, enabled);
             $YetaWF.elementRemoveClass(this.Control, "t_disabled");
-            this.Control.removeAttribute("tabindex");
-            if (!enabled) {
+            if (!enabled)
                 $YetaWF.elementAddClass(this.Control, "t_disabled");
-                $YetaWF.setAttribute(this.Control, "aria-disabled", "true");
-            } else {
-                $YetaWF.setAttribute(this.Control, "tabindex", "0");
-                $YetaWF.setAttribute(this.Control, "aria-disabled", "false");
-            }
             this.Enabled = enabled;
         }
     }
