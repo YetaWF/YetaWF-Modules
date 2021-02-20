@@ -105,7 +105,7 @@ var YetaWF_PageEdit;
     }(YetaWF.ModuleBaseDataImpl));
     YetaWF_PageEdit.PageControlModule = PageControlModule;
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
-        var mods = YetaWF.ModuleBaseDataImpl.getModules(PageControlModule.SELECTOR, ev.detail.containers);
+        var mods = YetaWF.ModuleBaseDataImpl.getModules(PageControlModule.SELECTOR);
         for (var _i = 0, mods_1 = mods; _i < mods_1.length; _i++) {
             var mod = mods_1[_i];
             mod.updateControlPanel();

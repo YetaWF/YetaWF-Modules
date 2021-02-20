@@ -110,7 +110,7 @@ namespace YetaWF_PageEdit {
     }
 
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: CustomEvent<YetaWF.DetailsEventNavPageLoaded>): boolean => {
-        let mods = YetaWF.ModuleBaseDataImpl.getModules<PageControlModule>(PageControlModule.SELECTOR, ev.detail.containers);
+        let mods = YetaWF.ModuleBaseDataImpl.getModules<PageControlModule>(PageControlModule.SELECTOR);
         for (let mod of mods)
             mod.updateControlPanel();
         return true;
