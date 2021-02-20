@@ -1,7 +1,6 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Basics#License */
 
 using System.Threading.Tasks;
-using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
@@ -24,7 +23,7 @@ namespace YetaWF.Modules.Basics.Views {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            string rootUrl = VersionManager.GetAddOnPackageUrl(Package.AreaName);
+            string rootUrl = Package.GetAddOnPackageUrl(Package.AreaName);
             string closeUrl = Manager.GetCDNUrl(System.IO.Path.Combine(rootUrl, "Icons", "Close.png"));
 
             if (model.MessageHandling == DataProvider.AlertConfig.MessageHandlingEnum.DisplayUntilOff) {

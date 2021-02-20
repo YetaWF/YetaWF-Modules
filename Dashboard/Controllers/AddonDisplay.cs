@@ -1,19 +1,15 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Dashboard#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using YetaWF.Core.Addons;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Dashboard.Controllers {
 
@@ -25,7 +21,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
             [Caption("Type"), Description("The AddOn type")]
             [UIHint("Enum"), ReadOnly]
-            public VersionManager.AddOnType Type { get; set; }
+            public Package.AddOnType Type { get; set; }
             [Caption("Domain"), Description("The domain owning this AddOn")]
             [UIHint("String"), ReadOnly]
             public string Domain { get; set; }
@@ -63,7 +59,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("String"), ReadOnly]
             public string SkinFilePath { get; set; }
 
-            public void SetData(VersionManager.AddOnProduct data) {
+            public void SetData(Package.AddOnProduct data) {
                 ObjectSupport.CopyData(data, this);
                 JsPathUrl = Utility.PhysicalToUrl(data.JsPath);
                 CssPathUrl = Utility.PhysicalToUrl(data.CssPath);
@@ -78,8 +74,8 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
         [AllowGet]
         public ActionResult AddonDisplay(string key) {
-            List<VersionManager.AddOnProduct> list = VersionManager.GetAvailableAddOns();
-            VersionManager.AddOnProduct data = (from l in list where l.AddonKey == key select l).FirstOrDefault();
+            List<Package.AddOnProduct> list = Package.GetAvailableAddOns();
+            Package.AddOnProduct data = (from l in list where l.AddonKey == key select l).FirstOrDefault();
             if (data == null)
                 throw new Error(this.__ResStr("notFound", "AddOn Info for key \"{0}\" not found"), key);
             DisplayModel model = new DisplayModel();

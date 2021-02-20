@@ -1,15 +1,11 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using YetaWF.Core.Addons;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
+using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.DevTests.Controllers {
 
@@ -42,7 +38,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [AllowGet]
         public ActionResult TemplateScroller() {
             Model model = new Model { };
-            string addonUrl = VersionManager.GetAddOnPackageUrl(AreaRegistration.CurrentPackage.AreaName);
+            string addonUrl = Package.GetAddOnPackageUrl(AreaRegistration.CurrentPackage.AreaName);
             // generate some random data for the scroller items
             for (int index = 0 ; index < 12 ; ++index) {
                 model.Items.Add(new ScrollerItem {

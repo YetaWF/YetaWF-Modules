@@ -38,7 +38,7 @@ namespace YetaWF.Modules.ComponentsHTML.Addons {
             Package package = AreaRegistration.CurrentPackage;
             string areaName = package.AreaName;
 
-            scripts.AddConfigOption(areaName, "LoaderGif", manager.GetCDNUrl(VersionManager.GetAddOnPackageUrl(package.AreaName) + "images/ajax-loader.gif"));
+            scripts.AddConfigOption(areaName, "LoaderGif", manager.GetCDNUrl(Package.GetAddOnPackageUrl(package.AreaName) + "images/ajax-loader.gif"));
 
             scripts.AddConfigOption(areaName, "SVG_fas_multiply", SkinSVGs.Get(package, "fas-multiply"));// BasicsImpl.ts toast/ Dialog.tsx Dialog close button
 

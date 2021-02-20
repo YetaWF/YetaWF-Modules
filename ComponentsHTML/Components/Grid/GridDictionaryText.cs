@@ -6,7 +6,6 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using YetaWF.Core;
-using YetaWF.Core.Addons;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -224,7 +223,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     if (fi == null) throw new InternalError($"Globals.{vars[1]} doesn't exist - column {name} in {file}");
                     part = fi.GetValue(null).ToString();
                 } else if (vars[0] == "Package") {
-                    VersionManager.AddOnProduct addonVersion = VersionManager.FindPackageVersion(package.AreaName);
+                    Package.AddOnProduct addonVersion = Package.FindPackage(package.AreaName);
                     foreach (var type in addonVersion.SupportTypes) {
                         object o = Activator.CreateInstance(type);
                         if (o == null)

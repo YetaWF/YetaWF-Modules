@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using YetaWF.Core.Addons;
 using YetaWF.Core.IO;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -30,8 +29,8 @@ namespace YetaWF.Modules.SyntaxHighlighter.Support {
 
         private async Task LoadSyntaxHighlighterThemesAsync() {
             Package package = AreaRegistration.CurrentPackage;
-            string url = VersionManager.GetAddOnNamedUrl(package.AreaName, "SkinSyntaxHighlighter");
-            string customUrl = VersionManager.GetCustomUrlFromUrl(url);
+            string url = Package.GetAddOnNamedUrl(package.AreaName, "SkinSyntaxHighlighter");
+            string customUrl = Package.GetCustomUrlFromUrl(url);
             string path = Utility.UrlToPhysical(url);
             string customPath = Utility.UrlToPhysical(customUrl);
 

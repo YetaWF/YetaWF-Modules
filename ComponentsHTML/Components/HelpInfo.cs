@@ -1,7 +1,6 @@
 /* Copyright � 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using System.Threading.Tasks;
-using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.IO;
 using YetaWF.Core.Models;
@@ -86,8 +85,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         private async Task<string> GetHelpFileContentsAsync(HelpInfoDefinition model) {
-            string urlBase = $"{VersionManager.GetAddOnPackageUrl(model.Package.AreaName)}Help";
-            string urlCustomBase = VersionManager.GetCustomUrlFromUrl(urlBase);
+            string urlBase = $"{Package.GetAddOnPackageUrl(model.Package.AreaName)}Help";
+            string urlCustomBase = Package.GetCustomUrlFromUrl(urlBase);
             string file = $"{model.Name}.html";
             string lang = MultiString.ActiveLanguage;
 

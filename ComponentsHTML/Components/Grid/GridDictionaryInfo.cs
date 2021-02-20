@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YetaWF.Core.Addons;
 using YetaWF.Core.Models;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -135,8 +134,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string model = s[1];
             string file = controller + "." + model;
             Package package = Package.GetPackageFromType(recordType);
-            string predefUrl = VersionManager.GetAddOnPackageUrl(package.AreaName) + "Grids/" + file;
-            string customUrl = VersionManager.GetCustomUrlFromUrl(predefUrl);
+            string predefUrl = Package.GetAddOnPackageUrl(package.AreaName) + "Grids/" + file;
+            string customUrl = Package.GetCustomUrlFromUrl(predefUrl);
 
             GridDictionaryInfo.ReadGridDictionaryInfo info = null;
             GridDictionaryInfo.ReadGridDictionaryInfo yamlInfo = await GridDictionaryInfo.ReadGridDictionaryYamlAsync(package, recordType, Utility.UrlToPhysical(predefUrl + ".yaml"));

@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YetaWF.Core.Addons;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
@@ -131,8 +130,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string file = $"{controller}.{objClass}.json";
 
             Package package = Package.GetPackageFromType(model);
-            string predefUrl = VersionManager.GetAddOnPackageUrl(package.AreaName) + "PropertyLists/" + file;
-            string customUrl = VersionManager.GetCustomUrlFromUrl(predefUrl);
+            string predefUrl = Package.GetAddOnPackageUrl(package.AreaName) + "PropertyLists/" + file;
+            string customUrl = Package.GetCustomUrlFromUrl(predefUrl);
             PropertyListSetup setup = null;
             PropertyListSetup predefSetup = await ReadPropertyListSetupAsync(package, model, Utility.UrlToPhysical(predefUrl));
             if (predefSetup.ExplicitDefinitions)

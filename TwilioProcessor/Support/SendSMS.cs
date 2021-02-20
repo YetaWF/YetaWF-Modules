@@ -13,6 +13,9 @@ using YetaWF.Core.Support.SendSMS;
 
 namespace Softelvdm.Modules.TwilioProcessor.Support {
 
+    /// <summary>
+    /// Implements the Twilio SMS provider used to send text messages.
+    /// </summary>
     public class TwilioSendSMS : ISendSMS, IInitializeApplicationStartup {
 
         /// <summary>
@@ -22,28 +25,21 @@ namespace Softelvdm.Modules.TwilioProcessor.Support {
             YetaWF.Core.Support.SendSMS.SendSMS.Register(this);
             return Task.CompletedTask;
         }
-        /// <summary>
-        /// The name of the SMS provider.
-        /// </summary>
+        /// <inheritdoc/>
         public string Name { get { return "TwilioProcessor"; } }
-        /// <summary>
-        /// Returns whether the SMS provider is available.
-        /// </summary>
-        /// <returns>True if it is available, false otherwise.</returns>
+        /// <inheritdoc/>
         public async Task<bool> IsAvailableAsync() {
             TwilioData twilioConfig = await TwilioConfigDataProvider.GetConfigCondAsync();
             return twilioConfig != null && twilioConfig.IsSMSConfigured();
         }
-        /// <summary>
-        /// Returns whether the SMS provider is in test mode.
-        /// </summary>
-        /// <returns>True if it is in test mode, false otherwise.</returns>
+        /// <inheritdoc/>
         public async Task<bool> IsTestModeAsync() {
             if (!await IsAvailableAsync()) throw new InternalError("SMS processing not available");
             TwilioData config = await TwilioConfigDataProvider.GetConfigAsync();
             return config.TestMode;
         }
 
+        /// <inheritdoc/>
         public async Task SendSMSAsync(string toNumber, string text, string FromNumber) {
             TwilioData config = await TwilioConfigDataProvider.GetConfigAsync();
             string accountSid = config.TestMode ? config.TestAccountSid : config.LiveAccountSid;

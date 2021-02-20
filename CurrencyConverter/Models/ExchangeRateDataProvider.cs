@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
-using YetaWF.Core.Addons;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
@@ -132,7 +131,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
         }
 
         private static string GetJSFileName() {
-            string url = VersionManager.GetAddOnPackageUrl(AreaRegistration.CurrentPackage.AreaName);
+            string url = Package.GetAddOnPackageUrl(AreaRegistration.CurrentPackage.AreaName);
             string path = Utility.UrlToPhysical(url);
             return Path.Combine(path, JSFile);
         }

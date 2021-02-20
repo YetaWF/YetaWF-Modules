@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core;
-using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Identity;
@@ -176,7 +175,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                         CssClass = "t_" + provider.InternalName.ToLower(),
                     });
                     YetaWF.Core.Packages.Package package = AreaRegistration.CurrentPackage;
-                    string url = VersionManager.GetAddOnPackageUrl(package.AreaName);
+                    string url = Package.GetAddOnPackageUrl(package.AreaName);
                     model.Images.Add(Manager.GetCDNUrl(string.Format("{0}Icons/LoginProviders/{1}.png", url, provider.InternalName)));
                 }
             }

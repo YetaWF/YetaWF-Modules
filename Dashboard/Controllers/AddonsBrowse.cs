@@ -12,11 +12,8 @@ using YetaWF.Core;
 using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider;
 using System.Threading.Tasks;
-#if MVC6
+using YetaWF.Core.Packages;
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Dashboard.Controllers {
 
@@ -39,7 +36,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
             [Caption("Type"), Description("The AddOn type")]
             [UIHint("Enum"), ReadOnly]
-            public VersionManager.AddOnType Type { get; set; }
+            public Package.AddOnType Type { get; set; }
             [Caption("Domain"), Description("The domain owning this AddOn")]
             [UIHint("String"), ReadOnly]
             public string Domain { get; set; }
@@ -61,7 +58,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("Hidden"), ReadOnly]
             public string AddonKey { get; set; }
 
-            public BrowseItem(AddonsBrowseModule module, VersionManager.AddOnProduct data) {
+            public BrowseItem(AddonsBrowseModule module, Package.AddOnProduct data) {
                 Module = module;
                 ObjectSupport.CopyData(data, this);
             }
@@ -103,7 +100,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                     };
                 },
                 DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
-                    List<VersionManager.AddOnProduct> list = VersionManager.GetAvailableAddOns();
+                    List<Package.AddOnProduct> list = Package.GetAvailableAddOns();
                     DataSourceResult data = new DataSourceResult {
                         Data = (from l in list select new BrowseItem(Module, l)).ToList<object>(),
                         Total = list.Count,
@@ -116,8 +113,8 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         [AllowGet]
         public ActionResult AddonsBrowse() {
             BrowseModel model = new BrowseModel {
-                AddOnsUrl = VersionManager.AddOnsUrl,
-                AddOnsCustomUrl = VersionManager.AddOnsCustomUrl,
+                AddOnsUrl = Package.AddOnsUrl,
+                AddOnsCustomUrl = Package.AddOnsCustomUrl,
                 NodeModulesUrl = Globals.NodeModulesUrl,
                 GridDef = GetGridModel()
             };
