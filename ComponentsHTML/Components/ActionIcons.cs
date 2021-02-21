@@ -49,7 +49,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         internal class ActionIconsSetup {
-            public string MenuId { get; set; }
+            public string MenuId { get; set; } = null!;
         }
 
         /// <inheritdoc/>
@@ -58,7 +58,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hb = new HtmlBuilder();
 
             if (model.Count == 0)
-                return null;
+                return string.Empty;
 
             Grid.GridActionsEnum actionStyle = PropData.GetAdditionalAttributeValue<Grid.GridActionsEnum>("GridActionsEnum", UserSettings.GetProperty<Grid.GridActionsEnum>("GridActions"));
             if (model.Count == 1) {

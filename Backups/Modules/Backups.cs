@@ -43,7 +43,7 @@ namespace YetaWF.Modules.Backups.Modules {
             }
         }
 
-        public ModuleAction GetAction_Backups(string url) {
+        public ModuleAction? GetAction_Backups(string url) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Browse",
@@ -57,7 +57,7 @@ namespace YetaWF.Modules.Backups.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
             };
         }
-        public async Task<ModuleAction> GetAction_PerformSiteBackupAsync() {
+        public async Task<ModuleAction?> GetAction_PerformSiteBackupAsync() {
             if (!IsAuthorized("Backups")) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(BackupsModuleController), nameof(BackupsModuleController.PerformSiteBackup)),
@@ -77,7 +77,7 @@ namespace YetaWF.Modules.Backups.Modules {
         }
 
         // This action is only useful if you're the YetaWF Publisher
-        public async Task<ModuleAction> GetAction_MakeSiteTemplateDataAsync() {
+        public async Task<ModuleAction?> GetAction_MakeSiteTemplateDataAsync() {
             if (YetaWFManager.Deployed) return null; //Can't make site template data on a deployed site
             if (!IsAuthorized("Backups")) return null;
             return new ModuleAction(this) {
@@ -96,7 +96,7 @@ namespace YetaWF.Modules.Backups.Modules {
             };
         }
 
-        public async Task<ModuleAction> GetAction_DownloadLinkAsync(string filename) {
+        public async Task<ModuleAction?> GetAction_DownloadLinkAsync(string filename) {
             if (!IsAuthorized("Downloads")) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(BackupsModuleController), nameof(BackupsModuleController.Download)),
@@ -114,7 +114,7 @@ namespace YetaWF.Modules.Backups.Modules {
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
             };
         }
-        public ModuleAction GetAction_RemoveLink(string filename) {
+        public ModuleAction? GetAction_RemoveLink(string filename) {
             if (!IsAuthorized("Backups")) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(BackupsModuleController), "Remove"),

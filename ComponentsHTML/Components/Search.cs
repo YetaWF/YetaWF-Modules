@@ -46,14 +46,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (rdonly)
                 ro = " readonly='readonly'";
 
-            if (!HtmlAttributes.TryGetValue("AutoDelay", out object objAutoDelay))
+            if (!HtmlAttributes.TryGetValue("AutoDelay", out object? objAutoDelay))
                 objAutoDelay = 0;
             int autoDelay = Convert.ToInt32(objAutoDelay);
 
-            TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out string placeHolder);
+            TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out string? placeHolder);
             placeHolder = string.IsNullOrWhiteSpace(placeHolder) ? string.Empty : $" placeholder={HAE(placeHolder)}";
 
-            string autoComplete = PropData.GetAdditionalAttributeValue<string>("AutoComplete", null);
+            string? autoComplete = PropData.GetAdditionalAttributeValue<string>("AutoComplete");
             if (autoComplete == null) {
                 if (Manager.CurrentModule != null && Manager.CurrentModule.FormAutoComplete)
                     autoComplete = "on";
@@ -62,7 +62,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
 
             // handle StringLengthAttribute as maxlength
-            StringLengthAttribute lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
+            StringLengthAttribute? lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
             if (lenAttr != null) {
 #if DEBUG
                 if (HtmlAttributes.ContainsKey("maxlength"))

@@ -27,11 +27,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         [Caption("Markdown Text"), HelpLink("https://www.markdownguide.org/cheat-sheet/")]
         [UIHint("TextAreaSourceOnly")]
-        public virtual string Text { get; set; }
+        public virtual string Text { get; set; } = null!;
         /// <summary>
         /// The HTML rendering of the markdown text.
         /// </summary>
-        public virtual string HTML { get; set; }
+        public virtual string HTML { get; set; } = null!;
         /// <summary>
         /// Implicit conversion to string.
         /// </summary>
@@ -165,7 +165,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal class UI {
             [UIHint("Tabs")]
-            public TabsDefinition TabsDef { get; set; }
+            public TabsDefinition TabsDef { get; set; } = null!;
         }
 
         /// <summary>

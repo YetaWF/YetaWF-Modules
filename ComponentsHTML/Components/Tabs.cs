@@ -39,7 +39,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     internal class TabsSetup {
         public bool ContextMenu { get; set; }
         public int ActiveTabIndex { get; set; }
-        public string ActiveTabHiddenId { get; set; }
+        public string ActiveTabHiddenId { get; set; } = null!;
         public TabsSetup() { }
     }
 
@@ -77,7 +77,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 bool active = model.ActiveTabIndex == count;
                 string tabId = $"{model.Id}_tab{count}";
 
-                string tabCss = null;
+                string? tabCss = null;
                 tabCss = CssManager.CombineCss(tabCss, tabEntry.TabCssClasses);
                 if (active)
                     tabCss = CssManager.CombineCss(tabCss, "t_tabactive");
@@ -99,7 +99,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             foreach (TabEntry tabEntry in model.Tabs) {
                 bool active = model.ActiveTabIndex == count;
                 string tabId = $"{model.Id}_tab{count}";
-                string cssClass = tabEntry.PaneCssClasses;
+                string? cssClass = tabEntry.PaneCssClasses;
 
                 hb.Append($@"
      <div class='t_proptable t_cat t_tabpanel {cssClass}' data-tab='{count}' id='{tabId}' aria-labelledby='{tabId}_lb' role='tabpanel' {(active ? "" : "style='display:none'")} aria-hidden='{(active ? "false" : "true")}'>");

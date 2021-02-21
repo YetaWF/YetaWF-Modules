@@ -42,7 +42,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <inheritdoc/>
         public Task<string> RenderAsync(DayTimeRange model) {
             if (model != null) {
-                string s = null;
+                string s;
                 if (model.Start != null && model.End != null) {
                     if (model.Start2 != null && model.End2 != null) {
                         s = __ResStr("time2", "{0} - {1}, {2} - {3} ", Formatting.FormatTimeOfDay(model.Start), Formatting.FormatTimeOfDay(model.End), Formatting.FormatTimeOfDay(model.Start2), Formatting.FormatTimeOfDay(model.End2));
@@ -103,15 +103,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             [UIHint("Boolean")]
             public bool Additional { get; set; }
 
-            public string AdditionalFieldCaption { get; set; }
-            public string AdditionalFieldDescription { get; set; }
+            public string? AdditionalFieldCaption { get; set; }
+            public string? AdditionalFieldDescription { get; set; }
 
             [ResourceRedirect(nameof(ClosedFieldCaption), nameof(ClosedFieldDescription))]
             [UIHint("Boolean")]
             public bool Closed { get; set; }
 
-            public string ClosedFieldCaption { get; set; }
-            public string ClosedFieldDescription { get; set; }
+            public string? ClosedFieldCaption { get; set; }
+            public string? ClosedFieldDescription { get; set; }
         }
 
         /// <inheritdoc/>
@@ -122,7 +122,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            DayTimeRangeUI ts = new DayTimeRangeUI(model??new DayTimeRange());
+            DayTimeRangeUI ts = new DayTimeRangeUI(new DayTimeRange());
             ts.ClosedFieldCaption = model.ClosedFieldCaption ?? __ResStr("closed", "Closed");
             ts.ClosedFieldDescription = model.ClosedFieldDescription ?? __ResStr("closedDesc", "Select to indicate when closed all day");
             ts.AdditionalFieldCaption = model.AdditionalFieldCaption ?? __ResStr("additional", "Additional");

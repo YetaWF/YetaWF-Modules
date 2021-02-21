@@ -1,11 +1,10 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-using YetaWF.Core.Addons;
-using YetaWF.Core.Identity;
-using YetaWF.Core.Support;
-using YetaWF.Core.Controllers;
-using YetaWF.Modules.ComponentsHTML.Components;
 using Microsoft.AspNetCore.Mvc;
+using YetaWF.Core.Addons;
+using YetaWF.Core.Controllers;
+using YetaWF.Core.Identity;
+using YetaWF.Modules.ComponentsHTML.Components;
 
 namespace YetaWF.Modules.ComponentsHTML.Controllers {
 
@@ -15,8 +14,8 @@ namespace YetaWF.Modules.ComponentsHTML.Controllers {
     public class SkinController : YetaWFController {
 
         internal class Lists {
-            public string PagesHTML { get; set; }
-            public string PopupsHTML { get; set; }
+            public string PagesHTML { get; set; } = null!;
+            public string PopupsHTML { get; set; } = null!;
         }
 
         /// <summary>

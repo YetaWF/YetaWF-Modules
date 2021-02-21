@@ -49,19 +49,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// <summary>
             /// The text of the dropdown button.
             /// </summary>
-            public string Text { get; set; }
+            public string Text { get; set; } = null!;
             /// <summary>
             /// The optional tooltip of the dropdown button.
             /// </summary>
-            public string Tooltip { get; set; }
+            public string? Tooltip { get; set; }
             /// <summary>
             /// The HTML Id of the dropdown button.
             /// </summary>
-            public string ButtonId { get; set; }
+            public string ButtonId { get; set; } = null!;
             /// <summary>
             /// The HTML representing the dropdown menu (a &lt;ul&gt; tag).
             /// </summary>
-            public string MenuHTML { get; set; }
+            public string MenuHTML { get; set; } = null!;
             /// <summary>
             /// Defines whether a small dropdown button is used. A small dropdown button doesn't display the button text.
             /// </summary>
@@ -69,7 +69,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// <summary>
             /// The Optional CSS class added to the dropdown button tag.
             /// </summary>
-            public string CssClass { get; set; }
+            public string? CssClass { get; set; }
         }
 
         /// <inheritdoc/>
@@ -88,7 +88,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            string cssStyle = null;
+            string? cssStyle = null;
             if (model.CssClass != null)
                 cssStyle += $" {model.CssClass}";
             if (model.Mini)

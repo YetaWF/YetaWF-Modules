@@ -61,7 +61,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(long? model) {
             HtmlBuilder hb = new HtmlBuilder();
-            string val = model != null ? model.ToString() : "";
+            string val = model?.ToString() ?? string.Empty;
             hb.Append($@"<div class='yt_longvalue t_display'>{HE(val)}</div>");
             return Task.FromResult(hb.ToString());
         }
@@ -100,7 +100,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(long? model) {
-            string val = model != null ? model.ToString() : "";
+            string val = model?.ToString() ?? string.Empty;
             HtmlAttributes.Add("class", "yt_text20");
             HtmlAttributes.Add("maxlength", "30");
             return await TextEditComponent.RenderTextAsync(this, val, "yt_longvalue");

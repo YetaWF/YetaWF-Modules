@@ -129,7 +129,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (rdonly)
                 ro = " readonly='readonly'";
 
-            TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out string placeHolder);
+            TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out string? placeHolder);
 
             string val = string.Empty;
             if (model != null)
@@ -143,7 +143,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 Locale = MultiString.ActiveLanguage,
             };
             // handle min/max
-            RangeAttribute rangeAttr = PropData.TryGetAttribute<RangeAttribute>();
+            RangeAttribute? rangeAttr = PropData.TryGetAttribute<RangeAttribute>();
             if (rangeAttr != null) {
                 setup.Min = (double)rangeAttr.Minimum;
                 setup.Max = (double)rangeAttr.Maximum;

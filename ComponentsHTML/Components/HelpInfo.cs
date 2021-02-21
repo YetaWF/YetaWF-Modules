@@ -68,13 +68,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<string> RenderAsync(HelpInfoDefinition model) {
+        public async Task<string> RenderAsync(HelpInfoDefinition? model) {
 
             if (model == null)
-                return null;
-            string contents = await GetHelpFileContentsAsync(model);
+                return string.Empty;
+            string? contents = await GetHelpFileContentsAsync(model);
             if (contents == null)
-                return null;
+                return string.Empty;
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
 <div class='yt_helpinfo'>
@@ -93,29 +93,29 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // try custom language specific
             HelpFileInfo helpCustomLang = await TryHelpFileAsync($"{urlCustomBase}/{lang}/{file}", model.UseCache);
             if (helpCustomLang.Exists)
-                return helpCustomLang.Contents;
+                return helpCustomLang.Contents!;
 
             // try custom
             HelpFileInfo helpCustom = await TryHelpFileAsync($"{urlCustomBase}/{file}", model.UseCache);
             if (helpCustom.Exists)
-                return helpCustom.Contents;
+                return helpCustom.Contents!;
 
             // try fallback language specific
             HelpFileInfo helpLang = await TryHelpFileAsync($"{urlBase}/{lang}/{file}", model.UseCache);
             if (helpLang.Exists)
-                return helpLang.Contents;
+                return helpLang.Contents!;
 
             // try fallback
             HelpFileInfo help = await TryHelpFileAsync($"{urlBase}/{file}", model.UseCache);
             if (help.Exists)
-                return help.Contents;
+                return help.Contents!;
 
-            return null;
+            return string.Empty;
         }
 
         private class HelpFileInfo {
             public bool Exists { get; set; }
-            public string Contents { get; set; }
+            public string? Contents { get; set; }
         }
 
         private async Task<HelpFileInfo> TryHelpFileAsync(string url, bool useCache) {
@@ -126,7 +126,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 // Check cache first
                 GetObjectInfo<HelpFileInfo> cache = await cacheDP.GetAsync<HelpFileInfo>(file);
                 if (cache.Success)
-                    return cache.Data;
+                    return cache.Data!;
 
                 // read file
                 if (!await FileSystem.FileSystemProvider.FileExistsAsync(file)) {

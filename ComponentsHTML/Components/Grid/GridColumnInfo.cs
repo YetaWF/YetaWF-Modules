@@ -71,7 +71,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             NotEndswith,
             All = 0xffff,
         }
-        public string OriginalWidthCh { get; set; }
+        public string OriginalWidthCh { get; set; } = null!;
 
         public GridColumnInfo() {
             PixWidth = ChWidth = 0;

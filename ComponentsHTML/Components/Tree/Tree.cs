@@ -73,16 +73,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public bool DragDrop { get; set; } // Supports drag & drop
         public bool ContextMenu { get; set; } // Supports context menu
 
-        public string HoverCss { get; set; }
-        public string HighlightCss { get; set; }
-        public string DisabledCss { get; set; }
-        public string RowHighlightCss { get; set; }
-        public string RowDragDropHighlightCss { get; set; }
-        public string SelectedCss { get; set; }
+        public string HoverCss { get; set; } = null!;
+        public string HighlightCss { get; set; } = null!;
+        public string DisabledCss { get; set; } = null!;
+        public string RowHighlightCss { get; set; } = null!;
+        public string RowDragDropHighlightCss { get; set; } = null!;
+        public string SelectedCss { get; set; } = null!;
 
-        public string ContentTargetId { get; set; }
-        public string ContentTargetPane { get; set; }
-        public string AjaxUrl { get; set; } // for dynamic population during expand
+        public string? ContentTargetId { get; set; }
+        public string? ContentTargetPane { get; set; }
+        public string? AjaxUrl { get; set; } // for dynamic population during expand
 
         public TreeSetup() { }
     }
@@ -112,9 +112,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            TreeDefinition treeModel = GetSiblingProperty<TreeDefinition>($"{FieldName}_TreeDefinition");
+            TreeDefinition? treeModel = GetSiblingProperty<TreeDefinition>($"{FieldName}_TreeDefinition");
+            if (treeModel == null) throw new InternalError($"No value provided for {FieldName}_TreeDefinition property");
 
-            IEnumerable<object> ienum = model as IEnumerable<object>;
+            IEnumerable<object> ienum = (model as IEnumerable<object>)!;
             List<TreeEntry> data = (from t in ienum select (TreeEntry)(object)t).ToList();
 
 
@@ -151,11 +152,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 PropertyData prop = ObjectSupport.GetPropertyData(treeModel.RecordType, nameof(TreeEntry.Text));
                 // Caption
-                string caption = treeModel.Header.ToString();
+                string? caption = treeModel.Header.ToString();
                 if (string.IsNullOrWhiteSpace(caption))
                     caption = prop.GetCaption(null);
                 // Description
-                string description = null;
+                string? description = null;
                 if (treeModel.HeaderTooltip != null) {
                     description = treeModel.HeaderTooltip.ToString();
                     if (string.IsNullOrWhiteSpace(description))
@@ -243,7 +244,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // check for SubEntriesProperty
             bool collapsed = record.Collapsed;
             bool dynSubs = false;
-            List<TreeEntry> items = record.SubEntries;
+            List<TreeEntry>? items = record.SubEntries;
             if (items == null || items.Count == 0) {
                 items = null;
                 if (record.DynamicSubEntries) {
@@ -253,8 +254,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 }
             }
 
-            string urlNew = record.UrlNew;
-            string urlContent = record.UrlContent;
+            string? urlNew = record.UrlNew;
+            string? urlContent = record.UrlContent;
 
             // selected
             bool selected = record.Selected;
@@ -291,10 +292,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // entry
 
             string text = await htmlHelper.ForDisplayAsync(record, nameof(TreeEntry.Text));
-            string beforeText = null;
+            string? beforeText = null;
             if (record.BeforeText != null)
                 beforeText = await htmlHelper.ForDisplayAsync(record, nameof(TreeEntry.BeforeText));
-            string afterText = null;
+            string? afterText = null;
             if (record.AfterText != null)
                 afterText = await htmlHelper.ForDisplayAsync(record, nameof(TreeEntry.AfterText));
 

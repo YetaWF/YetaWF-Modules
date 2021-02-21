@@ -79,7 +79,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             DateTimeEditComponent.Setup setup = new DateTimeEditComponent.Setup() {
                 Style = DateTimeEditComponent.Setup.DateTimeStyleEnum.Time
             };
-            if (TryGetSiblingProperty($"{PropertyName}_Setup", out DateTimeEditComponent.DateTimeSetup dateTimeSetup)) {
+            if (TryGetSiblingProperty($"{PropertyName}_Setup", out DateTimeEditComponent.DateTimeSetup? dateTimeSetup) && dateTimeSetup != null) {
                 setup.MinTime = dateTimeSetup.MinTime;
                 setup.MaxTime = dateTimeSetup.MaxTime;
             }
@@ -87,7 +87,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // model binding error handling
             string internalValue = $"{model:o}";
             string displayValue = Formatting.FormatTime(model);
-            if (Manager.HasModelBindingErrorManager && Manager.ModelBindingErrorManager.TryGetAttemptedValue(PropertyName, out string attemptedValue)) {
+            if (Manager.HasModelBindingErrorManager && Manager.ModelBindingErrorManager.TryGetAttemptedValue(PropertyName, out string? attemptedValue)) {
                 displayValue = internalValue = attemptedValue;
             }
 

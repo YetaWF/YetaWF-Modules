@@ -54,8 +54,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     public class FileUpload1EditComponent : FileUpload1ComponentBase, IYetaWFComponent<FileUpload1>, IYetaWFContainer<FileUpload1> {
 
         internal class Setup {
-            public string SaveUrl { get; set; }
-            public string RemoveUrl { get; set; }
+            public string SaveUrl { get; set; } = null!;
+            public string RemoveUrl { get; set; } = null!;
             public bool SerializeForm { get; set; }// serialize all form data when uploading a file
         }
 

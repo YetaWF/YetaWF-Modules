@@ -61,15 +61,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             [Caption("Name"), Description("Module Name")]
             [UIHint("String"), ReadOnly]
-            public string Name { get; set; }
+            public string Name { get; set; } = null!;
 
             [Caption("Description"), Description("Module Description")]
             [UIHint("String"), ReadOnly]
-            public string Description { get; set; }
+            public string Description { get; set; } = null!;
 
             [Caption("Module"), Description("Module")]
             [UIHint("String"), ReadOnly]
-            public string PermanentName { get; set; }
+            public string PermanentName { get; set; } = null!;
         }
         internal static GridDefinition GetGridModel(bool header) {
             return new GridDefinition() {
@@ -77,7 +77,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 InitialPageSize = 10,
                 ShowHeader = header,
                 AjaxUrl = Utility.UrlFor(typeof(ReferencedModulesController), nameof(ReferencedModulesController.ReferencedModulesDisplay_SortFilter)),
-                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
                         Data = recs.Data.ToList<object>(),
@@ -104,7 +104,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header)
             };
-            grid.GridDef.DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+            grid.GridDef.DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                 List<AddOnManager.Module> allMods = Manager.AddOnManager.GetUniqueInvokedCssModules();
 
                 List<Entry> mods = new List<Entry>();
@@ -161,15 +161,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             [Caption("Name"), Description("Module Name")]
             [UIHint("String"), ReadOnly]
-            public string Name { get; set; }
+            public string Name { get; set; } = null!;
 
             [Caption("Description"), Description("Module Description")]
             [UIHint("String"), ReadOnly]
-            public string Description { get; set; }
+            public string Description { get; set; } = null!;
 
             [Caption("Module"), Description("Module")]
             [UIHint("String"), ReadOnly]
-            public string PermanentName { get; set; }
+            public string PermanentName { get; set; } = null!;
 
             [UIHint("Hidden"), ReadOnly]
             public Guid ModuleGuid { get; set; }
@@ -180,7 +180,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 InitialPageSize = 10,
                 ShowHeader = header,
                 AjaxUrl = Utility.UrlFor(typeof(ReferencedModulesController), nameof(ReferencedModulesController.ReferencedModulesEdit_SortFilter)),
-                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
                         Data = recs.Data.ToList<object>(),
@@ -207,7 +207,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header)
             };
-            grid.GridDef.DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+            grid.GridDef.DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                 List<AddOnManager.Module> allMods = Manager.AddOnManager.GetUniqueInvokedCssModules();
 
                 List<Entry> mods = new List<Entry>();

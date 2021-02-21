@@ -26,15 +26,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// <summary>
             /// The container model.
             /// </summary>
-            public object Model { get; set; }
+            public object Model { get; set; } = null!;
             /// <summary>
             /// The UIHint used to render the container.
             /// </summary>
-            public string UIHint { get; set; }
+            public string UIHint { get; set; } = null!;
             /// <summary>
             /// The HTML field prefix used.
             /// </summary>
-            public string FieldPrefix { get; set; }
+            public string FieldPrefix { get; set; } = null!;
         }
         /// <summary>
         /// The result of the rendered ContainerView.
@@ -43,11 +43,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// <summary>
             /// The rendered HTML.
             /// </summary>
-            public string HTML { get; set; }
+            public string HTML { get; set; } = null!;
             /// <summary>
             /// Defines the current unique id counters.
             /// </summary>
-            public YetaWFManager.UniqueIdInfo UniqueIdCounters { get; set; }
+            public YetaWFManager.UniqueIdInfo UniqueIdCounters { get; set; } = null!;
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         private class TreePartialResult {
             public int Records { get; set; }
-            public string HTML { get; set; }
+            public string HTML { get; set; } = null!;
         }
 
         /// <summary>

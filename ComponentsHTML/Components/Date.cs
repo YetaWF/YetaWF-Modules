@@ -88,26 +88,26 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             DateTimeEditComponent.Setup setup = new DateTimeEditComponent.Setup {
                 Style = DateTimeEditComponent.Setup.DateTimeStyleEnum.Date
             };
-            if (TryGetSiblingProperty($"{PropertyName}_Setup", out DateTimeEditComponent.DateTimeSetup dateTimeSetup)) {
+            if (TryGetSiblingProperty($"{PropertyName}_Setup", out DateTimeEditComponent.DateTimeSetup? dateTimeSetup) && dateTimeSetup != null) {
                 setup.MinDate = dateTimeSetup.MinDate;
                 setup.MaxDate = dateTimeSetup.MaxDate;
             }
 
             // handle min/max date
             // attributes (like MinimumDateAttribute) override setup and defaults
-            MinimumDateAttribute minAttr = PropData.TryGetAttribute<MinimumDateAttribute>();
+            MinimumDateAttribute? minAttr = PropData.TryGetAttribute<MinimumDateAttribute>();
             if (minAttr != null)
                 setup.MinDate = minAttr.MinDate;
-            MaximumDateAttribute maxAttr = PropData.TryGetAttribute<MaximumDateAttribute>();
+            MaximumDateAttribute? maxAttr = PropData.TryGetAttribute<MaximumDateAttribute>();
             if (maxAttr != null)
                 setup.MaxDate = maxAttr.MaxDate;
 
             // model binding error handling
             string internalValue = setup.InitialCalendarDate = $"{model:o}";
             string displayValue = Formatting.FormatDate(model);
-            if (Manager.HasModelBindingErrorManager && Manager.ModelBindingErrorManager.TryGetAttemptedValue(PropertyName, out string attemptedValue)) {
+            if (Manager.HasModelBindingErrorManager && Manager.ModelBindingErrorManager.TryGetAttemptedValue(PropertyName, out string? attemptedValue)) {
                 displayValue = internalValue = attemptedValue;
-                setup.InitialCalendarDate = null;
+                setup.InitialCalendarDate = string.Empty;
             }
 
             HtmlBuilder hb = new HtmlBuilder();

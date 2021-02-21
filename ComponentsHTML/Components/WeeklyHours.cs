@@ -114,11 +114,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             public WeeklyHours Week { get; set; }
 
-            public string AdditionalFieldCaption { get { return Week.AdditionalFieldCaption; } }
-            public string AdditionalFieldDescription { get { return Week.AdditionalFieldDescription; } }
+            public string? AdditionalFieldCaption { get { return Week.AdditionalFieldCaption; } }
+            public string? AdditionalFieldDescription { get { return Week.AdditionalFieldDescription; } }
 
-            public string ClosedFieldCaption { get { return Week.ClosedFieldCaption; } }
-            public string ClosedFieldDescription { get { return Week.ClosedFieldDescription; } }
+            public string? ClosedFieldCaption { get { return Week.ClosedFieldCaption; } }
+            public string? ClosedFieldDescription { get { return Week.ClosedFieldDescription; } }
         }
 
         /// <summary>

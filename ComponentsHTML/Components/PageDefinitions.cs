@@ -65,15 +65,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             [Caption("Url"), Description("The Url used to identify this page")]
             [UIHint("Url"), ReadOnly]
-            public string Url { get; set; }
+            public string Url { get; set; } = null!;
 
             [Caption("Title"), Description("The page title which will appear as title in the browser window")]
             [UIHint("MultiString"), ReadOnly]
-            public MultiString Title { get; set; }
+            public MultiString Title { get; set; } = null!;
 
             [Caption("Description"), Description("The page description (not usually visible, entered by page designer, used for search keywords)")]
             [UIHint("MultiString"), ReadOnly]
-            public MultiString Description { get; set; }
+            public MultiString Description { get; set; } = null!;
 
             public Entry() { }
             public Entry(PageDefinition m) {
@@ -86,7 +86,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 InitialPageSize = 10,
                 ShowHeader = header,
                 AjaxUrl = Utility.UrlFor(typeof(PageDefinitionsController), nameof(PageDefinitionsController.PageDefinitionsDisplay_SortFilter)),
-                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
                         Data = recs.Data.ToList<object>(),
@@ -110,7 +110,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header)
             };
-            grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+            grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                 DataSourceResult data = new DataSourceResult {
                     Data = (from m in model select new Entry(m)).ToList<object>(),
                     Total = model.Count,

@@ -232,8 +232,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
         public override string GetTemplateName() { return TemplateName; }
 
-        internal string TemplateName { get; set; }
-        internal string TemplateClass { get; set; }
+        internal string TemplateName { get; set; } = null!;
+        internal string TemplateClass { get; set; } = null!;
     }
 
     /// <summary>
@@ -281,7 +281,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (!string.IsNullOrWhiteSpace(css))
                 css = $" {css}";
 
-            string id = HtmlBuilder.GetIdCond(HtmlAttributes);
+            string? id = HtmlBuilder.GetIdCond(HtmlAttributes);
             if (id != null)
                 id = $" id='{id}'";
             hb.Append($@"<input{id}{FieldSetup(FieldType.Anonymous)} type='text' value='{HAE(model ?? string.Empty)}' class='t_display yt_text_base {TemplateClass}{css}'{readOnly}{disabled}>");
@@ -339,15 +339,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model.</param>
         /// <param name="templateCssClass">The CSS class to add to the template (starting with yt_).</param>
         /// <returns>The component rendered as HTML.</returns>
-        public static async Task<string> RenderTextAsync(YetaWFComponent component, string model, string templateCssClass) {
+        public static async Task<string> RenderTextAsync(YetaWFComponent component, string model, string? templateCssClass) {
 
             await IncludeExplicitAsync();
 
-            string css = null;
+            string? css = null;
             css = CssManager.CombineCss(css, templateCssClass);
             css = CssManager.CombineCss(css, component.GetClasses());
 
-            string autoComplete = component.PropData.GetAdditionalAttributeValue<string>("AutoComplete", null);
+            string? autoComplete = component.PropData.GetAdditionalAttributeValue<string>("AutoComplete");
             if (autoComplete == null) {
                 if (Manager.CurrentModule != null && Manager.CurrentModule.FormAutoComplete)
                     autoComplete = "on";
@@ -355,13 +355,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     autoComplete = "off";
             }
 
-            string placeHolder = string.Empty;
-            component.TryGetSiblingProperty<string>($"{component.PropertyName}_PlaceHolder", out placeHolder);
+            component.TryGetSiblingProperty<string>($"{component.PropertyName}_PlaceHolder", out string? placeHolder);
             if (!string.IsNullOrWhiteSpace(placeHolder))
                 placeHolder = $"placeholder='{HAE(placeHolder)}'";
 
             // handle StringLengthAttribute as maxlength
-            StringLengthAttribute lenAttr = component.PropData.TryGetAttribute<StringLengthAttribute>();
+            StringLengthAttribute? lenAttr = component.PropData.TryGetAttribute<StringLengthAttribute>();
             if (lenAttr != null) {
 #if DEBUG
                 if (component.HtmlAttributes.ContainsKey("maxlength"))

@@ -112,9 +112,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <inheritdoc/>
         public Task<string> RenderAsync(TYPE model) {
 
-            List<SelectionItem<TYPE>> list;
-            if (!TryGetSiblingProperty($"{PropertyName}_List", out list))
-                list = new List<SelectionItem<TYPE>>();
+            TryGetSiblingProperty($"{PropertyName}_List", out List<SelectionItem<TYPE>>? list);
+            list ??= new List<SelectionItem<TYPE>>();
             return RenderDropDownListAsync(this, model, list, "yt_dropdownlist");
         }
 
@@ -126,7 +125,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="list">A collection of items to render.</param>
         /// <param name="cssClass">A CSS class to add to the &lt;select&gt; tag. May be null.</param>
         /// <returns></returns>
-        public static async Task<string> RenderDropDownListAsync(YetaWFComponent component, TYPE model, List<SelectionItem<TYPE>> list, string cssClass) {
+        public static async Task<string> RenderDropDownListAsync(YetaWFComponent component, TYPE model, List<SelectionItem<TYPE>> list, string? cssClass) {
 
             await IncludeExplicitAsync();
 
@@ -153,7 +152,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder tagHtml = new HtmlBuilder();
 
             // find the selected value
-            SelectionItem<TYPE> selItem = null;
+            SelectionItem<TYPE>? selItem = null;
             foreach (SelectionItem<TYPE> item in list) {
                 if (Equals(item.Value, model)) {
                     selItem = item;
@@ -169,12 +168,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (list.Count > 0) {
                 foreach (var item in list) {
 
-                    string desc = null;
-                    string t = item.Tooltip?.ToString();
+                    string? desc = null;
+                    string? t = item.Tooltip?.ToString();
                     if (!string.IsNullOrWhiteSpace(t))
                         desc = $" {Basics.CssTooltip}='{HAE(t)}'";
 
-                    string selected = null;
+                    string? selected = null;
                     if (item == selItem)
                         selected = " selected='selected'";
 
@@ -200,8 +199,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         internal class AjaxData {
-            public string OptionsHTML { get; set; }
-            public string ExtraData { get; set; }
+            public string OptionsHTML { get; set; } = null!;
+            public string? ExtraData { get; set; }
         }
 
         /// <summary>
@@ -210,7 +209,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="extraData">Optional data to be returned in JSON object as 'extra:' data.</param>
         /// <param name="list">A list of all items part of the DropDownList component.</param>
         /// <returns>A JSON object containing data and tooltips to update the contents of a DropDownList.</returns>
-        public static string RenderDataSource(List<SelectionItem<TYPE>> list, string extraData) {
+        public static string RenderDataSource(List<SelectionItem<TYPE>> list, string? extraData) {
 
             AjaxData data = new AjaxData {
                 ExtraData = extraData,
@@ -234,8 +233,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder tagHtml = new HtmlBuilder();
 
             foreach (var item in list) {
-                string desc = null;
-                string t = item.Tooltip?.ToString();
+                string? desc = null;
+                string? t = item.Tooltip?.ToString();
                 if (!string.IsNullOrWhiteSpace(t))
                     desc = $" {Basics.CssTooltip}='{HAE(t)}'";
                 tagHtml.Append($"<option value='{item.Value?.ToString()}'{desc}>{HE(item.Text.ToString())}</option>");

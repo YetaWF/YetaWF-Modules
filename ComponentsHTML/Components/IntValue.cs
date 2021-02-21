@@ -191,7 +191,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(int? model) {
-            if (model == null) return Task.FromResult<string>(null);
+            if (model == null) return Task.FromResult<string>(string.Empty);
             return Task.FromResult(HE(model.ToString()));
         }
     }
@@ -258,7 +258,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(int? model) {
 
-            TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out string placeHolder);
+            TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out string? placeHolder);
 
             NumberSetup setup = new NumberSetup {
                 Min = 0,
@@ -269,7 +269,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             };
 
             // handle min/max
-            RangeAttribute rangeAttr = PropData.TryGetAttribute<RangeAttribute>();
+            RangeAttribute? rangeAttr = PropData.TryGetAttribute<RangeAttribute>();
             if (rangeAttr != null) {
                 setup.Min = (int)rangeAttr.Minimum;
                 setup.Max = (int)rangeAttr.Maximum;

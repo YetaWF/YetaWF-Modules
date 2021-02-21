@@ -6,10 +6,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public double Min { get; set; }
         public double Max { get; set; }
         public double Step { get; set; }
-        public string Lead { get; set; }
-        public string Trail { get; set; }
+        public string? Lead { get; set; }
+        public string? Trail { get; set; }
         public int Digits { get; set; }
-        public string Currency { get; set; }
-        public string Locale { get; set; }
+        public string? Currency { get; set; }
+        public string? Locale { get; set; }
     }
 }

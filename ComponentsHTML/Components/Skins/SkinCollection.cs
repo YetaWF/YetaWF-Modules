@@ -58,14 +58,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // get all available skins
             SkinAccess skinAccess = new SkinAccess();
 
-            string desc = (from skinColl in skinAccess.GetAllSkinCollections() where model == skinColl.Name select skinColl.Description).FirstOrDefault();
+            string? desc = (from skinColl in skinAccess.GetAllSkinCollections() where model == skinColl.Name select skinColl.Description).FirstOrDefault();
             if (desc == null) {
                 bool useDefault = !PropData.GetAdditionalAttributeValue("NoDefault", false);
                 if (useDefault)
                     desc = __ResStr("siteDef", "(Site Default)");
             }
             if (string.IsNullOrWhiteSpace(desc))
-                return Task.FromResult<string>(null);
+                return Task.FromResult<string>(string.Empty);
             return Task.FromResult(HE(desc));
         }
     }

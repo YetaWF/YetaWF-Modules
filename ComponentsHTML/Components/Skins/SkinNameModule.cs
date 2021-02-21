@@ -8,6 +8,7 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
+using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -57,11 +58,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // get all available module skins for this collection
             SkinAccess skinAccess = new SkinAccess();
-            string collection = GetSiblingProperty<string>($"{PropertyName}_Collection");
+            string? collection = GetSiblingProperty<string>($"{PropertyName}_Collection");
+            if (collection == null) throw new InternalError($"No value found for property {PropertyName}_Collection");
             ModuleSkinList skinList = skinAccess.GetAllModuleSkins(collection);
 
-            ModuleSkinEntry entry = (from skin in skinList where skin.CSS == model select skin).FirstOrDefault();
-            string name = null;
+            ModuleSkinEntry? entry = (from skin in skinList where skin.CSS == model select skin).FirstOrDefault();
+            string? name = null;
             if (entry == null)
                 name = skinList.First().Name;
             else
@@ -92,7 +94,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // get all available module skins for this collection
             SkinAccess skinAccess = new SkinAccess();
-            string collection = GetSiblingProperty<string>($"{PropertyName}_Collection");
+            string? collection = GetSiblingProperty<string>($"{PropertyName}_Collection");
+            if (collection == null) throw new InternalError($"No value found for property {PropertyName}_Collection");
             ModuleSkinList skinList = skinAccess.GetAllModuleSkins(collection);
             List<SelectionItem<string>> list = (from skin in skinList orderby skin.Description select new SelectionItem<string>() {
                 Text = skin.Name,

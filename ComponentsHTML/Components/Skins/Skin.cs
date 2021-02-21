@@ -54,18 +54,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             [Caption("Skin Collection"), Description("The name of the skin collection")]
             [StringLength(SkinDefinition.MaxCollection)]
             [UIHint("SkinCollection")]
-            public string Collection { get; set; }
+            public string Collection { get; set; } = null!;
 
             [Caption("Page"), Description("The name of the page skin")]
             [StringLength(SkinDefinition.MaxPageFile)]
             [UIHint("SkinNamePage")]
-            public string PageFileName { get; set; }
+            public string PageFileName { get; set; } = null!;
             public string PageFileName_Collection { get { return Collection; } }
 
             [Caption("Popup"), Description("The name of the popup skin")]
             [StringLength(SkinDefinition.MaxPopupFile)]
             [UIHint("SkinNamePopup")]
-            public string PopupFileName { get; set; }
+            public string PopupFileName { get; set; } = null!;
             public string PopupFileName_Collection { get { return Collection; } }
         }
 
@@ -127,22 +127,22 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             [Caption("Skin Collection"), Description("The name of the skin collection")]
             [StringLength(SkinDefinition.MaxCollection)]
             [UIHint("SkinCollection")]
-            public string Collection { get; set; }
+            public string Collection { get; set; } = null!;
 
             [Caption("Page"), Description("The name of the page skin")]
             [StringLength(SkinDefinition.MaxPageFile)]
             [UIHint("SkinNamePage")]
-            public string PageFileName { get; set; }
+            public string PageFileName { get; set; } = null!;
             public string PageFileName_Collection { get { return Collection; } }
 
             [Caption("Popup"), Description("The name of the popup skin")]
             [StringLength(SkinDefinition.MaxPopupFile)]
             [UIHint("SkinNamePopup")]
-            public string PopupFileName { get; set; }
+            public string PopupFileName { get; set; } = null!;
             public string PopupFileName_Collection { get { return Collection; } }
         }
         internal class Setup {
-            public string AjaxUrl { get; set; }
+            public string AjaxUrl { get; set; } = null!;
         }
 
         /// <summary>

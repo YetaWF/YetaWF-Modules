@@ -64,7 +64,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public async Task<string> RenderAsync(string model) {
             List<SelectionItem<string>> states = await CAProvince.ReadProvincesListAsync();
             if (model == null) model = "";
-            string state = (from s in states where string.Compare(s.Value, model.ToUpper(), true) == 0 select s.Text).FirstOrDefault();
+            string? state = (from s in states where string.Compare(s.Value, model.ToUpper(), true) == 0 select s.Text).FirstOrDefault();
             return HE(state);
         }
     }

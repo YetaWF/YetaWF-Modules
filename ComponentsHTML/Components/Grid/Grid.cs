@@ -55,10 +55,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public bool CanFilter { get; internal set; }
         public bool CanReorder { get; internal set; }
         public bool ShowPager { get; internal set; }
-        public string FieldName { get; set; }
-        public string AjaxUrl { get; set; }
+        public string FieldName { get; set; } = null!;
+        public string AjaxUrl { get; set; } = null!;
         [JsonConverter(typeof(GridDisplayComponent.StaticDataConverter))]
-        public List<object> StaticData { get; internal set; }
+        public List<object> StaticData { get; internal set; } = null!;
         public int Page { get; set; }
         public int PageSize { get; set; }
         public int Records { get; set; }
@@ -66,27 +66,27 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public GridDefinition.SizeStyleEnum SizeStyle { get; internal set; }
         public List<GridColumnDefinition> Columns { get; set; }
         public int MinColumnWidth { get; set; }
-        public string SaveSettingsColumnWidthsUrl { get; set; }
-        public string SaveSettingsColumnSelectionUrl { get; set; }
-        public object ExtraData { get; set; }
-        public string HighlightCss { get; set; }
-        public string DisabledCss { get; set; }
-        public string RowHighlightCss { get; set; }
-        public string RowDragDropHighlightCss { get; set; }
-        public string SortActiveCss { get; set; }
+        public string? SaveSettingsColumnWidthsUrl { get; set; }
+        public string? SaveSettingsColumnSelectionUrl { get; set; }
+        public object? ExtraData { get; set; }
+        public string HighlightCss { get; set; } = null!;
+        public string DisabledCss { get; set; } = null!;
+        public string RowHighlightCss { get; set; } = null!;
+        public string RowDragDropHighlightCss { get; set; } = null!;
+        public string SortActiveCss { get; set; } = null!;
         public Guid? SettingsModuleGuid { get; set; }
         public bool HighlightOnClick { get; set; }
 
-        public List<string> PanelHeaderSearchColumns { get; set; }
+        public List<string>? PanelHeaderSearchColumns { get; set; }
 
-        public string DeletedMessage { get; set; }
-        public string DeleteConfirmationMessage { get; set; }
-        public string DeletedColumnDisplay { get; set; }
+        public string? DeletedMessage { get; set; }
+        public string? DeleteConfirmationMessage { get; set; }
+        public string? DeletedColumnDisplay { get; set; }
 
         public bool NoSubmitContents { get; set; }
 
         [JsonIgnore]
-        public string HeaderHTML { get; set; }
+        public string HeaderHTML { get; set; } = null!;
 
         public GridSetup() {
             Columns = new List<GridColumnDefinition>();
@@ -95,28 +95,28 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     internal class GridColumnDefinition {
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
         public bool Sortable { get; set; }
         public GridDefinition.SortBy Sort { get; set; }
         public bool Locked { get; set; }
         public bool OnlySubmitWhenChecked { get; set; }
         public GridColumnInfo.FilterOptionEnum? FilterOp { get; set; }
-        public string FilterType { get; set; }
-        public string FilterId { get; set; }
-        public string MenuId { get; set; }
+        public string? FilterType { get; set; }
+        public string? FilterId { get; set; } = null!;
+        public string? MenuId { get; set; } = null!;
         public bool Visible { get; set; }
     }
 
     internal class SearchUI {
         [Caption(""), Description("")]
         [UIHint("Search"), StringLength(80)]
-        public string __Search { get; set; }
+        public string __Search { get; set; } = null!;
     }
     internal class ColumnSelectionUI {
         [Caption(""), Description("")]
         [UIHint("CheckListMenu")]
-        public List<SelectionCheckListEntry> __ColumnSelection { get; set; }
-        public List<SelectionCheckListDetail> __ColumnSelection_List { get; set; }
+        public List<SelectionCheckListEntry> __ColumnSelection { get; set; } = null!;
+        public List<SelectionCheckListDetail> __ColumnSelection_List { get; set; } = null!;
         public string __ColumnSelection_DDSVG { get { return "fas-columns"; } }
     }
 
@@ -150,7 +150,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(GridDefinition model) {
 
-            if (model == null) return null;
+            if (model == null) return string.Empty;
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -168,7 +168,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             int initialPage = 0;
             int page = 0;
             if (GridLoadSave.UseGridSettings(model.SettingsModuleGuid)) {
-                gridSavedSettings = GridLoadSave.LoadModuleSettings((Guid)model.SettingsModuleGuid, initialPage + 1, pageSize);
+                gridSavedSettings = GridLoadSave.LoadModuleSettings((Guid)model.SettingsModuleGuid!, initialPage + 1, pageSize);
                 pageSize = gridSavedSettings.PageSize;
                 initialPage = gridSavedSettings.CurrentPage - 1;
                 page = gridSavedSettings.CurrentPage - 1;
@@ -209,12 +209,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (model.DirectDataAsync == null)
                 throw new InternalError($"{nameof(model.DirectDataAsync)} not set in {nameof(GridDefinition)} model");
 
-            List<DataProviderSortInfo> sorts = gridSavedSettings.GetSortInfo();
-            List<DataProviderFilterInfo> filters = gridSavedSettings.GetFilterInfo();
+            List<DataProviderSortInfo>? sorts = gridSavedSettings.GetSortInfo();
+            List<DataProviderFilterInfo>? filters = gridSavedSettings.GetFilterInfo();
             // add default sort if no sort provided
             if (sorts == null && !string.IsNullOrWhiteSpace(dictInfo.SortColumn)) {
                 // update sort column in saved settings.
-                GridDefinition.ColumnInfo sortCol = null;
+                GridDefinition.ColumnInfo sortCol;
                 if (gridSavedSettings.Columns.ContainsKey(dictInfo.SortColumn)) {
                     sortCol = gridSavedSettings.Columns[dictInfo.SortColumn];
                 } else {
@@ -233,7 +233,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 DataSourceResult ds = await model.DirectDataAsync(0, int.MaxValue, null, null);
                 setup.StaticData = ds.Data;
                 if (model.SortFilterStaticData != null && model.SortFilterStaticData != GridDefinition.DontSortFilter) {
-                    DataSourceResult dsPart = model.SortFilterStaticData?.Invoke(setup.StaticData, 0, int.MaxValue, sorts, filters);
+                    DataSourceResult dsPart = model.SortFilterStaticData.Invoke(setup.StaticData, 0, int.MaxValue, sorts, filters);
                     data = dsPart;
                     data.Total = ds.Total;
                 } else {
@@ -397,11 +397,11 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
         }
         private class FilterComplexUI {
             [UIHint("Hidden"), ReadOnly]
-            public string Value { get; set; }
+            public string Value { get; set; } = null!;
             [UIHint("Hidden"), ReadOnly]
-            public string Url { get; set; }
+            public string Url { get; set; } = null!;
             [UIHint("Hidden"), ReadOnly]
-            public string UIHint { get; set; }
+            public string UIHint { get; set; } = null!;
         }
         private class FilterBoolUI {
             [UIHint("Enum"), AdditionalMetadata("AdjustWidth", false)]
@@ -414,7 +414,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
         private class FilterDynEnumUI {
             [UIHint("DropDownListIntNull"), AdditionalMetadata("AdjustWidth", false)]
             public int? Value { get; set; }
-            public List<SelectionItem<int?>> Value_List { get; set; }
+            public List<SelectionItem<int?>> Value_List { get; set; } = null!;
         }
         private class FilterDecimalUI {
             [UIHint("Decimal")]
@@ -430,11 +430,11 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
         }
         private class FilterGuidUI {
             [UIHint("Text"), StringLength(100)]
-            public string Value { get; set; }
+            public string Value { get; set; } = null!;
         }
         private class FilterStringUI {
             [UIHint("Text"), StringLength(100)]
-            public string Value { get; set; }
+            public string Value { get; set; } = null!;
         }
 
         private async Task GetHeadersAsync(GridDefinition gridDef, GridDictionaryInfo.ReadGridDictionaryInfo dictInfo, GridSetup setup, GridLoadSave.GridSavedSettings gridSavedSettings) {
@@ -460,19 +460,21 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                     continue;
 
                 PropertyData prop = ObjectSupport.GetPropertyData(gridDef.RecordType, propName);
+                if (prop.UIHint == null)
+                    continue;
 
-                gridSavedSettings.Columns.TryGetValue(prop.Name, out GridDefinition.ColumnInfo columnInfo);
+                gridSavedSettings.Columns.TryGetValue(prop.Name, out GridDefinition.ColumnInfo? columnInfo);
 
                 // Visible
                 bool colVisible = columnInfo != null ? columnInfo.Visible : dictInfo.GetColumnStatus(propName) != ColumnVisibilityStatus.NotShown;
 
                 // Caption
-                string caption = prop.GetCaption(gridDef.ResourceRedirect);
+                string? caption = prop.GetCaption(gridDef.ResourceRedirect);
                 if (!gridCol.Hidden && gridDef.ResourceRedirect != null && string.IsNullOrWhiteSpace(caption))
                     continue;// we need a caption if we're using resource redirects
 
                 // Description
-                string description = prop.GetDescription(gridDef.ResourceRedirect);
+                string? description = prop.GetDescription(gridDef.ResourceRedirect);
 
                 // Locked
                 bool locked = gridCol.Locked;
@@ -508,7 +510,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 }
 
                 // Alignment
-                string alignCss = null;
+                string? alignCss = null;
                 switch (gridCol.Align) {
                     case GridHAlignmentEnum.Unspecified:
                     case GridHAlignmentEnum.Left:
@@ -564,10 +566,10 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
 
                 List<GridColumnInfo.FilterOptionEnum> filterOpts = new List<GridColumnInfo.FilterOptionEnum>();
                 GridColumnInfo.FilterOptionEnum? filterOp = null;
-                string filterValue = null;
-                string filterType = null;
-                string idMenu = null;
-                string idFilter = null;
+                string filterValue = string.Empty;
+                string? filterType = null;
+                string? idMenu = null;
+                string? idFilter = null;
 
                 if (!gridDef.IsStatic) {
 
@@ -591,7 +593,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             <div class='tg_fentry'>");
 
                         await YetaWFCoreRendering.Render.AddPopupsAddOnsAsync();// using popups
-                        ComplexFilter complexFilter =  await YetaWFComponentExtender.GetComplexFilterFromUIHintAsync(prop.UIHint);
+                        ComplexFilter? complexFilter =  await YetaWFComponentExtender.GetComplexFilterFromUIHintAsync(prop.UIHint);
                         if (complexFilter != null) {
 
                             filterType = "complex";
@@ -626,7 +628,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
 
                         } else if (prop.PropInfo.PropertyType == typeof(int) || prop.PropInfo.PropertyType == typeof(int?) || prop.PropInfo.PropertyType == typeof(long) || prop.PropInfo.PropertyType == typeof(long?)) {
 
-                            List<SelectionItem<int?>> entries = await YetaWFComponentExtender.GetSelectionListIntFromUIHintAsync(prop.UIHint);
+                            List<SelectionItem<int?>>? entries = await YetaWFComponentExtender.GetSelectionListIntFromUIHintAsync(prop.UIHint);
                             if (entries == null) {
                                 // regular int/long
                                 filterOpts = new List<GridColumnInfo.FilterOptionEnum> {
@@ -752,7 +754,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                             };
                             filterType = "guid";
                             FilterGuidUI filterUI = new FilterGuidUI {
-                                Value = (filterOp != null) ? filterValue : null,
+                                Value = (filterOp != null) ? filterValue : string.Empty,
                             };
                             filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.Contains;
 
@@ -801,7 +803,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                             filterOpts = GetFilterOptions(gridCol);
                             filterType = "text";
                             FilterStringUI filterUI = new FilterStringUI {
-                                Value = (filterOp != null) ? filterValue : null,
+                                Value = (filterOp != null) ? filterValue : string.Empty,
                             };
                             filterOp = filterOp ?? filterOpts.First();
 
@@ -818,7 +820,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             &nbsp;");
                     }
                     filterhb.Append($@"
-            {(filterOp != null ? GetFilterMenu(gridDef, filterOpts, filterOp, idMenu, colIndex) : null)}
+            {(filterOp != null && idMenu != null ? GetFilterMenu(gridDef, filterOpts, filterOp, idMenu, colIndex) : null)}
         </th>");
 
                 }
@@ -951,16 +953,16 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
 
                 PropertyData prop = ObjectSupport.GetPropertyData(gridDef.RecordType, propName);
 
-                gridSavedSettings.Columns.TryGetValue(propName, out GridDefinition.ColumnInfo columnInfo);
+                gridSavedSettings.Columns.TryGetValue(propName, out GridDefinition.ColumnInfo? columnInfo);
                 ColumnVisibilityStatus colStatus = dictInfo.GetColumnStatus(propName);
 
                 // Caption
-                string caption = prop.GetCaption(gridDef.ResourceRedirect);
+                string? caption = prop.GetCaption(gridDef.ResourceRedirect);
                 if (!gridCol.Hidden && gridDef.ResourceRedirect != null && string.IsNullOrWhiteSpace(caption))
                     continue;// we need a caption if we're using resource redirects
 
                 // Description
-                string description = prop.GetDescription(gridDef.ResourceRedirect);
+                string? description = prop.GetDescription(gridDef.ResourceRedirect);
 
                 list.Add(new SelectionCheckListDetail { Key = propName, Text = caption, Description = description, Enabled = colStatus != ColumnVisibilityStatus.AlwaysShown });
 
@@ -972,7 +974,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
         }
 
         internal static async Task<string> RenderTableHTML(YHtmlHelper htmlHelper,
-                GridDefinition model, DataSourceResult data, List<object> staticData, GridDictionaryInfo.ReadGridDictionaryInfo dictInfo, GridDefinition.ColumnDictionary colDict, string fieldPrefix, bool readOnly, int skip, int take) {
+                GridDefinition model, DataSourceResult data, List<object>? staticData, GridDictionaryInfo.ReadGridDictionaryInfo dictInfo, GridDefinition.ColumnDictionary colDict, string fieldPrefix, bool readOnly, int skip, int take) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -1082,18 +1084,20 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                     GridColumnInfo gridCol = dictInfo.ColumnInfo[colName];
                     if (!gridCol.Hidden) {
 
-                        colDict.TryGetValue(colName, out GridDefinition.ColumnInfo columnInfo);
+                        colDict.TryGetValue(colName, out GridDefinition.ColumnInfo? columnInfo);
                         bool colVisible = columnInfo != null ? columnInfo.Visible : dictInfo.GetColumnStatus(colName) != ColumnVisibilityStatus.NotShown;
 
                         if (colVisible || gridModel.IsStatic) {
                             PropertyData prop = ObjectSupport.GetPropertyData(recordType, colName);
                             object value = prop.GetPropertyValue<object>(record);
 
+                            if (prop.UIHint == null)
+                                continue;
                             if (gridModel.ResourceRedirect != null && string.IsNullOrWhiteSpace(prop.GetCaption(gridModel.ResourceRedirect)))
                                 continue;// we need a caption if we're using resource redirects
 
                             // Alignment
-                            string tdCss = null;
+                            string? tdCss = null;
                             switch (gridCol.Align) {
                                 case GridHAlignmentEnum.Unspecified:
                                 case GridHAlignmentEnum.Left:
@@ -1153,7 +1157,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             [Caption("Entries"), Description("Select the number of entries per page")]
             [UIHint("DropDownListInt")]
             public int __PageSelection { get; set; }
-            public List<SelectionItem<int>> __PageSelection_List { get; set; }
+            public List<SelectionItem<int>> __PageSelection_List { get; set; } = null!;
         }
 
         private async Task<string> RenderPagerAsync(GridDefinition gridModel, DataSourceResult data, GridLoadSave.GridSavedSettings gridSavedSettings, GridDictionaryInfo.ReadGridDictionaryInfo dictInfo, GridSetup setup) {

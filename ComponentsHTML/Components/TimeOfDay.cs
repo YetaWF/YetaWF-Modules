@@ -30,13 +30,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [UIHint("TimeOfDay"), Required]
     /// public TimeOfDay MorningTaskDueTime { get; set; }
     /// </example>
-    public class TimeOfDayDisplayComponent : TimeOfDayComponentBase, IYetaWFComponent<TimeOfDay> {
+    public class TimeOfDayDisplayComponent : TimeOfDayComponentBase, IYetaWFComponent<TimeOfDay?> {
 
         /// <inheritdoc/>
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
         /// <inheritdoc/>
-        public Task<string> RenderAsync(TimeOfDay model) {
+        public Task<string> RenderAsync(TimeOfDay? model) {
             if (model != null)
                 return Task.FromResult($"<div{FieldSetup(FieldType.Anonymous)} class='yt_timeofday t_display'>{HE(Formatting.FormatTimeOfDay(model))}</div>");
             return Task.FromResult(string.Empty);
@@ -51,7 +51,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [UIHint("TimeOfDay"), Required]
     /// public TimeOfDay MorningTaskDueTime { get; set; }
     /// </example>
-    public class TimeOfDayEditComponent : TimeOfDayComponentBase, IYetaWFComponent<TimeOfDay> {
+    public class TimeOfDayEditComponent : TimeOfDayComponentBase, IYetaWFComponent<TimeOfDay?> {
 
         /// <inheritdoc/>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
@@ -67,20 +67,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<string> RenderAsync(TimeOfDay model) {
+        public Task<string> RenderAsync(TimeOfDay? model) {
 
             DateTimeEditComponent.Setup setup = new DateTimeEditComponent.Setup {
                 Style = DateTimeEditComponent.Setup.DateTimeStyleEnum.Time
             };
-            if (TryGetSiblingProperty($"{PropertyName}_Setup", out DateTimeEditComponent.DateTimeSetup dateTimeSetup)) {
+            if (TryGetSiblingProperty($"{PropertyName}_Setup", out DateTimeEditComponent.DateTimeSetup? dateTimeSetup) && dateTimeSetup != null) {
                 setup.MinTime = dateTimeSetup.MinTime;
                 setup.MaxTime = dateTimeSetup.MaxTime;
             }
 
             // model binding error handling
-            string internalValue = setup.InitialCalendarDate = model != null ? $"{model.AsDateTime():o}" : null;
+            string internalValue = setup.InitialCalendarDate = (model != null) ? $"{model.AsDateTime():o}" : string.Empty;
             string displayValue = Formatting.FormatTimeOfDay(model != null && model.HasTimeOfDay ? model : null);
-            if (Manager.HasModelBindingErrorManager && Manager.ModelBindingErrorManager.TryGetAttemptedValue(PropertyName, out string attemptedValue)) {
+            if (Manager.HasModelBindingErrorManager && Manager.ModelBindingErrorManager.TryGetAttemptedValue(PropertyName, out string? attemptedValue)) {
                 displayValue = internalValue = attemptedValue;
             }
 

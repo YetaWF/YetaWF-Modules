@@ -20,7 +20,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public bool? SaveFilters { get; set; }
             public bool? SaveWidths { get; set; }
             public int? InitialPageSize { get; set; }
-            public List<int> PageSizes { get; set; }
+            public List<int>? PageSizes { get; set; }
             public bool? ShowHeader { get; set; }
             public bool? ShowFilter { get; set; }
             public bool? ShowPager { get; set; }
@@ -34,7 +34,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 // Check cache first
                 GetObjectInfo<ReadGridDictionaryInfo> info = await cacheDP.GetAsync<ReadGridDictionaryInfo>(file);
                 if (info.Success)
-                    return info.Data;
+                    return info.Data!;
 
                 // Load the file
                 Dictionary<string, GridColumnInfo> dict = new Dictionary<string, GridColumnInfo>();
@@ -67,10 +67,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 }
 
                 // Parse the file
-                string sortCol = null;
+                string? sortCol = null;
                 GridDefinition.SortBy sortDir = GridDefinition.SortBy.NotSpecified;
 
-                Config config = null;
+                Config? config = null;
 
                 foreach (string line in lines) {
                     string[] parts = line.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
@@ -219,18 +219,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 string[] vars = part.Substring(1, part.Length - 2).Split(new[] { '.' });
                 if (vars.Length != 2) throw new InternalError($"Invalid variable {part} for column {name} in {file}");
                 if (vars[0] == "Globals") {
-                    FieldInfo fi = typeof(Globals).GetField(vars[1], BindingFlags.Public | BindingFlags.Static);
+                    FieldInfo? fi = typeof(Globals).GetField(vars[1], BindingFlags.Public | BindingFlags.Static);
                     if (fi == null) throw new InternalError($"Globals.{vars[1]} doesn't exist - column {name} in {file}");
-                    part = fi.GetValue(null).ToString();
+                    part = fi.GetValue(null)!.ToString()!;
                 } else if (vars[0] == "Package") {
                     Package.AddOnProduct addonVersion = Package.FindPackage(package.AreaName);
                     foreach (var type in addonVersion.SupportTypes) {
-                        object o = Activator.CreateInstance(type);
+                        object? o = Activator.CreateInstance(type);
                         if (o == null)
                             throw new InternalError($"Type {type.Name} can't be created for area {package.AreaName}");
-                        FieldInfo fi = type.GetField(vars[1], BindingFlags.Public | BindingFlags.Static);
+                        FieldInfo? fi = type.GetField(vars[1], BindingFlags.Public | BindingFlags.Static);
                         if (fi != null) {
-                            part = fi.GetValue(null).ToString();
+                            part = fi.GetValue(null)!.ToString()!;
                             break;
                         }
                     }

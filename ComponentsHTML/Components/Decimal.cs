@@ -66,7 +66,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (model != null && (Decimal)model > Decimal.MinValue && (Decimal)model < Decimal.MaxValue) {
                 string s = string.Empty;
                 if (model != null) {
-                    string format = PropData.GetAdditionalAttributeValue("Format", "0.00");
+                    string format = PropData.GetAdditionalAttributeValue("Format", "0.00")!;
                     s = ((decimal)model).ToString(format);
                 }
                 return Task.FromResult($@"<div{FieldSetup(FieldType.Anonymous)} class='yt_decimal t_display{GetClasses()}'>{HAE(s)}</div>");
@@ -118,11 +118,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(Decimal? model) {
 
-            TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out string placeHolder);
+            TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out string? placeHolder);
 
-            string value = null;
+            string? value = null;
             if (model != null) {
-                string format = PropData.GetAdditionalAttributeValue("Format", "0.00");
+                string format = PropData.GetAdditionalAttributeValue("Format", "0.00")!;
                 value = HAE(((decimal)model).ToString(format));
             }
 
@@ -135,7 +135,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             };
 
             // handle min/max
-            RangeAttribute rangeAttr = PropData.TryGetAttribute<RangeAttribute>();
+            RangeAttribute? rangeAttr = PropData.TryGetAttribute<RangeAttribute>();
             if (rangeAttr != null) {
                 setup.Min = Convert.ToSingle(rangeAttr.Minimum);
                 setup.Max = Convert.ToSingle(rangeAttr.Maximum);

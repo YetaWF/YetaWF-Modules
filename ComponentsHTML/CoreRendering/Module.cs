@@ -82,14 +82,14 @@ namespace YetaWF.Modules.ComponentsHTML {
         /// <param name="mode">The module action's rendering mode.</param>
         /// <param name="id">The ID to generate.</param>
         /// <returns>Returns the module action as HTML.</returns>
-        public async Task<string> RenderModuleActionAsync(ModuleAction action, ModuleAction.RenderModeEnum mode, string id) {
+        public async Task<string> RenderModuleActionAsync(ModuleAction action, ModuleAction.RenderModeEnum mode, string? id) {
             return await RenderActionAsync(action, mode, id);
         }
 
-        internal static async Task<string> RenderActionAsync(ModuleAction action, ModuleAction.RenderModeEnum mode, string id, string EndIcon = null) {
+        internal static async Task<string> RenderActionAsync(ModuleAction action, ModuleAction.RenderModeEnum mode, string? id, string? EndIcon = null) {
 
             // check if we're in the right mode
-            if (!await action.RendersSomethingAsync()) return null;
+            if (!await action.RendersSomethingAsync()) return string.Empty;
 
             await Manager.AddOnManager.AddTemplateFromUIHintAsync("ActionIcons", YetaWFComponentBase.ComponentType.Display);// this is needed because we're not used by templates
 
@@ -142,8 +142,8 @@ namespace YetaWF.Modules.ComponentsHTML {
                     break;
             }
 
-            Dictionary<string, object> attrs = new Dictionary<string, object>();
-            string css = null;
+            Dictionary<string, object?> attrs = new Dictionary<string, object?>();
+            string? css = null;
             if (!string.IsNullOrWhiteSpace(action.Tooltip))
                 attrs.Add(Basics.CssTooltip, action.Tooltip);
             if (!string.IsNullOrWhiteSpace(action.Name))
@@ -171,11 +171,11 @@ namespace YetaWF.Modules.ComponentsHTML {
             if (!string.IsNullOrWhiteSpace(url)) {
                 attrs.Add("href", url);
                 if (Manager.CurrentPage != null) {
-                    string currUrl = Manager.CurrentPage.EvaluatedCanonicalUrl;
+                    string? currUrl = Manager.CurrentPage.EvaluatedCanonicalUrl;
                     if (!string.IsNullOrWhiteSpace(currUrl) && currUrl != "/") {// this doesn't work on home page because everything matches
                         if (action.Url == currUrl)
                             css = CssManager.CombineCss(css, "t_currenturl");
-                        if (currUrl.StartsWith(action.Url))
+                        if (action.Url != null && currUrl.StartsWith(action.Url))
                             css = CssManager.CombineCss(css, "t_currenturlpart");
                     }
                 }

@@ -101,7 +101,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal class UI {
             [UIHint("Tabs")]
-            public TabsDefinition TabsDef { get; set; }
+            public TabsDefinition TabsDef { get; set; } = null!;
         }
 
         /// <summary>
@@ -244,7 +244,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             RenderFooter(hb, classData);
 
-            ControlData cd = null;
+            ControlData? cd = null;
             if (!readOnly)
                 cd = GetControlSets(model, divId);
             if (setup.ExpandableList != null) {
@@ -287,7 +287,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
             RenderFooter(hb, classData);
 
-            ControlData cd = GetControlSets(model, divId);
+            ControlData? cd = GetControlSets(model, divId);
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PropertyListComponent('{divId}', {Utility.JsonSerialize(new PropertyList.PropertyListSetup())}, {Utility.JsonSerialize(cd)});");
 
             return hb.ToString();

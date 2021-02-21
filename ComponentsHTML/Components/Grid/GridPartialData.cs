@@ -43,11 +43,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         private class GridPartialResult {
             public int Records { get; set; }
-            public string TBody { get; set; }
+            public string TBody { get; set; } = null!;
             public int Pages { get; set; }
             public int Page { get; set; }
             public int PageSize { get; set; }
-            public List<Boolean> ColumnVisibility { get; set; }
+            public List<Boolean> ColumnVisibility { get; set; } = null!;
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             GridDefinition.ColumnDictionary colDict = new GridDefinition.ColumnDictionary();
             if (GridLoadSave.UseGridSettings(model.GridDef.SettingsModuleGuid)) {
-                GridLoadSave.GridSavedSettings gridSavedSettings = GridLoadSave.LoadModuleSettings((Guid)model.GridDef.SettingsModuleGuid, 1, 10);
+                GridLoadSave.GridSavedSettings gridSavedSettings = GridLoadSave.LoadModuleSettings((Guid)model.GridDef.SettingsModuleGuid!, 1, 10);
                 colDict = gridSavedSettings.Columns;
             }
 
@@ -88,7 +88,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             foreach (string colName in dictInfo.ColumnInfo.Keys) {
                 GridColumnInfo columnInfo = dictInfo.ColumnInfo[colName];
                 if (!columnInfo.Hidden) {
-                    colDict.TryGetValue(colName, out GridDefinition.ColumnInfo colInfo);
+                    colDict.TryGetValue(colName, out GridDefinition.ColumnInfo? colInfo);
                     colVisible.Add(colInfo != null ? colInfo.Visible : dictInfo.GetColumnStatus(colName) != ColumnVisibilityStatus.NotShown);
                 }
             }

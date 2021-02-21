@@ -48,7 +48,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public Task<string> RenderAsync(string model) {
 
             if (string.IsNullOrWhiteSpace(model))
-                return Task.FromResult<string>(null);
+                return Task.FromResult<string>(string.Empty);
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"<div class='yDivAlert'>{HE(model)}</div>");

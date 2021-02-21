@@ -74,7 +74,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             bool showValues = UserSettings.GetProperty<bool>("ShowEnumValue");
             showValues = showValues && PropData.GetAdditionalAttributeValue("ShowEnumValue", true);
 
-            string desc;
+            string? desc;
             string caption = ObjectSupport.GetEnumDisplayInfo(model, out desc, ShowValue: showValues);
 
             if (HtmlAttributes.Count > 0 || !string.IsNullOrWhiteSpace(desc)) {

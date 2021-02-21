@@ -49,7 +49,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// public string Description { get; set; }
     /// public string Description_Url { get; set; }
     /// </example>
-    [UsesAdditional("CssClass", "string", null, "Defines an optional CSS class added to the URL link.")]
+    [UsesAdditional("CssClass", "string", "null", "Defines an optional CSS class added to the URL link.")]
     [UsesSibling("_Url", "string", "If this property is specified, the model is used as the link text and this property is used as the actual URL.")]
     public class UrlDisplayComponent : UrlComponentBase, IYetaWFComponent<string> {
 
@@ -66,19 +66,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(string model) {
 
-            if (string.IsNullOrWhiteSpace(model)) return Task.FromResult<string>(null);
+            if (string.IsNullOrWhiteSpace(model)) return Task.FromResult<string>(string.Empty);
 
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append("<div class='yt_url t_display'>");
 
-            string hrefUrl;
+            string? hrefUrl;
             if (!TryGetSiblingProperty($"{PropertyName}_Url", out hrefUrl))
                 hrefUrl = model;
 
             if (string.IsNullOrWhiteSpace(hrefUrl) || (!hrefUrl.StartsWith("http://") && !hrefUrl.StartsWith("https://") && !hrefUrl.StartsWith("/"))) {
                 // no link
-                string cssClass = PropData.GetAdditionalAttributeValue("CssClass", string.Empty);
+                string? cssClass = PropData.GetAdditionalAttributeValue("CssClass", string.Empty);
                 if (!string.IsNullOrWhiteSpace(cssClass))
                     cssClass = Manager.AddOnManager.CheckInvokedCssModule(cssClass);
 
@@ -87,16 +87,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             } else {
                 // link
 
-                string cssClass = PropData.GetAdditionalAttributeValue("CssClass", "");
+                string? cssClass = PropData.GetAdditionalAttributeValue<string>("CssClass");
                 if (!string.IsNullOrWhiteSpace(cssClass))
                     cssClass = Manager.AddOnManager.CheckInvokedCssModule(cssClass);
 
-                string text;
+                string? text;
                 if (!TryGetSiblingProperty($"{PropertyName}_Text", out text))
                     text = model;
 
                 string tt = string.Empty;
-                TryGetSiblingProperty($"{PropertyName}_ToolTip", out string tooltip);
+                TryGetSiblingProperty($"{PropertyName}_ToolTip", out string? tooltip);
                 if (!string.IsNullOrWhiteSpace(tooltip))
                     tt = $" {Basics.CssTooltip}='{HAE(tooltip)}'";
 
@@ -132,19 +132,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal class UrlEditSetup {
             public UrlTypeEnum Type { get; set; }
-            public string Url { get; set; }
+            public string Url { get; set; } = null!;
         }
         internal class UrlUI {
 
             [UIHint("Hidden")]
-            public string Url { get; set; }
+            public string Url { get; set; } = null!;
 
             [UIHint("UrlType")]
             public UrlTypeEnum UrlType { get; set; }
             [UIHint("UrlDesignedPage")]
-            public string _Local { get; set; }
+            public string _Local { get; set; } = null!;
             [UIHint("UrlRemotePage")]
-            public string _Remote { get; set; }
+            public string _Remote { get; set; } = null!;
         }
 
         /// <summary>

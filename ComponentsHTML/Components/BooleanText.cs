@@ -68,7 +68,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (model != null && (bool)model)
                 check = " checked='checked'";
 
-            TryGetSiblingProperty($"{PropertyName}_Text", out string text);
+            TryGetSiblingProperty($"{PropertyName}_Text", out string? text);
 
             return Task.FromResult( $@"<input{FieldSetup(FieldType.Anonymous)} class='yt_booleantext t_display{GetClasses()}' type='checkbox' disabled='disabled'{check}>{HE(text)}");
         }
@@ -116,9 +116,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (model != null && (bool)model)
                 check = " checked='checked'";
 
-            TryGetSiblingProperty($"{PropertyName}_Text", out string text);
+            TryGetSiblingProperty($"{PropertyName}_Text", out string? text);
 
-            if (TryGetSiblingProperty($"{PropertyName}_Tooltip", out string tooltip))
+            if (TryGetSiblingProperty($"{PropertyName}_Tooltip", out string? tooltip))
                 tooltip = $" data-tooltip='{Utility.HAE(tooltip)}'";
 
             return Task.FromResult($@"

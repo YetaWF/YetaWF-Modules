@@ -60,7 +60,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         Tooltip = __ResStr("packageTT", "{0} - {1}", p.Description.ToString(), p.CompanyDisplayName),
                     }).ToList<SelectionItem<string>>();
             list = (from l in list orderby l.Text select l).ToList();
-            list.Insert(0, new SelectionItem<string> { Text = __ResStr("selectPackage", "(select)"), Value = null });
+            list.Insert(0, new SelectionItem<string> { Text = __ResStr("selectPackage", "(select)"), Value = string.Empty });
 
             return await DropDownListComponent.RenderDropDownListAsync(this, areaName, list, null);
         }
@@ -74,7 +74,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         Value = module.ModuleGuid.ToString(),
                         Tooltip = module.Description,
                     }).ToList<SelectionItem<string>>();
-            list.Insert(0, new SelectionItem<string> { Text = __ResStr("none", "(none)"), Value = null });
+            list.Insert(0, new SelectionItem<string> { Text = __ResStr("none", "(none)"), Value = string.Empty });
             return DropDownListEditComponentBase<string>.RenderDataSource(list, areaName);
         }
         internal static async Task<string> RenderReplacementPackageModulesDesignedAsync(Guid modGuid) {
@@ -88,7 +88,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         Value = module.ModuleGuid.ToString(),
                         Tooltip = module.Description,
                     }).ToList<SelectionItem<string>>();
-            list.Insert(0, new SelectionItem<string> { Text = __ResStr("none", "(none)"), Value = null });
+            list.Insert(0, new SelectionItem<string> { Text = __ResStr("none", "(none)"), Value = string.Empty });
             return DropDownListEditComponentBase<string>.RenderDataSource(list, areaName);
         }
     }

@@ -13,7 +13,7 @@ namespace YetaWF.Modules.ComponentsHTML {
         }
 
         internal static ComponentsData GetComponentsData() {
-            ComponentsData cData = (ComponentsData)Manager.ComponentsData;
+            ComponentsData? cData = (ComponentsData?)Manager.ComponentsData;
             if (cData == null) {
                 cData = new ComponentsData();
                 Manager.ComponentsData = cData;

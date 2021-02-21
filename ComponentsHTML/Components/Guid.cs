@@ -101,7 +101,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public async Task<string> RenderAsync(Guid? model) {
             HtmlAttributes.Add("class", "yt_text40");
             HtmlAttributes.Add("maxlength", "40");
-            return await TextEditComponent.RenderTextAsync(this, model != null ? model.ToString() : "", "yt_guid");
+            return await TextEditComponent.RenderTextAsync(this, model?.ToString() ?? string.Empty, "yt_guid");
         }
     }
 }

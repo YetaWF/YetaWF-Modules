@@ -15,7 +15,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public class ReadGridDictionaryInfo {
 
             public Dictionary<string, GridColumnInfo> ColumnInfo { get; set; }
-            public string SortColumn { get; set; }
+            public string? SortColumn { get; set; }
             public GridDefinition.SortBy SortBy { get; set; }
 
             public bool? ShowPanelHeader { get; set; }
@@ -30,7 +30,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public bool? SaveColumnFilters { get; set; }
 
             public int? InitialPageSize { get; set; }
-            public List<int> PageSizes { get; set; }
+            public List<int>? PageSizes { get; set; }
 
             public bool? Reorderable { get; set; }
             public bool? HighlightOnClick { get; set; }
@@ -50,7 +50,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
 
             public ColumnVisibilityStatus GetColumnStatus(string name) {
-                if (!ColumnInfo.TryGetValue(name, out GridColumnInfo colInfo))
+                if (!ColumnInfo.TryGetValue(name, out GridColumnInfo? colInfo))
                     return ColumnVisibilityStatus.Shown;
                 return colInfo.Visibility;
             }
@@ -68,7 +68,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <remarks>This method is not used by applications. It is reserved for component implementation.</remarks>
         public static async Task<GridDictionaryInfo.ReadGridDictionaryInfo> LoadGridColumnDefinitionsAsync(GridDefinition gridDef) {
 
-            GridDictionaryInfo.ReadGridDictionaryInfo dictInfo = (GridDictionaryInfo.ReadGridDictionaryInfo)gridDef.CachedData;
+            GridDictionaryInfo.ReadGridDictionaryInfo? dictInfo = (GridDictionaryInfo.ReadGridDictionaryInfo?)gridDef.CachedData;
             if (dictInfo == null || !YetaWFManager.Deployed) {// don't use cached grid info in development
 
                 gridDef.CachedData = await LoadGridColumnDefinitionsAsync(gridDef.RecordType);
@@ -126,7 +126,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <remarks>This method is not used by applications. It is reserved for component implementation.</remarks>
         private static async Task<GridDictionaryInfo.ReadGridDictionaryInfo> LoadGridColumnDefinitionsAsync(Type recordType) {
             Dictionary<string, GridColumnInfo> dict = new Dictionary<string, GridColumnInfo>();
-            string className = recordType.FullName.Split(new char[] { '.' }).Last();
+            string className = recordType.FullName!.Split(new char[] { '.' }).Last();
             string[] s = className.Split(new char[] { '+' });
             int len = s.Length;
             if (len != 2) throw new InternalError("Unexpected class {0} in record type {1}", className, recordType.FullName);
@@ -137,7 +137,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string predefUrl = Package.GetAddOnPackageUrl(package.AreaName) + "Grids/" + file;
             string customUrl = Package.GetCustomUrlFromUrl(predefUrl);
 
-            GridDictionaryInfo.ReadGridDictionaryInfo info = null;
+            GridDictionaryInfo.ReadGridDictionaryInfo? info = null;
             GridDictionaryInfo.ReadGridDictionaryInfo yamlInfo = await GridDictionaryInfo.ReadGridDictionaryYamlAsync(package, recordType, Utility.UrlToPhysical(predefUrl + ".yaml"));
             if (yamlInfo.Success) {
                 info = yamlInfo;

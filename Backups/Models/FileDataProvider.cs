@@ -27,7 +27,7 @@ namespace YetaWF.Modules.Backups.DataProvider.File {
             public BackupsDataProvider(Dictionary<string, object> options) : base(options) { }
             public override string GetBaseFolder() { return Path.Combine(YetaWFManager.Manager.SiteFolder, SiteBackup.BackupFolder); }
 
-            internal async Task<DataProviderGetRecords<BackupEntry>> GetBackupsAsync(int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
+            internal async Task<DataProviderGetRecords<BackupEntry>> GetBackupsAsync(int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) {
 
                 List<BackupEntry> backups = new List<BackupEntry>();
                 List<string> files = await GetListOfKeysAsync(BaseFolder);

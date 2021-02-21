@@ -10,8 +10,8 @@ using YetaWF.Core.Support;
 namespace YetaWF.Modules.Backups.DataProvider {
 
     public class BackupEntry {
-        public string FileName { get; set; }
-        public string FullFileName { get; set; }
+        public string FileName { get; set; } = null!;
+        public string FullFileName { get; set; } = null!;
         public long Size { get; set; }
         public DateTime Created { get; set; }
     }
@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Backups.DataProvider {
 
         private IDataProvider<string, BackupEntry> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<string, BackupEntry> CreateDataProvider() {
+        private IDataProvider<string, BackupEntry>? CreateDataProvider() {
             Package package = YetaWF.Modules.Backups.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName);
         }
@@ -35,9 +35,9 @@ namespace YetaWF.Modules.Backups.DataProvider {
         // API
         // API
 
-        public async Task<DataProviderGetRecords<BackupEntry>> GetBackupsAsync(int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) {
+        public async Task<DataProviderGetRecords<BackupEntry>> GetBackupsAsync(int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) {
 
-            File.FileDataProvider.BackupsDataProvider fileDP = DataProvider as File.FileDataProvider.BackupsDataProvider;
+            File.FileDataProvider.BackupsDataProvider? fileDP = DataProvider as File.FileDataProvider.BackupsDataProvider;
             if (fileDP == null)
                 throw new InternalError($"{nameof(BackupsDataProvider)} only supports File I/O");
 

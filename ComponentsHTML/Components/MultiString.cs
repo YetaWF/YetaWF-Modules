@@ -198,8 +198,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
         public override string GetTemplateName() { return TemplateName; }
 
-        internal string TemplateName { get; set; }
-        internal string ExtraClass { get; set; }
+        internal string TemplateName { get; set; } = null!;
+        internal string? ExtraClass { get; set; }
     }
 
     /// <summary>
@@ -244,10 +244,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal class MultiStringUI {
             [UIHint("Text")]
-            public string Input { get; set; }
+            public string Input { get; set; } = null!;
             [UIHint("DropDownList")]
-            public string Language { get; set; }
-            public List<SelectionItem<string>> Language_List { get; set; }
+            public string Language { get; set; } = null!;
+            public List<SelectionItem<string>> Language_List { get; set; } = null!;
         }
 
         /// <summary>
@@ -279,7 +279,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hb = new HtmlBuilder();
 
             // handle StringLengthAttribute as maxlength
-            StringLengthAttribute lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
+            StringLengthAttribute? lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
             if (lenAttr == null)
                 throw new InternalError("No max string length given using StringLengthAttribute - {0}", FieldName);
 

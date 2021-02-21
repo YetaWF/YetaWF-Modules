@@ -22,16 +22,16 @@ namespace YetaWF.Modules.ComponentsHTML {
         }
         private string RenderFormButton(FormButton formButton) {
 
-            Dictionary<string, object> attrs = new Dictionary<string, object>();
-            string css = null;
+            Dictionary<string, object?> attrs = new Dictionary<string, object?>();
+            string? css = null;
 
-            string text = formButton.Text;
+            string? text = formButton.Text;
             switch (formButton.ButtonType) {
                 case ButtonTypeEnum.Submit:
                 case ButtonTypeEnum.ConditionalSubmit:
                     if (formButton.ButtonType == ButtonTypeEnum.ConditionalSubmit && !Manager.IsInPopup && !Manager.HaveReturnToUrl) {
                         // if we don't have anyplace to return to and we're not in a popup we don't need a submit button
-                        return null;
+                        return string.Empty;
                     }
                     if (string.IsNullOrWhiteSpace(text)) text = this.__ResStr("btnSave", "Save");
                     attrs.Add("type", "submit");
@@ -65,7 +65,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             if (!string.IsNullOrWhiteSpace(formButton.CssClass))
                 css = CssManager.CombineCss(css, formButton.CssClass);
 
-            string id = null;
+            string? id = null;
             if (!string.IsNullOrWhiteSpace(formButton.Id))
                 id = $" id='{formButton.Id}'";
 

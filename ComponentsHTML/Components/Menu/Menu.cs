@@ -81,11 +81,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// <summary>
             /// Defines the menu entries.
             /// </summary>
-            public MenuList MenuList { get; set; }
+            public MenuList MenuList { get; set; } = null!;
             /// <summary>
             /// The CSS class added to the top-level HTML tag representing the menu. May be null.
             /// </summary>
-            public string CssClass { get; set; }
+            public string? CssClass { get; set; }
             /// <summary>
             /// Defines the delay (in milliseconds) before the menu is closed, which is used to avoid accidental closure on leaving the menu.
             /// </summary>

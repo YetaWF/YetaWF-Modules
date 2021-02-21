@@ -20,7 +20,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public int SmallMenuMaxWidth { get; set; }
             public int HoverDelay { get; set; }
         }   
-        internal static async Task<string> RenderMenuAsync(MenuList menu, string id = null, string cssClass = null, bool Hidden = false, YHtmlHelper HtmlHelper = null, bool WantArrows = false) {
+        internal static async Task<string> RenderMenuAsync(MenuList? menu, string? id = null, string? cssClass = null, bool Hidden = false, YHtmlHelper? HtmlHelper = null, bool WantArrows = false) {
 
             if (menu == null || menu.Count == 0)
                 return string.Empty;
@@ -41,7 +41,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return $@"<ul{(id != null ? $" id='{id}'" : "")} class='{css}'{style}>{menuContents}</ul>";
         }
 
-        private static async Task<string> RenderMenuAsync(YHtmlHelper htmlHelper, List<ModuleAction> subMenu, Guid? subGuid, string cssClass, ModuleAction.RenderModeEnum renderMode, int level, bool wantArrows) {
+        private static async Task<string> RenderMenuAsync(YHtmlHelper? htmlHelper, List<ModuleAction>? subMenu, Guid? subGuid, string? cssClass, ModuleAction.RenderModeEnum renderMode, int level, bool wantArrows) {
 
             string menuContents = await RenderLIAsync(htmlHelper, subMenu, subGuid, renderMode, null, level, wantArrows);
             if (string.IsNullOrWhiteSpace(menuContents)) return string.Empty;
@@ -54,7 +54,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return $@"<ul class='{css}' style='display:none'>{menuContents}</ul>";
         }
 
-        private static async Task<string> RenderLIAsync(YHtmlHelper htmlHelper, List<ModuleAction> subMenu, Guid? subGuid, ModuleAction.RenderModeEnum renderMode, string liCss, int level, bool wantArrows) {
+        private static async Task<string> RenderLIAsync(YHtmlHelper? htmlHelper, List<ModuleAction>? subMenu, Guid? subGuid, ModuleAction.RenderModeEnum renderMode, string? liCss, int level, bool wantArrows) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -64,7 +64,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 css = CssManager.CombineCss(css, liCss);
 
                 string contents = string.Empty;
-                ModuleDefinition subMod = await ModuleDefinition.LoadAsync((Guid)subGuid, AllowNone: true);
+                ModuleDefinition? subMod = await ModuleDefinition.LoadAsync((Guid)subGuid, AllowNone: true);
                 if (subMod != null) {
                     subMod.ShowTitle = false; // don't show the module title in a submenu (temp. override)
                     if (htmlHelper == null)
@@ -73,7 +73,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 }
                 hb.Append($"<li class='t_megamenu_content {css} t_lvl{level}'>{contents}</li>\n");
 
-            } else {
+            } else if (subMenu != null) { 
                 foreach (var menuEntry in subMenu) {
 
                     if (menuEntry.Enabled && await menuEntry.RendersSomethingAsync()) {
@@ -97,7 +97,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                     css = CssManager.CombineCss(css, "t_megamenu_hassub");
                                 css = CssManager.CombineCss(css, liCss);
                                 css = CssManager.CombineCss(css, "t_hassub");
-                                string arrow = null;
+                                string? arrow = null;
                                 if (wantArrows)
                                     arrow = SkinSVGs.Get(AreaRegistration.CurrentPackage, level == 0 ? "fas-caret-down" : "fas-caret-right");
                                 string menuContents = await CoreRendering.RenderActionAsync(menuEntry, renderMode, null, EndIcon: arrow);

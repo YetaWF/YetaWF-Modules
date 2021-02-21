@@ -16,8 +16,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal class PropertyListEntry {
 
-            public PropertyListEntry(string name, object value, string uiHint, bool editable, bool restricted, string textAbove, string textBelow, bool suppressEmpty,
-                    List<ExprAttribute> exprAttrs,
+            public PropertyListEntry(string name, object value, string? uiHint, bool editable, bool restricted, string? textAbove, string? textBelow, bool suppressEmpty,
+                    List<ExprAttribute>? exprAttrs,
                     SubmitFormOnChangeAttribute.SubmitTypeEnum submit) {
                 Name = name; Value = value; Editable = editable;
                 Restricted = restricted;
@@ -30,14 +30,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
             public object Value { get; private set; }
             public string Name { get; private set; }
-            public string TextAbove { get; private set; }
-            public string TextBelow { get; private set; }
+            public string? TextAbove { get; private set; }
+            public string? TextBelow { get; private set; }
             public bool Editable { get; private set; }
             public bool Restricted { get; private set; }
-            public string UIHint { get; private set; }
+            public string? UIHint { get; private set; }
             public bool SuppressEmpty { get; private set; }
             public SubmitFormOnChangeAttribute.SubmitTypeEnum SubmitType { get; private set; }
-            public List<ExprAttribute> ExprAttrs { get; set; }
+            public List<ExprAttribute>? ExprAttrs { get; set; }
         };
 
         // returns all properties for an object that have a description, in sorted order
@@ -70,9 +70,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             PropertyList.PropertyListSetup setup = await PropertyList.LoadPropertyListDefinitionsAsync(setupType);
             if (setup.ExplicitDefinitions) {
                 // Invoke __PropertyListSetupAsync
-                MethodInfo miAsync = objType.GetMethod("__PropertyListSetupAsync", new Type[] { typeof(PropertyList.PropertyListSetup) });
+                MethodInfo? miAsync = objType.GetMethod("__PropertyListSetupAsync", new Type[] { typeof(PropertyList.PropertyListSetup) });
                 if (miAsync != null) {
-                    Task methRetvalTask = (Task)miAsync.Invoke(obj, new object[] { setup });
+                    Task methRetvalTask = (Task)miAsync.Invoke(obj, new object[] { setup })!;
                     await methRetvalTask;
                 }
 
@@ -129,9 +129,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             categories = categories.Distinct().ToList();
 
             // order (if there is a CategoryOrder property)
-            PropertyInfo piCat = ObjectSupport.TryGetProperty(objType, "CategoryOrder");
+            PropertyInfo? piCat = ObjectSupport.TryGetProperty(objType, "CategoryOrder");
             if (piCat != null) {
-                List<string> orderedCategories = (List<string>)piCat.GetValue(obj);
+                List<string> orderedCategories = (List<string>)piCat.GetValue(obj)!;
                 List<string> allCategories = new List<string>();
                 // verify that all returned categories in the list of ordered categories actually exist
                 foreach (var oCat in orderedCategories) {
@@ -149,7 +149,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
             return categories;
         }
-        internal List<PropertyListEntry> GetPropertiesByCategory(object obj, string category) {
+        internal List<PropertyListEntry> GetPropertiesByCategory(object obj, string? category) {
 
             List<PropertyListEntry> properties = new List<PropertyListEntry>();
             Type objType = obj.GetType();
@@ -166,15 +166,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     if (prop.ReadOnly)
                         editable = false;
                 }
-                SuppressEmptyAttribute suppressEmptyAttr = null;
-                suppressEmptyAttr = prop.TryGetAttribute<SuppressEmptyAttribute>();
-
-                SubmitFormOnChangeAttribute submitFormOnChangeAttr = null;
-                submitFormOnChangeAttr = prop.TryGetAttribute<SubmitFormOnChangeAttribute>();
+                SuppressEmptyAttribute? suppressEmptyAttr = prop.TryGetAttribute<SuppressEmptyAttribute>();
+                SubmitFormOnChangeAttribute? submitFormOnChangeAttr = prop.TryGetAttribute<SubmitFormOnChangeAttribute>();
 
                 bool restricted = false;
                 if (YetaWFManager.IsDemo || Manager.IsDemoUser) {
-                    ExcludeDemoModeAttribute exclDemoAttr = prop.TryGetAttribute<ExcludeDemoModeAttribute>();
+                    ExcludeDemoModeAttribute? exclDemoAttr = prop.TryGetAttribute<ExcludeDemoModeAttribute>();
                     if (exclDemoAttr != null)
                         restricted = true;
                 }

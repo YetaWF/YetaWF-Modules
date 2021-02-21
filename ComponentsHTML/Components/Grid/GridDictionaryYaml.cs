@@ -28,15 +28,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public bool? SaveColumnWidths { get; set; }
             public bool? SaveColumnFilters { get; set; }
             public int? InitialPageSize { get; set; }
-            public List<int> PageSizes { get; set; }
+            public List<int>? PageSizes { get; set; }
 
             public bool? Reorderable { get; set; }
             public bool? HighlightOnClick { get; set; }
             public bool? UseSkinFormatting { get; set; }
 
-            public Panel Panel { get; set; }
+            public Panel? Panel { get; set; }
 
-            public List<Column> Columns { get; set; }
+            public List<Column>? Columns { get; set; }
         }
 
         internal class Panel {
@@ -47,14 +47,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public bool? ColumnSelection { get; set; }
         }
         internal class Column {
-            public string Name { get; set; }
+            public string Name { get; set; } = null!;
             public int Icons { get; set; }
             public ColumnVisibilityStatus Visibility { get; set; }
             public GridDefinition.SortBy DefaultSort { get; set; }
             public bool Sort { get; set; }
             public bool Filter { get; set; }
             public List<GridColumnInfo.FilterOptionEnum> FilterOptions { get; set; }
-            public string Width { get; set; }
+            public string Width { get; set; } = null!;
             public GridHAlignmentEnum Align { get; set; }
             public bool Truncate { get; set; }
             public bool Locked { get; set; }
@@ -90,7 +90,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 // Check cache first
                 GetObjectInfo<ReadGridDictionaryInfo> info = await cacheDP.GetAsync<ReadGridDictionaryInfo>(file);
                 if (info.Success)
-                    return info.Data;
+                    return info.Data!;
 
                 // Load the file
                 Dictionary<string, GridColumnInfo> dict = new Dictionary<string, GridColumnInfo>();
@@ -131,7 +131,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     if (config.Columns == null || config.Columns.Count == 0)
                         throw new InternalError($"Column definitions missing in {file}");
 
-                    Column sortCol = (from c in config.Columns where c.DefaultSort != GridDefinition.SortBy.NotSpecified select c).FirstOrDefault();
+                    Column? sortCol = (from c in config.Columns where c.DefaultSort != GridDefinition.SortBy.NotSpecified select c).FirstOrDefault();
 
                     EvaluateColumnWidths(config.Columns, package, file);
 
@@ -141,7 +141,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         GridColumnInfo c = new GridColumnInfo();
                         if (col.Icons > 0) col.Align = GridHAlignmentEnum.Center;
                         if (col.Filter) {
-                            if (col.FilterOptions == null || col.FilterOptions.Count <= 0)
+                            if (col.FilterOptions.Count <= 0)
                                 col.FilterOptions = allFilters;
                         } else
                             col.FilterOptions = new List<GridColumnInfo.FilterOptionEnum>();
@@ -227,7 +227,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 if (col.FilterOptions.Count > 0) col.Filter = true;
                 if (SameFilters(col.FilterOptions, allFilters))
-                    col.FilterOptions = null;
+                    col.FilterOptions = new List<GridColumnInfo.FilterOptionEnum>(); 
 
                 if (!string.IsNullOrWhiteSpace(c.OriginalWidthCh))
                     col.Width = c.OriginalWidthCh.Replace("[","<").Replace("]",">");

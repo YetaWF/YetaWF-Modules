@@ -91,7 +91,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append($@"
 <div id='{ControlId}' class='yt_timespan t_edit'>");
 
-            Dictionary<string, object> hiddenAttributes = new Dictionary<string, object>(HtmlAttributes) {
+            Dictionary<string, object?> hiddenAttributes = new Dictionary<string, object?>(HtmlAttributes) {
                 { "__NoTemplate", true }
             };
             hb.Append(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model.ToString(), "Hidden", HtmlAttributes: hiddenAttributes, Validation: Validation));

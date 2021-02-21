@@ -40,8 +40,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override string GetTemplateName() { return TemplateName; }
 
         private class GridRecordResult {
-            public string TR { get; set; }
-            public object StaticData { get; internal set; }
+            public string TR { get; set; } = null!;
+            public object StaticData { get; internal set; } = null!;
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             GridDefinition.ColumnDictionary colDict = new GridDefinition.ColumnDictionary();
             if (GridLoadSave.UseGridSettings(model.GridDef.SettingsModuleGuid)) {
-                GridLoadSave.GridSavedSettings gridSavedSettings = GridLoadSave.LoadModuleSettings((Guid)model.GridDef.SettingsModuleGuid, 1, 10);
+                GridLoadSave.GridSavedSettings gridSavedSettings = GridLoadSave.LoadModuleSettings((Guid)model.GridDef.SettingsModuleGuid!, 1, 10);
                 colDict = gridSavedSettings.Columns;
             }
 

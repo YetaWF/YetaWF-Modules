@@ -123,7 +123,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(object model) {
 
-            string text;
+            string? text;
             if (model is MultiString)
                 text = (MultiString)model;
             else
@@ -133,14 +133,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             bool spellcheck = PropData.GetAdditionalAttributeValue("Spellcheck", true);
             bool copy = PropData.GetAdditionalAttributeValue<bool>("Copy", false);
 
-            string placeHolder;
+            string? placeHolder;
             TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out placeHolder);
 
             if (placeHolder != null)
                 placeHolder = $" placeholder='{HAE(placeHolder)}'";
 
             // handle StringLengthAttribute as maxlength
-            StringLengthAttribute lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
+            StringLengthAttribute? lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
             if (lenAttr != null) {
 #if DEBUG
                 if (HtmlAttributes.ContainsKey("maxlength"))

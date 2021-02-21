@@ -13,7 +13,7 @@ namespace YetaWF_Basics {
         static on: boolean = true;
 
         constructor() {
-            $YetaWF.registerEventHandlerBody("click", ".YetaWF_Basics_AlertDisplay .t_close a", (ev: MouseEvent): boolean =>{
+            $YetaWF.registerEventHandlerBody("click", ".YetaWF_Basics_AlertDisplay .t_close button", (ev: MouseEvent): boolean =>{
                 AlertDisplayModule.dismissed = true;
 
                 let alert = $YetaWF.getElement1BySelector(".YetaWF_Basics_AlertDisplay");
@@ -35,7 +35,7 @@ namespace YetaWF_Basics {
         public initAlert(): void {
             let alert = $YetaWF.getElement1BySelector(".YetaWF_Basics_AlertDisplay");
             if (!AlertDisplayModule.dismissed && AlertDisplayModule.on)
-                alert.style.display = "";
+                alert.style.display = "block";
             else
                 alert.style.display = "none";
         }

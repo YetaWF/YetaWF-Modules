@@ -112,7 +112,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
 
             public DateTimeStyleEnum Style { get; set; }
-            public string InitialCalendarDate { get; set; }
+            public string InitialCalendarDate { get; set; } = null!;
             public DateTime MinDate { get; set; }
             public DateTime MaxDate { get; set; }
             public double MinTime { get; set; }
@@ -122,8 +122,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public List<string> WeekDays { get; set; }
             public List<string> WeekDays2 { get; set; }
             public List<string> Months { get; set; }
-            public string TodayString { get; set; }
-            public string Today { get; set; }
+            public string TodayString { get; set; } = null!;
+            public string Today { get; set; } = null!;
             public double BaseUtcOffset { get; set; }
 
             public Setup() {
@@ -182,7 +182,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             Setup setup = new Setup {
                 Style = Setup.DateTimeStyleEnum.DateTime,
             };
-            if (TryGetSiblingProperty($"{PropertyName}_Setup", out DateTimeSetup dateTimeSetup)) {
+            if (TryGetSiblingProperty($"{PropertyName}_Setup", out DateTimeSetup? dateTimeSetup) && dateTimeSetup != null) {
                 setup.MinDate = dateTimeSetup.MinDate;
                 setup.MaxDate = dateTimeSetup.MaxDate;
                 setup.MinTime = dateTimeSetup.MinTime;
@@ -191,19 +191,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // handle min/max date
             // attributes (like MinimumDateAttribute) override setup and defaults
-            MinimumDateAttribute minAttr = PropData.TryGetAttribute<MinimumDateAttribute>();
+            MinimumDateAttribute? minAttr = PropData.TryGetAttribute<MinimumDateAttribute>();
             if (minAttr != null)
                 setup.MinDate = minAttr.MinDate;
-            MaximumDateAttribute maxAttr = PropData.TryGetAttribute<MaximumDateAttribute>();
+            MaximumDateAttribute? maxAttr = PropData.TryGetAttribute<MaximumDateAttribute>();
             if (maxAttr != null)
                 setup.MaxDate = maxAttr.MaxDate;
 
             // model binding error handling
             string internalValue = setup.InitialCalendarDate = $"{model:o}";
             string displayValue = Formatting.FormatDateTime(model);
-            if (Manager.HasModelBindingErrorManager && Manager.ModelBindingErrorManager.TryGetAttemptedValue(PropertyName, out string attemptedValue)) {
+            if (Manager.HasModelBindingErrorManager && Manager.ModelBindingErrorManager.TryGetAttemptedValue(PropertyName, out string? attemptedValue)) {
                 displayValue = internalValue = attemptedValue;
-                setup.InitialCalendarDate = null;
+                setup.InitialCalendarDate = string.Empty;
             }
 
             HtmlBuilder hb = new HtmlBuilder();

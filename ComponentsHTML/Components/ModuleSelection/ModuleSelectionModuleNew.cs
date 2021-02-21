@@ -64,8 +64,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                             Tooltip = module.Value.Summary,
                         }).ToList<SelectionItem<string>>();
             }
-            list.Insert(0, new SelectionItem<string> { Text = __ResStr("none", "(none)"), Value = null });
-            return await DropDownListComponent.RenderDropDownListAsync(this, model.ToString(), list, null);
+            list.Insert(0, new SelectionItem<string> { Text = __ResStr("none", "(none)"), Value = string.Empty });
+            return await DropDownListComponent.RenderDropDownListAsync(this, model?.ToString() ?? string.Empty, list, null);
         }
 
         internal static string RenderReplacementPackageModulesNew(string areaName) {
@@ -81,23 +81,23 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                             Tooltip = module.Value.Summary,
                         }).ToList<SelectionItem<string>>();
             }
-            list.Insert(0, new SelectionItem<string> { Text = __ResStr("none", "(none)"), Value = null });
+            list.Insert(0, new SelectionItem<string> { Text = __ResStr("none", "(none)"), Value = string.Empty });
             return DropDownListEditComponentBase<string>.RenderDataSource(list, areaName);
         }
 
         internal static async Task<string> GetAreaNameFromGuidAsync(bool newMods, Guid? moduleGuid) {
             if (moduleGuid != null && moduleGuid != Guid.Empty) {
                 if (newMods) {
-                    InstalledModules.ModuleTypeEntry modEntry = InstalledModules.TryFindModuleEntry((Guid)moduleGuid);
+                    InstalledModules.ModuleTypeEntry? modEntry = InstalledModules.TryFindModuleEntry((Guid)moduleGuid);
                     if (modEntry != null)
                         return modEntry.Package.AreaName;
                     else
                         moduleGuid = null;
                 } else {
-                    return (from m in await DesignedModules.LoadDesignedModulesAsync() where m.ModuleGuid == (Guid)moduleGuid select m.AreaName).FirstOrDefault();
+                    return (from m in await DesignedModules.LoadDesignedModulesAsync() where m.ModuleGuid == (Guid)moduleGuid select m.AreaName).FirstOrDefault() ?? string.Empty;
                 }
             }
-            return null;
+            return string.Empty;
         }
     }
 }

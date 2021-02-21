@@ -61,7 +61,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(bool? model) {
 
-            string check = null;
+            string? check = null;
             if (model != null && (bool)model)
                 check = " checked='checked'";
             string tag = $@"<input{FieldSetup(FieldType.Anonymous)} type='checkbox' disabled='disabled'{check} class='yt_boolean t_display{GetClasses()}' >";
@@ -99,7 +99,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(bool? model) {
 
-            string check = null;
+            string? check = null;
             if (model != null && (bool)model)
                 check = " checked='checked'";
             string tag = $@"<input id='{ControlId}'{FieldSetup(Validation ? FieldType.Validated : FieldType.Anonymous)} type='checkbox'{check} value='true' class='yt_boolean t_edit{GetClasses()}'>";

@@ -94,7 +94,7 @@ CKEDITOR.replace('{ControlId}', {{
             } else {
 
                 if (string.IsNullOrWhiteSpace(text))
-                    return null;
+                    return string.Empty;
 
                 bool encode = PropData.GetAdditionalAttributeValue("Encode", true);
                 if (encode) {
@@ -139,13 +139,13 @@ CKEDITOR.replace('{ControlId}', {{
 
         internal class TextAreaSetup {
             public bool InPartialView { get; set; }
-            public string CDNUrl { get; set; }
+            public string CDNUrl { get; set; } = null!;
             public int EmHeight { get; set; }
             public bool RestrictedHtml { get; set; }
-            public string FilebrowserImageBrowseUrl { get; set; }
-            public string FilebrowserImageBrowseLinkUrl { get; set; }
-            public string FilebrowserPageBrowseUrl { get; set; }
-            public string FilebrowserWindowFeatures { get; set; }
+            public string? FilebrowserImageBrowseUrl { get; set; }
+            public string? FilebrowserImageBrowseLinkUrl { get; set; }
+            public string? FilebrowserPageBrowseUrl { get; set; }
+            public string FilebrowserWindowFeatures { get; set; } = null!;
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ CKEDITOR.replace('{ControlId}', {{
             if (owningGuid == Guid.Empty && Manager.CurrentModuleEdited != null)
                 owningGuid = Manager.CurrentModuleEdited.ModuleGuid;
             if (owningGuid == Guid.Empty)
-                owningGuid = Manager.CurrentModule.ModuleGuid;
+                owningGuid = Manager.CurrentModule!.ModuleGuid;
 
             Guid subFolder = PropData.GetAdditionalAttributeValue("SubFolder", Guid.Empty);
             if (subFolder == Guid.Empty)
@@ -181,13 +181,13 @@ CKEDITOR.replace('{ControlId}', {{
             bool restrictedHtml = PropData.GetAdditionalAttributeValue("RestrictedHtml", false);
             int emHeight = PropData.GetAdditionalAttributeValue("EmHeight", 10);
 
-            string filebrowserImageBrowseUrl = null;
+            string? filebrowserImageBrowseUrl = null;
             if (useImageBrowsing) {
                 filebrowserImageBrowseUrl = string.Format("/__CKEditor/ImageBrowseLinkUrl?__FolderGuid={0}&__SubFolder={1}",
                     owningGuid.ToString(), subFolder.ToString());
                 filebrowserImageBrowseUrl += "&" + Globals.Link_NoEditMode + "=y";
             }
-            string filebrowserPageBrowseUrl = null;
+            string? filebrowserPageBrowseUrl = null;
             if (usePageBrowsing) {
                 filebrowserPageBrowseUrl = "/__CKEditor/PageBrowseLinkUrl?";
                 filebrowserPageBrowseUrl += Globals.Link_NoEditMode + "=y";

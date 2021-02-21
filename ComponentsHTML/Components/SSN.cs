@@ -85,7 +85,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(string model) {
 
-            Dictionary<string, object> hiddenAttributes = new Dictionary<string, object>(HtmlAttributes) {
+            Dictionary<string, object?> hiddenAttributes = new Dictionary<string, object?>(HtmlAttributes) {
                 { "__NoTemplate", true }
             };
             string hidden = await HtmlHelper.ForEditComponentAsync(Container, PropertyName, null, "Hidden", HtmlAttributes: hiddenAttributes, Validation: Validation);

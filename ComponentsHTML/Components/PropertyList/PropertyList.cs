@@ -66,7 +66,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// <summary>
             /// For Boxed and BoxedWithCategories styles, defines the category that is initially expanded. May be null which means no category is initially expanded.
             /// </summary>
-            public string InitialExpanded { get; set; }
+            public string? InitialExpanded { get; set; }
             /// <summary>
             /// Category order. May be null or an empty collection, which means there is no explicit category order.
             /// </summary>
@@ -111,7 +111,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public static async Task<PropertyListSetup> LoadPropertyListDefinitionsAsync(Type model) {
             string controller;
             string objClass;
-            if (model.FullName.Contains("+")) {
+            if (model.FullName!.Contains("+")) {
                 string className = model.FullName.Split(new char[] { '.' }).Last();
                 string[] s = className.Split(new char[] { '+' });
                 int len = s.Length;
@@ -132,7 +132,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             Package package = Package.GetPackageFromType(model);
             string predefUrl = Package.GetAddOnPackageUrl(package.AreaName) + "PropertyLists/" + file;
             string customUrl = Package.GetCustomUrlFromUrl(predefUrl);
-            PropertyListSetup setup = null;
+            PropertyListSetup? setup = null;
             PropertyListSetup predefSetup = await ReadPropertyListSetupAsync(package, model, Utility.UrlToPhysical(predefUrl));
             if (predefSetup.ExplicitDefinitions)
                 setup = predefSetup;
@@ -151,7 +151,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 // Check cache first
                 GetObjectInfo<PropertyListSetup> info = await cacheDP.GetAsync<PropertyListSetup>(file);
                 if (info.Success)
-                    return info.Data;
+                    return info.Data!;
 
                 // Load the file
                 if (YetaWFManager.DiagnosticsMode) {// to avoid exception spam

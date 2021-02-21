@@ -57,14 +57,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // get all available popup skins for this collection
             SkinAccess skinAccess = new SkinAccess();
-            string collection = GetSiblingProperty<string>($"{PropertyName}_Collection");
+            string? collection = GetSiblingProperty<string>($"{PropertyName}_Collection");
             PageSkinList skinList = skinAccess.GetAllPopupSkins(collection);
 
-            string desc = (from skin in skinList where skin.ViewName == model select skin.Name).FirstOrDefault();
+            string? desc = (from skin in skinList where skin.ViewName == model select skin.Name).FirstOrDefault();
             if (desc == null)
                 desc = skinList.First().Name;
             if (string.IsNullOrWhiteSpace(desc))
-                return Task.FromResult<string>(null);
+                return Task.FromResult<string>(string.Empty);
             return Task.FromResult(HE(desc));
         }
     }
@@ -91,7 +91,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // get all available popup skins for this collection
             SkinAccess skinAccess = new SkinAccess();
-            string collection = GetSiblingProperty<string>($"{PropertyName}_Collection");
+            string? collection = GetSiblingProperty<string>($"{PropertyName}_Collection");
             PageSkinList skinList = skinAccess.GetAllPopupSkins(collection);
             List<SelectionItem<string>> list = (from skin in skinList orderby skin.Description select new SelectionItem<string>() {
                 Text = skin.Name,
