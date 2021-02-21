@@ -22,12 +22,8 @@ namespace YetaWF.Modules.SyntaxHighlighter.DataProvider {
         [StringLength(MaxSkinName)]
         public string HighlightJSSkin { get; set; }
 
-        [StringLength(MaxSkinName)]
-        public string SyntaxHighlighterSkin { get; set; }
-
         public ConfigData() {
-            SyntaxHighlighterSkin = "Default";
-            HighlightJSSkin = "solarized-light";
+            HighlightJSSkin = "Default";
         }
     }
 
@@ -44,7 +40,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.DataProvider {
 
         private IDataProvider<int, ConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, ConfigData> CreateDataProvider() {
+        private IDataProvider<int, ConfigData>? CreateDataProvider() {
             Package package = YetaWF.Modules.SyntaxHighlighter.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -59,7 +55,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.DataProvider {
             }
         }
         public async Task<ConfigData> GetItemAsync() {
-            ConfigData config = await DataProvider.GetAsync(KEY);
+            ConfigData? config = await DataProvider.GetAsync(KEY);
             if (config == null) {
                 config = new ConfigData();
                 await AddConfigAsync(config);
@@ -78,7 +74,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.DataProvider {
             );
         }
         public async Task UpdateConfigAsync(ConfigData data) {
-            ConfigData origConfig = Auditing.Active ? await GetItemAsync() : null;
+            ConfigData? origConfig = Auditing.Active ? await GetItemAsync() : null;
             data.Id = KEY;
             UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)
