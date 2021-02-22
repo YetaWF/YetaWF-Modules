@@ -55,4 +55,6 @@
         text-decoration: none;
         color: var(--tabs-tab-clr); }
   .yt_tabs .t_tabpanel {
-    padding: 1em; }
+    padding: 1em;
+    background: var(--body-bg);
+    color: var(--body-clr); }

@@ -716,7 +716,7 @@ namespace YetaWF_ComponentsHTML {
                                 </table>
                             </div>
                             <div class="t_footer">
-                                <a href="#" class="t_today">{this.Setup.TodayString}</a>
+                                <a href="#" class="t_todaysel">{this.Setup.TodayString}</a>
                             </div>
                         </div>
                     </div>
@@ -797,7 +797,7 @@ namespace YetaWF_ComponentsHTML {
                 return false;
             });
 
-            $YetaWF.registerEventHandler(this.CalendarPopup, "click", ".t_footer .t_today", (ev: MouseEvent): boolean => {
+            $YetaWF.registerEventHandler(this.CalendarPopup, "mousedown", ".t_footer .t_todaysel", (ev: MouseEvent): boolean => {
                 this.dateSelectedValueUTC = new Date(this.Setup.Today);
                 this.tempCalSelectedValueUTC = null;
                 this.close();

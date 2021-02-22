@@ -99,18 +99,24 @@ var YetaWF_ComponentsHTML;
                 return true;
             });
             $YetaWF.registerEventHandler(_this.Control, "mousedown", ".t_up", function (ev) {
+                if (!_this.enabled)
+                    return true;
                 _this.InputControl.focus();
                 _this.setNewSpinValue(true);
                 _this.startSpin(true);
                 return false;
             });
             $YetaWF.registerEventHandler(_this.Control, "mousedown", ".t_down", function (ev) {
+                if (!_this.enabled)
+                    return true;
                 _this.InputControl.focus();
                 _this.setNewSpinValue(false);
                 _this.startSpin(false);
                 return false;
             });
             $YetaWF.registerMultipleEventHandlers([_this.Control], ["mouseup", "mouseout"], ".t_down,.t_up", function (ev) {
+                if (!_this.enabled)
+                    return true;
                 _this.clearSpin();
                 return false;
             });
@@ -123,6 +129,8 @@ var YetaWF_ComponentsHTML;
                 return true;
             });
             $YetaWF.registerEventHandler(_this.InputControl, "focusout", null, function (ev) {
+                if (!_this.enabled)
+                    return true;
                 $YetaWF.elementRemoveClass(_this.Control, "t_focused");
                 _this.clearSpin();
                 _this.setInternalValue(_this.Value);

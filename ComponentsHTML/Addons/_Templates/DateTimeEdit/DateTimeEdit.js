@@ -734,7 +734,7 @@ var YetaWF_ComponentsHTML;
                                             $YetaWF.createElement("th", { scope: "col", "data-tooltip": this.Setup.WeekDays[6] }, this.Setup.WeekDays2[6]))),
                                     $YetaWF.createElement("tbody", null))),
                             $YetaWF.createElement("div", { class: "t_footer" },
-                                $YetaWF.createElement("a", { href: "#", class: "t_today" }, this.Setup.TodayString)))));
+                                $YetaWF.createElement("a", { href: "#", class: "t_todaysel" }, this.Setup.TodayString)))));
             var prev = $YetaWF.getElement1BySelector(".t_prev", [this.CalendarPopup]);
             prev.innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_left;
             var next = $YetaWF.getElement1BySelector(".t_next", [this.CalendarPopup]);
@@ -804,7 +804,7 @@ var YetaWF_ComponentsHTML;
             $YetaWF.registerEventHandler(this.CalendarPopup, "click", "table td .t_link, .t_header .t_prev svg, .t_header .t_next svg", function (ev) {
                 return false;
             });
-            $YetaWF.registerEventHandler(this.CalendarPopup, "click", ".t_footer .t_today", function (ev) {
+            $YetaWF.registerEventHandler(this.CalendarPopup, "mousedown", ".t_footer .t_todaysel", function (ev) {
                 _this.dateSelectedValueUTC = new Date(_this.Setup.Today);
                 _this.tempCalSelectedValueUTC = null;
                 _this.close();

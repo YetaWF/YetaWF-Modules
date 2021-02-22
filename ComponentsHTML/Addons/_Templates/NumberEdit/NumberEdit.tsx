@@ -126,18 +126,21 @@ namespace YetaWF_ComponentsHTML {
             });
 
             $YetaWF.registerEventHandler(this.Control, "mousedown", ".t_up", (ev: Event): boolean => {
+                if (!this.enabled) return true;
                 this.InputControl.focus();
                 this.setNewSpinValue(true);
                 this.startSpin(true);
                 return false;
             });
             $YetaWF.registerEventHandler(this.Control, "mousedown", ".t_down", (ev: Event): boolean => {
+                if (!this.enabled) return true;
                 this.InputControl.focus();
                 this.setNewSpinValue(false);
                 this.startSpin(false);
                 return false;
             });
             $YetaWF.registerMultipleEventHandlers([this.Control], ["mouseup", "mouseout"], ".t_down,.t_up", (ev: Event): boolean => {
+                if (!this.enabled) return true;
                 this.clearSpin();
                 return false;
             });
@@ -150,6 +153,7 @@ namespace YetaWF_ComponentsHTML {
                 return true;
             });
             $YetaWF.registerEventHandler(this.InputControl, "focusout", null, (ev: FocusEvent): boolean => {
+                if (!this.enabled) return true;
                 $YetaWF.elementRemoveClass(this.Control, "t_focused");
                 this.clearSpin();
                 this.setInternalValue(this.Value);
