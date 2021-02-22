@@ -690,91 +690,91 @@ namespace YetaWF.Modules.SkinPalette.Controllers {
             public decimal InputPlaceholderOpacity { get; set; }
 
 
-            [Category("Dropdownlist"), Caption("--dd-bg"), Description("Color")]
+            [Category("Dropdown"), Caption("--dd-bg"), Description("Color")]
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string DDBg { get; set; } = null!;
 
-            [Category("Dropdownlist"), Caption("--dd-clr"), Description("Color")]
+            [Category("Dropdown"), Caption("--dd-clr"), Description("Color")]
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string DDClr { get; set; } = null!;
 
-            [Category("Dropdownlist"), Caption("--dd-bg-hover"), Description("Color")]
+            [Category("Dropdown"), Caption("--dd-bg-hover"), Description("Color")]
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string DDBgHover { get; set; } = null!;
 
-            [Category("Dropdownlist"), Caption("--dd-clr-hover"), Description("Color")]
+            [Category("Dropdown"), Caption("--dd-clr-hover"), Description("Color")]
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string DDClrHover { get; set; } = null!;
 
-            [Category("Dropdownlist"), Caption("--dd-bg-active"), Description("Color")]
+            [Category("Dropdown"), Caption("--dd-bg-active"), Description("Color")]
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string DDBgActive { get; set; } = null!;
 
-            [Category("Dropdownlist"), Caption("--dd-clr-active"), Description("Color")]
+            [Category("Dropdown"), Caption("--dd-clr-active"), Description("Color")]
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string DDClrActive { get; set; } = null!;
 
-            [Category("Dropdownlist"), Caption("--dd-bg-focus"), Description("Color")]
+            [Category("Dropdown"), Caption("--dd-bg-focus"), Description("Color")]
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string DDBgFocus { get; set; } = null!;
 
-            [Category("Dropdownlist"), Caption("--dd-clr-focus"), Description("Color")]
+            [Category("Dropdown"), Caption("--dd-clr-focus"), Description("Color")]
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string DDClrFocus { get; set; } = null!;
 
-            [Category("Dropdownlist"), Caption("--dd-border"), Description("Border")]
+            [Category("Dropdown"), Caption("--dd-border"), Description("Border")]
             [UIHint("Text40"), StringLength(MaxBorder), Required]
             public string DDBorder { get; set; } = null!;
 
-            [Category("Dropdownlist"), Caption("--dd-border-hover"), Description("Border")]
+            [Category("Dropdown"), Caption("--dd-border-hover"), Description("Border")]
             [UIHint("Text40"), StringLength(MaxBorder), Required]
             public string DDBorderHover { get; set; } = null!;
 
-            [Category("Dropdownlist"), Caption("--dd-border-focus"), Description("Border")]
+            [Category("Dropdown"), Caption("--dd-border-focus"), Description("Border")]
             [UIHint("Text40"), StringLength(MaxBorder), Required]
             public string DDBorderFocus { get; set; } = null!;
 
-            [Category("Dropdownlist"), Caption("--dd-border-radius"), Description("Border Radius")]
+            [Category("Dropdown"), Caption("--dd-border-radius"), Description("Border Radius")]
             [UIHint("Text40"), StringLength(MaxRadius), Required]
             public string DDBorderRadius { get; set; } = null!;
 
-            [Category("Dropdownlist"), Caption("--dd-p-bg"), Description("Color")]
+            [Category("Dropdown"), Caption("--dd-p-bg"), Description("Color")]
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string DDListBg { get; set; } = null!;
 
-            [Category("Dropdownlist"), Caption("--dd-p-clr"), Description("Color")]
+            [Category("Dropdown"), Caption("--dd-p-clr"), Description("Color")]
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string DDListClr { get; set; } = null!;
 
-            [Category("Dropdownlist"), Caption("--dd-p-bg-hover"), Description("Color")]
+            [Category("Dropdown"), Caption("--dd-p-bg-hover"), Description("Color")]
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string DDListBgHover { get; set; } = null!;
 
-            [Category("Dropdownlist"), Caption("--dd-p-clr-hover"), Description("Color")]
+            [Category("Dropdown"), Caption("--dd-p-clr-hover"), Description("Color")]
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string DDListClrHover { get; set; } = null!;
 
-            [Category("Dropdownlist"), Caption("--dd-p-bg-focus"), Description("Color")]
+            [Category("Dropdown"), Caption("--dd-p-bg-focus"), Description("Color")]
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string DDListBgFocus { get; set; } = null!;
 
-            [Category("Dropdownlist"), Caption("--dd-p-clr-focus"), Description("Color")]
+            [Category("Dropdown"), Caption("--dd-p-clr-focus"), Description("Color")]
             [UIHint("Color"), StringLength(MaxColor), Required]
             public string DDListClrFocus { get; set; } = null!;
 
-            [Category("Dropdownlist"), Caption("--dd-p-border"), Description("Border")]
+            [Category("Dropdown"), Caption("--dd-p-border"), Description("Border")]
             [UIHint("Text40"), StringLength(MaxBorder), Required]
             public string DDListBorder { get; set; } = null!;
 
-            [Category("Dropdownlist"), Caption("--dd-p-border-radius"), Description("Border Radius")]
+            [Category("Dropdown"), Caption("--dd-p-border-radius"), Description("Border Radius")]
             [UIHint("Text40"), StringLength(MaxRadius), Required]
             public string DDListBorderRadius { get; set; } = null!;
 
-            [Category("Dropdownlist"), Caption("--dd-p-shadow"), Description("Shadow")]
+            [Category("Dropdown"), Caption("--dd-p-shadow"), Description("Shadow")]
             [UIHint("Text40"), StringLength(MaxShadow), Required]
             public string DDListShadow { get; set; } = null!;
 
-            [Category("Dropdownlist"), Caption("--dd-p-shadow-focus"), Description("Shadow")]
+            [Category("Dropdown"), Caption("--dd-p-shadow-focus"), Description("Shadow")]
             [UIHint("Text40"), StringLength(MaxShadow), Required]
             public string DDListShadowFocus { get; set; } = null!;
 

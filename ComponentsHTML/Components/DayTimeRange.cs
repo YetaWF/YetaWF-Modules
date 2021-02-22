@@ -34,13 +34,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [Category("Hours"), Caption("Mondays"), Description("Shows the default working hours")]
     /// [UIHint("DayTimeRange"), ReadOnly]
     /// </example>
-    public class DayTimeRangeDisplayComponent : DayTimeRangeComponent, IYetaWFComponent<DayTimeRange> {
+    public class DayTimeRangeDisplayComponent : DayTimeRangeComponent, IYetaWFComponent<DayTimeRange?> {
 
         /// <inheritdoc/>
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
         /// <inheritdoc/>
-        public Task<string> RenderAsync(DayTimeRange model) {
+        public Task<string> RenderAsync(DayTimeRange? model) {
             if (model != null) {
                 string s;
                 if (model.Start != null && model.End != null) {
@@ -64,7 +64,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [Category("Hours"), Caption("Mondays"), Description("Please select the default working hours")]
     /// [UIHint("DayTimeRange"), Required]
     /// </example>
-    public class DayTimeRangeEditComponent : DayTimeRangeComponent, IYetaWFComponent<DayTimeRange> {
+    public class DayTimeRangeEditComponent : DayTimeRangeComponent, IYetaWFComponent<DayTimeRange?> {
 
         internal class DayTimeRangeUI {
 
@@ -118,11 +118,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
         /// <inheritdoc/>
-        public async Task<string> RenderAsync(DayTimeRange model) {
+        public async Task<string> RenderAsync(DayTimeRange? model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            DayTimeRangeUI ts = new DayTimeRangeUI(new DayTimeRange());
+            DayTimeRangeUI ts = new DayTimeRangeUI(model ?? new DayTimeRange());
             ts.ClosedFieldCaption = model.ClosedFieldCaption ?? __ResStr("closed", "Closed");
             ts.ClosedFieldDescription = model.ClosedFieldDescription ?? __ResStr("closedDesc", "Select to indicate when closed all day");
             ts.AdditionalFieldCaption = model.AdditionalFieldCaption ?? __ResStr("additional", "Additional");

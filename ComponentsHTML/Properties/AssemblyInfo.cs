@@ -23,3 +23,5 @@ using YetaWF.PackageAttributes;
     "https://YetaWF.com/Documentation/YetaWFComponentsHTML#Support",
     "https://YetaWF.com/Documentation/YetaWFComponentsHTML#Release%20Notice",
     "https://YetaWF.com/Documentation/YetaWFComponentsHTML#License")]
+
+// TODO: All components (display/edit) should accept nullable types.

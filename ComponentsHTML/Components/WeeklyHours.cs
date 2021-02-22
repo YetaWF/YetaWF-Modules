@@ -35,7 +35,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
-    //public class WeeklyHoursDisplayComponent : WeeklyHoursComponent, IYetaWFComponent<WeeklyHours> {
+    //public class WeeklyHoursDisplayComponent : WeeklyHoursComponent, IYetaWFComponent<WeeklyHours?> {
 
     //    public override ComponentType GetComponentType() { return ComponentType.Display; }
 
@@ -52,7 +52,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [UIHint("WeeklyHours")]
     /// public WeeklyHours OpeningHours { get; set; }
     /// </example>
-    public class WeeklyHoursEditComponent : WeeklyHoursComponentBase, IYetaWFComponent<WeeklyHours> {
+    public class WeeklyHoursEditComponent : WeeklyHoursComponentBase, IYetaWFComponent<WeeklyHours?> {
 
         internal class WeeklyHoursUI {
 
@@ -132,7 +132,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<string> RenderAsync(WeeklyHours model) {
+        public async Task<string> RenderAsync(WeeklyHours? model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
