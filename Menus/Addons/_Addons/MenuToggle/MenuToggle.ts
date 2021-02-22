@@ -48,7 +48,7 @@ namespace YetaWF_Menus {
         return true;
     });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: CustomEvent<YetaWF.DetailsEventNavPageLoaded>): boolean => {
-        let toggleMods = YetaWF.ModuleBaseDataImpl.getModules<MenuToggleModule>(MenuToggleModule.SELECTOR, ev.detail.containers);
+        let toggleMods = YetaWF.ModuleBaseDataImpl.getModules<MenuToggleModule>(MenuToggleModule.SELECTOR);
         for (let toggleMod of toggleMods) {
             toggleMod.updateButton();
         }

@@ -372,7 +372,7 @@ namespace YetaWF_ComponentsHTML {
     });
     // handle new content
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: CustomEvent<YetaWF.DetailsEventNavPageLoaded>): boolean => {
-        let menus = YetaWF.ComponentBaseDataImpl.getControls<MenuComponent>(MenuComponent.SELECTOR, ev.detail.containers);
+        let menus = YetaWF.ComponentBaseDataImpl.getControls<MenuComponent>(MenuComponent.SELECTOR);
         for (let menu of menus) {
             menu.closeAll();
         }

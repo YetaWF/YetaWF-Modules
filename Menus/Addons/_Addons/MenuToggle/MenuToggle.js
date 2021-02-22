@@ -53,7 +53,7 @@ var YetaWF_Menus;
         return true;
     });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
-        var toggleMods = YetaWF.ModuleBaseDataImpl.getModules(MenuToggleModule.SELECTOR, ev.detail.containers);
+        var toggleMods = YetaWF.ModuleBaseDataImpl.getModules(MenuToggleModule.SELECTOR);
         for (var _i = 0, toggleMods_2 = toggleMods; _i < toggleMods_2.length; _i++) {
             var toggleMod = toggleMods_2[_i];
             toggleMod.updateButton();

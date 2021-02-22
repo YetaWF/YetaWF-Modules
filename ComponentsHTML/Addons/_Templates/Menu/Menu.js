@@ -361,7 +361,7 @@ var YetaWF_ComponentsHTML;
     });
     // handle new content
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
-        var menus = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR, ev.detail.containers);
+        var menus = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR);
         for (var _i = 0, menus_2 = menus; _i < menus_2.length; _i++) {
             var menu = menus_2[_i];
             menu.closeAll();
