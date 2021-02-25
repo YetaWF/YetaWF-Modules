@@ -16,7 +16,6 @@ namespace YetaWF.Modules.Pages.DataProvider.SQL {
         public void Register() {
             DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.PageDefinitionDataProvider), typeof(PageDefinitionDataProvider));
             DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(PageDefinitionDataProvider.PageDefinitionForModulesProvider), typeof(PageDefinitionDataProvider.PageDefinitionForModulesDataProviderSQL));
-            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.UnifiedSetDataProvider), typeof(UnifiedSetDataProvider));
         }
         class PageDefinitionDataProvider : SQLSimpleObject<Guid, PageDefinition>, IPageDefinitionIOMode {
 
@@ -80,9 +79,6 @@ namespace YetaWF.Modules.Pages.DataProvider.SQL {
             public class PageDefinitionForModulesDataProviderSQL : SQLSimpleObject<string, PageDefinitionForModules> {
                 public PageDefinitionForModulesDataProviderSQL(Dictionary<string, object> options) : base(options) { }
             }
-        }
-        class UnifiedSetDataProvider : SQLSimpleObject<Guid, UnifiedSetData> {
-            public UnifiedSetDataProvider(Dictionary<string, object> options) : base(options) { }
         }
     }
 }

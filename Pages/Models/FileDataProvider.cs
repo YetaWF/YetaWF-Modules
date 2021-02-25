@@ -16,7 +16,6 @@ namespace YetaWF.Modules.Pages.DataProvider.File {
 
         public void Register() {
             DataProviderImpl.RegisterExternalDataProvider(FileDataProviderBase.ExternalName, typeof(DataProvider.PageDefinitionDataProvider), typeof(PageDefinitionDataProvider));
-            DataProviderImpl.RegisterExternalDataProvider(FileDataProviderBase.ExternalName, typeof(DataProvider.UnifiedSetDataProvider), typeof(UnifiedSetDataProvider));
         }
         class PageDefinitionDataProvider : FileDataProvider<Guid, PageDefinition>, IPageDefinitionIOMode {
 
@@ -45,10 +44,6 @@ namespace YetaWF.Modules.Pages.DataProvider.File {
                 }
                 return pagesWithModule.OrderBy(p => p.Url).ToList();
             }
-        }
-        class UnifiedSetDataProvider : FileDataProvider<Guid, UnifiedSetData> {
-            public UnifiedSetDataProvider(Dictionary<string, object> options) : base(options) { }
-            public override string GetBaseFolder() { return Path.Combine(YetaWFManager.DataFolder, Dataset, SiteIdentity.ToString()); }
         }
     }
 }
