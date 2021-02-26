@@ -51,7 +51,7 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
                 return (Grid.GridActionsEnum)_DefaultGridActions;
             }
         }
-        public static Grid.GridActionsEnum? _DefaultGridActions;
+        private static Grid.GridActionsEnum? _DefaultGridActions;
 
         public bool DefaultShowGridSearchToolbar {
             get {
@@ -61,7 +61,7 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
                 return (bool)_ShowGridSearchToolbar;
             }
         }
-        public static bool? _ShowGridSearchToolbar;
+        private static bool? _ShowGridSearchToolbar;
 
         public UserData() {
             string timeZone = TimeZoneInfo.Local.Id;
@@ -158,7 +158,7 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
         // API
 
         public async Task<UserData> GetItemAsync() {
-            UserData userInfo = null;
+            UserData userInfo;
             if (Manager.HaveUser)
                 userInfo = await DataProvider.GetAsync(Manager.UserId);
             else
