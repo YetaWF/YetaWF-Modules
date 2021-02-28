@@ -100,7 +100,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                 string? arrow = null;
                                 if (wantArrows)
                                     arrow = SkinSVGs.Get(AreaRegistration.CurrentPackage, level == 0 ? "fas-caret-down" : "fas-caret-right");
-                                string menuContents = await CoreRendering.RenderActionAsync(menuEntry, renderMode, null, EndIcon: arrow);
+                                string menuContents = await CoreRendering.RenderActionAsync(menuEntry, renderMode, null, null, EndIcon: arrow);
 
                                 hb.Append($"<li class='t_lvl{level} {css}'>\n{menuContents}\n{subMenuContents}</li>\n");
                                 rendered = true;
@@ -111,7 +111,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                             string css = string.Empty;
                             css = CssManager.CombineCss(css, liCss);
 
-                            string menuContents = await CoreRendering.RenderActionAsync(menuEntry, renderMode, null);
+                            string menuContents = await CoreRendering.RenderActionAsync(menuEntry, renderMode, null, null);
 
                             hb.Append($"<li class='t_lvl{level} {css}'>{menuContents}</li>\n");
                         }

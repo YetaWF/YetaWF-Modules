@@ -14,8 +14,7 @@
     border-radius: var(--button-border-radius);
     &.y_button_sm {
         line-height: 1;
-        padding-left: 0;
-        padding-right: 0;
+        padding: .4em;
     }
     &.y_button_narrow {
         padding-left: 0.5em;
@@ -43,6 +42,30 @@
         text-decoration: none;
         cursor: default;
         opacity: var(--body-dis-opacity);
+    }
+    &.y_success {
+        border-color: var(--tst-info-bg);
+        background: var(--tst-info-bg);
+        color: var(--tst-info-clr);
+        &:hover {
+            filter: brightness(85%);
+        }
+    }
+    &.y_warning {
+        border-color: var(--tst-warn-bg);
+        background: var(--tst-warn-bg);
+        color: var(--tst-warn-clr);
+        &:hover {
+            filter: brightness(85%);
+        }
+    }
+    &.y_danger {
+        border-color: var(--tst-error-bg);
+        background: var(--tst-error-bg);
+        color: var(--tst-error-clr);
+        &:hover {
+            filter: brightness(85%);
+        }
     }
 }
 

@@ -81,12 +81,13 @@ namespace YetaWF.Modules.ComponentsHTML {
         /// <param name="action">The module action to render.</param>
         /// <param name="mode">The module action's rendering mode.</param>
         /// <param name="id">The ID to generate.</param>
+        /// <param name="cssClass">Option CSS class(es) added to the rendered module action.</param>
         /// <returns>Returns the module action as HTML.</returns>
-        public async Task<string> RenderModuleActionAsync(ModuleAction action, ModuleAction.RenderModeEnum mode, string? id) {
-            return await RenderActionAsync(action, mode, id);
+        public async Task<string> RenderModuleActionAsync(ModuleAction action, ModuleAction.RenderModeEnum mode, string? id, string? cssClass) {
+            return await RenderActionAsync(action, mode, id, cssClass);
         }
 
-        internal static async Task<string> RenderActionAsync(ModuleAction action, ModuleAction.RenderModeEnum mode, string? id, string? EndIcon = null) {
+        internal static async Task<string> RenderActionAsync(ModuleAction action, ModuleAction.RenderModeEnum mode, string? id, string? cssClass, string? EndIcon = null) {
 
             // check if we're in the right mode
             if (!await action.RendersSomethingAsync()) return string.Empty;
@@ -143,7 +144,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             }
 
             Dictionary<string, object?> attrs = new Dictionary<string, object?>();
-            string? css = null;
+            string? css = cssClass;
             if (!string.IsNullOrWhiteSpace(action.Tooltip))
                 attrs.Add(Basics.CssTooltip, action.Tooltip);
             if (!string.IsNullOrWhiteSpace(action.Name))
@@ -157,6 +158,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             string extraClass;
             switch (mode) {
                 default:
+                case ModuleAction.RenderModeEnum.ButtonBar: extraClass = "y_button y_act_buttonbar"; break;
                 case ModuleAction.RenderModeEnum.Button: extraClass = "y_button y_act_button"; break;
                 case ModuleAction.RenderModeEnum.ButtonIcon: extraClass = "y_button y_act_buttonicon"; break;
                 case ModuleAction.RenderModeEnum.ButtonOnly: extraClass = "y_button y_act_buttononly"; break;
@@ -232,7 +234,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                 if (popupEdit)
                     attrs.Add(Basics.CssAttrDataSpecialEdit, string.Empty);
             }
-            if (mode == ModuleAction.RenderModeEnum.Button || mode == ModuleAction.RenderModeEnum.ButtonIcon || mode == ModuleAction.RenderModeEnum.ButtonOnly)
+            if (mode == ModuleAction.RenderModeEnum.Button || mode == ModuleAction.RenderModeEnum.ButtonIcon || mode == ModuleAction.RenderModeEnum.ButtonOnly || mode == ModuleAction.RenderModeEnum.ButtonBar)
                 attrs.Add(Basics.CssAttrActionButton, string.Empty);
 
             bool hasText = false, hasImg = false;
@@ -243,7 +245,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                 hasImg = true;
             }
 
-            if (mode != ModuleAction.RenderModeEnum.IconsOnly && mode != ModuleAction.RenderModeEnum.ButtonIcon) {
+            if (mode != ModuleAction.RenderModeEnum.IconsOnly && mode != ModuleAction.RenderModeEnum.ButtonIcon && mode != ModuleAction.RenderModeEnum.ButtonBar) {
                 string text = mode == ModuleAction.RenderModeEnum.NormalMenu ? action.MenuText : action.LinkText;
                 if (!string.IsNullOrWhiteSpace(text)) {
                     innerHtml += Utility.HE(text);

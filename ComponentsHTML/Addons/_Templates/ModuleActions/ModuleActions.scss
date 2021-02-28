@@ -1,19 +1,63 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 .yt_moduleactions {
+
+    a.y_act_normmenu,
     a.y_act_normlink {
         margin-right: 1.5ch;
+        img,
+        i {
+            margin-right: .5ch;
+        }
     }
-    a.y_act_normlink img,
-    a.y_act_icon img,
-    a.y_act_normlink i,
-    a.y_act_icon i {
-        margin-right: 1ch;
+
+    a.y_act_icon {
+        img,
+        i {
+            margin-right: 1ch;
+        }
     }
+
+    a.y_act_link {
+        margin-right: 1.5ch;
+    }
+
     a.y_act_button {
         margin-right:.5ch;
+        img,
+        i {
+            margin-right: .5ch;
+        }
     }
-    a {
+
+    a.y_act_buttonicon {
+        padding: 0 .5rem;
+        margin-right:.5ch;
+    }
+
+    a.y_act_buttononly {
+        margin-right:.5ch;
+    }
+
+    a.y_act_buttonbar {
+        padding: 0 .5rem;
+        &.t_first {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-right: var(--bar-border);
+        }
+        &.t_last {
+            border-left: none;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        &.t_middle {
+            border-radius: 0;
+            border-right: var(--bar-border);
+        }
+    }
+
+    a { // for vertical spacing
         margin-bottom:.5rem;
     }
 }

@@ -14,8 +14,7 @@
   border-radius: var(--button-border-radius); }
   .y_button.y_button_sm, .y_buttonform.y_button_sm {
     line-height: 1;
-    padding-left: 0;
-    padding-right: 0; }
+    padding: .4em; }
   .y_button.y_button_narrow, .y_buttonform.y_button_narrow {
     padding-left: 0.5em;
     padding-right: 0.5em; }
@@ -37,6 +36,27 @@
     text-decoration: none;
     cursor: default;
     opacity: var(--body-dis-opacity); }
+  .y_button.y_success, .y_buttonform.y_success {
+    border-color: var(--tst-info-bg);
+    background: var(--tst-info-bg);
+    color: var(--tst-info-clr); }
+    .y_button.y_success:hover, .y_buttonform.y_success:hover {
+      -webkit-filter: brightness(85%);
+              filter: brightness(85%); }
+  .y_button.y_warning, .y_buttonform.y_warning {
+    border-color: var(--tst-warn-bg);
+    background: var(--tst-warn-bg);
+    color: var(--tst-warn-clr); }
+    .y_button.y_warning:hover, .y_buttonform.y_warning:hover {
+      -webkit-filter: brightness(85%);
+              filter: brightness(85%); }
+  .y_button.y_danger, .y_buttonform.y_danger {
+    border-color: var(--tst-error-bg);
+    background: var(--tst-error-bg);
+    color: var(--tst-error-clr); }
+    .y_button.y_danger:hover, .y_buttonform.y_danger:hover {
+      -webkit-filter: brightness(85%);
+              filter: brightness(85%); }
 
 .y_buttonform {
   margin: 3px;
