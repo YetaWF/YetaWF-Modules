@@ -4,16 +4,14 @@
     background: var(--button-bg);
     color: var(--button-clr);
     margin-bottom:.2em;// in case multiple wrap around
-    padding-left: 1em;
-    padding-right: 1em;
-    line-height:1.8em;
+    padding: .5em 1em;
+    line-height:1em;
     text-align: center;
     text-shadow: 0 1px 0 rgba(0,0,0,0.05);
     text-decoration: none;
     border: var(--button-border);
     border-radius: var(--button-border-radius);
     &.y_button_sm {
-        line-height: 1;
         padding: .4em;
     }
     &.y_button_narrow {
@@ -80,10 +78,6 @@
 a.y_button, a.y_button:hover {
     text-decoration: none;
     display:inline-block;
-}
-a.y_button {
-    padding-top:.2em;
-    padding-bottom: .2em;
 }
 
 @media print {

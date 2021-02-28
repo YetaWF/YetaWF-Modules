@@ -4,16 +4,14 @@
   background: var(--button-bg);
   color: var(--button-clr);
   margin-bottom: .2em;
-  padding-left: 1em;
-  padding-right: 1em;
-  line-height: 1.8em;
+  padding: .5em 1em;
+  line-height: 1em;
   text-align: center;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
   text-decoration: none;
   border: var(--button-border);
   border-radius: var(--button-border-radius); }
   .y_button.y_button_sm, .y_buttonform.y_button_sm {
-    line-height: 1;
     padding: .4em; }
   .y_button.y_button_narrow, .y_buttonform.y_button_narrow {
     padding-left: 0.5em;
@@ -67,10 +65,6 @@
 a.y_button, a.y_button:hover {
   text-decoration: none;
   display: inline-block; }
-
-a.y_button {
-  padding-top: .2em;
-  padding-bottom: .2em; }
 
 @media print {
   .y_button {

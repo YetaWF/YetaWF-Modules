@@ -483,13 +483,20 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 int widthPix = 0, widthCh = 0;
                 if (gridCol.Icons != 0) {
                     gridCol.Sort = false;
-                    Grid.GridActionsEnum actionStyle = Grid.GridActionsEnum.Icons;
-                    if (gridCol.Icons > 1)
-                        actionStyle = UserSettings.GetProperty<Grid.GridActionsEnum>("GridActions");
+
+                    Grid.GridActionsEnum actionStyle = UserSettings.GetProperty<Grid.GridActionsEnum>("GridActions");
+
                     gridCol.ChWidth = gridCol.PixWidth = 0;
                     if (actionStyle == Grid.GridActionsEnum.DropdownMenu) {
-                        widthCh = gridDef.DropdownActionWidth ?? 12;
-                    } else {
+                        if (gridCol.Icons <= 1)
+                            actionStyle = Grid.GridActionsEnum.Icons;
+                        else
+                            widthCh = gridDef.DropdownActionWidth ?? 12;
+                    }
+                    if (actionStyle == Grid.GridActionsEnum.ButtonBar) {
+                        widthCh = Math.Abs(gridCol.Icons) * 5;
+                    }
+                    if (actionStyle == Grid.GridActionsEnum.Icons) {
                         widthPix = 10 + (Math.Abs(gridCol.Icons) * (16 + 4) + 10);
                     }
                 }

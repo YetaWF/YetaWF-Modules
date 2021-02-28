@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 
@@ -18,6 +19,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [UIHint("ModuleActionsGrid"), ReadOnly]
     /// public List&lt;ModuleAction&gt; Actions { get; set; }
     /// </example>
+    [UsesAdditional("RenderAs", "YetaWF.Core.Modules.ModuleAction.RenderModeEnum", "ModuleAction.RenderModeEnum.Button", "Defines how the module actions are rendered.")]
     public class ModuleActionsGridComponent : YetaWFComponent, IYetaWFComponent<List<ModuleAction>?> {
 
         internal const string TemplateName = "ModuleActionsGrid";
@@ -44,7 +46,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (model == null || model.Count == 0)
                 return string.Empty;
 
-            if (model.Count == 1)
+            if (model.Count == 1 && actionStyle == Grid.GridActionsEnum.DropdownMenu)
                 actionStyle = Grid.GridActionsEnum.Icons;
 
             switch (actionStyle) {
@@ -57,6 +59,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     break;
                 case Grid.GridActionsEnum.Mini:
                     renderMode = ModuleAction.RenderModeEnum.ButtonMiniDropDown;
+                    break;
+                case Grid.GridActionsEnum.ButtonBar:
+                    renderMode = ModuleAction.RenderModeEnum.ButtonBar;
                     break;
             }
 
