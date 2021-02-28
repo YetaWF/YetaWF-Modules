@@ -25,6 +25,7 @@
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0; }
   #yPageControlMod .yt_moduleactions {
+    display: block;
     background: var(--panel-bg);
     padding: .5em;
     border: var(--tabs-tab-border);
