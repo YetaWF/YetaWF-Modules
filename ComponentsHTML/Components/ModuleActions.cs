@@ -27,6 +27,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal const string TemplateName = "ModuleActions";
 
+        internal class ModuleActionsSetup {
+            public string MenuId { get; set; } = null!;
+        }
+
         /// <inheritdoc/>
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
@@ -37,52 +41,45 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         /// <inheritdoc/>
         public override async Task IncludeAsync() {
-            await Manager.AddOnManager.AddTemplateFromUIHintAsync(ActionIconsComponent.TemplateName, YetaWFComponentBase.ComponentType.Display);// this is needed because we're not used by templates
+            await Manager.AddOnManager.AddTemplateFromUIHintAsync(DropDownButtonComponent.TemplateName, YetaWFComponentBase.ComponentType.Display);
             await base.IncludeAsync();
         }
 
         /// <inheritdoc/>
         public async Task<string> RenderAsync(List<ModuleAction> model) {
 
-            using (Manager.StartNestedComponent(FieldName)) {
+            ModuleAction.RenderModeEnum renderMode = PropData.GetAdditionalAttributeValue<ModuleAction.RenderModeEnum>("RenderAs", ModuleAction.RenderModeEnum.Button);
 
-                HtmlBuilder hb = new HtmlBuilder();
-
-                ModuleAction.RenderModeEnum renderMode = PropData.GetAdditionalAttributeValue<ModuleAction.RenderModeEnum>("RenderAs", ModuleAction.RenderModeEnum.Button);
-
-                if (model != null && model.Count > 0) {
-
-                    hb.Append($@"
-<div class='yt_moduleactions t_display'>");
-
-                    switch (renderMode) {
-                        case ModuleAction.RenderModeEnum.ButtonDropDown:
-                            await RenderDropDownAsync(hb, model, ModuleAction.RenderModeEnum.NormalMenu, false);
-                            break;
-                        case ModuleAction.RenderModeEnum.ButtonMiniDropDown:
-                            await RenderDropDownAsync(hb, model, ModuleAction.RenderModeEnum.NormalMenu, true);
-                            break;
-                        default:
-                            await RenderDefaultsAsync(hb, model, renderMode);
-                            break;
-                    }
-
-                    hb.Append($@"
-</div>");
-                }
-                return hb.ToString();
-            }
+            return await RenderAsync(this, model, renderMode);
         }
 
-        private async Task RenderDropDownAsync(HtmlBuilder hb, List<ModuleAction> model, ModuleAction.RenderModeEnum renderMode, bool mini) {
+        internal static async Task<string> RenderAsync(YetaWFComponent component, List<ModuleAction> model, ModuleAction.RenderModeEnum renderMode) {
+
+            if (model != null && model.Count > 0) {
+                switch (renderMode) {
+                    case ModuleAction.RenderModeEnum.ButtonDropDown:
+                        return await RenderDropDownAsync(component, model, ModuleAction.RenderModeEnum.NormalMenu, false);
+                    case ModuleAction.RenderModeEnum.ButtonMiniDropDown:
+                        return await RenderDropDownAsync(component, model, ModuleAction.RenderModeEnum.NormalMenu, true);
+                    default:
+                        return await RenderModuleActionsAsync(model, renderMode);
+                }
+            }
+            return string.Empty;
+        }
+
+        private static async Task<string> RenderDropDownAsync(YetaWFComponent component, List<ModuleAction> model, ModuleAction.RenderModeEnum renderMode, bool mini) {
+
+            HtmlBuilder hb = new HtmlBuilder();
+
             MenuList menu = new MenuList(model) {
                 RenderMode = renderMode
             };
-            string buttonId = ControlId + "_btn";
-            ActionIconsComponent.ActionIconsSetup setup = new ActionIconsComponent.ActionIconsSetup {
-                MenuId = ControlId + "_menu",
+            string buttonId = component.ControlId + "_btn";
+            ModuleActionsSetup setup = new ModuleActionsSetup {
+                MenuId = component.ControlId + "_menu",
             };
-            string menuHTML = await MenuDisplayComponent.RenderMenuAsync(menu, setup.MenuId, Globals.CssGridActionMenu, HtmlHelper: HtmlHelper, Hidden: true);
+            string menuHTML = await MenuDisplayComponent.RenderMenuAsync(menu, setup.MenuId, Globals.CssGridActionMenu, HtmlHelper: component.HtmlHelper, Hidden: true);
 
             if (!string.IsNullOrWhiteSpace(menuHTML)) {
 
@@ -95,15 +92,23 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 };
 
                 hb.Append($@"
-<div class='yt_actionicons{(mini ? " t_mini" : "")}' id='{ControlId}'>
-    {await HtmlHelper.ForDisplayContainerAsync(ddModel, DropDownButtonComponent.TemplateName)}
+<div class='yt_moduleactions{(mini ? " t_mini" : "")}' id='{component.ControlId}'>
+    {await component.HtmlHelper.ForDisplayContainerAsync(ddModel, DropDownButtonComponent.TemplateName)}
 </div>");
 
-                Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ActionIconsComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
+                Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ModuleActionsComponent('{component.ControlId}', {Utility.JsonSerialize(setup)});");
             }
+
+            return hb.ToString();
         }
 
-        private async Task RenderDefaultsAsync(HtmlBuilder hb, List<ModuleAction> model, ModuleAction.RenderModeEnum renderMode) {
+        internal static async Task<string> RenderModuleActionsAsync(List<ModuleAction> model, ModuleAction.RenderModeEnum renderMode) {
+
+            HtmlBuilder hb = new HtmlBuilder();
+
+            hb.Append($@"
+<div class='yt_moduleactions t_display'>");
+
             int firstIndex = 0;
             int lastIndex = model.Count - 1;
 
@@ -116,6 +121,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 hb.Append(await a.RenderAsync(renderMode, Css: css));
                 ++index;
             }
+
+            hb.Append($@"
+</div>");
+            return hb.ToString();
         }
     }
 }

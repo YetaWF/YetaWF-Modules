@@ -28,11 +28,11 @@ namespace YetaWF.Modules.Packages.Controllers {
         public class PackageModel {
 
             [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands { get; set; }
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands { get; set; }
 
-            public async Task<MenuList> __GetCommandsAsync() {
-                MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+            public async Task<List<ModuleAction>> __GetCommandsAsync() {
+                List<ModuleAction> actions = new List<ModuleAction>();
 
                 actions.New(await Module.GetAction_InfoLinkAsync(Package.InfoLink), ModuleAction.ActionLocationEnum.GridLinks);
                 //actions.New(Module.GetAction_SupportLink(Package.SupportLink), ModuleAction.ActionLocationEnum.GridLinks);

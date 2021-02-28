@@ -1,6 +1,7 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
@@ -45,9 +46,9 @@ namespace YetaWF.Modules.PageEdit.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
 
-        public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
-            MenuList baseMenuList = await base.GetModuleMenuListAsync(renderMode, location);
-            MenuList menuList = new MenuList();
+        public override async Task<List<ModuleAction>> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
+            List<ModuleAction> baseMenuList = await base.GetModuleMenuListAsync(renderMode, location);
+            List<ModuleAction> menuList = new List<ModuleAction>();
 
             PageEditModule modEdit = new PageEditModule();
             menuList.New(await modEdit.GetAction_EditAsync(null), location);

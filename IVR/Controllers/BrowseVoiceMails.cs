@@ -27,11 +27,11 @@ namespace Softelvdm.Modules.IVR.Controllers {
         public class BrowseItem {
 
             [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), AdditionalMetadata("GridActionsEnum", Grid.GridActionsEnum.Icons), ReadOnly]
-            public MenuList Commands { get; set; }
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands { get; set; }
 
-            public async Task<MenuList> __GetCommandsAsync() {
-                MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+            public async Task<List<ModuleAction>> __GetCommandsAsync() {
+                List<ModuleAction> actions = new List<ModuleAction>();
                 actions.New(await DisplayModule.GetAction_DisplayAsync(Module.DisplayUrl, Id), ModuleAction.ActionLocationEnum.GridLinks);
                 actions.New(Module.GetAction_Remove(Id), ModuleAction.ActionLocationEnum.GridLinks);
                 return actions;

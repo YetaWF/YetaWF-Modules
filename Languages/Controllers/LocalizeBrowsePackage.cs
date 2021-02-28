@@ -35,10 +35,10 @@ namespace YetaWF.Modules.Languages.Controllers {
         public class BrowseItem {
 
             [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands {
                 get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+                    List<ModuleAction> actions = new List<ModuleAction>();
 
                     LocalizeEditFileModule editMod = new LocalizeEditFileModule();
                     actions.New(editMod.GetAction_Edit(Module.EditUrl, PackageName, FileName), ModuleAction.ActionLocationEnum.GridLinks);

@@ -26,10 +26,10 @@ namespace YetaWF.Modules.Feedback.Controllers {
         public class BrowseItem {
 
             [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands {
                 get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+                    List<ModuleAction> actions = new List<ModuleAction>();
 
                     FeedbackDisplayModule dispMod = new FeedbackDisplayModule();
                     actions.New(dispMod.GetAction_Display(Module.DisplayUrl, Key), ModuleAction.ActionLocationEnum.GridLinks);

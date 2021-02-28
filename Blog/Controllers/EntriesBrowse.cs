@@ -25,11 +25,11 @@ namespace YetaWF.Modules.Blog.Controllers {
             }
 
             [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands { get; set; } = null!;
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands { get; set; } = null!;
 
-            public async Task<MenuList> __GetCommandsAsync() {
-                MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+            public async Task<List<ModuleAction>> __GetCommandsAsync() {
+                List<ModuleAction> actions = new List<ModuleAction>();
                 EntryDisplayModule dispMod = new EntryDisplayModule();
                 actions.New(await dispMod.GetAction_DisplayAsync(Identity), ModuleAction.ActionLocationEnum.GridLinks);
                 EntryEditModule editMod = new EntryEditModule();

@@ -26,10 +26,10 @@ namespace YetaWF.Modules.Identity.Controllers {
         public class BrowseItem {
 
             [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands {
                 get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+                    List<ModuleAction> actions = new List<ModuleAction>();
 
                     RolesDisplayModule dispMod = new RolesDisplayModule();
                     actions.New(dispMod.GetAction_Display(Module.DisplayUrl, Name), ModuleAction.ActionLocationEnum.GridLinks);

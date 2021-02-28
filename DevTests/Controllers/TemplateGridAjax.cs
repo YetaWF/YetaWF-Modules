@@ -23,11 +23,10 @@ namespace YetaWF.Modules.DevTests.Controllers {
         public class BrowseItem {
 
             [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands {
                 get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
-
+                    List<ModuleAction> actions = new List<ModuleAction>();
                     TemplateGridAjaxModule gridAjaxMod = new TemplateGridAjaxModule();
                     actions.New(gridAjaxMod.GetAction_Dashboard(), ModuleAction.ActionLocationEnum.GridLinks);
                     actions.New(gridAjaxMod.GetAction_User(), ModuleAction.ActionLocationEnum.GridLinks);
@@ -106,7 +105,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
         private GridDefinition GetGridModel() {
 
-            MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.Button};
+            List<ModuleAction> actions = new List<ModuleAction>();
             TemplateGridAjaxModule gridAjaxMod = new TemplateGridAjaxModule();
             actions.New(gridAjaxMod.GetAction_Dashboard(), ModuleAction.ActionLocationEnum.GridLinks);
             actions.New(gridAjaxMod.GetAction_User(), ModuleAction.ActionLocationEnum.GridLinks);

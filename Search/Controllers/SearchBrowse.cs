@@ -27,10 +27,10 @@ namespace YetaWF.Modules.Search.Controllers {
         public class BrowseItem {
 
             [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands {
                 get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+                    List<ModuleAction> actions = new List<ModuleAction>();
 
                     SearchEditModule editMod = new SearchEditModule();
                     actions.New(editMod.GetAction_Edit(Module.EditUrl, SearchDataId), ModuleAction.ActionLocationEnum.GridLinks);

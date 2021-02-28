@@ -31,16 +31,16 @@ namespace YetaWF.Modules.ComponentsHTML {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            MenuList moduleMenu = await mod.GetModuleMenuListAsync(renderMode, ModuleAction.ActionLocationEnum.ModuleLinks);
+            List<ModuleAction> list = await mod.GetModuleMenuListAsync(renderMode, ModuleAction.ActionLocationEnum.ModuleLinks);
+            string contents = await ModuleActionsComponent.RenderModuleActionsAsync(list, renderMode);
 
-            string menuContents = (await MenuDisplayComponent.RenderMenuAsync(moduleMenu, null, Globals.CssModuleLinks));
-            if (!string.IsNullOrWhiteSpace(menuContents)) {
+            if (!string.IsNullOrWhiteSpace(contents)) {
 
-                await Manager.AddOnManager.AddTemplateFromUIHintAsync("ActionIcons", YetaWFComponentBase.ComponentType.Display); // action icons
+                await Manager.AddOnManager.AddTemplateFromUIHintAsync(ModuleActionsComponent.TemplateName, YetaWFComponentBase.ComponentType.Display); // action icons
 
                 hb.Append($@"
 <div class='{Manager.AddOnManager.CheckInvokedCssModule(cssClass)}'>
-    {menuContents}
+    {contents}
 </div>");
             }
             return hb.ToString();
@@ -55,7 +55,7 @@ namespace YetaWF.Modules.ComponentsHTML {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            MenuList moduleMenu = await mod.GetModuleMenuListAsync(ModuleAction.RenderModeEnum.NormalMenu, ModuleAction.ActionLocationEnum.ModuleMenu);
+            MenuList moduleMenu = new MenuList(await mod.GetModuleMenuListAsync(ModuleAction.RenderModeEnum.NormalMenu, ModuleAction.ActionLocationEnum.ModuleMenu)) { };
 
             string id = Manager.UniqueId();
             string menuContents = (await MenuDisplayComponent.RenderMenuAsync(moduleMenu, id, Globals.CssModuleMenu));
@@ -92,7 +92,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             // check if we're in the right mode
             if (!await action.RendersSomethingAsync()) return string.Empty;
 
-            await Manager.AddOnManager.AddTemplateFromUIHintAsync("ActionIcons", YetaWFComponentBase.ComponentType.Display);// this is needed because we're not used by templates
+            await Manager.AddOnManager.AddTemplateFromUIHintAsync(ModuleActionsComponent.TemplateName, YetaWFComponentBase.ComponentType.Display);// this is needed because we're not used by templates
 
             if (!string.IsNullOrWhiteSpace(action.ConfirmationText) && (action.Style != ModuleAction.ActionStyleEnum.Post && action.Style != ModuleAction.ActionStyleEnum.Nothing))
                 throw new InternalError("When using ConfirmationText, the Style property must be set to Post");

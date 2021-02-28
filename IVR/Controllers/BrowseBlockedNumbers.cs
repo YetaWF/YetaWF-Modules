@@ -29,10 +29,10 @@ namespace Softelvdm.Modules.IVR.Controllers {
         public class BrowseItem {
 
             [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands {
                 get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+                    List<ModuleAction> actions = new List<ModuleAction>();
 
                     EditBlockedNumberModule editMod = new EditBlockedNumberModule();
                     actions.New(editMod.GetAction_Edit(Module.EditUrl, Number), ModuleAction.ActionLocationEnum.GridLinks);

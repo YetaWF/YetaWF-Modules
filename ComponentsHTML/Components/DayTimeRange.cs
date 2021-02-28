@@ -123,10 +123,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hb = new HtmlBuilder();
 
             DayTimeRangeUI ts = new DayTimeRangeUI(model ?? new DayTimeRange());
-            ts.ClosedFieldCaption = model.ClosedFieldCaption ?? __ResStr("closed", "Closed");
-            ts.ClosedFieldDescription = model.ClosedFieldDescription ?? __ResStr("closedDesc", "Select to indicate when closed all day");
-            ts.AdditionalFieldCaption = model.AdditionalFieldCaption ?? __ResStr("additional", "Additional");
-            ts.AdditionalFieldDescription = model.AdditionalFieldDescription ?? __ResStr("additionalDesc", "Select to enable an additional time range");
+            ts.ClosedFieldCaption = model?.ClosedFieldCaption ?? __ResStr("closed", "Closed");
+            ts.ClosedFieldDescription = model?.ClosedFieldDescription ?? __ResStr("closedDesc", "Select to indicate when closed all day");
+            ts.AdditionalFieldCaption = model?.AdditionalFieldCaption ?? __ResStr("additional", "Additional");
+            ts.AdditionalFieldDescription = model?.AdditionalFieldDescription ?? __ResStr("additionalDesc", "Select to enable an additional time range");
 
             hb.Append($"<div id='{ControlId}' class='yt_daytimerange t_edit'>");
 

@@ -50,24 +50,12 @@ $smbuttonhorzmargin: .2em;
             @media print {
                 display: none;
             }
-            .yModuleLinks {
+            .yt_moduleactions {
                 margin:0;
                 padding:0;
-                list-style-type: none;
-                li {
-                    display:inline-block;
-                    line-height:1;
-                    vertical-align: middle;
-                }
-                .yaction-link {
-                    i, img {
-                        margin-right:.4ch;
-                    }
-                    margin-right:.5ch;
-                    margin-bottom:.2em;
-                }
                 .y_button { // smaller buttons
                     font: var(--mpnl-link-font);
+                    margin-bottom:.1em;
                     padding:.3em;
                 }
             }

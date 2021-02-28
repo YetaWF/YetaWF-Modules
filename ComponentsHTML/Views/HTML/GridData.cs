@@ -54,7 +54,7 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
                 await HandlePropertiesAsync(item);
         }
         internal static Task HandlePropertiesAsync(object data) {
-            return ObjectSupport.HandlePropertyAsync<MenuList>("Commands", "__GetCommandsAsync", data);
+            return ObjectSupport.HandlePropertyAsync<List<ModuleAction>>("Commands", "__GetCommandsAsync", data);
         }
     }
 }

@@ -17,10 +17,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
-    var ActionIconsComponent = /** @class */ (function (_super) {
-        __extends(ActionIconsComponent, _super);
-        function ActionIconsComponent(controlId, setup) {
-            var _this = _super.call(this, controlId, ActionIconsComponent.TEMPLATE, ActionIconsComponent.SELECTOR, {
+    var ModuleActionsComponent = /** @class */ (function (_super) {
+        __extends(ModuleActionsComponent, _super);
+        function ModuleActionsComponent(controlId, setup) {
+            var _this = _super.call(this, controlId, ModuleActionsComponent.TEMPLATE, ModuleActionsComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
                 ChangeEvent: null,
                 GetValue: null,
@@ -35,17 +35,17 @@ var YetaWF_ComponentsHTML;
             });
             return _this;
         }
-        ActionIconsComponent.prototype.openMenu = function () {
+        ModuleActionsComponent.prototype.openMenu = function () {
             var menuDiv = this.MenuControl.cloneNode(true);
             menuDiv.id = this.MenuControl.id + "_live";
             document.body.appendChild(menuDiv);
             new YetaWF_ComponentsHTML.MenuULComponent(menuDiv.id, { "Owner": this.MenuControl, "AutoOpen": true, "AutoRemove": true, "AttachTo": this.ButtonControl.Control, Dynamic: true });
         };
-        ActionIconsComponent.TEMPLATE = "yt_actionicons";
-        ActionIconsComponent.SELECTOR = ".yt_actionicons";
-        return ActionIconsComponent;
+        ModuleActionsComponent.TEMPLATE = "yt_moduleactions";
+        ModuleActionsComponent.SELECTOR = ".yt_moduleactions";
+        return ModuleActionsComponent;
     }(YetaWF.ComponentBaseDataImpl));
-    YetaWF_ComponentsHTML.ActionIconsComponent = ActionIconsComponent;
+    YetaWF_ComponentsHTML.ModuleActionsComponent = ModuleActionsComponent;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
-//# sourceMappingURL=ActionIcons.js.map
+//# sourceMappingURL=ModuleActions.js.map

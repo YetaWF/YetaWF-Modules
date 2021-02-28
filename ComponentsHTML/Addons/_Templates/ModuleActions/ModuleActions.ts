@@ -2,20 +2,20 @@
 
 namespace YetaWF_ComponentsHTML {
 
-    interface ActionIconsSetup {
+    interface ModuleActionsSetup {
         MenuId: string;
     }
 
-    export class ActionIconsComponent extends YetaWF.ComponentBaseDataImpl {
+    export class ModuleActionsComponent extends YetaWF.ComponentBaseDataImpl {
 
-        public static readonly TEMPLATE: string = "yt_actionicons";
-        public static readonly SELECTOR: string = ".yt_actionicons";
+        public static readonly TEMPLATE: string = "yt_moduleactions";
+        public static readonly SELECTOR: string = ".yt_moduleactions";
 
         private MenuControl: HTMLDivElement;
         private ButtonControl: DropDownButtonComponent;
 
-        constructor(controlId: string, setup: ActionIconsSetup) {
-            super(controlId, ActionIconsComponent.TEMPLATE, ActionIconsComponent.SELECTOR, {
+        constructor(controlId: string, setup: ModuleActionsSetup) {
+            super(controlId, ModuleActionsComponent.TEMPLATE, ModuleActionsComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
                 ChangeEvent: null,
                 GetValue: null,

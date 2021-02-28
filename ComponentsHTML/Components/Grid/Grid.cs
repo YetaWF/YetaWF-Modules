@@ -276,12 +276,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 <div id='{model.Id}' name='{FieldName}' class='yt_grid t_display{noSubmitClass} {(model.UseSkinFormatting ? "tg_skin" : "tg_noskin")} {(gridSavedSettings.Collapsed ? "t_collapsed" : "t_expanded")}'>");
 
             if (model.PanelHeader) {
-                string actions = (await MenuDisplayComponent.RenderMenuAsync(model.PanelHeaderActions, null, Globals.CssModuleLinks));
+                string actions = await HtmlHelper.ForDisplayAsync(model, nameof(model.PanelHeaderActions), UIHint: "ModuleActions");
 
                 hb.Append($@"
     <div class='yGridPanelTitle'>
          <h1>{Utility.HE(model.PanelHeaderTitle)}</h1>
-         <div class='yModuleLinksContainer'>
+         <div class='{Globals.CssModuleLinksContainer}'>
             {actions}
          </div>
          <div class='yPanelActionsContainer'>");

@@ -32,11 +32,11 @@ namespace YetaWF.Modules.Backups.Controllers {
         public class BackupModel {
 
             [Caption("Actions"), Description("All available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands { get; set; } = null!;
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands { get; set; } = null!;
 
-            public async Task<MenuList> __GetCommandsAsync() {
-                MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+            public async Task<List<ModuleAction>> __GetCommandsAsync() {
+                List<ModuleAction> actions = new List<ModuleAction>();
                 actions.New(await Module.GetAction_DownloadLinkAsync(FileName), ModuleAction.ActionLocationEnum.GridLinks);
                 actions.New(Module.GetAction_RemoveLink(FileName), ModuleAction.ActionLocationEnum.GridLinks);
                 return actions;

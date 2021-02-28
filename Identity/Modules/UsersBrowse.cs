@@ -66,8 +66,8 @@ namespace YetaWF.Modules.Identity.Modules {
             }
         }
 
-        public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
-            MenuList menuList = await base.GetModuleMenuListAsync(renderMode, location);
+        public override async Task<List<ModuleAction>> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
+            List<ModuleAction> menuList = await base.GetModuleMenuListAsync(renderMode, location);
             UsersAddModule mod = new UsersAddModule();
             menuList.New(mod.GetAction_Add(AddUrl), location);
             return menuList;

@@ -1,6 +1,7 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Components;
@@ -109,8 +110,8 @@ namespace YetaWF.Modules.Menus.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
-            MenuList menuList = await base.GetModuleMenuListAsync(renderMode, location);
+        public override async Task<List<ModuleAction>> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
+            List<ModuleAction> menuList = await base.GetModuleMenuListAsync(renderMode, location);
             MenuEditModule mod = new MenuEditModule();
             menuList.New(mod.GetAction_Edit(EditUrl, ModuleGuid), location);
             return menuList;
