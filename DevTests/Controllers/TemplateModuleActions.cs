@@ -17,43 +17,43 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [Trim]
         public class Model {
 
-            [Caption("ModuleActions (NormalMenu)"), Description("ModuleActions (NormalMenu)")]
+            [Caption("NormalMenu"), Description("ModuleActions (NormalMenu)")]
             [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.NormalMenu), ReadOnly]
             public List<ModuleAction> PropNormalMenu { get; set; }
 
-            [Caption("ModuleActions (NormalLinks)"), Description("ModuleActions (NormalLinks)")]
+            [Caption("NormalLinks"), Description("ModuleActions (NormalLinks)")]
             [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.NormalLinks), ReadOnly]
             public List<ModuleAction> PropNormalLinks { get; set; }
 
-            [Caption("ModuleActions (IconsOnly)"), Description("ModuleActions (IconsOnly)")]
+            [Caption("IconsOnly"), Description("ModuleActions (IconsOnly)")]
             [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.IconsOnly), ReadOnly]
             public List<ModuleAction> PropIconsOnly { get; set; }
 
-            [Caption("ModuleActions (LinksOnly)"), Description("ModuleActions (LinksOnly)")]
+            [Caption("LinksOnly"), Description("ModuleActions (LinksOnly)")]
             [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.LinksOnly), ReadOnly]
             public List<ModuleAction> PropLinksOnly { get; set; }
 
-            [Caption("ModuleActions (Button)"), Description("ModuleActions (Button)")]
+            [Caption("Button"), Description("ModuleActions (Button)")]
             [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.Button), ReadOnly]
             public List<ModuleAction> PropButton { get; set; }
 
-            [Caption("ModuleActions (ButtonIcon)"), Description("ModuleActions (ButtonIcon)")]
+            [Caption("ButtonIcon"), Description("ModuleActions (ButtonIcon)")]
             [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.ButtonIcon), ReadOnly]
             public List<ModuleAction> PropButtonIcon { get; set; }
 
-            [Caption("ModuleActions (ButtonOnly)"), Description("ModuleActions (ButtonOnly)")]
+            [Caption("ButtonOnly"), Description("ModuleActions (ButtonOnly)")]
             [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.ButtonOnly), ReadOnly]
             public List<ModuleAction> PropButtonOnly { get; set; }
 
-            [Caption("ModuleActions (ButtonBar)"), Description("ModuleActions (ButtonBar)")]
+            [Caption("ButtonBar"), Description("ModuleActions (ButtonBar)")]
             [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.ButtonBar), ReadOnly]
             public List<ModuleAction> PropButtonBar { get; set; }
 
-            [Caption("ModuleActions (ButtonDropDown)"), Description("ModuleActions (ButtonDropDown)")]
+            [Caption("ButtonDropDown"), Description("ModuleActions (ButtonDropDown)")]
             [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.ButtonDropDown), ReadOnly]
             public List<ModuleAction> PropButtonDropDown { get; set; }
 
-            [Caption("ModuleActions (ButtonMiniDropDown)"), Description("ModuleActions (ButtonMiniDropDown)")]
+            [Caption("ButtonMiniDropDown"), Description("ModuleActions (ButtonMiniDropDown)")]
             [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.ButtonMiniDropDown), ReadOnly]
             public List<ModuleAction> PropButtonMiniDropDown { get; set; }
 
