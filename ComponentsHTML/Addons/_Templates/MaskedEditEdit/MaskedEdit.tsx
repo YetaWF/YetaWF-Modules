@@ -53,6 +53,7 @@ namespace YetaWF_ComponentsHTML {
             this.Input.insertAdjacentElement("afterend", warn);
 
             $YetaWF.registerEventHandler(this.Input, "keypress", null, (ev: KeyboardEvent): boolean => {
+                if (ev.key.length !== 1) return true;// special key, like Enter
                 if (!this.isValidKeyPress(ev)) {
                     this.flashError();
                     return false;

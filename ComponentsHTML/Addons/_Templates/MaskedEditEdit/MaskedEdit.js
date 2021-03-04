@@ -42,6 +42,8 @@ var YetaWF_ComponentsHTML;
             warn.innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_exclamation_triangle;
             _this.Input.insertAdjacentElement("afterend", warn);
             $YetaWF.registerEventHandler(_this.Input, "keypress", null, function (ev) {
+                if (ev.key.length !== 1)
+                    return true; // special key, like Enter
                 if (!_this.isValidKeyPress(ev)) {
                     _this.flashError();
                     return false;
