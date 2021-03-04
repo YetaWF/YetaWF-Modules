@@ -98,6 +98,7 @@ i.yic.yic_componentshtml_modmenuedit {
       #ytoast .t_entry.t_warning .t_title {
         border-bottom: var(--tst-warn-line); }
     #ytoast .t_entry .t_close {
+      cursor: pointer;
       position: absolute;
       top: 0px;
       right: 5px; }
