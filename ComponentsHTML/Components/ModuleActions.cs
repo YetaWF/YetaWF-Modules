@@ -105,25 +105,27 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         internal static async Task<string> RenderModuleActionsAsync(List<ModuleAction> model, ModuleAction.RenderModeEnum renderMode) {
 
             HtmlBuilder hb = new HtmlBuilder();
+            if (model.Count > 0) {
 
-            hb.Append($@"
+                hb.Append($@"
 <div class='yt_moduleactions t_display'>");
 
-            int firstIndex = 0;
-            int lastIndex = model.Count - 1;
+                int firstIndex = 0;
+                int lastIndex = model.Count - 1;
 
-            int index = 0;
-            foreach (ModuleAction a in model) {
-                string css = "t_middle";
-                if (index == firstIndex && index == lastIndex) css = "t_firstlast";
-                else if (index == firstIndex) css = "t_first";
-                else if (index == lastIndex) css = "t_last";
-                hb.Append(await a.RenderAsync(renderMode, Css: css));
-                ++index;
-            }
+                int index = 0;
+                foreach (ModuleAction a in model) {
+                    string css = "t_middle";
+                    if (index == firstIndex && index == lastIndex) css = "t_firstlast";
+                    else if (index == firstIndex) css = "t_first";
+                    else if (index == lastIndex) css = "t_last";
+                    hb.Append(await a.RenderAsync(renderMode, Css: css));
+                    ++index;
+                }
 
-            hb.Append($@"
+                hb.Append($@"
 </div>");
+            }
             return hb.ToString();
         }
     }
