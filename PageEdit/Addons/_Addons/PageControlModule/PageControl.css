@@ -24,7 +24,7 @@
   #yPageControlMod .yt_tabs {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0; }
-  #yPageControlMod .yt_moduleactions {
+  #yPageControlMod .yt_moduleactionsplain {
     display: block;
     background: var(--panel-bg);
     padding: .5em;
@@ -32,8 +32,8 @@
     border-top: none;
     border-bottom-left-radius: var(--tabs-tab-border-radius);
     border-bottom-right-radius: var(--tabs-tab-border-radius); }
-    #yPageControlMod .yt_moduleactions a {
+    #yPageControlMod .yt_moduleactionsplain a {
       text-decoration: none;
       margin-bottom: .1rem; }
-      #yPageControlMod .yt_moduleactions a:hover {
+      #yPageControlMod .yt_moduleactionsplain a:hover {
         text-decoration: underline; }

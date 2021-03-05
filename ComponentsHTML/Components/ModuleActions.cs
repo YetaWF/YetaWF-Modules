@@ -108,7 +108,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (model.Count > 0) {
 
                 hb.Append($@"
-<div class='yt_moduleactions t_display'>");
+<div class='yt_moduleactionsplain t_display'>");
 
                 int firstIndex = 0;
                 int lastIndex = model.Count - 1;
