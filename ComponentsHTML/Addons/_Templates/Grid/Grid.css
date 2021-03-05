@@ -156,6 +156,8 @@
           padding: 2em 0 2em 2ch; }
           .yt_grid .yt_grid .tg_table table tbody td .tg_emptydiv {
             padding: 0; }
+        .yt_grid .tg_table table tbody td .yt_moduleactions {
+          line-height: 20px; }
       .yt_grid .tg_table table th, .yt_grid .tg_table table td {
         font: var(--body-font);
         overflow: hidden; }

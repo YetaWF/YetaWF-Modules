@@ -83,6 +83,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             Align = GridHAlignmentEnum.Unspecified;
             Icons = 0;
             FilterOptions = new List<FilterOptionEnum>();
+            Truncate = true;
         }
     }
 }

@@ -64,6 +64,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             public Column() {
                 FilterOptions = new List<GridColumnInfo.FilterOptionEnum>();
+                Truncate = true;
             }
 
             private int PixWidth { get; set; }

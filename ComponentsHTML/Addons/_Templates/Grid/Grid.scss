@@ -210,6 +210,9 @@ $smbuttonhorzmargin: .2em;
                             padding:0;
                         }
                     }
+                    .yt_moduleactions {
+                        line-height:20px;// a little extra height in case of wrapping
+                    }
                 }
             }
             th, td {
