@@ -38,10 +38,10 @@ namespace YetaWF.Modules.Identity.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            ModuleAction actionDisplay = null;
-            ModuleAction actionLoginAs = null;
-            string userName = string.Empty;
             using (UserDefinitionDataProvider userDefDP = new UserDefinitionDataProvider()) {
+                ModuleAction actionDisplay = null;
+                ModuleAction actionLoginAs = null;
+                string userName;
                 UserDefinition user = null;
                 if (!string.IsNullOrWhiteSpace(model)) {
                     user = await userDefDP.GetItemByEmailAsync(model);
@@ -56,12 +56,14 @@ namespace YetaWF.Modules.Identity.Components {
                     }
                 } else
                     userName = __ResStr("noEmail", "(not specified)");
+
+                hb.Append($@"
+<div{FieldSetup(FieldType.Anonymous)} class='yt_yetawf_identity_email t_display{GetClasses()}{HtmlBuilder.GetClassAttribute(HtmlAttributes)}'>
+    {HE(userName)}
+    {(actionDisplay != null ? await actionDisplay.RenderAsync(ModuleAction.RenderModeEnum.IconsOnly) : null)}
+    {(actionLoginAs != null ? await actionLoginAs.RenderAsync(ModuleAction.RenderModeEnum.IconsOnly) : null)}
+</div>");
             }
-            hb.Append($"<span{FieldSetup(FieldType.Anonymous)}{HtmlBuilder.GetClassAttribute(HtmlAttributes)}>{HE(userName)}</span>");
-            if (actionDisplay != null)
-                hb.Append(await actionDisplay.RenderAsync(ModuleAction.RenderModeEnum.IconsOnly));
-            if (actionLoginAs != null)
-                hb.Append(await actionLoginAs.RenderAsync(ModuleAction.RenderModeEnum.IconsOnly));
             return hb.ToString();
         }
     }
