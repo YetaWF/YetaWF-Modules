@@ -1119,7 +1119,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                             }
 
                             // Truncate
-                            if (gridCol.Truncate)
+                            if (gridCol.Truncate && gridCol.Icons == 0) // the icon column cannot be truncated
                                 tdCss = CssManager.CombineCss(tdCss, "tg_truncate");
 
                             hb.Append($@"

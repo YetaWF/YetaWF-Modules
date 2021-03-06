@@ -56,11 +56,12 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 MenuText = this.__ResStr("editText", "Page Settings"),
                 Tooltip = this.__ResStr("editTooltip", "Edit page settings"),
                 Legend = this.__ResStr("editLegend", "Edits page settings"),
-
+                
                 Style = ModuleAction.ActionStyleEnum.PopupEdit,
                 Category = ModuleAction.ActionCategoryEnum.Update,
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
                 Mode = ModuleAction.ActionModeEnum.Any,
+                DontFollow = true,
 
                 SaveReturnUrl = true,
             };

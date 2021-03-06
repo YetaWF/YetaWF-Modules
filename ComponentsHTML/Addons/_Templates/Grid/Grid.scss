@@ -50,7 +50,8 @@ $smbuttonhorzmargin: .2em;
             @media print {
                 display: none;
             }
-            .yt_moduleactions {
+            .yt_moduleactions,
+            .yt_moduleactionsplain {
                 margin:0;
                 padding:0;
                 .y_button { // smaller buttons
@@ -210,7 +211,8 @@ $smbuttonhorzmargin: .2em;
                             padding:0;
                         }
                     }
-                    .yt_moduleactions {
+                    .yt_moduleactions,
+                    .yt_moduleactionsplain {
                         line-height:20px;// a little extra height in case of wrapping
                     }
                 }

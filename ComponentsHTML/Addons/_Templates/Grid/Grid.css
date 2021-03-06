@@ -30,10 +30,12 @@
       @media print {
         .yt_grid .yGridPanelTitle .yModuleLinksContainer {
           display: none; } }
-      .yt_grid .yGridPanelTitle .yModuleLinksContainer .yt_moduleactions {
+      .yt_grid .yGridPanelTitle .yModuleLinksContainer .yt_moduleactions,
+      .yt_grid .yGridPanelTitle .yModuleLinksContainer .yt_moduleactionsplain {
         margin: 0;
         padding: 0; }
-        .yt_grid .yGridPanelTitle .yModuleLinksContainer .yt_moduleactions .y_button {
+        .yt_grid .yGridPanelTitle .yModuleLinksContainer .yt_moduleactions .y_button,
+        .yt_grid .yGridPanelTitle .yModuleLinksContainer .yt_moduleactionsplain .y_button {
           font: var(--mpnl-link-font);
           margin-bottom: .1em;
           padding: .3em; }
@@ -156,7 +158,8 @@
           padding: 2em 0 2em 2ch; }
           .yt_grid .yt_grid .tg_table table tbody td .tg_emptydiv {
             padding: 0; }
-        .yt_grid .tg_table table tbody td .yt_moduleactions {
+        .yt_grid .tg_table table tbody td .yt_moduleactions,
+        .yt_grid .tg_table table tbody td .yt_moduleactionsplain {
           line-height: 20px; }
       .yt_grid .tg_table table th, .yt_grid .tg_table table td {
         font: var(--body-font);
