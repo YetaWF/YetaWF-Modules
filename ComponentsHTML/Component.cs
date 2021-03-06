@@ -86,7 +86,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     // error state
                     string errClass = GetErrorClass();
                     if (!string.IsNullOrWhiteSpace(errClass))
-                        HtmlAttributes.Add("class", errClass);
+                        HtmlBuilder.AddClass(HtmlAttributes, errClass);
                     // client side validation
                     string validations = GetValidation();
                     if (validations != null)
