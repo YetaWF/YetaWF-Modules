@@ -93,11 +93,12 @@ namespace YetaWF.Modules.Identity.Components {
                 ModuleAction actionDisplay = null;
                 ModuleAction actionLoginAs = null;
                 UserDefinition user = null;
-                if (model != null) 
+                if (model != null && model != 0) 
                     user = await dataProvider.GetItemByUserIdAsync((int)model);
-                string userName;
+                string userName = null;
                 if (user == null) {
-                    userName = string.Format("({0})", model);
+                    if (model != null && model != 0)
+                        userName = string.Format("({0})", model);
                 } else {
                     userName = user.UserName;
                     UsersDisplayModule modDisp = new UsersDisplayModule();
