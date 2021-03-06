@@ -42,11 +42,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// <summary>
     /// Displays the page name based on the model's page Guid.
     /// </summary>
-    /// <example>
-    /// [Caption("Master Page"), Description("Defines the master page for the Unified Page Set that defines the skin, referenced modules, authorization and all other page attributes")]
-    /// [UIHint("PageSelection"), ReadOnly]
-    /// public Guid MasterPageGuid { get; set; }
-    /// </example>
     public class PageSelectionComponentDisplay : PageSelectionComponentBase, IYetaWFComponent<Guid>, IYetaWFComponent<Guid?> {
 
         /// <summary>
