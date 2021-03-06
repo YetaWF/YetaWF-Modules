@@ -12,11 +12,14 @@
   padding: .2em; }
   #yDialogContainer .t_titlebar {
     display: -webkit-box;
+    display: -webkit-flex;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
             flex-direction: row;
-    flex-wrap: nowrap;
+    -webkit-flex-wrap: nowrap;
+            flex-wrap: nowrap;
     background: var(--dialog-title-bg);
     color: var(--dialog-title-clr);
     cursor: move;
@@ -27,6 +30,7 @@
     font: var(--dialog-title-font); }
     #yDialogContainer .t_titlebar #yAlertTitle {
       -webkit-box-flex: 1;
+      -webkit-flex: 1 1;
               flex: 1 1;
       margin-left: auto;
       overflow: hidden;

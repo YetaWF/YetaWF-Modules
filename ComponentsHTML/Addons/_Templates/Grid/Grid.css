@@ -4,14 +4,19 @@
   position: relative; }
   .yt_grid .yGridPanelTitle {
     display: -webkit-box;
+    display: -webkit-flex;
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
             flex-direction: row;
-    flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
+            flex-wrap: wrap;
     -webkit-box-pack: left;
+    -webkit-justify-content: left;
             justify-content: left;
     -webkit-box-align: center;
+    -webkit-align-items: center;
             align-items: center;
     border-bottom: var(--mpnl-border);
     padding: .2em; }
@@ -22,6 +27,7 @@
       vertical-align: middle; }
     .yt_grid .yGridPanelTitle .yModuleLinksContainer {
       -webkit-box-flex: 1;
+      -webkit-flex: 1 1;
               flex: 1 1;
       display: inline-block;
       padding-right: .5em;
@@ -41,11 +47,14 @@
           padding: .3em; }
     .yt_grid .yGridPanelTitle .yPanelActionsContainer {
       display: -webkit-box;
+      display: -webkit-flex;
       display: flex;
       -webkit-box-orient: horizontal;
       -webkit-box-direction: normal;
+      -webkit-flex-direction: row;
               flex-direction: row;
       -webkit-box-pack: end;
+      -webkit-justify-content: flex-end;
               justify-content: flex-end;
       margin-left: auto; }
       .yt_grid .yGridPanelTitle .yPanelActionsContainer .tg_pgbtns .tg_reload {
@@ -62,6 +71,7 @@
         margin-right: 1ch; }
       .yt_grid .yGridPanelTitle .yPanelActionsContainer .yModuleExpColl {
         -webkit-box-flex: 0;
+        -webkit-flex: 0 0;
                 flex: 0 0;
         margin: .2em; }
   .yt_grid .tg_table {

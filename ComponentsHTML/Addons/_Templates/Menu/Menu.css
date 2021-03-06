@@ -2,11 +2,14 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 ul.yt_menu.t_display.t_large {
   display: -webkit-box;
+  display: -webkit-flex;
   display: flex;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
           flex-direction: row;
-  flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+          flex-wrap: wrap;
   padding: var(--mm-0-padding);
   margin: 0;
   list-style: none;
@@ -47,11 +50,14 @@ ul.yt_menu.t_display.t_large {
       position: absolute;
       z-index: 1000;
       display: -webkit-box;
+      display: -webkit-flex;
       display: flex;
       -webkit-box-orient: vertical;
       -webkit-box-direction: normal;
+      -webkit-flex-direction: column;
               flex-direction: column;
-      flex-wrap: nowrap;
+      -webkit-flex-wrap: nowrap;
+              flex-wrap: nowrap;
       padding: var(--mm-1-padding);
       margin: 0;
       list-style: none;
@@ -104,11 +110,14 @@ ul.yt_menu.t_display.t_large {
           position: absolute;
           z-index: 1000;
           display: -webkit-box;
+          display: -webkit-flex;
           display: flex;
           -webkit-box-orient: vertical;
           -webkit-box-direction: normal;
+          -webkit-flex-direction: column;
                   flex-direction: column;
-          flex-wrap: nowrap;
+          -webkit-flex-wrap: nowrap;
+                  flex-wrap: nowrap;
           padding: var(--mm-2-padding);
           margin: 0;
           list-style: none;
@@ -154,11 +163,14 @@ ul.yt_menu.t_display.t_large {
 
 ul.yt_menu.t_display.t_small {
   display: -webkit-box;
+  display: -webkit-flex;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
           flex-direction: column;
-  flex-wrap: nowrap;
+  -webkit-flex-wrap: nowrap;
+          flex-wrap: nowrap;
   padding: var(--mm-0-padding);
   margin: 0;
   list-style: none;
@@ -195,11 +207,14 @@ ul.yt_menu.t_display.t_small {
         height: var(--mm-0-ddheight); }
     ul.yt_menu.t_display.t_small > li > ul {
       display: -webkit-box;
+      display: -webkit-flex;
       display: flex;
       -webkit-box-orient: vertical;
       -webkit-box-direction: normal;
+      -webkit-flex-direction: column;
               flex-direction: column;
-      flex-wrap: nowrap;
+      -webkit-flex-wrap: nowrap;
+              flex-wrap: nowrap;
       width: 95%;
       overflow: hidden;
       margin: var(--mm-1-small-margin);
@@ -251,11 +266,14 @@ ul.yt_menu.t_display.t_small {
             border-radius: var(--mm-svg-small-border-radius); }
         ul.yt_menu.t_display.t_small > li > ul > li > ul {
           display: -webkit-box;
+          display: -webkit-flex;
           display: flex;
           -webkit-box-orient: vertical;
           -webkit-box-direction: normal;
+          -webkit-flex-direction: column;
                   flex-direction: column;
-          flex-wrap: nowrap;
+          -webkit-flex-wrap: nowrap;
+                  flex-wrap: nowrap;
           width: 90%;
           overflow: hidden;
           margin: var(--mm-2-small-margin);

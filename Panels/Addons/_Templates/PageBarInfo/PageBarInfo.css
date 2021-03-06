@@ -2,6 +2,7 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
 .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list {
   -webkit-box-flex: 0;
+  -webkit-flex: none;
           flex: none;
   overflow-x: auto;
   overflow-y: hidden;
@@ -53,9 +54,11 @@
 @media (min-width: 1000px) {
   .yt_panels_pagebarinfo.t_stylesvert {
     display: -webkit-box;
+    display: -webkit-flex;
     display: flex; }
     .yt_panels_pagebarinfo.t_stylesvert .yt_panels_pagebarinfo_list {
       -webkit-box-flex: 0;
+      -webkit-flex: 0 0 120px;
               flex: 0 0 120px;
       overflow-x: hidden;
       overflow-y: auto;
@@ -71,6 +74,7 @@
           padding-bottom: 10px; }
     .yt_panels_pagebarinfo.t_stylesvert .t_area {
       -webkit-box-flex: 1;
+      -webkit-flex: 1;
               flex: 1;
       padding: .7em 1.3em .7em 1.3em;
       overflow: hidden;
@@ -79,6 +83,7 @@
 @media (min-width: 1500px) {
   .yt_panels_pagebarinfo.t_stylesvert.t_expanded .yt_panels_pagebarinfo_list {
     -webkit-box-flex: 0;
+    -webkit-flex: 0 0 250px;
             flex: 0 0 250px;
     overflow-x: hidden;
     overflow-y: auto;
