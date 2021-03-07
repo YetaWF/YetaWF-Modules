@@ -83,8 +83,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             if (!string.IsNullOrWhiteSpace(menuHTML)) {
 
+                if (!component.TryGetSiblingProperty($"{component.PropertyName}_Label", out string? label))
+                    label = __ResStr("dropdownText", "Manage");
+
                 DropDownButtonComponent.Model ddModel = new DropDownButtonComponent.Model {
-                    Text = __ResStr("dropdownText", "Manage"),
+                    Text = label ?? string.Empty,
                     Tooltip = null,
                     ButtonId = buttonId,
                     MenuHTML = menuHTML,

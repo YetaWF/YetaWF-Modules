@@ -52,6 +52,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [Caption("ButtonDropDown"), Description("ModuleActions (ButtonDropDown)")]
             [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.ButtonDropDown), ReadOnly]
             public List<ModuleAction> PropButtonDropDown { get; set; }
+            public string PropButtonDropDown_Label { get { return "Select"; } }
 
             [Caption("ButtonMiniDropDown"), Description("ModuleActions (ButtonMiniDropDown)")]
             [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.ButtonMiniDropDown), ReadOnly]
