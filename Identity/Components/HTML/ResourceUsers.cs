@@ -17,6 +17,8 @@ using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.DataProvider;
 
+#nullable enable
+
 namespace YetaWF.Modules.Identity.Components {
 
     public abstract class ResourceUsersComponentBase : YetaWFComponent {
@@ -33,7 +35,7 @@ namespace YetaWF.Modules.Identity.Components {
     /// This component is used by the YetaWF.Identity package and is not intended for use by an application.
     /// </summary>
     [PrivateComponent]
-    public class ResourceUsersDisplayComponent : ResourceUsersComponentBase, IYetaWFComponent<List<User>> {
+    public class ResourceUsersDisplayComponent : ResourceUsersComponentBase, IYetaWFComponent<List<User>?> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
@@ -54,7 +56,7 @@ namespace YetaWF.Modules.Identity.Components {
                 InitialPageSize = 5,
                 ShowHeader = header,
                 AjaxUrl = Utility.UrlFor(typeof(ResourceUsersController), nameof(ResourceUsersController.ResourceUsersDisplay_SortFilter)),
-                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
                         Data = recs.Data.ToList<object>(),
@@ -64,7 +66,7 @@ namespace YetaWF.Modules.Identity.Components {
             };
         }
 
-        public async Task<string> RenderAsync(List<User> model) {
+        public async Task<string> RenderAsync(List<User>? model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -73,7 +75,7 @@ namespace YetaWF.Modules.Identity.Components {
             GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header)
             };
-            grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+            grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                 List<Entry> users;
                 if (model == null)
                     users = new List<Entry>();
@@ -99,19 +101,19 @@ namespace YetaWF.Modules.Identity.Components {
     /// This component is used by the YetaWF.Identity package and is not intended for use by an application.
     /// </summary>
     [PrivateComponent]
-    public class ResourceUsersEditComponent : ResourceUsersComponentBase, IYetaWFComponent<List<User>> {
+    public class ResourceUsersEditComponent : ResourceUsersComponentBase, IYetaWFComponent<List<User>?> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
         public class ResourceUsersSetup {
-            public string GridId { get; set; }
-            public string AddUrl { get; set; }
-            public string GridAllId { get; internal set; }
+            public string GridId { get; set; } = null!;
+            public string AddUrl { get; set; } = null!;
+            public string GridAllId { get; set; } = null!;
         }
         public class NewModel {
             [Caption("New User"), Description("Enter a new user name and click Add")]
             [UIHint("Text80"), StringLength(Globals.MaxUser), Trim]
-            public string NewValue { get; set; }
+            public string NewValue { get; set; } = null!;
         }
 
         public class Entry {
@@ -127,7 +129,7 @@ namespace YetaWF.Modules.Identity.Components {
             [UIHint("Hidden"), ReadOnly]
             public int UserId { get; set; }
             [UIHint("Hidden"), ReadOnly]
-            public string UserName { get; set; }
+            public string UserName { get; set; } = null!;
 
             public Entry(int userId, string userName) {
                 UserId = UserNameFromId = userId;
@@ -139,7 +141,7 @@ namespace YetaWF.Modules.Identity.Components {
 
             [Caption("User"), Description("User Name")]
             [UIHint("String"), ReadOnly]
-            public string UserName { get; set; }
+            public string UserName { get; set; } = null!;
 
             public AllEntry(UserDefinition user) {
                 ObjectSupport.CopyData(user, this);
@@ -153,7 +155,7 @@ namespace YetaWF.Modules.Identity.Components {
                 InitialPageSize = 10,
                 ShowHeader = header,
                 AjaxUrl = Utility.UrlFor(typeof(ResourceUsersController), nameof(ResourceUsersController.ResourceUsersEdit_SortFilter)),
-                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
                         Data = recs.Data.ToList<object>(),
@@ -171,7 +173,7 @@ namespace YetaWF.Modules.Identity.Components {
                 RecordType = typeof(AllEntry),
                 InitialPageSize = 10,
                 AjaxUrl = Utility.UrlFor(typeof(ResourceUsersController), nameof(ResourceUsersController.ResourceUsersBrowse_GridData)),
-                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
                         DataProviderGetRecords<UserDefinition> browseItems = await userDP.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
@@ -182,7 +184,7 @@ namespace YetaWF.Modules.Identity.Components {
                 },
             };
         }
-        public async Task<string> RenderAsync(List<User> model) {
+        public async Task<string> RenderAsync(List<User>? model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -191,7 +193,7 @@ namespace YetaWF.Modules.Identity.Components {
             GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header)
             };
-            grid.GridDef.DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+            grid.GridDef.DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                 List<Entry> users = new List<Entry>();
                 if (model != null) {
                     foreach (User u in model) {
