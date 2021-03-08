@@ -11,11 +11,7 @@ using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Core.Support;
 using YetaWF.Core.Localize;
 using System.Linq;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
 

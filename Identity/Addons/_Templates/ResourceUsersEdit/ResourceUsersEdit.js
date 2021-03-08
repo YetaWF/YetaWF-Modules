@@ -26,7 +26,6 @@ var YetaWF_Identity;
                 GetValue: null,
                 Enable: null,
             }) || this;
-            _this.ReloadInProgress = false;
             _this.AddCounter = 0;
             _this.Setup = setup;
             _this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
@@ -34,10 +33,8 @@ var YetaWF_Identity;
             _this.ButtonAdd = $YetaWF.getElement1BySelector("input[name='btnAdd']", [_this.Control]);
             _this.InputUserName = $YetaWF.getElement1BySelector("input[name$='.NewValue']", [_this.Control]);
             $YetaWF.registerEventHandler(_this.ButtonAdd, "click", null, function (ev) {
-                if (_this.ReloadInProgress)
+                if ($YetaWF.isLoading)
                     return true;
-                _this.ReloadInProgress = true;
-                $YetaWF.setLoading(true);
                 var uri = $YetaWF.parseUrl(_this.Setup.AddUrl);
                 uri.addFormInfo(_this.Control);
                 var uniqueIdCounters = { UniqueIdPrefix: _this.ControlId + "ls", UniqueIdPrefixCounter: 0, UniqueIdCounter: ++_this.AddCounter };
@@ -47,23 +44,11 @@ var YetaWF_Identity;
                 uri.addSearch("data", JSON.stringify(_this.Grid.StaticData));
                 if (_this.Grid.ExtraData)
                     uri.addSearchSimpleObject(_this.Grid.ExtraData);
-                var request = new XMLHttpRequest();
-                request.open("POST", _this.Setup.AddUrl, true);
-                request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-                request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                request.onreadystatechange = function (ev) {
-                    if (request.readyState === 4 /*DONE*/) {
-                        _this.ReloadInProgress = false;
-                        $YetaWF.setLoading(false);
-                        $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, function (result) {
-                            var partial = JSON.parse(request.responseText);
-                            _this.ReloadInProgress = false;
-                            $YetaWF.setLoading(false);
-                            _this.Grid.AddRecord(partial.TR, partial.StaticData);
-                        });
+                $YetaWF.post(_this.Setup.AddUrl, uri.toFormData(), function (success, partial) {
+                    if (success) {
+                        _this.Grid.AddRecord(partial.TR, partial.StaticData);
                     }
-                };
-                request.send(uri.toFormData());
+                });
                 return false;
             });
             $YetaWF.registerMultipleEventHandlers([_this.InputUserName], ["input", "change", "click", "keyup", "paste"], null, function (ev) { _this.toggleButton(); return true; });

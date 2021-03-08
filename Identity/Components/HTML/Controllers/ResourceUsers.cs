@@ -10,11 +10,7 @@ using YetaWF.Modules.Identity.Addons;
 using System.Collections.Generic;
 using System.Linq;
 using YetaWF.Modules.Identity.Components;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
 

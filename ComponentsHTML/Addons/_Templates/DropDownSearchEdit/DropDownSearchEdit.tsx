@@ -163,9 +163,11 @@ namespace YetaWF_ComponentsHTML {
             var uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
             uri.addFormInfo(this.Control);
             uri.addSearch("Search", value);
-            $YetaWF.post(uri.toUrl(), uri.toFormData(), (success: boolean, data: string): void => {
-                this.LastValue = value;
-                this.openPopup(JSON.parse(data));
+            $YetaWF.post(uri.toUrl(), uri.toFormData(), (success: boolean, data: SelectionItem[]): void => {
+                if (success) {
+                    this.LastValue = value;
+                    this.openPopup(data);
+                }
             });
         }
 

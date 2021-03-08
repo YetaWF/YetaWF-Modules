@@ -229,7 +229,7 @@ namespace YetaWF_ComponentsHTML {
     }
 
     // The property list needs a bit of special love when it's made visible. Because panels have no width/height
-    // while the propertylist is not visible (jquery implementation), when a propertylist is made visible using show(),
+    // while the propertylist is not visible, when a propertylist is made visible using show(),
     // the default panel is not sized correctly. If you explicitly show() a propertylist that has never been visible,
     // call the following to cause the propertylist to be resized correctly:
     // ComponentsHTML.processPropertyListVisible(div);

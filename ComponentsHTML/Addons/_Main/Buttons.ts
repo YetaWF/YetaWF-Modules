@@ -7,15 +7,6 @@ namespace YetaWF_ComponentsHTML {
     export class Buttons {
 
         public static initButtons(tag: HTMLElement): void {
-
-            // let buttons = $YetaWF.getElementsBySelector(`button,input[type=submit],input[type=button],input[type=reset],input[type=file],a[${YConfigs.Basics.CssAttrActionButton}]`, [tag]);
-            // for (let button of buttons) {
-            //     if (!$YetaWF.elementHasClass(button, "yt_dropdownbutton")) {
-            //         $YetaWF.elementAddClass(button, "y_button");
-            //         $YetaWF.setAttribute(button, "role", "button");
-            //     }
-            // }
-
             // Diagnostics, find old bootstrap and kendo buttons, which shouldn't be used any longer.
             if (YConfigs.Basics.DEBUGBUILD) {
                 let invalids = $YetaWF.getElementsBySelector(".y_bootstrap");

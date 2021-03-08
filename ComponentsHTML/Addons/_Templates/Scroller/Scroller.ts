@@ -82,10 +82,6 @@ namespace YetaWF_ComponentsHTML {
             var offs = this.Panel * itemwidth;
             this.DivItems.style.transition = "all 250ms";
             this.DivItems.style.left = `${-offs}px`;
-
-            //$('.t_items', this.Control).animate({
-            //    left: -offs,
-            //}, 250, function () { });
         }
     }
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: CustomEvent<YetaWF.DetailsEventContainerResize>): boolean => {

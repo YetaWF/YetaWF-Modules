@@ -154,8 +154,10 @@ var YetaWF_ComponentsHTML;
             uri.addFormInfo(this.Control);
             uri.addSearch("Search", value);
             $YetaWF.post(uri.toUrl(), uri.toFormData(), function (success, data) {
-                _this.LastValue = value;
-                _this.openPopup(JSON.parse(data));
+                if (success) {
+                    _this.LastValue = value;
+                    _this.openPopup(data);
+                }
             });
         };
         DropDownSearchEditComponent.prototype.clearInputTimeout = function () {

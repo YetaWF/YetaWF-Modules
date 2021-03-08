@@ -22,7 +22,6 @@ namespace YetaWF_Identity {
         private GridAll: YetaWF_ComponentsHTML.Grid;
         private ButtonAdd: HTMLInputElement;
         private InputUserName: HTMLInputElement;
-        private ReloadInProgress: boolean = false;
         private AddCounter: number = 0;
 
         constructor(controlId: string, setup: ResourceUsersSetup) {
@@ -42,10 +41,7 @@ namespace YetaWF_Identity {
 
             $YetaWF.registerEventHandler(this.ButtonAdd, "click", null, (ev: MouseEvent): boolean => {
 
-                if (this.ReloadInProgress) return true;
-
-                this.ReloadInProgress = true;
-                $YetaWF.setLoading(true);
+                if ($YetaWF.isLoading) return true;
 
                 var uri = $YetaWF.parseUrl(this.Setup.AddUrl);
                 uri.addFormInfo(this.Control);
@@ -55,23 +51,12 @@ namespace YetaWF_Identity {
                 uri.addSearch("fieldPrefix", this.Grid.FieldName);
                 uri.addSearch("data", JSON.stringify(this.Grid.StaticData));
                 if (this.Grid.ExtraData) uri.addSearchSimpleObject(this.Grid.ExtraData);
-                var request: XMLHttpRequest = new XMLHttpRequest();
-                request.open("POST", this.Setup.AddUrl, true);
-                request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-                request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                request.onreadystatechange = (ev: Event): any => {
-                    if (request.readyState === 4 /*DONE*/) {
-                        this.ReloadInProgress = false;
-                        $YetaWF.setLoading(false);
-                        $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, (result: string): void => {
-                            var partial: GridRecordResult = JSON.parse(request.responseText);
-                            this.ReloadInProgress = false;
-                            $YetaWF.setLoading(false);
-                            this.Grid.AddRecord(partial.TR, partial.StaticData);
-                        });
+
+                $YetaWF.post(this.Setup.AddUrl, uri.toFormData(), (success: boolean, partial: GridRecordResult): void => {
+                    if (success) {
+                        this.Grid.AddRecord(partial.TR, partial.StaticData);
                     }
-                };
-                request.send(uri.toFormData());
+                });
 
                 return false;
             });
