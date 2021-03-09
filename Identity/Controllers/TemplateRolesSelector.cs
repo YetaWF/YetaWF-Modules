@@ -7,12 +7,8 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Serializers;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
 using YetaWF.Core.Support;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
 
@@ -54,6 +50,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         public ActionResult TemplateRolesSelector_Partial(Model model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
+            model.Prop1RO = model.Prop1Req;
             return FormProcessed(model, this.__ResStr("ok", "OK"));
         }
     }
