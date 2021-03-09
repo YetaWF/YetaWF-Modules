@@ -21,7 +21,7 @@
     color: var(--body-clr); }
   .y_button:not(:disabled), .y_buttonform:not(:disabled) {
     cursor: pointer; }
-  .y_button:hover, .y_buttonform:hover {
+  .y_button:hover:not(:disabled):not(.t_disabled), .y_buttonform:hover:not(:disabled):not(.t_disabled) {
     text-decoration: none;
     background: var(--button-bg-hover);
     color: var(--button-clr-hover); }
@@ -30,29 +30,31 @@
     text-decoration: none;
     background: var(--button-bg-focus);
     color: var(--button-clr-focus); }
-  .y_button:disabled, .y_buttonform:disabled {
+  .y_button:disabled, .y_button.t_disabled, .y_buttonform:disabled, .y_buttonform.t_disabled {
     text-decoration: none;
     cursor: default;
-    opacity: var(--body-dis-opacity); }
+    opacity: var(--body-dis-opacity);
+    background: var(--button-bg);
+    color: var(--button-clr); }
   .y_button.y_success, .y_buttonform.y_success {
     border-color: var(--tst-info-bg);
     background: var(--tst-info-bg);
     color: var(--tst-info-clr); }
-    .y_button.y_success:hover, .y_buttonform.y_success:hover {
+    .y_button.y_success:hover:not(:disabled):not(.t_disabled), .y_buttonform.y_success:hover:not(:disabled):not(.t_disabled) {
       -webkit-filter: brightness(85%);
               filter: brightness(85%); }
   .y_button.y_warning, .y_buttonform.y_warning {
     border-color: var(--tst-warn-bg);
     background: var(--tst-warn-bg);
     color: var(--tst-warn-clr); }
-    .y_button.y_warning:hover, .y_buttonform.y_warning:hover {
+    .y_button.y_warning:hover:not(:disabled):not(.t_disabled), .y_buttonform.y_warning:hover:not(:disabled):not(.t_disabled) {
       -webkit-filter: brightness(85%);
               filter: brightness(85%); }
   .y_button.y_danger, .y_buttonform.y_danger {
     border-color: var(--tst-error-bg);
     background: var(--tst-error-bg);
     color: var(--tst-error-clr); }
-    .y_button.y_danger:hover, .y_buttonform.y_danger:hover {
+    .y_button.y_danger:hover:not(:disabled):not(.t_disabled), .y_buttonform.y_danger:hover:not(:disabled):not(.t_disabled) {
       -webkit-filter: brightness(85%);
               filter: brightness(85%); }
 
@@ -62,7 +64,7 @@
   .y_buttonform:focus {
     box-shadow: var(--button-focus-shadow); }
 
-a.y_button, a.y_button:hover {
+a.y_button, a.y_button:hover:not(:disabled):not(.t_disabled) {
   text-decoration: none;
   display: inline-block; }
 
@@ -81,8 +83,8 @@ button.y_buttonlite_text {
   button.y_buttonlite:not(:disabled),
   button.y_buttonlite_text:not(:disabled) {
     cursor: pointer; }
-  button.y_buttonlite:hover,
-  button.y_buttonlite_text:hover {
+  button.y_buttonlite:hover:not(:disabled):not(.t_disabled),
+  button.y_buttonlite_text:hover:not(:disabled):not(.t_disabled) {
     background: var(--buttonlite-bg-hover);
     color: var(--buttonlite-clr-hover); }
   button.y_buttonlite:focus,
@@ -90,8 +92,9 @@ button.y_buttonlite_text {
     outline: 0;
     background: var(--buttonlite-bg-focus);
     color: var(--buttonlite-clr-focus); }
-  button.y_buttonlite:disabled,
-  button.y_buttonlite_text:disabled {
+  button.y_buttonlite:disabled, button.y_buttonlite.t_disabled,
+  button.y_buttonlite_text:disabled,
+  button.y_buttonlite_text.t_disabled {
     cursor: default;
     opacity: var(--body-dis-opacity); }
   button.y_buttonlite svg,

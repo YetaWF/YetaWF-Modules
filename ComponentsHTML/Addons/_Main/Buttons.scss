@@ -25,7 +25,7 @@
     &:not(:disabled) {
         cursor: pointer;
     }
-    &:hover {
+    &:hover:not(:disabled):not(.t_disabled) {
         text-decoration: none;
         background: var(--button-bg-hover);
         color: var(--button-clr-hover);
@@ -36,16 +36,19 @@
         background: var(--button-bg-focus);
         color: var(--button-clr-focus);
     }
-    &:disabled {
+    &:disabled,
+    &.t_disabled {
         text-decoration: none;
         cursor: default;
         opacity: var(--body-dis-opacity);
-    }
+        background: var(--button-bg);
+        color: var(--button-clr);
+        }
     &.y_success {
         border-color: var(--tst-info-bg);
         background: var(--tst-info-bg);
         color: var(--tst-info-clr);
-        &:hover {
+        &:hover:not(:disabled):not(.t_disabled) {
             filter: brightness(85%);
         }
     }
@@ -53,7 +56,7 @@
         border-color: var(--tst-warn-bg);
         background: var(--tst-warn-bg);
         color: var(--tst-warn-clr);
-        &:hover {
+        &:hover:not(:disabled):not(.t_disabled) {
             filter: brightness(85%);
         }
     }
@@ -61,7 +64,7 @@
         border-color: var(--tst-error-bg);
         background: var(--tst-error-bg);
         color: var(--tst-error-clr);
-        &:hover {
+        &:hover:not(:disabled):not(.t_disabled) {
             filter: brightness(85%);
         }
     }
@@ -75,7 +78,7 @@
     }
 }
 
-a.y_button, a.y_button:hover {
+a.y_button, a.y_button:hover:not(:disabled):not(.t_disabled) {
     text-decoration: none;
     display:inline-block;
 }
@@ -97,7 +100,7 @@ button.y_buttonlite_text /* text only*/ {
     &:not(:disabled) {
         cursor: pointer;
     }
-    &:hover {
+    &:hover:not(:disabled):not(.t_disabled) {
         background: var(--buttonlite-bg-hover);
         color: var(--buttonlite-clr-hover);
     }
@@ -106,7 +109,8 @@ button.y_buttonlite_text /* text only*/ {
         background: var(--buttonlite-bg-focus);
         color: var(--buttonlite-clr-focus);
     }
-    &:disabled {
+    &:disabled,
+    &.t_disabled {
         cursor: default;
         opacity: var(--body-dis-opacity);;
     }

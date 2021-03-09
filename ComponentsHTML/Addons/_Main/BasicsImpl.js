@@ -254,6 +254,11 @@ var YetaWF_ComponentsHTML;
             elem.removeAttribute("disabled");
             if (!enable)
                 elem.setAttribute("disabled", "disabled");
+            if (elem.tagName === "A") {
+                $YetaWF.elementRemoveClass(elem, "t_disabled");
+                if (!enable)
+                    $YetaWF.elementAddClass(elem, "t_disabled");
+            }
             // mark submit/nosubmit
             if (enable) {
                 if ($YetaWF.elementHasClass(elem, "yform-nosubmit-temp"))
@@ -263,6 +268,16 @@ var YetaWF_ComponentsHTML;
                 if (!$YetaWF.elementHasClass(elem, "yform-nosubmit"))
                     $YetaWF.elementAddClasses(elem, ["yform-novalidate", "yform-nosubmit-temp", "yform-nosubmit"]);
             }
+        };
+        /**
+         * Returns whether the element is enabled.
+         */
+        BasicsImpl.prototype.isEnabled = function (elem) {
+            if ($YetaWF.getAttributeCond(elem, "disabled") != null)
+                return false;
+            if ($YetaWF.elementHasClass(elem, "t_disabled"))
+                return false;
+            return true;
         };
         /**
          * Given an element, returns the owner (typically a module) that owns the element.
