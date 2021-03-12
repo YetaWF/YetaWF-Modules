@@ -1,8 +1,43 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Feed#License */
 
-.YetaWF_Feed_Feed .t_news .t_text table {
-    td,
-    th {
-        padding:5px;
+.YetaWF_Feed_Feed {
+    .t_news {
+        border: var(--panel-border);
+        border-radius: var(--panel-border-radius);
+        padding:1em 1ch 1em 1ch;
+        .t_header {
+            padding-bottom:1em;
+            .t_title {
+                font-size: 1.3rem;
+            }
+        }
+        .t_headerentry {
+            border: var(--panel-border);
+            border-radius: var(--panel-border-radius);
+            padding:1em 1ch 1em 1ch;
+            margin-bottom:.5em;
+            .t_title, .t_text {
+                padding-bottom:.5em;
+            }
+            .t_date {
+                font-size: .8rem;
+            }
+            a {
+                white-space: normal;
+            }
+        }
+        .t_entry {
+            padding-top:.2em;
+            padding-bottom:.2em;
+            a {
+                white-space: normal;
+            }
+        }
+        .t_text table {
+            td,
+            th {
+                padding:.3em;
+            }
+        }
     }
 }
