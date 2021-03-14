@@ -302,11 +302,13 @@ var YetaWF_ComponentsHTML;
         return true;
     });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, function (ev) {
-        PopupsImpl.reposition();
+        if (ev.detail.container === document.body)
+            PopupsImpl.reposition();
         return true;
     });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, function (ev) {
-        PopupsImpl.reposition();
+        if (ev.detail.container === document.body)
+            PopupsImpl.reposition();
         return true;
     });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {

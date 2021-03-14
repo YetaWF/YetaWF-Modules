@@ -40,12 +40,12 @@ namespace YetaWF.Modules.Modules.Controllers {
                         actions.New(await ModSettings.GetModuleActionAsync("Settings", guid), ModuleAction.ActionLocationEnum.GridLinks);
                     } catch (Exception) { }
                 }
-#if DEBUG
-                actions.New(await Module.GetAction_SetSuperuserAsync(guid), ModuleAction.ActionLocationEnum.GridLinks);
-                actions.New(await Module.GetAction_SetAdminAsync(guid), ModuleAction.ActionLocationEnum.GridLinks);
-                actions.New(await Module.GetAction_SetUserAsync(guid), ModuleAction.ActionLocationEnum.GridLinks);
-                actions.New(await Module.GetAction_SetAnonymousAsync(guid), ModuleAction.ActionLocationEnum.GridLinks);
-#endif
+//#if DEBUG
+//                actions.New(await Module.GetAction_SetSuperuserAsync(guid), ModuleAction.ActionLocationEnum.GridLinks);
+//                actions.New(await Module.GetAction_SetAdminAsync(guid), ModuleAction.ActionLocationEnum.GridLinks);
+//                actions.New(await Module.GetAction_SetUserAsync(guid), ModuleAction.ActionLocationEnum.GridLinks);
+//                actions.New(await Module.GetAction_SetAnonymousAsync(guid), ModuleAction.ActionLocationEnum.GridLinks);
+//#endif
                 try {
                     actions.New(Module.GetAction_Remove(guid), ModuleAction.ActionLocationEnum.GridLinks);
                 } catch (Exception) { }

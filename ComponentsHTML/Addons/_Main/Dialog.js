@@ -155,11 +155,13 @@ var YetaWF_ComponentsHTML;
     }());
     YetaWF_ComponentsHTML.DialogClass = DialogClass;
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, function (ev) {
-        DialogClass.reposition();
+        if (ev.detail.container === document.body)
+            DialogClass.reposition();
         return true;
     });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, function (ev) {
-        DialogClass.reposition();
+        if (ev.detail.container === document.body)
+            DialogClass.reposition();
         return true;
     });
     $YetaWF.registerEventHandlerBody("mousemove", null, function (ev) {

@@ -361,12 +361,14 @@ namespace YetaWF_ComponentsHTML {
         return true;
     });
 
-    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, (ev: Event): boolean => {
-        PopupsImpl.reposition();
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, (ev: CustomEvent<YetaWF.DetailsEventContainerScroll>): boolean => {
+        if (ev.detail.container === document.body)
+            PopupsImpl.reposition();
         return true;
     });
-    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: Event): boolean => {
-        PopupsImpl.reposition();
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: CustomEvent<YetaWF.DetailsEventContainerResize>): boolean => {
+        if (ev.detail.container === document.body)
+            PopupsImpl.reposition();
         return true;
     });
 

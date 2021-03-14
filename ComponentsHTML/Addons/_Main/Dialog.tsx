@@ -180,12 +180,14 @@ namespace YetaWF_ComponentsHTML {
             dialog.style.top = `${top}px`; //  + window.pageYOffset
         }
     }
-    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, (ev: Event): boolean => {
-        DialogClass.reposition();
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, (ev: CustomEvent<YetaWF.DetailsEventContainerScroll>): boolean => {
+        if (ev.detail.container === document.body)
+            DialogClass.reposition();
         return true;
     });
-    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: Event): boolean => {
-        DialogClass.reposition();
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: CustomEvent<YetaWF.DetailsEventContainerResize>): boolean => {
+        if (ev.detail.container === document.body)
+            DialogClass.reposition();
         return true;
     });
     $YetaWF.registerEventHandlerBody("mousemove", null, (ev: MouseEvent): boolean => {

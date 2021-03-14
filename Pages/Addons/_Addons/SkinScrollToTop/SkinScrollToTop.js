@@ -62,11 +62,13 @@ var YetaWF_Pages;
     }());
     YetaWF_Pages.ScrollUp = ScrollUp;
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, function (ev) {
-        ScrollUp.evalScrollTop();
+        if (ev.detail.container === document.body)
+            ScrollUp.evalScrollTop();
         return true;
     });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, function (ev) {
-        ScrollUp.evalScrollTop();
+        if (ev.detail.container === document.body)
+            ScrollUp.evalScrollTop();
         return true;
     });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
