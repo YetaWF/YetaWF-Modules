@@ -165,7 +165,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     col.FilterOperator = null;
                     col.FilterValue = string.Empty;
                 }
-                if (gridData.Filters != null && dictInfo.SaveColumnFilters != false) {
+                if (!gridData.Search && gridData.Filters != null && dictInfo.SaveColumnFilters != false) {
                     foreach (var filterCol in gridData.Filters) {
                         if (filterCol.Field != null) {
                             if (gridSavedSettings.Columns.ContainsKey(filterCol.Field)) {

@@ -200,7 +200,7 @@ var YetaWF_ComponentsHTML;
             if (_this.InputPanelSearch && _this.Setup.PanelHeaderSearchColumns) {
                 _this.InputPanelSearch.Control.addEventListener(YetaWF_ComponentsHTML.SearchEditComponent.EVENTCLICK, function (evt) {
                     _this.clearFilters();
-                    _this.reload(0, undefined, undefined, undefined, undefined, undefined, _this.Setup.PanelHeaderSearchColumns, _this.InputPanelSearch.value);
+                    _this.reload(0, undefined, undefined, undefined, true);
                 });
             }
             // column selection
@@ -766,13 +766,21 @@ var YetaWF_ComponentsHTML;
             return false;
         };
         // reloading
-        Grid.prototype.reload = function (page, newPageSize, overrideColFilter, overrideExtraData, sort, done, searchCols, searchText) {
+        Grid.prototype.reload = function (page, newPageSize, overrideColFilter, overrideExtraData, sort, done) {
             var _this = this;
             if (!this.reloadInProgress) {
                 this.setReloading(true);
                 if (page < 0)
                     page = 0;
-                if (this.Setup.StaticData && !sort) {
+                var searchCols = null;
+                var searchText = null;
+                if (this.InputPanelSearch && this.Setup.PanelHeaderSearchColumns) {
+                    if (this.InputPanelSearch.value) {
+                        searchCols = this.Setup.PanelHeaderSearchColumns;
+                        searchText = this.InputPanelSearch.value;
+                    }
+                }
+                if (this.Setup.StaticData && !sort && !searchText) {
                     // show/hide selected rows
                     if (this.Setup.PageSize > 0) {
                         var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
@@ -1083,9 +1091,9 @@ var YetaWF_ComponentsHTML;
                     case "dynenum":
                         // handle selection change
                         $YetaWF.registerCustomEventHandlerDocument(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, "#" + col.FilterId, function (ev) {
-                            _this.reload(0);
                             if (_this.InputPanelSearch)
                                 _this.InputPanelSearch.value = "";
+                            _this.reload(0);
                             return false;
                         });
                         break;
@@ -1099,9 +1107,9 @@ var YetaWF_ComponentsHTML;
                         var elem = $YetaWF.getElementById(col.FilterId);
                         $YetaWF.registerEventHandler(elem, "keydown", null, function (ev) {
                             if (ev.keyCode === 13) { // Return
-                                _this.reload(0);
                                 if (_this.InputPanelSearch)
                                     _this.InputPanelSearch.value = "";
+                                _this.reload(0);
                                 return false;
                             }
                             return true;

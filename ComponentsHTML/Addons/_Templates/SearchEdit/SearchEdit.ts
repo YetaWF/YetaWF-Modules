@@ -40,7 +40,7 @@ namespace YetaWF_ComponentsHTML {
             this.InputControl = this.Control as HTMLInputElement;
             this.Container = $YetaWF.elementClosest(this.Control, ".yt_search_container");
 
-            $YetaWF.registerMultipleEventHandlers([this.InputControl], ["change", "input"], null, (ev: Event): boolean => {
+            $YetaWF.registerMultipleEventHandlers([this.InputControl], ["input"], null, (ev: Event): boolean => {
                 this.sendChangeEvent();
                 this.startAutoClick();
                 return true;

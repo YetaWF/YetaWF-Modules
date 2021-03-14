@@ -38,7 +38,7 @@ var YetaWF_ComponentsHTML;
             _this.Setup = setup;
             _this.InputControl = _this.Control;
             _this.Container = $YetaWF.elementClosest(_this.Control, ".yt_search_container");
-            $YetaWF.registerMultipleEventHandlers([_this.InputControl], ["change", "input"], null, function (ev) {
+            $YetaWF.registerMultipleEventHandlers([_this.InputControl], ["input"], null, function (ev) {
                 _this.sendChangeEvent();
                 _this.startAutoClick();
                 return true;

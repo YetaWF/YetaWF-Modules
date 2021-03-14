@@ -268,7 +268,7 @@ namespace YetaWF_ComponentsHTML {
             if (this.InputPanelSearch && this.Setup.PanelHeaderSearchColumns) {
                 this.InputPanelSearch.Control.addEventListener(SearchEditComponent.EVENTCLICK, (evt: Event): void => {
                     this.clearFilters();
-                    this.reload(0, undefined, undefined, undefined, undefined, undefined, this.Setup.PanelHeaderSearchColumns, this.InputPanelSearch!.value);
+                    this.reload(0, undefined, undefined, undefined, true);
                 });
             }
             // column selection
@@ -832,7 +832,7 @@ namespace YetaWF_ComponentsHTML {
         }
 
         // reloading
-        private reload(page: number, newPageSize?: number, overrideColFilter?: OverrideColumnFilter, overrideExtraData?: any|null|undefined, sort?: boolean, done?: () => void, searchCols?: string[], searchText?: string): void {
+        private reload(page: number, newPageSize?: number, overrideColFilter?: OverrideColumnFilter, overrideExtraData?: any|null|undefined, sort?: boolean, done?: () => void): void {
 
             if (!this.reloadInProgress) {
 
@@ -840,7 +840,16 @@ namespace YetaWF_ComponentsHTML {
 
                 if (page < 0) page = 0;
 
-                if (this.Setup.StaticData && !sort) {
+                let searchCols: string[] | null = null;
+                let searchText: string | null = null;
+                if (this.InputPanelSearch && this.Setup.PanelHeaderSearchColumns) {
+                    if (this.InputPanelSearch.value) {
+                        searchCols = this.Setup.PanelHeaderSearchColumns;
+                        searchText = this.InputPanelSearch.value;
+                    }
+                }
+
+                if (this.Setup.StaticData && !sort && !searchText) {
                     // show/hide selected rows
                     if (this.Setup.PageSize > 0) {
                         let trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
@@ -1134,9 +1143,9 @@ namespace YetaWF_ComponentsHTML {
                     case "dynenum":
                         // handle selection change
                         $YetaWF.registerCustomEventHandlerDocument(DropDownListEditComponent.EVENTCHANGE, `#${col.FilterId}`, (ev: Event): boolean => {
-                            this.reload(0);
                             if (this.InputPanelSearch)
                                 this.InputPanelSearch.value = "";
+                            this.reload(0);
                             return false;
                         });
                         break;
@@ -1150,9 +1159,9 @@ namespace YetaWF_ComponentsHTML {
                         let elem = $YetaWF.getElementById(col.FilterId);
                         $YetaWF.registerEventHandler(elem, "keydown", null, (ev: KeyboardEvent): boolean => {
                             if (ev.keyCode === 13) { // Return
-                                this.reload(0);
                                 if (this.InputPanelSearch)
                                     this.InputPanelSearch.value = "";
+                                this.reload(0);
                                 return false;
                             }
                             return true;

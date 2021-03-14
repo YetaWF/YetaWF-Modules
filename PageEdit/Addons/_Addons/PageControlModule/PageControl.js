@@ -26,6 +26,7 @@ var YetaWF_PageEdit;
             var pagebutton = $YetaWF.getElement1BySelector(".t_controlpanel", [_this.Module]);
             $YetaWF.registerEventHandler(pagebutton, "click", null, function (ev) {
                 _this.toggleControlPanel();
+                _this.updateURL();
                 return false;
             });
             // on page load, show control panel if wanted
@@ -35,9 +36,15 @@ var YetaWF_PageEdit;
             }
             return _this;
         }
+        PageControlModule.prototype.updateURL = function () {
+            var uri = new YetaWF.Url();
+            uri.parse(window.location.href);
+            uri.removeSearch("!Pagectl");
+            if (YVolatile.Basics.PageControlVisible)
+                uri.addSearch("!Pagectl", "y");
+            $YetaWF.setUrl(uri.toUrl());
+        };
         PageControlModule.prototype.toggleControlPanel = function () {
-            if (!this.PageControlMod)
-                return;
             if ($YetaWF.isVisible(this.PageControlMod)) {
                 YVolatile.Basics.PageControlVisible = false;
                 ComponentsHTMLHelper.fadeOut(this.PageControlMod, this.FadeTime);

@@ -31,6 +31,7 @@ namespace YetaWF_PageEdit {
             const pagebutton = $YetaWF.getElement1BySelector(".t_controlpanel", [this.Module]);
             $YetaWF.registerEventHandler(pagebutton, "click", null, (ev: MouseEvent): boolean => {
                 this.toggleControlPanel();
+                this.updateURL();
                 return false;
             });
 
@@ -40,8 +41,17 @@ namespace YetaWF_PageEdit {
                 ComponentsHTMLHelper.processPropertyListVisible(this.PageControlMod);
             }
         }
+
+        private updateURL() : void {
+            let uri = new YetaWF.Url();
+            uri.parse(window.location.href);
+            uri.removeSearch("!Pagectl");
+            if (YVolatile.Basics.PageControlVisible)
+                uri.addSearch("!Pagectl", "y");
+            $YetaWF.setUrl(uri.toUrl());
+        }
+
         private toggleControlPanel() :void {
-            if (!this.PageControlMod) return;
             if ($YetaWF.isVisible(this.PageControlMod)) {
                 YVolatile.Basics.PageControlVisible = false;
                 ComponentsHTMLHelper.fadeOut(this.PageControlMod, this.FadeTime);

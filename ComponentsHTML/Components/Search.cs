@@ -46,7 +46,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (rdonly)
                 ro = " readonly='readonly'";
 
-            if (!HtmlAttributes.TryGetValue("AutoDelay", out object? objAutoDelay))
+            if (HtmlAttributes.TryGetValue("AutoDelay", out object? objAutoDelay))
+                HtmlAttributes.Remove("AutoDelay");
+            else
                 objAutoDelay = 0;
             int autoDelay = Convert.ToInt32(objAutoDelay);
 

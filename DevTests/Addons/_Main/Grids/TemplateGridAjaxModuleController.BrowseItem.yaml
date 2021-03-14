@@ -1,29 +1,5 @@
 
-ShowHeader: true
-ShowFilter: true
-ShowPager: true
-SupportReload: true
-
 SizeStyle: SizeToFit
-
-SaveColumnWidths: true
-SaveColumnFilters: true
-InitialPageSize: 10
-PageSizes:
-    - 10
-    - 20
-    - 50
-
-Reorderable: false
-HighlightOnClick: true
-UseSkinFormatting: true
-
-Panel:
-    Show: true
-    CanMinimize: true
-    Search: false
-    AutoSearch: 300
-    ColumnSelection: true
 
 Columns:
     - Name: Commands
