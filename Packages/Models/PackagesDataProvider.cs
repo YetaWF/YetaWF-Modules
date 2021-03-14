@@ -88,7 +88,6 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
             Logging.AddLog("Site initialization starting");
 
-            //ClearAll();
             List<Package> installedPackages = await InstallPackagesAsync(WantedPackages);
             if (qs["From"] == "Data") {
                 await BuildSiteUsingDataAsync(false, installedPackages);
@@ -97,7 +96,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 await BuildSiteUsingTemplateAsync("InitialSite.txt");
                 //BuildSiteUsingTemplate("Custom Site (Initial Site).txt");
             }
-            PermanentManager.ClearAll();// clear any cached objects
+            
             await Package.SavePackageMapAsync();
 
             await SiteDefinition.RemoveInitialInstallAsync();
@@ -105,14 +104,10 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
             Logging.AddLog("Site initialization done");
 
-            // Cache is now invalid so we'll just restart
-#if MVC6
+            // Cache is now invalid so we need to  restart
+
             //Manager.RestartSite(); // don't restart or redirect (can't)
             // tell user in browser what to do
-#else
-            // Cache is now invalid so we'll just restart
-            Manager.RestartSite();
-#endif
         }
         public class InitialSiteLogging : ILogging {
 

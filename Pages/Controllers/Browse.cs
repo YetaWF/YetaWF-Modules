@@ -14,7 +14,6 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
-using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Pages.DataProvider;
 using YetaWF.Modules.Pages.Modules;
@@ -23,12 +22,7 @@ using YetaWF.Core.IO;
 using System.Text;
 using YetaWF.Core.Components;
 using YetaWF.Core.Serializers;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web;
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Pages.Controllers {
 
@@ -47,22 +41,22 @@ namespace YetaWF.Modules.Pages.Controllers {
 
                 if (PageEditModule != null)
                     actions.New(await PageEditModule.GetModuleActionAsync("Edit", null, PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
-#if DEBUG
-                actions.New(await Module.GetAction_SetSuperuserAsync(PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
-                actions.New(await Module.GetAction_SetAdminAsync(PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
-                actions.New(await Module.GetAction_SetUserAsync(PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
-                actions.New(await Module.GetAction_SetAnonymousAsync(PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
-#endif
+//#if DEBUG
+//                actions.New(await Module.GetAction_SetSuperuserAsync(PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
+//                actions.New(await Module.GetAction_SetAdminAsync(PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
+//                actions.New(await Module.GetAction_SetUserAsync(PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
+//                actions.New(await Module.GetAction_SetAnonymousAsync(PageGuid), ModuleAction.ActionLocationEnum.GridLinks);
+//#endif
                 actions.New(Module.GetAction_RemoveLink(Url), ModuleAction.ActionLocationEnum.GridLinks);
 
                 return actions;
             }
 
-            [Caption("Url"), Description("The Url used to identify this page - This is the name of the designed page and may not include necessary query string arguments to display the page")]
+            [Caption("Url"), Description("The URL used to identify this page - This is the name of the designed page and may not include necessary query string arguments to display the page")]
             [UIHint("Url"), ReadOnly]
             public string Url { get; set; }
 
-            [Caption("Canonical Url"), Description("The Canonical Url used to identify this page")]
+            [Caption("Canonical URL"), Description("The Canonical URL used to identify this page")]
             [UIHint("Url"), ReadOnly]
             public string CanonicalUrl { get; set; }
 
@@ -109,11 +103,11 @@ namespace YetaWF.Modules.Pages.Controllers {
             [UIHint("String"), ReadOnly]
             public string CssClass { get; set; }
 
-            [Caption("Mobile Page Url"), Description("If this page is accessed by a mobile device, it is redirected to the Url defined here as mobile page Url - Redirection is not active in Site Edit Mode")]
+            [Caption("Mobile Page URL"), Description("If this page is accessed by a mobile device, it is redirected to the URL defined here as mobile page URL - Redirection is not active in Site Edit Mode")]
             [UIHint("Url"), ReadOnly]
             public string MobilePageUrl { get; set; }
 
-            [Caption("Redirect To Page"), Description("If this page is accessed, it is redirected to the Url defined here - Redirection is not active in Site Edit Mode")]
+            [Caption("Redirect To Page"), Description("If this page is accessed, it is redirected to the URL defined here - Redirection is not active in Site Edit Mode")]
             [UIHint("Url"), ReadOnly]
             public string RedirectToPageUrl { get; set; }
 
