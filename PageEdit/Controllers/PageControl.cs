@@ -519,7 +519,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 nextPage = Manager.ReturnToUrl;
             }
             Manager.PageControlShown = false;
-            return Redirect(nextPage, ForceRedirect: true, SetCurrentControlPanelMode: true);
+            return Redirect(nextPage, ForceRedirect: true);
         }
         [ResourceAuthorize(CoreInfo.Resource_PageExport)]
         public async Task<ActionResult> ExportPage(Guid pageGuid, long cookieToReturn) {
@@ -532,13 +532,13 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         public ActionResult SwitchToEdit() {
             Manager.PageControlShown = false;
             Manager.EditMode = true;
-            return Redirect(Manager.ReturnToUrl, SetCurrentEditMode: true, SetCurrentControlPanelMode: true);
+            return Redirect(Manager.ReturnToUrl, SetCurrentEditMode: true);
         }
 
         public ActionResult SwitchToView() {
             Manager.PageControlShown = false;
             Manager.EditMode = false;
-            return Redirect(Manager.ReturnToUrl, SetCurrentEditMode: true, SetCurrentControlPanelMode: true);
+            return Redirect(Manager.ReturnToUrl, SetCurrentEditMode: true);
         }
 
         [ExcludeDemoMode]

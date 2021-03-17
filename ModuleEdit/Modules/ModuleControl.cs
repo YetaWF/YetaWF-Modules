@@ -75,7 +75,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             if (string.IsNullOrWhiteSpace(url)) return null;
             return new ModuleAction(this) {
                 Url = url,
-                QueryArgsDict = new QueryHelper(new QueryDictionary { { Globals.Link_NoEditMode, "y" }, { Globals.Link_NoPageControl, "y" } }),
+                QueryArgsDict = new QueryHelper(new QueryDictionary { { Globals.Link_NoEditMode, "y" } }),
                 Image = "#Help",
                 LinkText = this.__ResStr("modHelpLink", "Help"),
                 MenuText = this.__ResStr("modHelpMenu", "Help"),
