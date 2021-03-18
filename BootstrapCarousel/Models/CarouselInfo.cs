@@ -10,10 +10,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Modules.BootstrapCarousel.Support;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.BootstrapCarousel.Models {
 

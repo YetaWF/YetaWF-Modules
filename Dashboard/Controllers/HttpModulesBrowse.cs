@@ -26,12 +26,11 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             public BrowseItem(string name) {
                 Name = name;
             }
-            public BrowseItem() { }
         }
 
         public class BrowseModel {
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
 #if MVC6
 #else

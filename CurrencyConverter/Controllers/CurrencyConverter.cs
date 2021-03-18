@@ -5,11 +5,7 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Serializers;
 using YetaWF.Modules.CurrencyConverter.DataProvider;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.CurrencyConverter.Controllers {
 
@@ -19,13 +15,13 @@ namespace YetaWF.Modules.CurrencyConverter.Controllers {
 
         public class Model {
             [UIHint("YetaWF_CurrencyConverter_Country")]
-            public string FromCountry { get; set; }
+            public string FromCountry { get; set; } = null!;
             [UIHint("YetaWF_CurrencyConverter_Country")]
-            public string ToCountry { get; set; }
+            public string ToCountry { get; set; } = null!;
             [UIHint("Currency")]
             public decimal Amount { get; set; }
 
-            public SerializableList<ExchangeRateEntry> Rates { get; set; }
+            public SerializableList<ExchangeRateEntry> Rates { get; set; } = null!;
         }
 
         [AllowGet]

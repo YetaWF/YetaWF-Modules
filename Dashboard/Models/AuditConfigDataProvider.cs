@@ -36,7 +36,7 @@ namespace YetaWF.Modules.Dashboard.DataProvider {
 
         private IDataProvider<int, AuditConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, AuditConfigData> CreateDataProvider() {
+        private IDataProvider<int, AuditConfigData>? CreateDataProvider() {
             Package package = YetaWF.Modules.Dashboard.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -51,7 +51,7 @@ namespace YetaWF.Modules.Dashboard.DataProvider {
             }
         }
         public async Task<AuditConfigData> GetItemAsync() {
-            AuditConfigData config = await DataProvider.GetAsync(KEY);
+            AuditConfigData? config = await DataProvider.GetAsync(KEY);
             if (config == null) {
                 config = new AuditConfigData();
                 await AddConfigAsync(config);
@@ -70,7 +70,7 @@ namespace YetaWF.Modules.Dashboard.DataProvider {
             );
         }
         public async Task UpdateConfigAsync(AuditConfigData data) {
-            AuditConfigData origConfig = Auditing.Active ? await GetItemAsync() : null;
+            AuditConfigData? origConfig = Auditing.Active ? await GetItemAsync() : null;
             data.Id = KEY;
             UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)

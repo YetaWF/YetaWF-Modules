@@ -22,17 +22,17 @@ namespace YetaWF.Modules.CurrencyConverter.Components {
     /// This component is used by the YetaWF.CurrencyConverter package and is not intended for use by an application.
     /// </summary>
     [PrivateComponent]
-    public class CountryDisplayComponent : CountryComponent, IYetaWFComponent<string> {
+    public class CountryDisplayComponent : CountryComponent, IYetaWFComponent<string?> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public async Task<string> RenderAsync(string model) {
+        public async Task<string> RenderAsync(string? model) {
 
             using (ExchangeRateDataProvider dp = new ExchangeRateDataProvider()) {
-                ExchangeRateData data = await dp.GetItemAsync();
-                string currency = (from r in data.Rates where r.Code == model select r.CurrencyName).FirstOrDefault();
                 if (string.IsNullOrEmpty(model))
-                    return null;
+                    return string.Empty;
+                ExchangeRateData data = await dp.GetItemAsync();
+                string? currency = (from r in data.Rates where r.Code == model select r.CurrencyName).FirstOrDefault();
                 return HE(currency);
             }
         }
@@ -41,16 +41,16 @@ namespace YetaWF.Modules.CurrencyConverter.Components {
     /// This component is used by the YetaWF.CurrencyConverter package and is not intended for use by an application.
     /// </summary>
     [PrivateComponent]
-    public class CountryEditComponent : CountryComponent, IYetaWFComponent<string> {
+    public class CountryEditComponent : CountryComponent, IYetaWFComponent<string?> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        public async Task<string> RenderAsync(string model) {
+        public async Task<string> RenderAsync(string? model) {
 
             using (ExchangeRateDataProvider dp = new ExchangeRateDataProvider()) {
                 ExchangeRateData data = await dp.GetItemAsync();
                 List<SelectionItem<string>> list = (from r in data.Rates orderby r.CurrencyName select new SelectionItem<string> { Text = r.CurrencyName, Value = r.Code }).ToList();
-                return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_yetawf_currencyconverter_country");
+                return await DropDownListComponent.RenderDropDownListAsync(this, model??string.Empty, list, "yt_yetawf_currencyconverter_country");
             }
         }
     }

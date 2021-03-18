@@ -23,13 +23,13 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
             [Caption("I/O Mode"), Description("The I/O mode supported by this data provider")]
             [UIHint("String"), ReadOnly]
-            public string IOModeName { get; set; }
+            public string IOModeName { get; set; } = null!;
             [Caption("Type Name"), Description("The type of the supported data provider")]
             [UIHint("String"), ReadOnly]
-            public string TypeName { get; set; }
+            public string TypeName { get; set; } = null!;
             [Caption("Implementation Type Name"), Description("The type of the implementation of the supported data provider")]
             [UIHint("String"), ReadOnly]
-            public string TypeImplName { get; set; }
+            public string TypeImplName { get; set; } = null!;
 
             public BrowseItem(DataProviderInfo data) {
                 ObjectSupport.CopyData(data, this);
@@ -39,7 +39,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         public class BrowseModel {
             [Caption(""), Description("")] // empty entries required so property is shown in property list (but with a suppressed label)
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
         private GridDefinition GetGridModel() {
             return new GridDefinition {
@@ -47,7 +47,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                 SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = GetActionUrl(nameof(BrowseDataProviders_GridData)),
-                DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (DataProviderInfoDataProvider dataProvider = new DataProviderInfoDataProvider()) {
                         DataProviderGetRecords<DataProviderInfo> browseItems = dataProvider.GetItems(skip, take, sort, filters);
                         DataSourceResult data = new DataSourceResult {

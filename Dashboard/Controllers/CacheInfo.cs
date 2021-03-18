@@ -3,16 +3,7 @@
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Mvc;
-using YetaWF.Core.DataProvider;
-#endif
 
 namespace YetaWF.Modules.Dashboard.Controllers {
 
@@ -23,10 +14,10 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         public class BrowseItem {
             [Caption("Key"), Description("The cache key")]
             [UIHint("String"), ReadOnly]
-            public string Key { get; set; }
+            public string Key { get; set; } = null!;
             [Caption("Value"), Description("The first 100 bytes of the cache value")]
             [UIHint("String"), ReadOnly]
-            public string Value { get; set; }
+            public string Value { get; set; } = null!;
             [Caption("Size"), Description("The size of the value (if available)")]
             [UIHint("FileFolderSize"), ReadOnly]
             public long Size { get; set; }
@@ -48,7 +39,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
             [Caption("Cached Items"), Description("The cache keys and the values (either the data type or the first 100 bytes of data are shown)")]
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
 #if MVC6
 #else
             public void SetData(System.Web.Caching.Cache data) {

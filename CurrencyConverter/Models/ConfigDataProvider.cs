@@ -19,7 +19,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
         public int Id { get; set; }
 
         [StringLength(MaxAppID)]
-        public string AppID { get; set; }
+        public string? AppID { get; set; }
         public bool UseHttps { get; set; }
         [Data_NewValue]
         public TimeSpan RefreshInterval { get; set; }
@@ -42,7 +42,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
 
         private IDataProvider<int, ConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, ConfigData> CreateDataProvider() {
+        private IDataProvider<int, ConfigData>? CreateDataProvider() {
             Package package = YetaWF.Modules.CurrencyConverter.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, Cacheable: true);
         }
@@ -57,7 +57,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
             }
         }
         public async Task<ConfigData> GetItemAsync() {
-            ConfigData config = await DataProvider.GetAsync(KEY);
+            ConfigData? config = await DataProvider.GetAsync(KEY);
             if (config == null) {
                 config = new ConfigData() {
                     Id = KEY,
@@ -81,7 +81,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
             );
         }
         public async Task UpdateConfigAsync(ConfigData data) {
-            ConfigData origConfig = Auditing.Active ? await GetItemAsync() : null;
+            ConfigData? origConfig = Auditing.Active ? await GetItemAsync() : null;
             data.Id = KEY;
             UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)

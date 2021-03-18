@@ -32,20 +32,20 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
             [Caption("Identifier/String"), Description("The identifying string of the record - Identifier String and Type both identify the source of this record")]
             [UIHint("String"), ReadOnly]
-            public string IdentifyString { get; set; }
+            public string IdentifyString { get; set; } = null!;
             [Caption("Identifier/Type"), Description("The type of the record - Identifier String and Type both identify the source of this record")]
             [UIHint("Guid"), ReadOnly]
             public Guid IdentifyGuid { get; set; }
 
             [Caption("Action"), Description("The action that created this record")]
             [UIHint("String"), ReadOnly]
-            public string Action { get; set; }
+            public string Action { get; set; } = null!;
             [Caption("Description"), Description("The description for this record")]
             [UIHint("String"), ReadOnly]
-            public string Description { get; set; }
+            public string? Description { get; set; }
             [Caption("Changes"), Description("The properties that were changed")]
             [UIHint("String"), ReadOnly]
-            public string Changes { get; set; }
+            public string? Changes { get; set; }
 
             [Caption("Site"), Description("The site that was changed")]
             [UIHint("SiteId"), ReadOnly]
@@ -71,7 +71,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         [AllowGet]
         public async Task<ActionResult> AuditDisplay(int id) {
             using (AuditInfoDataProvider dataProvider = new AuditInfoDataProvider()) {
-                AuditInfo data = await dataProvider.GetItemAsync(id);
+                AuditInfo? data = await dataProvider.GetItemAsync(id);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Audit Info \"{0}\" not found"), id);
                 DisplayModel model = new DisplayModel();

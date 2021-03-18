@@ -26,10 +26,10 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         public class BrowseItem {
             [Caption("Key"), Description("The SessionState key")]
             [UIHint("String"), ReadOnly]
-            public string Key { get; set; }
+            public string Key { get; set; } = null!;
             [Caption("Value"), Description("The first 100 bytes of the SessionState value")]
             [UIHint("String"), ReadOnly]
-            public string Value { get; set; }
+            public string Value { get; set; } = null!;
             [Caption("Size"), Description("The size of the value (if available)")]
             [UIHint("FileFolderSize"), ReadOnly]
             public long Size { get; set; }
@@ -43,7 +43,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
             [Caption("SessionState Items"), Description("The SessionState keys and the values (either the data type or the first 100 bytes of data are shown)")]
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
 
             public void SetData(SessionState session) { }
         }
@@ -53,14 +53,14 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                 SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = GetActionUrl(nameof(SessionInfo_GridData)),
-                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
                         Data = recs.Data.ToList<object>(),
                         Total = recs.Total,
                     };
                 },
-                DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<BrowseItem> items = DataProviderImpl<BrowseItem>.GetRecords(GetAllItems(), skip, take, sort, filters);
                     foreach (BrowseItem item in items.Data)
                         item.Value = item.Value.PadRight(100, ' ').Substring(0, 100).TrimEnd();
@@ -93,9 +93,9 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
         private List<BrowseItem> GetAllItems() {
             SessionState session = Manager.CurrentSession;
-            List<BrowseItem> items = (from string item in session.Keys select new BrowseItem { Key = item, Value = (session[item] ?? "").ToString(), Size = -1 }).ToList();
+            List<BrowseItem> items = (from string item in session.Keys select new BrowseItem { Key = item, Value = (session[item] ?? string.Empty).ToString()!, Size = -1 }).ToList();
             foreach (BrowseItem item in items) {
-                object o = null;
+                object? o = null;
                 try {
                     o = session[item.Key];
                 } catch (Exception) { }

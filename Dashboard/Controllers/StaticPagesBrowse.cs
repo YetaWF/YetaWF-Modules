@@ -32,7 +32,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
             [Caption("Local Url"), Description("The local Url of the static page")]
             [UIHint("Url"), ReadOnly]
-            public string LocalUrl { get; set; }
+            public string LocalUrl { get; set; } = null!;
             [Caption("Type"), Description("The type of storage used for the static page")]
             [UIHint("Enum"), ReadOnly]
             public StaticPageManager.PageEntryEnum StorageType { get; set; }
@@ -52,12 +52,11 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                     data.FileNamePopupHttps ?? "-",
                 };
             }
-            public BrowseItem() { }
         }
 
         public class BrowseModel {
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
         private GridDefinition GetGridModel() {
             return new GridDefinition {
@@ -66,7 +65,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                 SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = GetActionUrl(nameof(StaticPagesBrowse_GridData)),
-                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(data, skip, take, sorts, filters);
                     foreach (BrowseItem r in recs.Data)
                         r.Module = Module;
@@ -75,7 +74,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                         Total = recs.Total,
                     };
                 },
-                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     List<BrowseItem> items = (from k in await Manager.StaticPageManager.GetSiteStaticPagesAsync() select new BrowseItem(Module, k)).ToList();
                     int total = items.Count;
                     DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(items, skip, take, sort, filters);

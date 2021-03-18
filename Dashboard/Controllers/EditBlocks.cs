@@ -21,27 +21,27 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
             [Category("Not Authorized"), Caption("URL Path Contains"), Description("List of text fragments, one entry per line - If a text fragment is found in a URL, the request returns 401 Not Authorized - The comparison is case insensitive")]
             [UIHint("TextAreaSourceOnly"), StringLength(10000), Trim]
-            public string NotAuthUrlPathContains { get; set; }
+            public string? NotAuthUrlPathContains { get; set; }
 
             [Category("Not Authorized"), Caption("URL Path Ends With"), Description("List of text fragments, one entry per line - If a text fragment is found at the end of a URL path, the request returns 401 Not Authorized - The comparison is case insensitive")]
             [UIHint("TextAreaSourceOnly"), StringLength(10000), Trim]
-            public string NotAuthUrlPathEndsWith { get; set; }
+            public string? NotAuthUrlPathEndsWith { get; set; }
 
             [Category("Not Authorized"), Caption("User Agent Contains"), Description("List of text fragments, one entry per line - If a text fragment is found in a user agent, the request returns 401 Not Authorized - The comparison is case insensitive")]
             [UIHint("TextAreaSourceOnly"), StringLength(10000), Trim]
-            public string NotAuthUserAgentContains { get; set; }
+            public string? NotAuthUserAgentContains { get; set; }
 
             [Category("Successful"), Caption("URL Path Contains"), Description("List of text fragments, one entry per line - If a text fragment is found in a URL, the request returns 200 OK with an empty response body - The comparison is case insensitive")]
             [UIHint("TextAreaSourceOnly"), StringLength(10000), Trim]
-            public string SuccessUrlPathContains { get; set; }
+            public string? SuccessUrlPathContains { get; set; }
 
             [Category("Successful"), Caption("URL Path Ends With"), Description("List of text fragments, one entry per line - If a text fragment is found at the end of a URL path, the request returns 200 OK with an empty response body - The comparison is case insensitive")]
             [UIHint("TextAreaSourceOnly"), StringLength(10000), Trim]
-            public string SuccessUrlPathEndsWith { get; set; }
+            public string? SuccessUrlPathEndsWith { get; set; }
 
             [Category("Successful"), Caption("User Agent Contains"), Description("List of text fragments, one entry per line - If a text fragment is found in a user agent, the request returns 200 OK with an empty response body - The comparison is case insensitive")]
             [UIHint("TextAreaSourceOnly"), StringLength(10000), Trim]
-            public string SuccessUserAgentContains { get; set; }
+            public string? SuccessUserAgentContains { get; set; }
 
             public EditModel() { }
         }
@@ -49,7 +49,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         [AllowGet]
         public ActionResult EditBlocks() {
 
-            BlockSettingsDefinition settings = BlockRequestMiddleware.GetCurrentSettings();
+            BlockSettingsDefinition? settings = BlockRequestMiddleware.GetCurrentSettings();
 
             EditModel model = new EditModel {
                 NotAuthUrlPathContains = ToStringLines(settings?.NotAuthorized.UrlPathContains),
@@ -88,11 +88,11 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             return FormProcessed(model, this.__ResStr("okSaved", "Request blocking settings saved"));
         }
 
-        private string ToStringLines(List<string> list) {
-            if (list == null) return null;
+        private string ToStringLines(List<string>? list) {
+            if (list == null) return string.Empty;
             return string.Join("\n", list);
         }
-        private List<string> ToStringList(string text) {
+        private List<string> ToStringList(string? text) {
             if (string.IsNullOrWhiteSpace(text)) return new List<string>();
             List<string> list = text.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).ToList();
             list = (from l in list where l.Trim().Length > 0 select l).ToList();

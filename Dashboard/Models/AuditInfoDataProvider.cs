@@ -29,24 +29,24 @@ namespace YetaWF.Modules.Dashboard.DataProvider {
 
         [Data_Index]
         [StringLength(MaxIdentifyString)]
-        public string IdentifyString { get; set; }
+        public string IdentifyString { get; set; } = null!;
         [Data_Index]
         public Guid IdentifyGuid { get; set; }
 
         [Data_Index]
         [StringLength(MaxAction)]
-        public string Action { get; set; }
+        public string Action { get; set; } = null!;
         [StringLength(0)]
-        public string Changes { get; set; }
+        public string? Changes { get; set; }
         [StringLength(0)]
-        public string Description { get; set; }
+        public string Description { get; set; } = null!;
         public bool RequiresRestart { get; set; }
         public bool ExpensiveMultiInstance { get; set; }
 
         [Data_Binary]
-        public byte[] DataBefore { get; set; }
+        public byte[]? DataBefore { get; set; }
         [Data_Binary]
-        public byte[] DataAfter { get; set; }
+        public byte[]? DataAfter { get; set; }
 
         public AuditInfo() { }
     }
@@ -77,7 +77,7 @@ namespace YetaWF.Modules.Dashboard.DataProvider {
 
         private IDataProviderIdentity<int, object, AuditInfo> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderIdentity<int, object, AuditInfo> CreateDataProvider() {
+        private IDataProviderIdentity<int, object, AuditInfo>? CreateDataProvider() {
             Package package = YetaWF.Modules.Dashboard.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_AuditInfo", Parms: new { NoLanguages = true });
         }
@@ -86,7 +86,7 @@ namespace YetaWF.Modules.Dashboard.DataProvider {
         // API
         // API
 
-        public Task<AuditInfo> GetItemAsync(int id) {
+        public Task<AuditInfo?> GetItemAsync(int id) {
             return DataProvider.GetByIdentityAsync(id);
         }
         public Task<bool> AddItemAsync(AuditInfo data) {
@@ -98,7 +98,7 @@ namespace YetaWF.Modules.Dashboard.DataProvider {
         public Task<bool> RemoveItemAsync(int id) {
             return DataProvider.RemoveByIdentityAsync(id);
         }
-        public Task<DataProviderGetRecords<AuditInfo>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        public Task<DataProviderGetRecords<AuditInfo>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
             return DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
         public Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
@@ -128,7 +128,7 @@ namespace YetaWF.Modules.Dashboard.DataProvider {
                 throw new InternalError("Couldn't add audit information");
         }
         public async Task<bool> HasPendingRestartAsync() {
-            List<DataProviderFilterInfo> filters = null;
+            List<DataProviderFilterInfo>? filters = null;
             filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(AuditInfo.Created), Operator = ">=", Value = YetaWF.Core.Support.Startup.MultiInstanceStartTime });
             filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(AuditInfo.RequiresRestart), Operator = "==", Value = true });
             DataProviderGetRecords<AuditInfo> info = await DataProvider.GetRecordsAsync(0, 1, null, filters);
