@@ -100,10 +100,6 @@ var YetaWF_ComponentsHTML;
             var url = this.inputHidden.value.trim();
             if (url && url.length > 0) {
                 if (tp === UrlTypeEnum.Local) {
-                    var uri = $YetaWF.parseUrl(url);
-                    uri.removeSearch(YConfigs.Basics.Link_NoEditMode);
-                    uri.addSearch(YConfigs.Basics.Link_NoEditMode, "y");
-                    this.aLink.href = uri.toUrl();
                 }
                 else {
                     this.aLink.href = url;

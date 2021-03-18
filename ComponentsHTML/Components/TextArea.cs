@@ -182,16 +182,11 @@ CKEDITOR.replace('{ControlId}', {{
             int emHeight = PropData.GetAdditionalAttributeValue("EmHeight", 10);
 
             string? filebrowserImageBrowseUrl = null;
-            if (useImageBrowsing) {
-                filebrowserImageBrowseUrl = string.Format("/__CKEditor/ImageBrowseLinkUrl?__FolderGuid={0}&__SubFolder={1}",
-                    owningGuid.ToString(), subFolder.ToString());
-                filebrowserImageBrowseUrl += "&" + Globals.Link_NoEditMode + "=y";
-            }
+            if (useImageBrowsing)
+                filebrowserImageBrowseUrl = $"/__CKEditor/ImageBrowseLinkUrl?__FolderGuid={owningGuid}&__SubFolder={subFolder}";
             string? filebrowserPageBrowseUrl = null;
-            if (usePageBrowsing) {
+            if (usePageBrowsing)
                 filebrowserPageBrowseUrl = "/__CKEditor/PageBrowseLinkUrl?";
-                filebrowserPageBrowseUrl += Globals.Link_NoEditMode + "=y";
-            }
             string url = addonUrl + "full_config.js";
             if (sourceOnly)
                 url = addonUrl + "sourceonly_config.js";

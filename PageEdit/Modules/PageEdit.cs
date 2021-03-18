@@ -49,7 +49,6 @@ namespace YetaWF.Modules.PageEdit.Modules {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = new { PageGuid = guid },
-                QueryArgsDict = new QueryHelper(new QueryDictionary { { Globals.Link_NoEditMode, "y" } }),
                 Image = "#Edit",
                 Name = "PageSettings",
                 LinkText = this.__ResStr("editLink", "Page Settings"),
