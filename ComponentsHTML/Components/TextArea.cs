@@ -47,7 +47,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     [UsesAdditional("EmHeight", "int", "10", "Defines whether the text area is rendered using a read/only CKEditor in source mode only. Otherwise, the model is rendered as a string.")]
     [UsesAdditional("SourceOnly", "bool", "false", "Defines the approximate height of the CKEditor in line heights based on the page font. The defined height can only be approximated and is by no means meant to be exact. This setting is ignored if the model is rendered as a string.")]
     [UsesAdditional("Encode", "bool", "true", "Defines whether \"\\r\\n\" and \"\\r\" are preserved as new lines using <br/> and the model is encoded when rendered as a string. Otherwise the string is not encoded. This is ignored if a read/only CKEditor is used to render the model.")]
-    public class TextAreaDisplayComponent : TextAreaComponentBase, IYetaWFComponent<object> {
+    public class TextAreaDisplayComponent : TextAreaComponentBase, IYetaWFComponent<object?> {
 
         /// <summary>
         /// Returns the component type (edit/display).
@@ -60,13 +60,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<string> RenderAsync(object model) {
+        public async Task<string> RenderAsync(object? model) {
 
             string text;
             if (model is MultiString)
                 text = (MultiString)model;
             else
-                text = (string)model;
+                text = model != null ? (string)model : string.Empty;
 
             bool sourceOnly = PropData.GetAdditionalAttributeValue("SourceOnly", false);
             bool full = PropData.GetAdditionalAttributeValue("Full", false);
@@ -129,7 +129,7 @@ CKEDITOR.replace('{ControlId}', {{
     [UsesAdditional("EmHeight", "int", "10", "Defines whether the text area is rendered using a read/only CKEditor in source mode only. Otherwise, the model is rendered as a string.")]
     [UsesSibling("_Folder", "string", "Used for image support to identify the module owning the images. If this property is not found, the current module is used as the image file owner.")]
     [UsesSibling("_SubFolder", "string", "Used for image support to identify the module owning the images. If this property is not found, the current module is used as the image file owner.")]
-    public class TextAreaEditComponent : TextAreaComponentBase, IYetaWFComponent<object> {
+    public class TextAreaEditComponent : TextAreaComponentBase, IYetaWFComponent<object?> {
 
         /// <summary>
         /// Returns the component type (edit/display).
@@ -153,7 +153,7 @@ CKEDITOR.replace('{ControlId}', {{
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<string> RenderAsync(object model) {
+        public async Task<string> RenderAsync(object? model) {
 
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "ckeditor");
             string addonUrl = Manager.AddOnManager.GetAddOnNamedUrl(Package.AreaName, "ckeditor") + "__CUSTOM_FILES/";
@@ -162,7 +162,7 @@ CKEDITOR.replace('{ControlId}', {{
             if (model is MultiString)
                 text = (MultiString)model;
             else
-                text = (string)model;
+                text = model != null ? (string)model : string.Empty;
 
             TryGetSiblingProperty<Guid>($"{PropertyName}_Folder", out Guid owningGuid);
             if (owningGuid == Guid.Empty && Manager.CurrentModuleEdited != null)

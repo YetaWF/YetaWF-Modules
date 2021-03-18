@@ -93,7 +93,7 @@ var YetaWF_ComponentsHTML;
             var cked = ckeds_2[_i];
             var ck = CKEDITOR.instances[cked.Control.id];
             try {
-                ck.resize("100%", cked.Setup.EmHeight, true);
+                ck.resize("100%", cked.Setup.EmHeight + "em", true);
             }
             catch (e) { }
         }

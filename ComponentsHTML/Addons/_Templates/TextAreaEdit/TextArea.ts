@@ -90,7 +90,7 @@ namespace YetaWF_ComponentsHTML {
         for (let cked of ckeds) {
             let ck = CKEDITOR.instances[cked.Control.id];
             try {
-                ck.resize("100%", cked.Setup.EmHeight, true);
+                ck.resize("100%", `${cked.Setup.EmHeight}em`, true);
             } catch (e) {}
         }
         return true;

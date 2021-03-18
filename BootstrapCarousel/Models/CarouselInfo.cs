@@ -38,7 +38,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Models {
             [Caption("Image"), Description("The image for this carousel entry - All images should be the same size as the carousel will resize to display each image")]
             [UIHint("Image"), AdditionalMetadata("ImageType", ImageSupport.ImageType), AdditionalMetadata("Width", 200), AdditionalMetadata("Height", 200)]
             [AdditionalMetadata("File", true)]
-            public string Image { get; set; }
+            public string Image { get; set; } = null!;
             [UIHint("Hidden")]
             public Guid Image_Guid { get; set; }
 
@@ -51,20 +51,20 @@ namespace YetaWF.Modules.BootstrapCarousel.Models {
             [Caption("Url"), Description("The optional Url visited when the image is clicked")]
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
             [StringLength(Globals.MaxUrl), Trim]
-            public string Url { get; set; }
+            public string? Url { get; set; }
 
             [StringLength(MaxCaption)]
             public MultiString CompleteCaption { get; set; }
 
             [Caption("Caption"), Description("The optional caption for this image")]
-            [UIHint("TextArea"), AdditionalMetadata("EmHeight", 4), Trim]
+            [UIHint("TextArea"), AdditionalMetadata("EmHeight", 5), Trim]
             [DontSave]
-            public string Caption {
+            public string? Caption {
                 get {
                     return CompleteCaption[MultiString.ActiveLanguage];
                 }
                 set {
-                    CompleteCaption[MultiString.ActiveLanguage] = value;
+                    CompleteCaption[MultiString.ActiveLanguage] = value ?? string.Empty;
                 }
             }
 

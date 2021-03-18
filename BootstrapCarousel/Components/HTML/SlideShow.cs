@@ -119,7 +119,7 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
 
         internal class UI {
             [UIHint("Tabs")]
-            public TabsDefinition TabsDef { get; set; }
+            public TabsDefinition TabsDef { get; set; } = null!;
         }
 
         public async Task<string> RenderAsync(CarouselInfo model) {
