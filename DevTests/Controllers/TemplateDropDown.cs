@@ -28,7 +28,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("DropDownList"), StringLength(20)]
             [SelectionRequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string DropDownList { get; set; }
+            public string? DropDownList { get; set; }
             public List<SelectionItem<string>> DropDownList_List { get; set; }
 
             [Category("Core"), Caption("DropDownListInt"), Description("DropDownListInt (SelectionRequired)")]

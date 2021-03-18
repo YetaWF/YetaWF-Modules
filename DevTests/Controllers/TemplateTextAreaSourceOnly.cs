@@ -3,11 +3,7 @@
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.DevTests.Controllers {
 
@@ -24,18 +20,18 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("TextAreaSourceOnly"), StringLength(0), Trim]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string Prop1Req { get; set; }
+            public string? Prop1Req { get; set; }
             public string Prop1Req_PlaceHolder { get { return this.__ResStr("prop1ReqPH", "(This is a required field)"); }  }
 
             [Caption("TextAreaSourceOnly"), Description("TextAreaSourceOnly")]
             [UIHint("TextAreaSourceOnly"), StringLength(0), Trim]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string Prop1 { get; set; }
+            public string? Prop1 { get; set; }
             public string Prop1_PlaceHolder { get { return this.__ResStr("prop1PH", "(This is an optional field)"); } }
 
             [Caption("TextAreaSourceOnly (Read/Only)"), Description("TextAreaSourceOnly (read/only)")]
             [UIHint("TextAreaSourceOnly"), ReadOnly]
-            public string Prop1RO { get; set; }
+            public string? Prop1RO { get; set; }
 
             [Caption("Control Status"), Description("Defines the processing status of the controls")]
             [UIHint("Enum")]

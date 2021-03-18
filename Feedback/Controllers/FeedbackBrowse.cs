@@ -44,23 +44,23 @@ namespace YetaWF.Modules.Feedback.Controllers {
 
             [Caption("Name"), Description("The user's name")]
             [UIHint("String"), ReadOnly]
-            public string Name { get; set; }
+            public string Name { get; set; } = null!;
 
             [Caption("Email Address"), Description("The user's email address")]
             [UIHint("String"), ReadOnly]
-            public string Email { get; set; }
+            public string Email { get; set; } = null!;
 
             [Caption("Subject"), Description("The subject of the message")]
             [UIHint("String"), ReadOnly]
-            public string Subject { get; set; }
+            public string Subject { get; set; } = null!;
 
             [Caption("IP Address"), Description("The IP address from which the feedback message was sent")]
             [UIHint("IPAddress"), ReadOnly]
-            public string IPAddress { get; set; }
+            public string IPAddress { get; set; } = null!;
 
             [Caption("Message"), Description("The feedback message")]
             [UIHint("String"), ReadOnly]
-            public string Message { get; set; }
+            public string Message { get; set; } = null!;
 
             private int Key { get; set; }
             private FeedbackBrowseModule Module { get; set; }
@@ -76,7 +76,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
 
         public class BrowseModel {
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
         private GridDefinition GetGridModel() {
             return new GridDefinition {
@@ -84,7 +84,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
                 SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = GetActionUrl(nameof(FeedbackBrowse_GridData)),
-                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (FeedbackDataProvider dataProvider = new FeedbackDataProvider()) {
                         DataProviderGetRecords<FeedbackData> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {

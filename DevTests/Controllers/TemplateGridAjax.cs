@@ -49,7 +49,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
             [Caption("ShortName"), Description("Some string")]
             [UIHint("String"), ReadOnly]
-            public string ShortName { get; set; }
+            public string ShortName { get; set; } = null!;
 
             [Caption("Date/Time"), Description("Some date and time")]
             [UIHint("DateTime"), ReadOnly]
@@ -69,11 +69,11 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
             [Caption("Description"), Description("Description")]
             [UIHint("String"), ReadOnly]
-            public string Description { get; set; }
+            public string Description { get; set; } = null!;
 
             [Caption("Hidden"), Description("A hidden field")]
             [UIHint("Hidden"), ReadOnly]
-            public string Hidden { get; set; }
+            public string Hidden { get; set; } = null!;
 
             [Caption("ShortName 2"), Description("Some string")]
             [UIHint("String"), ReadOnly]
@@ -87,16 +87,16 @@ namespace YetaWF.Modules.DevTests.Controllers {
         public class BrowseModel {
             [Caption(""), Description("")]
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
         public class EntryElement {
             public int Id { get; set; }
             public decimal Decimal { get; set; }
             public bool BoolVal { get; set; }
-            public string ShortName { get; set; }
+            public string ShortName { get; set; } = null!;
             public string ShortName2 { get { return ShortName; } }
-            public string Hidden { get; set; }
-            public string Description { get; set; }
+            public string Hidden { get; set; } = null!;
+            public string Description { get; set; } = null!;
             public DateTime SomeDateTime { get; set; }
             public DateTime SomeDate { get; set; }
             public Guid Guid { get; set; }
@@ -125,7 +125,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
                 SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = GetActionUrl(nameof(TemplateGridAjax_GridData)),
-                DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<EntryElement> browseItems = DataProviderImpl<EntryElement>.GetRecords(GetRandomData(), skip, take, sort, filters);
                     return Task.FromResult(new DataSourceResult {
                         Data = (from s in browseItems.Data select new BrowseItem(s)).ToList<object>(),
@@ -160,7 +160,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
         }
 
         const int MaxRecords = 100;
-        private static List<Guid> Guids = null;
+        private static List<Guid>? Guids = null;
 
         private List<EntryElement> GetRandomData() {
             if (Guids == null) {

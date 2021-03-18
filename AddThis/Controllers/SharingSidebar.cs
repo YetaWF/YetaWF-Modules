@@ -17,7 +17,7 @@ namespace YetaWF.Modules.AddThis.Controllers {
 
         public class DisplayModel {
 
-            public string Code { get; set; }
+            public string? Code { get; set; } 
 
         }
 

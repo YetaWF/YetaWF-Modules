@@ -35,13 +35,16 @@ namespace YetaWF.Modules.Basics.Controllers {
             [Caption("Letters Height"), Description("The overall height of the letters shown, calculated using the current skin")]
             [UIHint("IntValue")]
             public int LettersHeight { get; set; }
+
+            public DisplayModel() {
+                SiteSelectedSkin = Manager.CurrentSite.Skin;
+                Characters = "<span class='t_chars'>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<br/>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</span>";
+            }
         }
 
         [AllowGet]
         public ActionResult ModuleSkinInfo() {
             DisplayModel model = new DisplayModel();
-            model.SiteSelectedSkin = Manager.CurrentSite.Skin;
-            model.Characters = "<span class='t_chars'>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<br/>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</span>";
             return View(model);
         }
     }

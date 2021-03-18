@@ -35,10 +35,10 @@ namespace YetaWF.Modules.Feedback.Modules {
 
         [Category("General"), Caption("Display URL"), Description("The URL to display a feedback message - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string DisplayUrl { get; set; }
+        public string? DisplayUrl { get; set; }
         [Category("General"), Caption("Edit URL"), Description("The URL to edit a feedback message - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string EditUrl { get; set; }
+        public string? EditUrl { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
         public override List<RoleDefinition> ExtraRoles {
@@ -51,7 +51,7 @@ namespace YetaWF.Modules.Feedback.Modules {
             }
         }
 
-        public ModuleAction GetAction_Feedback(string url) {
+        public ModuleAction? GetAction_Feedback(string? url) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Browse",
@@ -65,7 +65,7 @@ namespace YetaWF.Modules.Feedback.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
             };
         }
-        public ModuleAction GetAction_RemoveFeedback(int key) {
+        public ModuleAction? GetAction_RemoveFeedback(int key) {
             if (!IsAuthorized("RemoveFeedback")) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(FeedbackBrowseModuleController), "RemoveFeedback"),

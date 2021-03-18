@@ -15,11 +15,11 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
         public class ScrollerItem {
             [UIHint("Image")]
-            public string Image { get; set; }
+            public string Image { get; set; } = null!;
             [UIHint("String")]
-            public string Title { get; set; }
+            public string Title { get; set; } = null!;
             [UIHint("String")]
-            public string Summary { get; set; }
+            public string Summary { get; set; } = null!;
         }
 
         [Trim]

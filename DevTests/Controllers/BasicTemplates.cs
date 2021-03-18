@@ -42,13 +42,13 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("CAProvince")]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string CAProvince { get; set; }
+            public string? CAProvince { get; set; }
 
             [Category("Core"), Caption("CountryISO3166"), Description("CountryISO3166 (Required)")]
             [UIHint("CountryISO3166"), StringLength(80), Trim]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string Country { get; set; }
+            public string? Country { get; set; }
 
             [Category("Core"), Caption("Currency"), Description("Currency (Required) - Uses formatting defined using Site Settings, General tab")]
             [UIHint("Currency")]
@@ -61,7 +61,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("CurrencyISO4217"), StringLength(YetaWF.Core.Components.CurrencyISO4217.Currency.MaxId), Trim]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string CurrencyISO4217 { get; set; }
+            public string? CurrencyISO4217 { get; set; }
 
             [Category("Core"), Caption("Decimal"), Description("Decimal (Required)")]
             [UIHint("Decimal")]
@@ -74,7 +74,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("DropDownList"), StringLength(20)]
             [SelectionRequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string DropDownList { get; set; }
+            public string? DropDownList { get; set; }
             public List<SelectionItem<string>> DropDownList_List { get; set; }
 
             [Category("Core"), Caption("DropDownListInt"), Description("DropDownListInt (SelectionRequired)")]
@@ -103,7 +103,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [Category("Core"), Caption("FileUpload1"), Description("FileUpload1")]
             [UIHint("FileUpload1")]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public FileUpload1 FileUpload1 { get; set; }
+            public FileUpload1 FileUpload1 { get; set; } = null!;
 
             [Category("Core"), Caption("Guid"), Description("Guid (Required)")]
             [UIHint("Guid"), GuidValidation]
@@ -140,7 +140,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("LanguageId"), AdditionalMetadata("NoDefault", false), AdditionalMetadata("AllLanguages", true)]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string LanguageId { get; set; }
+            public string? LanguageId { get; set; }
 
             [Category("Core"), Caption("LongValue"), Description("LongValue (Required)")]
             [UIHint("LongValue")]
@@ -158,14 +158,14 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("PaneSelection")]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string PaneSelection { get; set; }
+            public string? PaneSelection { get; set; }
             public List<string> PaneSelection_List { get; set; }
 
             [Category("Core"), Caption("Password20"), Description("Password20 (Required)")]
             [UIHint("Password20"), StringLength(20)]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string Password20 { get; set; }
+            public string? Password20 { get; set; }
             public string Password20_PlaceHolder { get { return this.__ResStr("password20PH", "(Password)"); } }
 
             [Category("Core"), Caption("SMTPServer"), Description("SMTPServer (Required)")]
@@ -178,54 +178,51 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("Text"), StringLength(200)]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string Text { get; set; }
+            public string? Text { get; set; }
             public string Text_PlaceHolder { get { return this.__ResStr("textPH", "(This is a placeholder)"); } }
 
             [Category("Core"), Caption("Text10"), Description("Text10 (Required)")]
             [UIHint("Text10"), StringLength(10)]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string Text10 { get; set; }
+            public string? Text10 { get; set; }
 
             [Category("Core"), Caption("Text20"), Description("Text20 (Required)")]
             [UIHint("Text20"), StringLength(20)]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string Text20 { get; set; }
+            public string? Text20 { get; set; }
 
             [Category("Core"), Caption("Text40"), Description("Text40 (Required)")]
             [UIHint("Text40"), StringLength(40)]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string Text40 { get; set; }
+            public string? Text40 { get; set; }
 
             [Category("Core"), Caption("Text80"), Description("Text80 (Required)")]
             [UIHint("Text80"), StringLength(80), AdditionalMetadata("Copy", true)]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string Text80 { get; set; }
+            public string? Text80 { get; set; }
 
             [Category("Core"), Caption("TextArea"), Description("TextArea (Required)")]
             [UIHint("TextArea"), AdditionalMetadata("ImageBrowse", true), AdditionalMetadata("PageBrowse", true)]
             [StringLength(1000)]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string TextArea { get; set; }
+            public string? TextArea { get; set; }
 
             [Category("Core"), Caption("USState"), Description("USState (Required)")]
             [UIHint("USState")]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true )]
-            public string USState { get; set; }
+            public string? USState { get; set; }
 
             [Category("Core"), Caption("Control Status"), Description("Defines the processing status of the controls")]
             [UIHint("Enum")]
             public ControlStatusEnum ControlStatus { get; set; }
 
             public EditModel() {
-                SMTPServer = new SMTPServer();
-            }
-            public void UpdateData(BasicTemplatesModule module) {
                 // BooleanText
                 BooleanText_Text = "Accept";
                 // DropDownList
@@ -242,14 +239,20 @@ namespace YetaWF.Modules.DevTests.Controllers {
                     new SelectionItem<int> { Text= "Item2", Value=2, Tooltip = "Tooltip2" },
                     new SelectionItem<int> { Text= "Item3", Value=3, Tooltip = "Tooltip3" },
                 };
+                // PaneSelection
+                PaneSelection_List = new List<string> { "Pane 1", "Pane 2", "Pane 3" };
+                
+                SMTPServer = new SMTPServer();
+            }
+            public void UpdateData(BasicTemplatesModule module) {
                 // FileUpload1
                 FileUpload1 = new FileUpload1 {
                     SelectButtonText = this.__ResStr("btnSelect", "Upload a file..."),
                     SaveURL = Utility.UrlFor(typeof(BasicTemplatesModuleController), "UploadSomething", new { __ModuleGuid = module.ModuleGuid }),
                     RemoveURL = Utility.UrlFor(typeof(BasicTemplatesModuleController), "RemoveSomething", new { __ModuleGuid = module.ModuleGuid }),
                 };
-                // PaneSelection
-                PaneSelection_List = new List<string> { "Pane 1", "Pane 2", "Pane 3" };
+
+                SMTPServer = new SMTPServer();
             }
         }
 
@@ -272,12 +275,12 @@ namespace YetaWF.Modules.DevTests.Controllers {
         // FileUpload1
 
         public class UploadResponse {
-            public string Result { get; set; }
-            public string FileName { get; set; }
-            public string FileNamePlain { get; set; }
-            public string RealFileName { get; set; }
-            public string Attributes { get; set; }
-            public string List { get; set; }
+            public string Result { get; set; } = null!;
+            public string FileName { get; set; } = null!;
+            public string FileNamePlain { get; set; } = null!;
+            public string RealFileName { get; set; } = null!;
+            public string Attributes { get; set; } = null!;
+            public string List { get; set; } = null!;
         }
 
         [AllowPost]

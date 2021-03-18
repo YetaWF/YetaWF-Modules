@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Basics.DataProvider {
 
         private IDataProvider<int, RecaptchaV2Config> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, RecaptchaV2Config> CreateDataProvider() {
+        private IDataProvider<int, RecaptchaV2Config>? CreateDataProvider() {
             Package package = YetaWF.Modules.Basics.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_RecaptchaV2", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -52,7 +52,7 @@ namespace YetaWF.Modules.Basics.DataProvider {
             }
         }
         public async Task<RecaptchaV2Config> GetItemAsync() {
-            RecaptchaV2Config config = await DataProvider.GetAsync(KEY);
+            RecaptchaV2Config? config = await DataProvider.GetAsync(KEY);
             if (config == null) {
                 config = new RecaptchaV2Config();
                 await AddConfigAsync(config);
@@ -71,7 +71,7 @@ namespace YetaWF.Modules.Basics.DataProvider {
             );
         }
         public async Task UpdateConfigAsync(RecaptchaV2Config data) {
-            RecaptchaV2Config origConfig = Auditing.Active ? await GetItemAsync() : null;
+            RecaptchaV2Config? origConfig = Auditing.Active ? await GetItemAsync() : null;
             data.Key = KEY;
             UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Key, data.Key, data);
             if (status != UpdateStatusEnum.OK)

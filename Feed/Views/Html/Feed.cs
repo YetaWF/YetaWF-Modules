@@ -52,7 +52,7 @@ namespace YetaWF.Modules.Feed.Views {
     <div class='t_headerentry'></div>");
 
             foreach (FeedModuleController.Entry entry in model.Entries) {
-                string author = null;
+                string? author = null;
                 foreach (FeedModuleController.Author a in entry.Authors) {
                     if (!string.IsNullOrWhiteSpace(a.Email)) {
                         if (string.IsNullOrWhiteSpace(author)) {

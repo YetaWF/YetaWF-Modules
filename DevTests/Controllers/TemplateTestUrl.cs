@@ -27,28 +27,28 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [StringLength(Globals.MaxUrl), Trim]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string Url { get; set; }
+            public string? Url { get; set; }
 
             [Caption("Url2"), Description("Url2")]
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
             [StringLength(Globals.MaxUrl), Trim]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string Url2 { get; set; }
+            public string? Url2 { get; set; }
 
             [Caption("Local Url"), Description("Local Url")]
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local)]
             [StringLength(Globals.MaxUrl), Trim]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string LocalUrl { get; set; }
+            public string? LocalUrl { get; set; }
 
             [Caption("Remote Url"), Description("Remote")]
             [UIHint("Url"), UrlValidation]
             [StringLength(Globals.MaxUrl), Trim]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string RemoteUrl { get; set; }
+            public string? RemoteUrl { get; set; }
 
             [Caption("Url"), Description("Url")]
             [UIHint("Url"), ReadOnly]
@@ -66,7 +66,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("Text80"), StringLength(Globals.MaxUrl), UrlValidation(urlType: UrlTypeEnum.New), Trim]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string NewUrl { get; set; }
+            public string? NewUrl { get; set; }
 
             [Caption("Control Status"), Description("Defines the processing status of the controls")]
             [UIHint("Enum")]

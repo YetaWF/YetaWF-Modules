@@ -47,7 +47,7 @@ namespace YetaWF.Modules.Basics.DataProvider {
         public AlertConfig() {
             CompleteMessage = new MultiString();
             Enabled = false;
-            Message = null;
+            Message = string.Empty;
             MessageHandling = MessageHandlingEnum.DisplayUntilOff;
         }
     }
@@ -65,7 +65,7 @@ namespace YetaWF.Modules.Basics.DataProvider {
 
         private IDataProvider<int, AlertConfig> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, AlertConfig> CreateDataProvider() {
+        private IDataProvider<int, AlertConfig>? CreateDataProvider() {
             Package package = YetaWF.Modules.Basics.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_AlertConfig", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -80,7 +80,7 @@ namespace YetaWF.Modules.Basics.DataProvider {
             }
         }
         public async Task<AlertConfig> GetItemAsync() {
-            AlertConfig config = await DataProvider.GetAsync(KEY);
+            AlertConfig? config = await DataProvider.GetAsync(KEY);
             if (config == null) {
                 config = new AlertConfig();
                 await AddConfigAsync(config);
@@ -99,7 +99,7 @@ namespace YetaWF.Modules.Basics.DataProvider {
             );
         }
         public async Task UpdateConfigAsync(AlertConfig data) {
-            AlertConfig origConfig = Auditing.Active ? await GetItemAsync() : null;
+            AlertConfig? origConfig = Auditing.Active ? await GetItemAsync() : null;
             data.Id = KEY;
             UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)

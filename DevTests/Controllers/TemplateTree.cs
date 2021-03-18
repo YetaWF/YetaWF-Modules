@@ -22,9 +22,9 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
             [Caption("Text"), Description("Entries")]
             [UIHint("String"), ReadOnly]
-            public override string Text { get; set; }
+            public override string Text { get; set; } = null!;
 
-            public string OtherData { get; set; }
+            public string? OtherData { get; set; }
 
             public EntryElement() { }
         }
@@ -33,9 +33,9 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
             [Caption(""), Description("")]
             [UIHint("Tree"), ReadOnly]
-            public List<EntryElement> Entries { get; set; }
+            public List<EntryElement> Entries { get; set; } = null!;
 
-            public TreeDefinition Entries_TreeDefinition { get; set; }
+            public TreeDefinition Entries_TreeDefinition { get; set; } = null!;
 
             public Model() { }
         }
@@ -71,13 +71,13 @@ namespace YetaWF.Modules.DevTests.Controllers {
             return list;
         }
 
-        private List<EntryElement> GetSubEntries(int level) {
+        private List<EntryElement>? GetSubEntries(int level) {
             if (level == 0) return null;
             --level;
 
             List<EntryElement> list = new List<EntryElement>();
             for (int i = 0; i < 1 + level ; ++i) {
-                List<EntryElement> subs = GetSubEntries(level);
+                List<EntryElement>? subs = GetSubEntries(level);
                 list.Add(new EntryElement {
                     Text = $"Entry {i}",
                     OtherData = $"Otherdata {i}",

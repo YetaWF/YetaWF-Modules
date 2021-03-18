@@ -56,7 +56,7 @@ namespace YetaWF.Modules.DevTests.Components {
                 PageSizes = new List<int> { 5, 10, 20 },
                 ShowHeader = header,
                 AjaxUrl = Utility.UrlFor(typeof(ListOfEmailAddressesController), nameof(ListOfEmailAddressesController.ListOfEmailAddressesDisplay_SortFilter)),
-                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
                         Data = recs.Data.ToList<object>(),
@@ -74,7 +74,7 @@ namespace YetaWF.Modules.DevTests.Components {
             GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header)
             };
-            grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+            grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                 List<Entry> list = new List<Entry>();
                 if (model != null)
                     list = (from u in model select new Entry(u)).ToList();
@@ -108,14 +108,14 @@ namespace YetaWF.Modules.DevTests.Components {
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
         public class ListOfEmailAddressesSetup {
-            public string GridId { get; set; }
-            public string AddUrl { get; set; }
+            public string GridId { get; set; } = null!;
+            public string AddUrl { get; set; } = null!;
         }
 
         public class NewModel {
             [Caption("Email Address"), Description("Please enter a new email address and click Add")]
             [UIHint("Text80"), StringLength(80), Trim]
-            public string NewValue { get; set; }
+            public string? NewValue { get; set; }
         }
 
         public class Entry {
@@ -126,7 +126,7 @@ namespace YetaWF.Modules.DevTests.Components {
 
             [Caption("Email Address"), Description("Shows all defined email addresses")]
             [UIHint("String"), ReadOnly]
-            public string EmailAddress { get; set; }
+            public string EmailAddress { get; set; } = null!;
 
             [UIHint("GridValue"), ReadOnly]
             public string Value { get { return EmailAddress; } }
@@ -143,7 +143,7 @@ namespace YetaWF.Modules.DevTests.Components {
                 PageSizes = new List<int> { 5, 10, 20 },
                 ShowHeader = header,
                 AjaxUrl = Utility.UrlFor(typeof(ListOfEmailAddressesController), nameof(ListOfEmailAddressesController.ListOfEmailAddressesEdit_SortFilter)),
-                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
                         Data = recs.Data.ToList<object>(),
@@ -165,7 +165,7 @@ namespace YetaWF.Modules.DevTests.Components {
             GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header)
             };
-            grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+            grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                 List<Entry> list = new List<Entry>();
                 if (model != null)
                     list = (from u in model select new Entry(u)).ToList();

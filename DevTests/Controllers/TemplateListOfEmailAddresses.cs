@@ -70,7 +70,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             // Validation
             EmailValidationAttribute attr = new EmailValidationAttribute();
             if (!attr.IsValid(newEmailAddress))
-                throw new Error(attr.ErrorMessage);
+                throw new Error(attr.ErrorMessage ?? "???");
             List<ListOfEmailAddressesEditComponent.Entry> list = Utility.JsonDeserialize<List<ListOfEmailAddressesEditComponent.Entry>>(data);
             if ((from l in list where l.EmailAddress.ToLower() == newEmailAddress.ToLower() select l).FirstOrDefault() != null)
                 throw new Error(this.__ResStr("dupEmail", "Email address {0} has already been added", newEmailAddress));

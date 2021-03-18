@@ -58,9 +58,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.ButtonMiniDropDown), ReadOnly]
             public List<ModuleAction> PropButtonMiniDropDown { get; set; }
 
-            public Model() { }
-
-            public void Update() {
+            public Model() {
                 TemplateModuleActionsModule mod = new TemplateModuleActionsModule();
                 List<ModuleAction> actions = new List<ModuleAction>();
                 ModuleAction action = mod.GetAction_Dashboard();
@@ -91,14 +89,12 @@ namespace YetaWF.Modules.DevTests.Controllers {
         [AllowGet]
         public ActionResult TemplateModuleActions() {
             Model model = new Model();
-            model.Update();
             return View(model);
         }
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
         public ActionResult TemplateModuleActions_Partial(Model model) {
-            model.Update();
             if (!ModelState.IsValid)
                 return PartialView(model);
             return FormProcessed(model, this.__ResStr("ok", "OK"));
