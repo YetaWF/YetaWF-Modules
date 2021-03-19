@@ -6,11 +6,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using System.Threading.Tasks;
 using YetaWF.Modules.ImageRepository.Components;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.ImageRepository.Controllers {
 
@@ -23,8 +19,8 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
 
             [Caption("Image Selection"), Description("Description of image selection")]
             [UIHint("YetaWF_ImageRepository_ImageSelection"), Required, Trim]
-            public string ImageName { get; set; }
-            public ImageSelectionInfo ImageName_Info { get; set; }
+            public string? ImageName { get; set; }
+            public ImageSelectionInfo ImageName_Info { get; set; } = null!;
 
             public Model() { }
 
@@ -37,7 +33,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
         }
 
         [AllowGet]
-        public async Task<ActionResult> TemplateTest(string imageName) {
+        public async Task<ActionResult> TemplateTest() {
             Model model = new Model { };
             await model.UpdateAsync(Module);
             return View(model);

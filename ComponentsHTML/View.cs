@@ -89,15 +89,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append($@"
 <form id='{id}' class='{Forms.CssFormAjax}{HtmlBuilder.GetClasses(attrs, css)}' autocomplete='{(ModuleBase.FormAutoComplete ? "on" : "off")}' action='{Utility.HAE(formAction)}' method='{Method}'{HtmlBuilder.Attributes(attrs)}>");
 
-            // show errors if already present
-            if (!HtmlHelper.ModelState.IsValid) {
-                Manager.ScriptManager.AddLast($@"
-var f = $YetaWF.getElementById('{id}');
-if ($YetaWF.Forms.hasErrors(f))
-    $YetaWF.Forms.showErrors(f);
-");
-            }
-
             return hb.ToString();
         }
         /// <summary>

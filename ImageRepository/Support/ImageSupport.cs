@@ -21,7 +21,7 @@ namespace YetaWF.Modules.ImageRepository.Support {
             return Task.CompletedTask;
         }
 
-        private Task<YetaWF.Core.Image.ImageSupport.GetImageAsFileInfo> RetrieveImageAsync(string name, string location) {
+        private Task<YetaWF.Core.Image.ImageSupport.GetImageAsFileInfo> RetrieveImageAsync(string? name, string? location) {
             Task<YetaWF.Core.Image.ImageSupport.GetImageAsFileInfo> fail = Task.FromResult(new YetaWF.Core.Image.ImageSupport.GetImageAsFileInfo());
             if (string.IsNullOrWhiteSpace(location)) return fail;
             if (string.IsNullOrWhiteSpace(name)) return fail;

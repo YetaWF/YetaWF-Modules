@@ -37,15 +37,15 @@ namespace YetaWF.Modules.IFrame.Modules {
         [Category("General"), Caption("Url"), Description("The Url used to display the module contents")]
         [StringLength(Globals.MaxUrl), Required, Trim]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
-        public string Url { get; set; }
+        public string? Url { get; set; }
 
         [Category("General"), Caption("Width"), Description("The width used to display the module contents - used as is as Css width (e.g., 100%, 50px, 40em)")]
         [UIHint("Text20"), StringLength(20), Trim]
-        public string Width { get; set; }
+        public string? Width { get; set; }
 
         [Category("General"), Caption("Height"), Description("The height used to display the module contents - used as is as Css height (e.g., 800px, 40em)")]
         [UIHint("Text20"), StringLength(20), Trim]
-        public string Height { get; set; }
+        public string? Height { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return EditorLevel_DefaultAllowedRoles; } }
 

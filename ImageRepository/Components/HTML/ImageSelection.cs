@@ -25,11 +25,11 @@ namespace YetaWF.Modules.ImageRepository.Components {
     /// This component is used by the YetaWF.ImageRepository package and is not intended for use by an application.
     /// </summary>
     [PrivateComponent]
-    public class ImageSelectionEditComponent : ImageSelectionComponent, IYetaWFComponent<string> {
+    public class ImageSelectionEditComponent : ImageSelectionComponent, IYetaWFComponent<string?> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        public async Task<string> RenderAsync(string model) {
+        public async Task<string> RenderAsync(string? model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -42,7 +42,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
         <div class='t_list'>
             <select class='t_native' name='List' size='10' style='height:{info.PreviewHeight}px'>");
 
-            string modelPlain = model?.RemoveStartingAt(YetaWF.Core.Image.ImageSupport.ImageSeparator);
+            string? modelPlain = model?.RemoveStartingAt(YetaWF.Core.Image.ImageSupport.ImageSeparator);
             foreach (var f in await info.GetFilesAsync()) {
                 string fPlain = f.RemoveStartingAt(YetaWF.Core.Image.ImageSupport.ImageSeparator);
                 string sel = fPlain == modelPlain ? " selected" : "";
@@ -53,7 +53,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
             </select>
         </div>
         <div class='t_preview'>
-            <img src='{HAE(info.MakeImageUrl(model, info.PreviewWidth, info.PreviewHeight))}' alt='{__ResStr("preview", "Image Preview")}' />
+            <img src='{HAE(info.MakeImageUrl(model??string.Empty, info.PreviewWidth, info.PreviewHeight))}' alt='{__ResStr("preview", "Image Preview")}' />
         </div>
     </div>
     <div class='t_haveimage' {(string.IsNullOrWhiteSpace(model) ? "style='display:none'" : "")}>
