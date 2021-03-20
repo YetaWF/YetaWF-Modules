@@ -76,7 +76,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Allows entry of a currency amount based, formatted using the site's defined default currency.
+    /// Allows entry of a currency amount, formatted using the site's defined default currency.
     /// </summary>
     /// <remarks>
     /// The currency is based on the site's defined default currency. The default currency can be found at Admin > Settings > Site Settings, Site tab, Currency, Currency Format and Currency Rounding fields.
@@ -91,7 +91,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the control is rendered read/only.")]
     [UsesAdditional("Disabled", "bool", "false", "Defines whether the control is disabled.")]
     [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
-    public class CurrencyEditComponent : CurrencyComponentBase, IYetaWFComponent<Decimal>, IYetaWFComponent<Decimal?> {
+    public class CurrencyEditComponent : CurrencyComponentBase, IYetaWFComponent<decimal?> {
 
         /// <summary>
         /// Returns the component type (edit/display).
@@ -110,15 +110,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<string> RenderAsync(Decimal model) {
-            return await RenderAsync((Decimal?) model);
-        }
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
-        public Task<string> RenderAsync(Decimal? model) {
+        public Task<string> RenderAsync(decimal? model) {
 
             bool rdonly = PropData.GetAdditionalAttributeValue<bool>("ReadOnly", false);
             bool disabled = PropData.GetAdditionalAttributeValue<bool>("Disabled", false);
@@ -131,9 +123,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out string? placeHolder);
 
-            string val = string.Empty;
-            if (model != null)
-                val = $" value='{Formatting.FormatAmount((decimal)model)}'";
+            CurrencyISO4217.Currency currency = Manager.CurrentSite.CurrencyInfo;
 
             NumberSetup setup = new NumberSetup {
                 Min = 0,
@@ -141,6 +131,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 Step = 1,
                 Digits = Manager.CurrentSite.CurrencyDecimals,
                 Locale = MultiString.ActiveLanguage,
+                Lead = currency.Lead,
+                Trail = currency.Trail,
             };
             // handle min/max
             RangeAttribute? rangeAttr = PropData.TryGetAttribute<RangeAttribute>();
@@ -149,12 +141,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 setup.Max = (double)rangeAttr.Maximum;
             }
 
+            string? internalValue = model?.ToString();
+            string displayValue = model != null ? ((decimal)model).ToString(currency.Format) : string.Empty;
+            if (Manager.HasModelBindingErrorManager && Manager.ModelBindingErrorManager.TryGetAttemptedValue(PropertyName, out string? attemptedValue)) {
+                displayValue = internalValue = attemptedValue;
+            }
+
             placeHolder = string.IsNullOrWhiteSpace(placeHolder) ? string.Empty : $" placeholder={HAE(placeHolder)}";
 
             string tags =
 $@"<div id='{ControlId}'{GetClassAttribute("yt_number_container yt_currency t_edit")}>
-    <input type='hidden'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} {val}>
-    <input type='text' maxlength='20' {dis}{ro}{placeHolder}{(disabled ? " t_disabled" : "")}{(rdonly ? " t_readonly" : "")} {val}>
+    <input type='hidden'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} value='{HAE(internalValue)}'>
+    <input type='text' maxlength='20' {dis}{ro}{placeHolder}{(disabled ? " t_disabled" : "")}{(rdonly ? " t_readonly" : "")}  value='{HAE(displayValue)}'>
 </div>";
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.CurrencyEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");

@@ -62,7 +62,7 @@ namespace YetaWF_ComponentsHTML {
             this.InputControl = $YetaWF.getElement1BySelector("input[type='text']", [this.Control]) as HTMLInputElement;
             this.InputHidden = $YetaWF.getElement1BySelector("input[type='hidden']", [this.Control]) as HTMLInputElement;
 
-            this.setInternalValue(this.InputControl.value);
+            this.setInternalValue(this.InputHidden.value);
 
             let warn = <div class="t_warn" style="display:none"></div>;
             warn.innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_exclamation_triangle;

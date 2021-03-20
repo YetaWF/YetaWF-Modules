@@ -120,12 +120,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out string? placeHolder);
 
-            string? value = null;
-            if (model != null) {
-                string format = PropData.GetAdditionalAttributeValue("Format", "0.00")!;
-                value = HAE(((decimal)model).ToString(format));
-            }
-
             NumberSetup setup = new NumberSetup {
                 Min = 0,
                 Max = 999999999.99,
@@ -141,12 +135,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 setup.Max = Convert.ToSingle(rangeAttr.Maximum);
             }
 
+            string? internalValue = model?.ToString();
+            string displayValue = model != null ? HAE(((decimal)model).ToString(PropData.GetAdditionalAttributeValue("Format", "0.00")!)) : string.Empty;
+            if (Manager.HasModelBindingErrorManager && Manager.ModelBindingErrorManager.TryGetAttemptedValue(PropertyName, out string? attemptedValue)) {
+                displayValue = internalValue = attemptedValue;
+            }
+
             placeHolder = string.IsNullOrWhiteSpace(placeHolder) ? string.Empty : $" placeholder={HAE(placeHolder)}";
 
             string tags =
 $@"<div id='{ControlId}'{GetClassAttribute("yt_number_container yt_decimal t_edit")}>
-    <input type='hidden'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} value='{value}'>
-    <input type='text' maxlength='20' value='{value}'{placeHolder}>
+    <input type='hidden'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} value='{HAE(internalValue)}'>
+    <input type='text' maxlength='20'{placeHolder} value='{HAE(displayValue)}'>
 </div>";
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DecimalEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");

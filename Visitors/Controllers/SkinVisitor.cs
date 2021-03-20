@@ -12,7 +12,7 @@ namespace YetaWF.Modules.Visitors.Controllers {
         public SkinVisitorModuleController() { }
 
         public class DisplayModel {
-            public string TrackClickUrl { get; set; }
+            public string TrackClickUrl { get; set; } = null!;
         }
 
         [AllowGet]

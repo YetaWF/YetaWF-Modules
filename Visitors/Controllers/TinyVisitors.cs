@@ -21,9 +21,9 @@ namespace YetaWF.Modules.Visitors.Controllers {
             public int YesterdaysAnonymous { get; set; }
             public int YesterdaysUsers { get; set; }
 
-            public string VisitorsUrl { get; set; }
-            public string ImageUrl { get; set; }
-            public string Tooltip { get; set; }
+            public string? VisitorsUrl { get; set; }
+            public string ImageUrl { get; set; } = null!;
+            public string Tooltip { get; set; } = null!;
 
             public void SetData(VisitorEntry data) {
                 ObjectSupport.CopyData(data, this);
