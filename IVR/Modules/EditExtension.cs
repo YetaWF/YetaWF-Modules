@@ -27,7 +27,7 @@ namespace Softelvdm.Modules.IVR.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_Edit(string url, string extension) {
+        public ModuleAction? GetAction_Edit(string? url, string extension) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = new { Extension = extension },

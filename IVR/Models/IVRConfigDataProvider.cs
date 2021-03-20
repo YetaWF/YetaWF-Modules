@@ -24,32 +24,32 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         public int Id { get; set; }
 
         public bool TestMode { get { return ! WebConfigHelper.GetValue<bool>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "Live"); } }
-        public string LiveAccountSid { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "LiveAccountSid"); } }
-        public string LiveAuthToken { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "LiveAuthToken"); } }
-        public string TestAccountSid { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "TestAccountSid"); } }
-        public string TestAuthToken { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "TestAuthToken"); } }
+        public string? LiveAccountSid { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "LiveAccountSid"); } }
+        public string? LiveAuthToken { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "LiveAuthToken"); } }
+        public string? TestAccountSid { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "TestAccountSid"); } }
+        public string? TestAuthToken { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "TestAuthToken"); } }
 
         [StringLength(Globals.MaxUrl)]
-        public string LiveVerificationProcessCallUrl { get; set; }
+        public string? LiveVerificationProcessCallUrl { get; set; }
 
         [StringLength(Globals.MaxUrl)]
-        public string TestVerificationProcessCallUrl { get; set; }
+        public string? TestVerificationProcessCallUrl { get; set; }
 
         [Data_Binary]
         public SerializableList<ExtensionPhoneNumber> NotificationNumbers { get; set; }
 
         [StringLength(Globals.MaxUrl)]
-        public string DisplayVoiceMailUrl { get; set; }
+        public string? DisplayVoiceMailUrl { get; set; }
 
         [StringLength(MaxVoice)]
-        public string Voice { get; set; }
+        public string? Voice { get; set; }
         [StringLength(MaxVoice)]
-        public string VoiceInternal { get; set; }
+        public string? VoiceInternal { get; set; }
 
         [StringLength(Globals.MaxPublicKey)]
-        public string PublicKey { get; set; }
+        public string? PublicKey { get; set; }
         [StringLength(Globals.MaxPrivateKey)]
-        public string PrivateKey { get; set; }
+        public string? PrivateKey { get; set; }
 
         [Data_Binary]
         public WeeklyHours OpeningHours { get; set; }
@@ -76,7 +76,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
 
         private IDataProvider<int, IVRConfig> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, IVRConfig> CreateDataProvider() {
+        private IDataProvider<int, IVRConfig>? CreateDataProvider() {
             Package package = Softelvdm.Modules.IVR.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -99,7 +99,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
             }
         }
         public async Task<IVRConfig> GetItemAsync() {
-            IVRConfig config = await DataProvider.GetAsync(KEY);
+            IVRConfig? config = await DataProvider.GetAsync(KEY);
             if (config == null) {
                 config = new IVRConfig();
 
@@ -124,7 +124,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
             );
         }
         public async Task UpdateConfigAsync(IVRConfig data) {
-            IVRConfig origConfig = Auditing.Active ? await GetItemAsync() : null;
+            IVRConfig? origConfig = Auditing.Active ? await GetItemAsync() : null;
             data.Id = KEY;
             UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)

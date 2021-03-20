@@ -21,9 +21,9 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         public const int MaxErrors = 40000;
 
         [Data_PrimaryKey, StringLength(MaxName)]
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
         [StringLength(MaxDescription)]
-        public string Description { get; set; }
+        public string Description { get; set; } = null!;
         public bool Enabled { get; set; }
         public bool EnableOnStartup { get; set; }
         public bool RunOnce { get; set; }
@@ -38,7 +38,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         public DateTime? Next { get; set; }
         public TimeSpan RunTime { get; set; }
         [StringLength(MaxErrors)]
-        public string Errors { get; set; }
+        public string? Errors { get; set; }
 
         public SchedulerItemData() {
             Frequency = new SchedulerFrequency();
@@ -75,7 +75,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
 
         private IDataProvider<string, SchedulerItemData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<string, SchedulerItemData> CreateDataProvider() {
+        private IDataProvider<string, SchedulerItemData>? CreateDataProvider() {
             Package package = YetaWF.Modules.Scheduler.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, Cacheable: true, Parms: new { NoLanguages = true });
         }
@@ -84,7 +84,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         // API
         // API
 
-        public async Task<SchedulerItemData> GetItemAsync(string key) {
+        public async Task<SchedulerItemData?> GetItemAsync(string key) {
             return await DataProvider.GetAsync(key);
         }
         public async Task<bool> AddItemAsync(SchedulerItemData evnt) {
@@ -101,22 +101,22 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         public async Task<bool> RemoveItemAsync(string key) {
             return await DataProvider.RemoveAsync(key);
         }
-        public async Task<DataProviderGetRecords<SchedulerItemData>> GetItemsAsync(List<DataProviderFilterInfo> filters) {
+        public async Task<DataProviderGetRecords<SchedulerItemData>> GetItemsAsync(List<DataProviderFilterInfo>? filters) {
             filters = FixFilters(filters);
             return await DataProvider.GetRecordsAsync(0, 0, null, filters);
         }
-        public async Task<DataProviderGetRecords<SchedulerItemData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        public async Task<DataProviderGetRecords<SchedulerItemData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
             filters = FixFilters(filters);
             sort = FixSort(sort);
             return await DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
-        public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
+        public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo>? filters) {
             filters = FixFilters(filters);
             int result = await DataProvider.RemoveRecordsAsync(filters);
             return result;
         }
         // Replace IsRunning ... with  Next == DateTime.MaxValue
-        private List<DataProviderSortInfo> FixSort(List<DataProviderSortInfo> sort) {
+        private List<DataProviderSortInfo>? FixSort(List<DataProviderSortInfo>? sort) {
             if (sort == null) return null;
             List<DataProviderSortInfo> newSort = new List<DataProviderSortInfo>();
             foreach (DataProviderSortInfo s in sort) {
@@ -131,14 +131,14 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
             return newSort;
         }
 
-        private List<DataProviderFilterInfo> FixFilters(List<DataProviderFilterInfo> filters) {
+        private List<DataProviderFilterInfo>? FixFilters(List<DataProviderFilterInfo>? filters) {
             if (filters == null) return filters;
             List<DataProviderFilterInfo> newFilters = new List<DataProviderFilterInfo>();
             DataProviderFilterInfo.NormalizeFilters(typeof(SchedulerItemData), filters);
             foreach (DataProviderFilterInfo f in filters) {
                 if (f.Field == "IsRunning") {
                     bool val;
-                    if (f.Value.GetType() == typeof(bool))
+                    if (f.Value?.GetType() == typeof(bool))
                         val = (bool)f.Value;
                     else
                         throw new InternalError("Unexpected value type in filter for IsRunning");

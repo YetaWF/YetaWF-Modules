@@ -22,24 +22,24 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         [Data_Index]
         public long RunId { get; set; }
         [StringLength(SchedulerItemData.MaxName)]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         public Core.Log.Logging.LevelEnum Level { get; set; }
         public int SiteIdentity { get; set; }
 
         [StringLength(0)]
-        public string Info { get; set; }
+        public string Info { get; set; } = null!;
 
         public LogData() { }
     }
 
     public interface ILogDataProviderIOModeAsync {
         Task<bool> AddItemAsync(LogData data);
-        Task<DataProviderGetRecords<LogData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters);
-        Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters);
+        Task<DataProviderGetRecords<LogData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters);
+        Task<int> RemoveItemsAsync(List<DataProviderFilterInfo>? filters);
         bool CanBrowse { get; }
         bool CanImportOrExport { get; }
-        string GetLogFileName();
+        string? GetLogFileName();
     }
 
     public class LogDataProvider : DataProviderImpl, IInstallableModel {
@@ -53,7 +53,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         private IDataProvider<int, LogData> DataProvider { get { return GetDataProvider(); } }
         private ILogDataProviderIOModeAsync DataProviderIOMode { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, LogData> CreateDataProvider() {
+        private IDataProvider<int, LogData>? CreateDataProvider() {
             Package package = YetaWF.Modules.Scheduler.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Log", Cacheable: true);
         }
@@ -62,16 +62,16 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
         // API
         // API
 
-        public async Task<LogData> GetItemAsync(int logEntry) {
+        public async Task<LogData?> GetItemAsync(int logEntry) {
             return await DataProvider.GetAsync(logEntry);
         }
         public async Task<bool> AddItemAsync(LogData data) {
             return await DataProviderIOMode.AddItemAsync(data);
         }
-        public async Task<DataProviderGetRecords<LogData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        public async Task<DataProviderGetRecords<LogData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
             return await DataProviderIOMode.GetItemsAsync(skip, take, sort, filters);
         }
-        public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
+        public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo>? filters) {
             return await DataProviderIOMode.RemoveItemsAsync(filters);
         }
         public bool CanBrowse {
@@ -84,7 +84,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
                 return DataProviderIOMode.CanImportOrExport;
             }
         }
-        public string GetLogFileName() {
+        public string? GetLogFileName() {
             return DataProviderIOMode.GetLogFileName();
         }
 

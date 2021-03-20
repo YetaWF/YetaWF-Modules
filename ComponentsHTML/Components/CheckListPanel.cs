@@ -11,8 +11,6 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Controllers;
 
-#nullable enable
-
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>

@@ -30,7 +30,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider.File {
             public LogDataProvider(Dictionary<string, object> options) : base(options) {
                 LogFile = Path.Combine(BaseFolder, LogfileName);
                 YetaWFManager.Syncify(async () => // Log is sync by definition
-                    await FileSystem.FileSystemProvider.CreateDirectoryAsync(Path.GetDirectoryName(LogFile))
+                    await FileSystem.FileSystemProvider.CreateDirectoryAsync(Path.GetDirectoryName(LogFile)!)
                 );
             }
             public override string GetBaseFolder() { return Path.Combine(YetaWFManager.DataFolder, Dataset); }
@@ -42,10 +42,10 @@ namespace YetaWF.Modules.Scheduler.DataProvider.File {
                 await FileSystem.FileSystemProvider.AppendAllTextAsync(LogFile, text);
                 return true;
             }
-            public Task<DataProviderGetRecords<LogData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+            public Task<DataProviderGetRecords<LogData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
                 throw new NotImplementedException();
             }
-            public Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
+            public Task<int> RemoveItemsAsync(List<DataProviderFilterInfo>? filters) {
                 throw new NotImplementedException();
             }
             public bool CanBrowse {

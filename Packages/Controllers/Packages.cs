@@ -29,7 +29,7 @@ namespace YetaWF.Modules.Packages.Controllers {
 
             [Caption("Actions"), Description("The available actions")]
             [UIHint("ModuleActionsGrid"), ReadOnly]
-            public List<ModuleAction> Commands { get; set; }
+            public List<ModuleAction> Commands { get; set; } = null!;
 
             public async Task<List<ModuleAction>> __GetCommandsAsync() {
                 List<ModuleAction> actions = new List<ModuleAction>();
@@ -54,23 +54,23 @@ namespace YetaWF.Modules.Packages.Controllers {
 
             [Caption("Package Name"), Description("The assembly name of the package")]
             [UIHint("String"), ReadOnly]
-            public string Name { get; set; }
+            public string Name { get; set; } = null!;
             [Caption("Product Name"), Description("The product name used internally by YetaWF")]
             [UIHint("String"), ReadOnly]
-            public string Product { get; set; }
+            public string Product { get; set; } = null!;
             [Caption("Product Version"), Description("The product's version")]
             [UIHint("String"), ReadOnly]
-            public string Version { get; set; }
+            public string Version { get; set; } = null!;
             [Caption("Product Description"), Description("A brief description of the product")]
             [UIHint("String"), ReadOnly]
-            public string Description { get; set; }
+            public string? Description { get; set; }
 
             [Caption("Company Name"), Description("The name of the company publishing this product")]
             [UIHint("String"), ReadOnly]
-            public string CompanyDisplayName { get; set; }
+            public string CompanyDisplayName { get; set; } = null!;
             [Caption("Domain"), Description("The domain name of the company publishing this product (without .com, .net, etc.)")]
             [UIHint("String"), ReadOnly]
-            public string Domain { get; set; }
+            public string Domain { get; set; } = null!;
 
             [Caption("Package Type"), Description("The package type")]
             [UIHint("Enum"), ReadOnly]
@@ -78,7 +78,7 @@ namespace YetaWF.Modules.Packages.Controllers {
 
             [Caption("Area"), Description("The MVC area for this product's modules, used internally by YetaWF")]
             [UIHint("String"), ReadOnly]
-            public string AreaName { get; set; }
+            public string AreaName { get; set; } = null!;
 
             public PackageModel(PackagesModule module, ModuleDefinition modLocalize, Package p) {
                 Package = p;
@@ -92,7 +92,7 @@ namespace YetaWF.Modules.Packages.Controllers {
         }
         public class PackagesModel {
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
         private GridDefinition GetGridModel() {
             return new GridDefinition {
@@ -100,8 +100,8 @@ namespace YetaWF.Modules.Packages.Controllers {
                 SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(PackageModel),
                 AjaxUrl = GetActionUrl(nameof(Packages_GridData)),
-                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
-                    ModuleDefinition modLocalize = await ModuleDefinition.LoadAsync(Manager.CurrentSite.PackageLocalizationServices, AllowNone: true);
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
+                    ModuleDefinition? modLocalize = await ModuleDefinition.LoadAsync(Manager.CurrentSite.PackageLocalizationServices, AllowNone: true);
                     if (modLocalize == null)
                         throw new InternalError("No localization services available - no module has been defined");
                     DataProviderGetRecords<Package> packages = Package.GetAvailablePackages(skip, take, sort, filters);

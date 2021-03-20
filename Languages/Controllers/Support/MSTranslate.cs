@@ -7,10 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using YetaWF.Core.Support;
-#if MVC6
-#else
-using System.Web.Security.AntiXss;
-#endif
 
 namespace YetaWF.Modules.Languages.Controllers.Support {
 
@@ -21,7 +17,7 @@ namespace YetaWF.Modules.Languages.Controllers.Support {
             public static readonly string DataMarketAccessUri = "https://api.cognitive.microsoft.com/sts/v1.0/issueToken";
 
             private string _clientKey;
-            private string _token;
+            private string? _token;
 
             public MSAuthentication(string clientKey) {
                 _clientKey = clientKey;
@@ -54,7 +50,7 @@ namespace YetaWF.Modules.Languages.Controllers.Support {
         }
 
         private string _clientId;
-        private string _token;
+        private string? _token;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "Don't care")]
         public async Task<List<string>> TranslateAsync(string from, string to, List<string> strings) {
@@ -107,7 +103,7 @@ namespace YetaWF.Modules.Languages.Controllers.Support {
 
             // Get the response
             List<string> newStrings = new List<string>();
-            WebResponse response = null;
+            WebResponse? response = null;
 
             using (response = await request.GetResponseAsync()) {
                 using (Stream stream = response.GetResponseStream()) {

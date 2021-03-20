@@ -75,8 +75,8 @@ namespace YetaWF.Modules.Scheduler.Components {
 
         public class EventUI {
             [UIHint("DropDownList")]
-            public string DropDown { get; set; }
-            public List<SelectionItem<string>> DropDown_List { get; set; }
+            public string? DropDown { get; set; }
+            public List<SelectionItem<string>> DropDown_List { get; set; } = null!;
         }
 
         public async Task<string> RenderAsync(SchedulerEvent model) {
@@ -86,7 +86,7 @@ namespace YetaWF.Modules.Scheduler.Components {
             List<Type> schedulerEvents = YetaWF.Modules.Scheduler.Support.Scheduler.Instance.SchedulerEvents;
             List<SelectionItem<string>> list = new List<SelectionItem<string>>();
             foreach (Type type in schedulerEvents) {
-                IScheduling isched = (IScheduling)Activator.CreateInstance(type);
+                IScheduling isched = (IScheduling)Activator.CreateInstance(type)!;
                 SchedulerItemBase[] items = isched.GetItems();
                 foreach (SchedulerItemBase item in items) {
                     list.Add(new SelectionItem<string>() {

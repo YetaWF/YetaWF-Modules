@@ -24,7 +24,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         public DateTime HolidayDate { get; set; }
 
         [StringLength(MaxDescription)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public HolidayEntry() { }
     }
@@ -40,7 +40,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
 
         private IDataProviderIdentity<DateTime, object, HolidayEntry> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderIdentity<DateTime, object, HolidayEntry> CreateDataProvider() {
+        private IDataProviderIdentity<DateTime, object, HolidayEntry>? CreateDataProvider() {
             Package package = Softelvdm.Modules.IVR.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Holidays", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -49,10 +49,10 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         // LOAD/SAVE
         // LOAD/SAVE
 
-        public Task<HolidayEntry> GetItemAsync(DateTime holidayDate) {
+        public Task<HolidayEntry?> GetItemAsync(DateTime holidayDate) {
             return DataProvider.GetAsync(holidayDate, null);
         }
-        public Task<HolidayEntry> GetItemByIdentityAsync(int id) {
+        public Task<HolidayEntry?> GetItemByIdentityAsync(int id) {
             return DataProvider.GetByIdentityAsync(id);
         }
         public async Task<bool> AddItemAsync(HolidayEntry data) {
@@ -67,7 +67,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         }
         public async Task<UpdateStatusEnum> UpdateItemAsync(HolidayEntry data) {
 
-            HolidayEntry origData = Auditing.Active ? await GetItemByIdentityAsync(data.Id) : null;
+            HolidayEntry? origData = Auditing.Active ? await GetItemByIdentityAsync(data.Id) : null;
 
             UpdateStatusEnum status = await DataProvider.UpdateByIdentityAsync(data.Id, data);
             if (status != UpdateStatusEnum.OK)
@@ -82,7 +82,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         }
         public async Task<bool> RemoveItemByIdentityAsync(int id) {
 
-            HolidayEntry origData = Auditing.Active ? await GetItemByIdentityAsync(id) : null;
+            HolidayEntry? origData = Auditing.Active ? await GetItemByIdentityAsync(id) : null;
 
             if (!await DataProvider.RemoveByIdentityAsync(id))
                 return false;
@@ -94,7 +94,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
             );
             return true;
         }
-        public Task<DataProviderGetRecords<HolidayEntry>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        public Task<DataProviderGetRecords<HolidayEntry>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
             return DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
     }

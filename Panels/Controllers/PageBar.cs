@@ -44,7 +44,7 @@ namespace YetaWF.Modules.Panels.Controllers {
             [Caption("Page Pattern"), Description("Defines a Regex pattern - all pages matching this pattern will be included in the Page Panel - for example, ^/Admin/Config/[^/]*$ would include all pages starting with /Admin/Config/, but would not include their child pages")]
             [UIHint("Text40"), Trim]
             [StringLength(500)]
-            public string PagePattern { get; set; }
+            public string? PagePattern { get; set; }
 
             [Category("General"), Caption("Style"), Description("Defines the appearance of page entries")]
             [UIHint("Enum")]
@@ -52,16 +52,16 @@ namespace YetaWF.Modules.Panels.Controllers {
 
             [Category("General"), Caption("Content Pane"), Description("Defines the pane used to extract page content - leave blank to use the main pane as page content")]
             [UIHint("Text20"), StringLength(20)]
-            public string ContentPane { get; set; }
+            public string? ContentPane { get; set; }
 
             [Category("General"), Caption("Default Image"), Description("The default image used when a page doesn't define its own FavIcon")]
             [UIHint("Image"), AdditionalMetadata("ImageType", ModuleImageSupport.ImageType)]
             [AdditionalMetadata("Width", 100), AdditionalMetadata("Height", 100)]
             [DontSave]
-            public string DefaultImage { get; set; }
+            public string? DefaultImage { get; set; }
 
             [CopyAttribute]
-            public byte[] DefaultImage_Data { get; set; }
+            public byte[]? DefaultImage_Data { get; set; }
 
             public Model() {
                 PanelInfo = new PageBarInfo();
@@ -91,9 +91,8 @@ namespace YetaWF.Modules.Panels.Controllers {
                 };
 
                 // Check whether current page contents are accessible and get pane contents
-                Uri contentUri = null;
-                string contentUrl;
-                Manager.TryGetUrlArg<string>("!ContentUrl", out contentUrl);
+                Uri? contentUri = null;
+                Manager.TryGetUrlArg<string>("!ContentUrl", out string? contentUrl);
                 if (!string.IsNullOrWhiteSpace(contentUrl)) {
                     if (contentUrl.StartsWith("/"))
                         contentUrl = Manager.CurrentSite.MakeUrl(contentUrl);
@@ -103,7 +102,7 @@ namespace YetaWF.Modules.Panels.Controllers {
                         contentUri = new Uri(model.PanelInfo.Panels[0].Url);
                 }
                 if (contentUri != null) {
-                    PageDefinition page = await PageDefinition.LoadFromUrlAsync(contentUri.AbsolutePath);
+                    PageDefinition? page = await PageDefinition.LoadFromUrlAsync(contentUri.AbsolutePath);
                     if (page != null) {
                         if (page.IsAuthorized_View()) {
                             model.PanelInfo.ContentUri = contentUri;
@@ -144,7 +143,7 @@ namespace YetaWF.Modules.Panels.Controllers {
         }
 
         private async Task<List<PageBarInfo.PanelEntry>> GetPanelsAsync() {
-            SavedCacheInfo info = GetCache(Module.ModuleGuid);
+            SavedCacheInfo? info = GetCache(Module.ModuleGuid);
             if (info == null || info.UserId != Manager.UserId || info.Language != Manager.UserLanguage) {
                 // We only reload the pages when the user is new (logon/logoff), otherwise we would build this too often
                 List<PageBarInfo.PanelEntry> list = new SerializableList<PageBarInfo.PanelEntry>();
@@ -173,14 +172,14 @@ namespace YetaWF.Modules.Panels.Controllers {
             }
             return info.PanelEntries;
         }
-        private void AddPage(List<PageBarInfo.PanelEntry> list, PageDefinition pageDef, bool popup) {
+        private void AddPage(List<PageBarInfo.PanelEntry> list, PageDefinition? pageDef, bool popup) {
             if (pageDef != null && pageDef.IsAuthorized_View()) {
                 // If a page is authorized for anonymous but not users, we suppress it if we're Editor, Admin, Superuser, etc. to avoid cases where we
                 // have 2 of the same pages, one for anonymous users, the other for logged on users.
                 if (Manager.HaveUser && pageDef.IsAuthorized_View_Anonymous() && !pageDef.IsAuthorized_View_AnyUser())
                     return;
                 list.Add(new PageBarInfo.PanelEntry {
-                    Url = pageDef.EvaluatedCanonicalUrl,
+                    Url = pageDef.EvaluatedCanonicalUrl!,
                     Caption = pageDef.Title,
                     ToolTip = pageDef.Description,
                     ImageUrl = GetImage(pageDef),
@@ -216,8 +215,8 @@ namespace YetaWF.Modules.Panels.Controllers {
 
         // Panel Cache
         public class SavedCacheInfo {
-            public List<PageBarInfo.PanelEntry> PanelEntries { get; set; }
-            public string Language { get; set; }
+            public List<PageBarInfo.PanelEntry> PanelEntries { get; set; } = null!;
+            public string? Language { get; set; }
             public int UserId { get; set; }
             public DateTime Created { get; set; }
             public SavedCacheInfo() {
@@ -228,11 +227,11 @@ namespace YetaWF.Modules.Panels.Controllers {
             Package package = YetaWF.Core.AreaRegistration.CurrentPackage;
             return string.Format("{0}_PageBarCache_{1}_{2}", package.AreaName, Manager.CurrentSite.Identity, moduleGuid);
         }
-        public SavedCacheInfo GetCache(Guid moduleGuid) {
+        public SavedCacheInfo? GetCache(Guid moduleGuid) {
             SessionStateIO<SavedCacheInfo> session = new SessionStateIO<SavedCacheInfo> {
                 Key = GetCacheName(moduleGuid)
             };
-            SavedCacheInfo info = session.Load();
+            SavedCacheInfo? info = session.Load();
             if (info != null && info.Created < DateTime.UtcNow.AddMinutes(-5)) return null;
             return info;
         }
@@ -256,7 +255,7 @@ namespace YetaWF.Modules.Panels.Controllers {
             // Validation
             UrlValidationAttribute attr = new UrlValidationAttribute(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local);
             if (!attr.IsValid(newUrl))
-                throw new Error(attr.ErrorMessage);
+                throw new Error(attr.ErrorMessage!);
             List<ListOfLocalPagesEditComponent.Entry> list = Utility.JsonDeserialize<List<ListOfLocalPagesEditComponent.Entry>>(data);
             if ((from l in list where l.Url.ToLower() == newUrl.ToLower() select l).FirstOrDefault() != null)
                 throw new Error(this.__ResStr("dupUrl", "Page {0} has already been added", newUrl));

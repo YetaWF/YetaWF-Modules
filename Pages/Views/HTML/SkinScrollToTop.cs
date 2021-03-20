@@ -20,7 +20,7 @@ namespace YetaWF.Modules.Pages.Views {
 
             Manager.ScriptManager.AddLast($@"YetaWF_Pages.ScrollUp.init();");
 
-            return Task.FromResult<string>(null);
+            return Task.FromResult<string>(string.Empty);
         }
     }
 }

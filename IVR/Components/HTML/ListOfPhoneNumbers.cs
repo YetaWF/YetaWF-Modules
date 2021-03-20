@@ -40,7 +40,7 @@ namespace Softelvdm.Modules.IVR.Components {
     [UsesAdditional("Header", "bool", "true", "Defines whether the grid header is shown.")]
     [UsesAdditional("Pages", "bool", "true", "Defines whether the grid pager is shown.")]
     [UsesAdditional("UseSkinFormatting", "bool", "true", "Defines whether the grid uses skin-based rendering using the defined page skin.")]
-    public class ListOfPhoneNumbersDisplayComponent : ListOfPhoneNumbersComponentBase, IYetaWFComponent<SerializableList<ExtensionPhoneNumber>> {
+    public class ListOfPhoneNumbersDisplayComponent : ListOfPhoneNumbersComponentBase, IYetaWFComponent<SerializableList<ExtensionPhoneNumber>?> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
@@ -48,7 +48,7 @@ namespace Softelvdm.Modules.IVR.Components {
 
             [Caption("Phone Number"), Description("Shows all defined phone numbers")]
             [UIHint("Softelvdm_IVR_PhoneNumber"), ReadOnly]
-            public string PhoneNumber { get; set; }
+            public string? PhoneNumber { get; set; }
 
             [Caption("SMS"), Description("Shows whether a text message is sent to the phone number when a voice mail is received")]
             [UIHint("Boolean"), ReadOnly]
@@ -66,7 +66,7 @@ namespace Softelvdm.Modules.IVR.Components {
                 ShowPager = pager,
                 UseSkinFormatting = useSkin,
                 AjaxUrl = Utility.UrlFor(typeof(ListOfPhoneNumbersController), nameof(ListOfPhoneNumbersController.ListOfPhoneNumbersDisplay_SortFilter)),
-                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
                         Data = recs.Data.ToList<object>(),
@@ -76,7 +76,7 @@ namespace Softelvdm.Modules.IVR.Components {
             };
         }
 
-        public async Task<string> RenderAsync(SerializableList<ExtensionPhoneNumber> model) {
+        public async Task<string> RenderAsync(SerializableList<ExtensionPhoneNumber>? model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -87,7 +87,7 @@ namespace Softelvdm.Modules.IVR.Components {
             GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header, pager, useSkin)
             };
-            grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+            grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                 List<Entry> list = new List<Entry>();
                 if (model != null) {
                     foreach (ExtensionPhoneNumber ext in model) {
@@ -119,19 +119,19 @@ namespace Softelvdm.Modules.IVR.Components {
     /// [UIHint("Softelvdm_IVR_ListOfPhoneNumbers")]
     /// public SerializableList&lt;ExtensionPhoneNumber&gt; PhoneNumbers { get; set; }
     /// </example>
-    public class ListOfPhoneNumbersEditComponent : ListOfPhoneNumbersComponentBase, IYetaWFComponent<SerializableList<ExtensionPhoneNumber>> {
+    public class ListOfPhoneNumbersEditComponent : ListOfPhoneNumbersComponentBase, IYetaWFComponent<SerializableList<ExtensionPhoneNumber>?> {
 
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
         public class ListOfPhoneNumbersSetup {
-            public string GridId { get; set; }
-            public string AddUrl { get; set; }
+            public string GridId { get; set; } = null!;
+            public string AddUrl { get; set; } = null!;
         }
         public class NewModel {
 
             [Caption("Phone Number"), Description("Please enter a new phone number and click Add")]
             [UIHint("Text20"), StringLength(Globals.MaxPhoneNumber), PhoneNumberNational]
-            public string NewPhoneNumber { get; set; }
+            public string? NewPhoneNumber { get; set; }
 
             [Caption("SMS"), Description("Shows whether a text message is sent to the phone number when a voice mail is received")]
             [UIHint("Boolean")]
@@ -168,7 +168,7 @@ namespace Softelvdm.Modules.IVR.Components {
                 InitialPageSize = 10,
                 ShowHeader = header,
                 AjaxUrl = Utility.UrlFor(typeof(ListOfPhoneNumbersController), nameof(ListOfPhoneNumbersController.ListOfPhoneNumbersEdit_SortFilter)),
-                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
                         Data = recs.Data.ToList<object>(),
@@ -181,7 +181,7 @@ namespace Softelvdm.Modules.IVR.Components {
             };
         }
 
-        public async Task<string> RenderAsync(SerializableList<ExtensionPhoneNumber> model) {
+        public async Task<string> RenderAsync(SerializableList<ExtensionPhoneNumber>? model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -190,7 +190,7 @@ namespace Softelvdm.Modules.IVR.Components {
             GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header)
             };
-            grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+            grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                 List<Entry> list = new List<Entry>();
                 if (model != null) {
                     foreach (ExtensionPhoneNumber ext in model) {

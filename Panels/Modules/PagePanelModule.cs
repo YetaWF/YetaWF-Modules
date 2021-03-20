@@ -44,7 +44,7 @@ namespace YetaWF.Modules.Panels.Modules {
         [Category("General"), Caption("Page Pattern"), Description("Defines a Regex pattern - All pages matching this pattern will be included in the Page Panel - for example, ^/Admin/Config/[^/]*$ would include all pages starting with /Admin/Config/, but would not include their child pages - Pages added to the Page List are shown ahead of pages discovered using the Page Pattern")]
         [UIHint("Text40"), Trim]
         [StringLength(500)]
-        public string PagePattern { get; set; }
+        public string? PagePattern { get; set; }
 
         [Category("General"), Caption("Use Popups"), Description("Defines whether pages added automatically using the Page Pattern field are shown as popups - otherwise full pages are shown")]
         [UIHint("Boolean")]
@@ -67,7 +67,7 @@ namespace YetaWF.Modules.Panels.Modules {
         [UIHint("Image"), AdditionalMetadata("ImageType", ModuleImageSupport.ImageType)]
         [AdditionalMetadata("Width", 100), AdditionalMetadata("Height", 100)]
         [DontSave]
-        public string DefaultImage {
+        public string? DefaultImage {
             get {
                 if (_defaultImage == null) {
                     if (DefaultImage_Data != null && DefaultImage_Data.Length > 0)
@@ -79,12 +79,12 @@ namespace YetaWF.Modules.Panels.Modules {
                 _defaultImage = value;
             }
         }
-        private string _defaultImage = null;
+        private string? _defaultImage = null;
 
         [Data_Binary, CopyAttribute]
-        public byte[] DefaultImage_Data { get; set; }
+        public byte[]? DefaultImage_Data { get; set; }
 
-        public ModuleAction GetAction_Display(string url) {
+        public ModuleAction? GetAction_Display(string? url) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Display",

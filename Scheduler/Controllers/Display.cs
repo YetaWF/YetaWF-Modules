@@ -26,11 +26,11 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
             [Caption("Name"), Description("The name of this scheduler item - the name is used to identify a scheduler item")]
             [UIHint("String"), StringLength(SchedulerItemData.MaxName), ReadOnly]
-            public string Name { get; set; }
+            public string Name { get; set; } = null!;
 
             [Caption("Description"), Description("The description of this scheduler item")]
             [UIHint("TextArea"), ReadOnly]
-            public string Description { get; set; }
+            public string? Description { get; set; }
 
             [Caption("Enabled"), Description("Defines whether the scheduler item is enabled")]
             [UIHint("Boolean"), ReadOnly]
@@ -54,7 +54,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
             [Caption("Interval"), Description("The scheduler item's frequency")]
             [UIHint("YetaWF_Scheduler_Frequency"), ReadOnly]
-            public SchedulerFrequency Frequency { get; set; }
+            public SchedulerFrequency Frequency { get; set; } = null!;
 
             [Caption("Last"), Description("The last time this item ran")]
             [UIHint("DateTime"), ReadOnly]
@@ -70,11 +70,11 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
             [Caption("Errors"), Description("The errors that occurred during the scheduler item's last run")]
             [UIHint("TextArea"), ReadOnly]
-            public string Errors { get; set; }
+            public string? Errors { get; set; }
 
             [Caption("Event"), Description("The event running at the scheduled time")]
             [UIHint("YetaWF_Scheduler_Event"), ReadOnly]
-            public SchedulerEvent Event { get; set; }
+            public SchedulerEvent Event { get; set; } = null!;
 
             public void SetEvent(SchedulerItemData evnt)
             {
@@ -86,7 +86,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         public async Task<ActionResult> SchedulerDisplay(string eventName) {
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
                 SchedulerDisplayModel model = new SchedulerDisplayModel { };
-                SchedulerItemData evnt = await dataProvider.GetItemAsync(eventName);
+                SchedulerItemData? evnt = await dataProvider.GetItemAsync(eventName);
                 if (evnt == null)
                     throw new Error(this.__ResStr("notFound", "Scheduler item \"{0}\" not found."), eventName);
                 model.SetEvent(evnt);

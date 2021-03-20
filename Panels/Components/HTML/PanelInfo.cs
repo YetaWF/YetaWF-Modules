@@ -32,7 +32,7 @@ namespace YetaWF.Modules.Panels.Components {
 
         internal class UI {
             [UIHint("Tabs")]
-            public TabsDefinition TabsDef { get; set; }
+            public TabsDefinition TabsDef { get; set; } = null!;
         }
         internal class Setup {
             public PanelInfo.PanelStyleEnum Style { get; set; }
@@ -57,9 +57,9 @@ namespace YetaWF.Modules.Panels.Components {
 
                 for (int panelIndex = 0; panelIndex < model.Panels.Count; ++panelIndex) {
                     if (await model.Panels[panelIndex].IsAuthorizedAsync()) {
-                        string caption = model.Panels[panelIndex].Caption;
+                        string? caption = model.Panels[panelIndex].Caption;
                         if (string.IsNullOrWhiteSpace(caption)) { caption = this.__ResStr("noCaption", "(no caption)"); }
-                        string toolTip = model.Panels[panelIndex].ToolTip;
+                        string? toolTip = model.Panels[panelIndex].ToolTip;
                         if (string.IsNullOrWhiteSpace(toolTip)) { toolTip = null; }
                         ui.TabsDef.Tabs.Add(new TabEntry {
                             Caption = caption,
@@ -68,7 +68,7 @@ namespace YetaWF.Modules.Panels.Components {
                             RenderPaneAsync = async (int tabIndex) => {
                                 HtmlBuilder hbt = new HtmlBuilder();
                                 if (await model.Panels[tabIndex].IsAuthorizedAsync()) {
-                                    ModuleDefinition mod = await model.Panels[tabIndex].GetModuleAsync();
+                                    ModuleDefinition? mod = await model.Panels[tabIndex].GetModuleAsync();
                                     if (mod != null) {
                                         mod.ShowTitle = false;
                                         mod.UsePartialFormCss = false;
@@ -112,7 +112,7 @@ namespace YetaWF.Modules.Panels.Components {
         <div class='t_panel t_acccontent {(active ? "t_active" : "")}' id='{DivId}_{panelIndex}_pane'
             aria-labelledby='{DivId}_{panelIndex}_lb' role='tabpanel' aria-hidden='{(active ? "false" : "true")}' style='overflow: hidden;{(active ? "" : "display:none")}'>");
 
-                        ModuleDefinition mod = await model.Panels[panelIndex].GetModuleAsync();
+                        ModuleDefinition? mod = await model.Panels[panelIndex].GetModuleAsync();
                         if (mod != null) {
                             mod.ShowTitle = false;
                             mod.UsePartialFormCss = false;
@@ -151,7 +151,7 @@ namespace YetaWF.Modules.Panels.Components {
 
         internal class UI {
             [UIHint("Tabs")]
-            public TabsDefinition TabsDef { get; set; }
+            public TabsDefinition TabsDef { get; set; } = null!;
         }
 
         public async Task<string> RenderAsync(PanelInfo model) {

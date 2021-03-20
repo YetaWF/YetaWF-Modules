@@ -30,21 +30,21 @@ namespace Softelvdm.Modules.IVR.Controllers {
             [UIHint("String"), ReadOnly]
             [HelpLink("https://www.twilio.com/")]
             [ExcludeDemoMode]
-            public string LiveAccountSid { get; set; }
+            public string? LiveAccountSid { get; set; }
             [Category("Accounts"), Caption("Live Auth Token"), Description("The Live Auth Token is obtained from your Twilio account, defined in appsettings.json (applies to all sites in this YetaWF instance) and is used when Test Mode is disabled")]
             [UIHint("String"), ReadOnly]
             [ExcludeDemoMode]
-            public string LiveAuthToken { get; set; }
+            public string? LiveAuthToken { get; set; }
 
             [Category("Accounts"), Caption("Test Account Sid"), Description("The Test Account Sid is obtained from your Twilio account, defined in appsettings.json (applies to all sites in this YetaWF instance) and is used when Test Mode is enabled")]
             [UIHint("String"), ReadOnly]
             [HelpLink("https://www.twilio.com/")]
             [ExcludeDemoMode]
-            public string TestAccountSid { get; set; }
+            public string? TestAccountSid { get; set; }
             [Category("Accounts"), Caption("Test Auth Token"), Description("The Test Auth Token is obtained from your Twilio account, defined in appsettings.json (applies to all sites in this YetaWF instance) and is used when Test Mode is enabled")]
             [UIHint("String"), ReadOnly]
             [ExcludeDemoMode]
-            public string TestAuthToken { get; set; }
+            public string? TestAuthToken { get; set; }
 
             [Category("Notifications"), Caption("SMS Numbers"), Description("Defines the phone numbers that receive a text message whenever a call is received")]
             [TextAbove("Phone numbers added here receive a text message when a call is received (before the caller can select an extension or leave a voice mail). This is may become annoying fast if you receive many calls on the main number. " +
@@ -55,11 +55,11 @@ namespace Softelvdm.Modules.IVR.Controllers {
             [Category("IVR"), Caption("Voice"), Description("Defines the Voice variable, which can be used to override the default voice - This voice is used for all messages to external users - If not specified, the default voice is used")]
             [UIHint("Text80"), StringLength(DataProvider.IVRConfig.MaxVoice), Trim]
             [HelpLink("https://www.twilio.com/console/voice/twiml/text-to-speech")]
-            public string Voice { get; set; }
+            public string? Voice { get; set; }
             [Category("IVR"), Caption("Voice (Internal)"), Description("Defines the Voice variable, which can be used to override the default voice - This voice is used for all messages to internal users - If not specified, the default voice is used")]
             [UIHint("Text80"), StringLength(DataProvider.IVRConfig.MaxVoice), Trim]
             [HelpLink("https://www.twilio.com/console/voice/twiml/text-to-speech")]
-            public string VoiceInternal { get; set; }
+            public string? VoiceInternal { get; set; }
 
             [Category("IVR"), Caption("Max. Errors"), Description("The maximum number of invalid entries by the caller before hanging up - Set to 0 to ignore")]
             [UIHint("IntValue2"), Range(0, 99)]
@@ -67,15 +67,15 @@ namespace Softelvdm.Modules.IVR.Controllers {
 
             [Category("IVR"), Caption("Live Call Process Url"), Description("Defines the Request Url used to verify a Twilio Call request in Live mode - This is typically used for load balancers and cases where the request is redirected, which changes the original Url - Instead of inspecting the various non-standard headers, specify the expected Url here - If not specified the default is http[s]://...yoursite.com.../Softelvdm_IVR/Call/Process")]
             [UIHint("Text80"), StringLength(Globals.MaxUrl), Trim]
-            public string LiveVerificationProcessCallUrl { get; set; }
+            public string? LiveVerificationProcessCallUrl { get; set; }
 
             [Category("IVR"), Caption("Test Call Process Url"), Description("Defines the Request Url used to verify a Twilio Fax Sent request in Test mode - This is typically used for load balancers and cases where the request is redirected, which changes the original Url - Instead of inspecting the various non-standard headers, specify the expected Url here - If not specified the default is http[s]://...yoursite.com.../Softelvdm_IVR/Call/Process")]
             [UIHint("Text80"), StringLength(Globals.MaxUrl), Trim]
-            public string TestVerificationProcessCallUrl { get; set; }
+            public string? TestVerificationProcessCallUrl { get; set; }
 
             [Category("Voice Mail"), Caption("Display Url"), Description("Defines the optional page used to display a voice mail - If no page is defined, a Url is generated")]
             [UIHint("Url"), StringLength(Globals.MaxUrl), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Remote|UrlTypeEnum.Local)]
-            public string DisplayVoiceMailUrl { get; set; }
+            public string? DisplayVoiceMailUrl { get; set; }
 
             [TextAbove("Enter the hours your company is open.")]
             [Category("Hours"), Caption(""), Description("")]
@@ -89,12 +89,12 @@ namespace Softelvdm.Modules.IVR.Controllers {
             [Category("Security"), Caption("Public Key"), Description("The public key used to encrypt the token sent from the IVR to Twilio with POST requests, to be validated on return")]
             [UIHint("TextAreaSourceOnly"), StringLength(Globals.MaxPublicKey)]
             [ExcludeDemoMode]
-            public string PublicKey { get; set; }
+            public string? PublicKey { get; set; }
 
             [Category("Security"), Caption("Private Key"), Description("The private key used to decrypt the token sent from the IVR - DO NOT SHARE THIS KEY!")]
             [UIHint("TextAreaSourceOnly"), StringLength(Globals.MaxPrivateKey)]
             [ExcludeDemoMode]
-            public string PrivateKey { get; set; }
+            public string? PrivateKey { get; set; }
 
             public IVRConfig GetData(IVRConfig data) {
                 ObjectSupport.CopyData(this, data);
@@ -110,7 +110,10 @@ namespace Softelvdm.Modules.IVR.Controllers {
             public void SetData(IVRConfig data) {
                 ObjectSupport.CopyData(data, this);
             }
-            public Model() { }
+            public Model() {
+                NotificationNumbers = new SerializableList<ExtensionPhoneNumber>();
+                OpeningHours = WeeklyHours.WorkWeek;
+            }
         }
 
         [AllowGet]

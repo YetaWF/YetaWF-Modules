@@ -42,19 +42,19 @@ namespace YetaWF.Modules.Search.Controllers {
 
             [Caption("Search Keyword"), Description("")]
             [UIHint("String"), ReadOnly]
-            public string SearchTerm { get; set; }
+            public string SearchTerm { get; set; } = null!;
 
             [Caption("Url"), Description("The page where this keyword was found")]
             [UIHint("Url"), ReadOnly]
-            public string PageUrl { get; set; }
+            public string PageUrl { get; set; } = null!;
 
             [Caption("Title"), Description("The page title")]
             [UIHint("String"), ReadOnly]
-            public string PageTitle { get; set; }
+            public string? PageTitle { get; set; }
 
             [Caption("Summary"), Description("The page summary")]
             [UIHint("String"), ReadOnly]
-            public string PageSummary { get; set; }
+            public string? PageSummary { get; set; }
 
             [Caption("Created"), Description("The date/time the page was created")]
             [UIHint("DateTime"), ReadOnly]
@@ -69,7 +69,7 @@ namespace YetaWF.Modules.Search.Controllers {
 
             [Caption("Language"), Description("The page language where this keyword was found")]
             [UIHint("String"), ReadOnly]
-            public string Language { get; set; }
+            public string Language { get; set; } = null!;
 
             [Caption("Count"), Description("The number of times this keyword was found on the page")]
             [UIHint("IntValue"), ReadOnly]
@@ -97,7 +97,7 @@ namespace YetaWF.Modules.Search.Controllers {
 
         public class BrowseModel {
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
         private GridDefinition GetGridModel() {
             return new GridDefinition {
@@ -106,7 +106,7 @@ namespace YetaWF.Modules.Search.Controllers {
                 InitialPageSize = 20,
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = GetActionUrl(nameof(SearchBrowse_GridData)),
-                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (SearchDataProvider searchDP = new SearchDataProvider()) {
                         DataProviderGetRecords<SearchData> browseItems = await searchDP.GetItemsWithUrlAsync(skip, take, sort, filters);
                         return new DataSourceResult {

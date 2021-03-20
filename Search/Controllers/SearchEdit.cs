@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Search.Controllers {
 
             [Caption("Search Keyword"), Description("Search Keyword")]
             [UIHint("Text40"), StringLength(SearchData.MaxSearchTerm), Required]
-            public string SearchTerm { get; set; }
+            public string? SearchTerm { get; set; }
 
             [Caption("Added"), Description("The date/time this keyword was added")]
             [UIHint("DateTime"), ReadOnly]
@@ -34,11 +34,11 @@ namespace YetaWF.Modules.Search.Controllers {
 
             [Caption("Url"), Description("The page where this keyword was found")]
             [UIHint("Url"), ReadOnly]
-            public string PageUrl { get; set; }
+            public string? PageUrl { get; set; }
 
             [Caption("Language"), Description("The page language where this keyword was found")]
             [UIHint("LanguageId")]
-            public string Language { get; set; }
+            public string? Language { get; set; }
 
             [Caption("Count"), Description("The number of times this keyword was found on the page")]
             [UIHint("IntValue"), Range(1,999999)]
@@ -74,7 +74,7 @@ namespace YetaWF.Modules.Search.Controllers {
             if (!SearchDataProvider.IsUsable) return View("SearchUnavailable_Edit");
             using (SearchDataProvider dataProvider = new SearchDataProvider()) {
                 EditModel model = new EditModel { };
-                SearchData data = await dataProvider.GetItemWithUrlAsync(searchDataId);
+                SearchData? data = await dataProvider.GetItemWithUrlAsync(searchDataId);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Search keyword with id {0} not found."), searchDataId);
                 model.SetData(data);
@@ -88,7 +88,7 @@ namespace YetaWF.Modules.Search.Controllers {
         public async Task<ActionResult> SearchEdit_Partial(EditModel model) {
 
             using (SearchDataProvider dataProvider = new SearchDataProvider()) {
-                SearchData data = await dataProvider.GetItemWithUrlAsync(model.SearchDataId);
+                SearchData? data = await dataProvider.GetItemWithUrlAsync(model.SearchDataId);
                 if (data == null)
                     throw new Error(this.__ResStr("alreadyDeleted", "The search keyword with id {0} has been removed and can no longer be updated.", model.SearchDataId));
 

@@ -36,7 +36,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
 
         public override bool ShowModuleMenu { get { return false; } }
 
-        public async Task<ModuleAction> GetAction_EditAsync(string url, Guid? pageGuid = null) {
+        public async Task<ModuleAction?> GetAction_EditAsync(string? url, Guid? pageGuid = null) {
             Guid guid;
             if (pageGuid == null) {
                 if (Manager.CurrentPage == null) return null;
@@ -65,9 +65,9 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 SaveReturnUrl = true,
             };
         }
-        public async Task<ModuleAction> GetAction_RemoveAsync(Guid? pageGuid = null) {
+        public async Task<ModuleAction?> GetAction_RemoveAsync(Guid? pageGuid = null) {
             Guid guid;
-            PageDefinition page;
+            PageDefinition? page;
             if (pageGuid == null) {
                 page = Manager.CurrentPage;
                 if (page == null) return null;

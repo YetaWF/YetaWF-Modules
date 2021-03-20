@@ -28,7 +28,7 @@ namespace YetaWF.Modules.PageEdit.Views {
 
         internal class UI {
             [UIHint("Tabs")]
-            public TabsDefinition TabsDef { get; set; }
+            public TabsDefinition TabsDef { get; set; } = null!;
         }
 
         public async Task<string> RenderViewAsync(PageControlModule module, PageControlModuleController.PageControlModel model) {

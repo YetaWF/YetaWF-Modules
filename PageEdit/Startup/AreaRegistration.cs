@@ -23,6 +23,6 @@ namespace YetaWF.Modules.PageEdit {
         /// Defines the current package, used by applications that need access to the YetaWF.Core.Packages.Package instance.
         /// </summary>
         public static Package CurrentPackage { get { return _CachedCurrentPackage ??= (_CachedCurrentPackage = Package.GetPackageFromAssembly(typeof(AreaRegistration).Assembly)); } }
-        private static Package _CachedCurrentPackage;
+        private static Package? _CachedCurrentPackage;
     }
 }

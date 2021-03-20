@@ -7,8 +7,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Modules.ComponentsHTML.Components;
 
-#nullable enable
-
 namespace YetaWF.Modules.DevTests.Controllers {
 
     public class TemplateCheckListModuleController : ControllerImpl<YetaWF.Modules.DevTests.Modules.TemplateCheckListModule> {

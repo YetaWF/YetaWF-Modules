@@ -10,8 +10,6 @@ using System.Linq;
 using System.Collections.Generic;
 using YetaWF.Core.Controllers;
 
-#nullable enable
-
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <inheritdoc/>

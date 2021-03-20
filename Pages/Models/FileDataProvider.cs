@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Pages.DataProvider.File {
                 DesignedPagesDictionaryByUrl byUrl = new DesignedPagesDictionaryByUrl();
                 List<Guid> pageGuids = await GetListOfKeysAsync(BaseFolder);
                 foreach (var pageGuid in pageGuids) {
-                    PageDefinition page = await GetAsync(pageGuid);
+                    PageDefinition? page = await GetAsync(pageGuid);
                     if (page == null)
                         throw new InternalError("No PageDefinition for guid {0}", pageGuid);
                     PageDefinition.DesignedPage desPage = new PageDefinition.DesignedPage() { Url = page.Url, PageGuid = page.PageGuid };
@@ -38,7 +38,7 @@ namespace YetaWF.Modules.Pages.DataProvider.File {
                 DataProviderGetRecords<PageDefinition> pages = await GetRecordsAsync(0, 0, null, null);
                 List<PageDefinition> pagesWithModule = new List<PageDefinition>();
                 foreach (PageDefinition page in pages.Data) {
-                    PageDefinition p = (from m in page.ModuleDefinitions where m.ModuleGuid == moduleGuid select page).FirstOrDefault();
+                    PageDefinition? p = (from m in page.ModuleDefinitions where m.ModuleGuid == moduleGuid select page).FirstOrDefault();
                     if (p != null)
                         pagesWithModule.Add(p);
                 }

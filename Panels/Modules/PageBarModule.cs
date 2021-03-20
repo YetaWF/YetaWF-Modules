@@ -45,7 +45,7 @@ namespace YetaWF.Modules.Panels.Modules {
         [Category("General"), Caption("Page Pattern"), Description("Defines a Regex pattern - All pages matching this pattern will be included in the Page Bar - for example, ^/Admin/Config/[^/]*$ would include all pages starting with /Admin/Config/, but would not include their child pages - Pages added to the Page List are shown ahead of pages discovered using the Page Pattern")]
         [UIHint("Text40"), Trim]
         [StringLength(500)]
-        public string PagePattern { get; set; }
+        public string? PagePattern { get; set; }
 
         public enum PanelStyleEnum {
             [EnumDescription("Vertical", "Displays the page FavIcon and page title arranged vertically")]
@@ -60,13 +60,13 @@ namespace YetaWF.Modules.Panels.Modules {
         [Category("General"), Caption("Content Pane"), Description("Defines the pane used to extract page content - leave blank to use the main pane as page content")]
         [UIHint("Text20"), StringLength(20)]
         [Data_NewValue]
-        public string ContentPane { get; set; }
+        public string? ContentPane { get; set; }
 
         [Category("General"), Caption("Default Image"), Description("The default image used when a page doesn't define its own FavIcon")]
         [UIHint("Image"), AdditionalMetadata("ImageType", ModuleImageSupport.ImageType)]
         [AdditionalMetadata("Width", 100), AdditionalMetadata("Height", 100)]
         [DontSave]
-        public string DefaultImage {
+        public string? DefaultImage {
             get {
                 if (_defaultImage == null) {
                     if (DefaultImage_Data != null && DefaultImage_Data.Length > 0)
@@ -78,10 +78,10 @@ namespace YetaWF.Modules.Panels.Modules {
                 _defaultImage = value;
             }
         }
-        private string _defaultImage = null;
+        private string? _defaultImage = null;
 
         [Data_Binary, CopyAttribute]
-        public byte[] DefaultImage_Data { get; set; }
+        public byte[]? DefaultImage_Data { get; set; }
 
         public ModuleAction GetAction_Display(string url) {
             return new ModuleAction(this) {

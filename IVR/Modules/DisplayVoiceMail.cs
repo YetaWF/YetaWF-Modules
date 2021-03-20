@@ -29,7 +29,7 @@ namespace Softelvdm.Modules.IVR.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public async Task<ModuleAction> GetAction_DisplayAsync(string url, int id) {
+        public async Task<ModuleAction?> GetAction_DisplayAsync(string? url, int id) {
             if (url == null) {
                 IVRConfig config = await IVRConfigDataProvider.GetConfigAsync();
                 url = config.DisplayVoiceMailUrl;

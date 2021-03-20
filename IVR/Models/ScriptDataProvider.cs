@@ -14,27 +14,27 @@ using YetaWF.Core.Support;
 namespace Softelvdm.Modules.IVR.DataProvider {
 
     public class ScriptParm {
-        public string Name { get; set; }
-        public string Value { get; set; }
+        public string Name { get; set; } = null!;
+        public string Value { get; set; } = null!;
     }
     public class ScriptEntry {
-        public string Tag { get; set; }
+        public string Tag { get; set; } = null!;
         public List<ScriptParm> Parms { get; set; }
-        public string Text { get; set; }
+        public string Text { get; set; } = null!;
 
         public ScriptEntry() {
             Parms = new List<ScriptParm>();
         }
     }
     public class ExtensionNumber {
-        public string Number { get; set; }
+        public string Number { get; set; } = null!;
         public bool SendSMSVoiceMail { get; set; }
     }
 
 
     public class Extension {
-        public string Digits { get; set; }
-        public string Name { get; set; }
+        public string Digits { get; set; } = null!;
+        public string Name { get; set; } = null!;
         public List<ExtensionNumber> Numbers { get; set; }
         public Extension() {
             Numbers = new List<ExtensionNumber>();
@@ -51,7 +51,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
             Extensions = new List<Extension>();
         }
 
-        public Extension FindExtension(string extension) {
+        public Extension? FindExtension(string extension) {
             return (from e in Extensions where e.Digits == extension select e).FirstOrDefault();
         }
     }
@@ -80,8 +80,8 @@ namespace Softelvdm.Modules.IVR.DataProvider {
             Scripts = new Dictionary<string, ScriptData>();
         }
 
-        public async Task<ScriptData> GetScriptAsync(string phoneNumber) {
-            if (!Scripts.TryGetValue(phoneNumber, out ScriptData script)) {
+        public async Task<ScriptData?> GetScriptAsync(string phoneNumber) {
+            if (!Scripts.TryGetValue(phoneNumber, out ScriptData? script)) {
                 script = await ReadScriptAsync(phoneNumber);
                 if (script != null) {
                     try {
@@ -92,7 +92,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
             return script;
         }
 
-        private async Task<ScriptData> ReadScriptAsync(string phoneNumber) {
+        private async Task<ScriptData?> ReadScriptAsync(string phoneNumber) {
 
             // find the file
             string addonUrl = Package.GetAddOnPackageUrl(Softelvdm.Modules.IVR.AreaRegistration.CurrentPackage.AreaName);
@@ -116,7 +116,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
                 foreach (ExtensionEntry extension in data.Data) {
                     Extension ext = new Extension {
                         Digits = extension.Extension,
-                        Name = extension.Description,
+                        Name = extension.Description ?? string.Empty,
                         Numbers = new List<ExtensionNumber>(),
                     };
                     foreach (ExtensionPhoneNumber extPhone in extension.PhoneNumbers) {

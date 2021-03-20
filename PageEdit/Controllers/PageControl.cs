@@ -49,7 +49,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             [Caption("Name"), Description("The name of the new module to be added - the module name uniquely identifies a module")]
             [UIHint("Text40"), StringLength(ModuleDefinition.MaxName), Required, Trim]
-            public string ModuleName { get; set; }
+            public string? ModuleName { get; set; }
 
             [Caption("Title"), Description("The module title, which appears at the top of the module as its title")]
             [UIHint("MultiString40"), StringLength(ModuleDefinition.MaxTitle), Required, Trim]
@@ -57,8 +57,8 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             [Caption("Pane"), Description("The pane where the new module is added - in Edit Mode, all panes are visible, even empty panes")]
             [UIHint("PaneSelection"), Required]
-            public string SelectedPane { get; set; }
-            public List<string> SelectedPane_List { get; set; }
+            public string? SelectedPane { get; set; }
+            public List<string> SelectedPane_List { get; set; } = null!;
 
             [Caption("Location"), Description("The location within the selected pane where the new module is added")]
             [UIHint("Enum"), Required, Trim]
@@ -86,8 +86,8 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             [Caption("Pane"), Description("The pane where the existing module is added - in Edit Mode, all panes are visible, even empty panes")]
             [UIHint("PaneSelection"), Required]
-            public string ExistingModulePane { get; set; }
-            public List<string> ExistingModulePane_List { get; set; }
+            public string? ExistingModulePane { get; set; }
+            public List<string> ExistingModulePane_List { get; set; } = null!;
 
             [Caption("Location"), Description("The location within the selected pane where the module is added")]
             [UIHint("Enum"), Required]
@@ -108,7 +108,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             [Caption("ZIP File"), Description("The ZIP file containing the page data to be imported - The page cannot already exist - Modules that are already present are not updated while importing the page")]
             [UIHint("FileUpload1"), Required]
-            public FileUpload1 UploadFile { get; set; }
+            public FileUpload1 UploadFile { get; set; } = null!;
 
             public void AddData(PageDefinition page, PageControlModule mod) {
                 UploadFile = new FileUpload1 {
@@ -128,8 +128,8 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             [Caption("Pane"), Description("The pane where the new module is added - in Edit Mode, all panes are visible, even empty panes")]
             [UIHint("PaneSelection"), Required]
-            public string ModulePane { get; set; }
-            public List<string> ModulePane_List { get; set; }
+            public string? ModulePane { get; set; }
+            public List<string> ModulePane_List { get; set; } = null!;
 
             [Caption("Location"), Description("The location within the selected pane where the module is added")]
             [UIHint("Enum"), Required]
@@ -137,7 +137,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             [Caption("ZIP File"), Description("The ZIP file containing the module data to be imported (creates a new module) ")]
             [UIHint("FileUpload1"), Required]
-            public FileUpload1 UploadFile { get; set; }
+            public FileUpload1 UploadFile { get; set; } = null!;
 
             public void AddData(PageDefinition page, PageControlModule mod) {
                 UploadFile = new FileUpload1 {
@@ -167,7 +167,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             [Caption("Url"), Description("The Url of the new page - local Urls start with / and do not include http:// or https://")]
             [UIHint("Text40"), StringLength(Globals.MaxUrl), UrlValidation(urlType: UrlTypeEnum.New), Required, Trim]
-            public string Url { get; set; }
+            public string? Url { get; set; }
 
             [Caption("Title"), Description("The title of the new page - the page title is displayed by the web browser in its header")]
             [UIHint("MultiString"), StringLength(PageDefinition.MaxTitle), RequiredIf("CopyPage", false), Trim]
@@ -186,7 +186,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             [Category("Skin"), Caption("Theme"), Description("The theme used for all pages of the site")]
             [UIHint("Theme"), StringLength(SiteDefinition.MaxTheme), SelectionRequired]
-            public string Theme { get; set; }
+            public string? Theme { get; set; }
 
             public SkinSelectionModel() { }
         }
@@ -195,13 +195,13 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             [Caption("Active Site"), Description("List of sites that can be accessed - select an entry to visit the site")]
             [UIHint("DropDownList"), SubmitFormOnChange]
-            public string SiteDomain { get; set; }
-
-            public List<SelectionItem<string>> SiteDomain_List { get; set; }
+            public string? SiteDomain { get; set; }
+            public List<SelectionItem<string>> SiteDomain_List { get; set; } = null!;
 
             [Caption("Active User"), Description("List of user accounts that can be used to quickly log into the site - select an entry to log in as that user")]
             [UIHint("YetaWF_Identity_LoginUsers"), SubmitFormOnChange]
             public int UserId { get; set; }
+            public SerializableList<User> UserId_List { get; set; } = null!;
 
             [Caption("Superuser"), Description("If a superuser was signed on previously in this session, the superuser status remains even if logged in as another user - Uncheck to turn off superuser mode for this session")]
             [UIHint("Boolean"), SuppressIfNot("SuperuserStillActive", true), SubmitFormOnChange]
@@ -210,8 +210,6 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [Caption("Superuser"), Description("The currently logged on user is a superuser")]
             [UIHint("Boolean"), SuppressIf("SuperuserCurrent", false), ReadOnly]
             public bool SuperuserCurrent { get; set; }
-
-            public SerializableList<User> UserId_List { get; set; }
 
             public LoginSiteSelectionModel() { }
 
@@ -241,15 +239,15 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
         public class PageControlModel {
             public bool EditAuthorized { get; set; }
-            public AddNewModuleModel AddNewModel { get; set; }
-            public AddExistingModel AddExistingModel { get; set; }
-            public ImportPageModel ImportPageModel { get; set; }
-            public ImportModuleModel ImportModuleModel { get; set; }
-            public AddNewPageModel AddNewPageModel { get; set; }
-            public SkinSelectionModel SkinSelectionModel { get; set; }
-            public LoginSiteSelectionModel LoginSiteSelectionModel { get; set; }
+            public AddNewModuleModel AddNewModel { get; set; } = null!;
+            public AddExistingModel AddExistingModel { get; set; } = null!;
+            public ImportPageModel ImportPageModel { get; set; } = null!;
+            public ImportModuleModel ImportModuleModel { get; set; } = null!;
+            public AddNewPageModel AddNewPageModel { get; set; } = null!;
+            public SkinSelectionModel SkinSelectionModel { get; set; } = null!;
+            public LoginSiteSelectionModel LoginSiteSelectionModel { get; set; } = null!;
             [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.NormalLinks), ReadOnly]
-            public List<ModuleAction> Actions { get; set; }
+            public List<ModuleAction> Actions { get; set; } = null!;
         }
 
         [AllowGet]
@@ -272,7 +270,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                     pageGuid = Manager.CurrentPage.PageGuid;
             }
 
-            PageDefinition page = await PageDefinition.LoadAsync(pageGuid);
+            PageDefinition? page = await PageDefinition.LoadAsync(pageGuid) ?? throw new InternalError($"Page {pageGuid} not found");
             bool editAuthorized = false;
             if (page.IsAuthorized_Edit())
                 editAuthorized = true;
@@ -280,7 +278,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             PageControlModel model = new PageControlModel() {
                 EditAuthorized = editAuthorized,
                 AddNewPageModel = new AddNewPageModel() {
-                    CurrentPageGuid = Manager.CurrentPage.PageGuid,
+                    CurrentPageGuid = Manager.CurrentPage!.PageGuid,
                 },
                 AddNewModel = new AddNewModuleModel() {
                     CurrentPageGuid = Manager.CurrentPage.PageGuid,
@@ -326,11 +324,11 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
 
-            PageDefinition basePage = null;
+            PageDefinition? basePage = null;
             if (model.CopyPage)
                 basePage = await PageDefinition.LoadAsync(model.CurrentPageGuid);
 
-            PageDefinition.NewPageInfo newPage = await PageDefinition.CreateNewPageAsync(model.Title, model.Description, model.Url, basePage, model.CopyModules);
+            PageDefinition.NewPageInfo newPage = await PageDefinition.CreateNewPageAsync(model.Title, model.Description, model.Url!, basePage, model.CopyModules);
             PageDefinition page = newPage.Page;
             if (page == null) {
                 ModelState.AddModelError(nameof(model.Url), newPage.Message);
@@ -346,7 +344,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [ExcludeDemoMode]
         [ResourceAuthorize(CoreInfo.Resource_ModuleNewAdd)]
         public async Task<ActionResult> AddNewModule_Partial(AddNewModuleModel model) {
-            PageDefinition page = await PageDefinition.LoadAsync(model.CurrentPageGuid);
+            PageDefinition? page = await PageDefinition.LoadAsync(model.CurrentPageGuid);
             if (page == null)
                 throw new Error("Can't edit this page");
             model.AddData(page);
@@ -356,7 +354,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             ModuleDefinition module = ModuleDefinition.CreateNewDesignedModule(model.SelectedModule, model.ModuleName, model.ModuleTitle);
             if (!module.IsModuleUnique)
                 module.ModuleGuid = Guid.NewGuid();
-            page.AddModule(model.SelectedPane, module, model.ModuleLocation == Location.Top);
+            page.AddModule(model.SelectedPane!, module, model.ModuleLocation == Location.Top);
             await page.SaveAsync();
             return Reload(model, PopupText: this.__ResStr("okNew", "New module added"));
         }
@@ -366,7 +364,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [ExcludeDemoMode]
         [ResourceAuthorize(CoreInfo.Resource_ModuleExistingAdd)]
         public async Task<ActionResult> AddExistingModule_Partial(AddExistingModel model) {
-            PageDefinition page = await PageDefinition.LoadAsync(model.CurrentPageGuid);
+            PageDefinition? page = await PageDefinition.LoadAsync(model.CurrentPageGuid);
             if (page == null)
                 throw new Error("Can't edit this page");
             model.AddData(page);
@@ -374,8 +372,8 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
 
-            ModuleDefinition module = await ModuleDefinition.LoadAsync(model.ExistingModule);
-            page.AddModule(model.ExistingModulePane, module, model.ModuleLocation == Location.Top);
+            ModuleDefinition? module = await ModuleDefinition.LoadAsync(model.ExistingModule) ?? throw new InternalError($"Existing module {model.ExistingModule} not found");
+            page.AddModule(model.ExistingModulePane!, module, model.ModuleLocation == Location.Top);
             await page.SaveAsync();
             return Reload(model, PopupText: this.__ResStr("okExisting", "Module added"));
         }
@@ -392,7 +390,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             SiteDefinition origSite = new SiteDefinition();
             ObjectSupport.CopyData(Manager.CurrentSite, origSite);// make a copy of original site
             SiteDefinition site = Manager.CurrentSite;// update new settings
-            site.Theme = model.Theme;
+            site.Theme = model.Theme!;
             ObjectSupport.ModelDisposition modelDisp = ObjectSupport.EvaluateModelChanges(origSite, site);
             switch (modelDisp) {
                 default:
@@ -420,7 +418,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             string tempName = await upload.StoreTempPackageFileAsync(__filename);
 
             List<string> errorList = new List<string>();
-            bool success = await ModuleDefinition.ImportAsync(tempName, model.CurrentPageGuid, true, model.ModulePane, model.ModuleLocation == Location.Top, errorList);
+            bool success = await ModuleDefinition.ImportAsync(tempName, model.CurrentPageGuid, true, model.ModulePane!, model.ModuleLocation == Location.Top, errorList);
             await FileSystem.TempFileSystemProvider.DeleteFileAsync(tempName);
 
             string errs = "";
@@ -523,7 +521,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         }
         [ResourceAuthorize(CoreInfo.Resource_PageExport)]
         public async Task<ActionResult> ExportPage(Guid pageGuid, long cookieToReturn) {
-            PageDefinition page = await PageDefinition.LoadAsync(pageGuid);
+            PageDefinition page = await PageDefinition.LoadAsync(pageGuid) ?? throw new InternalError($"Page {pageGuid} not found");
             YetaWFZipFile zipFile = await page.ExportAsync();
             return new ZippedFileResult(zipFile, cookieToReturn);
         }
@@ -547,7 +545,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                 return NotAuthorized();
             await FileBundles.ResetCacheAsync();
             using (ICacheDataProvider cacheDP = YetaWF.Core.IO.Caching.GetStaticSmallObjectCacheProvider()) {
-                ICacheClearable clearableDP = cacheDP as ICacheClearable;
+                ICacheClearable? clearableDP = cacheDP as ICacheClearable;
                 if (clearableDP != null)
                     await clearableDP.ClearAllAsync();
             }

@@ -35,14 +35,14 @@ namespace YetaWF.Modules.Panels.Components {
 
         public class Setup {
             public bool Resize { get; set; }
-            public string ActiveCss { get; set; }
-            public string ExpandCollapseUrl { get; set; }
+            public string ActiveCss { get; set; } = null!;
+            public string ExpandCollapseUrl { get; set; } = null!;
         }
 
         public async Task<string> RenderAsync(PageBarInfo model) {
             HtmlBuilder hb = new HtmlBuilder();
 
-            string pane = model.ContentPane;
+            string? pane = model.ContentPane;
 
             string styleCss;
             string styleListCss = "";
@@ -60,12 +60,12 @@ namespace YetaWF.Modules.Panels.Components {
 
             string paneContents = "";
             if (model.ContentPage != null)
-                paneContents = await model.ContentPage.RenderPaneAsync(HtmlHelper, pane == "" ? Globals.MainPane : pane, PaneDiv: false);
+                paneContents = await model.ContentPage.RenderPaneAsync(HtmlHelper, string.IsNullOrWhiteSpace(pane) ? Globals.MainPane : pane, PaneDiv: false);
 
             if (PageBarDataProvider.GetExpanded())
                 styleCss += " t_expanded";
 
-            string pageUrl = Manager.CurrentPage.EvaluatedCanonicalUrl;
+            string pageUrl = Manager.CurrentPage.EvaluatedCanonicalUrl!;
             string pageUrlOnly;
             QueryHelper qh = QueryHelper.FromUrl(pageUrl, out pageUrlOnly);
 

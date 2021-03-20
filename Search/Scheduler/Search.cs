@@ -60,7 +60,7 @@ namespace YetaWF.Modules.Search.Scheduler {
 #if DEBUG
                     //                  if (type.Name != "FileDocumentDisplayModule") continue;//used for debugging
 #endif
-                    ISearchDynamicUrls iSearch = Activator.CreateInstance(type) as ISearchDynamicUrls;
+                    ISearchDynamicUrls? iSearch = Activator.CreateInstance(type) as ISearchDynamicUrls;
                     if (iSearch != null) {
                         try {
                             SearchWords searchWords = new SearchWords(searchConfig, searchDP, searchStarted);
@@ -76,9 +76,9 @@ namespace YetaWF.Modules.Search.Scheduler {
                 // search all designed modules that have dynamic urls
                 foreach (DesignedModule desMod in await DesignedModules.LoadDesignedModulesAsync()) {
                     try {
-                        ModuleDefinition mod = await ModuleDefinition.LoadAsync(desMod.ModuleGuid, AllowNone: true);
+                        ModuleDefinition? mod = await ModuleDefinition.LoadAsync(desMod.ModuleGuid, AllowNone: true);
                         if (mod != null && types.Contains(mod.GetType()) && mod.WantSearch) {
-                            ISearchDynamicUrls iSearch = mod as ISearchDynamicUrls;
+                            ISearchDynamicUrls? iSearch = mod as ISearchDynamicUrls;
                             if (iSearch != null) {
                                 SearchWords searchWords = new SearchWords(searchConfig, searchDP, searchStarted);
                                 await iSearch.KeywordsForDynamicUrlsAsync(searchWords);
@@ -94,7 +94,7 @@ namespace YetaWF.Modules.Search.Scheduler {
                 // Search all designed pages and extract keywords
                 List<Guid> pages = await PageDefinition.GetDesignedGuidsAsync();
                 foreach (Guid pageGuid in pages) {
-                    PageDefinition page = await PageDefinition.LoadAsync(pageGuid);
+                    PageDefinition? page = await PageDefinition.LoadAsync(pageGuid);
                     if (page != null) {
                         SearchWords searchWords = new SearchWords(searchConfig, searchDP, searchStarted);
                         await SearchPageAsync(searchWords, page);
@@ -114,7 +114,7 @@ namespace YetaWF.Modules.Search.Scheduler {
                 searchWords.AddKeywords(page.Keywords);
                 foreach (var m in page.ModuleDefinitions) {
                     Guid modGuid = m.ModuleGuid;
-                    ModuleDefinition mod = null;
+                    ModuleDefinition? mod = null;
                     try {
                         mod = await ModuleDefinition.LoadAsync(m.ModuleGuid);
                     } catch (Exception ex) {
@@ -145,7 +145,6 @@ namespace YetaWF.Modules.Search.Scheduler {
         public class SearchWords : ISearchWords {
 
             private const int TITLE_WEIGHT = 200;
-            private const int DESCRIPTION_WEIGHT = 200;
             private const int KEYWORDS_WEIGHT = 200;
             private const int CONTENT_WEIGHT = 1;
 
@@ -154,17 +153,17 @@ namespace YetaWF.Modules.Search.Scheduler {
 
             SearchDataProvider CurrentSearchDP;
             DateTime CurrentSearchStarted;
-            string CurrentUrl;
+            string? CurrentUrl;
             PageDefinition.PageSecurityType CurrentPageSecurity;
             bool CurrentAllowAnonymous;
             bool CurrentAllowAnyUser;
             bool SavedCurrentAllowAnonymous, SavedCurrentAllowAnyUser;
-            MultiString CurrentTitle;
-            MultiString CurrentSummary;
+            MultiString CurrentTitle = null!;
+            MultiString CurrentSummary = null!;
             DateTime CurrentDateCreated;
             DateTime? CurrentDateUpdated;
-            string CurrentCustomData;
-            List<SearchData> CurrentSearchData;
+            string? CurrentCustomData;
+            List<SearchData> CurrentSearchData = null!;
 
             public SearchWords(SearchConfigData searchConfig, SearchDataProvider searchDP, DateTime searchStarted) {
                 CurrentSearchDP = searchDP;
@@ -195,7 +194,7 @@ namespace YetaWF.Modules.Search.Scheduler {
             public Task<bool> SetUrlAsync(string url, PageDefinition.PageSecurityType pageSecurity, MultiString title, MultiString summary, DateTime dateCreated, DateTime? dateUpdated, bool allowAnonymous, bool allowUser) {
                 return SetUrlAsync(url, pageSecurity, title, summary, dateCreated, dateUpdated, allowAnonymous, allowUser, null);
             }
-            public async Task<bool> SetUrlAsync(string url, PageDefinition.PageSecurityType pageSecurity, MultiString title, MultiString summary, DateTime dateCreated, DateTime? dateUpdated, bool allowAnonymous, bool allowUser, string customData) {
+            public async Task<bool> SetUrlAsync(string url, PageDefinition.PageSecurityType pageSecurity, MultiString title, MultiString summary, DateTime dateCreated, DateTime? dateUpdated, bool allowAnonymous, bool allowUser, string? customData) {
                 YetaWFManager manager = YetaWFManager.Manager;
                 if (CurrentUrl != null) throw new InternalError("Already have an active Url - {nameof(SetUrlAsync)} {url} called");
                 if (!url.StartsWith("/"))
@@ -232,10 +231,10 @@ namespace YetaWF.Modules.Search.Scheduler {
                 foreach (var propData in ObjectSupport.GetPropertyData(tp)) {
                     if (propData.PropInfo.CanRead && propData.PropInfo.CanWrite) {
                         if (propData.PropInfo.PropertyType == typeof(string)) {
-                            string s = (string)propData.PropInfo.GetValue(searchObject, null);
+                            string s = (string)propData.PropInfo.GetValue(searchObject, null)!;
                             AddContent(s);
                         } else if (propData.PropInfo.PropertyType == typeof(MultiString)) {
-                            MultiString ms = (MultiString)propData.PropInfo.GetValue(searchObject, null);
+                            MultiString ms = (MultiString)propData.PropInfo.GetValue(searchObject, null)!;
                             AddContent(ms);
                         }
                     }
@@ -243,7 +242,7 @@ namespace YetaWF.Modules.Search.Scheduler {
             }
             public async Task SaveAsync() {
                 VerifyPage();
-                await CurrentSearchDP.AddItemsAsync(CurrentSearchData, CurrentUrl, CurrentPageSecurity, CurrentTitle, CurrentSummary, CurrentDateCreated, CurrentDateUpdated, CurrentSearchStarted, CurrentCustomData);
+                await CurrentSearchDP.AddItemsAsync(CurrentSearchData, CurrentUrl!, CurrentPageSecurity, CurrentTitle, CurrentSummary, CurrentDateCreated, CurrentDateUpdated, CurrentSearchStarted, CurrentCustomData);
                 Reset(CurrentSearchDP, CurrentSearchStarted);
             }
             internal bool SetModule(bool allowAnonymous, bool allowUser) {
@@ -323,7 +322,7 @@ namespace YetaWF.Modules.Search.Scheduler {
                         token = token.Truncate(len - 1);
                     }
                     if (token.Length > 0 && token.Length < SearchData.MaxSearchTerm && (token.Length >= SmallestMixedToken || (token.Length >= SmallestUpperCaseToken && token.ToUpper() == token))) {
-                        SearchData data = (from cd in CurrentSearchData
+                        SearchData? data = (from cd in CurrentSearchData
                                            where cd.SearchTerm == token &&
                                                cd.Language == culture && cd.AllowAnyUser == allowAnyUser && cd.AllowAnonymous == allowAnonymous
                                            select cd).FirstOrDefault();

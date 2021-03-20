@@ -44,21 +44,21 @@ namespace YetaWF.Modules.Languages.Controllers {
             [HelpLink("https://www.microsoft.com/en-us/translator/getstarted.aspx")]
             [UIHint("Text80"), StringLength(LocalizeConfigData.MaxMSClientKey), RequiredIf(nameof(TranslationService), LocalizeConfigData.TranslationServiceEnum.MicrosoftTranslator), Trim]
             [ProcessIf("TranslationService", LocalizeConfigData.TranslationServiceEnum.MicrosoftTranslator)]
-            public string MSClientKey { get; set; }
+            public string? MSClientKey { get; set; }
 
             [ExcludeDemoMode]
             [Caption("Translate API Key"), Description("Defines the Google Cloud Platform / Google Translate API key, which is used when translating localization resources into other languages - You can obtain an API key from the Google Cloud Platform service - This is not a free service")]
             [HelpLink("https://cloud.google.com/translate/docs/")]
             [UIHint("Text80"), StringLength(LocalizeConfigData.MaxGoogleTranslateAPIKey), RequiredIf(nameof(TranslationService), LocalizeConfigData.TranslationServiceEnum.GoogleTranslate), Trim]
             [ProcessIf("TranslationService", LocalizeConfigData.TranslationServiceEnum.GoogleTranslate)]
-            public string GoogleTranslateAPIKey { get; set; }
+            public string? GoogleTranslateAPIKey { get; set; }
 
             [ExcludeDemoMode]
             [Caption("Translate App Name"), Description("Defines the name of your application performing translations - This is not a free service")]
             [HelpLink("https://cloud.google.com/translate/docs/")]
             [UIHint("Text80"), StringLength(LocalizeConfigData.MaxGoogleTranslateAppName), RequiredIf(nameof(TranslationService), LocalizeConfigData.TranslationServiceEnum.GoogleTranslate), Trim]
             [ProcessIf("TranslationService", LocalizeConfigData.TranslationServiceEnum.GoogleTranslate)]
-            public string GoogleTranslateAppName { get; set; }
+            public string? GoogleTranslateAppName { get; set; }
 
             public LocalizeConfigData GetData(LocalizeConfigData data) {
                 ObjectSupport.CopyData(this, data);
@@ -92,7 +92,7 @@ namespace YetaWF.Modules.Languages.Controllers {
         [ExcludeDemoMode]
         public async Task<ActionResult> LocalizeConfig_Partial(Model model) {
             using (LocalizeConfigDataProvider dataProvider = new LocalizeConfigDataProvider()) {
-                LocalizeConfigData origData = YetaWF.Core.Audit.Auditing.Active ? await dataProvider.GetItemAsync() : null;
+                LocalizeConfigData? origData = YetaWF.Core.Audit.Auditing.Active ? await dataProvider.GetItemAsync() : null;
                 LocalizeConfigData data = await dataProvider.GetItemAsync();// get the original item
                 if (!ModelState.IsValid)
                     return PartialView(model);

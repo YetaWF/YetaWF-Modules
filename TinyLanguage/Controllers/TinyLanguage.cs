@@ -21,7 +21,7 @@ namespace YetaWF.Modules.TinyLanguage.Controllers {
 
             [Caption("Language"), Description("Select the language to be used for the entire site")]
             [UIHint("LanguageId"), StringLength(LanguageData.MaxId), SubmitFormOnChange]
-            public string LanguageId { get; set; }
+            public string? LanguageId { get; set; }
 
             public EditModel() { }
         }
@@ -37,7 +37,7 @@ namespace YetaWF.Modules.TinyLanguage.Controllers {
         public async Task<ActionResult> TinyLanguage_Partial(EditModel model) {
             if (!ModelState.IsValid)
                 return PartialView(model);
-            await Manager.SetUserLanguageAsync(model.LanguageId);
+            await Manager.SetUserLanguageAsync(model.LanguageId!);
             return Redirect(Manager.ReturnToUrl, ForceRedirect: true);
         }
     }

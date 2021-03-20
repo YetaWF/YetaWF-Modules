@@ -34,11 +34,11 @@ namespace YetaWF.Modules.PageEdit.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_SwitchToEdit() {
+        public ModuleAction? GetAction_SwitchToEdit() {
             PageControlModule mod = new PageControlModule();
             return mod.GetAction_SwitchToEdit();
         }
-        public ModuleAction GetAction_SwitchToView() {
+        public ModuleAction? GetAction_SwitchToView() {
             PageControlModule mod = new PageControlModule();
             return mod.GetAction_SwitchToView();
         }

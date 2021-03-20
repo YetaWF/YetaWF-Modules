@@ -24,11 +24,11 @@ namespace Softelvdm.Modules.IVR.Controllers {
 
             [Caption("Blocked Number"), Description("Enter the phone number to block")]
             [UIHint("Text20"), StringLength(Globals.MaxPhoneNumber), Required, Trim]
-            public string Number { get; set; }
+            public string? Number { get; set; }
 
             [Caption("Description"), Description("Enter an optional description of the blocked number")]
             [UIHint("TextAreaSourceOnly"), StringLength(BlockedNumberEntry.MaxDescription)]
-            public string Description { get; set; }
+            public string? Description { get; set; }
 
             public AddModel() { }
 

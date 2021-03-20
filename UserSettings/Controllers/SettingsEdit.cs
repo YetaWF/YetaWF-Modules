@@ -28,7 +28,7 @@ namespace YetaWF.Modules.UserSettings.Controllers {
 
             [Caption("Time Zone"), Description("Your time zone - all dates/times within this web site will be adjusted for the specified time zone")]
             [UIHint("TimeZone"), StringLength(UserData.MaxTimeZone), Required]
-            public string TimeZone { get; set; }
+            public string? TimeZone { get; set; }
 
             [Caption("Date Format"), Description("The desired date format when dates are displayed on this website")]
             [UIHint("Enum"), Required]
@@ -58,7 +58,7 @@ namespace YetaWF.Modules.UserSettings.Controllers {
 
             [Caption("Language"), Description("The default language used for the entire site (only used when localization is enabled)")]
             [UIHint("LanguageId"), StringLength(LanguageData.MaxId)]
-            public string LanguageId { get; set; }
+            public string? LanguageId { get; set; }
 
             [Caption("Show Filter Toolbar"), Description("Defines whether the filter toolbar is always shown on grids - If not shown, it can still be accessed using the search button in each grid, at the bottom of the grid, next to the refresh button")]
             [UIHint("Boolean")]

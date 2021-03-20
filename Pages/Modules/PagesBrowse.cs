@@ -47,7 +47,7 @@ namespace YetaWF.Modules.Pages.Modules {
             }
         }
 
-        public ModuleAction GetAction_Pages(string url) {
+        public ModuleAction? GetAction_Pages(string? url) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Browse",
@@ -61,7 +61,7 @@ namespace YetaWF.Modules.Pages.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
             };
         }
-        public ModuleAction GetAction_ShowPage(string url) {
+        public ModuleAction? GetAction_ShowPage(string? url) {
             return new ModuleAction(this) {
                 Url = url,
                 Image = "#Display",
@@ -77,7 +77,7 @@ namespace YetaWF.Modules.Pages.Modules {
                 DontFollow = true,
             };
         }
-        public ModuleAction GetAction_RemoveLink(string pageName) {
+        public ModuleAction? GetAction_RemoveLink(string pageName) {
             if (!IsAuthorized("RemovePages")) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.Remove)),
@@ -96,7 +96,7 @@ namespace YetaWF.Modules.Pages.Modules {
                 SaveReturnUrl = true,
             };
         }
-        public ModuleAction GetAction_UpdateAdminAndEditorAuthorization() {
+        public ModuleAction? GetAction_UpdateAdminAndEditorAuthorization() {
             if (!IsAuthorized("SetAuthorization")) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.UpdateAdminAndEditorAuthorization)),
@@ -116,7 +116,7 @@ namespace YetaWF.Modules.Pages.Modules {
             };
         }
 #if DEBUG
-        public async Task<ModuleAction> GetAction_SetSuperuserAsync(Guid guid) {
+        public async Task<ModuleAction?> GetAction_SetSuperuserAsync(Guid guid) {
             if (!IsAuthorized("SetAuthorization")) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.SetSuperuser)),
@@ -133,7 +133,7 @@ namespace YetaWF.Modules.Pages.Modules {
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks,
             };
         }
-        public async Task<ModuleAction> GetAction_SetAdminAsync(Guid guid) {
+        public async Task<ModuleAction?> GetAction_SetAdminAsync(Guid guid) {
             if (!IsAuthorized("SetAuthorization")) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.SetAdmin)),
@@ -150,7 +150,7 @@ namespace YetaWF.Modules.Pages.Modules {
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks,
             };
         }
-        public async Task<ModuleAction> GetAction_SetUserAsync(Guid guid) {
+        public async Task<ModuleAction?> GetAction_SetUserAsync(Guid guid) {
             if (!IsAuthorized("SetAuthorization")) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.SetUser)),
@@ -167,7 +167,7 @@ namespace YetaWF.Modules.Pages.Modules {
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks,
             };
         }
-        public async Task<ModuleAction> GetAction_SetAnonymousAsync(Guid guid) {
+        public async Task<ModuleAction?> GetAction_SetAnonymousAsync(Guid guid) {
             if (!IsAuthorized("SetAuthorization")) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.SetAnonymous)),
@@ -185,7 +185,7 @@ namespace YetaWF.Modules.Pages.Modules {
             };
         }
 #endif
-        public ModuleAction GetAction_CreateSiteMap() {
+        public ModuleAction? GetAction_CreateSiteMap() {
             if (!IsAuthorized("SiteMaps")) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.CreateSiteMap)),
@@ -204,7 +204,7 @@ namespace YetaWF.Modules.Pages.Modules {
                 PleaseWaitText = this.__ResStr("screAuthPlsWait", "Creating site map..."),
             };
         }
-        public ModuleAction GetAction_RemoveSiteMap() {
+        public ModuleAction? GetAction_RemoveSiteMap() {
             if (!IsAuthorized("SiteMaps")) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.RemoveSiteMap)),
@@ -222,7 +222,7 @@ namespace YetaWF.Modules.Pages.Modules {
                 ConfirmationText = this.__ResStr("sremAuthConfirm", "Are you sure you want to remove the current site map?"),
             };
         }
-        public async Task<ModuleAction> GetAction_DownloadSiteMapAsync() {
+        public async Task<ModuleAction?> GetAction_DownloadSiteMapAsync() {
             if (!IsAuthorized("SiteMaps")) return null;
             SiteMaps sm = new SiteMaps();
             string filename = sm.GetSiteMapFileName();
@@ -243,7 +243,7 @@ namespace YetaWF.Modules.Pages.Modules {
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks,
             };
         }
-        public async Task<ModuleAction> GetAction_CreatePageList() {
+        public async Task<ModuleAction?> GetAction_CreatePageList() {
             if (!IsAuthorized("SiteMaps")) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.CreatePageList)),

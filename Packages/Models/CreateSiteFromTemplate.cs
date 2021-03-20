@@ -46,10 +46,10 @@ namespace YetaWF.Modules.Packages.DataProvider {
         }
 
         private int _LineCounter;
-        private string _Template;
-        private MenuList _SiteMenu;
-        private PageDefinition _CurrentPage;
-        private string _CurrentUrl;
+        private string _Template = null!;
+        private MenuList _SiteMenu = null!;
+        private PageDefinition? _CurrentPage;
+        private string? _CurrentUrl;
 
         /// <summary>
         /// Builds the current site from the template file
@@ -58,7 +58,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         public async Task BuildSiteUsingTemplateAsync(string template, bool build = true) {
             Logging.AddLog("Running site template {0}", template);
             // Get the current site menu
-            ModuleDefinition menuServices = await ModuleDefinition.LoadAsync(Manager.CurrentSite.MenuServices, AllowNone: true);
+            ModuleDefinition? menuServices = await ModuleDefinition.LoadAsync(Manager.CurrentSite.MenuServices, AllowNone: true);
             if (menuServices == null)
                 throw TemplateError("No menu services available - no module has been defined in Site Settings");
             IModuleMenuAsync iModMenu = (IModuleMenuAsync)menuServices;
@@ -208,7 +208,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 if (url.Length == 0 || url[0] != '/')
                     throw TemplateError("Url must start with / and can't be indented");
 
-                PageDefinition page = null;
+                PageDefinition? page = null;
                 if (build) {
                     page = await PageDefinition.CreatePageDefinitionAsync(url);
                 } else {
@@ -299,8 +299,8 @@ namespace YetaWF.Modules.Packages.DataProvider {
                     // Load assembly
                     ++_LineCounter; lines.RemoveAt(0);// accept as module line
                     string[] parts = modsLine.Split(new char[] { ':' });
-                    string pane = null;
-                    string modDef = null;
+                    string? pane = null;
+                    string? modDef = null;
                     if (parts.Length == 1) {
                         pane = Globals.MainPane;
                         modDef = parts[0].Trim();
@@ -437,12 +437,12 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 throw TemplateError("Type missing");
 
             try {
-                Assembly asm = Assemblies.Load(assembly);
-                Type tp = asm.GetType(type);
+                Assembly asm = Assemblies.Load(assembly)!;
+                Type tp = asm.GetType(type)!;
                 if (UniqueMod)
                     return await ModuleDefinition.CreateUniqueModuleAsync(tp);
                 else
-                    return Activator.CreateInstance(tp);
+                    return Activator.CreateInstance(tp)!;
             } catch (Exception exc) {
                 throw TemplateError("Can't create object {0}, {1}", assembly, type, ErrorHandling.FormatExceptionMessage(exc));
             }
@@ -454,7 +454,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             value = value.Replace("\\r\\n", Environment.NewLine);
             PropertyInfo pi = ObjectSupport.GetProperty(obj.GetType(), varName);
             if (vars.Length > 1) {
-                obj = pi.GetValue(obj);
+                obj = pi.GetValue(obj)!;
                 AssignVariable(obj, string.Join(".", vars, 1, vars.Length - 1), value);
             } else {
                 Type propType = pi.PropertyType;
@@ -481,7 +481,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                         throw TemplateError("Invalid bool value {0} for variable {1}", value, varName);
                     pi.SetValue(obj, boolVal);
                 } else
-                    throw TemplateError("Unsupported type {0} for variable {1}", propType.FullName, varName);
+                    throw TemplateError("Unsupported type {0} for variable {1}", propType.FullName!, varName);
             }
         }
 
@@ -575,7 +575,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             MenuActionInfo menuInfo = await GetMenuActionAsync(menuText);
             menuText = menuInfo.MenuText;
             ModuleAction menuEntry = menuInfo.Action;
-            ModuleAction parentAction = FindAction(_SiteMenu, menuText);
+            ModuleAction? parentAction = FindAction(_SiteMenu, menuText);
             if (parentAction != null) {
                 if (parentAction.SubMenu == null)
                     parentAction.SubMenu = new SerializableList<ModuleAction>() { menuEntry };
@@ -586,7 +586,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             return menuEntry;
         }
         // Find an action with the specified menu text
-        private ModuleAction FindAction(SerializableList<ModuleAction> menuList, string menuText) {
+        private ModuleAction? FindAction(SerializableList<ModuleAction> menuList, string menuText) {
             if (string.IsNullOrWhiteSpace(menuText)) return null;
             string mtext = GetFirstMenuText(ref menuText);
             foreach (ModuleAction action in menuList) {
@@ -618,8 +618,8 @@ namespace YetaWF.Modules.Packages.DataProvider {
         }
 
         public class MenuActionInfo {
-            public ModuleAction Action { get; set; }
-            public string MenuText { get; set; }
+            public ModuleAction Action { get; set; } = null!;
+            public string MenuText { get; set; } = null!;
         }
         // get the action text from the entire menu string menu>submenu>submenu>action
         private async Task<MenuActionInfo> GetMenuActionAsync(string menuText) {
@@ -633,7 +633,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 menuString = s[s.Length - 1];
             }
             menuString = menuString.Trim();
-            object obj = await EvaluateVariableAsync(menuString);
+            object? obj = await EvaluateVariableAsync(menuString);
             if (obj is string) {
                 string text = (string)obj;
                 ModuleAction action = new ModuleAction(null) {
@@ -673,12 +673,12 @@ namespace YetaWF.Modules.Packages.DataProvider {
             SerializableList<ModuleAction> menu = _SiteMenu;
             for (int si = 0, maxSi = menuStrings.Count(); si < maxSi; ++si) {
                 string menuString = menuStrings[si].Trim();
-                object obj = await EvaluateVariableAsync(menuString);
+                object? obj = await EvaluateVariableAsync(menuString);
                 if (obj is ModuleAction) {
                     ModuleAction action = (ModuleAction)obj;
                     menuString = action.MenuText.ToString();
                 } else
-                    menuString = (string)obj;
+                    menuString = obj != null ? (string)obj : string.Empty;
                 bool found = false;
                 for (int mi = 0; mi < menu.Count(); ++mi) {
                     ModuleAction action = menu[mi];
@@ -701,7 +701,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 if (!found) return;
             }
         }
-        private async Task<object> EvaluateVariableAsync(string expr) {
+        private async Task<object?> EvaluateVariableAsync(string expr) {
             // "string"     -> string
             // {asm,type}.method_call(parms)   ->  invoke method on object. All parms must be constants.
             expr = expr.Trim();
@@ -734,7 +734,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
             }
         }
 
-        private async Task<object> InvokeMethodAsync(string expr, string origExpr, object obj) {
+        private async Task<object?> InvokeMethodAsync(string expr, string origExpr, object obj) {
             int i = expr.IndexOf('(');
             if (i < 0) throw TemplateError("Invalid method call (open parenthesis required) in expression \"{0}\"", origExpr);
             string methodName = expr.Substring(0, i);
@@ -744,11 +744,11 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 throw TemplateError("Invalid method call (closing parenthesis required) in expression \"{0}\"", origExpr);
             expr = expr.Substring(0, expr.Length - 1);
 
-            MethodInfo mi = obj.GetType().GetMethod(methodName);
+            MethodInfo? mi = obj.GetType().GetMethod(methodName);
             if (mi == null)
-                throw TemplateError("Object {0} doesn't have a method call named {1} in expression \"{2}\"", obj.GetType().FullName, methodName, origExpr);
+                throw TemplateError("Object {0} doesn't have a method call named {1} in expression \"{2}\"", obj.GetType().FullName!, methodName, origExpr);
 
-            List<object> parmList = new List<object>();
+            List<object?> parmList = new List<object?>();
             if (!string.IsNullOrWhiteSpace(expr)) {
                 string[] parms = expr.Split(new[] { ',' });
                 foreach (string parm in parms) {
@@ -786,10 +786,10 @@ namespace YetaWF.Modules.Packages.DataProvider {
                     }
                 }
             }
-            object result;
+            object? result;
             try {
                 if (methodName.EndsWith("Async")) {
-                    Task<ModuleAction> res = (Task<ModuleAction>) mi.Invoke(obj, parmList.ToArray());
+                    Task<ModuleAction?> res = (Task<ModuleAction?>) mi.Invoke(obj, parmList.ToArray())!;
                     result = await res;
                 } else {
                     result = mi.Invoke(obj, parmList.ToArray());

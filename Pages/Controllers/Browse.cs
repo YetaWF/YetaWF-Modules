@@ -32,7 +32,7 @@ namespace YetaWF.Modules.Pages.Controllers {
 
             [Caption("Actions"), Description("The available actions")]
             [UIHint("ModuleActionsGrid"), ReadOnly]
-            public List<ModuleAction> Commands { get; set; }
+            public List<ModuleAction> Commands { get; set; } = null!;
 
             public async Task<List<ModuleAction>> __GetCommandsAsync() {
                 List<ModuleAction> actions = new List<ModuleAction>();
@@ -54,19 +54,19 @@ namespace YetaWF.Modules.Pages.Controllers {
 
             [Caption("Url"), Description("The URL used to identify this page - This is the name of the designed page and may not include necessary query string arguments to display the page")]
             [UIHint("Url"), ReadOnly]
-            public string Url { get; set; }
+            public string Url { get; set; } = null!;
 
             [Caption("Canonical URL"), Description("The Canonical URL used to identify this page")]
             [UIHint("Url"), ReadOnly]
-            public string CanonicalUrl { get; set; }
+            public string? CanonicalUrl { get; set; }
 
             [Caption("Title"), Description("The page title which will appear as title in the browser window")]
             [UIHint("MultiString"), ReadOnly]
-            public MultiString Title { get; set; }
+            public MultiString Title { get; set; } = null!;
 
             [Caption("Description"), Description("The page description (not usually visible, entered by page designer, used for search keywords)")]
             [UIHint("MultiString"), ReadOnly]
-            public MultiString Description { get; set; }
+            public MultiString Description { get; set; } = null!;
 
             [Caption("Static Page"), Description("Defines whether the page is rendered as a static page (for anonymous users only) - A page whose content doesn't change can be marked as a static page, which results in faster page load for the end-user - Site Settings can be used to enable/disable the use of static pages globally using the StaticPages property - Static pages are only used with deployed sites")]
             [UIHint("Enum"), ReadOnly]
@@ -101,25 +101,25 @@ namespace YetaWF.Modules.Pages.Controllers {
 
             [Description("The optional CSS classes to be added to the page's <body> tag for further customization through stylesheets")]
             [UIHint("String"), ReadOnly]
-            public string CssClass { get; set; }
+            public string? CssClass { get; set; }
 
             [Caption("Mobile Page URL"), Description("If this page is accessed by a mobile device, it is redirected to the URL defined here as mobile page URL - Redirection is not active in Site Edit Mode")]
             [UIHint("Url"), ReadOnly]
-            public string MobilePageUrl { get; set; }
+            public string? MobilePageUrl { get; set; }
 
             [Caption("Redirect To Page"), Description("If this page is accessed, it is redirected to the URL defined here - Redirection is not active in Site Edit Mode")]
             [UIHint("Url"), ReadOnly]
-            public string RedirectToPageUrl { get; set; }
+            public string? RedirectToPageUrl { get; set; }
 
             [Caption("Guid"), Description("The id uniquely identifying this page")]
             [UIHint("Guid"), ReadOnly]
             public Guid PageGuid { get; set; }
 
-            public string EvaluatedCanonicalUrl { get; set; }
+            public string EvaluatedCanonicalUrl { get; set; } = null!;
             private PagesBrowseModule Module { get; set; }
-            public ModuleDefinition PageEditModule { get; set; }
+            public ModuleDefinition? PageEditModule { get; set; }
 
-            public PageItem(PagesBrowseModule module, PageDefinition page, ModuleDefinition pageSettings) {
+            public PageItem(PagesBrowseModule module, PageDefinition page, ModuleDefinition? pageSettings) {
                 Module = module;
                 PageEditModule = pageSettings;
                 ObjectSupport.CopyData(page, this);
@@ -132,7 +132,7 @@ namespace YetaWF.Modules.Pages.Controllers {
 
         public class PagesBrowseModel {
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
         private GridDefinition GetGridModel() {
             return new GridDefinition {
@@ -141,9 +141,9 @@ namespace YetaWF.Modules.Pages.Controllers {
                 InitialPageSize = 20,
                 RecordType = typeof(PageItem),
                 AjaxUrl = GetActionUrl(nameof(PagesBrowse_GridData)),
-                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     // page editing services
-                    ModuleDefinition pageSettings = await ModuleDefinition.LoadAsync(Manager.CurrentSite.PageEditingServices, AllowNone: true);
+                    ModuleDefinition? pageSettings = await ModuleDefinition.LoadAsync(Manager.CurrentSite.PageEditingServices, AllowNone: true);
                     //if (pageSettings == null)
                     //    throw new InternalError("No page edit services available - no module has been defined in Site Properties");
 
@@ -178,7 +178,7 @@ namespace YetaWF.Modules.Pages.Controllers {
         public async Task<ActionResult> Remove(string pageName) {
             if (string.IsNullOrWhiteSpace(pageName))
                 throw new Error(this.__ResStr("noPageName", "No page name specified"));
-            PageDefinition page = await PageDefinition.LoadFromUrlAsync(pageName);
+            PageDefinition? page = await PageDefinition.LoadFromUrlAsync(pageName);
             if (page == null)
                 throw new Error(this.__ResStr("noPage", "Page \"{0}\" not found", pageName));
 
@@ -195,9 +195,9 @@ namespace YetaWF.Modules.Pages.Controllers {
                 int editorRole = Resource.ResourceAccess.GetEditorRoleId();
                 DataProviderGetRecords<PageDefinition> pages = await pageDP.GetItemsAsync(0, 0, null, null);
                 foreach (PageDefinition genericPage in pages.Data) {
-                    PageDefinition page = await PageDefinition.LoadAsync(genericPage.PageGuid);
+                    PageDefinition? page = await PageDefinition.LoadAsync(genericPage.PageGuid);
                     if (page != null) {
-                        PageDefinition.AllowedRole role;
+                        PageDefinition.AllowedRole? role;
                         while ((role = PageDefinition.AllowedRole.Find(page.AllowedRoles, adminRole)) != null)
                             page.AllowedRoles.Remove(role);
                         page.AllowedRoles.Add(new PageDefinition.AllowedRole { RoleId = adminRole, View = PageDefinition.AllowedEnum.Yes, Edit = PageDefinition.AllowedEnum.Yes, Remove = PageDefinition.AllowedEnum.Yes, });
@@ -218,13 +218,13 @@ namespace YetaWF.Modules.Pages.Controllers {
         public async Task<ActionResult> SetSuperuser(Guid guid) {
             using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
                 int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
-                PageDefinition page = await PageDefinition.LoadAsync(guid);
+                PageDefinition? page = await PageDefinition.LoadAsync(guid);
                 if (page == null)
                     throw new InternalError($"Page with Guid {0} not found", guid);
                 page.AllowedRoles = new SerializableList<PageDefinition.AllowedRole>();
                 page.AllowedUsers = new SerializableList<PageDefinition.AllowedUser>();
                 foreach (PageDefinition.ModuleEntry modEntry in page.ModuleDefinitions) {
-                    ModuleDefinition module = await modEntry.GetModuleAsync();
+                    ModuleDefinition? module = await modEntry.GetModuleAsync();
                     if (module != null) {
                         module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
                         module.AllowedUsers = new SerializableList<ModuleDefinition.AllowedUser>();
@@ -240,7 +240,7 @@ namespace YetaWF.Modules.Pages.Controllers {
         public async Task<ActionResult> SetAdmin(Guid guid) {
             using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
                 int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
-                PageDefinition page = await PageDefinition.LoadAsync(guid);
+                PageDefinition? page = await PageDefinition.LoadAsync(guid);
                 if (page == null)
                     throw new InternalError($"Page with Guid {0} not found", guid);
                 page.AllowedRoles = new SerializableList<PageDefinition.AllowedRole>();
@@ -248,7 +248,7 @@ namespace YetaWF.Modules.Pages.Controllers {
                 page.AllowedRoles.Add(new PageDefinition.AllowedRole { RoleId = adminRole, View = PageDefinition.AllowedEnum.Yes });
 
                 foreach (PageDefinition.ModuleEntry modEntry in page.ModuleDefinitions) {
-                    ModuleDefinition module = await modEntry.GetModuleAsync();
+                    ModuleDefinition? module = await modEntry.GetModuleAsync();
                     if (module != null) {
                         module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
                         module.AllowedUsers = new SerializableList<ModuleDefinition.AllowedUser>();
@@ -266,7 +266,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
                 int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
                 int userRole = Resource.ResourceAccess.GetUserRoleId();
-                PageDefinition page = await PageDefinition.LoadAsync(guid);
+                PageDefinition? page = await PageDefinition.LoadAsync(guid);
                 if (page == null)
                     throw new InternalError($"Page with Guid {0} not found", guid);
                 page.AllowedRoles = new SerializableList<PageDefinition.AllowedRole>();
@@ -274,7 +274,7 @@ namespace YetaWF.Modules.Pages.Controllers {
                 page.AllowedRoles.Add(new PageDefinition.AllowedRole { RoleId = userRole, View = PageDefinition.AllowedEnum.Yes });
 
                 foreach (PageDefinition.ModuleEntry modEntry in page.ModuleDefinitions) {
-                    ModuleDefinition module = await modEntry.GetModuleAsync();
+                    ModuleDefinition? module = await modEntry.GetModuleAsync();
                     if (module != null) {
                         module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
                         module.AllowedUsers = new SerializableList<ModuleDefinition.AllowedUser>();
@@ -293,7 +293,7 @@ namespace YetaWF.Modules.Pages.Controllers {
                 int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
                 int userRole = Resource.ResourceAccess.GetUserRoleId();
                 int anonRole = Resource.ResourceAccess.GetAnonymousRoleId();
-                PageDefinition page = await PageDefinition.LoadAsync(guid);
+                PageDefinition? page = await PageDefinition.LoadAsync(guid);
                 if (page == null)
                     throw new InternalError($"Page with Guid {0} not found", guid);
                 page.AllowedRoles = new SerializableList<PageDefinition.AllowedRole>();
@@ -302,7 +302,7 @@ namespace YetaWF.Modules.Pages.Controllers {
                 page.AllowedRoles.Add(new PageDefinition.AllowedRole { RoleId = anonRole, View = PageDefinition.AllowedEnum.Yes });
 
                 foreach (PageDefinition.ModuleEntry modEntry in page.ModuleDefinitions) {
-                    ModuleDefinition module = await modEntry.GetModuleAsync();
+                    ModuleDefinition? module = await modEntry.GetModuleAsync();
                     if (module != null) {
                         module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
                         module.AllowedUsers = new SerializableList<ModuleDefinition.AllowedUser>();

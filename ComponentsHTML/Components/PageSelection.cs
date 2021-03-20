@@ -67,7 +67,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hb = new HtmlBuilder();
 
             if (model != null) {
-                PageDefinition page = await PageDefinition.LoadPageDefinitionAsync((Guid)model);
+                PageDefinition? page = await PageDefinition.LoadPageDefinitionAsync((Guid)model);
                 if (page == null)
                     hb.Append(__ResStr("notFound", "(Page not found - {0})", model.ToString()!));
                 else

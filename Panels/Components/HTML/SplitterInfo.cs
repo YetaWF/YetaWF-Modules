@@ -34,7 +34,7 @@ namespace YetaWF.Modules.Panels.Components {
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
         public class Setup {
-            public string ContentId { get; set; }
+            public string ContentId { get; set; } = null!;
             public int Height { get; set; }// 0 (auto-fill), or pixels
             public int MinWidth { get; set; }// pixels
             public int Width { get; set; }// percentage
@@ -44,11 +44,11 @@ namespace YetaWF.Modules.Panels.Components {
 
             HtmlBuilder hbLeft = new HtmlBuilder();
 
-            string titleText = model.TitleText;
-            string titleTooltip = model.TitleTooltip;
+            string? titleText = model.TitleText;
+            string? titleTooltip = model.TitleTooltip;
 
             if (await model.IsAuthorizedLeftAsync()) {
-                ModuleDefinition mod = await model.GetModuleLeftAsync();
+                ModuleDefinition? mod = await model.GetModuleLeftAsync();
                 if (mod != null) {
                     hbLeft.Append(await mod.RenderModuleViewAsync(HtmlHelper));
                     // get title & text from module
@@ -61,7 +61,7 @@ namespace YetaWF.Modules.Panels.Components {
 
             HtmlBuilder hbRight = new HtmlBuilder();
             if (await model.IsAuthorizedRightAsync()) {
-                ModuleDefinition mod = await model.GetModuleRightAsync();
+                ModuleDefinition? mod = await model.GetModuleRightAsync();
                 if (mod != null) {
                     hbRight.Append(await mod.RenderModuleViewAsync(HtmlHelper));
                 } else {
@@ -69,7 +69,7 @@ namespace YetaWF.Modules.Panels.Components {
                 }
             }
 
-            string heightStyle = null;
+            string? heightStyle = null;
             if (Manager.EditMode)
                 heightStyle = $" style='height:300px'";
             else if (model.Height > 0)

@@ -259,7 +259,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                     Description = this.__ResStr("adminRole", "An administrator can do EVERYTHING on ONE site (the site where the user has the {0} role)", Globals.Role_Administrator)
                 }
             );
-            GetAllUserRolesAsync(true);// reload
+            await GetAllUserRolesAsync(true);// reload
         }
         public async Task AddEditorRoleAsync() {
             if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Adding roles is not possible when distributed caching is enabled");
@@ -269,7 +269,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                     Description = this.__ResStr("editorRole", "An editor is a user who can perform editing actions on the site")
                 }
             );
-            GetAllUserRolesAsync(true);// reload
+            await GetAllUserRolesAsync(true);// reload
         }
 
         // IINSTALLABLEMODEL

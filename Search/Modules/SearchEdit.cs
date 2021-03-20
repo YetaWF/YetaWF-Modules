@@ -27,7 +27,7 @@ namespace YetaWF.Modules.Search.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_Edit(string url, int searchDataId) {
+        public ModuleAction? GetAction_Edit(string? url, int searchDataId) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = new { searchDataId = searchDataId },

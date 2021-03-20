@@ -2,11 +2,7 @@
 
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.TinyLogin.Controllers {
 
@@ -17,14 +13,14 @@ namespace YetaWF.Modules.TinyLogin.Controllers {
         [Trim]
         public class TinyLoginModel {
 
-            public string UserName { get; set; }
+            public string? UserName { get; set; }
             public bool LoggedOn { get; set; }
 
-            public string LogonUrl { get; set; }
-            public string LogoffUrl { get; set; }
-            public string RegisterUrl { get; set; }
-            public string UserUrl { get; set; }
-            public string UserTooltip { get; set; }
+            public string LogonUrl { get; set; } = null!;
+            public string LogoffUrl { get; set; } = null!;
+            public string RegisterUrl { get; set; } = null!;
+            public string UserUrl { get; set; } = null!;
+            public string UserTooltip { get; set; } = null!;
 
             public TinyLoginModel() { }
         }

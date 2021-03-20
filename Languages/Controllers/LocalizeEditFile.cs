@@ -25,11 +25,11 @@ namespace YetaWF.Modules.Languages.Controllers {
 
             [Caption("Current Language"), Description("Displays the current language used - Use User Settings to change the current language")]
             [UIHint("String"), ReadOnly]
-            public string CurrentLanguage { get; set; }
+            public string CurrentLanguage { get; set; } = null!;
 
             [Caption("Comment"), Description("An optional comment")]
             [UIHint("TextAreaSourceOnly"), StringLength(LocalizationData.MaxComment), Trim]
-            public string Comment { get; set; }
+            public string? Comment { get; set; }
 
             [Caption("Classes"), Description("Shows all the localizable string fragments found in class properties and the class's Header, Footer and Legend attributes")]
             [UIHint("YetaWF_Languages_LocalizeClasses"), SuppressIf("ClassCount", 0)]
@@ -54,14 +54,14 @@ namespace YetaWF.Modules.Languages.Controllers {
             public int StringCount { get { return Strings.Count; } }
 
             [UIHint("Hidden")]
-            public string PackageName { get; set; }
+            public string PackageName { get; set; } = null!;
             [UIHint("Hidden")]
-            public string TypeName { get; set; }
+            public string TypeName { get; set; } = null!;
 
             [UIHint("Hidden")]
             public bool ForceCustom { get; set; }
             [UIHint("Hidden")]
-            public string HiddenCurrentLanguage { get; set; }
+            public string HiddenCurrentLanguage { get; set; } = null!;
 
             public LocalizationData GetData(LocalizationData data) {
                 ObjectSupport.CopyData(this, data);
@@ -82,7 +82,7 @@ namespace YetaWF.Modules.Languages.Controllers {
             Package package = Package.GetPackageFromPackageName(packageName);
             bool custom = true;
             bool forceCustom = false;
-            LocalizationData data = Localization.Load(package, typeName, Localization.Location.CustomResources);
+            LocalizationData? data = Localization.Load(package, typeName, Localization.Location.CustomResources);
             if (data == null) {
                 data = Localization.Load(package, typeName, Localization.Location.InstalledResources);
                 custom = false;
@@ -118,9 +118,9 @@ namespace YetaWF.Modules.Languages.Controllers {
         [ExcludeDemoMode]
         public ActionResult LocalizeEditFile_Partial(EditModel model, bool RestoreDefaults = false) {
             Package package = Package.GetPackageFromPackageName(model.PackageName);
-            LocalizationData data = null;
+            LocalizationData? data;
             if (RestoreDefaults) {
-                data = Localization.Load(package, model.TypeName, Localization.Location.DefaultResources);
+                data = Localization.Load(package, model.TypeName, Localization.Location.DefaultResources) ?? throw new InternalError($"Localization for {model.TypeName} not found");
 
                 Localization.SaveAsync(package, model.TypeName, Localization.Location.InstalledResources, null);// delete it
                 Localization.SaveAsync(package, model.TypeName, Localization.Location.CustomResources, null);// delete it
@@ -145,6 +145,8 @@ namespace YetaWF.Modules.Languages.Controllers {
                     data = Localization.Load(package, model.TypeName, Localization.Location.InstalledResources);
                 if (data == null)
                     data = Localization.Load(package, model.TypeName, Localization.Location.DefaultResources);
+                if (data == null) 
+                    throw new InternalError($"Localization for {model.TypeName} not found");
                 data = model.GetData(data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
 

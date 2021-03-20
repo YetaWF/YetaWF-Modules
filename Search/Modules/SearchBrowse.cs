@@ -37,13 +37,13 @@ namespace YetaWF.Modules.Search.Modules {
 
         [Category("General"), Caption("Add URL"), Description("The URL to add a new search keyword - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string AddUrl { get; set; }
+        public string? AddUrl { get; set; }
         [Category("General"), Caption("Display URL"), Description("The URL to display a search keyword - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string DisplayUrl { get; set; }
+        public string? DisplayUrl { get; set; }
         [Category("General"), Caption("Edit URL"), Description("The URL to edit a search keyword - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string EditUrl { get; set; }
+        public string? EditUrl { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
         public override List<RoleDefinition> ExtraRoles {
@@ -59,7 +59,7 @@ namespace YetaWF.Modules.Search.Modules {
             }
         }
 
-        public ModuleAction GetAction_Items(string url) {
+        public ModuleAction? GetAction_Items(string? url) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Browse",
@@ -73,7 +73,7 @@ namespace YetaWF.Modules.Search.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
             };
         }
-        public ModuleAction GetAction_Remove(int searchDataId) {
+        public ModuleAction? GetAction_Remove(int searchDataId) {
             if (!IsAuthorized("RemoveItems")) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(SearchBrowseModuleController), "Remove"),
@@ -91,7 +91,7 @@ namespace YetaWF.Modules.Search.Modules {
                 ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to remove this keyword?"),
             };
         }
-        public ModuleAction GetAction_RemoveAll() {
+        public ModuleAction? GetAction_RemoveAll() {
             if (!IsAuthorized("RemoveItems")) return null;
             if (!SearchDataProvider.IsUsable) return null;
             return new ModuleAction(this) {
@@ -110,7 +110,7 @@ namespace YetaWF.Modules.Search.Modules {
                 PleaseWaitText = this.__ResStr("removeAllPlsWait", "Keywords are being removed..."),
             };
         }
-        public async Task<ModuleAction> GetAction_CollectKeywordsAsync() {
+        public async Task<ModuleAction?> GetAction_CollectKeywordsAsync() {
             if (!IsAuthorized("CollectKeywords")) return null;
             if (!SearchDataProvider.IsUsable) return null;
             return new ModuleAction(this) {

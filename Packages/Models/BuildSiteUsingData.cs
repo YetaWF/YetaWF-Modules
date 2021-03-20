@@ -16,7 +16,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// Builds the current site from the zip files in the Data folder
         /// </summary>
         /// <param name="includeNonSiteSpecifics"></param>
-        public async Task BuildSiteUsingDataAsync(bool includeNonSiteSpecifics, List<Package> installedPackages = null) {
+        public async Task BuildSiteUsingDataAsync(bool includeNonSiteSpecifics, List<Package>? installedPackages = null) {
             Manager.ImportChunksNonSiteSpecifics = includeNonSiteSpecifics;
             List<string> files = await FileSystem.FileSystemProvider.GetFilesAsync(Path.Combine(TemplateFolder, DataFolderName), "*.zip");
             foreach (string file in files) {

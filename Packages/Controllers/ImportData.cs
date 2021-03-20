@@ -24,7 +24,7 @@ namespace YetaWF.Modules.Packages.Controllers {
 
         public class ImportDataModel {
             [UIHint("FileUpload1")]
-            public FileUpload1 UploadFile { get; set; }
+            public FileUpload1 UploadFile { get; set; } = null!;
         }
 
         [AllowGet]

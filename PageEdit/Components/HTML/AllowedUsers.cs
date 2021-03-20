@@ -40,14 +40,14 @@ namespace YetaWF.Modules.PageEdit.Components {
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
         public class AllowedUsersSetup {
-            public string GridId { get; set; }
-            public string AddUrl { get; set; }
-            public string GridAllId { get; internal set; }
+            public string GridId { get; set; } = null!;
+            public string AddUrl { get; set; } = null!;
+            public string GridAllId { get; set; } = null!;
         }
         public class NewModel {
             [Caption("New User"), Description("Enter a new user name and click Add")]
             [UIHint("Text40"), StringLength(Globals.MaxUser), Trim]
-            public string NewValue { get; set; }
+            public string? NewValue { get; set; }
         }
 
         public class GridAllowedUser {
@@ -75,7 +75,7 @@ namespace YetaWF.Modules.PageEdit.Components {
             [UIHint("Hidden"), ReadOnly]
             public int UserId { get; set; }
             [UIHint("Hidden"), ReadOnly]
-            public string UserName { get; set; }
+            public string UserName { get; set; } = null!;
 
             public GridAllowedUser(PageDefinition.AllowedUser allowedUser, string userName) {
                 ObjectSupport.CopyData(allowedUser, this);
@@ -94,7 +94,7 @@ namespace YetaWF.Modules.PageEdit.Components {
 
             [Caption("User"), Description("User Name")]
             [UIHint("String"), ReadOnly]
-            public string UserName { get; set; }
+            public string? UserName { get; set; } 
 
             public AllEntry(UserDefinition user) {
                 ObjectSupport.CopyData(user, this);
@@ -106,7 +106,7 @@ namespace YetaWF.Modules.PageEdit.Components {
                 PageSizes = new List<int>() { 5, 10, 20 },
                 ShowHeader = header,
                 AjaxUrl = Utility.UrlFor(typeof(AllowedUsersController), nameof(AllowedUsersController.AllowedUsersEdit_SortFilter)),
-                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<GridAllowedUser> recs = DataProviderImpl<GridAllowedUser>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
                         Data = recs.Data.ToList<object>(),
@@ -123,7 +123,7 @@ namespace YetaWF.Modules.PageEdit.Components {
                 RecordType = typeof(AllEntry),
                 InitialPageSize = 10,
                 AjaxUrl = Utility.UrlFor(typeof(AllowedUsersController), nameof(AllowedUsersController.AllowedUsersBrowse_GridData)),
-                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
                         DataProviderGetRecords<UserDefinition> browseItems = await userDP.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
@@ -144,7 +144,7 @@ namespace YetaWF.Modules.PageEdit.Components {
             GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header)
             };
-            grid.GridDef.DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+            grid.GridDef.DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                 List<GridAllowedUser> list;
                 if (model != null) {
                     list = new List<GridAllowedUser>();

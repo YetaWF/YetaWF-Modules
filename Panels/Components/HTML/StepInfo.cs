@@ -39,11 +39,11 @@ namespace YetaWF.Modules.Panels.Components {
 
             foreach (StepInfo.StepEntry step in model.Steps) {
 
-                string caption = model.Steps[stepIndex].Caption;
+                string? caption = model.Steps[stepIndex].Caption;
                 if (string.IsNullOrWhiteSpace(caption)) { caption = this.__ResStr("noCaption", "(no caption)"); }
-                string description = model.Steps[stepIndex].Description;
+                string? description = model.Steps[stepIndex].Description;
                 if (string.IsNullOrWhiteSpace(description)) { description = this.__ResStr("noDesc", "(no description)"); }
-                string name = model.Steps[stepIndex].Name;
+                string? name = model.Steps[stepIndex].Name;
                 if (string.IsNullOrWhiteSpace(name)) { name = "unnamed"; }
 
                 hb.Append($@"
@@ -74,7 +74,7 @@ namespace YetaWF.Modules.Panels.Components {
 
         internal class UI {
             [UIHint("Tabs")]
-            public TabsDefinition TabsDef { get; set; }
+            public TabsDefinition TabsDef { get; set; } = null!;
         }
 
         public async Task<string> RenderAsync(StepInfo model) {

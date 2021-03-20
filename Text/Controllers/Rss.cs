@@ -22,11 +22,11 @@ namespace YetaWF.Modules.Text.Controllers {
     public class RssController : YetaWFController {
 
         public async Task<ActionResult> RssFeed(Guid moduleGuid) {
-            TextModule mod = (TextModule)await ModuleDefinition.LoadAsync(moduleGuid, AllowNone: true);
+            TextModule? mod = (TextModule?)await ModuleDefinition.LoadAsync(moduleGuid, AllowNone: true);
             if (mod == null || !mod.Feed)
                 throw new Error(this.__ResStr("noFeed", "The feed is no longer available"));
 
-            ModuleAction action = await mod.GetAction_RssFeedAwait(mod.ModuleGuid);
+            ModuleAction action = await mod.GetAction_RssFeedAsync(mod.ModuleGuid) ?? throw new InternalError($"Rss Feed URL not defined");
             string url = action.GetCompleteUrl();
 
             SyndicationFeed feed;
@@ -35,7 +35,7 @@ namespace YetaWF.Modules.Text.Controllers {
                 string.IsNullOrWhiteSpace(mod.FeedMainUrl) ? new Uri(url) : new Uri(Manager.CurrentSite.MakeUrl(mod.FeedMainUrl)),
                 items);
 
-            action = await mod.GetAction_RssDetailAsync(mod.FeedDetailUrl, mod.ModuleGuid, mod.AnchorId);
+            action = await mod.GetAction_RssDetailAsync(mod.FeedDetailUrl, mod.ModuleGuid, mod.AnchorId) ?? throw new InternalError($"Rss Feed Detail URL not defined");
             url = action.GetCompleteUrl();
             SyndicationItem sItem = new SyndicationItem(mod.Title, mod.Contents, new Uri(url));
             sItem.PublishDate = mod.FeedPublishDate ?? DateTime.MinValue;

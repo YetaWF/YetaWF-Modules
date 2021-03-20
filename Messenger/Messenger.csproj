@@ -25,23 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Addons\SiteTemplates\**" />
-    <Compile Remove="Addons\_Templates\**" />
-    <Compile Remove="Components\**" />
-    <!-- TODO: Review for final release - this is a workaround for slow solution load -->
-    <Compile Remove="node_modules\**" />
-    <Content Remove="node_modules\**" />
-    <None Remove="Addons\SiteTemplates\**" />
-    <None Remove="Addons\_Templates\**" />
-    <None Remove="Components\**" />
-    <None Remove="node_modules\**" />
-    <EmbeddedResource Remove="Addons\SiteTemplates\**" />
-    <EmbeddedResource Remove="Addons\_Templates\**" />
-    <EmbeddedResource Remove="Components\**" />
-    <EmbeddedResource Remove="node_modules\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client.Core" Version="5.0.3" />
   </ItemGroup>
 

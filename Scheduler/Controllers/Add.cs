@@ -25,7 +25,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
             [Caption("Name"), Description("The name of this scheduler item - the name is used to identify a scheduler item")]
             [UIHint("Text40"), Required, StringLength(SchedulerItemData.MaxName)]
-            public string Name { get; set; }
+            public string? Name { get; set; }
 
             [Caption("Event"), Description("The event type of the scheduler item")]
             [UIHint("YetaWF_Scheduler_Event")]
@@ -33,7 +33,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
             [Caption("Description"), Description("The description of this scheduler item")]
             [UIHint("TextAreaSourceOnly"), StringLength(SchedulerItemData.MaxDescription), Required]
-            public string Description { get; set; }
+            public string? Description { get; set; }
 
             [Caption("Enabled"), Description("The status of the scheduler item")]
             [UIHint("Boolean")]

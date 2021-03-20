@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Modules.Controllers {
 
             [Caption("Actions"), Description("The available actions")]
             [UIHint("ModuleActionsGrid"), ReadOnly]
-            public List<ModuleAction> Commands { get; set; }
+            public List<ModuleAction> Commands { get; set; } = null!;
 
             public async Task<List<ModuleAction>> __GetCommandsAsync() {
                 List<ModuleAction> actions = new List<ModuleAction>();
@@ -54,15 +54,15 @@ namespace YetaWF.Modules.Modules.Controllers {
 
             [Caption("Name"), Description("The module name, which is used to identify the module")]
             [UIHint("String"), ReadOnly]
-            public string Name { get; set; }
+            public string Name { get; set; } = null!;
 
             [Caption("Title"), Description("The module title, which appears at the top of the module as its title")]
             [UIHint("MultiString"), ReadOnly]
-            public MultiString Title { get; set; }
+            public MultiString? Title { get; set; }
 
             [Caption("Summary"), Description("The module description")]
             [UIHint("MultiString"), ReadOnly]
-            public MultiString Description { get; set; }
+            public MultiString? Description { get; set; }
 
             [Caption("Use Count"), Description("The number of pages where this module is used")]
             [UIHint("IntValue"), ReadOnly]
@@ -86,7 +86,7 @@ namespace YetaWF.Modules.Modules.Controllers {
 
             [Caption("CSS Class"), Description("The optional CSS classes to be added to the module's <div> tag for further customization through stylesheets")]
             [UIHint("String"), ReadOnly]
-            public string CssClass { get; set; }
+            public string? CssClass { get; set; }
 
             [Caption("Search Keywords"), Description("Defines whether this module's contents should be added to the site's search keywords")]
             [UIHint("Boolean"), ReadOnly]
@@ -98,23 +98,23 @@ namespace YetaWF.Modules.Modules.Controllers {
 
             [Caption("Area"), Description("The area implementing this module")]
             [UIHint("String"), ReadOnly]
-            public string AreaName { get; set; }
+            public string AreaName { get; set; } = null!;
 
             [Caption("Module Guid"), Description("The id uniquely identifying this module")]
             [UIHint("Guid"), ReadOnly]
             public Guid ModuleGuid { get; set; }
 
             private ModulesBrowseModule Module { get; set; }
-            private ModuleDefinition ModSettings { get; set; }
+            private ModuleDefinition? ModSettings { get; set; }
 
-            public BrowseItem(ModulesBrowseModule browseMod,  ModuleDefinition modSettings, SerializableList<DesignedModule> designedList, ModuleDefinition mod, int useCount) {
+            public BrowseItem(ModulesBrowseModule browseMod,  ModuleDefinition? modSettings, SerializableList<DesignedModule> designedList, ModuleDefinition mod, int useCount) {
 
                 Module = browseMod;
                 ModSettings = modSettings;
                 ObjectSupport.CopyData(mod, this);
 
                 ModuleGuid = mod.ModuleGuid;
-                DesignedModule desMod = (from d in designedList where d.ModuleGuid == mod.ModuleGuid select d).FirstOrDefault();
+                DesignedModule? desMod = (from d in designedList where d.ModuleGuid == mod.ModuleGuid select d).FirstOrDefault();
                 if (desMod != null) {
                     Description = desMod.Description;
                     AreaName = desMod.AreaName;
@@ -129,7 +129,7 @@ namespace YetaWF.Modules.Modules.Controllers {
 
         public class BrowseModel {
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
         private GridDefinition GetGridModel() {
             return new GridDefinition {
@@ -138,9 +138,9 @@ namespace YetaWF.Modules.Modules.Controllers {
                 InitialPageSize = 20,
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = GetActionUrl(nameof(ModulesBrowse_GridData)),
-                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     // module settings services
-                    ModuleDefinition modSettings = await ModuleDefinition.LoadAsync(Manager.CurrentSite.ModuleEditingServices, AllowNone: true);
+                    ModuleDefinition? modSettings = await ModuleDefinition.LoadAsync(Manager.CurrentSite.ModuleEditingServices, AllowNone: true);
                     //if (modSettings == null)
                     //    throw new InternalError("No module edit settings services available - no module has been defined");
 
@@ -153,9 +153,11 @@ namespace YetaWF.Modules.Modules.Controllers {
                     await YetaWF.Core.IO.Module.GetModulesAsync(info);
                     SerializableList<DesignedModule> designedList = await DesignedModules.LoadDesignedModulesAsync();
                     List<BrowseItem> list = new List<BrowseItem>();
-                    foreach (ModuleDefinition s in info.Modules) {
-                        int useCount = (await s.__GetPagesAsync()).Count;
-                        list.Add(new BrowseItem(Module, modSettings, designedList, s, useCount));
+                    if (info.Modules != null) {
+                        foreach (ModuleDefinition s in info.Modules) {
+                            int useCount = (await s.__GetPagesAsync()).Count;
+                            list.Add(new BrowseItem(Module, modSettings, designedList, s, useCount));
+                        }
                     }
                     return new DataSourceResult {
                         Data = list.ToList<object>(),
@@ -192,7 +194,7 @@ namespace YetaWF.Modules.Modules.Controllers {
         [Permission("SetAuthorization")]
         [ExcludeDemoMode]
         public async Task<ActionResult> SetSuperuser(Guid guid) {
-            ModuleDefinition module = await ModuleDefinition.LoadAsync(guid, AllowNone: true);
+            ModuleDefinition? module = await ModuleDefinition.LoadAsync(guid, AllowNone: true);
             if (module == null)
                 throw new InternalError($"Couldn't load module {guid}");
             int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
@@ -206,7 +208,7 @@ namespace YetaWF.Modules.Modules.Controllers {
         [Permission("SetAuthorization")]
         [ExcludeDemoMode]
         public async Task<ActionResult> SetAdmin(Guid guid) {
-            ModuleDefinition module = await ModuleDefinition.LoadAsync(guid, AllowNone: true);
+            ModuleDefinition? module = await ModuleDefinition.LoadAsync(guid, AllowNone: true);
             if (module == null)
                 throw new InternalError($"Couldn't load module {guid}");
             int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
@@ -221,7 +223,7 @@ namespace YetaWF.Modules.Modules.Controllers {
         [Permission("SetAuthorization")]
         [ExcludeDemoMode]
         public async Task<ActionResult> SetUser(Guid guid) {
-            ModuleDefinition module = await ModuleDefinition.LoadAsync(guid, AllowNone: true);
+            ModuleDefinition? module = await ModuleDefinition.LoadAsync(guid, AllowNone: true);
             if (module == null)
                 throw new InternalError($"Couldn't load module {guid}");
             int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
@@ -236,7 +238,7 @@ namespace YetaWF.Modules.Modules.Controllers {
         [Permission("SetAuthorization")]
         [ExcludeDemoMode]
         public async Task<ActionResult> SetAnonymous(Guid guid) {
-            ModuleDefinition module = await ModuleDefinition.LoadAsync(guid, AllowNone: true);
+            ModuleDefinition? module = await ModuleDefinition.LoadAsync(guid, AllowNone: true);
             if (module == null)
                 throw new InternalError($"Couldn't load module {guid}");
             int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
@@ -255,9 +257,10 @@ namespace YetaWF.Modules.Modules.Controllers {
         public async Task<ActionResult> RestoreAuthorization() {
             YetaWF.Core.IO.Module.ModuleBrowseInfo info = new YetaWF.Core.IO.Module.ModuleBrowseInfo();
             await YetaWF.Core.IO.Module.GetModulesAsync(info);
-            foreach (ModuleDefinition genericMod in info.Modules) {
-                ModuleDefinition mod = await ModuleDefinition.LoadAsync(genericMod.ModuleGuid, AllowNone: true);
-                if (mod != null) {
+            if (info.Modules != null) {
+                foreach (ModuleDefinition genericMod in info.Modules) {
+                    ModuleDefinition? mod = await ModuleDefinition.LoadAsync(genericMod.ModuleGuid, AllowNone: true);
+                    if (mod != null) {
 #if MERGE // enable this to preserve anon and user settings
                     int anonRoleId = Resource.ResourceAccess.GetAnonymousRoleId();
                     int userRoleId = Resource.ResourceAccess.GetUserRoleId();
@@ -276,11 +279,12 @@ namespace YetaWF.Modules.Modules.Controllers {
                         mod.AllowedRoles = mod.DefaultAllowedRoles;
                     }
 #else
-                    mod.AllowedRoles = mod.DefaultAllowedRoles;
+                        mod.AllowedRoles = mod.DefaultAllowedRoles;
 #endif
-                    //mod.AllowedUsers = // we're not touching this
+                        //mod.AllowedUsers = // we're not touching this
 
-                    await mod.SaveAsync();
+                        await mod.SaveAsync();
+                    }
                 }
             }
             return Reload(null, Reload: ReloadEnum.ModuleParts);

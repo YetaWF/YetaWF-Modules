@@ -38,10 +38,10 @@ namespace Softelvdm.Modules.IVR.Modules {
 
         [Category("General"), Caption("Add Url"), Description("The Url to add a new blocked number - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string AddUrl { get; set; }
+        public string? AddUrl { get; set; }
         [Category("General"), Caption("Edit Url"), Description("The Url to edit a blocked number - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string EditUrl { get; set; }
+        public string? EditUrl { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
         public override List<RoleDefinition> ExtraRoles {
@@ -61,7 +61,7 @@ namespace Softelvdm.Modules.IVR.Modules {
             return menuList;
         }
 
-        public ModuleAction GetAction_Items(string url) {
+        public ModuleAction? GetAction_Items(string? url) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Browse",
@@ -75,7 +75,7 @@ namespace Softelvdm.Modules.IVR.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
             };
         }
-        public ModuleAction GetAction_Remove(int id) {
+        public ModuleAction? GetAction_Remove(int id) {
             if (!IsAuthorized("RemoveItems")) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(BrowseBlockedNumbersModuleController), nameof(BrowseBlockedNumbersModuleController.Remove)),

@@ -38,7 +38,7 @@ namespace YetaWF.Modules.Languages.Modules {
 
         [Caption("Edit URL"), Description("The URL to edit a localization resource - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string EditUrl { get; set; }
+        public string? EditUrl { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
         public override List<RoleDefinition> ExtraRoles {
@@ -51,7 +51,7 @@ namespace YetaWF.Modules.Languages.Modules {
             }
         }
 
-        public ModuleAction GetAction_Browse(string url, Package package) {
+        public ModuleAction? GetAction_Browse(string? url, Package package) {
             if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsModulePackage && !package.IsSkinPackage) return null;
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
@@ -67,7 +67,7 @@ namespace YetaWF.Modules.Languages.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
             };
         }
-        public async Task<ModuleAction> GetAction_CreateCustomLocalizationAsync() {
+        public async Task<ModuleAction?> GetAction_CreateCustomLocalizationAsync() {
             if (YetaWFManager.Deployed) return null; // can't do this on a deployed site
             if (!IsAuthorized("Localize")) return null;
             string packageName = Manager.GetUrlArg<string>("PackageName");
@@ -91,7 +91,7 @@ namespace YetaWF.Modules.Languages.Modules {
                 NeedsModuleContext = true,
             };
         }
-        public async Task<ModuleAction> GetAction_CreateInstalledLocalizationAsync() {
+        public async Task<ModuleAction?> GetAction_CreateInstalledLocalizationAsync() {
             if (YetaWFManager.Deployed) return null; // can't do this on a deployed site
             if (!IsAuthorized("Localize")) return null;
             string packageName = Manager.GetUrlArg<string>("PackageName");
@@ -115,7 +115,7 @@ namespace YetaWF.Modules.Languages.Modules {
                 NeedsModuleContext = true,
             };
         }
-        public async Task<ModuleAction> GetAction_CreateAllInstalledLocalizationsAsync() {
+        public async Task<ModuleAction?> GetAction_CreateAllInstalledLocalizationsAsync() {
             if (YetaWFManager.Deployed) return null; // can't do this on a deployed site
             if (!IsAuthorized("Localize")) return null;
             if (MultiString.ActiveLanguage == MultiString.DefaultLanguage) return null;
@@ -135,7 +135,7 @@ namespace YetaWF.Modules.Languages.Modules {
                 NeedsModuleContext = true,
             };
         }
-        public async Task<ModuleAction> GetAction_LocalizePackageDataAsync(Package package) {
+        public async Task<ModuleAction?> GetAction_LocalizePackageDataAsync(Package package) {
             if (YetaWFManager.Deployed) return null; // can't do this on a deployed site
             if (!IsAuthorized("Localize")) return null;
             if (package == null) return null;
@@ -157,7 +157,7 @@ namespace YetaWF.Modules.Languages.Modules {
                 NeedsModuleContext = true,
             };
         }
-        public async Task<ModuleAction> GetAction_LocalizeAllPackagesDataAsync() {
+        public async Task<ModuleAction?> GetAction_LocalizeAllPackagesDataAsync() {
             if (YetaWFManager.Deployed) return null; // can't do this on a deployed site
             if (!IsAuthorized("Localize")) return null;
             if (MultiString.ActiveLanguage == MultiString.DefaultLanguage) return null;

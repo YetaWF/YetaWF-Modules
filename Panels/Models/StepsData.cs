@@ -23,7 +23,7 @@ namespace YetaWF.Modules.Panels.Models {
 
             [Caption("Name"), Description("The name for this step - This name is used by other modules for notification purposes - Modules that support displaying steps have standardized names for steps, which should be documented in their documentation")]
             [UIHint("Text40"), StringLength(MaxName), Required, Trim]
-            public string Name { get; set; }
+            public string? Name { get; set; }
 
             [Caption("Caption"), Description("The caption for this step")]
             [UIHint("MultiString40"), StringLength(MaxCaption), Required, Trim]

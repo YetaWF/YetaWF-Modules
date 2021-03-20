@@ -38,7 +38,7 @@ namespace Softelvdm.Modules.IVR.Modules {
 
         [Category("General"), Caption("Display Url"), Description("The Url to display a call log entry - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string DisplayUrl { get; set; }
+        public string? DisplayUrl { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
         public override List<RoleDefinition> ExtraRoles {
@@ -56,7 +56,7 @@ namespace Softelvdm.Modules.IVR.Modules {
             return menuList;
         }
 
-        public ModuleAction GetAction_Items(string url) {
+        public ModuleAction? GetAction_Items(string? url) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Browse",
@@ -70,7 +70,7 @@ namespace Softelvdm.Modules.IVR.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
             };
         }
-        public ModuleAction GetAction_Remove(int id) {
+        public ModuleAction? GetAction_Remove(int id) {
             if (!IsAuthorized("RemoveItems")) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(BrowseCallLogModuleController), nameof(BrowseCallLogModuleController.Remove)),

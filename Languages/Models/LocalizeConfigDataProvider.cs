@@ -33,12 +33,12 @@ namespace YetaWF.Modules.Languages.DataProvider {
         public TranslationServiceEnum TranslationService { get; set; }
 
         [StringLength(MaxGoogleTranslateAPIKey)]
-        public string GoogleTranslateAPIKey { get; set; }
+        public string? GoogleTranslateAPIKey { get; set; }
         [StringLength(MaxGoogleTranslateAppName)]
-        public string GoogleTranslateAppName { get; set; }
+        public string? GoogleTranslateAppName { get; set; }
 
         [StringLength(MaxMSClientKey)]
-        public string MSClientKey { get; set; }
+        public string? MSClientKey { get; set; }
 
         public LocalizeConfigData() { }
     }
@@ -56,7 +56,7 @@ namespace YetaWF.Modules.Languages.DataProvider {
 
         private IDataProvider<int, LocalizeConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, LocalizeConfigData> CreateDataProvider() {
+        private IDataProvider<int, LocalizeConfigData>? CreateDataProvider() {
             Package package = YetaWF.Modules.Languages.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -71,7 +71,7 @@ namespace YetaWF.Modules.Languages.DataProvider {
             }
         }
         public async Task<LocalizeConfigData> GetItemAsync() {
-            LocalizeConfigData config = await DataProvider.GetAsync(KEY);
+            LocalizeConfigData? config = await DataProvider.GetAsync(KEY);
             if (config == null) {
                 config = new LocalizeConfigData();
                 await AddConfigAsync(config);
@@ -90,7 +90,7 @@ namespace YetaWF.Modules.Languages.DataProvider {
             );
         }
         public async Task UpdateConfigAsync(LocalizeConfigData data) {
-            LocalizeConfigData origConfig = Auditing.Active ? await GetItemAsync() : null;
+            LocalizeConfigData? origConfig = Auditing.Active ? await GetItemAsync() : null;
             data.Id = KEY;
             UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)

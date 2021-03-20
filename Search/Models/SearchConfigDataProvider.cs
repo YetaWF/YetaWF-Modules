@@ -43,7 +43,7 @@ namespace YetaWF.Modules.Search.DataProvider {
 
         private IDataProvider<int, SearchConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, SearchConfigData> CreateDataProvider() {
+        private IDataProvider<int, SearchConfigData>? CreateDataProvider() {
             Package package = YetaWF.Modules.Search.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -58,7 +58,7 @@ namespace YetaWF.Modules.Search.DataProvider {
             }
         }
         public async Task<SearchConfigData> GetItemAsync() {
-            SearchConfigData config = await DataProvider.GetAsync(KEY);
+            SearchConfigData? config = await DataProvider.GetAsync(KEY);
             if (config == null) {
                 config = new SearchConfigData();
                 await AddConfigAsync(config);
@@ -77,7 +77,7 @@ namespace YetaWF.Modules.Search.DataProvider {
             );
         }
         public async Task UpdateConfigAsync(SearchConfigData data) {
-            SearchConfigData origConfig = Auditing.Active ? await GetItemAsync() : null;
+            SearchConfigData? origConfig = Auditing.Active ? await GetItemAsync() : null;
             data.Id = KEY;
             UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)

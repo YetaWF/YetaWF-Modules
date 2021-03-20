@@ -27,7 +27,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_Display(string url, string name) {
+        public ModuleAction? GetAction_Display(string? url, string name) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = new { EventName = name },

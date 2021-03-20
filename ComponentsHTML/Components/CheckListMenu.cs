@@ -10,8 +10,6 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 
-#nullable enable
-
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>

@@ -12,16 +12,11 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
-using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Pages.DataProvider;
 using YetaWF.Modules.Panels.Controllers;
 using YetaWF.Modules.Panels.Models;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Panels.Components {
 
@@ -44,14 +39,14 @@ namespace YetaWF.Modules.Panels.Components {
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
         public class ListOfLocalPagesSetup {
-            public string GridId { get; set; }
-            public string AddUrl { get; set; }
-            public string GridAllId { get; internal set; }
+            public string GridId { get; set; } = null!;
+            public string AddUrl { get; set; } = null!;
+            public string GridAllId { get; set; } = null!;
         }
         public class NewModel {
             [Caption("Page"), Description("Please select a page and click Add to add it to the list of pages")]
             [UIHint("Url"), StringLength(Globals.MaxUrl), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), Trim]
-            public string NewValue { get; set; }
+            public string? NewValue { get; set; }
         }
 
         public class Entry {
@@ -69,7 +64,7 @@ namespace YetaWF.Modules.Panels.Components {
             public bool Popup { get; set; }
 
             [UIHint("Hidden"), ReadOnly]
-            public string Url { get; set; } // this is used so we have the pure url (without input field)
+            public string Url { get; set; } = null!;// this is used so we have the pure url (without input field)
 
             public Entry(LocalPage page) {
                 Url = page.Url;
@@ -84,11 +79,11 @@ namespace YetaWF.Modules.Panels.Components {
 
             [Caption("Page"), Description("Defines the page name")]
             [UIHint("Url"), ReadOnly]
-            public string Url { get; set; }
+            public string Url { get; set; } = null!;
 
             [Caption("Title"), Description("The page title which will appear as title in the browser window")]
             [UIHint("MultiString"), ReadOnly]
-            public MultiString Title { get; set; }
+            public MultiString Title { get; set; } = null!;
 
             [Caption("Popup"), Description("Defines whether the page is shown in a popup window (ignored when used in a Page Bar module)")]
             [UIHint("Boolean"), ReadOnly]
@@ -105,7 +100,7 @@ namespace YetaWF.Modules.Panels.Components {
                 InitialPageSize = 0,
                 ShowHeader = header,
                 AjaxUrl = Utility.UrlFor(typeof(ListOfLocalPagesController), nameof(ListOfLocalPagesController.ListOfLocalPagesEdit_SortFilter)),
-                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
                         Data = recs.Data.ToList<object>(),
@@ -122,7 +117,7 @@ namespace YetaWF.Modules.Panels.Components {
                 RecordType = typeof(AllEntry),
                 InitialPageSize = 10,
                 AjaxUrl = Utility.UrlFor(typeof(ListOfLocalPagesController), nameof(ListOfLocalPagesController.ListOfLocalPagesBrowse_GridData)),
-                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (PageDefinitionDataProvider pagesDP = new PageDefinitionDataProvider()) {
                         DataProviderGetRecords<PageDefinition> browseItems = await pagesDP.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
@@ -143,7 +138,7 @@ namespace YetaWF.Modules.Panels.Components {
             GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header)
             };
-            grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+            grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                 model = model ?? new List<LocalPage>();
                 List<Entry> list = (from u in model select new Entry(u)).ToList();
                 return Task.FromResult(new DataSourceResult {

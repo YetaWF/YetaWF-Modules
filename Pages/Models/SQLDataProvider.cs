@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Pages.DataProvider.SQL {
             }
 
             public class DesignedPage {
-                public string Url { get; set; } // absolute Url (w/o http: or domain) e.g., /Home or /Test/Page123
+                public string Url { get; set; } = null!; // absolute Url (w/o http: or domain) e.g., /Home or /Test/Page123
                 [Data_PrimaryKey]
                 public Guid PageGuid { get; set; }
                 [Data_Identity]
@@ -60,7 +60,7 @@ namespace YetaWF.Modules.Pages.DataProvider.SQL {
 
             public class PageDefinitionForModules {
                 public Guid ModuleGuid { get; set; }
-                public string Pane { get; set; }
+                public string Pane { get; set; } = null!;
                 [Data_Identity]
                 public int Identity { get; set; }
             }
@@ -71,7 +71,7 @@ namespace YetaWF.Modules.Pages.DataProvider.SQL {
 
                 private IDataProvider<string, PageDefinitionForModules> DataProvider { get { return GetDataProvider(); } }
 
-                private IDataProvider<string, PageDefinitionForModules> CreateDataProvider() {
+                private IDataProvider<string, PageDefinitionForModules>? CreateDataProvider() {
                     Package package = YetaWF.Modules.Pages.AreaRegistration.CurrentPackage;
                     return MakeDataProvider(package, package.AreaName + "_ModuleDefinitions", SiteIdentity: SiteIdentity, Cacheable: true, LimitIOMode: SQLBase.ExternalName);
                 }

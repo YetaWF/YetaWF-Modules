@@ -66,7 +66,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
             return menuList;
         }
 
-        public async Task<ModuleAction> GetAction_PageControlAsync() {
+        public async Task<ModuleAction?> GetAction_PageControlAsync() {
             return new ModuleAction(this) {
                 Category = ModuleAction.ActionCategoryEnum.Significant,
                 CssClass = "y_button_outline",
@@ -81,7 +81,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
             };
         }
 
-        public ModuleAction GetAction_SwitchToEdit() {
+        public ModuleAction? GetAction_SwitchToEdit() {
             if (!Manager.CurrentPage.IsAuthorized_Edit()) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.SwitchToEdit)),
@@ -101,7 +101,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
             };
 
         }
-        public ModuleAction GetAction_SwitchToView() {
+        public ModuleAction? GetAction_SwitchToView() {
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.SwitchToView)),
                 QueryArgs = new { },
@@ -119,9 +119,9 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 DontFollow = true,
             };
         }
-        public async Task<ModuleAction> GetAction_ExportPageAsync(Guid? pageGuid = null) {
+        public async Task<ModuleAction?> GetAction_ExportPageAsync(Guid? pageGuid = null) {
             Guid guid;
-            PageDefinition page;
+            PageDefinition? page;
             if (pageGuid == null) {
                 page = Manager.CurrentPage;
                 if (page == null) return null;
@@ -151,7 +151,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 Style = ModuleAction.ActionStyleEnum.Normal,
             };
         }
-        public async Task<ModuleAction> GetAction_W3CValidationAsync() {
+        public async Task<ModuleAction?> GetAction_W3CValidationAsync() {
             if (Manager.CurrentPage == null) return null;
             if (Manager.IsLocalHost) return null;
             ControlPanelConfigData config = await ControlPanelConfigDataProvider.GetConfigAsync();
@@ -173,7 +173,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 DontFollow = true,
             };
         }
-        public async Task<ModuleAction> GetAction_RestartSite() {
+        public async Task<ModuleAction?> GetAction_RestartSite() {
             if (!Manager.HasSuperUserRole) return null;
             if (YetaWF.Core.Support.Startup.MultiInstance) return null;
             return new ModuleAction(this) {
@@ -191,7 +191,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 DontFollow = true,
             };
         }
-        public ModuleAction GetAction_ClearJsCssCache() {
+        public ModuleAction? GetAction_ClearJsCssCache() {
             if (!Manager.HasSuperUserRole) return null;
             return new ModuleAction(this) {
                 Style = ModuleAction.ActionStyleEnum.Post,

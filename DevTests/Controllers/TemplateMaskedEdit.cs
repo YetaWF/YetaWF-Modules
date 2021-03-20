@@ -3,8 +3,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using Microsoft.AspNetCore.Mvc;
 
-#nullable enable
-
 namespace YetaWF.Modules.DevTests.Controllers {
 
     public class TemplateMaskedEditModuleController : ControllerImpl<YetaWF.Modules.DevTests.Modules.TemplateMaskedEditModule> {

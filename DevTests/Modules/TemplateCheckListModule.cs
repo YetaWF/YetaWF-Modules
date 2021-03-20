@@ -8,8 +8,6 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.DataProvider;
 
-#nullable enable
-
 namespace YetaWF.Modules.DevTests.Modules {
 
     public class TemplateCheckListModuleDataProvider : ModuleDefinitionDataProvider<Guid, TemplateCheckListModule>, IInstallableModel { }

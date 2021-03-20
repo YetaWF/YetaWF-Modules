@@ -9,8 +9,6 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 
-#nullable enable
-
 namespace YetaWF.Modules.DevTests.Controllers {
 
     public class DropDownSearchDataController : YetaWFController {

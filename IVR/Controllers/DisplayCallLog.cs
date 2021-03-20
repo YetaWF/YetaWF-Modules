@@ -29,23 +29,23 @@ namespace Softelvdm.Modules.IVR.Controllers {
             [Caption("From"), Description("The caller's phone number")]
             [UIHint("Softelvdm_IVR_PhoneNumber"), ReadOnly]
             [ExcludeDemoMode]
-            public string Caller { get; set; }
+            public string Caller { get; set; } = null!;
             [Caption("From City"), Description("The caller's city (if available)")]
             [UIHint("String"), ReadOnly]
-            public string CallerCity { get; set; }
+            public string? CallerCity { get; set; }
             [Caption("From State"), Description("The caller's state (if available)")]
             [UIHint("String"), ReadOnly]
-            public string CallerState { get; set; }
+            public string? CallerState { get; set; }
             [Caption("From Zip Code"), Description("The caller's ZIP code (if available)")]
             [UIHint("String"), ReadOnly]
-            public string CallerZip { get; set; }
+            public string? CallerZip { get; set; }
             [Caption("From Country"), Description("The caller's country (if available)")]
             [UIHint("String"), ReadOnly]
-            public string CallerCountry { get; set; }
+            public string? CallerCountry { get; set; }
 
             [Caption("Phone Number"), Description("The phone number called")]
             [UIHint("Softelvdm_IVR_PhoneNumber"), ReadOnly]
-            public string To { get; set; }
+            public string? To { get; set; }
 
             [Caption("Id"), Description("The internal id")]
             [UIHint("IntValue"), ReadOnly]
@@ -59,7 +59,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
         [AllowGet]
         public async Task<ActionResult> DisplayCallLog(int id) {
             using (CallLogDataProvider dataProvider = new CallLogDataProvider()) {
-                CallLogEntry data = await dataProvider.GetItemByIdentityAsync(id);
+                CallLogEntry? data = await dataProvider.GetItemByIdentityAsync(id);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Call Log Entry with id {0} not found"), id);
                 DisplayModel model = new DisplayModel();

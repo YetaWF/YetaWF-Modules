@@ -44,23 +44,23 @@ namespace YetaWF.Modules.Panels.Modules {
         [Category("General"), Caption("Left Title"), Description("Defines the title shown in the left pane")]
         [UIHint("Text40"), StringLength(100), Trim]
         [Data_NewValue]
-        public string TitleText { get; set; }
+        public string? TitleText { get; set; }
         [Category("General"), Caption("Left Title Tooltip"), Description("Defines the tooltip shown for the title in the left pane")]
         [UIHint("Text80"), StringLength(200), Trim]
         [Data_NewValue]
-        public string TitleTooltip { get; set; }
+        public string? TitleTooltip { get; set; }
         [Category("General"), Caption("Collapse Text"), Description("Defines the text shown next to the collapse icon")]
         [UIHint("Text40"), StringLength(100), Trim]
         [Data_NewValue]
-        public string CollapseText { get; set; }
+        public string? CollapseText { get; set; }
         [Category("General"), Caption("Collapse Tooltip"), Description("Defines the tooltip shown for the collapse text and icon")]
         [UIHint("Text40"), StringLength(200), Trim]
         [Data_NewValue]
-        public string CollapseToolTip { get; set; }
+        public string? CollapseToolTip { get; set; }
         [Category("General"), Caption("Expand Tooltip"), Description("Defines the tooltip shown for the expand icon")]
         [UIHint("Text40"), StringLength(200), Trim]
         [Data_NewValue]
-        public string ExpandToolTip { get; set; }
+        public string? ExpandToolTip { get; set; }
 
         [Category("General"), Caption("Height (Pixels)"), Description("Defines the height of the module in pixels - Set to 0 to calculate the height automatically to fill the remainder of the page")]
         [UIHint("IntValue4"), Range(0, 9999), Required]
@@ -92,15 +92,15 @@ namespace YetaWF.Modules.Panels.Modules {
             List<PageDefinition> pages = await PageDefinition.GetPagesFromModuleAsync(ModuleGuid);
             if (pages.Count == 0) return;
 
-            ISearchPageDynamicUrls iSearchLeft = null;
+            ISearchPageDynamicUrls? iSearchLeft = null;
             if (ModuleLeft != Guid.Empty) {
-                ModuleDefinition modLeft = await ModuleDefinition.LoadAsync(ModuleLeft, AllowNone: true);
+                ModuleDefinition? modLeft = await ModuleDefinition.LoadAsync(ModuleLeft, AllowNone: true);
                 if (modLeft != null)
                     iSearchLeft = modLeft as ISearchPageDynamicUrls;
             }
-            ISearchPageDynamicUrls iSearchRight = null;
+            ISearchPageDynamicUrls? iSearchRight = null;
             if (ModuleRight != Guid.Empty) {
-                ModuleDefinition modRight = await ModuleDefinition.LoadAsync(ModuleRight, AllowNone: true);
+                ModuleDefinition? modRight = await ModuleDefinition.LoadAsync(ModuleRight, AllowNone: true);
                 if (modRight != null)
                     iSearchRight = modRight as ISearchPageDynamicUrls;
             }
@@ -124,15 +124,15 @@ namespace YetaWF.Modules.Panels.Modules {
             List<PageDefinition> pages = await PageDefinition.GetPagesFromModuleAsync(ModuleGuid);
             if (pages.Count == 0) return;
 
-            ISiteMapPageDynamicUrls iSearchLeft = null;
+            ISiteMapPageDynamicUrls? iSearchLeft = null;
             if (ModuleLeft != Guid.Empty) {
-                ModuleDefinition modLeft = await ModuleDefinition.LoadAsync(ModuleLeft, AllowNone: true);
+                ModuleDefinition? modLeft = await ModuleDefinition.LoadAsync(ModuleLeft, AllowNone: true);
                 if (modLeft != null)
                     iSearchLeft = modLeft as ISiteMapPageDynamicUrls;
             }
-            ISiteMapPageDynamicUrls iSearchRight = null;
+            ISiteMapPageDynamicUrls? iSearchRight = null;
             if (ModuleRight != Guid.Empty) {
-                ModuleDefinition modRight = await ModuleDefinition.LoadAsync(ModuleRight, AllowNone: true);
+                ModuleDefinition? modRight = await ModuleDefinition.LoadAsync(ModuleRight, AllowNone: true);
                 if (modRight != null)
                     iSearchRight = modRight as ISiteMapPageDynamicUrls;
             }

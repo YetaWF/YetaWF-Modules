@@ -20,7 +20,7 @@ namespace YetaWF.Modules.Scheduler.Support {
 
     public partial class Scheduler : IInitializeApplicationStartup {
 
-        internal static Scheduler Instance = null;
+        internal static Scheduler Instance = null!;
 
         public Task InitializeApplicationStartupAsync() {
             Instance = this;
@@ -61,7 +61,7 @@ namespace YetaWF.Modules.Scheduler.Support {
                 return _schedulerEvents;
             }
         }
-        private static List<Type> _schedulerEvents;
+        private static List<Type>? _schedulerEvents;
 
         // SCHEDULER
         // SCHEDULER
@@ -77,7 +77,7 @@ namespace YetaWF.Modules.Scheduler.Support {
 
                 using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_RunItem_{name}")) {
 
-                    SchedulerItemData evnt = await schedDP.GetItemAsync(name);
+                    SchedulerItemData? evnt = await schedDP.GetItemAsync(name);
                     if (evnt == null)
                         throw new Error(this.__ResStr("errItemNotFound", "Scheduler item '{0}' does not exist."), name);
                     if (evnt.RunOnce)
@@ -108,7 +108,7 @@ namespace YetaWF.Modules.Scheduler.Support {
 
                 using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_RunItem_{name}")) {
 
-                    SchedulerItemData evnt = await schedDP.GetItemAsync(name);
+                    SchedulerItemData? evnt = await schedDP.GetItemAsync(name);
                     if (evnt == null)
                         throw new Error(this.__ResStr("errItemNotFound", "Scheduler item '{0}' does not exist."), name);
 
@@ -138,7 +138,7 @@ namespace YetaWF.Modules.Scheduler.Support {
                 schedulingThread.Interrupt();
         }
 
-        private Thread schedulingThread;
+        private Thread? schedulingThread;
         private bool schedulingThreadRunning;
 #if DEBUG
         private TimeSpan defaultTimeSpanNoTask = new TimeSpan(1, 0, 0); // default timespan before restart when no task is waiting
@@ -149,7 +149,7 @@ namespace YetaWF.Modules.Scheduler.Support {
         private TimeSpan defaultTimeSpanError = new TimeSpan(0, 0, 30); // default timespan before restart when an erorr occurred in the scheduling loop
         private TimeSpan defaultStartupTimeSpan = new TimeSpan(0, 0, 30); // default timespan before scheduler start after site startup
 #endif
-        private SchedulerLogging SchedulerLog;
+        private SchedulerLogging SchedulerLog = null!;
 
         private void Execute() {
 
@@ -294,7 +294,7 @@ namespace YetaWF.Modules.Scheduler.Support {
                     }
 
                     // Find the next startup time so we know how long to wait
-                    List<DataProviderSortInfo> sorts = null;
+                    List<DataProviderSortInfo>? sorts = null;
                     sorts = DataProviderSortInfo.Join(sorts, new DataProviderSortInfo { Field = nameof(SchedulerItemData.Next), Order = DataProviderSortInfo.SortDirection.Ascending });
                     filters = new List<DataProviderFilterInfo> {
                         new DataProviderFilterInfo {
@@ -348,10 +348,10 @@ namespace YetaWF.Modules.Scheduler.Support {
                     errors.AppendLine(m);
                 }
 
-                Type tp = null;
+                Type? tp = null;
                 try {
-                    Assembly asm = Assemblies.Load(item.Event.ImplementingAssembly);
-                    tp = asm.GetType(item.Event.ImplementingType);
+                    Assembly asm = Assemblies.Load(item.Event.ImplementingAssembly)!;
+                    tp = asm.GetType(item.Event.ImplementingType)!;
                 } catch (Exception exc) {
                     throw new InternalError("Scheduler item '{0}' could not be loaded (Type={1}, Assembly={2}) - {3}", item.Name, item.Event.ImplementingType, item.Event.ImplementingAssembly, ErrorHandling.FormatExceptionMessage(exc));
                 }
@@ -360,9 +360,9 @@ namespace YetaWF.Modules.Scheduler.Support {
                     DataProviderGetRecords<SiteDefinition> info = await SiteDefinition.GetSitesAsync(0, 0, null, null);
                     foreach (SiteDefinition site in info.Data) {
 
-                        IScheduling schedEvt = null;
+                        IScheduling? schedEvt = null;
                         try {
-                            schedEvt = (IScheduling)Activator.CreateInstance(tp);
+                            schedEvt = (IScheduling)Activator.CreateInstance(tp)!;
                         } catch (Exception exc) {
                             string m = $"Scheduler item '{item.Name}' could not be instantiated (Type={item.Event.ImplementingType}, Assembly={item.Event.ImplementingAssembly}) - {ErrorHandling.FormatExceptionMessage(exc)}";
                             Logging.AddLog(m);
@@ -402,9 +402,9 @@ namespace YetaWF.Modules.Scheduler.Support {
                     }
                 } else {
 
-                    IScheduling schedEvt = null;
+                    IScheduling? schedEvt = null;
                     try {
-                        schedEvt = (IScheduling)Activator.CreateInstance(tp);
+                        schedEvt = (IScheduling)Activator.CreateInstance(tp)!;
                     } catch (Exception exc) {
                         string m = $"Scheduler item '{item.Name}' could not be instantiated (Type={item.Event.ImplementingType}, Assembly={item.Event.ImplementingAssembly}) - {ErrorHandling.FormatExceptionMessage(exc)}";
                         Logging.AddLog(m);

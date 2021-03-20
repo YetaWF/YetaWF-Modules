@@ -37,7 +37,7 @@ namespace YetaWF.Modules.ModuleEdit.Components {
             return new GridDefinition {
                 RecordType = typeof(ModuleDefinition.GridAllowedRole),
                 ShowHeader = header,
-                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<ModuleDefinition.GridAllowedRole> recs = DataProviderImpl<ModuleDefinition.GridAllowedRole>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
                         Data = recs.Data.ToList<object>(),
@@ -62,7 +62,7 @@ namespace YetaWF.Modules.ModuleEdit.Components {
             roles = (from r in roles orderby r.RoleName.Text select r).ToList();
             if (allowedRoles != null) {
                 foreach (ModuleDefinition.AllowedRole allowedRole in allowedRoles) {
-                    ModuleDefinition.GridAllowedRole role = (from r in roles where r.RoleId == allowedRole.RoleId select r).FirstOrDefault();
+                    ModuleDefinition.GridAllowedRole? role = (from r in roles where r.RoleId == allowedRole.RoleId select r).FirstOrDefault();
                     if (role != null)
                         ObjectSupport.CopyData(allowedRole, role);
                 }
@@ -87,7 +87,7 @@ namespace YetaWF.Modules.ModuleEdit.Components {
                 GridDef = GetGridModel(header)
             };
             grid.GridDef.ResourceRedirect = Manager.CurrentModuleEdited;
-            grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+            grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                 List<ModuleDefinition.GridAllowedRole> list = GetGridAllowedRoleFromAllowedRoleList(model);
                 DataSourceResult data = new DataSourceResult {
                     Data = list.ToList<object>(),

@@ -27,9 +27,9 @@ namespace YetaWF.Modules.Pages.Scheduler {
             List<Guid> pageGuids = await PageDefinition.GetDesignedGuidsAsync();
             List<string> pages = new List<string>();
             foreach (Guid guid in pageGuids) {
-                PageDefinition page = await PageDefinition.LoadPageDefinitionAsync(guid);
+                PageDefinition? page = await PageDefinition.LoadPageDefinitionAsync(guid);
                 if (page != null)
-                    pages.Add(page.EvaluatedCanonicalUrl);
+                    pages.Add(page.EvaluatedCanonicalUrl!);
             }
             pages = pages.OrderBy(s => s).ToList();
             foreach (string page in pages)

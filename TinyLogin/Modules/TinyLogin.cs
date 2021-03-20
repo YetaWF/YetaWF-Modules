@@ -60,25 +60,25 @@ namespace YetaWF.Modules.TinyLogin.Modules {
         [Caption("Log On Url"), Description("The Url where the user is redirected when the login link is clicked")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
         [StringLength(Globals.MaxUrl), Trim]
-        public string LogonUrl { get; set; }
+        public string? LogonUrl { get; set; }
 
         [Category("General")]
         [Caption("Log Off Url"), Description("The Url where the user is redirected when the logoff link is clicked")]
         [UIHint("Text80"), LogoffUrlValidationAttribute]
         [StringLength(Globals.MaxUrl), Trim]
-        public string LogoffUrl { get; set; }
+        public string? LogoffUrl { get; set; }
 
         [Category("General")]
         [Caption("Register Url"), Description("The Url where the user is redirected when the register link is clicked")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
         [StringLength(Globals.MaxUrl), Trim]
-        public string RegisterUrl { get; set; }
+        public string? RegisterUrl { get; set; }
 
         [Category("General")]
         [Caption("User Url"), Description("The Url where the user is redirected when the user name is clicked")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
         [StringLength(Globals.MaxUrl), Trim]
-        public string UserUrl { get; set; }
+        public string? UserUrl { get; set; }
 
         [Category("General")]
         [Caption("User Tooltip"), Description("The tooltip shown for the user name link")]
@@ -87,7 +87,7 @@ namespace YetaWF.Modules.TinyLogin.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
 
-        public async Task<ModuleAction> GetAction_LoginAsync(string url) {
+        public async Task<ModuleAction> GetAction_LoginAsync(string? url) {
             return new ModuleAction(this) {
                 Url = url,
                 LinkText = this.__ResStr("loginLink", "Login"),
@@ -102,7 +102,7 @@ namespace YetaWF.Modules.TinyLogin.Modules {
                 SaveReturnUrl = false,
             };
         }
-        public async Task<ModuleAction> GetAction_RegisterAsync(string url) {
+        public async Task<ModuleAction?> GetAction_RegisterAsync(string? url) {
             if (!AllowUserRegistration) return null;
             return new ModuleAction(this) {
                 Url = url,
@@ -118,7 +118,7 @@ namespace YetaWF.Modules.TinyLogin.Modules {
                 SaveReturnUrl = false,
             };
         }
-        public async Task<ModuleAction> GetAction_LogoffAsync(string url) {
+        public async Task<ModuleAction> GetAction_LogoffAsync(string? url) {
             return new ModuleAction(this) {
                 Url = url,
                 LinkText = this.__ResStr("logoffLink", "Logout"),
@@ -133,7 +133,7 @@ namespace YetaWF.Modules.TinyLogin.Modules {
                 DontFollow = true,
             };
         }
-        public async Task<ModuleAction> GetAction_UserNameAsync(string url, string userName, string tooltip) {
+        public async Task<ModuleAction> GetAction_UserNameAsync(string? url, string userName, string tooltip) {
             return new ModuleAction(this) {
                 Url = url,
                 LinkText = userName,

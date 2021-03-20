@@ -26,57 +26,57 @@ namespace YetaWF.Modules.UserProfile.Controllers {
 
             [Caption("Name"), Description("Your name")]
             [UIHint("Text40"), StringLength(UserInfo.MaxName), Required, Trim]
-            public string Name { get; set; }
+            public string? Name { get; set; }
             [Caption("Company Name"), Description("Your company name")]
             [UIHint("Text40"), StringLength(UserInfo.MaxCompanyName), Trim]
-            public string CompanyName { get; set; }
+            public string? CompanyName { get; set; }
             [Caption("Street Address"), Description("The street portion of your mailing address")]
             [UIHint("Text40"), StringLength(UserInfo.MaxAddress), Required, Trim]
-            public string Address1 { get; set; }
+            public string? Address1 { get; set; }
             [Caption("Street Address (opt)"), Description("The optional second line of your mailing address")]
             [UIHint("Text40"), StringLength(UserInfo.MaxAddress), Trim]
-            public string Address2 { get; set; }
+            public string? Address2 { get; set; }
 
             [Caption("Country"), Description("The country for your mailing address")]
             [UIHint("CountryISO3166"), StringLength(UserInfo.MaxCountry), Trim, Required, SubmitFormOnChange(SubmitFormOnChangeAttribute.SubmitTypeEnum.Apply)]
-            public string Country { get; set; }
-            public string AddressType { get { return string.IsNullOrWhiteSpace(Country) ? null : CountryISO3166.CountryToAddressType(Country); } }
+            public string? Country { get; set; }
+            public string? AddressType { get { return string.IsNullOrWhiteSpace(Country) ? null : CountryISO3166.CountryToAddressType(Country); } }
 
             // US - United States
             [Caption("City"), Description("The city portion of your mailing address")]
             [UIHint("Text40"), StringLength(UserInfo.MaxCity), Trim, Required, SuppressIfNot("AddressType", CountryISO3166.Country.US)]
-            public string CityUS { get; set; }
+            public string? CityUS { get; set; }
             [Caption("State"), Description("The state of your mailing address")]
             [UIHint("USState"), StringLength(UserInfo.MaxState), Trim, Required, SuppressIfNot("AddressType", CountryISO3166.Country.US)]
-            public string StateUS { get; set; }
+            public string? StateUS { get; set; }
             [Caption("ZIP Code"), Description("The ZIP code of your mailing address - Use format 00000 or 00000-0000")]
             [UIHint("Text10"), StringLength(UserInfo.MaxZip), Trim, Required, SuppressIfNot("AddressType", CountryISO3166.Country.US)]
             [ZipCodeValidation]
-            public string ZipUS { get; set; }
+            public string? ZipUS { get; set; }
 
             // Zip1 - Postal code first
             [Caption("Postal Code"), Description("The postal code for your mailing address")]
             [UIHint("Text20"), StringLength(UserInfo.MaxZip), Trim, Required, SuppressIfNot("AddressType", CountryISO3166.Country.Zip1)]
-            public string ZipZip1 { get; set; }
+            public string? ZipZip1 { get; set; }
             [Caption("City"), Description("The city portion of your mailing address")]
             [UIHint("Text40"), StringLength(UserInfo.MaxCity), Trim, Required, SuppressIfNot("AddressType", CountryISO3166.Country.Zip1)]
-            public string CityZip1 { get; set; }
+            public string? CityZip1 { get; set; }
 
             // ZipLast - Postal code last
             [Caption("City"), Description("The city portion of your mailing address")]
             [UIHint("Text40"), StringLength(UserInfo.MaxCity), Trim, Required, SuppressIfNot("AddressType", CountryISO3166.Country.ZipLast)]
-            public string CityZipLast { get; set; }
+            public string? CityZipLast { get; set; }
             [Caption("Postal Code"), Description("The postal code of your mailing address")]
             [UIHint("Text20"), StringLength(UserInfo.MaxZip), Trim, Required, SuppressIfNot("AddressType", CountryISO3166.Country.ZipLast)]
-            public string ZipZipLast { get; set; }
+            public string? ZipZipLast { get; set; }
 
             // Generic
             [Caption("City"), Description("The city portion of your mailing address")]
             [UIHint("Text40"), StringLength(UserInfo.MaxCity), Trim, Required, SuppressIfNot("AddressType", CountryISO3166.Country.Generic)]
-            public string CityGeneric { get; set; }
+            public string? CityGeneric { get; set; }
             [Caption("Postal Code"), Description("The postal code of your mailing address")]
             [UIHint("Text20"), StringLength(UserInfo.MaxZip), Trim, Required, SuppressIfNot("AddressType", CountryISO3166.Country.Generic)]
-            public string ZIPGeneric { get; set; }
+            public string? ZIPGeneric { get; set; }
 
 #if EXAMPLE
             // DE - Germany (example, could be further customized with specific validation attributes)
@@ -86,34 +86,34 @@ namespace YetaWF.Modules.UserProfile.Controllers {
             // Germany+DE+DEU+276+DE  instead of  Germany+DE+DEU+276+Zip1
             [Caption("PLZ"), Description("The Postleitzahl for your mailing address")]
             [UIHint("Text10"), StringLength(5), Trim, Required, SuppressIfNot("AddressType", "DE")]
-            public string ZipDE { get; set; }
+            public string? ZipDE { get; set; }
             [Caption("City"), Description("The city for your mailing address")]
             [UIHint("Text20"), StringLength(UserInfo.MaxCity), Trim, Required, SuppressIfNot("AddressType", "DE")]
-            public string CityDE { get; set; }
+            public string? CityDE { get; set; }
 #endif
             [Caption("Telephone Number"), Description("Your telephone number - please include country code and extension if necessary")]
             [UIHint("Text40"), StringLength(UserInfo.MaxTelephone), Required, Trim]
-            public string Telephone { get; set; }
+            public string? Telephone { get; set; }
             [Caption("Email Address"), Description("Your email address - This is defined by your account on this site")]
             [UIHint("Email"), ReadOnly]
-            public string Email { get; set; }
+            public string? Email { get; set; }
 
             public EditModel() { }
 
             public UserInfo GetData(UserInfo userInfo) {
                 ObjectSupport.CopyData(this, userInfo);
                 if (AddressType == CountryISO3166.Country.US) {
-                    userInfo.City = CityUS;
-                    userInfo.State = StateUS;
-                    userInfo.Zip = ZipUS;
+                    userInfo.City = CityUS ?? string.Empty;
+                    userInfo.State = StateUS ?? string.Empty;
+                    userInfo.Zip = ZipUS ?? string.Empty;
                 } else if (AddressType == CountryISO3166.Country.Zip1) {
-                    userInfo.City = CityZip1;
-                    userInfo.State = null;
-                    userInfo.Zip = ZipZip1;
+                    userInfo.City = CityZip1 ?? string.Empty;
+                    userInfo.State = string.Empty;
+                    userInfo.Zip = ZipZip1 ?? string.Empty;
                 } else if (AddressType == CountryISO3166.Country.ZipLast) {
-                    userInfo.City = CityZipLast;
-                    userInfo.State = null;
-                    userInfo.Zip = ZipZipLast;
+                    userInfo.City = CityZipLast ?? string.Empty;
+                    userInfo.State = string.Empty;
+                    userInfo.Zip = ZipZipLast ?? string.Empty;
 #if EXAMPLE
                 } else if (AddressType == "DE") {
                     userInfo.City = CityDE;
@@ -121,9 +121,9 @@ namespace YetaWF.Modules.UserProfile.Controllers {
                     userInfo.Zip = ZipDE;
 #endif
                 } else if (AddressType == CountryISO3166.Country.Generic) {
-                    userInfo.City = CityGeneric;
-                    userInfo.State = null;
-                    userInfo.Zip = ZIPGeneric;
+                    userInfo.City = CityGeneric ?? string.Empty;
+                    userInfo.State = string.Empty;
+                    userInfo.Zip = ZIPGeneric ?? string.Empty;
                 } else
                     throw new InternalError("Invalid address type {0}", AddressType);
                 return userInfo;
@@ -152,7 +152,7 @@ namespace YetaWF.Modules.UserProfile.Controllers {
             }
             public void UpdateData(UserInfo userInfo) {
                 UserId = Manager.UserId;
-                Email = Manager.UserEmail;
+                Email = Manager.UserEmail ?? string.Empty;
             }
         }
 
@@ -161,7 +161,7 @@ namespace YetaWF.Modules.UserProfile.Controllers {
             Manager.NeedUser();
             using (UserInfoDataProvider userInfoDP = new UserInfoDataProvider()) {
                 EditModel model = new EditModel { };
-                UserInfo userInfo = await userInfoDP.GetItemAsync(Manager.UserId);
+                UserInfo? userInfo = await userInfoDP.GetItemAsync(Manager.UserId);
                 if (userInfo == null)
                     userInfo = new UserInfo { UserId = Manager.UserId };
                 model.SetData(userInfo);
@@ -178,7 +178,7 @@ namespace YetaWF.Modules.UserProfile.Controllers {
                 Manager.NeedUser();
 
                 bool newUser = false;
-                UserInfo userInfo = await userInfoDP.GetItemAsync(model.UserId);
+                UserInfo? userInfo = await userInfoDP.GetItemAsync(model.UserId);
                 if (userInfo == null) {
                     newUser = true;
                     userInfo = new UserInfo();
@@ -203,7 +203,7 @@ namespace YetaWF.Modules.UserProfile.Controllers {
                 else
                     await userInfoDP.UpdateItemAsync(userInfo);
 
-                string msg = Module.SaveMessage;
+                string? msg = Module.SaveMessage;
                 if (string.IsNullOrWhiteSpace(msg))
                     msg = this.__ResStr("okSaved", "Profile saved");
                 if (string.IsNullOrWhiteSpace(Module.PostSaveUrl))
