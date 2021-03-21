@@ -33,6 +33,7 @@
     overflow: hidden;
     white-space: nowrap; }
     .yt_bootstrapcarousel_slideshow.t_display .t_inner .t_item {
+      position: relative;
       display: inline-block; }
       .yt_bootstrapcarousel_slideshow.t_display .t_inner .t_item a {
         width: 100%; }

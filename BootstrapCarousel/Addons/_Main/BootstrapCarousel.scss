@@ -33,6 +33,7 @@
         overflow: hidden;
         white-space: nowrap;
         .t_item {
+            position: relative;
             display: inline-block;
             a {
                 width:100%;
