@@ -51,7 +51,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             public string? Title { get; set; }
 
             [Caption("Comment"), Description("Enter your comment about this blog entry for others to view")]
-            [UIHint("TextArea"), AdditionalMetadata("EmHeight", 10), StringLength(BlogComment.MaxComment)]
+            [UIHint("TextArea"), AdditionalMetadata("EmHeight", 10), StringLength(BlogComment.MaxComment), Required]
             [AdditionalMetadata("TextAreaSave", false), AdditionalMetadata("RestrictedHtml", true)]
             public string? Comment { get; set; }
 
@@ -75,7 +75,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                 return data;
             }
 
-            internal async Task UpdateDataAsync() {
+            internal async Task UpdateDataAsync(bool initial) {
                 BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
                 GravatarsEnabled = config.ShowGravatar;
 
@@ -83,7 +83,8 @@ namespace YetaWF.Modules.Blog.Controllers {
                     BlogCategory? cat = await categoryDP.GetItemAsync(CategoryIdentity);
                     if (cat == null) throw new InternalError("Category with id {0} not found", CategoryIdentity);
                     ShowCaptcha = cat.UseCaptcha;
-                    ShowGravatar = GravatarsEnabled;
+                    if (initial)
+                        ShowGravatar = GravatarsEnabled;
                 }
                 OpenForComments = await TestOpenForCommentsAsync(EntryIdentity);
             }
@@ -117,7 +118,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                 EntryIdentity = entryNum,
                 Captcha = new RecaptchaV2Data(),
             };
-            await model.UpdateDataAsync();
+            await model.UpdateDataAsync(true);
 
             return View(model);
         }
@@ -126,7 +127,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> CommentAdd_Partial(AddModel model) {
-            await model.UpdateDataAsync();
+            await model.UpdateDataAsync(false);
             using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
                 BlogEntry? blogEntry = await entryDP.GetItemAsync(model.EntryIdentity);
                 if (blogEntry == null)

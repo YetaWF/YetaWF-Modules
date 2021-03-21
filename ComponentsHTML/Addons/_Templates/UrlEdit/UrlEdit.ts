@@ -18,7 +18,7 @@ namespace YetaWF_ComponentsHTML {
 
         private Setup: UrlEditSetup;
         private inputHidden: HTMLInputElement;
-        private selectType: YetaWF_ComponentsHTML.DropDownListEditComponent;
+        private selectType: YetaWF_ComponentsHTML.DropDownListEditComponent | null = null;
         private selectPage: YetaWF_ComponentsHTML.DropDownListEditComponent | null = null;
         private inputUrl: HTMLInputElement | null = null;
         private divLocal: HTMLDivElement | null = null;
@@ -42,7 +42,7 @@ namespace YetaWF_ComponentsHTML {
 
             this.inputHidden = $YetaWF.getElement1BySelector(".t_hidden", [this.Control]) as HTMLInputElement;
 
-            this.selectType = YetaWF.ComponentBaseDataImpl.getControlFromSelector(".yt_urltype", DropDownListEditComponent.SELECTOR, [this.Control]);
+            this.selectType = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond(".yt_urltype", DropDownListEditComponent.SELECTOR, [this.Control]);
             // eslint-disable-next-line no-bitwise
             if (this.Setup.Type & UrlTypeEnum.Local) {
                 this.selectPage = YetaWF.ComponentBaseDataImpl.getControlFromSelector<DropDownListEditComponent>(".yt_urldesignedpage", DropDownListEditComponent.SELECTOR, [this.Control]);
@@ -57,13 +57,12 @@ namespace YetaWF_ComponentsHTML {
 
             this.value = this.Setup.Url;
 
-            if (!this.inputUrl || !this.selectPage)
-                this.selectType.enable(false);
-
-            this.selectType.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, (evt: Event): void => {
-                this.updateStatus();
-                this.sendEvent();
-            });
+            if (this.selectType) {
+                this.selectType.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, (evt: Event): void => {
+                    this.updateStatus();
+                    this.sendEvent();
+                });
+            }
             if (this.selectPage) {
                 this.selectPage.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, (evt: Event): void => {
                     this.updateStatus();
@@ -80,27 +79,38 @@ namespace YetaWF_ComponentsHTML {
         }
 
         private updateStatus(): void {
-            var tp = Number(this.selectType.value) as UrlTypeEnum;
-            switch (tp) {
-                case UrlTypeEnum.Local:
-                    if (this.divLocal)
-                        this.divLocal.style.display = "";
-                    if (this.divRemote)
-                        this.divRemote.style.display = "none";
-                    if (this.selectPage)
-                        this.inputHidden.value = this.selectPage.value.trim();
-                    break;
-                case UrlTypeEnum.Remote:
-                    if (this.divLocal)
-                        this.divLocal.style.display = "none";
-                    if (this.divRemote)
-                        this.divRemote.style.display = "";
-                    if (this.inputUrl)
-                        this.inputHidden.value = this.inputUrl.value.trim();
-                    break;
+            let tp: UrlTypeEnum;
+            if (!this.selectType) {
+                if (this.selectPage) {
+                    this.inputHidden.value = this.selectPage.value.trim();
+                    tp = UrlTypeEnum.Local;
+                } else if (this.inputUrl) {
+                    this.inputHidden.value = this.inputUrl.value.trim();
+                    tp = UrlTypeEnum.Remote;
+                } else
+                    throw "Can't determine UrlType";
+            } else {
+                tp = Number(this.selectType.value) as UrlTypeEnum;
+                switch (tp) {
+                    case UrlTypeEnum.Local:
+                        if (this.divLocal)
+                            this.divLocal.style.display = "";
+                        if (this.divRemote)
+                            this.divRemote.style.display = "none";
+                        if (this.selectPage)
+                            this.inputHidden.value = this.selectPage.value.trim();
+                        break;
+                    case UrlTypeEnum.Remote:
+                        if (this.divLocal)
+                            this.divLocal.style.display = "none";
+                        if (this.divRemote)
+                            this.divRemote.style.display = "";
+                        if (this.inputUrl)
+                            this.inputHidden.value = this.inputUrl.value.trim();
+                        break;
+                }
             }
-
-            var url = this.inputHidden.value.trim();
+            let url = this.inputHidden.value.trim();
             if (url && url.length > 0) {
                 if (tp === UrlTypeEnum.Local) {
 
@@ -115,7 +125,7 @@ namespace YetaWF_ComponentsHTML {
         }
         private sendEvent(): void {
             FormsSupport.validateElement(this.inputHidden);
-            var event = document.createEvent("Event");
+            let event = document.createEvent("Event");
             event.initEvent(UrlEditComponent.EVENTCHANGE, true, true);
             this.Control.dispatchEvent(event);
         }
@@ -126,33 +136,36 @@ namespace YetaWF_ComponentsHTML {
             return this.inputHidden.value;
         }
         set value(url: string) {
-            var sel = Number(this.selectType.value) as UrlTypeEnum;// current selection
-            if (this.Setup.Type === UrlTypeEnum.Local + UrlTypeEnum.Remote && this.selectPage) {
-                if (url != null && (url.startsWith("//") || url.startsWith("http"))) {
-                    // remote
-                    if (this.inputUrl)
-                        sel = UrlTypeEnum.Remote;
+            if (this.selectType) {
+                let sel = Number(this.selectType.value) as UrlTypeEnum;// current selection
+                if (this.Setup.Type === UrlTypeEnum.Local + UrlTypeEnum.Remote && this.selectPage) {
+                    if (url != null && (url.startsWith("//") || url.startsWith("http"))) {
+                        // remote
+                        if (this.inputUrl)
+                            sel = UrlTypeEnum.Remote;
+                    } else {
+                        // try local
+                        this.selectPage.value = url;
+                        if (this.selectPage.value !== url)
+                            sel = UrlTypeEnum.Remote;// have to use remote as there was no match in the designed pages
+                        else
+                            sel = UrlTypeEnum.Local;
+                    }
+                } else if (this.Setup.Type === UrlTypeEnum.Local && this.selectPage) {
+                    sel = UrlTypeEnum.Local;
                 } else {
-                    // try local
-                    this.selectPage.value = url;
-                    if (this.selectPage.value !== url)
-                        sel = UrlTypeEnum.Remote;// have to use remote as there was no match in the designed pages
-                    else
-                        sel = UrlTypeEnum.Local;
+                    sel = UrlTypeEnum.Remote;
                 }
-            } else if (this.Setup.Type === UrlTypeEnum.Local && this.selectPage) {
-                sel = UrlTypeEnum.Local;
-            } else {
-                sel = UrlTypeEnum.Remote;
+                this.selectType.value = sel.toString();
+
+                if (sel === UrlTypeEnum.Local && this.selectPage) {
+                    this.selectPage.value = url;
+                } else if (sel === UrlTypeEnum.Remote && this.inputUrl) {
+                    this.inputUrl.value = url;
+                }
             }
             this.inputHidden.value = url;
-            this.selectType.value = sel.toString();
 
-            if (sel === UrlTypeEnum.Local && this.selectPage) {
-                this.selectPage.value = url;
-            } else if (sel === UrlTypeEnum.Remote && this.inputUrl) {
-                this.inputUrl.value = url;
-            }
             this.updateStatus();
         }
 
@@ -160,7 +173,7 @@ namespace YetaWF_ComponentsHTML {
             this.value = "";
         }
         public enable(enabled: boolean): void {
-            if (this.inputUrl && this.selectPage)
+            if (this.selectType)
                 this.selectType.enable(enabled);
             if (this.selectPage)
                 this.selectPage.enable(enabled);

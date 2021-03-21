@@ -36,24 +36,27 @@ var YetaWF_ComponentsHTML;
             }) || this;
             //this.Setup = setup;
             _this.Hidden = $YetaWF.getElement1BySelector("input.t_multistring_hidden", [_this.Control]);
-            _this.SelectLang = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
+            _this.SelectLang = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond("select", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
             _this.InputText = $YetaWF.getElement1BySelector("input.t_multistring_text", [_this.Control]);
             // selection change (put language specific text into text box)
-            _this.SelectLang.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, function (evt) {
-                var sel = _this.SelectLang.selectedIndex;
-                var hid = $YetaWF.getElement1BySelector("input[name$='[" + sel + "].value']", [_this.Control]);
-                var newText = hid.value;
-                if (newText.length === 0 && sel > 0) {
-                    var hid0 = $YetaWF.getElement1BySelector("input[name$='[0].value']", [_this.Control]);
-                    newText = hid0.value;
-                    hid.value = newText;
-                }
-                _this.InputText.value = newText;
-            });
+            if (_this.SelectLang) {
+                _this.SelectLang.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, function (evt) {
+                    var sel = _this.SelectLang.selectedIndex;
+                    var hid = $YetaWF.getElement1BySelector("input[name$='[" + sel + "].value']", [_this.Control]);
+                    var newText = hid.value;
+                    if (newText.length === 0 && sel > 0) {
+                        var hid0 = $YetaWF.getElement1BySelector("input[name$='[0].value']", [_this.Control]);
+                        newText = hid0.value;
+                        hid.value = newText;
+                    }
+                    _this.InputText.value = newText;
+                });
+            }
             // textbox change (save text in language specific hidden fields)
             $YetaWF.registerEventHandler(_this.InputText, "input", null, function (ev) {
+                var _a;
                 var newText = _this.InputText.value;
-                var sel = _this.SelectLang.selectedIndex;
+                var sel = ((_a = _this.SelectLang) === null || _a === void 0 ? void 0 : _a.selectedIndex) || 0;
                 var hid = $YetaWF.getElement1BySelector("input[name$='[" + sel + "].value']", [_this.Control]);
                 hid.value = newText;
                 if (sel === 0)
@@ -63,7 +66,8 @@ var YetaWF_ComponentsHTML;
                 return false;
             });
             $YetaWF.registerEventHandler(_this.InputText, "blur", null, function (ev) {
-                var sel = _this.SelectLang.selectedIndex;
+                var _a;
+                var sel = ((_a = _this.SelectLang) === null || _a === void 0 ? void 0 : _a.selectedIndex) || 0;
                 if (sel === 0) {
                     var hid0 = $YetaWF.getElement1BySelector("input[name$='[0].value']", [_this.Control]);
                     var text = hid0.value;
@@ -84,8 +88,10 @@ var YetaWF_ComponentsHTML;
             return _this;
         }
         MultiStringEditComponent.prototype.updateSelectLang = function () {
-            if (this.SelectLang.selectedIndex === 0)
-                this.SelectLang.enable(YConfigs.YetaWF_ComponentsHTML.Localization && this.InputText.value.length > 0);
+            if (this.SelectLang) {
+                if (this.SelectLang.selectedIndex === 0)
+                    this.SelectLang.enable(YConfigs.YetaWF_ComponentsHTML.Localization && this.InputText.value.length > 0);
+            }
         };
         MultiStringEditComponent.prototype.sendChangedEvent = function () {
             FormsSupport.validateElement(this.Hidden);
@@ -99,6 +105,7 @@ var YetaWF_ComponentsHTML;
             this.updateSelectLang();
         };
         MultiStringEditComponent.prototype.clear = function () {
+            var _a;
             var hids = $YetaWF.getElementsBySelector("input[name$='.value']", [this.Control]);
             for (var _i = 0, hids_1 = hids; _i < hids_1.length; _i++) {
                 var hid = hids_1[_i];
@@ -106,7 +113,7 @@ var YetaWF_ComponentsHTML;
             }
             this.Hidden.value = "";
             this.InputText.value = "";
-            this.SelectLang.clear();
+            (_a = this.SelectLang) === null || _a === void 0 ? void 0 : _a.clear();
             this.updateSelectLang();
         };
         Object.defineProperty(MultiStringEditComponent.prototype, "defaultValue", {
@@ -118,9 +125,10 @@ var YetaWF_ComponentsHTML;
         });
         Object.defineProperty(MultiStringEditComponent.prototype, "value", {
             get: function () {
+                var _a;
                 var data = {};
                 var newText = this.InputText.value;
-                var sel = this.SelectLang.selectedIndex;
+                var sel = ((_a = this.SelectLang) === null || _a === void 0 ? void 0 : _a.selectedIndex) || 0;
                 var hid = $YetaWF.getElement1BySelector("input[name$='[" + sel + "].value']", [this.Control]);
                 hid.value = newText;
                 var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
@@ -135,6 +143,7 @@ var YetaWF_ComponentsHTML;
                 return data;
             },
             set: function (data) {
+                var _a;
                 var textDefault = this.findLanguageText(data, YLocs.YetaWF_ComponentsHTML.Languages[0]);
                 var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
                 for (var index = 0; index < count; ++index) {
@@ -152,7 +161,7 @@ var YetaWF_ComponentsHTML;
                         this.InputText.value = s;
                     }
                 }
-                this.SelectLang.clear();
+                (_a = this.SelectLang) === null || _a === void 0 ? void 0 : _a.clear();
                 this.updateSelectLang();
             },
             enumerable: false,

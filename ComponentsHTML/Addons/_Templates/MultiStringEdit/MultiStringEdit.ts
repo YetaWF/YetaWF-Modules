@@ -20,7 +20,7 @@ namespace YetaWF_ComponentsHTML {
 
         //private Setup: Setup;
         private Hidden: HTMLInputElement;
-        private SelectLang: YetaWF_ComponentsHTML.DropDownListEditComponent;
+        private SelectLang: YetaWF_ComponentsHTML.DropDownListEditComponent | null;
         private InputText: HTMLInputElement;
 
         constructor(controlId: string/*, setup: Setup*/) {
@@ -40,26 +40,28 @@ namespace YetaWF_ComponentsHTML {
             //this.Setup = setup;
 
             this.Hidden = $YetaWF.getElement1BySelector("input.t_multistring_hidden", [this.Control]) as HTMLInputElement;
-            this.SelectLang = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select", DropDownListEditComponent.SELECTOR, [this.Control]);
+            this.SelectLang = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond("select", DropDownListEditComponent.SELECTOR, [this.Control]);
             this.InputText = $YetaWF.getElement1BySelector("input.t_multistring_text", [this.Control]) as HTMLInputElement;
 
             // selection change (put language specific text into text box)
-            this.SelectLang.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, (evt: Event): void => {
-                let sel = this.SelectLang.selectedIndex;
-                let hid = $YetaWF.getElement1BySelector(`input[name$='[${sel}].value']`, [this.Control]) as HTMLInputElement;
-                let newText = hid.value;
-                if (newText.length === 0 && sel > 0) {
-                    var hid0 = $YetaWF.getElement1BySelector("input[name$='[0].value']", [this.Control]) as HTMLInputElement;
-                    newText = hid0.value;
-                    hid.value = newText;
-                }
-                this.InputText.value = newText;
-            });
+            if (this.SelectLang) {
+                this.SelectLang.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, (evt: Event): void => {
+                    let sel = this.SelectLang!.selectedIndex;
+                    let hid = $YetaWF.getElement1BySelector(`input[name$='[${sel}].value']`, [this.Control]) as HTMLInputElement;
+                    let newText = hid.value;
+                    if (newText.length === 0 && sel > 0) {
+                        var hid0 = $YetaWF.getElement1BySelector("input[name$='[0].value']", [this.Control]) as HTMLInputElement;
+                        newText = hid0.value;
+                        hid.value = newText;
+                    }
+                    this.InputText.value = newText;
+                });
+            }
 
             // textbox change (save text in language specific hidden fields)
             $YetaWF.registerEventHandler(this.InputText, "input", null, (ev: Event): boolean => {
                 let newText = this.InputText.value;
-                let sel = this.SelectLang.selectedIndex;
+                let sel = this.SelectLang?.selectedIndex || 0;
                 let hid = $YetaWF.getElement1BySelector(`input[name$='[${sel}].value']`, [this.Control]) as HTMLInputElement;
                 hid.value = newText;
                 if (sel === 0)
@@ -69,7 +71,7 @@ namespace YetaWF_ComponentsHTML {
                 return false;
             });
             $YetaWF.registerEventHandler(this.InputText, "blur", null, (ev: Event): boolean => {
-                let sel = this.SelectLang.selectedIndex;
+                let sel = this.SelectLang?.selectedIndex || 0;
                 if (sel === 0) {
                     let hid0 = $YetaWF.getElement1BySelector("input[name$='[0].value']", [this.Control]) as HTMLInputElement;
                     let text = hid0.value;
@@ -90,8 +92,10 @@ namespace YetaWF_ComponentsHTML {
         }
 
         private updateSelectLang(): void {
-            if (this.SelectLang.selectedIndex === 0)
-                this.SelectLang.enable(YConfigs.YetaWF_ComponentsHTML.Localization && this.InputText.value.length > 0);
+            if (this.SelectLang) {
+                if (this.SelectLang.selectedIndex === 0)
+                    this.SelectLang.enable(YConfigs.YetaWF_ComponentsHTML.Localization && this.InputText.value.length > 0);
+            }
         }
 
         private sendChangedEvent(): void {
@@ -113,7 +117,7 @@ namespace YetaWF_ComponentsHTML {
                 hid.value = "";
             this.Hidden.value = "";
             this.InputText.value = "";
-            this.SelectLang.clear();
+            this.SelectLang?.clear();
             this.updateSelectLang();
         }
         get defaultValue(): string {
@@ -123,7 +127,7 @@ namespace YetaWF_ComponentsHTML {
             var data = {};
 
             var newText = this.InputText.value;
-            var sel = this.SelectLang.selectedIndex;
+            var sel = this.SelectLang?.selectedIndex || 0;
             var hid = $YetaWF.getElement1BySelector(`input[name$='[${sel}].value']`, [this.Control]) as HTMLInputElement;
             hid.value = newText;
 
@@ -156,7 +160,7 @@ namespace YetaWF_ComponentsHTML {
                     this.InputText.value = s;
                 }
             }
-            this.SelectLang.clear();
+            this.SelectLang?.clear();
             this.updateSelectLang();
         }
         public hasChanged(data: object): boolean {

@@ -172,8 +172,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             using (Manager.StartNestedComponent(FieldName)) {
 
-                hb.Append($@"
+                if ((type & (UrlTypeEnum.Local|UrlTypeEnum.Remote)) == (UrlTypeEnum.Local|UrlTypeEnum.Remote)) {
+                    hb.Append($@"
     {await HtmlHelper.ForEditAsync(ui, nameof(ui.UrlType), Validation: false)}");
+                }
 
                 if ((type & UrlTypeEnum.Local) != 0) {
                     hb.Append($@"
