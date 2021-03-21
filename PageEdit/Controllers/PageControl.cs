@@ -58,7 +58,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [Caption("Pane"), Description("The pane where the new module is added - in Edit Mode, all panes are visible, even empty panes")]
             [UIHint("PaneSelection"), Required]
             public string? SelectedPane { get; set; }
-            public List<string> SelectedPane_List { get; set; } = null!;
+            public List<string> SelectedPane_List { get; set; }
 
             [Caption("Location"), Description("The location within the selected pane where the new module is added")]
             [UIHint("Enum"), Required, Trim]
@@ -66,6 +66,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             public AddNewModuleModel() {
                 ModuleTitle = new MultiString();
+                SelectedPane_List = new List<string>();
             }
             public void AddData(PageDefinition page) {
                 if (page != null) {
@@ -87,11 +88,15 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [Caption("Pane"), Description("The pane where the existing module is added - in Edit Mode, all panes are visible, even empty panes")]
             [UIHint("PaneSelection"), Required]
             public string? ExistingModulePane { get; set; }
-            public List<string> ExistingModulePane_List { get; set; } = null!;
+            public List<string> ExistingModulePane_List { get; set; }
 
             [Caption("Location"), Description("The location within the selected pane where the module is added")]
             [UIHint("Enum"), Required]
             public Location ModuleLocation { get; set; }
+
+            public AddExistingModel() {
+                ExistingModulePane_List = new List<string>();
+            }
 
             public void AddData(PageDefinition page) {
                 if (page != null) {
@@ -108,7 +113,11 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             [Caption("ZIP File"), Description("The ZIP file containing the page data to be imported - The page cannot already exist - Modules that are already present are not updated while importing the page")]
             [UIHint("FileUpload1"), Required]
-            public FileUpload1 UploadFile { get; set; } = null!;
+            public FileUpload1 UploadFile { get; set; }
+
+            public ImportPageModel() {
+                UploadFile = new FileUpload1();
+            }
 
             public void AddData(PageDefinition page, PageControlModule mod) {
                 UploadFile = new FileUpload1 {
@@ -129,7 +138,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [Caption("Pane"), Description("The pane where the new module is added - in Edit Mode, all panes are visible, even empty panes")]
             [UIHint("PaneSelection"), Required]
             public string? ModulePane { get; set; }
-            public List<string> ModulePane_List { get; set; } = null!;
+            public List<string> ModulePane_List { get; set; }
 
             [Caption("Location"), Description("The location within the selected pane where the module is added")]
             [UIHint("Enum"), Required]
@@ -137,7 +146,11 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             [Caption("ZIP File"), Description("The ZIP file containing the module data to be imported (creates a new module) ")]
             [UIHint("FileUpload1"), Required]
-            public FileUpload1 UploadFile { get; set; } = null!;
+            public FileUpload1 UploadFile { get; set; }
+
+            public ImportModuleModel() {
+                ModulePane_List = new List<string>();
+            }
 
             public void AddData(PageDefinition page, PageControlModule mod) {
                 UploadFile = new FileUpload1 {
@@ -196,12 +209,12 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [Caption("Active Site"), Description("List of sites that can be accessed - select an entry to visit the site")]
             [UIHint("DropDownList"), SubmitFormOnChange]
             public string? SiteDomain { get; set; }
-            public List<SelectionItem<string>> SiteDomain_List { get; set; } = null!;
+            public List<SelectionItem<string>> SiteDomain_List { get; set; }
 
             [Caption("Active User"), Description("List of user accounts that can be used to quickly log into the site - select an entry to log in as that user")]
             [UIHint("YetaWF_Identity_LoginUsers"), SubmitFormOnChange]
             public int UserId { get; set; }
-            public SerializableList<User> UserId_List { get; set; } = null!;
+            public SerializableList<User> UserId_List { get; set; }
 
             [Caption("Superuser"), Description("If a superuser was signed on previously in this session, the superuser status remains even if logged in as another user - Uncheck to turn off superuser mode for this session")]
             [UIHint("Boolean"), SuppressIfNot("SuperuserStillActive", true), SubmitFormOnChange]
@@ -211,7 +224,10 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [UIHint("Boolean"), SuppressIf("SuperuserCurrent", false), ReadOnly]
             public bool SuperuserCurrent { get; set; }
 
-            public LoginSiteSelectionModel() { }
+            public LoginSiteSelectionModel() {
+                SiteDomain_List = new List<SelectionItem<string>>();
+                UserId_List = new SerializableList<User>();
+            }
 
             public async Task AddDataAsync() {
 

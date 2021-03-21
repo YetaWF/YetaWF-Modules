@@ -20,11 +20,11 @@ namespace YetaWF.Modules.DevTests.Controllers {
         public class MarkdownRequired : MarkdownStringBase {
             [Required, AdditionalMetadata("EmHeight", 10)]
             [StringLength(1000)]
-            public override string? Text { get; set; } = null!;
+            public override string? Text { get; set; }
         }
         public class MarkdownOptional : MarkdownStringBase {
             [StringLength(1000), AdditionalMetadata("EmHeight", 5)]
-            public override string? Text { get; set; } = null!;
+            public override string? Text { get; set; }
         }
 
         [Trim]

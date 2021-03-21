@@ -30,7 +30,7 @@ namespace YetaWF.Modules.Packages.Controllers {
             [UIHint("DropDownList")]
             public string? SiteTemplate { get; set; }
 
-            public List<SelectionItem<string>> SiteTemplate_List { get; set; } = null!;
+            public List<SelectionItem<string>>? SiteTemplate_List { get; set; }
 
             public async Task UpdateDataAsync() {
                 PackagesDataProvider packagesDP = new PackagesDataProvider();

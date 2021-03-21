@@ -38,11 +38,11 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Title"), Description("The title for this blog entry")]
             [UIHint("MultiString"), StringLength(BlogEntry.MaxTitle), Required, Trim]
-            public MultiString Title { get; set; } = null!;
+            public MultiString Title { get; set; } 
 
             [Caption("Keywords"), Description("The keywords for this blog entry")]
             [UIHint("MultiString"), StringLength(BlogEntry.MaxKwds), Trim]
-            public MultiString Keywords { get; set; } = null!;
+            public MultiString Keywords { get; set; } 
 
             [Caption("Author"), Description("The name of the blog author")]
             [UIHint("Text40"), StringLength(BlogEntry.MaxAuthor), Required, Trim]
@@ -98,7 +98,10 @@ namespace YetaWF.Modules.Blog.Controllers {
                 DisplayIdentity = Identity;
                 OriginalCategoryIdentity = data.CategoryIdentity;
             }
-            public EditModel() { }
+            public EditModel() {
+                Keywords = new MultiString();
+                Title = new MultiString();
+            }
         }
 
         [AllowGet]

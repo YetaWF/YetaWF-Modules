@@ -36,7 +36,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
             [Caption("Email Addresses (Read/Only)"), Description("List of email addresses (read/only)")]
             [UIHint("YetaWF_DevTests_ListOfEmailAddresses"), ReadOnly]
-            public List<string> Prop1RO { get; set; } = null!;
+            public List<string>? Prop1RO { get; set; }
 
             public Model() {
                 Prop1Req = new List<string>() { "aa1@somedomain.com", "aa2@somedomain.com", "aa3@somedomain.com", "aa4@somedomain.com", "aa5@somedomain.com", "aa6@somedomain.com", "aa7@somedomain.com", "aa8@somedomain.com", "aa9@somedomain.com", "aa10@somedomain.com" };

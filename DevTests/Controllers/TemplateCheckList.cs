@@ -20,9 +20,9 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
             [Caption("CheckList Menu"), Description("CheckList Menu")]
             [UIHint("CheckListMenu")]
-            public List<SelectionCheckListEntry> Prop1 { get; set; } = null!;
+            public List<SelectionCheckListEntry>? Prop1 { get; set; }
             public string Prop1_DDSVG { get { return "fas-columns"; } }
-            public List<SelectionCheckListDetail> Prop1_List {
+            public List<SelectionCheckListDetail>? Prop1_List {
                 get {
                     return new List<SelectionCheckListDetail> {
                         new SelectionCheckListDetail { Key = "Checkbox1", Text = "Item 1", Description = "Description for item 1", Enabled = false },
@@ -36,7 +36,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
             [Caption("CheckList Panel"), Description("CheckList Panel")]
             [UIHint("CheckListPanel")]
-            public List<SelectionCheckListEntry> Prop2 { get; set; } = null!;
+            public List<SelectionCheckListEntry>? Prop2 { get; set; }
             public List<SelectionCheckListDetail> Prop2_List {
                 get {
                     List<SelectionCheckListDetail> list = new List<SelectionCheckListDetail>();

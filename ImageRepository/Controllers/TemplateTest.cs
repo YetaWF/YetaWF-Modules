@@ -20,7 +20,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
             [Caption("Image Selection"), Description("Description of image selection")]
             [UIHint("YetaWF_ImageRepository_ImageSelection"), Required, Trim]
             public string? ImageName { get; set; }
-            public ImageSelectionInfo ImageName_Info { get; set; } = null!;
+            public ImageSelectionInfo? ImageName_Info { get; set; }
 
             public Model() { }
 

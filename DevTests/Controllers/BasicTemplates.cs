@@ -103,7 +103,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [Category("Core"), Caption("FileUpload1"), Description("FileUpload1")]
             [UIHint("FileUpload1")]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public FileUpload1? FileUpload1 { get; set; } = null!;
+            public FileUpload1? FileUpload1 { get; set; }
 
             [Category("Core"), Caption("Guid"), Description("Guid (Required)")]
             [UIHint("Guid"), GuidValidation]

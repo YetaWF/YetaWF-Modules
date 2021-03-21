@@ -32,11 +32,11 @@ namespace YetaWF.Modules.Packages.Controllers {
 
             [Category("Remote ZIP File"), Caption("Submit"), Description("Click to download and install the package")]
             [UIHint("FormButton"), ReadOnly]
-            public FormButton RemoteGo { get; set; } = null!;
+            public FormButton? RemoteGo { get; set; }
 
             [Category("Local ZIP File"), Caption("ZIP File"), Description("Select a local ZIP file - Used to import a package (binary or source code package)")]
             [UIHint("FileUpload1")]
-            public FileUpload1? UploadFile { get; set; } = null!;
+            public FileUpload1? UploadFile { get; set; }
 
             public void Update(ImportModule mod, ImportModuleController ctrl) {
                 UploadFile = new FileUpload1 {

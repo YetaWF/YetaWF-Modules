@@ -138,7 +138,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             [Category("References"), Caption("Skin Modules"), Description("Defines modules which must be injected into this page")]
             [UIHint("ReferencedModules")]
-            public SerializableList<ModuleDefinition.ReferencedModule> ReferencedModules { get; set; } = null!;
+            public SerializableList<ModuleDefinition.ReferencedModule> ReferencedModules { get; set; }
 
             [Category("Skin"), Caption("Popup Page"), Description("The popup page used for the popup window when this page is shown in a popup")]
             [UIHint("SkinNamePopup"), AdditionalMetadata("NoDefault", false), StringLength(SiteDefinition.MaxPopupPage)]

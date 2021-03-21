@@ -34,7 +34,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [Category("General"), Caption("User List"), Description("List of user accounts that can be used to quickly log into the site")]
             [UIHint("YetaWF_Identity_ResourceUsers")]
             [Data_Binary]
-            public SerializableList<User> Users { get; set; } = null!;
+            public SerializableList<User> Users { get; set; }
 
             public ControlPanelConfigData GetData(ControlPanelConfigData data) {
                 ObjectSupport.CopyData(this, data);
@@ -43,7 +43,9 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public void SetData(ControlPanelConfigData data) {
                 ObjectSupport.CopyData(data, this);
             }
-            public Model() { }
+            public Model() {
+                Users = new SerializableList<User>();
+            }
         }
 
         [AllowGet]
