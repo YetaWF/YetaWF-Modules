@@ -46,7 +46,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
             SendSMS sendSMS = new SendSMS();
-            await sendSMS.SendMessageAsync(model.PhoneNumber, model.Text);
+            await sendSMS.SendMessageAsync(model.PhoneNumber!, model.Text!);
             return FormProcessed(model, this.__ResStr("ok", "SMS sent"));
         }
     }

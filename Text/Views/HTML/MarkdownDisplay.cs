@@ -17,7 +17,7 @@ namespace YetaWF.Modules.Text.Views {
         public override string GetViewName() { return ViewName; }
 
         public Task<string> RenderViewAsync(MarkdownModule module, MarkdownModuleController.ModelDisplay model) {
-            return Task.FromResult(model.Contents.HTML);
+            return Task.FromResult(model.Contents.HTML ?? string.Empty);
         }
     }
 }

@@ -1253,25 +1253,6 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
 
         // Custom serializer to minimize static data being transferred
 
-        internal class GridEntryContractResolver : DefaultContractResolver {
-
-            public GridEntryContractResolver() { }
-
-            protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization) {
-                IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
-                if (type != typeof(object)) {
-                    List<string> propList = new List<string>();
-                    List<PropertyData> props = ObjectSupport.GetPropertyData(type);
-                    foreach (PropertyData prop in props) {
-                        if (prop.Name.StartsWith("__") || (prop.PropInfo.CanRead && prop.PropInfo.CanWrite && !string.IsNullOrWhiteSpace(prop.UIHint))) {
-                            propList.Add(prop.Name);
-                        }
-                    }
-                    properties = (from p in properties where propList.Contains(p.PropertyName) select p).ToList();
-                }
-                return properties;
-            }
-        }
         internal class StaticDataConverter : JsonConverter {
             public override bool CanConvert(Type objectType) {
                 return true;
@@ -1284,7 +1265,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 throw new NotImplementedException();
             }
             public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
-                string array = JsonConvert.SerializeObject(value, new JsonSerializerSettings { ContractResolver = new GridEntryContractResolver() });
+                string array = JsonConvert.SerializeObject(value, new JsonSerializerSettings { ContractResolver = new Utility.PropertyGetSetUIHintContractResolver() });
                 writer.WriteRawValue(array);
             }
         }

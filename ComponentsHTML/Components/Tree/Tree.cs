@@ -39,33 +39,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         ///
         /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
         public override string GetTemplateName() { return TemplateName; }
-
-        internal static JsonSerializerSettings JsonSettings = new JsonSerializerSettings {
-            ContractResolver = new TreeEntryContractResolver(),
-            Formatting = Newtonsoft.Json.Formatting.None,
-        };
-
-        // Custom serializer to minimize static data being transferred
-
-        internal class TreeEntryContractResolver : DefaultContractResolver {
-
-            public TreeEntryContractResolver() { }
-
-            protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization) {
-                IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
-                if (type != typeof(object)) {
-                    List<string> propList = new List<string>();
-                    List<PropertyData> props = ObjectSupport.GetPropertyData(type);
-                    foreach (PropertyData prop in props) {
-                        if (prop.Name.StartsWith("__") || (prop.PropInfo.CanRead && prop.PropInfo.CanWrite)) {
-                            propList.Add(prop.Name);
-                        }
-                    }
-                    properties = (from p in properties where propList.Contains(p.PropertyName) select p).ToList();
-                }
-                return properties;
-            }
-        }
     }
 
     internal class TreeSetup {
@@ -314,7 +287,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             string recData = "";
             if (treeModel.JSONData) {
-                string json = JsonConvert.SerializeObject(record, JsonSettings);
+                string json = JsonConvert.SerializeObject(record, Utility.GetJsonSettingsGetSet());
                 recData = $" data-record='{HAE(json)}'";
             }
 

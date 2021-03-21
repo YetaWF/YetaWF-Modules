@@ -78,7 +78,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
             } else {
                 using (SiteAnnouncementDataProvider siteAnnounceDP = new SiteAnnouncementDataProvider()) {
 
-                    await YetaWF_Messenger_SiteAnnouncementsHub.SendMessageAsync(model.Message, model.Title);
+                    await YetaWF_Messenger_SiteAnnouncementsHub.SendMessageAsync(model.Message!, model.Title!);
 
                     if (await siteAnnounceDP.IsInstalledAsync()) {
                         if (!await siteAnnounceDP.AddItemAsync(model.GetData()))
