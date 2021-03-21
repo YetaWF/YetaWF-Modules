@@ -51,7 +51,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     ///     SerializeForm = true,
     /// };
     /// </example>
-    public class FileUpload1EditComponent : FileUpload1ComponentBase, IYetaWFComponent<FileUpload1>, IYetaWFContainer<FileUpload1> {
+    public class FileUpload1EditComponent : FileUpload1ComponentBase, IYetaWFComponent<FileUpload1?>, IYetaWFContainer<FileUpload1?> {
 
         internal class Setup {
             public string SaveUrl { get; set; } = null!;
@@ -85,7 +85,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<string> RenderAsync(FileUpload1 model) {
+        public Task<string> RenderAsync(FileUpload1? model) {
             return RenderContainerAsync(model);
         }
         /// <summary>
@@ -93,9 +93,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<string> RenderContainerAsync(FileUpload1 model) {
+        public async Task<string> RenderContainerAsync(FileUpload1? model) {
 
             HtmlBuilder hb = new HtmlBuilder();
+
+            if (model == null)
+                throw new System.ArgumentNullException(nameof(FileUpload1));
 
             Setup setup = new Setup {
                 SaveUrl = model.SaveURL,

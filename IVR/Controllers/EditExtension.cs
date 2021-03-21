@@ -29,7 +29,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
             [Caption("Extension"), Description("Defines the extension (digits)")]
             [UIHint("Text10"), ExtensionValidation, Required, Trim]
             [StringLength(ExtensionEntry.MaxExtension)]
-            public string Extension { get; set; } = null!;
+            public string? Extension { get; set; } = null!;
 
             [Caption("Description"), Description("Describes the extension - This text is used to identify the extension when call screening")]
             [UIHint("Text40"), Required, Trim]

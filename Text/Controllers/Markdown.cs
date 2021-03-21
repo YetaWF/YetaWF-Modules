@@ -20,11 +20,11 @@ namespace YetaWF.Modules.Text.Controllers {
 
         public class MarkdownEdit : MarkdownString {
             [Required, AdditionalMetadata("EmHeight", 25)]
-            public override string Text { get; set; } = null!;
+            public override string? Text { get; set; } = null!;
         }
         public class MarkdownDisplay : MarkdownStringBase {
             [ReadOnly, AdditionalMetadata("EmHeight", 25)]
-            public override string Text { get; set; } = null!;
+            public override string? Text { get; set; } = null!;
         }
 
         public class ModelEdit {

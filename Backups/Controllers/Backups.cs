@@ -18,12 +18,7 @@ using YetaWF.Modules.Backups.DataProvider;
 using YetaWF.Modules.Backups.Modules;
 using YetaWF.Core.IO;
 using YetaWF.Core.Components;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web;
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Backups.Controllers {
 

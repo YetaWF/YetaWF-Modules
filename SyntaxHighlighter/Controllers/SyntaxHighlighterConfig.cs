@@ -24,16 +24,16 @@ namespace YetaWF.Modules.SyntaxHighlighter.Controllers {
 
             [Category("Highlight.js"), Caption("Skin"), Description("The skin used for syntax highlighting")]
             [UIHint("YetaWF_SyntaxHighlighter_HighlightJS"), StringLength(ConfigData.MaxSkinName), AdditionalMetadata("NoDefault", true), Trim]
-            public string HighlightJSSkin { get; set; } = null!;
+            public string? HighlightJSSkin { get; set; }
 
             [TextAbove("The syntax highlighter uses Highlight.js.")]
             [Category("Highlight.js"), Caption("Help"), Description("The syntax highlighter uses Highlight.js")]
             [UIHint("Url"), ReadOnly]
-            public string HighlightJSUrl { get; set; } = null!;
+            public string HighlightJSUrl { get; set; } 
 
             [Category("Highlight.js"), Caption("Languages"), Description("Displays help for the languages that can be used by Highlight.js for syntax coloring - Not all may be installed and available")]
             [UIHint("Url"), ReadOnly]
-            public string LanguagesHighlightJSUrl { get; set; } = null!;
+            public string LanguagesHighlightJSUrl { get; set; }
 
             public ConfigData GetData(ConfigData data) {
                 ObjectSupport.CopyData(this, data);
@@ -41,10 +41,11 @@ namespace YetaWF.Modules.SyntaxHighlighter.Controllers {
             }
             public void SetData(ConfigData data) {
                 ObjectSupport.CopyData(data, this);
+            }
+            public Model() {
                 HighlightJSUrl = "https://highlightjs.org";
                 LanguagesHighlightJSUrl = "http://highlightjs.readthedocs.io/en/latest/css-classes-reference.html#language-names-and-aliases";
             }
-            public Model() { }
         }
 
         [AllowGet]

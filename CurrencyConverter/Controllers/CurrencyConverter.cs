@@ -15,9 +15,9 @@ namespace YetaWF.Modules.CurrencyConverter.Controllers {
 
         public class Model {
             [UIHint("YetaWF_CurrencyConverter_Country")]
-            public string FromCountry { get; set; } = null!;
+            public string? FromCountry { get; set; }
             [UIHint("YetaWF_CurrencyConverter_Country")]
-            public string ToCountry { get; set; } = null!;
+            public string? ToCountry { get; set; } = null!;
             [UIHint("Decimal")]
             public decimal Amount { get; set; }
 

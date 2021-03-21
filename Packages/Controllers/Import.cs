@@ -36,7 +36,7 @@ namespace YetaWF.Modules.Packages.Controllers {
 
             [Category("Local ZIP File"), Caption("ZIP File"), Description("Select a local ZIP file - Used to import a package (binary or source code package)")]
             [UIHint("FileUpload1")]
-            public FileUpload1 UploadFile { get; set; } = null!;
+            public FileUpload1? UploadFile { get; set; } = null!;
 
             public void Update(ImportModule mod, ImportModuleController ctrl) {
                 UploadFile = new FileUpload1 {

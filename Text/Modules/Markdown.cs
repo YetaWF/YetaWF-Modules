@@ -21,9 +21,9 @@ namespace YetaWF.Modules.Text.Modules {
 
     public class MarkdownString : MarkdownStringBase {
         [StringLength(0), AdditionalMetadata("EmHeight", 10)]
-        public override string Text { get { return base.Text; } set { base.Text = value; } }
+        public override string? Text { get { return base.Text; } set { base.Text = value; } }
         [StringLength(0)]
-        public override string HTML { get { return base.HTML; } set { base.HTML = value; } }
+        public override string? HTML { get { return base.HTML; } set { base.HTML = value; } }
     }
 
     [ModuleGuid("{5EAF62EB-9B05-45a1-A530-4A721D2F1C33}")]

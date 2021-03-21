@@ -103,7 +103,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [Category("Core"), Caption("FileUpload1"), Description("FileUpload1")]
             [UIHint("FileUpload1")]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public FileUpload1 FileUpload1 { get; set; } = null!;
+            public FileUpload1? FileUpload1 { get; set; } = null!;
 
             [Category("Core"), Caption("Guid"), Description("Guid (Required)")]
             [UIHint("Guid"), GuidValidation]
@@ -122,19 +122,19 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("IntValue2")]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public int IntValue2 { get; set; }
+            public int? IntValue2 { get; set; }
 
             [Category("Core"), Caption("IntValue4"), Description("IntValue4 (Required)")]
             [UIHint("IntValue4")]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public int IntValue4 { get; set; }
+            public int? IntValue4 { get; set; }
 
             [Category("Core"), Caption("IntValue6"), Description("IntValue6 (Required)")]
             [UIHint("IntValue6")]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public int IntValue6 { get; set; }
+            public int? IntValue6 { get; set; }
 
             [Category("Core"), Caption("LanguageId"), Description("LanguageId (Required)")]
             [UIHint("LanguageId"), AdditionalMetadata("NoDefault", false), AdditionalMetadata("AllLanguages", true)]
@@ -146,13 +146,13 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("LongValue")]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public long LongValue { get; set; }
+            public long? LongValue { get; set; }
 
             [Category("Core"), Caption("PageSelection"), Description("PageSelection (Required)")]
             [UIHint("PageSelection"), AdditionalMetadata("New", true)]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public Guid PageSelection { get; set; }
+            public Guid? PageSelection { get; set; }
 
             [Category("Core"), Caption("PaneSelection"), Description("PaneSelection (Required)")]
             [UIHint("PaneSelection")]
@@ -172,7 +172,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("SMTPServer")]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public SMTPServer SMTPServer { get; set; }
+            public SMTPServer? SMTPServer { get; set; }
 
             [Category("Core"), Caption("Text"), Description("Text (Required)")]
             [UIHint("Text"), StringLength(200)]
@@ -251,8 +251,6 @@ namespace YetaWF.Modules.DevTests.Controllers {
                     SaveURL = Utility.UrlFor(typeof(BasicTemplatesModuleController), "UploadSomething", new { __ModuleGuid = module.ModuleGuid }),
                     RemoveURL = Utility.UrlFor(typeof(BasicTemplatesModuleController), "RemoveSomething", new { __ModuleGuid = module.ModuleGuid }),
                 };
-
-                SMTPServer = new SMTPServer();
             }
         }
 
