@@ -287,7 +287,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             string recData = "";
             if (treeModel.JSONData) {
-                string json = JsonConvert.SerializeObject(record, Utility.GetJsonSettingsGetSet());
+                string json = JsonConvert.SerializeObject(record, Utility.JsonSettingsGetSet);
                 recData = $" data-record='{HAE(json)}'";
             }
 
