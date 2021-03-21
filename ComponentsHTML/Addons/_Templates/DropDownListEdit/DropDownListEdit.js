@@ -125,8 +125,10 @@ var YetaWF_ComponentsHTML;
                             return true;
                         }
                         else if (key === "Enter") {
-                            _this.closePopup(SendSelectEnum.ChangeSinceOpen);
-                            return true;
+                            if (_this.Popup) {
+                                _this.closePopup(SendSelectEnum.ChangeSinceOpen);
+                                return false;
+                            }
                         }
                         else if (key.length === 1) {
                             // find an entry starting with the character pressed
@@ -346,7 +348,7 @@ var YetaWF_ComponentsHTML;
             // resize to fit
             var controlRect = control.Control.getBoundingClientRect();
             var desiredHeight = control.Setup.DropDownHeightFactor * DropDownListEditComponent.DEFAULTHEIGHT;
-            var desiredWidth = control.Setup.DropDownWidthFactor * control.DropDownWidth;
+            var desiredWidth = control.Setup.DropDownWidthFactor * controlRect.width;
             var bottomAvailable = window.innerHeight - controlRect.bottom;
             var topAvailable = controlRect.top;
             var top = 0, bottom = 0;

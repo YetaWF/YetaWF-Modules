@@ -133,8 +133,10 @@ namespace YetaWF_ComponentsHTML {
                             this.closePopup(SendSelectEnum.ChangeSinceOpen);
                             return true;
                         } else if (key === "Enter") {
-                            this.closePopup(SendSelectEnum.ChangeSinceOpen);
-                            return true;
+                            if (this.Popup) {
+                                this.closePopup(SendSelectEnum.ChangeSinceOpen);
+                                return false;
+                            }
                         } else if (key.length === 1) {
                             // find an entry starting with the character pressed
                             const opts = this.Select.options;
@@ -354,7 +356,8 @@ namespace YetaWF_ComponentsHTML {
 
             let controlRect = control.Control.getBoundingClientRect();
             let desiredHeight = control.Setup.DropDownHeightFactor * DropDownListEditComponent.DEFAULTHEIGHT;
-            let desiredWidth = control.Setup.DropDownWidthFactor * control.DropDownWidth;
+            let desiredWidth = control.Setup.DropDownWidthFactor * controlRect.width;
+
             let bottomAvailable = window.innerHeight - controlRect.bottom;
             let topAvailable = controlRect.top;
 
