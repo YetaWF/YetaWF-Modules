@@ -63,6 +63,8 @@ namespace YetaWF_ComponentsHTML {
             this.Select = $YetaWF.getElement1BySelector("select", [this.Control]) as HTMLSelectElement;
             this.Container = $YetaWF.getElement1BySelector(".t_container", [this.Control]) as HTMLDivElement;
 
+            this.Enabled = ! $YetaWF.elementHasClass(this.Container, "t_disabled");
+
             this.optionsUpdated();
 
             $YetaWF.registerEventHandler(this.Container, "mouseenter", null, (ev: MouseEvent): boolean => {

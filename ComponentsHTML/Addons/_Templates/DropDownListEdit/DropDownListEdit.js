@@ -50,6 +50,7 @@ var YetaWF_ComponentsHTML;
             _this.Input = $YetaWF.getElement1BySelector(".t_input", [_this.Control]);
             _this.Select = $YetaWF.getElement1BySelector("select", [_this.Control]);
             _this.Container = $YetaWF.getElement1BySelector(".t_container", [_this.Control]);
+            _this.Enabled = !$YetaWF.elementHasClass(_this.Container, "t_disabled");
             _this.optionsUpdated();
             $YetaWF.registerEventHandler(_this.Container, "mouseenter", null, function (ev) {
                 if (_this.Enabled) {
