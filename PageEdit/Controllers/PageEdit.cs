@@ -82,7 +82,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [UIHint("Enum")]
             public PageDefinition.IFrameUseEnum IFrameUse { get; set; }
 
-            [Category("Page"), Caption("FavIcon"), Description("The icon representing this site (a 32x32 pixel PNG image) shown by the web browser used to display the page")]
+            [Category("Page"), Caption("FavIcon"), Description("The icon representing this page (a 32x32 pixel PNG image) shown by the web browser used to display the page")]
             [UIHint("Image"), AdditionalMetadata("ImageType", PageDefinition.ImageType)]
             [AdditionalMetadata("Width", 40), AdditionalMetadata("Height", 40)]
             public string? FavIcon {
@@ -100,6 +100,10 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             private string? _favIcon = null;
 
             public byte[]? FavIcon_Data { get; set; }
+
+            [Category("Page"), Caption("FavIcon (SVG)"), Description("The SVG icon representing this page (typically rendered as a 64x64 pixel image) shown in PageBars used to display the page - Use a complete <SVG> tag or reference a skin SVG by prefixing the icon name with # which locates the SVG in the skin's folder ./SVG/FAV_name (e.g., #UserSettings uses ./SVG/FAV_UserSettings.svg)")]
+            [UIHint("TextAreaSourceOnly"), AdditionalMetadata("EmHeight", 6), StringLength(PageDefinition.MaxFav_SVG)]
+            public string? Fav_SVG { get; set; }
 
             [Category("Page"), Caption("Copyright"), Description("Defines an optional copyright notice displayed on the page, if supported by the skin used - If not defined, a default copyright notice may be defined in Site Properties - Use <<Year>> for current year")]
             [UIHint("MultiString80"), StringLength(PageDefinition.MaxCopyright), Trim]

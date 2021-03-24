@@ -129,6 +129,12 @@ $large-screen: 1500px;
                         display:inline-block;
                         padding-right:.5em;
                     }
+                    svg {
+                        display:inline-block;
+                        margin-right:.5em;
+                        width: 32px;
+                        height:32px;
+                    }
                     .t_caption {
                         font-size:.8rem;
                         display:inline-block;

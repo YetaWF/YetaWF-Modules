@@ -25,6 +25,9 @@
       outline: none;
       line-height: 2em;
       white-space: nowrap;
+      -webkit-user-select: none;
+          -ms-user-select: none;
+              user-select: none;
       background: var(--tabs-tab-bg);
       color: var(--tabs-tab-clr);
       border-left: var(--tabs-tab-border);

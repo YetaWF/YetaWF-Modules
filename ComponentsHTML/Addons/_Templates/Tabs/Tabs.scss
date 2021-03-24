@@ -25,6 +25,7 @@
             outline:none;
             line-height:2em;
             white-space: nowrap;
+            user-select: none;
             background: var(--tabs-tab-bg);
             color: var(--tabs-tab-clr);
             border-left: var(--tabs-tab-border);

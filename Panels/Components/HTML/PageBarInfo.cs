@@ -92,8 +92,17 @@ namespace YetaWF.Modules.Panels.Components {
                 string anchor = $"";
 
                 hb.Append($@"
-        <a class='t_entry{active} yaction-link' data-contenttarget='{DivId}' data-contentpane='{HAE(pane == "" ? "MainPane" : pane)}' {Basics.CssSaveReturnUrl}='' href='{HAE(qh.ToUrl(pageUrlOnly))}' data-tooltip='{HAE(entry.ToolTip.ToString())}'>
-            <img src='{HAE(entry.ImageUrl)}' alt='{HAE(caption)}' title='{HAE(entry.ToolTip.ToString())}' />
+        <a class='t_entry{active} yaction-link' data-contenttarget='{DivId}' data-contentpane='{HAE(pane == "" ? "MainPane" : pane)}' {Basics.CssSaveReturnUrl}='' href='{HAE(qh.ToUrl(pageUrlOnly))}' data-tooltip='{HAE(entry.ToolTip.ToString())}'>");
+
+                if (entry.ImageSVG != null) {
+                    hb.Append($@"
+            {entry.ImageSVG}");
+                } else {
+                    hb.Append($@"
+            <img src='{HAE(entry.ImageUrl)}' alt='{HAE(caption)}' title='{HAE(entry.ToolTip.ToString())}' />");
+                }
+
+                hb.Append($@"
             <div class='t_caption'>
                 {HE(caption)}
             </div>

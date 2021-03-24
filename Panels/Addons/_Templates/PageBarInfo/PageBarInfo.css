@@ -99,6 +99,11 @@
       .yt_panels_pagebarinfo.t_stylesvert.t_expanded .yt_panels_pagebarinfo_list .t_entry img {
         display: inline-block;
         padding-right: .5em; }
+      .yt_panels_pagebarinfo.t_stylesvert.t_expanded .yt_panels_pagebarinfo_list .t_entry svg {
+        display: inline-block;
+        margin-right: .5em;
+        width: 32px;
+        height: 32px; }
       .yt_panels_pagebarinfo.t_stylesvert.t_expanded .yt_panels_pagebarinfo_list .t_entry .t_caption {
         font-size: .8rem;
         display: inline-block;

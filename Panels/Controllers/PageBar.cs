@@ -18,6 +18,7 @@ using YetaWF.Modules.Panels.Modules;
 using YetaWF.Core.Components;
 using YetaWF.Modules.Panels.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Skins;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -178,15 +179,34 @@ namespace YetaWF.Modules.Panels.Controllers {
                 // have 2 of the same pages, one for anonymous users, the other for logged on users.
                 if (Manager.HaveUser && pageDef.IsAuthorized_View_Anonymous() && !pageDef.IsAuthorized_View_AnyUser())
                     return;
+
+                string? svg = GetSVG(pageDef.Fav_SVG);
+                string? imageUrl = null;
+                if (svg == null)
+                    imageUrl = GetImage(pageDef);
+
                 list.Add(new PageBarInfo.PanelEntry {
                     Url = pageDef.EvaluatedCanonicalUrl!,
                     Caption = pageDef.Title,
                     ToolTip = pageDef.Description,
-                    ImageUrl = GetImage(pageDef),
+                    ImageUrl = imageUrl,
+                    ImageSVG = svg,
                     Popup = popup
                 });
             }
         }
+        private string? GetSVG(string svg) {
+            if (string.IsNullOrWhiteSpace(svg)) return null;
+            if (svg.StartsWith('#')) {
+                if (svg.Length <= 1) return null;
+                svg = svg.Substring(1);
+                if (string.IsNullOrWhiteSpace(svg)) return null;
+                return SkinSVGs.GetSkin($"FAV_{svg}");
+            } else {
+                return svg;
+            }
+        }
+
         private string GetImage(PageDefinition pageDef) {
             string image;
             string type;
