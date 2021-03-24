@@ -29,6 +29,10 @@
       color: var(--bar-clr-active); }
     .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_entry:focus {
       outline: thin dotted; }
+    .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_entry svg {
+      width: 32px;
+      height: 32px;
+      opacity: 0.6; }
   .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list .t_entry {
     height: 80px;
     width: 120px;
@@ -101,10 +105,7 @@
         padding-right: .5em; }
       .yt_panels_pagebarinfo.t_stylesvert.t_expanded .yt_panels_pagebarinfo_list .t_entry svg {
         display: inline-block;
-        margin-right: .5em;
-        width: 32px;
-        height: 32px;
-        opacity: 0.6; }
+        margin-right: .5em; }
       .yt_panels_pagebarinfo.t_stylesvert.t_expanded .yt_panels_pagebarinfo_list .t_entry .t_caption {
         font-size: .8rem;
         display: inline-block;

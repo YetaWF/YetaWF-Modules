@@ -101,7 +101,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             public byte[]? FavIcon_Data { get; set; }
 
-            [Category("Page"), Caption("FavIcon (SVG)"), Description("The SVG icon representing this page (typically rendered as a 64x64 pixel image) shown in PageBars used to display the page - Use a complete <SVG> tag or reference a skin SVG by prefixing the icon name with # which locates the SVG in the skin's folder ./SVG/FAV_name (e.g., #UserSettings uses ./SVG/FAV_UserSettings.svg)")]
+            [Category("Page"), Caption("FavIcon (SVG)"), Description("The SVG icon representing this page (typically rendered as a 32x32 pixel image) shown in PageBars used to display the page - Use a complete <SVG> tag or reference a skin SVG by prefixing the icon name with # which locates the SVG in the skin's folder ./SVG/FAV_name (e.g., #UserSettings uses ./SVG/FAV_UserSettings.svg)")]
             [UIHint("TextAreaSourceOnly"), AdditionalMetadata("EmHeight", 6), StringLength(PageDefinition.MaxFav_SVG)]
             public string? Fav_SVG { get; set; }
 

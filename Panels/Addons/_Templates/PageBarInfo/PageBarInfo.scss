@@ -40,6 +40,11 @@ $large-screen: 1500px;
             &:focus {
                 outline: thin dotted;
             }
+            svg {
+                width: 32px;
+                height:32px;
+                opacity: 0.6;
+            }
         }
         .t_entry {
             height:$entry-height;
@@ -132,9 +137,6 @@ $large-screen: 1500px;
                     svg {
                         display:inline-block;
                         margin-right:.5em;
-                        width: 32px;
-                        height:32px;
-                        opacity: 0.6;
                     }
                     .t_caption {
                         font-size:.8rem;
