@@ -103,7 +103,8 @@
         display: inline-block;
         margin-right: .5em;
         width: 32px;
-        height: 32px; }
+        height: 32px;
+        opacity: 0.6; }
       .yt_panels_pagebarinfo.t_stylesvert.t_expanded .yt_panels_pagebarinfo_list .t_entry .t_caption {
         font-size: .8rem;
         display: inline-block;
