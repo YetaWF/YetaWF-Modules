@@ -8,7 +8,7 @@ namespace YetaWF_ComponentsHTML {
         DropDownHeightFactor: number;
     }
 
-    interface AjaxData {
+    export interface DropDownListAjaxData {
         OptionsHTML: string;
         ExtraData: string;
     }
@@ -504,7 +504,7 @@ namespace YetaWF_ComponentsHTML {
             request.onreadystatechange = (ev: Event): any => {
                 if (request.readyState === 4 /*DONE*/) {
                     $YetaWF.setLoading(false);
-                    var retVal = $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, this.Control, undefined, undefined, (data: AjaxData): void => {
+                    var retVal = $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, this.Control, undefined, undefined, (data: DropDownListAjaxData): void => {
 
                         this.setOptionsHTML(data.OptionsHTML);
 

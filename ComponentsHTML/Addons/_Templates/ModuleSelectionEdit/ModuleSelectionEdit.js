@@ -140,7 +140,7 @@ var YetaWF_ComponentsHTML;
                 var data = { "modGuid": modGuid };
                 this.SelectModule.ajaxUpdate(data, this.Setup.AjaxUrlComplete, function (data) {
                     _this.Hidden.value = modGuid;
-                    _this.SelectPackage.value = data.extra;
+                    _this.SelectPackage.value = data.ExtraData;
                     _this.SelectModule.value = modGuid;
                     _this.showDescription();
                     FormsSupport.validateElement(_this.Hidden);
