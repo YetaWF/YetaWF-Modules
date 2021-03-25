@@ -37,28 +37,17 @@ namespace YetaWF_ComponentsHTML {
             this.SelectPopupFile = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name$='.PopupFileName']", DropDownListEditComponent.SELECTOR, [this.Control]);
 
             this.SelectCollection.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, (evt: Event): void => {
-                var data = { SkinCollection: this.SelectCollection.value };
+                let data = { SkinCollection: this.SelectCollection.value };
 
-                $YetaWF.setLoading(true);
-
-                var uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
+                let uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
                 uri.addSearchSimpleObject(data);
 
-                var request: XMLHttpRequest = new XMLHttpRequest();
-                request.open("POST", uri.toUrl());
-                request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-                request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                request.onreadystatechange = (ev: Event): any => {
-                    if (request.readyState === 4 /*DONE*/) {
-                        $YetaWF.setLoading(false);
-                        $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, this.Control, undefined, (data: string): void => {
-                            let lists: Lists = JSON.parse(data);
-                            this.SelectPageFile.setOptionsHTML(lists.PagesHTML);
-                            this.SelectPopupFile.setOptionsHTML(lists.PopupsHTML);
-                        });
+                $YetaWF.post(uri.toUrl(), uri.toFormData(), (success: boolean, lists: Lists): void =>{
+                    if (success) {
+                        this.SelectPageFile.setOptionsHTML(lists.PagesHTML);
+                        this.SelectPopupFile.setOptionsHTML(lists.PopupsHTML);
                     }
-                };
-                request.send(uri.toFormData());
+                });
             });
         }
         public enable(enabled: boolean): void {

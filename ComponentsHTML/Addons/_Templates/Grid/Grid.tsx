@@ -273,6 +273,7 @@ namespace YetaWF_ComponentsHTML {
             }
             // column selection
             if (this.Setup.SettingsModuleGuid && this.ColumnSelection) {
+
                 this.ColumnSelection.Control.addEventListener(CheckListMenuEditComponent.EVENTCHANGE, (evt: Event): void => {
 
                     let uri = $YetaWF.parseUrl(this.Setup.SaveSettingsColumnSelectionUrl);
@@ -294,26 +295,18 @@ namespace YetaWF_ComponentsHTML {
                         colIndex++;
                     }
 
-                    let request: XMLHttpRequest = new XMLHttpRequest();
-                    request.open("POST", this.Setup.SaveSettingsColumnSelectionUrl, true);
-                    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-                    request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                    request.onreadystatechange = (ev: Event): any => {
-                        if (request.readyState === 4 /*DONE*/) {
-                            this.setReloading(false);
-                            $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, (result: string): void => {
-                                if (!this.Setup.StaticData) {
-                                    this.reload(0);
-                                } else {
-                                    let colVis:boolean[] = [];
-                                    for (let entry of entries)
-                                        colVis.push(entry.Checked);
-                                    this.updateColumnHeaders(colVis);
-                                }
-                            });
+                    $YetaWF.post(this.Setup.SaveSettingsColumnSelectionUrl, uri.toFormData(), (success: boolean, data:any): void => {
+                        if (success) {
+                            if (!this.Setup.StaticData) {
+                                this.reload(0);
+                            } else {
+                                let colVis:boolean[] = [];
+                                for (let entry of entries)
+                                    colVis.push(entry.Checked);
+                                this.updateColumnHeaders(colVis);
+                            }
                         }
-                    };
-                    request.send(uri.toFormData());
+                    });
                 });
             }
             // pagesize selection
@@ -836,8 +829,6 @@ namespace YetaWF_ComponentsHTML {
 
             if (!this.reloadInProgress) {
 
-                this.setReloading(true);
-
                 if (page < 0) page = 0;
 
                 let searchCols: string[] | null = null;
@@ -941,41 +932,31 @@ namespace YetaWF_ComponentsHTML {
                     if (this.Setup.StaticData)
                         uri.addSearch("data", JSON.stringify(this.Setup.StaticData));
 
-                    let request: XMLHttpRequest = new XMLHttpRequest();
-                    request.open("POST", this.Setup.AjaxUrl);
-                    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-                    request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                    request.onreadystatechange = (ev: Event): any => {
-                        if (request.readyState === 4 /*DONE*/) {
-                            this.setReloading(false);
-                            $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, (result: string): void => {
-                                let partial: GridPartialResult = JSON.parse(request.responseText);
-                                $YetaWF.processClearDiv(this.TBody);
-                                this.TBody.innerHTML = "";
-                                $YetaWF.appendMixedHTML(this.TBody, partial.TBody, true);
-                                // We have to update column headers based on the data we got in case of a reload as the user may have multiple windows for the same session
-                                this.updateColumnHeaders(partial.ColumnVisibility);// for visibility
-                                this.Setup.Records = partial.Records;
-                                this.Setup.Pages = partial.Pages;
-                                this.Setup.Page = partial.Page;
-                                this.Setup.PageSize = partial.PageSize;
-                                if (this.InputPage)
-                                    this.InputPage.value = this.Setup.Page + 1;
-                                if (this.Setup.NoSubmitContents) {
-                                    this.SubmitCheckCol = this.getSubmitCheckCol();
-                                    if (this.SubmitCheckCol >= 0)
-                                        this.setInitialSubmitStatus();
-                                }
-                                this.updateStatus();
-                                if (done)
-                                    done();
-                                this.setExpandCollapseStatus(true);
-                                this.sendEventSelect();
-                            });
+                    $YetaWF.post(this.Setup.AjaxUrl, uri.toFormData(), (success: boolean, partial: GridPartialResult): void => {
+                        if (success) {
+                            $YetaWF.processClearDiv(this.TBody);
+                            this.TBody.innerHTML = "";
+                            $YetaWF.appendMixedHTML(this.TBody, partial.TBody, true);
+                            // We have to update column headers based on the data we got in case of a reload as the user may have multiple windows for the same session
+                            this.updateColumnHeaders(partial.ColumnVisibility);// for visibility
+                            this.Setup.Records = partial.Records;
+                            this.Setup.Pages = partial.Pages;
+                            this.Setup.Page = partial.Page;
+                            this.Setup.PageSize = partial.PageSize;
+                            if (this.InputPage)
+                                this.InputPage.value = this.Setup.Page + 1;
+                            if (this.Setup.NoSubmitContents) {
+                                this.SubmitCheckCol = this.getSubmitCheckCol();
+                                if (this.SubmitCheckCol >= 0)
+                                    this.setInitialSubmitStatus();
+                            }
+                            this.updateStatus();
+                            if (done)
+                                done();
+                            this.setExpandCollapseStatus(true);
+                            this.sendEventSelect();
                         }
-                    };
-                    let data = uri.toFormData();
-                    request.send(data);
+                    });
                 }
             }
         }

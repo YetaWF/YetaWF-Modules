@@ -225,29 +225,21 @@ var YetaWF_ComponentsHTML;
                         }
                         colIndex++;
                     }
-                    var request = new XMLHttpRequest();
-                    request.open("POST", _this.Setup.SaveSettingsColumnSelectionUrl, true);
-                    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-                    request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                    request.onreadystatechange = function (ev) {
-                        if (request.readyState === 4 /*DONE*/) {
-                            _this.setReloading(false);
-                            $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, function (result) {
-                                if (!_this.Setup.StaticData) {
-                                    _this.reload(0);
+                    $YetaWF.post(_this.Setup.SaveSettingsColumnSelectionUrl, uri.toFormData(), function (success, data) {
+                        if (success) {
+                            if (!_this.Setup.StaticData) {
+                                _this.reload(0);
+                            }
+                            else {
+                                var colVis = [];
+                                for (var _i = 0, entries_2 = entries; _i < entries_2.length; _i++) {
+                                    var entry = entries_2[_i];
+                                    colVis.push(entry.Checked);
                                 }
-                                else {
-                                    var colVis = [];
-                                    for (var _i = 0, entries_2 = entries; _i < entries_2.length; _i++) {
-                                        var entry = entries_2[_i];
-                                        colVis.push(entry.Checked);
-                                    }
-                                    _this.updateColumnHeaders(colVis);
-                                }
-                            });
+                                _this.updateColumnHeaders(colVis);
+                            }
                         }
-                    };
-                    request.send(uri.toFormData());
+                    });
                 });
             }
             // pagesize selection
@@ -769,7 +761,6 @@ var YetaWF_ComponentsHTML;
         Grid.prototype.reload = function (page, newPageSize, overrideColFilter, overrideExtraData, sort, done) {
             var _this = this;
             if (!this.reloadInProgress) {
-                this.setReloading(true);
                 if (page < 0)
                     page = 0;
                 var searchCols = null;
@@ -876,41 +867,31 @@ var YetaWF_ComponentsHTML;
                     uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
                     if (this.Setup.StaticData)
                         uri.addSearch("data", JSON.stringify(this.Setup.StaticData));
-                    var request_1 = new XMLHttpRequest();
-                    request_1.open("POST", this.Setup.AjaxUrl);
-                    request_1.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-                    request_1.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                    request_1.onreadystatechange = function (ev) {
-                        if (request_1.readyState === 4 /*DONE*/) {
-                            _this.setReloading(false);
-                            $YetaWF.processAjaxReturn(request_1.responseText, request_1.statusText, request_1, undefined, undefined, function (result) {
-                                var partial = JSON.parse(request_1.responseText);
-                                $YetaWF.processClearDiv(_this.TBody);
-                                _this.TBody.innerHTML = "";
-                                $YetaWF.appendMixedHTML(_this.TBody, partial.TBody, true);
-                                // We have to update column headers based on the data we got in case of a reload as the user may have multiple windows for the same session
-                                _this.updateColumnHeaders(partial.ColumnVisibility); // for visibility
-                                _this.Setup.Records = partial.Records;
-                                _this.Setup.Pages = partial.Pages;
-                                _this.Setup.Page = partial.Page;
-                                _this.Setup.PageSize = partial.PageSize;
-                                if (_this.InputPage)
-                                    _this.InputPage.value = _this.Setup.Page + 1;
-                                if (_this.Setup.NoSubmitContents) {
-                                    _this.SubmitCheckCol = _this.getSubmitCheckCol();
-                                    if (_this.SubmitCheckCol >= 0)
-                                        _this.setInitialSubmitStatus();
-                                }
-                                _this.updateStatus();
-                                if (done)
-                                    done();
-                                _this.setExpandCollapseStatus(true);
-                                _this.sendEventSelect();
-                            });
+                    $YetaWF.post(this.Setup.AjaxUrl, uri.toFormData(), function (success, partial) {
+                        if (success) {
+                            $YetaWF.processClearDiv(_this.TBody);
+                            _this.TBody.innerHTML = "";
+                            $YetaWF.appendMixedHTML(_this.TBody, partial.TBody, true);
+                            // We have to update column headers based on the data we got in case of a reload as the user may have multiple windows for the same session
+                            _this.updateColumnHeaders(partial.ColumnVisibility); // for visibility
+                            _this.Setup.Records = partial.Records;
+                            _this.Setup.Pages = partial.Pages;
+                            _this.Setup.Page = partial.Page;
+                            _this.Setup.PageSize = partial.PageSize;
+                            if (_this.InputPage)
+                                _this.InputPage.value = _this.Setup.Page + 1;
+                            if (_this.Setup.NoSubmitContents) {
+                                _this.SubmitCheckCol = _this.getSubmitCheckCol();
+                                if (_this.SubmitCheckCol >= 0)
+                                    _this.setInitialSubmitStatus();
+                            }
+                            _this.updateStatus();
+                            if (done)
+                                done();
+                            _this.setExpandCollapseStatus(true);
+                            _this.sendEventSelect();
                         }
-                    };
-                    var data = uri.toFormData();
-                    request_1.send(data);
+                    });
                 }
             }
         };

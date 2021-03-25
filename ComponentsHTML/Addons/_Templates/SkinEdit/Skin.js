@@ -34,24 +34,14 @@ var YetaWF_ComponentsHTML;
             _this.SelectPopupFile = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name$='.PopupFileName']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
             _this.SelectCollection.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, function (evt) {
                 var data = { SkinCollection: _this.SelectCollection.value };
-                $YetaWF.setLoading(true);
                 var uri = $YetaWF.parseUrl(_this.Setup.AjaxUrl);
                 uri.addSearchSimpleObject(data);
-                var request = new XMLHttpRequest();
-                request.open("POST", uri.toUrl());
-                request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-                request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                request.onreadystatechange = function (ev) {
-                    if (request.readyState === 4 /*DONE*/) {
-                        $YetaWF.setLoading(false);
-                        $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, _this.Control, undefined, function (data) {
-                            var lists = JSON.parse(data);
-                            _this.SelectPageFile.setOptionsHTML(lists.PagesHTML);
-                            _this.SelectPopupFile.setOptionsHTML(lists.PopupsHTML);
-                        });
+                $YetaWF.post(uri.toUrl(), uri.toFormData(), function (success, lists) {
+                    if (success) {
+                        _this.SelectPageFile.setOptionsHTML(lists.PagesHTML);
+                        _this.SelectPopupFile.setOptionsHTML(lists.PopupsHTML);
                     }
-                };
-                request.send(uri.toFormData());
+                });
             });
             return _this;
         }

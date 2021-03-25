@@ -38,40 +38,17 @@ var YetaWF_ImageRepository;
                 // get url to remove the file
                 if ($YetaWF.isLoading)
                     return false;
-                $YetaWF.setLoading(true);
                 var uri = $YetaWF.parseUrl(_this.RemoveButton.href);
                 uri.removeSearch("Name");
                 uri.addSearch("Name", _this.Hidden.value);
-                var request = new XMLHttpRequest();
-                request.open("POST", uri.toUrl(), true);
-                request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-                request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                request.onreadystatechange = function (ev) {
-                    if (request.readyState === 4 /*DONE*/) {
-                        $YetaWF.setLoading(false);
-                        $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, function (result) {
-                            $YetaWF.setLoading(false);
-                            if (result.startsWith(YConfigs.Basics.AjaxJavascriptReturn)) {
-                                var script = result.substring(YConfigs.Basics.AjaxJavascriptReturn.length);
-                                // eslint-disable-next-line no-eval
-                                eval(script);
-                                return;
-                            }
-                            else if (result.startsWith(YConfigs.Basics.AjaxJavascriptErrorReturn)) {
-                                var script = result.substring(YConfigs.Basics.AjaxJavascriptErrorReturn.length);
-                                // eslint-disable-next-line no-eval
-                                eval(script);
-                                return;
-                            }
-                            var resp = JSON.parse(result);
-                            // eslint-disable-next-line no-eval
-                            eval(resp.Result);
-                            _this.List.innerHTML = resp.List;
-                            _this.clearFileName();
-                        });
+                $YetaWF.post(uri.toUrl(), null, function (success, resp) {
+                    if (success) {
+                        // eslint-disable-next-line no-eval
+                        eval(resp.Result);
+                        _this.List.innerHTML = resp.List;
+                        _this.clearFileName();
                     }
-                };
-                request.send();
+                });
                 return false;
             });
         }

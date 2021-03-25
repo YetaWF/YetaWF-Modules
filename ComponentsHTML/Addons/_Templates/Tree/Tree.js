@@ -332,7 +332,6 @@ var YetaWF_ComponentsHTML;
             if (!this.Setup.AjaxUrl)
                 throw "Tree control doesn't have an AJAX URL - " + this.Control.outerHTML;
             if (!$YetaWF.isLoading) {
-                $YetaWF.setLoading(true);
                 // fetch data from servers
                 var uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
                 var recData = $YetaWF.getAttribute(liElem, "data-record");
@@ -341,32 +340,22 @@ var YetaWF_ComponentsHTML;
                 uri.addFormInfo(this.Control);
                 var uniqueIdCounters = { UniqueIdPrefix: this.ControlId + "ls", UniqueIdPrefixCounter: ++this.AddCounter, UniqueIdCounter: 0 };
                 uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
-                var request = new XMLHttpRequest();
-                request.open("POST", this.Setup.AjaxUrl);
-                request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-                request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                request.onreadystatechange = function (ev) {
-                    if (request.readyState === 4 /*DONE*/) {
-                        $YetaWF.setLoading(false);
-                        $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, function (result) {
-                            var partial = JSON.parse(request.responseText);
-                            var iElem = $YetaWF.getElement1BySelector("i.t_icright", [liElem]);
-                            $YetaWF.elementRemoveClasses(iElem, ["t_icright", "t_icdown", "t_icempty"]);
-                            if (partial.Records > 0) {
-                                // add new items
-                                $YetaWF.appendMixedHTML(liElem, partial.HTML);
-                                // mark expanded
-                                $YetaWF.elementAddClass(iElem, "t_icdown");
-                            }
-                            else {
-                                // mark not expandable
-                                $YetaWF.elementAddClass(iElem, "t_icempty");
-                            }
-                        });
+                $YetaWF.post(this.Setup.AjaxUrl, uri.toFormData(), function (success, partial) {
+                    if (success) {
+                        var iElem = $YetaWF.getElement1BySelector("i.t_icright", [liElem]);
+                        $YetaWF.elementRemoveClasses(iElem, ["t_icright", "t_icdown", "t_icempty"]);
+                        if (partial.Records > 0) {
+                            // add new items
+                            $YetaWF.appendMixedHTML(liElem, partial.HTML);
+                            // mark expanded
+                            $YetaWF.elementAddClass(iElem, "t_icdown");
+                        }
+                        else {
+                            // mark not expandable
+                            $YetaWF.elementAddClass(iElem, "t_icempty");
+                        }
                     }
-                };
-                var data = uri.toFormData();
-                request.send(data);
+                });
             }
         };
         // API

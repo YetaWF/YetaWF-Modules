@@ -144,7 +144,7 @@ namespace YetaWF_ComponentsHTML {
                         this.showDescription();
                         FormsSupport.validateElement(this.Hidden);
                     },
-                    (result: string): void => {
+                    (): void => {
                         this.clear();
                         FormsSupport.validateElement(this.Hidden);
                     }

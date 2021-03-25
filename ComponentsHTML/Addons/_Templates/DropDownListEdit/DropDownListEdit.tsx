@@ -488,36 +488,23 @@ namespace YetaWF_ComponentsHTML {
             return width;
         }
 
-        public ajaxUpdate(data: any, ajaxUrl: string, onSuccess?: (data: any) => void, onFailure?: (result: string) => void): void {
+        public ajaxUpdate(data: any, ajaxUrl: string, onSuccess?: (data: any) => void, onFailure?: () => void): void {
 
             this.closePopup(SendSelectEnum.No);
-
-            $YetaWF.setLoading(true);
 
             var uri = $YetaWF.parseUrl(ajaxUrl);
             uri.addSearchSimpleObject(data);
 
-            var request: XMLHttpRequest = new XMLHttpRequest();
-            request.open("POST", ajaxUrl);
-            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-            request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            request.onreadystatechange = (ev: Event): any => {
-                if (request.readyState === 4 /*DONE*/) {
-                    $YetaWF.setLoading(false);
-                    var retVal = $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, this.Control, undefined, undefined, (data: DropDownListAjaxData): void => {
-
-                        this.setOptionsHTML(data.OptionsHTML);
-
-                        if (onSuccess)
-                            onSuccess(data);
-                    });
-                    if (!retVal) {
-                        if (onFailure)
-                            onFailure(request.responseText);
-                    }
+            $YetaWF.post(ajaxUrl, uri.toFormData(), (success: boolean, data: DropDownListAjaxData): void => {
+                if (success) {
+                    this.setOptionsHTML(data.OptionsHTML);
+                    if (onSuccess)
+                        onSuccess(data);
+                } else {
+                    if (onFailure)
+                        onFailure();
                 }
-            };
-            request.send(uri.toFormData());
+            });
         }
     }
 

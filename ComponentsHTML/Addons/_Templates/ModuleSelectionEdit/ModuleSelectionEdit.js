@@ -144,7 +144,7 @@ var YetaWF_ComponentsHTML;
                     _this.SelectModule.value = modGuid;
                     _this.showDescription();
                     FormsSupport.validateElement(_this.Hidden);
-                }, function (result) {
+                }, function () {
                     _this.clear();
                     FormsSupport.validateElement(_this.Hidden);
                 });

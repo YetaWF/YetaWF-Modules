@@ -37,7 +37,6 @@ var YetaWF_Pages;
                 if (_this.ReloadInProgress)
                     return true;
                 _this.ReloadInProgress = true;
-                $YetaWF.setLoading(true);
                 var uri = $YetaWF.parseUrl(_this.Setup.AddUrl);
                 uri.addFormInfo(_this.Control);
                 var uniqueIdCounters = { UniqueIdPrefix: _this.ControlId + "ls", UniqueIdPrefixCounter: 0, UniqueIdCounter: ++_this.AddCounter };
@@ -47,23 +46,11 @@ var YetaWF_Pages;
                 uri.addSearch("data", JSON.stringify(_this.Grid.StaticData));
                 if (_this.Grid.ExtraData)
                     uri.addSearchSimpleObject(_this.Grid.ExtraData);
-                var request = new XMLHttpRequest();
-                request.open("POST", _this.Setup.AddUrl, true);
-                request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-                request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                request.onreadystatechange = function (ev) {
-                    if (request.readyState === 4 /*DONE*/) {
-                        _this.ReloadInProgress = false;
-                        $YetaWF.setLoading(false);
-                        $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, function (result) {
-                            var partial = JSON.parse(request.responseText);
-                            _this.ReloadInProgress = false;
-                            $YetaWF.setLoading(false);
-                            _this.Grid.AddRecord(partial.TR, partial.StaticData);
-                        });
-                    }
-                };
-                request.send(uri.toFormData());
+                $YetaWF.post(_this.Setup.AddUrl, uri.toFormData(), function (success, partial) {
+                    _this.ReloadInProgress = false;
+                    if (success)
+                        _this.Grid.AddRecord(partial.TR, partial.StaticData);
+                });
                 return false;
             });
             _this.SelectUrl.Control.addEventListener(YetaWF_ComponentsHTML.UrlEditComponent.EVENTCHANGE, function (evt) {

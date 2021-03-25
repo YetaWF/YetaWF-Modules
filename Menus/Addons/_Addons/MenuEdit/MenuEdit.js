@@ -34,6 +34,19 @@ var YetaWF_Menus;
             this.Tree.Control.addEventListener(YetaWF_ComponentsHTML.TreeComponent.EVENTDROP, function (evt) {
                 _this.sendEntireMenu();
             });
+            // After submit (by Save button), submit the entire menu
+            var form = $YetaWF.Forms.getForm(this.Details);
+            $YetaWF.registerCustomEventHandler(form, YetaWF.Forms.EVENTPOSTSUBMIT, null, function (ev) {
+                if (ev.detail.success) {
+                    _this.getFormControls();
+                    _this.saveFields();
+                    _this.Tree.setSelectText(_this.MenuText.defaultValue);
+                    _this.ActiveNew = false;
+                    _this.sendEntireMenu();
+                    _this.update();
+                }
+                return true;
+            });
             $YetaWF.registerEventHandler(this.AddButton, "click", null, function (ev) {
                 if (_this.ActiveEntry && _this.changeSelection()) {
                     var li = _this.Tree.addEntry(_this.ActiveEntry, YLocs.YetaWF_Menus.NewEntryText, _this.Setup.NewEntry);
@@ -58,16 +71,7 @@ var YetaWF_Menus;
             });
             $YetaWF.registerEventHandler(this.SaveButton, "click", null, function (ev) {
                 var form = $YetaWF.Forms.getForm(_this.Details);
-                $YetaWF.Forms.submit(form, true, "ValidateCurrent=true", function (hasErrors) {
-                    _this.getFormControls();
-                    if (!hasErrors) {
-                        _this.saveFields();
-                        _this.Tree.setSelectText(_this.MenuText.defaultValue);
-                        _this.ActiveNew = false;
-                        _this.sendEntireMenu();
-                        _this.update();
-                    }
-                });
+                $YetaWF.Forms.submit(form, true, "ValidateCurrent=true");
                 return false;
             });
             $YetaWF.registerEventHandler(this.DeleteButton, "click", null, function (ev) {
@@ -458,22 +462,9 @@ var YetaWF_Menus;
             uri.addSearch("menuGuid", menuGuid);
             uri.addSearch("menuVersion", menuVersion);
             uri.addSearch("EntireMenu", JSON.stringify(this.buildHierarchy()));
-            $YetaWF.setLoading(true);
-            var request = new XMLHttpRequest();
-            request.open("POST", this.Setup.AjaxUrl);
-            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-            request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            request.onreadystatechange = function (ev) {
-                if (request.readyState === 4 /*DONE*/) {
-                    $YetaWF.setLoading(false);
-                    $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, function (result) {
-                        var sendResult = JSON.parse(result);
-                        menuVersionInput.value = sendResult.NewVersion.toString();
-                    });
-                }
-            };
-            var data = uri.toFormData();
-            request.send(data);
+            $YetaWF.post(this.Setup.AjaxUrl, uri.toFormData(), function (success, sendResult) {
+                menuVersionInput.value = sendResult.NewVersion.toString();
+            });
         };
         return MenuEditView;
     }());

@@ -473,28 +473,19 @@ var YetaWF_ComponentsHTML;
         DropDownListEditComponent.prototype.ajaxUpdate = function (data, ajaxUrl, onSuccess, onFailure) {
             var _this = this;
             this.closePopup(SendSelectEnum.No);
-            $YetaWF.setLoading(true);
             var uri = $YetaWF.parseUrl(ajaxUrl);
             uri.addSearchSimpleObject(data);
-            var request = new XMLHttpRequest();
-            request.open("POST", ajaxUrl);
-            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-            request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            request.onreadystatechange = function (ev) {
-                if (request.readyState === 4 /*DONE*/) {
-                    $YetaWF.setLoading(false);
-                    var retVal = $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, _this.Control, undefined, undefined, function (data) {
-                        _this.setOptionsHTML(data.OptionsHTML);
-                        if (onSuccess)
-                            onSuccess(data);
-                    });
-                    if (!retVal) {
-                        if (onFailure)
-                            onFailure(request.responseText);
-                    }
+            $YetaWF.post(ajaxUrl, uri.toFormData(), function (success, data) {
+                if (success) {
+                    _this.setOptionsHTML(data.OptionsHTML);
+                    if (onSuccess)
+                        onSuccess(data);
                 }
-            };
-            request.send(uri.toFormData());
+                else {
+                    if (onFailure)
+                        onFailure();
+                }
+            });
         };
         DropDownListEditComponent.TEMPLATE = "yt_dropdownlist_base";
         DropDownListEditComponent.SELECTOR = ".yt_dropdownlist_base.t_edit";
