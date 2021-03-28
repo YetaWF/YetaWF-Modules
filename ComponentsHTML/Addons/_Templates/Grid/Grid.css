@@ -299,7 +299,3 @@ ul.yGridActionMenu {
   z-index: 50000;
   font: var(--pm-1-font);
   position: absolute; }
-
-/* action icons within grid */
-.yt_grid .yActionIcons a img, .yt_grid .yActionIcons a i {
-  margin: .2em; }
