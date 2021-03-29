@@ -43,19 +43,17 @@
 
     a.y_act_buttonbar {
         padding: .3em .5em;
+        border: var(--bar-border);
         &.t_first {
             border-top-right-radius: 0;
             border-bottom-right-radius: 0;
-            border-right: var(--bar-border);
         }
         &.t_last {
-            border-left: none;
             border-top-left-radius: 0;
             border-bottom-left-radius: 0;
         }
         &.t_middle {
             border-radius: 0;
-            border-right: var(--bar-border);
         }
     }
 
