@@ -42,8 +42,8 @@ ul.yt_menu.t_display.t_large {
         background: var(--mm-0-a-bg-hover);
         color: var(--mm-0-a-clr-hover); }
       ul.yt_menu.t_display.t_large > li > a svg {
-        vertical-align: top;
-        margin-left: 1ch;
+        vertical-align: initial;
+        margin-left: .5ch;
         width: var(--mm-0-ddwidth);
         height: var(--mm-0-ddheight); }
     ul.yt_menu.t_display.t_large > li > ul {

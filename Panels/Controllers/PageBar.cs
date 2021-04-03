@@ -195,7 +195,7 @@ namespace YetaWF.Modules.Panels.Controllers {
                 });
             }
         }
-        private string? GetSVG(string svg) {
+        private string? GetSVG(string? svg) {
             if (string.IsNullOrWhiteSpace(svg)) return null;
             if (svg.StartsWith('#')) {
                 if (svg.Length <= 1) return null;

@@ -146,7 +146,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             [Caption("ZIP File"), Description("The ZIP file containing the module data to be imported (creates a new module) ")]
             [UIHint("FileUpload1"), Required]
-            public FileUpload1 UploadFile { get; set; }
+            public FileUpload1 UploadFile { get; set; } = null!;
 
             public ImportModuleModel() {
                 ModulePane_List = new List<string>();
