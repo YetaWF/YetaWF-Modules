@@ -86,11 +86,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     hb.Append($@" name='{FieldName}'");
                     // error state
                     string errClass = GetErrorClass();
-                    if (errClass != null)
-                        HtmlAttributes.Add("class", errClass);
+                    if (!string.IsNullOrWhiteSpace(errClass))
+                        HtmlBuilder.AddClass(HtmlAttributes, errClass);
                     // client side validation
                     string validations = GetValidation();
-                    if (validations != null)
+                    if (string.IsNullOrEmpty(validations))
                         HtmlAttributes.Add("data-v", validations);
                     break;
             }
