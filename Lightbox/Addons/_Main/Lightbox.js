@@ -55,6 +55,7 @@ var YetaWF_Lightbox;
         }
         LightboxModule.prototype.open = function (link) {
             $YetaWF.setLoading(true);
+            $YetaWF.closeOverlays();
             if (this.getImages(link)) {
                 this.addDivs();
                 this.showImage();

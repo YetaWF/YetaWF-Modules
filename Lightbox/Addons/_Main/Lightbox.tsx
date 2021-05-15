@@ -63,6 +63,7 @@ namespace YetaWF_Lightbox {
 
         private open(link: HTMLElement): boolean {
             $YetaWF.setLoading(true);
+            $YetaWF.closeOverlays();
             if (this.getImages(link)) {
                 this.addDivs();
                 this.showImage();
