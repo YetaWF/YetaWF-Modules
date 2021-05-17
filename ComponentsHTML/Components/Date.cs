@@ -44,7 +44,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <inheritdoc/>
         public Task<string> RenderAsync(DateTime? model) {
             if (model != null && (DateTime)model > DateTime.MinValue && (DateTime)model < DateTime.MaxValue) {
-                return Task.FromResult($@"<div{FieldSetup(FieldType.Anonymous)} class='yt_datetime t_display{GetClasses()}'>{HE(YetaWF.Core.Localize.Formatting.FormatDate(model))}</div>");
+                return Task.FromResult($@"<div{FieldSetup(FieldType.Anonymous)} class='yt_datetime t_display{GetClasses()}'>{HE(YetaWF.Core.Localize.Formatting.FormatDateOnly(model))}</div>");
             }
             return Task.FromResult(string.Empty);
         }
@@ -103,8 +103,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 setup.MaxDate = maxAttr.MaxDate;
 
             // model binding error handling
-            string internalValue = setup.InitialCalendarDate = $"{model:o}";
-            string displayValue = Formatting.FormatDate(model);
+            string internalValue = setup.InitialCalendarDate = $"{model?.Date:o}";
+            string displayValue = Formatting.FormatDateOnly(model);
             if (Manager.HasModelBindingErrorManager && Manager.ModelBindingErrorManager.TryGetAttemptedValue(PropertyName, out string? attemptedValue)) {
                 displayValue = internalValue = attemptedValue;
                 setup.InitialCalendarDate = string.Empty;

@@ -1177,8 +1177,12 @@ var YetaWF_ComponentsHTML;
         };
         DateTimeEditComponent.prototype.setHidden = function (dateVal) {
             var s = "";
-            if (dateVal != null)
-                s = dateVal.getUTCFullYear() + "-" + this.zeroPad(dateVal.getUTCMonth() + 1, 2) + "-" + this.zeroPad(dateVal.getUTCDate(), 2) + "T" + this.zeroPad(dateVal.getUTCHours(), 2) + ":" + this.zeroPad(dateVal.getUTCMinutes(), 2) + ":00.000Z";
+            if (dateVal != null) {
+                if (this.Setup.Style === DateTimeStyleEnum.DateTime || this.Setup.Style === DateTimeStyleEnum.Time)
+                    s = dateVal.getUTCFullYear() + "-" + this.zeroPad(dateVal.getUTCMonth() + 1, 2) + "-" + this.zeroPad(dateVal.getUTCDate(), 2) + "T" + this.zeroPad(dateVal.getUTCHours(), 2) + ":" + this.zeroPad(dateVal.getUTCMinutes(), 2) + ":00.000Z";
+                else if (this.Setup.Style === DateTimeStyleEnum.Date)
+                    s = dateVal.getUTCFullYear() + "-" + this.zeroPad(dateVal.getUTCMonth() + 1, 2) + "-" + this.zeroPad(dateVal.getUTCDate(), 2) + "T00:00:00.000Z";
+            }
             this.InputHidden.setAttribute("value", s);
         };
         DateTimeEditComponent.prototype.setHiddenInvalid = function (dateVal) {
