@@ -117,14 +117,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public DateTime MaxDate { get; set; }
             public double MinTime { get; set; }
             public double MaxTime { get; set; }
-            public Formatting.DateFormatEnum DateFormat { get; set; }
-            public Formatting.TimeFormatEnum TimeFormat { get; set; }
-            public List<string> WeekDays { get; set; }
-            public List<string> WeekDays2 { get; set; }
-            public List<string> Months { get; set; }
-            public string TodayString { get; set; } = null!;
-            public string Today { get; set; } = null!;
-            public double BaseUtcOffset { get; set; }
+            public string TodayString { get; set; }
+            public string Today { get; set; }
 
             public Setup() {
                 Style = DateTimeStyleEnum.DateTime;
@@ -132,43 +126,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 MaxDate = new DateTime(2199, 12, 31);
                 MinTime = new TimeSpan(0, 0, 0).TotalMinutes;
                 MaxTime = new TimeSpan(23, 59, 0).TotalMinutes;
-                DateFormat = UserSettings.GetProperty<Formatting.DateFormatEnum>("DateFormat");
-                TimeFormat = UserSettings.GetProperty<Formatting.TimeFormatEnum>("TimeFormat");
-                WeekDays2 = new List<string> {
-                    Formatting.GetDayName2Chars(DayOfWeek.Sunday),
-                    Formatting.GetDayName2Chars(DayOfWeek.Monday),
-                    Formatting.GetDayName2Chars(DayOfWeek.Tuesday),
-                    Formatting.GetDayName2Chars(DayOfWeek.Wednesday),
-                    Formatting.GetDayName2Chars(DayOfWeek.Thursday),
-                    Formatting.GetDayName2Chars(DayOfWeek.Friday),
-                    Formatting.GetDayName2Chars(DayOfWeek.Saturday),
-                };
-                WeekDays = new List<string> {
-                    Formatting.GetDayName(DayOfWeek.Sunday),
-                    Formatting.GetDayName(DayOfWeek.Monday),
-                    Formatting.GetDayName(DayOfWeek.Tuesday),
-                    Formatting.GetDayName(DayOfWeek.Wednesday),
-                    Formatting.GetDayName(DayOfWeek.Thursday),
-                    Formatting.GetDayName(DayOfWeek.Friday),
-                    Formatting.GetDayName(DayOfWeek.Saturday),
-                };
-                Months = new List<string> {
-                    Formatting.GetMonthName(1),
-                    Formatting.GetMonthName(2),
-                    Formatting.GetMonthName(3),
-                    Formatting.GetMonthName(4),
-                    Formatting.GetMonthName(5),
-                    Formatting.GetMonthName(6),
-                    Formatting.GetMonthName(7),
-                    Formatting.GetMonthName(8),
-                    Formatting.GetMonthName(9),
-                    Formatting.GetMonthName(10),
-                    Formatting.GetMonthName(11),
-                    Formatting.GetMonthName(12),
-                };
                 TodayString = Formatting.FormatLongDate(DateTime.UtcNow);
                 Today = $"{DateTime.UtcNow:o}";
-                BaseUtcOffset = Manager.GetTimeZoneInfo().BaseUtcOffset.TotalSeconds;
             }
         }
 

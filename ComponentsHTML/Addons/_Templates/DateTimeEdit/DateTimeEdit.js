@@ -34,7 +34,7 @@ var YetaWF_ComponentsHTML;
         DateFormatEnum[DateFormatEnum["YYYYMMDD"] = 20] = "YYYYMMDD";
         DateFormatEnum[DateFormatEnum["YYYYMMDDdash"] = 21] = "YYYYMMDDdash";
         DateFormatEnum[DateFormatEnum["YYYYMMDDdot"] = 22] = "YYYYMMDDdot";
-    })(DateFormatEnum || (DateFormatEnum = {}));
+    })(DateFormatEnum = YetaWF_ComponentsHTML.DateFormatEnum || (YetaWF_ComponentsHTML.DateFormatEnum = {}));
     var TimeFormatEnum;
     (function (TimeFormatEnum) {
         TimeFormatEnum[TimeFormatEnum["HHMMAM"] = 0] = "HHMMAM";
@@ -45,7 +45,7 @@ var YetaWF_ComponentsHTML;
         TimeFormatEnum[TimeFormatEnum["HHMMSSAMdot"] = 21] = "HHMMSSAMdot";
         TimeFormatEnum[TimeFormatEnum["HHMMSS"] = 30] = "HHMMSS";
         TimeFormatEnum[TimeFormatEnum["HHMMSSdot"] = 31] = "HHMMSSdot";
-    })(TimeFormatEnum || (TimeFormatEnum = {}));
+    })(TimeFormatEnum = YetaWF_ComponentsHTML.TimeFormatEnum || (YetaWF_ComponentsHTML.TimeFormatEnum = {}));
     var DateTimeEditComponent = /** @class */ (function (_super) {
         __extends(DateTimeEditComponent, _super);
         function DateTimeEditComponent(controlId, setup) {
@@ -67,23 +67,24 @@ var YetaWF_ComponentsHTML;
             _this.YearPopup = null;
             _this.MonthPopup = null;
             _this.tempTimeSelectedValue = null;
-            _this.tempCalSelectedValueUTC = null;
+            _this.tempCalSelectedValue = null;
             _this.tempArrow = null;
             _this.tempYearSelectedValue = null;
             _this.tempMonthSelectedValue = null;
-            _this.IgnoreResizeUntil = 0;
-            _this._SelectedUTC = new Date();
             _this._SelectedUser = new Date();
-            _this._TempCalCurrentDateUTC = new Date();
             _this._TempCalCurrentDateUser = new Date();
+            _this.IgnoreResizeUntil = 0;
             _this.Setup = setup;
+            _this.WeekDays2 = YLocs.YetaWF_ComponentsHTML.WeekDays2.split(",");
+            _this.WeekDays = YLocs.YetaWF_ComponentsHTML.WeekDays.split(",");
+            _this.MonthNames = YLocs.YetaWF_ComponentsHTML.MonthNames.split(",");
             _this.InputHidden = $YetaWF.getElement1BySelector("input[type='hidden']", [_this.Control]);
             _this.InputControl = $YetaWF.getElement1BySelector("input[type='text']", [_this.Control]);
             var warn = $YetaWF.createElement("div", { class: "t_warn", style: "display:none" });
             warn.innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_exclamation_triangle;
             _this.InputControl.insertAdjacentElement("afterend", warn);
-            _this.SelectedUTC = new Date(_this.Setup.InitialCalendarDate || _this.Setup.Today);
-            _this.TempCalCurrentDateUTC = new Date(_this.SelectedUTC);
+            _this.SelectedUser = new Date(_this.Setup.InitialCalendarDate || _this.Setup.Today);
+            _this.TempCalCurrentDateUser = new Date(_this.SelectedUser);
             $YetaWF.registerEventHandler(_this.Control, "mousedown", ".t_time", function (ev) {
                 if (_this.enabled) {
                     if (_this.TimePopup) {
@@ -186,7 +187,7 @@ var YetaWF_ComponentsHTML;
                         else if (key === "Enter") {
                             var month = _this.getSelectedValue(_this.MonthPopup);
                             var date = _this.TempCalCurrentDateUser;
-                            date.setUTCMonth(Number(month));
+                            date.setMonth(Number(month));
                             var tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [_this.CalendarPopup]);
                             _this.buildCalendarMonthPage(tbody, date);
                             _this.updateCalendarTitle();
@@ -218,7 +219,7 @@ var YetaWF_ComponentsHTML;
                         else if (key === "Enter") {
                             var year = _this.getSelectedValue(_this.YearPopup);
                             var date = _this.TempCalCurrentDateUser;
-                            date.setUTCFullYear(Number(year));
+                            date.setFullYear(Number(year));
                             var tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [_this.CalendarPopup]);
                             _this.buildCalendarMonthPage(tbody, date);
                             _this.updateCalendarTitle();
@@ -237,7 +238,7 @@ var YetaWF_ComponentsHTML;
                         else {
                             if (key === "Enter") {
                                 _this.TempCalCurrentDateUser = new Date(date);
-                                _this.dateSelectedValueUTC = _this.TempCalCurrentDateUTC;
+                                _this.dateSelectedValue = _this.TempCalCurrentDateUser;
                                 _this.close();
                                 _this.sendChangeEvent();
                                 return false;
@@ -247,41 +248,41 @@ var YetaWF_ComponentsHTML;
                                 return false;
                             }
                             else if (key === "ArrowUp") {
-                                date.setUTCDate(date.getUTCDate() - 7);
+                                date.setDate(date.getDate() - 7);
                             }
                             else if (key === "ArrowDown") {
-                                date.setUTCDate(date.getUTCDate() + 7);
+                                date.setDate(date.getDate() + 7);
                             }
                             else if (key === "ArrowLeft") {
-                                date.setUTCDate(date.getUTCDate() - 1);
+                                date.setDate(date.getDate() - 1);
                             }
                             else if (key === "ArrowRight") {
-                                date.setUTCDate(date.getUTCDate() + 1);
+                                date.setDate(date.getDate() + 1);
                             }
                             else if (key === "PageUp") {
-                                var dom = date.getUTCDate(); // day of month current month
-                                date.setUTCDate(0); // last day of last month
-                                var daysInMonth = date.getUTCDate();
+                                var dom = date.getDate(); // day of month current month
+                                date.setDate(0); // last day of last month
+                                var daysInMonth = date.getDate();
                                 if (dom >= daysInMonth)
                                     dom = daysInMonth;
-                                date.setUTCDate(dom);
+                                date.setDate(dom);
                             }
                             else if (key === "PageDown") {
-                                var dom = date.getUTCDate(); // day of month current month
-                                date.setUTCDate(1); // first day of this month
-                                date.setUTCMonth(date.getUTCMonth() + 2); // first day of next-next month
-                                date.setUTCDate(0); // last day of next month
-                                var daysInMonth = date.getUTCDate();
+                                var dom = date.getDate(); // day of month current month
+                                date.setDate(1); // first day of this month
+                                date.setMonth(date.getMonth() + 2); // first day of next-next month
+                                date.setDate(0); // last day of next month
+                                var daysInMonth = date.getDate();
                                 if (dom >= daysInMonth)
                                     dom = daysInMonth;
-                                date.setUTCDate(dom);
+                                date.setDate(dom);
                             }
                             else if (key === "Home") {
-                                date.setUTCDate(1);
+                                date.setDate(1);
                             }
                             else if (key === "End") {
-                                date.setUTCMonth(date.getUTCMonth() + 1);
-                                date.setUTCDate(date.getUTCDate() - 1);
+                                date.setMonth(date.getMonth() + 1);
+                                date.setDate(date.getDate() - 1);
                             }
                             else
                                 return true;
@@ -353,6 +354,7 @@ var YetaWF_ComponentsHTML;
                     this.TimeSelectedUser = tt.token;
                     break;
             }
+            this.setHidden(this.SelectedUser);
             return true;
         };
         DateTimeEditComponent.prototype.extractInputDate = function (text) {
@@ -361,14 +363,14 @@ var YetaWF_ComponentsHTML;
             var nt;
             var rt;
             var sep = "/";
-            switch (this.Setup.DateFormat) {
+            switch (YLocs.YetaWF_ComponentsHTML.DateFormat) {
                 default:
                 case DateFormatEnum.MMDDYYYYdash:
                 case DateFormatEnum.MMDDYYYYdot:
                 case DateFormatEnum.MMDDYYYY:
-                    if (this.Setup.DateFormat === DateFormatEnum.MMDDYYYYdash)
+                    if (YLocs.YetaWF_ComponentsHTML.DateFormat === DateFormatEnum.MMDDYYYYdash)
                         sep = "-";
-                    else if (this.Setup.DateFormat === DateFormatEnum.MMDDYYYYdot)
+                    else if (YLocs.YetaWF_ComponentsHTML.DateFormat === DateFormatEnum.MMDDYYYYdot)
                         sep = ".";
                     nt = this.getNumberToken(text);
                     if (!nt.success)
@@ -397,9 +399,9 @@ var YetaWF_ComponentsHTML;
                 case DateFormatEnum.DDMMYYYY:
                 case DateFormatEnum.DDMMYYYYdash:
                 case DateFormatEnum.DDMMYYYYdot:
-                    if (this.Setup.DateFormat === DateFormatEnum.DDMMYYYYdash)
+                    if (YLocs.YetaWF_ComponentsHTML.DateFormat === DateFormatEnum.DDMMYYYYdash)
                         sep = "-";
-                    else if (this.Setup.DateFormat === DateFormatEnum.DDMMYYYYdot)
+                    else if (YLocs.YetaWF_ComponentsHTML.DateFormat === DateFormatEnum.DDMMYYYYdot)
                         sep = ".";
                     nt = this.getNumberToken(text);
                     if (!nt.success)
@@ -428,9 +430,9 @@ var YetaWF_ComponentsHTML;
                 case DateFormatEnum.YYYYMMDD:
                 case DateFormatEnum.YYYYMMDDdash:
                 case DateFormatEnum.YYYYMMDDdot:
-                    if (this.Setup.DateFormat === DateFormatEnum.YYYYMMDDdash)
+                    if (YLocs.YetaWF_ComponentsHTML.DateFormat === DateFormatEnum.YYYYMMDDdash)
                         sep = "-";
-                    else if (this.Setup.DateFormat === DateFormatEnum.YYYYMMDDdot)
+                    else if (YLocs.YetaWF_ComponentsHTML.DateFormat === DateFormatEnum.YYYYMMDDdot)
                         sep = ".";
                     nt = this.getNumberToken(text);
                     if (!nt.success)
@@ -463,10 +465,9 @@ var YetaWF_ComponentsHTML;
                 return dt;
             var minDate = new Date(this.Setup.MinDate);
             var maxDate = new Date(this.Setup.MaxDate);
-            if (y < minDate.getUTCFullYear() || y > maxDate.getUTCFullYear())
+            if (y < minDate.getFullYear() || y > maxDate.getFullYear())
                 return dt;
-            dt.token = new Date(y, m - 1, d);
-            dt.token.setUTCSeconds(dt.token.getUTCSeconds() - this.Setup.BaseUtcOffset);
+            dt.token = new Date(y, m - 1, d, 0, 0, 0);
             dt.text = text;
             dt.success = true;
             return dt;
@@ -478,13 +479,13 @@ var YetaWF_ComponentsHTML;
             var rt;
             var wt;
             var sep = ":";
-            switch (this.Setup.TimeFormat) {
+            switch (YLocs.YetaWF_ComponentsHTML.TimeFormat) {
                 default:
                 case TimeFormatEnum.HHMMAM:
                 case TimeFormatEnum.HHMMSSAM:
                 case TimeFormatEnum.HHMMAMdot:
                 case TimeFormatEnum.HHMMSSAMdot: {
-                    if (this.Setup.TimeFormat === TimeFormatEnum.HHMMAMdot)
+                    if (YLocs.YetaWF_ComponentsHTML.TimeFormat === TimeFormatEnum.HHMMAMdot)
                         sep = ".";
                     nt = this.getNumberToken(text);
                     if (!nt.success)
@@ -539,7 +540,7 @@ var YetaWF_ComponentsHTML;
                 case TimeFormatEnum.HHMMSS:
                 case TimeFormatEnum.HHMMdot:
                 case TimeFormatEnum.HHMMSSdot: {
-                    if (this.Setup.TimeFormat === TimeFormatEnum.HHMMdot)
+                    if (YLocs.YetaWF_ComponentsHTML.TimeFormat === TimeFormatEnum.HHMMdot)
                         sep = ".";
                     nt = this.getNumberToken(text);
                     if (!nt.success)
@@ -710,8 +711,8 @@ var YetaWF_ComponentsHTML;
         DateTimeEditComponent.prototype.openCalendar = function () {
             var _this = this;
             this.close();
-            var month = this.Setup.Months[this.TempCalCurrentDateUser.getUTCMonth()];
-            var year = this.TempCalCurrentDateUser.getUTCFullYear().toFixed(0);
+            var month = this.MonthNames[this.TempCalCurrentDateUser.getMonth()];
+            var year = this.TempCalCurrentDateUser.getFullYear().toFixed(0);
             this.CalendarPopup =
                 $YetaWF.createElement("div", { id: DateTimeEditComponent.CALENDARPOPUPID, "data-owner": this.ControlId, "aria-hidden": "false" },
                     $YetaWF.createElement("div", { class: "t_container", "data-role": "popup", "aria-hidden": "false" },
@@ -727,13 +728,13 @@ var YetaWF_ComponentsHTML;
                                 $YetaWF.createElement("table", { tabindex: "0", role: "grid" },
                                     $YetaWF.createElement("thead", null,
                                         $YetaWF.createElement("tr", { role: "row" },
-                                            $YetaWF.createElement("th", { scope: "col", "data-tooltip": this.Setup.WeekDays[0] }, this.Setup.WeekDays2[0]),
-                                            $YetaWF.createElement("th", { scope: "col", "data-tooltip": this.Setup.WeekDays[1] }, this.Setup.WeekDays2[1]),
-                                            $YetaWF.createElement("th", { scope: "col", "data-tooltip": this.Setup.WeekDays[2] }, this.Setup.WeekDays2[2]),
-                                            $YetaWF.createElement("th", { scope: "col", "data-tooltip": this.Setup.WeekDays[3] }, this.Setup.WeekDays2[3]),
-                                            $YetaWF.createElement("th", { scope: "col", "data-tooltip": this.Setup.WeekDays[4] }, this.Setup.WeekDays2[4]),
-                                            $YetaWF.createElement("th", { scope: "col", "data-tooltip": this.Setup.WeekDays[5] }, this.Setup.WeekDays2[5]),
-                                            $YetaWF.createElement("th", { scope: "col", "data-tooltip": this.Setup.WeekDays[6] }, this.Setup.WeekDays2[6]))),
+                                            $YetaWF.createElement("th", { scope: "col", "data-tooltip": this.WeekDays[0] }, this.WeekDays2[0]),
+                                            $YetaWF.createElement("th", { scope: "col", "data-tooltip": this.WeekDays[1] }, this.WeekDays2[1]),
+                                            $YetaWF.createElement("th", { scope: "col", "data-tooltip": this.WeekDays[2] }, this.WeekDays2[2]),
+                                            $YetaWF.createElement("th", { scope: "col", "data-tooltip": this.WeekDays[3] }, this.WeekDays2[3]),
+                                            $YetaWF.createElement("th", { scope: "col", "data-tooltip": this.WeekDays[4] }, this.WeekDays2[4]),
+                                            $YetaWF.createElement("th", { scope: "col", "data-tooltip": this.WeekDays[5] }, this.WeekDays2[5]),
+                                            $YetaWF.createElement("th", { scope: "col", "data-tooltip": this.WeekDays[6] }, this.WeekDays2[6]))),
                                     $YetaWF.createElement("tbody", null))),
                             $YetaWF.createElement("div", { class: "t_footer" },
                                 $YetaWF.createElement("a", { href: "#", class: "t_todaysel" }, this.Setup.TodayString)))));
@@ -765,15 +766,15 @@ var YetaWF_ComponentsHTML;
             $YetaWF.registerEventHandler(this.CalendarPopup, "mousedown", "table td .t_link", function (ev) {
                 var anchor = ev.__YetaWFElem;
                 var value = $YetaWF.getAttribute(anchor, "data-value");
-                _this.tempCalSelectedValueUTC = value;
+                _this.tempCalSelectedValue = value;
                 return false;
             });
             $YetaWF.registerEventHandler(this.CalendarPopup, "mouseup", "table td .t_link", function (ev) {
                 var anchor = ev.__YetaWFElem;
                 var value = $YetaWF.getAttribute(anchor, "data-value");
-                if (_this.tempCalSelectedValueUTC === value) {
-                    _this.dateSelectedValueUTC = _this.TempCalCurrentDateUTC = new Date(_this.tempCalSelectedValueUTC);
-                    _this.tempCalSelectedValueUTC = null;
+                if (_this.tempCalSelectedValue === value) {
+                    _this.dateSelectedValue = _this.TempCalCurrentDateUser = new Date(_this.tempCalSelectedValue);
+                    _this.tempCalSelectedValue = null;
                     _this.close();
                     _this.sendChangeEvent();
                 }
@@ -791,10 +792,10 @@ var YetaWF_ComponentsHTML;
                 if (_this.tempArrow === anchor) {
                     var date = _this.TempCalCurrentDateUser;
                     if ($YetaWF.elementHasClass(anchor, "t_prev")) {
-                        date.setUTCMonth(date.getUTCMonth() - 1);
+                        date.setMonth(date.getMonth() - 1);
                     }
                     else {
-                        date.setUTCMonth(date.getUTCMonth() + 1);
+                        date.setMonth(date.getMonth() + 1);
                     }
                     var tbody_1 = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [_this.CalendarPopup]);
                     _this.buildCalendarMonthPage(tbody_1, date);
@@ -807,8 +808,8 @@ var YetaWF_ComponentsHTML;
                 return false;
             });
             $YetaWF.registerEventHandler(this.CalendarPopup, "mousedown", ".t_footer .t_todaysel", function (ev) {
-                _this.dateSelectedValueUTC = new Date(_this.Setup.Today);
-                _this.tempCalSelectedValueUTC = null;
+                _this.dateSelectedValue = new Date(_this.Setup.Today);
+                _this.tempCalSelectedValue = null;
                 _this.close();
                 _this.sendChangeEvent();
                 return false;
@@ -842,11 +843,10 @@ var YetaWF_ComponentsHTML;
         DateTimeEditComponent.prototype.buildCalendarMonthPage = function (tbody, startDate) {
             this.TempCalCurrentDateUser = new Date(startDate);
             var date = new Date(startDate);
-            var startMonth = startDate.getUTCMonth();
-            date.setUTCDate(1); // set the first day
-            date.setUTCDate(-date.getUTCDay() + 1); // get to the start of the week (Sunday)
+            var startMonth = startDate.getMonth();
+            date.setDate(1); // set the first day
+            date.setDate(-date.getDay() + 1); // get to the start of the week (Sunday)
             var today = new Date(this.Setup.Today);
-            today.setUTCSeconds(today.getUTCSeconds() + this.Setup.BaseUtcOffset);
             tbody.innerHTML = "";
             var selDate = this.TempCalCurrentDateUser;
             for (var last = false; !last;) {
@@ -855,25 +855,25 @@ var YetaWF_ComponentsHTML;
                     var css = "";
                     if (day === 0 || day === 6) // Saturday, Sunday
                         css += " t_weekend";
-                    if (date < startDate && date.getUTCMonth() !== startMonth)
+                    if (date < startDate && date.getMonth() !== startMonth)
                         css += " t_othermonth";
-                    else if (date > startDate && date.getUTCMonth() !== startMonth) {
+                    else if (date > startDate && date.getMonth() !== startMonth) {
                         css += " t_othermonth";
                         last = true;
                     }
-                    if (date.getUTCFullYear() === selDate.getUTCFullYear() && date.getUTCMonth() === selDate.getUTCMonth() && date.getUTCDate() === selDate.getUTCDate())
+                    if (date.getFullYear() === selDate.getFullYear() && date.getMonth() === selDate.getMonth() && date.getDate() === selDate.getDate())
                         css += " t_selected";
-                    if (date.getUTCDate() === today.getUTCDate() && date.getUTCMonth() === today.getUTCMonth() && date.getUTCFullYear() === today.getUTCFullYear())
+                    if (date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear())
                         css += " t_today";
                     css = css.trim();
                     var tt = this.getLongFormattedDate(date);
                     var cell = $YetaWF.createElement("td", { class: css, role: "gridcell" },
-                        $YetaWF.createElement("a", { tabindex: "-1", class: "t_link", href: "#", "data-value": this.UserToUTC(date).toISOString(), title: tt }, date.getUTCDate()));
+                        $YetaWF.createElement("a", { tabindex: "-1", class: "t_link", href: "#", "data-value": date.toISOString(), title: tt }, date.getDate()));
                     row.appendChild(cell);
-                    date.setUTCDate(date.getUTCDate() + 1);
+                    date.setDate(date.getDate() + 1);
                 }
                 tbody.appendChild(row);
-                if (!last && date.getUTCMonth() !== startMonth)
+                if (!last && date.getMonth() !== startMonth)
                     last = true;
             }
         };
@@ -891,9 +891,9 @@ var YetaWF_ComponentsHTML;
             var minDate = new Date(this.Setup.MinDate);
             var maxDate = new Date(this.Setup.MaxDate);
             var ul = $YetaWF.getElement1BySelector("ul", [this.YearPopup]);
-            var startYear = minDate.getUTCFullYear();
-            var endYear = maxDate.getUTCFullYear();
-            var selValue = this.TempCalCurrentDateUser.getUTCFullYear();
+            var startYear = minDate.getFullYear();
+            var endYear = maxDate.getFullYear();
+            var selValue = this.TempCalCurrentDateUser.getFullYear();
             var html = "";
             for (var i = startYear; i <= endYear; ++i) {
                 var extra = "";
@@ -929,7 +929,7 @@ var YetaWF_ComponentsHTML;
                 var value = Number($YetaWF.getAttribute(li, "data-value"));
                 if (_this.tempYearSelectedValue === value) {
                     var date = _this.TempCalCurrentDateUser;
-                    date.setUTCFullYear(value);
+                    date.setFullYear(value);
                     var tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [_this.CalendarPopup]);
                     _this.buildCalendarMonthPage(tbody, date);
                     _this.updateCalendarTitle();
@@ -973,13 +973,13 @@ var YetaWF_ComponentsHTML;
             var ul = $YetaWF.getElement1BySelector("ul", [this.MonthPopup]);
             var startMonth = 0;
             var endMonth = 11;
-            var selValue = this.TempCalCurrentDateUser.getUTCMonth();
+            var selValue = this.TempCalCurrentDateUser.getMonth();
             var html = "";
             for (var i = startMonth; i <= endMonth; ++i) {
                 var extra = "";
                 if (i === selValue)
                     extra = " t_selected";
-                html += "<li tabindex=\"-1\" role=\"option\" unselectable=\"on\" class=\"t_item" + extra + "\" data-value=\"" + i + "\">" + this.Setup.Months[i] + "</li>"; //Format
+                html += "<li tabindex=\"-1\" role=\"option\" unselectable=\"on\" class=\"t_item" + extra + "\" data-value=\"" + i + "\">" + this.MonthNames[i] + "</li>"; //Format
             }
             ul.innerHTML = html;
             var monthSel = $YetaWF.getElement1BySelector(".t_header .t_month", [this.CalendarPopup]);
@@ -1009,7 +1009,7 @@ var YetaWF_ComponentsHTML;
                 var value = Number($YetaWF.getAttribute(li, "data-value"));
                 if (_this.tempMonthSelectedValue === value) {
                     var date = _this.TempCalCurrentDateUser;
-                    date.setUTCMonth(value);
+                    date.setMonth(value);
                     var tbody = $YetaWF.getElement1BySelector(".t_calendarbody tbody", [_this.CalendarPopup]);
                     _this.buildCalendarMonthPage(tbody, date);
                     _this.updateCalendarTitle();
@@ -1042,15 +1042,15 @@ var YetaWF_ComponentsHTML;
         DateTimeEditComponent.prototype.updateCalendarTitle = function () {
             if (!this.CalendarPopup)
                 return;
-            var month = this.Setup.Months[this.TempCalCurrentDateUser.getUTCMonth()];
-            var year = this.TempCalCurrentDateUser.getUTCFullYear();
+            var month = this.MonthNames[this.TempCalCurrentDateUser.getMonth()];
+            var year = this.TempCalCurrentDateUser.getFullYear();
             var monthSpan = $YetaWF.getElement1BySelector(".t_header .t_month", [this.CalendarPopup]);
             monthSpan.innerHTML = month;
             var yearSpan = $YetaWF.getElement1BySelector(".t_header .t_year", [this.CalendarPopup]);
             yearSpan.innerHTML = year.toFixed(0);
         };
         DateTimeEditComponent.prototype.getFormattedDateTime = function (date) {
-            var time = date.getUTCHours() * 60 + date.getUTCMinutes();
+            var time = date.getHours() * 60 + date.getMinutes();
             switch (this.Setup.Style) {
                 default:
                 case DateTimeStyleEnum.DateTime:
@@ -1062,10 +1062,10 @@ var YetaWF_ComponentsHTML;
             }
         };
         DateTimeEditComponent.prototype.getFormattedDate = function (date) {
-            var d = date.getUTCDate();
-            var m = date.getUTCMonth() + 1;
-            var y = date.getUTCFullYear();
-            switch (this.Setup.DateFormat) {
+            var d = date.getDate();
+            var m = date.getMonth() + 1;
+            var y = date.getFullYear();
+            switch (YLocs.YetaWF_ComponentsHTML.DateFormat) {
                 default:
                 case DateFormatEnum.MMDDYYYY:
                     return this.zeroPad(m, 2) + "/" + this.zeroPad(d, 2) + "/" + y;
@@ -1090,7 +1090,7 @@ var YetaWF_ComponentsHTML;
         DateTimeEditComponent.prototype.getFormattedTime = function (time) {
             var h = Math.floor(time / 60);
             var m = time % 60;
-            switch (this.Setup.TimeFormat) {
+            switch (YLocs.YetaWF_ComponentsHTML.TimeFormat) {
                 default:
                 case TimeFormatEnum.HHMMAM:
                 case TimeFormatEnum.HHMMSSAM:
@@ -1099,7 +1099,7 @@ var YetaWF_ComponentsHTML;
                     var hour = h % 12;
                     if (hour === 0)
                         hour += 12;
-                    switch (this.Setup.TimeFormat) {
+                    switch (YLocs.YetaWF_ComponentsHTML.TimeFormat) {
                         default:
                         case TimeFormatEnum.HHMMAM:
                         case TimeFormatEnum.HHMMSSAM:
@@ -1125,24 +1125,24 @@ var YetaWF_ComponentsHTML;
             return s;
         };
         DateTimeEditComponent.prototype.getLongFormattedDate = function (date) {
-            var day = date.getUTCDay();
-            var dom = date.getUTCDate();
-            var m = date.getUTCMonth();
-            var y = date.getUTCFullYear();
-            switch (this.Setup.DateFormat) {
+            var day = date.getDay();
+            var dom = date.getDate();
+            var m = date.getMonth();
+            var y = date.getFullYear();
+            switch (YLocs.YetaWF_ComponentsHTML.DateFormat) {
                 default:
                 case DateFormatEnum.MMDDYYYY:
                 case DateFormatEnum.MMDDYYYYdash:
                 case DateFormatEnum.MMDDYYYYdot:
-                    return this.Setup.WeekDays[day] + ", " + this.Setup.Months[m] + " " + dom + ", " + y;
+                    return this.WeekDays[day] + ", " + this.MonthNames[m] + " " + dom + ", " + y;
                 case DateFormatEnum.DDMMYYYY:
                 case DateFormatEnum.DDMMYYYYdash:
                 case DateFormatEnum.DDMMYYYYdot:
-                    return this.Setup.WeekDays[day] + ", " + dom + " " + this.Setup.Months[m] + ", " + y;
+                    return this.WeekDays[day] + ", " + dom + " " + this.MonthNames[m] + ", " + y;
                 case DateFormatEnum.YYYYMMDD:
                 case DateFormatEnum.YYYYMMDDdash:
                 case DateFormatEnum.YYYYMMDDdot:
-                    return y + ", " + this.Setup.Months[m] + " " + dom + ", " + this.Setup.WeekDays[day];
+                    return y + ", " + this.MonthNames[m] + " " + dom + ", " + this.WeekDays[day];
             }
         };
         DateTimeEditComponent.prototype.setSelectedIndex = function (popup, index) {
@@ -1184,35 +1184,12 @@ var YetaWF_ComponentsHTML;
         DateTimeEditComponent.prototype.setHiddenInvalid = function (dateVal) {
             this.InputHidden.setAttribute("value", dateVal);
         };
-        Object.defineProperty(DateTimeEditComponent.prototype, "SelectedUTC", {
-            get: function () {
-                return this._SelectedUTC;
-            },
-            set: function (date) {
-                this._SelectedUTC = new Date(date);
-                this._SelectedUser = this.UTCToUser(date);
-            },
-            enumerable: false,
-            configurable: true
-        });
         Object.defineProperty(DateTimeEditComponent.prototype, "SelectedUser", {
             get: function () {
                 return this._SelectedUser;
             },
             set: function (date) {
                 this._SelectedUser = new Date(date);
-                this._SelectedUTC = this.UserToUTC(date);
-            },
-            enumerable: false,
-            configurable: true
-        });
-        Object.defineProperty(DateTimeEditComponent.prototype, "TempCalCurrentDateUTC", {
-            get: function () {
-                return this._TempCalCurrentDateUTC;
-            },
-            set: function (date) {
-                this._TempCalCurrentDateUTC = new Date(date);
-                this._TempCalCurrentDateUser = this.UTCToUser(date);
             },
             enumerable: false,
             configurable: true
@@ -1223,45 +1200,34 @@ var YetaWF_ComponentsHTML;
             },
             set: function (date) {
                 this._TempCalCurrentDateUser = new Date(date);
-                this._TempCalCurrentDateUTC = this.UserToUTC(date);
             },
             enumerable: false,
             configurable: true
         });
-        DateTimeEditComponent.prototype.UTCToUser = function (date) {
-            var d = new Date(date);
-            d.setUTCSeconds(d.getUTCSeconds() + this.Setup.BaseUtcOffset);
-            return d;
-        };
-        DateTimeEditComponent.prototype.UserToUTC = function (date) {
-            var d = new Date(date);
-            d.setUTCSeconds(d.getUTCSeconds() - this.Setup.BaseUtcOffset);
-            return d;
-        };
         Object.defineProperty(DateTimeEditComponent.prototype, "TimeSelectedUser", {
             get: function () {
-                return this.SelectedUser.getUTCHours() * 60 + this.SelectedUser.getUTCMinutes();
+                return this.SelectedUser.getHours() * 60 + this.SelectedUser.getMinutes();
             },
             set: function (value) {
                 var d = new Date(this.SelectedUser);
-                d.setUTCHours(value / 60);
-                d.setUTCMinutes(value % 60);
-                d.setUTCSeconds(0);
-                d.setUTCMilliseconds(0);
+                d.setHours(value / 60);
+                d.setMinutes(value % 60);
+                d.setSeconds(0);
+                d.setMilliseconds(0);
                 this.SelectedUser = d;
                 this.InputControl.value = this.getFormattedDateTime(this.SelectedUser);
-                this.setHidden(this.SelectedUTC);
+                this.setHidden(this.SelectedUser);
             },
             enumerable: false,
             configurable: true
         });
-        Object.defineProperty(DateTimeEditComponent.prototype, "dateSelectedValueUTC", {
+        Object.defineProperty(DateTimeEditComponent.prototype, "dateSelectedValue", {
             get: function () {
                 return this.SelectedUser;
             },
             set: function (date) {
                 var time = this.TimeSelectedUser;
-                this.SelectedUTC = date;
+                this.SelectedUser = date;
                 this.TimeSelectedUser = time;
             },
             enumerable: false,
@@ -1270,7 +1236,7 @@ var YetaWF_ComponentsHTML;
         Object.defineProperty(DateTimeEditComponent.prototype, "value", {
             // API
             get: function () {
-                return new Date(this.dateSelectedValueUTC);
+                return new Date(this.dateSelectedValue);
             },
             enumerable: false,
             configurable: true
@@ -1283,7 +1249,7 @@ var YetaWF_ComponentsHTML;
             configurable: true
         });
         DateTimeEditComponent.prototype.clear = function () {
-            this.SelectedUTC = new Date();
+            this.SelectedUser = new Date();
             this.InputControl.value = "";
             this.setHidden(null);
         };

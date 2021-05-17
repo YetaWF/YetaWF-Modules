@@ -35,15 +35,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
-    //public class WeeklyHoursDisplayComponent : WeeklyHoursComponent, IYetaWFComponent<WeeklyHours?> {
-
-    //    public override ComponentType GetComponentType() { return ComponentType.Display; }
-
-    //    public Task<string> RenderAsync(WeeklyHours model) {
-    //        HtmlBuilder hb = new HtmlBuilder();
-    //    }
-    //}
-
     /// <summary>
     /// Allows entry of time ranges for an entire week, two time ranges for each day (typically AM and PM), such as office opening hours, optionally "Closed". The model specifies the selected weekly daytime ranges.
     /// </summary>
