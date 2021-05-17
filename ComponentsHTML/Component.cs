@@ -90,7 +90,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         HtmlBuilder.AddClass(HtmlAttributes, errClass);
                     // client side validation
                     string validations = GetValidation();
-                    if (string.IsNullOrEmpty(validations))
+                    if (!string.IsNullOrEmpty(validations))
                         HtmlAttributes.Add("data-v", validations);
                     break;
             }
