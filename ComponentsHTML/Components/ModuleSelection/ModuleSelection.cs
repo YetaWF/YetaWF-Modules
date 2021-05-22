@@ -195,7 +195,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     hb.Append($@"
     <div class='t_packages'>
         {await HtmlHelper.ForLabelAsync(uiNew!, nameof(uiNew.Package))}
-        {await HtmlHelper.ForEditAsync(uiNew, nameof(uiNew.Package))}
+        {await HtmlHelper.ForEditAsync(uiNew!, nameof(uiNew.Package))}
     </div>");
 
                 } else {
@@ -204,7 +204,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
     <div class='t_packages'>
         {await HtmlHelper.ForLabelAsync(uiExisting!, nameof(uiExisting.Package))}
-        {await HtmlHelper.ForEditAsync(uiExisting, nameof(uiExisting.Package))}
+        {await HtmlHelper.ForEditAsync(uiExisting!, nameof(uiExisting.Package))}
     </div>");
                 }
 
@@ -215,13 +215,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                     hb.Append($@"
         {await HtmlHelper.ForLabelAsync(uiNew!, nameof(uiNew.Module))}
-        {await HtmlHelper.ForEditAsync(uiNew, nameof(uiNew.Module))}");
+        {await HtmlHelper.ForEditAsync(uiNew!, nameof(uiNew.Module))}");
 
                 } else {
 
                     hb.Append($@"
         {await HtmlHelper.ForLabelAsync(uiExisting!, nameof(uiExisting.Module))}
-        {await HtmlHelper.ForEditAsync(uiExisting, nameof(uiExisting.Module))}");
+        {await HtmlHelper.ForEditAsync(uiExisting!, nameof(uiExisting.Module))}");
 
                     useEditMod = PropData.GetAdditionalAttributeValue("EditSettings", false);
 

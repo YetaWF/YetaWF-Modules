@@ -7,7 +7,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Components;
 using YetaWF.Modules.ComponentsHTML.Components;
 using Microsoft.AspNetCore.Mvc;
-
+using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.DevTests.Controllers {
 
@@ -59,6 +59,12 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [Category("Date/Time"), Caption("Date (Read/Only)"), Description("Date/Time (Read/only)")]
             [UIHint("Date"), ReadOnly]
             public DateTime DateRO { get; set; }
+
+            [Category("Date/Time"), Caption("Date UTC Midnight (Required)"), Description("Date (Required)")]
+            [UIHint("Date"), AdditionalMetadata("UTCMidnight", true)]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
+            public DateTime DateUtcMidnightReq { get; set; }
 
             [Category("Date/Time"), Caption("Time Of Day (Required)"), Description("Time Of Day (Required)")]
             [UIHint("TimeOfDay")]

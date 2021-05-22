@@ -97,7 +97,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
             key = KeyPrefix + key;
             key = GetKey(key);
             // get cached version
-            TYPE data = default(TYPE);
+            TYPE? data = default(TYPE);
 
             StaticCacheObject? cachedObj;
             bool localValid;
@@ -111,7 +111,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
                     Created = DateTime.MinValue,
                 };
             } else {
-                data = (TYPE)cachedObj!.Value;
+                data = (TYPE?)cachedObj!.Value;
             }
             // get shared cached version
             IDatabase db = Redis.GetDatabase();

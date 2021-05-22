@@ -342,7 +342,7 @@ var YetaWF_ComponentsHTML;
                     text = dt.text;
                     if (text.length > 0)
                         return false;
-                    this.SelectedUser = dt.token;
+                    this.dateSelectedValue = dt.token;
                     break;
                 case DateTimeStyleEnum.Time:
                     var tt = this.extractInputTime(text);
@@ -1178,9 +1178,9 @@ var YetaWF_ComponentsHTML;
         DateTimeEditComponent.prototype.setHidden = function (dateVal) {
             var s = "";
             if (dateVal != null) {
-                if (this.Setup.Style === DateTimeStyleEnum.DateTime || this.Setup.Style === DateTimeStyleEnum.Time)
+                if (this.Setup.Style === DateTimeStyleEnum.DateTime || this.Setup.Style === DateTimeStyleEnum.Time || (this.Setup.Style === DateTimeStyleEnum.Date && !this.Setup.UtcMidnight))
                     s = dateVal.getUTCFullYear() + "-" + this.zeroPad(dateVal.getUTCMonth() + 1, 2) + "-" + this.zeroPad(dateVal.getUTCDate(), 2) + "T" + this.zeroPad(dateVal.getUTCHours(), 2) + ":" + this.zeroPad(dateVal.getUTCMinutes(), 2) + ":00.000Z";
-                else if (this.Setup.Style === DateTimeStyleEnum.Date)
+                else if (this.Setup.Style === DateTimeStyleEnum.Date && this.Setup.UtcMidnight)
                     s = dateVal.getUTCFullYear() + "-" + this.zeroPad(dateVal.getUTCMonth() + 1, 2) + "-" + this.zeroPad(dateVal.getUTCDate(), 2) + "T00:00:00.000Z";
             }
             this.InputHidden.setAttribute("value", s);

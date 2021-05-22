@@ -119,6 +119,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public double MaxTime { get; set; }
             public string TodayString { get; set; }
             public string Today { get; set; }
+            /// <summary>
+            /// If a date is entered, it is normalized as UTC midnight, without time component. Otherwise, the time component is left unmodified.
+            /// Applies to the Date component only.
+            /// </summary>
+            public bool UtcMidnight { get; set; }
 
             public Setup() {
                 Style = DateTimeStyleEnum.DateTime;
@@ -158,7 +163,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 setup.MaxDate = maxAttr.MaxDate;
 
             // model binding error handling
-            string internalValue = setup.InitialCalendarDate = $"{model:o}";
+            string internalValue = setup.InitialCalendarDate = model != null ? $"{model:o}" : string.Empty;
             string displayValue = Formatting.FormatDateTime(model);
             if (Manager.HasModelBindingErrorManager && Manager.ModelBindingErrorManager.TryGetAttemptedValue(PropertyName, out string? attemptedValue)) {
                 displayValue = internalValue = attemptedValue;

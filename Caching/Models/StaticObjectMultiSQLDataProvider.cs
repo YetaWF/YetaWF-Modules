@@ -98,7 +98,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
                     Created = DateTime.MinValue,
                 };
             } else {
-                data = (TYPE)cachedObj!.Value;
+                data = (TYPE?)cachedObj!.Value;
             }
             // get shared cached version
             SharedCacheVersion? sharedInfo = await SharedCacheVersionSQLDataProvider.SharedCacheVersionDP.GetVersionAsync(key);

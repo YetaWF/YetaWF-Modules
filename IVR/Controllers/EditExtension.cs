@@ -54,7 +54,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
 
             public void SetData(ExtensionEntry data) {
                 ObjectSupport.CopyData(data, this);
-                OriginalExtension = Extension;
+                OriginalExtension = data.Extension;
             }
             public EditModel() { }
         }

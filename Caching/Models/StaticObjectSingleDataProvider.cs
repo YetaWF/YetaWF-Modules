@@ -57,7 +57,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
                 if (StaticObjects.TryGetValue(key, out obj)) {
                     return Task.FromResult(new GetObjectInfo<TYPE> {
                         Success = true,
-                        Data = (TYPE)obj,
+                        Data = (TYPE?)obj,
                     });
                 }
             }

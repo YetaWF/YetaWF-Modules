@@ -43,8 +43,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         /// <inheritdoc/>
         public Task<string> RenderAsync(DateTime? model) {
+
             if (model != null && (DateTime)model > DateTime.MinValue && (DateTime)model < DateTime.MaxValue) {
-                return Task.FromResult($@"<div{FieldSetup(FieldType.Anonymous)} class='yt_datetime t_display{GetClasses()}'>{HE(YetaWF.Core.Localize.Formatting.FormatDateOnly(model))}</div>");
+
+                bool utcMidnight = PropData.GetAdditionalAttributeValue<bool>("UTCMidnight", false);
+                string displayValue = utcMidnight ? Formatting.FormatDateOnly(model) : Formatting.FormatDate(model);
+                return Task.FromResult($@"<div{FieldSetup(FieldType.Anonymous)} class='yt_datetime t_display{GetClasses()}'>{HE(displayValue)}</div>");
             }
             return Task.FromResult(string.Empty);
         }
@@ -93,6 +97,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 setup.MaxDate = dateTimeSetup.MaxDate;
             }
 
+            bool utcMidnight = PropData.GetAdditionalAttributeValue<bool>("UTCMidnight", false);
+
             // handle min/max date
             // attributes (like MinimumDateAttribute) override setup and defaults
             MinimumDateAttribute? minAttr = PropData.TryGetAttribute<MinimumDateAttribute>();
@@ -103,8 +109,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 setup.MaxDate = maxAttr.MaxDate;
 
             // model binding error handling
-            string internalValue = setup.InitialCalendarDate = $"{model?.Date:o}";
-            string displayValue = Formatting.FormatDateOnly(model);
+            string internalValue;
+            if (model != null) {
+                internalValue = setup.InitialCalendarDate = utcMidnight ? $"{model.Value.Date:o}" : $"{model:o}";
+            } else {
+                internalValue = setup.InitialCalendarDate = string.Empty;
+            }
+            string displayValue = utcMidnight ? Formatting.FormatDateOnly(model) : Formatting.FormatDate(model);
             if (Manager.HasModelBindingErrorManager && Manager.ModelBindingErrorManager.TryGetAttemptedValue(PropertyName, out string? attemptedValue)) {
                 displayValue = internalValue = attemptedValue;
                 setup.InitialCalendarDate = string.Empty;

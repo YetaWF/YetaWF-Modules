@@ -71,7 +71,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
         }
         public async Task<GetObjectInfo<TYPE>> GetAsync<TYPE>(string key) {
             // get cached version
-            TYPE data = default(TYPE);
+            TYPE? data = default(TYPE);
             key = GetKey(key);
 
             StaticCacheObject? cachedObj;
@@ -86,7 +86,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
                     Created = DateTime.MinValue,
                 };
             } else {
-                data = (TYPE)cachedObj!.Value;
+                data = (TYPE?)cachedObj!.Value;
             }
             // get shared cached version
             SharedCacheVersion? sharedInfo = await SharedCacheVersionPostgreSQLDataProvider.SharedCacheVersionDP.GetVersionAsync(key);
