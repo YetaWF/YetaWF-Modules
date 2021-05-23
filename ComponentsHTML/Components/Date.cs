@@ -98,6 +98,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
 
             bool utcMidnight = PropData.GetAdditionalAttributeValue<bool>("UTCMidnight", false);
+            setup.UtcMidnight = utcMidnight;
 
             // handle min/max date
             // attributes (like MinimumDateAttribute) override setup and defaults
