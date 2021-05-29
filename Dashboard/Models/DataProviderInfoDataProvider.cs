@@ -9,9 +9,9 @@ namespace YetaWF.Modules.Dashboard.DataProvider {
 
     public class DataProviderInfo {
 
-        public string IOModeName { get; set; }
-        public string TypeName { get; set; }
-        public string TypeImplName { get; set; }
+        public string IOModeName { get; set; } = null!;
+        public string TypeName { get; set; } = null!;
+        public string TypeImplName { get; set; } = null!;
 
         public DataProviderInfo() { }
     }
@@ -28,11 +28,11 @@ namespace YetaWF.Modules.Dashboard.DataProvider {
         // API
         // API
 
-        public DataProviderGetRecords<DataProviderInfo> GetItems(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        public DataProviderGetRecords<DataProviderInfo> GetItems(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
             List<DataProviderInfo> list = (from r in DataProviderImpl.RegisteredExternalDataProviders select new DataProviderInfo {
                 IOModeName = r.IOModeName,
-                TypeName = r.Type.FullName,
-                TypeImplName = r.TypeImpl.FullName,
+                TypeName = r.Type.FullName!,
+                TypeImplName = r.TypeImpl.FullName!,
             }).ToList();
             return DataProviderImpl<DataProviderInfo>.GetRecords(list, skip, take, sort, filters);
         }

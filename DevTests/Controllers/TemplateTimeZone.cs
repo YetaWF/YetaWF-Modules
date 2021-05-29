@@ -27,18 +27,18 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("TimeZone"), StringLength(Globals.MaxTimeZone), Trim]
             [SelectionRequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string TimeZoneReq { get; set; }
+            public string? TimeZoneReq { get; set; }
 
             [Caption("TimeZone (Required w/Select)"), Description("TimeZone (Required, with (select))")]
             [UIHint("TimeZone"), AdditionalMetadata("ShowDefault", false), StringLength(Globals.MaxTimeZone), Trim]
             [SelectionRequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string TimeZoneReqSel { get; set; }
+            public string? TimeZoneReqSel { get; set; }
 
             [Caption("TimeZone"), Description("TimeZone (optional)")]
             [UIHint("TimeZone"), AdditionalMetadata("ShowDefault", false), StringLength(Globals.MaxTimeZone), Trim]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string TimeZone { get; set; }
+            public string? TimeZone { get; set; }
 
             [Caption("TimeZone (Read/Only)"), Description("TimeZone (read/only)")]
             [UIHint("TimeZone"), ReadOnly]

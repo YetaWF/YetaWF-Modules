@@ -5,25 +5,79 @@
 /* POPUP */
 #ypopup {
   position: fixed;
+  z-index: 2002 !important;
+  font: var(--body-font);
+  background: var(--dialog-bg);
+  color: var(--dialog-clr);
+  border: var(--dialog-border);
+  border-radius: var(--dialog-border-radius);
+  padding: .2em;
   display: -webkit-box;
+  display: -webkit-flex;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
           flex-direction: column;
   overflow: hidden; }
-  #ypopup.ui-dialog {
-    z-index: 2002 !important; }
-  #ypopup iframe.ui-dialog-content {
+  #ypopup .t_titlebar {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+            flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+            flex-wrap: nowrap;
+    background: var(--dialog-title-bg);
+    color: var(--dialog-title-clr);
+    cursor: move;
+    padding: .4em .5em .4em 1em;
+    position: relative;
+    border: var(--dialog-border);
+    border-radius: var(--dialog-border-radius);
+    font: var(--dialog-title-font); }
+    #ypopup .t_titlebar #ypopupTitle {
+      -webkit-box-flex: 1;
+      -webkit-flex: 1 1;
+              flex: 1 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; }
+    #ypopup .t_titlebar .t_close {
+      margin-left: auto;
+      padding: .2em; }
+      #ypopup .t_titlebar .t_close svg {
+        width: 1rem;
+        height: 1rem; }
+  #ypopup .t_content {
+    width: auto;
+    min-height: 2em;
+    max-height: none;
+    height: auto;
+    margin: 0;
+    padding: .5em 1em;
+    overflow: auto; }
+  #ypopup iframe {
     padding: 0;
     margin: 0;
     height: 100%;
+    width: 100%;
     max-height: none; }
-  #ypopup #ypopupContent.ui-dialog-content {
-    margin: 0;
-    padding: .5em 1em; }
 
-.ui-widget-overlay.ui-front {
-  z-index: 2001 !important; }
+#ypopupOverlay {
+  z-index: 2001 !important;
+  background: var(--overlay-bg);
+  opacity: var(--overlay-opacity);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%; }
+  @media print {
+    #ypopupOverlay {
+      display: none; } }
 
 body.yPopup {
   padding: .5em 1em;

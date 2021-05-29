@@ -37,17 +37,17 @@ namespace YetaWF.Modules.Scheduler.Modules {
 
         [Category("General"), Caption("Add Url"), Description("The Url to add a new scheduler item - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string AddUrl { get; set; }
+        public string? AddUrl { get; set; }
         [Category("General"), Caption("Display Url"), Description("The Url to display a scheduler item - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string DisplayUrl { get; set; }
+        public string? DisplayUrl { get; set; }
         [Category("General"), Caption("Edit Url"), Description("The Url to edit a scheduler item - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string EditUrl { get; set; }
+        public string? EditUrl { get; set; }
 
         [Category("General"), Caption("Log Url"), Description("The Url to display the scheduler log - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string LogUrl { get; set; }
+        public string? LogUrl { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
         public override List<RoleDefinition> ExtraRoles {
@@ -63,8 +63,8 @@ namespace YetaWF.Modules.Scheduler.Modules {
             }
         }
 
-        public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
-            MenuList menuList = await base.GetModuleMenuListAsync(renderMode, location);
+        public override async Task<List<ModuleAction>> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
+            List<ModuleAction> menuList = await base.GetModuleMenuListAsync(renderMode, location);
             SchedulerAddModule mod = new SchedulerAddModule();
             menuList.New(mod.GetAction_Add(AddUrl), location);
             LogBrowseModule logMod = new LogBrowseModule();
@@ -72,7 +72,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
             return menuList;
         }
 
-        public ModuleAction GetAction_SchedulerItems(string url) {
+        public ModuleAction? GetAction_SchedulerItems(string? url) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Browse",
@@ -86,7 +86,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
             };
         }
-        public ModuleAction GetAction_RemoveItem(string name) {
+        public ModuleAction? GetAction_RemoveItem(string? name) {
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(SchedulerBrowseModuleController), "RemoveItem"),
                 QueryArgs = new { Name = name },
@@ -103,7 +103,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
                 ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to remove scheduler item \"{0}\"?", name),
             };
         }
-        public async Task<ModuleAction> GetAction_RunItemAsync(string name) {
+        public async Task<ModuleAction?> GetAction_RunItemAsync(string? name) {
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(SchedulerBrowseModuleController), nameof(SchedulerBrowseModuleController.RunItem)),
                 QueryArgs = new { Name = name },
@@ -120,7 +120,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
                 ConfirmationText = this.__ResStr("runConfirm", "Are you sure you want to run scheduler item \"{0}\"?", name),
             };
         }
-        public async Task<ModuleAction> GetAction_SchedulerToggleAsync() {
+        public async Task<ModuleAction?> GetAction_SchedulerToggleAsync() {
             bool running;
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
                 running = dataProvider.GetRunning();

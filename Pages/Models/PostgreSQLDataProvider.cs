@@ -16,7 +16,6 @@ namespace YetaWF.Modules.Pages.DataProvider.PostgreSQL {
         public void Register() {
             DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.PageDefinitionDataProvider), typeof(PageDefinitionDataProvider));
             DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(PageDefinitionDataProvider.PageDefinitionForModulesProvider), typeof(PageDefinitionDataProvider.PageDefinitionForModulesDataProviderSQL));
-            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.UnifiedSetDataProvider), typeof(UnifiedSetDataProvider));
         }
         class PageDefinitionDataProvider : SQLSimpleObject<Guid, PageDefinition>, IPageDefinitionIOMode {
 
@@ -38,7 +37,7 @@ namespace YetaWF.Modules.Pages.DataProvider.PostgreSQL {
             }
 
             public class DesignedPage {
-                public string Url { get; set; } // absolute Url (w/o http: or domain) e.g., /Home or /Test/Page123
+                public string Url { get; set; } = null!; // absolute Url (w/o http: or domain) e.g., /Home or /Test/Page123
                 [Data_PrimaryKey]
                 public Guid PageGuid { get; set; }
                 [Data_Identity]
@@ -61,7 +60,7 @@ namespace YetaWF.Modules.Pages.DataProvider.PostgreSQL {
 
             public class PageDefinitionForModules {
                 public Guid ModuleGuid { get; set; }
-                public string Pane { get; set; }
+                public string Pane { get; set; } = null!;
                 [Data_Identity]
                 public int Identity { get; set; }
             }
@@ -72,7 +71,7 @@ namespace YetaWF.Modules.Pages.DataProvider.PostgreSQL {
 
                 private IDataProvider<string, PageDefinitionForModules> DataProvider { get { return GetDataProvider(); } }
 
-                private IDataProvider<string, PageDefinitionForModules> CreateDataProvider() {
+                private IDataProvider<string, PageDefinitionForModules>? CreateDataProvider() {
                     Package package = YetaWF.Modules.Pages.AreaRegistration.CurrentPackage;
                     return MakeDataProvider(package, package.AreaName + "_ModuleDefinitions", SiteIdentity: SiteIdentity, Cacheable: true, LimitIOMode: SQLBase.ExternalName);
                 }
@@ -80,9 +79,6 @@ namespace YetaWF.Modules.Pages.DataProvider.PostgreSQL {
             public class PageDefinitionForModulesDataProviderSQL : SQLSimpleObject<string, PageDefinitionForModules> {
                 public PageDefinitionForModulesDataProviderSQL(Dictionary<string, object> options) : base(options) { }
             }
-        }
-        class UnifiedSetDataProvider : SQLSimpleObject<Guid, UnifiedSetData> {
-            public UnifiedSetDataProvider(Dictionary<string, object> options) : base(options) { }
         }
     }
 }

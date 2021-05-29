@@ -31,7 +31,7 @@ namespace YetaWF.Modules.Visitors.Controllers {
 
             [Caption("Session Id"), Description("The session id used to identify the visitor")]
             [UIHint("String"), ReadOnly]
-            public string SessionId { get; set; }
+            public string? SessionId { get; set; }
 
             [Caption("User Id"), Description("The user's email address (if available)")]
             [UIHint("YetaWF_Identity_UserId"), ReadOnly]
@@ -39,19 +39,19 @@ namespace YetaWF.Modules.Visitors.Controllers {
 
             [Caption("IP Address"), Description("The IP address of the site visitor")]
             [UIHint("IPAddress"), ReadOnly]
-            public string IPAddress { get; set; }
+            public string? IPAddress { get; set; }
             [Caption("Url"), Description("The Url accessed by the site visitor")]
             [UIHint("Url"), ReadOnly]
-            public string Url { get; set; }
+            public string? Url { get; set; }
             [Caption("Referrer"), Description("The Url where the site visitor came from")]
             [UIHint("Url"), ReadOnly]
-            public string Referrer { get; set; }
+            public string? Referrer { get; set; }
             [Caption("User Agent"), Description("The web browser's user agent")]
             [UIHint("String"), ReadOnly]
-            public string UserAgent { get; set; }
+            public string? UserAgent { get; set; }
             [Caption("Error"), Description("Shows any error that may have occurred")]
             [UIHint("String"), ReadOnly]
-            public string Error { get; set; }
+            public string? Error { get; set; }
 
             public void SetData(VisitorEntry data) {
                 ObjectSupport.CopyData(data, this);
@@ -61,7 +61,7 @@ namespace YetaWF.Modules.Visitors.Controllers {
         [AllowGet]
         public async Task<ActionResult> VisitorDisplay(int key) {
             using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
-                VisitorEntry data = await visitorDP.GetItemAsync(key);
+                VisitorEntry? data = await visitorDP.GetItemAsync(key);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Visitor Entry {0} not found."), key);
                 DisplayModel model = new DisplayModel();

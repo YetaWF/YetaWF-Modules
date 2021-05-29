@@ -3,6 +3,7 @@
 using System;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
@@ -65,7 +66,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (model != null && (Decimal)model > Decimal.MinValue && (Decimal)model < Decimal.MaxValue) {
                 string s = string.Empty;
                 if (model != null) {
-                    string format = PropData.GetAdditionalAttributeValue("Format", "0.00");
+                    string format = PropData.GetAdditionalAttributeValue("Format", "0.00")!;
                     s = ((decimal)model).ToString(format);
                 }
                 return Task.FromResult($@"<div{FieldSetup(FieldType.Anonymous)} class='yt_decimal t_display{GetClasses()}'>{HAE(s)}</div>");
@@ -85,6 +86,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [UIHint("Decimal"), Range(0.0, 100.0), Required]
     /// public decimal SalesTaxRate { get; set; }
     /// </example>
+    [UsesAdditional("Step", "double", "1.0", "The increment/decrement used when clicking on the up/down arrows of the edit control.")]
     [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
     public class DecimalEditComponent : DecimalComponentBase, IYetaWFComponent<Decimal>, IYetaWFComponent<Decimal?> {
 
@@ -94,20 +96,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        internal class DecimalSetup {
-            public double Min { get; set; }
-            public double Max { get; set; }
-            public string PlaceHolder { get; set; }
-        }
-
-        /// <summary>
-        /// Called by the framework when the component is used so the component can add component specific addons.
-        /// </summary>
+        /// <inheritdoc/>
         public override async Task IncludeAsync() {
-            await KendoUICore.AddFileAsync("kendo.userevents.min.js");
-            await KendoUICore.AddFileAsync("kendo.numerictextbox.min.js");
+            await Manager.AddOnManager.AddTemplateAsync(AreaRegistration.CurrentPackage.AreaName, "Number", ComponentType.Edit);
             await base.IncludeAsync();
         }
+
         /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.
         /// </summary>
@@ -116,6 +110,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public async Task<string> RenderAsync(Decimal model) {
             return await RenderAsync((Decimal?) model);
         }
+
         /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.
         /// </summary>
@@ -123,27 +118,36 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(Decimal? model) {
 
-            string value = null;
-            if (model != null) {
-                string format = PropData.GetAdditionalAttributeValue("Format", "0.00");
-                value = HAE(((decimal)model).ToString(format));
-            }
+            TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out string? placeHolder);
 
-            TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out string placeHolder);
-
-            DecimalSetup setup = new DecimalSetup {
+            NumberSetup setup = new NumberSetup {
                 Min = 0,
                 Max = 999999999.99,
-                PlaceHolder = placeHolder,
+                Step = PropData.GetAdditionalAttributeValue<double>("Step", 1.0),
+                Digits = 2,
+                Locale = MultiString.ActiveLanguage,
             };
 
             // handle min/max
-            RangeAttribute rangeAttr = PropData.TryGetAttribute<RangeAttribute>();
+            RangeAttribute? rangeAttr = PropData.TryGetAttribute<RangeAttribute>();
             if (rangeAttr != null) {
                 setup.Min = Convert.ToSingle(rangeAttr.Minimum);
                 setup.Max = Convert.ToSingle(rangeAttr.Maximum);
             }
-            string tags = $@"<input{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} id='{ControlId}' class='yt_decimal t_edit{GetClasses()}' maxlength='20' value='{value}'>";
+
+            string? internalValue = model?.ToString();
+            string displayValue = model != null ? HAE(((decimal)model).ToString(PropData.GetAdditionalAttributeValue("Format", "0.00")!)) : string.Empty;
+            if (Manager.HasModelBindingErrorManager && Manager.ModelBindingErrorManager.TryGetAttemptedValue(PropertyName, out string? attemptedValue)) {
+                displayValue = internalValue = attemptedValue;
+            }
+
+            placeHolder = string.IsNullOrWhiteSpace(placeHolder) ? string.Empty : $" placeholder={HAE(placeHolder)}";
+
+            string tags =
+$@"<div id='{ControlId}'{GetClassAttribute("yt_number_container yt_decimal t_edit")}>
+    <input type='hidden'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} value='{HAE(internalValue)}'>
+    <input type='text' maxlength='20'{placeHolder} value='{HAE(displayValue)}'>
+</div>";
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DecimalEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 

@@ -2,13 +2,11 @@
 
 namespace YetaWF_ComponentsHTML {
 
-    export enum TabStyleEnum {
-        JQuery = 0,
-        Kendo = 1,
+    export interface IPackageLocs {
+        Loading: string;
     }
 
     interface TabsSetup {
-        TabStyle: TabStyleEnum;
         ActiveTabIndex: number;
         ActiveTabHiddenId: string;
         ContextMenu: boolean;
@@ -37,7 +35,7 @@ namespace YetaWF_ComponentsHTML {
 
             this.ActiveTabHidden = $YetaWF.getElementById(this.Setup.ActiveTabHiddenId) as HTMLInputElement;
 
-            $YetaWF.registerEventHandler(this.Control, "click", `#${this.ControlId} > ul.t_tabstrip > li`, (ev: MouseEvent): boolean => {
+            $YetaWF.registerEventHandler(this.Control, "click", `#${this.ControlId} > ul.t_tabstrip > li.t_tab`, (ev: MouseEvent): boolean => {
                 let li = ev.__YetaWFElem;
                 let index = Number($YetaWF.getAttribute(li, "data-tab"));
                 this.activatePane(index);
@@ -59,47 +57,6 @@ namespace YetaWF_ComponentsHTML {
                 if (index >= 0 && index < this.tabCount) {
                     this.activatePane(index);
                     return false;
-                }
-                return true;
-            });
-            $YetaWF.registerEventHandler(this.Control, "focusin", null, (ev: FocusEvent): boolean => {
-                let curentTab = this.currentTab;
-                if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery) {
-                    for (let tab of this.tabs)
-                        $YetaWF.elementRemoveClass(tab, "ui-state-focus");
-                    $YetaWF.elementAddClass(curentTab, "ui-state-focus");
-                } else {
-                }
-                return true;
-            });
-            $YetaWF.registerEventHandler(this.Control, "focusout", null, (ev: FocusEvent): boolean => {
-                if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery) {
-                    for (let tab of this.tabs)
-                        $YetaWF.elementRemoveClass(tab, "ui-state-focus");
-                } else {
-                }
-                return true;
-            });
-            $YetaWF.registerEventHandler(this.Control, "mousemove", `#${this.ControlId} > ul.t_tabstrip > li`, (ev: MouseEvent): boolean => {
-                let curentTab = ev.__YetaWFElem as HTMLLIElement;
-                if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery) {
-                    for (let tab of this.tabs)
-                        $YetaWF.elementRemoveClass(tab, "ui-state-hover");
-                    $YetaWF.elementAddClass(curentTab, "ui-state-hover");
-                } else {
-                    for (let tab of this.tabs)
-                        $YetaWF.elementRemoveClass(tab, "k-state-hover");
-                    $YetaWF.elementAddClass(curentTab, "k-state-hover");
-                }
-                return true;
-            });
-            $YetaWF.registerEventHandler(this.Control, "mouseout", `#${this.ControlId} > ul.t_tabstrip > li`, (ev: MouseEvent): boolean => {
-                if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery) {
-                    for (let tab of this.tabs)
-                        $YetaWF.elementRemoveClass(tab, "ui-state-hover");
-                } else {
-                    for (let tab of this.tabs)
-                        $YetaWF.elementRemoveClass(tab, "k-state-hover");
                 }
                 return true;
             });
@@ -144,54 +101,28 @@ namespace YetaWF_ComponentsHTML {
 
             let activeTab = tabs[index];
             let activePanel = panels[index];
-            if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery) {
 
-                for (let tab of tabs) {
-                    $YetaWF.elementRemoveClasses(tab, ["ui-tabs-active", "ui-state-active"]);
-                    $YetaWF.setAttribute(tab, "tabindex", "-1");
-                    $YetaWF.setAttribute(tab, "aria-selected", "false");
-                    $YetaWF.setAttribute(tab, "aria-expanded", "false");
-                }
-                $YetaWF.elementAddClasses(activeTab, ["ui-tabs-active", "ui-state-active"]);
-                $YetaWF.setAttribute(activeTab, "tabindex", "0");
-                $YetaWF.setAttribute(activeTab, "aria-selected", "true");
-                $YetaWF.setAttribute(activeTab, "aria-expanded", "true");
+            for (let tab of tabs) {
+                $YetaWF.elementRemoveClass(tab, "t_tabactive");
+                $YetaWF.setAttribute(tab, "tabindex", "-1");
+                $YetaWF.setAttribute(tab, "aria-selected", "false");
+                $YetaWF.setAttribute(tab, "aria-expanded", "false");
+            }
+            $YetaWF.elementAddClass(activeTab, "t_tabactive");
+            $YetaWF.setAttribute(activeTab, "tabindex", "0");
+            $YetaWF.setAttribute(activeTab, "aria-selected", "true");
+            $YetaWF.setAttribute(activeTab, "aria-expanded", "true");
 
-                for (let panel of panels) {
-                    $YetaWF.setAttribute(panel, "aria-hidden", "true");
-                    panel.style.display = "none";
-                }
-                $YetaWF.setAttribute(activePanel, "aria-hidden", "false");
-                activePanel.style.display = "";
-
-            } else if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.Kendo) {
-
-                for (let tab of tabs) {
-                    $YetaWF.elementRemoveClasses(tab, ["k-state-active", "k-tab-on-top"]);
-                    $YetaWF.setAttribute(tab, "aria-selected", "false");
-                    tab.removeAttribute("id");
-                }
-                $YetaWF.elementAddClasses(activeTab, ["k-state-active", "k-tab-on-top"]);
-                $YetaWF.setAttribute(activeTab, "aria-selected", "true");
-
-                let ariaId = this.Control.getAttribute("aria-activedescendant");
-                activeTab.id = ariaId as string;
-
-                for (let panel of panels) {
-                    $YetaWF.elementRemoveClasses(panel, ["k-state-active"]);
-                    $YetaWF.setAttribute(panel, "aria-hidden", "true");
-                    $YetaWF.setAttribute(panel, "aria-expanded", "false");
-                    panel.style.display = "none";
-                }
-                $YetaWF.elementAddClass(activePanel, "k-state-active");
-                $YetaWF.setAttribute(activePanel, "aria-hidden", "false");
-                $YetaWF.setAttribute(activePanel, "aria-expanded", "true");
-                activePanel.style.display = "block";
-
-            } else
-                throw `Unknown tab style ${YVolatile.Forms.TabStyle}`;/*DEBUG*/
+            for (let panel of panels) {
+                $YetaWF.setAttribute(panel, "aria-hidden", "true");
+                panel.style.display = "none";
+            }
+            $YetaWF.setAttribute(activePanel, "aria-hidden", "false");
+            activePanel.style.display = "";
 
             this.ActiveTabHidden.value = index.toString();
+
+            activeTab.focus();
 
             $YetaWF.sendActivateDivEvent([activePanel]);
             $YetaWF.sendPanelSwitchedEvent(activePanel);
@@ -221,31 +152,27 @@ namespace YetaWF_ComponentsHTML {
          * Adds a tab/pane and returns the DIV that can be used to add contents.
          */
         public add(caption: string, tooltip?: string): HTMLDivElement {
-            if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery) {
-                let tabstrip = $YetaWF.getElement1BySelector(`#${this.ControlId} > ul.t_tabstrip`) as HTMLUListElement;
-                let total = this.tabs.length;
-                let tab =
-                    <li role="tab" tabindex="-1" class="ui-tabs-tab ui-corner-top ui-tab ui-state-default" aria-selected="false" aria-expanded="false">
-                        <a data-tooltip={tooltip} role="presentation" tabindex="-1" class="ui-tabs-anchor">
-                            {caption}
-                        </a>
-                    </li> as HTMLLIElement;
-                tabstrip.appendChild(tab);
+            let tabstrip = $YetaWF.getElement1BySelector(`#${this.ControlId} > ul.t_tabstrip`) as HTMLUListElement;
+            let total = this.tabs.length;
+            let tab =
+                <li role="tab" tabindex="-1" class="t_tab" aria-selected="false" aria-expanded="false">
+                    <a data-tooltip={tooltip} role="presentation" tabindex="-1" class="t_tabanchor">
+                        {caption}
+                    </a>
+                </li> as HTMLLIElement;
+            tabstrip.appendChild(tab);
 
-                let pane =
-                     <div class="t_proptable t_cat t_tabpanel ui-tabs-panel ui-corner-bottom ui-widget-content" role="tabpanel" style="display:none" aria-hidden="true">
-                         <div class="t_contents t_loading">Loading...</div>
-                     </div> as HTMLDivElement;
-                this.Control.appendChild(pane);
+            let pane =
+                 <div class="t_proptable t_cat t_tabpanel" role="tabpanel" style="display:none" aria-hidden="true">
+                     <div class="t_contents t_loading">{YLocs.YetaWF_ComponentsHTML.Loading}</div>
+                 </div> as HTMLDivElement;
+            this.Control.appendChild(pane);
 
-                this.resequenceTabs();
+            this.resequenceTabs();
 
-                this.activatePane(total);
+            this.activatePane(total);
 
-                return $YetaWF.getElement1BySelector(".t_contents", [pane]) as HTMLDivElement;
-            } else {
-                throw "Kendo UI based tab control doesn't support add()";
-            }
+            return $YetaWF.getElement1BySelector(".t_contents", [pane]) as HTMLDivElement;
         }
 
         public remove(index: number): void {
@@ -271,42 +198,38 @@ namespace YetaWF_ComponentsHTML {
         }
 
         private resequenceTabs(): void {
-            if (YVolatile.Forms.TabStyle === YetaWF.TabStyleEnum.JQuery) {
-                let count = 0;
-                for (let tab of this.tabs) {
-                    let tabId = `${this.ControlId}_tab${count}`;
-                    let tabIdLb = `${tabId}_lb`;
-                    $YetaWF.setAttribute(tab, "data-tab", count.toString());
-                    $YetaWF.setAttribute(tab, "aria-controls", tabId);
-                    $YetaWF.setAttribute(tab, "aria-labelledby", tabIdLb);
-                    let anchor = $YetaWF.getElement1BySelector("a", [tab]) as HTMLAnchorElement;
-                    anchor.href = `#${tabId}`;
-                    anchor.id = `#${tabIdLb}`;
-                    ++count;
-                }
-                count = 0;
-                let panes = $YetaWF.getElementsBySelector(`#${this.ControlId} > div.t_tabpanel`) as HTMLDivElement[];
-                for (let pane of panes) {
-                    let tabId = `${this.ControlId}_tab${count}`;
-                    let tabIdLb = `${tabId}_lb`;
-                    $YetaWF.setAttribute(pane, "data-tab", count.toString());
-                    pane.id = tabId;
-                    $YetaWF.setAttribute(pane, "aria-labelledby", tabIdLb);
+            let count = 0;
+            for (let tab of this.tabs) {
+                let tabId = `${this.ControlId}_tab${count}`;
+                let tabIdLb = `${tabId}_lb`;
+                $YetaWF.setAttribute(tab, "data-tab", count.toString());
+                $YetaWF.setAttribute(tab, "aria-controls", tabId);
+                $YetaWF.setAttribute(tab, "aria-labelledby", tabIdLb);
+                let anchor = $YetaWF.getElement1BySelector("a", [tab]) as HTMLAnchorElement;
+                anchor.href = `#${tabId}`;
+                anchor.id = `#${tabIdLb}`;
+                ++count;
+            }
+            count = 0;
+            let panes = $YetaWF.getElementsBySelector(`#${this.ControlId} > div.t_tabpanel`) as HTMLDivElement[];
+            for (let pane of panes) {
+                let tabId = `${this.ControlId}_tab${count}`;
+                let tabIdLb = `${tabId}_lb`;
+                $YetaWF.setAttribute(pane, "data-tab", count.toString());
+                pane.id = tabId;
+                $YetaWF.setAttribute(pane, "aria-labelledby", tabIdLb);
 
-                    let loadingDiv = $YetaWF.getElement1BySelectorCond(".t_contents.t_loading", [pane]);
-                    if (loadingDiv)
-                        loadingDiv.id = `${tabId}_content`;
+                let loadingDiv = $YetaWF.getElement1BySelectorCond(".t_contents.t_loading", [pane]);
+                if (loadingDiv)
+                    loadingDiv.id = `${tabId}_content`;
 
-                    ++count;
-                }
-            } else {
-                throw "Kendo UI based tab control doesn't support resequenceTabs()";
+                ++count;
             }
         }
     }
 
     // The property list needs a bit of special love when it's made visible. Because panels have no width/height
-    // while the propertylist is not visible (jquery implementation), when a propertylist is made visible using show(),
+    // while the propertylist is not visible, when a propertylist is made visible using show(),
     // the default panel is not sized correctly. If you explicitly show() a propertylist that has never been visible,
     // call the following to cause the propertylist to be resized correctly:
     // ComponentsHTML.processPropertyListVisible(div);

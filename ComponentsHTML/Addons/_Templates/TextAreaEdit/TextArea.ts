@@ -33,13 +33,11 @@ namespace YetaWF_ComponentsHTML {
                     let editor = CKEDITOR.instances[control.id];
                     if (enable) {
                         control.removeAttribute("readonly");
-                        $YetaWF.elementRemoveClass(control, "k-state-disabled");
                         try {
                             editor.setReadOnly(false);
                         } catch (e) {}
                     } else {
                         control.setAttribute("readonly", "readonly");
-                        $YetaWF.elementAddClass(control, "k-state-disabled");
                         try {
                             editor.setReadOnly(true);
                         } catch (e) { }
@@ -92,7 +90,7 @@ namespace YetaWF_ComponentsHTML {
         for (let cked of ckeds) {
             let ck = CKEDITOR.instances[cked.Control.id];
             try {
-                ck.resize("100%", cked.Setup.EmHeight, true);
+                ck.resize("100%", `${cked.Setup.EmHeight}em`, true);
             } catch (e) {}
         }
         return true;

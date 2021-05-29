@@ -8,80 +8,28 @@ var __extends = (this && this.__extends) || (function () {
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-/// <reference types="kendo-ui" />
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     var DecimalEditComponent = /** @class */ (function (_super) {
         __extends(DecimalEditComponent, _super);
         function DecimalEditComponent(controlId, setup) {
-            var _a;
-            var _this = _super.call(this, controlId, DecimalEditComponent.TEMPLATE, DecimalEditComponent.SELECTOR, {
-                ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "decimal_change",
-                GetValue: function (control) {
-                    return control.valueText;
-                },
-                Enable: function (control, enable, clearOnDisable) {
-                    control.enable(enable);
-                    if (!enable && clearOnDisable)
-                        control.clear();
-                },
-            }, false, function (tag, control) {
-                control.kendoNumericTextBox.destroy();
-            }) || this;
-            $(_this.Control).kendoNumericTextBox({
-                format: "0.00",
-                min: setup.Min, max: setup.Max,
-                culture: YVolatile.Basics.Language,
-                downArrowText: "",
-                upArrowText: "",
-                placeholder: (_a = setup.PlaceHolder) !== null && _a !== void 0 ? _a : undefined,
-                change: function (e) {
-                    $(_this.Control).trigger("change");
-                    var event = document.createEvent("Event");
-                    event.initEvent("decimal_change", true, true);
-                    _this.Control.dispatchEvent(event);
-                    FormsSupport.validateElement(_this.Control);
-                }
-            });
-            _this.kendoNumericTextBox = $(_this.Control).data("kendoNumericTextBox");
-            return _this;
+            return _super.call(this, controlId, setup, DecimalEditComponent.TEMPLATE, DecimalEditComponent.SELECTOR) || this;
         }
-        Object.defineProperty(DecimalEditComponent.prototype, "value", {
-            get: function () {
-                return this.kendoNumericTextBox.value();
-            },
-            set: function (val) {
-                if (val == null)
-                    this.kendoNumericTextBox.value("");
-                else
-                    this.kendoNumericTextBox.value(val);
-            },
-            enumerable: false,
-            configurable: true
-        });
-        Object.defineProperty(DecimalEditComponent.prototype, "valueText", {
-            get: function () {
-                return this.value ? this.value.toString() : "";
-            },
-            enumerable: false,
-            configurable: true
-        });
-        DecimalEditComponent.prototype.clear = function () {
-            this.kendoNumericTextBox.value("");
-        };
-        DecimalEditComponent.prototype.enable = function (enabled) {
-            this.kendoNumericTextBox.enable(enabled);
-        };
         DecimalEditComponent.TEMPLATE = "yt_decimal";
-        DecimalEditComponent.SELECTOR = "input.yt_decimal.t_edit.k-input[name]";
+        DecimalEditComponent.SELECTOR = ".yt_decimal.t_edit";
+        // events duplicated from NumberEditComponentBase to avoid changes in component users
+        DecimalEditComponent.EVENT = "number_changespin"; // combines change and spin
+        DecimalEditComponent.EVENTCHANGE = "number_change";
+        DecimalEditComponent.EVENTSPIN = "number_spin";
         return DecimalEditComponent;
-    }(YetaWF.ComponentBaseDataImpl));
+    }(YetaWF_ComponentsHTML.NumberEditComponentBase));
     YetaWF_ComponentsHTML.DecimalEditComponent = DecimalEditComponent;
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 

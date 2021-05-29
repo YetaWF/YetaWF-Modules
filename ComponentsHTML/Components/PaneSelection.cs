@@ -43,11 +43,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(string model) {
 
-            List<string> list;
-            if (!TryGetSiblingProperty($"{PropertyName}_List", out list))
+            if (!TryGetSiblingProperty($"{PropertyName}_List", out List<string>? list))
                 list = new List<string>();
             List<SelectionItem<string>> itemList = new List<SelectionItem<string>>();
-            foreach (string l in list) {
+            foreach (string l in list!) {
                 itemList.Add(new SelectionItem<string> {
                     Text = l,
                     Value = l,

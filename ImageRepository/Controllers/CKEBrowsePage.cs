@@ -23,14 +23,14 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
             [Caption("Local Url"), Description("Local Url")]
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local)]
             [StringLength(Globals.MaxUrl), Required, Trim]
-            public string PageUrl { get; set; }
+            public string? PageUrl { get; set; } 
 
             [UIHint("Hidden")]
-            public string CKEditor { get; set; }
+            public string CKEditor { get; set; } = null!;
             [UIHint("Hidden")]
             public int CKEditorFuncNum { get; set; }
             [UIHint("Hidden")]
-            public string LangCode { get; set; }
+            public string LangCode { get; set; } = null!;
 
             public Model() { }
 

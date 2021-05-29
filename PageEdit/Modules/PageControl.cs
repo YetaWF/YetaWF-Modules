@@ -1,6 +1,7 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
@@ -45,9 +46,9 @@ namespace YetaWF.Modules.PageEdit.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
 
-        public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
-            MenuList baseMenuList = await base.GetModuleMenuListAsync(renderMode, location);
-            MenuList menuList = new MenuList();
+        public override async Task<List<ModuleAction>> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
+            List<ModuleAction> baseMenuList = await base.GetModuleMenuListAsync(renderMode, location);
+            List<ModuleAction> menuList = new List<ModuleAction>();
 
             PageEditModule modEdit = new PageEditModule();
             menuList.New(await modEdit.GetAction_EditAsync(null), location);
@@ -65,13 +66,10 @@ namespace YetaWF.Modules.PageEdit.Modules {
             return menuList;
         }
 
-        public async Task<ModuleAction> GetAction_PageControlAsync() {
-            string css = null;
-            if (Manager.SkinInfo.UsingBootstrap && Manager.SkinInfo.UsingBootstrapButtons)
-                css = "btn btn-outline-primary";
+        public async Task<ModuleAction?> GetAction_PageControlAsync() {
             return new ModuleAction(this) {
                 Category = ModuleAction.ActionCategoryEnum.Significant,
-                CssClass = css,
+                CssClass = "y_button_outline",
                 Image = await new SkinImages().FindIcon_PackageAsync("PageEdit.png", Package.GetCurrentPackage(this)),
                 Location = ModuleAction.ActionLocationEnum.Any,
                 Mode = ModuleAction.ActionModeEnum.Any,
@@ -83,7 +81,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
             };
         }
 
-        public ModuleAction GetAction_SwitchToEdit() {
+        public ModuleAction? GetAction_SwitchToEdit() {
             if (!Manager.CurrentPage.IsAuthorized_Edit()) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.SwitchToEdit)),
@@ -103,11 +101,11 @@ namespace YetaWF.Modules.PageEdit.Modules {
             };
 
         }
-        public ModuleAction GetAction_SwitchToView() {
+        public ModuleAction? GetAction_SwitchToView() {
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.SwitchToView)),
-                NeedsModuleContext = true,
                 QueryArgs = new { },
+                NeedsModuleContext = true,
                 Image = "#Display",
                 LinkText = this.__ResStr("modSwitchToViewLink", "Switch To Site View Mode"),
                 MenuText = this.__ResStr("modSwitchToViewText", "Switch To Site View Mode"),
@@ -121,9 +119,9 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 DontFollow = true,
             };
         }
-        public async Task<ModuleAction> GetAction_ExportPageAsync(Guid? pageGuid = null) {
+        public async Task<ModuleAction?> GetAction_ExportPageAsync(Guid? pageGuid = null) {
             Guid guid;
-            PageDefinition page;
+            PageDefinition? page;
             if (pageGuid == null) {
                 page = Manager.CurrentPage;
                 if (page == null) return null;
@@ -153,7 +151,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 Style = ModuleAction.ActionStyleEnum.Normal,
             };
         }
-        public async Task<ModuleAction> GetAction_W3CValidationAsync() {
+        public async Task<ModuleAction?> GetAction_W3CValidationAsync() {
             if (Manager.CurrentPage == null) return null;
             if (Manager.IsLocalHost) return null;
             ControlPanelConfigData config = await ControlPanelConfigDataProvider.GetConfigAsync();
@@ -175,7 +173,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 DontFollow = true,
             };
         }
-        public async Task<ModuleAction> GetAction_RestartSite() {
+        public async Task<ModuleAction?> GetAction_RestartSite() {
             if (!Manager.HasSuperUserRole) return null;
             if (YetaWF.Core.Support.Startup.MultiInstance) return null;
             return new ModuleAction(this) {
@@ -193,7 +191,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
                 DontFollow = true,
             };
         }
-        public ModuleAction GetAction_ClearJsCssCache() {
+        public ModuleAction? GetAction_ClearJsCssCache() {
             if (!Manager.HasSuperUserRole) return null;
             return new ModuleAction(this) {
                 Style = ModuleAction.ActionStyleEnum.Post,

@@ -49,7 +49,7 @@ Tawk_API.visitor = {{
 
             Manager.ScriptManager.AddLast(sb.ToString());
 
-            return Task.FromResult<string>(null);
+            return Task.FromResult<string>(string.Empty);
         }
     }
 }

@@ -51,7 +51,7 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
                 return (Grid.GridActionsEnum)_DefaultGridActions;
             }
         }
-        public static Grid.GridActionsEnum? _DefaultGridActions;
+        private static Grid.GridActionsEnum? _DefaultGridActions;
 
         public bool DefaultShowGridSearchToolbar {
             get {
@@ -61,7 +61,7 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
                 return (bool)_ShowGridSearchToolbar;
             }
         }
-        public static bool? _ShowGridSearchToolbar;
+        private static bool? _ShowGridSearchToolbar;
 
         public UserData() {
             string timeZone = TimeZoneInfo.Local.Id;
@@ -101,7 +101,7 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
         // IUSERSETTINGS
 
         public async Task<object> ResolveUserAsync() {
-            object userInfo = Manager.UserSettingsObject;
+            object? userInfo = Manager.UserSettingsObject;
             if (userInfo == null) {
                 using (UserDataProvider userDP = new UserDataProvider()) {
                     Manager.UserSettingsObject = userInfo = await userDP.GetItemAsync();
@@ -110,18 +110,18 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
             return userInfo;
         }
 
-        public object GetProperty(string name, Type type) {
+        public object? GetProperty(string name, Type type) {
             // get the user settings (for anonymous users create one)
-            object userInfo = Manager.UserSettingsObject;
+            object? userInfo = Manager.UserSettingsObject;
             if (userInfo == null) return null;
             // get the requested property
-            PropertyInfo pi = ObjectSupport.TryGetProperty(userInfo.GetType(), name);
+            PropertyInfo? pi = ObjectSupport.TryGetProperty(userInfo.GetType(), name);
             if (pi == null) throw new InternalError("User setting {0} doesn't exist", name);
             if (pi.PropertyType != type) throw new InternalError("User setting {0} is not of the requested type {1}", name, type.FullName);
             return pi.GetValue(userInfo);
         }
 
-        public async Task SetPropertyAsync(string name, System.Type type, object value) {
+        public async Task SetPropertyAsync(string name, System.Type type, object? value) {
             // set the user settings (for anonymous users create one)
             UserData userInfo = (UserData)await ResolveUserAsync();
             // get the requested property
@@ -148,7 +148,7 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
 
         private IDataProvider<int, UserData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, UserData> CreateDataProvider() {
+        private IDataProvider<int, UserData>? CreateDataProvider() {
             Package package = YetaWF.Modules.UserSettings.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -158,7 +158,7 @@ namespace YetaWF.Modules.UserSettings.DataProvider {
         // API
 
         public async Task<UserData> GetItemAsync() {
-            UserData userInfo = null;
+            UserData? userInfo;
             if (Manager.HaveUser)
                 userInfo = await DataProvider.GetAsync(Manager.UserId);
             else

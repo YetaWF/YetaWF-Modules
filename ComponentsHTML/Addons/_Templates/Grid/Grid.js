@@ -8,12 +8,13 @@ var __extends = (this && this.__extends) || (function () {
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-// Kendo UI menu use
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     var SizeStyleEnum;
@@ -77,6 +78,9 @@ var YetaWF_ComponentsHTML;
             _this.PagerTotals = null;
             _this.InputPage = null;
             _this.SelectPageSize = null;
+            _this.SelectPanelPageSize = null;
+            _this.InputPanelSearch = null;
+            _this.ColumnSelection = null;
             _this.ColumnResizeBar = null;
             _this.ColumnResizeHeader = null;
             _this.LoadingDiv = null;
@@ -97,22 +101,18 @@ var YetaWF_ComponentsHTML;
                 _this.PagerTotals = $YetaWF.getElement1BySelectorCond(".tg_totals", [_this.Control]);
                 if (_this.Setup.PageSize) {
                     _this.InputPage = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name$='.__Page']", YetaWF_ComponentsHTML.IntValueEditComponent.SELECTOR, [_this.Control]);
-                    _this.SelectPageSize = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name$='.__PageSelection']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
+                    _this.SelectPageSize = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond(".tg_pager select[name$='.__PageSelection']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
+                    _this.SelectPanelPageSize = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond(".yGridPanelTitle select[name='__PageSelection']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
                 }
+                if (YetaWF_ComponentsHTML.SearchEditComponent) // searchedit may not be in use
+                    _this.InputPanelSearch = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond(".yGridPanelTitle [name='__Search']", YetaWF_ComponentsHTML.SearchEditComponent.SELECTOR, [_this.Control]);
+                if (YetaWF_ComponentsHTML.CheckListMenuEditComponent) // checklist may not be in use
+                    _this.ColumnSelection = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond(".yGridPanelTitle [name='__ColumnSelection']", YetaWF_ComponentsHTML.CheckListMenuEditComponent.SELECTOR, [_this.Control]);
             }
             _this.FilterBar = $YetaWF.getElement1BySelectorCond(".tg_filter", [_this.Control]);
             _this.updateStatus();
             $YetaWF.getElement1BySelector(".tg_table", [_this.Control]).addEventListener("scroll", function (ev) {
                 $YetaWF.sendContainerScrollEvent(_this.Control);
-                return true;
-            });
-            $YetaWF.registerEventHandler(_this.Control, "mouseover", ".tg_header th, .tg_filter .tg_button, .tg_pager .tg_button", function (ev) {
-                if (!$YetaWF.elementHasClass(ev.__YetaWFElem, _this.Setup.HoverCss))
-                    $YetaWF.elementAddClass(ev.__YetaWFElem, _this.Setup.HoverCss);
-                return true;
-            });
-            $YetaWF.registerEventHandler(_this.Control, "mouseout", ".tg_header th, .tg_filter .tg_button, .tg_pager .tg_button", function (ev) {
-                $YetaWF.elementRemoveClass(ev.__YetaWFElem, _this.Setup.HoverCss);
                 return true;
             });
             $YetaWF.registerEventHandler(_this.Control, "mouseover", ".tg_resize", function (ev) {
@@ -130,6 +130,8 @@ var YetaWF_ComponentsHTML;
                     if ($YetaWF.isVisible(filterBar)) {
                         filterBar.style.display = "none";
                         _this.clearFilters();
+                        if (_this.InputPanelSearch)
+                            _this.InputPanelSearch.value = "";
                         _this.reload(0);
                     }
                     else {
@@ -142,8 +144,7 @@ var YetaWF_ComponentsHTML;
             // Reload
             if (_this.BtnReload) {
                 $YetaWF.registerEventHandler(_this.BtnReload, "click", null, function (ev) {
-                    if (!$YetaWF.elementHasClass(ev.__YetaWFElem, _this.Setup.DisabledCss))
-                        _this.reload(_this.Setup.Page);
+                    _this.reload(_this.Setup.Page);
                     return false;
                 });
                 $YetaWF.registerModuleRefresh(_this.Control, function (mod) {
@@ -155,40 +156,32 @@ var YetaWF_ComponentsHTML;
             // Nav buttons
             if (_this.BtnTop) {
                 $YetaWF.registerEventHandler(_this.BtnTop, "click", null, function (ev) {
-                    if (!$YetaWF.elementHasClass(ev.__YetaWFElem, _this.Setup.DisabledCss)) {
-                        if (_this.Setup.Page >= 0)
-                            _this.reload(0);
-                    }
+                    if (_this.Setup.Page >= 0)
+                        _this.reload(0);
                     return false;
                 });
             }
             if (_this.BtnPrev) {
                 $YetaWF.registerEventHandler(_this.BtnPrev, "click", null, function (ev) {
-                    if (!$YetaWF.elementHasClass(ev.__YetaWFElem, _this.Setup.DisabledCss)) {
-                        var page = _this.Setup.Page - 1;
-                        if (page >= 0)
-                            _this.reload(page);
-                    }
+                    var page = _this.Setup.Page - 1;
+                    if (page >= 0)
+                        _this.reload(page);
                     return false;
                 });
             }
             if (_this.BtnNext) {
                 $YetaWF.registerEventHandler(_this.BtnNext, "click", null, function (ev) {
-                    if (!$YetaWF.elementHasClass(ev.__YetaWFElem, _this.Setup.DisabledCss)) {
-                        var page = _this.Setup.Page + 1;
-                        if (page < _this.Setup.Pages)
-                            _this.reload(page);
-                    }
+                    var page = _this.Setup.Page + 1;
+                    if (page < _this.Setup.Pages)
+                        _this.reload(page);
                     return false;
                 });
             }
             if (_this.BtnBottom) {
                 $YetaWF.registerEventHandler(_this.BtnBottom, "click", null, function (ev) {
-                    if (!$YetaWF.elementHasClass(ev.__YetaWFElem, _this.Setup.DisabledCss)) {
-                        var page = _this.Setup.Pages - 1;
-                        if (page >= 0)
-                            _this.reload(page);
-                    }
+                    var page = _this.Setup.Pages - 1;
+                    if (page >= 0)
+                        _this.reload(page);
                     return false;
                 });
             }
@@ -203,11 +196,63 @@ var YetaWF_ComponentsHTML;
                     return true;
                 });
             }
+            //  search input
+            if (_this.InputPanelSearch && _this.Setup.PanelHeaderSearchColumns) {
+                _this.InputPanelSearch.Control.addEventListener(YetaWF_ComponentsHTML.SearchEditComponent.EVENTCLICK, function (evt) {
+                    _this.clearFilters();
+                    _this.reload(0, undefined, undefined, undefined, true);
+                });
+            }
+            // column selection
+            if (_this.Setup.SettingsModuleGuid && _this.ColumnSelection) {
+                _this.ColumnSelection.Control.addEventListener(YetaWF_ComponentsHTML.CheckListMenuEditComponent.EVENTCHANGE, function (evt) {
+                    var uri = $YetaWF.parseUrl(_this.Setup.SaveSettingsColumnSelectionUrl);
+                    uri.addSearch("SettingsModuleGuid", _this.Setup.SettingsModuleGuid);
+                    // build query args
+                    var entries = _this.ColumnSelection.getValueEntries();
+                    var colOffIndex = 0;
+                    var colOnIndex = 0;
+                    var colIndex = 0;
+                    for (var _i = 0, entries_1 = entries; _i < entries_1.length; _i++) {
+                        var entry = entries_1[_i];
+                        if (entry.Checked) {
+                            if (!_this.Setup.Columns[colIndex].Visible)
+                                uri.addSearch("ColumnsOn[" + colOnIndex++ + "]", entry.Name);
+                        }
+                        else {
+                            if (_this.Setup.Columns[colIndex].Visible)
+                                uri.addSearch("ColumnsOff[" + colOffIndex++ + "]", entry.Name);
+                        }
+                        colIndex++;
+                    }
+                    $YetaWF.post(_this.Setup.SaveSettingsColumnSelectionUrl, uri.toFormData(), function (success, data) {
+                        if (success) {
+                            if (!_this.Setup.StaticData) {
+                                _this.reload(0);
+                            }
+                            else {
+                                var colVis = [];
+                                for (var _i = 0, entries_2 = entries; _i < entries_2.length; _i++) {
+                                    var entry = entries_2[_i];
+                                    colVis.push(entry.Checked);
+                                }
+                                _this.updateColumnHeaders(colVis);
+                            }
+                        }
+                    });
+                });
+            }
             // pagesize selection
             if (_this.SelectPageSize) {
                 _this.SelectPageSize.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, function (evt) {
                     if (_this.SelectPageSize)
                         _this.reload(0, Number(_this.SelectPageSize.value));
+                });
+            }
+            if (_this.SelectPanelPageSize) {
+                _this.SelectPanelPageSize.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, function (evt) {
+                    if (_this.SelectPanelPageSize)
+                        _this.reload(0, Number(_this.SelectPanelPageSize.value));
                 });
             }
             // Column resizing
@@ -280,6 +325,8 @@ var YetaWF_ComponentsHTML;
                     var colIndex = Array.prototype.indexOf.call(filter.children, head);
                     _this.clearColSortValue(colIndex);
                     _this.reload(0);
+                    if (_this.InputPanelSearch)
+                        _this.InputPanelSearch.value = "";
                     return false;
                 });
                 _this.addDirectFilterHandlers();
@@ -414,8 +461,42 @@ var YetaWF_ComponentsHTML;
                     });
                 }
             }
+            $YetaWF.registerEventHandler(_this.Control, "click", ".yGridPanelExpColl button", function (ev) {
+                if ($YetaWF.elementHasClass(_this.Control, "t_expanded")) {
+                    _this.setExpandCollapseStatus(false);
+                    return false;
+                }
+                else if ($YetaWF.elementHasClass(_this.Control, "t_collapsed")) {
+                    _this.setExpandCollapseStatus(true);
+                    return false;
+                }
+                return true;
+            });
             return _this;
         }
+        Grid.prototype.saveExpandCollapseStatus = function (expanded) {
+            // send save request, we don't care about the response
+            var uri = $YetaWF.parseUrl("/YetaWF_ComponentsHTML/GridPanelSaveSettings/SaveExpandCollapse");
+            uri.addSearch("SettingsModuleGuid", this.Setup.SettingsModuleGuid);
+            uri.addSearch("Expanded", expanded.toString());
+            var request = new XMLHttpRequest();
+            request.open("POST", uri.toUrl(), true);
+            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            request.send( /*uri.toFormData()*/);
+        };
+        Grid.prototype.setExpandCollapseStatus = function (expand) {
+            if (!expand && $YetaWF.elementHasClass(this.Control, "t_expanded")) {
+                $YetaWF.elementRemoveClasses(this.Control, ["t_expanded", "t_collapsed"]);
+                $YetaWF.elementAddClass(this.Control, "t_collapsed");
+                this.saveExpandCollapseStatus(false);
+            }
+            else if (expand && $YetaWF.elementHasClass(this.Control, "t_collapsed")) {
+                $YetaWF.elementRemoveClasses(this.Control, ["t_expanded", "t_collapsed"]);
+                $YetaWF.elementAddClass(this.Control, "t_expanded");
+                this.saveExpandCollapseStatus(true);
+            }
+        };
         // handle submit local data
         Grid.prototype.handlePreSubmitLocalData = function (form) {
             if (this.Setup.StaticData && this.Setup.NoSubmitContents) {
@@ -680,10 +761,17 @@ var YetaWF_ComponentsHTML;
         Grid.prototype.reload = function (page, newPageSize, overrideColFilter, overrideExtraData, sort, done) {
             var _this = this;
             if (!this.reloadInProgress) {
-                this.setReloading(true);
                 if (page < 0)
                     page = 0;
-                if (this.Setup.StaticData && !sort) {
+                var searchCols = null;
+                var searchText = null;
+                if (this.InputPanelSearch && this.Setup.PanelHeaderSearchColumns) {
+                    if (this.InputPanelSearch.value) {
+                        searchCols = this.Setup.PanelHeaderSearchColumns;
+                        searchText = this.InputPanelSearch.value;
+                    }
+                }
+                if (this.Setup.StaticData && !sort && !searchText) {
                     // show/hide selected rows
                     if (this.Setup.PageSize > 0) {
                         var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
@@ -693,8 +781,12 @@ var YetaWF_ComponentsHTML;
                         }
                         var len = trs.length;
                         var count = 0;
+                        if (!newPageSize)
+                            newPageSize = this.Setup.PageSize;
+                        else
+                            this.Setup.PageSize = newPageSize;
                         for (var i = page * this.Setup.PageSize; i < len; ++i) {
-                            if (count >= (newPageSize || this.Setup.PageSize))
+                            if (count >= newPageSize)
                                 break;
                             trs[i].removeAttribute("style");
                             // init any controls that just became visible
@@ -705,8 +797,10 @@ var YetaWF_ComponentsHTML;
                     this.Setup.Page = page;
                     if (this.InputPage)
                         this.InputPage.value = this.Setup.Page + 1;
+                    this.updatePage();
                     this.updateStatus();
                     this.setReloading(false);
+                    this.setExpandCollapseStatus(true);
                 }
                 else {
                     // fetch data from servers
@@ -726,69 +820,78 @@ var YetaWF_ComponentsHTML;
                         uri.addSearch("sorts[0].order", (col.Sort === SortByEnum.Descending ? 1 : 0));
                     }
                     // filters
-                    var colIndex = 0;
-                    var fcount = 0;
-                    for (var _a = 0, _b = this.Setup.Columns; _a < _b.length; _a++) {
-                        var col_2 = _b[_a];
-                        var val = this.getColSortValue(colIndex);
-                        if (val) {
-                            if (col_2.FilterType === "complex") {
-                                uri.addSearch("filters[" + fcount + "].field", col_2.Name);
-                                uri.addSearch("filters[" + fcount + "].operator", "Complex");
-                                uri.addSearch("filters[" + fcount + "].valueAsString", val);
+                    if (searchCols) {
+                        var fcount = 0;
+                        for (var _a = 0, searchCols_1 = searchCols; _a < searchCols_1.length; _a++) {
+                            var searchCol = searchCols_1[_a];
+                            if (searchText) {
+                                uri.addSearch("filters[" + fcount + "].field", searchCol);
+                                uri.addSearch("filters[" + fcount + "].operator", "Contains");
+                                uri.addSearch("filters[" + fcount + "].valueAsString", searchText);
                                 ++fcount;
                             }
-                            else {
-                                var oper = col_2.FilterOp;
-                                if (overrideColFilter && overrideColFilter.ColIndex === colIndex)
-                                    oper = overrideColFilter.FilterOp;
-                                if (oper != null) {
+                        }
+                        if (fcount > 0)
+                            uri.addSearch("Search", "True");
+                    }
+                    else {
+                        var colIndex = 0;
+                        var fcount = 0;
+                        for (var _b = 0, _c = this.Setup.Columns; _b < _c.length; _b++) {
+                            var col_2 = _c[_b];
+                            var val = this.getColSortValue(colIndex);
+                            if (val) {
+                                if (col_2.FilterType === "complex") {
                                     uri.addSearch("filters[" + fcount + "].field", col_2.Name);
-                                    uri.addSearch("filters[" + fcount + "].operator", this.GetFilterOpString(oper));
+                                    uri.addSearch("filters[" + fcount + "].operator", "Complex");
                                     uri.addSearch("filters[" + fcount + "].valueAsString", val);
                                     ++fcount;
                                 }
+                                else {
+                                    var oper = col_2.FilterOp;
+                                    if (overrideColFilter && overrideColFilter.ColIndex === colIndex)
+                                        oper = overrideColFilter.FilterOp;
+                                    if (oper != null) {
+                                        uri.addSearch("filters[" + fcount + "].field", col_2.Name);
+                                        uri.addSearch("filters[" + fcount + "].operator", this.GetFilterOpString(oper));
+                                        uri.addSearch("filters[" + fcount + "].valueAsString", val);
+                                        ++fcount;
+                                    }
+                                }
                             }
+                            ++colIndex;
                         }
-                        ++colIndex;
                     }
                     uri.addFormInfo(this.Control);
                     var uniqueIdCounters = { UniqueIdPrefix: this.ControlId + "gr", UniqueIdPrefixCounter: 0, UniqueIdCounter: 0 };
                     uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
                     if (this.Setup.StaticData)
                         uri.addSearch("data", JSON.stringify(this.Setup.StaticData));
-                    var request_1 = new XMLHttpRequest();
-                    request_1.open("POST", this.Setup.AjaxUrl);
-                    request_1.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-                    request_1.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                    request_1.onreadystatechange = function (ev) {
-                        if (request_1.readyState === 4 /*DONE*/) {
-                            _this.setReloading(false);
-                            $YetaWF.processAjaxReturn(request_1.responseText, request_1.statusText, request_1, undefined, undefined, function (result) {
-                                var partial = JSON.parse(request_1.responseText);
-                                $YetaWF.processClearDiv(_this.TBody);
-                                _this.TBody.innerHTML = "";
-                                $YetaWF.appendMixedHTML(_this.TBody, partial.TBody, true);
-                                _this.Setup.Records = partial.Records;
-                                _this.Setup.Pages = partial.Pages;
-                                _this.Setup.Page = partial.Page;
-                                _this.Setup.PageSize = partial.PageSize;
-                                if (_this.InputPage)
-                                    _this.InputPage.value = _this.Setup.Page + 1;
-                                if (_this.Setup.NoSubmitContents) {
-                                    _this.SubmitCheckCol = _this.getSubmitCheckCol();
-                                    if (_this.SubmitCheckCol >= 0)
-                                        _this.setInitialSubmitStatus();
-                                }
-                                _this.updateStatus();
-                                if (done)
-                                    done();
-                                _this.sendEventSelect();
-                            });
+                    $YetaWF.post(this.Setup.AjaxUrl, uri.toFormData(), function (success, partial) {
+                        if (success) {
+                            $YetaWF.processClearDiv(_this.TBody);
+                            _this.TBody.innerHTML = "";
+                            $YetaWF.appendMixedHTML(_this.TBody, partial.TBody, true);
+                            // We have to update column headers based on the data we got in case of a reload as the user may have multiple windows for the same session
+                            _this.updateColumnHeaders(partial.ColumnVisibility); // for visibility
+                            _this.Setup.Records = partial.Records;
+                            _this.Setup.Pages = partial.Pages;
+                            _this.Setup.Page = partial.Page;
+                            _this.Setup.PageSize = partial.PageSize;
+                            if (_this.InputPage)
+                                _this.InputPage.value = _this.Setup.Page + 1;
+                            if (_this.Setup.NoSubmitContents) {
+                                _this.SubmitCheckCol = _this.getSubmitCheckCol();
+                                if (_this.SubmitCheckCol >= 0)
+                                    _this.setInitialSubmitStatus();
+                            }
+                            _this.updateStatus();
+                            if (done)
+                                done();
+                            _this.setExpandCollapseStatus(true);
+                            _this.sendEventSelect();
                         }
-                    };
-                    var data = uri.toFormData();
-                    request_1.send(data);
+                    });
                 }
             }
         };
@@ -801,6 +904,49 @@ var YetaWF_ComponentsHTML;
                 else
                     this.LoadingDiv.setAttribute("style", "display:none");
             }
+        };
+        Grid.prototype.updateColumnHeaders = function (columnVisibility) {
+            // show/hide columns
+            var thsH = $YetaWF.getElementsBySelector(".tg_header th", [this.Control]);
+            var thsF = $YetaWF.getElementsBySelector(".tg_filter th", [this.Control]);
+            if (this.Setup.StaticData) {
+                var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
+                for (var _i = 0, trs_4 = trs; _i < trs_4.length; _i++) {
+                    var tr = trs_4[_i];
+                    var tds = $YetaWF.getElementsBySelector("td", [tr]);
+                    var colIndex_1 = 0;
+                    for (var _a = 0, columnVisibility_1 = columnVisibility; _a < columnVisibility_1.length; _a++) {
+                        var entry = columnVisibility_1[_a];
+                        if (!entry) {
+                            tds[colIndex_1].style.display = "none";
+                        }
+                        else {
+                            tds[colIndex_1].style.display = "";
+                        }
+                        ++colIndex_1;
+                    }
+                }
+            }
+            var colIndex = 0;
+            for (var _b = 0, columnVisibility_2 = columnVisibility; _b < columnVisibility_2.length; _b++) {
+                var entry = columnVisibility_2[_b];
+                this.Setup.Columns[colIndex].Visible = entry;
+                if (!entry) {
+                    if (thsH.length)
+                        thsH[colIndex].style.display = "none";
+                    if (thsF.length)
+                        thsF[colIndex].style.display = "none";
+                }
+                else {
+                    if (thsH.length)
+                        thsH[colIndex].style.display = "";
+                    if (thsF.length)
+                        thsF[colIndex].style.display = "";
+                }
+                ++colIndex;
+            }
+            if (this.ColumnSelection)
+                this.ColumnSelection.replaceValues(columnVisibility);
         };
         Grid.prototype.updateStatus = function () {
             if (this.PagerTotals) {
@@ -831,13 +977,13 @@ var YetaWF_ComponentsHTML;
                 this.PagerTotals.innerHTML = "<span>" + totals + "</span>";
             }
             if (this.BtnTop)
-                $YetaWF.elementToggleClass(this.BtnTop, this.Setup.DisabledCss, this.Setup.Page <= 0);
+                $YetaWF.elementEnableToggle(this.BtnTop, this.Setup.Page > 0);
             if (this.BtnPrev)
-                $YetaWF.elementToggleClass(this.BtnPrev, this.Setup.DisabledCss, this.Setup.Page <= 0);
+                $YetaWF.elementEnableToggle(this.BtnPrev, this.Setup.Page > 0);
             if (this.BtnNext)
-                $YetaWF.elementToggleClass(this.BtnNext, this.Setup.DisabledCss, this.Setup.Page >= this.Setup.Pages - 1);
+                $YetaWF.elementEnableToggle(this.BtnNext, this.Setup.Page < this.Setup.Pages - 1);
             if (this.BtnBottom)
-                $YetaWF.elementToggleClass(this.BtnBottom, this.Setup.DisabledCss, this.Setup.Page >= this.Setup.Pages - 1);
+                $YetaWF.elementEnableToggle(this.BtnBottom, this.Setup.Page < this.Setup.Pages - 1);
             // show/hide "No Records"
             if (this.Setup.StaticData) {
                 if (this.Setup.Records === 0) {
@@ -926,20 +1072,24 @@ var YetaWF_ComponentsHTML;
                     case "dynenum":
                         // handle selection change
                         $YetaWF.registerCustomEventHandlerDocument(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, "#" + col.FilterId, function (ev) {
+                            if (_this.InputPanelSearch)
+                                _this.InputPanelSearch.value = "";
                             _this.reload(0);
                             return false;
                         });
                         break;
                     case "long":
                     case "decimal":
-                    case "datetime":
-                    case "date":
                     case "text":
-                    case "guid": {
+                    case "guid":
+                    case "date":
+                    case "datetime": {
                         // handle return key
                         var elem = $YetaWF.getElementById(col.FilterId);
                         $YetaWF.registerEventHandler(elem, "keydown", null, function (ev) {
                             if (ev.keyCode === 13) { // Return
+                                if (_this.InputPanelSearch)
+                                    _this.InputPanelSearch.value = "";
                                 _this.reload(0);
                                 return false;
                             }
@@ -986,6 +1136,8 @@ var YetaWF_ComponentsHTML;
             else
                 elem.value = "";
             var grid = YetaWF.ComponentBaseDataImpl.getControlFromTag(elem, YetaWF_ComponentsHTML.Grid.SELECTOR);
+            if (grid.InputPanelSearch)
+                grid.InputPanelSearch.value = "";
             grid.reload(0);
         };
         Grid.prototype.getColSortValue = function (colIndex) {
@@ -1022,7 +1174,7 @@ var YetaWF_ComponentsHTML;
                     var datetime = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, YetaWF_ComponentsHTML.DateTimeEditComponent.SELECTOR);
                     return datetime.valueText;
                 case "date":
-                    var date = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, YetaWF_ComponentsHTML.DateEditComponent.SELECTOR);
+                    var date = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, YetaWF_ComponentsHTML.DateTimeEditComponent.SELECTOR);
                     return date.valueText;
                 case "enum": {
                     var dd = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR);
@@ -1069,7 +1221,7 @@ var YetaWF_ComponentsHTML;
                     datetime.clear();
                     break;
                 case "date":
-                    var date = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, YetaWF_ComponentsHTML.DateEditComponent.SELECTOR);
+                    var date = YetaWF.ComponentBaseDataImpl.getControlById(col.FilterId, YetaWF_ComponentsHTML.DateTimeEditComponent.SELECTOR);
                     date.clear();
                     break;
                 case "enum": {
@@ -1124,8 +1276,8 @@ var YetaWF_ComponentsHTML;
         Grid.prototype.resequenceDelete = function (recNum) {
             // resequence origin
             var trs = $YetaWF.getElementsBySelector("tr[data-origin]", [this.TBody]);
-            for (var _i = 0, trs_4 = trs; _i < trs_4.length; _i++) {
-                var tr = trs_4[_i];
+            for (var _i = 0, trs_5 = trs; _i < trs_5.length; _i++) {
+                var tr = trs_5[_i];
                 var orig = Number($YetaWF.getAttribute(tr, "data-origin"));
                 if (orig >= recNum) {
                     $YetaWF.setAttribute(tr, "data-origin", (orig - 1).toString());
@@ -1138,8 +1290,8 @@ var YetaWF_ComponentsHTML;
             // resequence origin
             var trs = $YetaWF.getElementsBySelector("tr[data-origin]", [this.TBody]);
             var index = 0;
-            for (var _i = 0, trs_5 = trs; _i < trs_5.length; _i++) {
-                var tr = trs_5[_i];
+            for (var _i = 0, trs_6 = trs; _i < trs_6.length; _i++) {
+                var tr = trs_6[_i];
                 var orig = Number($YetaWF.getAttribute(tr, "data-origin"));
                 $YetaWF.setAttribute(tr, "data-origin", index.toString());
                 // update all indexes for input/select fields to match record origin (TODO: check whether we should only update last index in field)
@@ -1160,7 +1312,6 @@ var YetaWF_ComponentsHTML;
         // API
         // API
         Grid.prototype.enable = function (enable) {
-            // TODO: This currently only works with jqueryui class
             $YetaWF.elementRemoveClass(this.Control, this.Setup.DisabledCss);
             if (!enable)
                 $YetaWF.elementAddClass(this.Control, this.Setup.DisabledCss);
@@ -1205,8 +1356,8 @@ var YetaWF_ComponentsHTML;
         Grid.prototype.AddRecords = function (trs, staticData) {
             if (!this.Setup.StaticData)
                 throw "Static grids only";
-            for (var _i = 0, trs_6 = trs; _i < trs_6.length; _i++) {
-                var tr = trs_6[_i];
+            for (var _i = 0, trs_7 = trs; _i < trs_7.length; _i++) {
+                var tr = trs_7[_i];
                 $YetaWF.appendMixedHTML(this.TBody, tr, true);
                 var lastTr = this.TBody.lastChild;
                 var origin_1 = this.Setup.StaticData.length;
@@ -1259,8 +1410,8 @@ var YetaWF_ComponentsHTML;
             if (!this.Setup.StaticData)
                 throw "Static grids only";
             var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
-            for (var _i = 0, trs_7 = trs; _i < trs_7.length; _i++) {
-                var tr = trs_7[_i];
+            for (var _i = 0, trs_8 = trs; _i < trs_8.length; _i++) {
+                var tr = trs_8[_i];
                 tr.remove();
             }
             this.Setup.StaticData = [];
@@ -1344,8 +1495,8 @@ var YetaWF_ComponentsHTML;
                 throw "Static grids only";
             var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
             var index = 0;
-            for (var _i = 0, trs_8 = trs; _i < trs_8.length; _i++) {
-                var tr = trs_8[_i];
+            for (var _i = 0, trs_9 = trs; _i < trs_9.length; _i++) {
+                var tr = trs_9[_i];
                 var rect = tr.getBoundingClientRect();
                 if (x < rect.left || x > rect.left + rect.width)
                     return -1;
@@ -1362,8 +1513,8 @@ var YetaWF_ComponentsHTML;
                 throw "Static grids only";
             var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
             var index = 0;
-            for (var _i = 0, trs_9 = trs; _i < trs_9.length; _i++) {
-                var tr = trs_9[_i];
+            for (var _i = 0, trs_10 = trs; _i < trs_10.length; _i++) {
+                var tr = trs_10[_i];
                 var rect = tr.getBoundingClientRect();
                 if (x < rect.left || x > rect.left + rect.width)
                     return -1;

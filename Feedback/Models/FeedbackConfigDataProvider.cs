@@ -27,7 +27,7 @@ namespace YetaWF.Modules.Feedback.DataProvider {
         public bool RequireEmail { get; set; }
         public bool BccEmails { get; set; }
         [StringLength(Globals.MaxEmail)]
-        public string Email { get; set; }
+        public string Email { get; set; } = null!;
 
         public FeedbackConfigData() {
             RequireEmail = true;
@@ -49,7 +49,7 @@ namespace YetaWF.Modules.Feedback.DataProvider {
 
         private IDataProvider<int, FeedbackConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, FeedbackConfigData> CreateDataProvider() {
+        private IDataProvider<int, FeedbackConfigData>? CreateDataProvider() {
             Package package = YetaWF.Modules.Feedback.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -64,7 +64,7 @@ namespace YetaWF.Modules.Feedback.DataProvider {
             }
         }
         public async Task<FeedbackConfigData> GetItemAsync() {
-            FeedbackConfigData config = await DataProvider.GetAsync(KEY);
+            FeedbackConfigData? config = await DataProvider.GetAsync(KEY);
             if (config == null) {
                 config = new FeedbackConfigData();
                 await AddConfigAsync(config);
@@ -83,7 +83,7 @@ namespace YetaWF.Modules.Feedback.DataProvider {
             );
         }
         public async Task UpdateConfigAsync(FeedbackConfigData data) {
-            FeedbackConfigData origConfig = Auditing.Active ? await GetItemAsync() : null;
+            FeedbackConfigData? origConfig = Auditing.Active ? await GetItemAsync() : null;
             data.Id = KEY;
             UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)

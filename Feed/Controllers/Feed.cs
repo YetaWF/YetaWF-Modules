@@ -22,25 +22,25 @@ namespace YetaWF.Modules.Feed.Controllers {
     public FeedModuleController() { }
 
         public class Entry {
-            public string Title { get; set; }
-            public string Description { get; set; }
-            public SerializableList<string> Links { get; set; }
-            public SerializableList<Author> Authors { get; set; }
+            public string Title { get; set; } = null!;
+            public string? Description { get; set; } = null!;
+            public SerializableList<string> Links { get; set; } = null!;
+            public SerializableList<Author> Authors { get; set; } = null!;
 
             public DateTime PublishDate { get; set; }
         }
         public class Author {
-            public string Email { get; set; }
-            public string Name { get; set; }
-            public string Url { get; set; }
+            public string? Email { get; set; }
+            public string? Name { get; set; }
+            public string? Url { get; set; }
         }
 
         public class DisplayModel {
-            public string Title { get; set; }
-            public string Description { get; set; }
+            public string? Title { get; set; }
+            public string? Description { get; set; }
             public DateTime LastUpdate { get; set; }
-            public SerializableList<Entry> Entries { get; set; }
-            public string Url { get; set; }
+            public SerializableList<Entry> Entries { get; set; } = null!;
+            public string? Url { get; set; }
             public DateTime CacheExpires { get; set; }
 
             public DisplayModel() {
@@ -54,7 +54,7 @@ namespace YetaWF.Modules.Feed.Controllers {
             GetObjectInfo<DisplayModel> cacheInfo;
             using (ICacheDataProvider localCacheDP = YetaWF.Core.IO.Caching.GetLocalCacheProvider()) {
                 cacheInfo = await localCacheDP.GetAsync<DisplayModel>(Module.CacheKey);
-                if (!cacheInfo.Success || cacheInfo.Data.CacheExpires < DateTime.UtcNow) {
+                if (!cacheInfo.Success || cacheInfo.RequiredData.CacheExpires < DateTime.UtcNow) {
                     model = new DisplayModel();
                     string url = Module.FeedUrl;
                     XmlReader reader = XmlReader.Create(url);
@@ -65,14 +65,13 @@ namespace YetaWF.Modules.Feed.Controllers {
                     model.LastUpdate = feed.LastUpdatedTime.DateTime;
                     model.Url = GetFeedUrl(feed.Links);
                     foreach (SyndicationItem item in feed.Items) {
-                        string desc = null;
+                        string? desc = null;
                         if (string.IsNullOrWhiteSpace(desc))
                             if (item.Summary != null) desc = item.Summary.Text;
                         if (string.IsNullOrWhiteSpace(desc)) {
                             if (item.Content != null) {
-                                TextSyndicationContent tsc = item.Content as TextSyndicationContent;
-                                if (tsc != null)
-                                    desc = tsc.Text;
+                                TextSyndicationContent? tsc = item.Content as TextSyndicationContent;
+                                desc = tsc?.Text;
                             }
                         }
                         Entry entry = new Entry {
@@ -98,7 +97,7 @@ namespace YetaWF.Modules.Feed.Controllers {
 
                     await localCacheDP.AddAsync(Module.CacheKey, model);
                 } else {
-                    model = cacheInfo.Data;
+                    model = cacheInfo.RequiredData;
                 }
 
                 if (model.Entries.Count == 0)
@@ -108,8 +107,8 @@ namespace YetaWF.Modules.Feed.Controllers {
             }
         }
 
-        private string GetFeedUrl(Collection<SyndicationLink> links) {
-            SyndicationLink link = (from l in links where l.RelationshipType == "alternate" select l).FirstOrDefault();
+        private string? GetFeedUrl(Collection<SyndicationLink> links) {
+            SyndicationLink? link = (from l in links where l.RelationshipType == "alternate" select l).FirstOrDefault();
             if (link == null) link = links.FirstOrDefault();
             if (link == null) return null;
             return link.Uri.ToString();

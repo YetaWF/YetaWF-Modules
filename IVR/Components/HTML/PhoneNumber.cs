@@ -13,9 +13,9 @@ namespace Softelvdm.Modules.IVR.Components {
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetTemplateName() { return TemplateName; }
 
-        public static string FormatPhoneNumber(string phoneNumber) {
+        public static string FormatPhoneNumber(string? phoneNumber) {
             if (phoneNumber == null || !phoneNumber.StartsWith("+1") || phoneNumber.Length != 12)
-                return phoneNumber;
+                return phoneNumber ?? string.Empty;
             return $"({phoneNumber.Substring(2, 3)}) {phoneNumber.Substring(5, 3)}-{phoneNumber.Substring(8, 4)}";
         }
     }

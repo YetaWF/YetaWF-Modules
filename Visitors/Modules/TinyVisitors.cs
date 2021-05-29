@@ -38,6 +38,6 @@ namespace YetaWF.Modules.Visitors.Modules {
         [Category("General"), Caption("Visitors Url"), Description("The page shown when the icon is clicked")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
         [StringLength(Globals.MaxUrl), Trim]
-        public string VisitorsUrl { get; set; }
+        public string? VisitorsUrl { get; set; }
     }
 }

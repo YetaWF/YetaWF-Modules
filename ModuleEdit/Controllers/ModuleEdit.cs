@@ -25,7 +25,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
         public class ModuleEditModel {
 
             [UIHint("PropertyList")]
-            public ModuleDefinition Module { get; set; }
+            public ModuleDefinition Module { get; set; } = null!;
 
             [UIHint("Hidden")]
             public Guid ModuleGuid { get; set; }
@@ -41,7 +41,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
             if (moduleGuid == Guid.Empty)
                 throw new InternalError("No moduleGuid provided");
 
-            ModuleDefinition module = await ModuleDefinition.LoadAsync(moduleGuid);
+            ModuleDefinition module = await ModuleDefinition.LoadAsync(moduleGuid) ?? throw new InternalError($"{nameof(ModuleEdit)} called with {moduleGuid} which doesn't exist");
             ModuleEditModel model = new ModuleEditModel() {
                 Module = module,
                 ModuleGuid = moduleGuid,
@@ -62,7 +62,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
                 throw new InternalError("No moduleGuid provided");
 
             // we need to find the real type of the module for data binding
-            ModuleDefinition origModule = await ModuleDefinition.LoadAsync(model.ModuleGuid);
+            ModuleDefinition origModule = (await ModuleDefinition.LoadAsync(model.ModuleGuid))!;
 
             model.Module = (ModuleDefinition)await GetObjectFromModelAsync(origModule.GetType(), nameof(model.Module));
             ObjectSupport.CopyData(origModule, model.Module, ReadOnly: true); // update read only properties in model in case there is an error

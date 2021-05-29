@@ -19,7 +19,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
 
     public class ExtensionPhoneNumber {
         [StringLength(Globals.MaxPhoneNumber)]
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; } = null!;
         [Data_NewValue]
         public bool SendSMS { get; set; }
     }
@@ -37,10 +37,10 @@ namespace Softelvdm.Modules.IVR.DataProvider {
 
         [Data_PrimaryKey]
         [StringLength(MaxExtension)]
-        public string Extension { get; set; }
+        public string Extension { get; set; } = null!;
 
         [StringLength(MaxDescription)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public SerializableList<ExtensionPhoneNumber> PhoneNumbers { get; set; }
         public SerializableList<User> Users { get; set; }
@@ -62,7 +62,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
 
         private IDataProviderIdentity<string, object, ExtensionEntry> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderIdentity<string, object, ExtensionEntry> CreateDataProvider() {
+        private IDataProviderIdentity<string, object, ExtensionEntry>? CreateDataProvider() {
             Package package = Softelvdm.Modules.IVR.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Extensions", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -71,10 +71,10 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         // LOAD/SAVE
         // LOAD/SAVE
 
-        public Task<ExtensionEntry> GetItemAsync(string extension) {
+        public Task<ExtensionEntry?> GetItemAsync(string extension) {
             return DataProvider.GetAsync(extension, null);
         }
-        public Task<ExtensionEntry> GetItemByIdentityAsync(int id) {
+        public Task<ExtensionEntry?> GetItemByIdentityAsync(int id) {
             return DataProvider.GetByIdentityAsync(id);
         }
         public async Task<bool> AddItemAsync(ExtensionEntry data) {
@@ -92,7 +92,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         }
         public async Task<UpdateStatusEnum> UpdateItemAsync(ExtensionEntry data) {
 
-            ExtensionEntry origData = Auditing.Active ? await GetItemByIdentityAsync(data.Id) : null;
+            ExtensionEntry? origData = Auditing.Active ? await GetItemByIdentityAsync(data.Id) : null;
 
             data.Updated = DateTime.UtcNow;
             foreach (ExtensionPhoneNumber ext in data.PhoneNumbers)
@@ -110,7 +110,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         }
         public async Task<bool> RemoveItemByIdentityAsync(int id) {
 
-            ExtensionEntry origData = Auditing.Active ? await GetItemByIdentityAsync(id) : null;
+            ExtensionEntry? origData = Auditing.Active ? await GetItemByIdentityAsync(id) : null;
 
             if (!await DataProvider.RemoveByIdentityAsync(id))
                 return false;
@@ -136,7 +136,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
             return list;
         }
 
-        public Task<DataProviderGetRecords<ExtensionEntry>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        public Task<DataProviderGetRecords<ExtensionEntry>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
             return DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
     }

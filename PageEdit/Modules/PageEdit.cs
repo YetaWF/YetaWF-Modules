@@ -36,7 +36,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
 
         public override bool ShowModuleMenu { get { return false; } }
 
-        public async Task<ModuleAction> GetAction_EditAsync(string url, Guid? pageGuid = null) {
+        public async Task<ModuleAction?> GetAction_EditAsync(string? url, Guid? pageGuid = null) {
             Guid guid;
             if (pageGuid == null) {
                 if (Manager.CurrentPage == null) return null;
@@ -49,25 +49,25 @@ namespace YetaWF.Modules.PageEdit.Modules {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = new { PageGuid = guid },
-                QueryArgsDict = new QueryHelper(new QueryDictionary { { Globals.Link_NoEditMode, "y" }, { Globals.Link_NoPageControl, "y" } }),
                 Image = "#Edit",
                 Name = "PageSettings",
                 LinkText = this.__ResStr("editLink", "Page Settings"),
                 MenuText = this.__ResStr("editText", "Page Settings"),
                 Tooltip = this.__ResStr("editTooltip", "Edit page settings"),
                 Legend = this.__ResStr("editLegend", "Edits page settings"),
-
+                
                 Style = ModuleAction.ActionStyleEnum.PopupEdit,
                 Category = ModuleAction.ActionCategoryEnum.Update,
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
                 Mode = ModuleAction.ActionModeEnum.Any,
+                DontFollow = true,
 
                 SaveReturnUrl = true,
             };
         }
-        public async Task<ModuleAction> GetAction_RemoveAsync(Guid? pageGuid = null) {
+        public async Task<ModuleAction?> GetAction_RemoveAsync(Guid? pageGuid = null) {
             Guid guid;
-            PageDefinition page;
+            PageDefinition? page;
             if (pageGuid == null) {
                 page = Manager.CurrentPage;
                 if (page == null) return null;

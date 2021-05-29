@@ -1,28 +1,24 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core;
-using YetaWF.Core.Addons;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Extensions;
+using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Modules;
+using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Models;
 using YetaWF.Modules.Identity.Modules;
 using YetaWF.Modules.Identity.Support;
-using YetaWF.Core.Components;
-using YetaWF.Core.Extensions;
-using YetaWF.Core.Identity;
-using System.Linq;
-using YetaWF.Core.Modules;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
 
@@ -139,7 +135,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                         CssClass = "t_" + provider.InternalName.ToLower(),
                     });
                     YetaWF.Core.Packages.Package package = AreaRegistration.CurrentPackage;
-                    string url = VersionManager.GetAddOnPackageUrl(package.AreaName);
+                    string url = Package.GetAddOnPackageUrl(package.AreaName);
                     model.Images.Add(Manager.GetCDNUrl(string.Format("{0}Icons/LoginProviders/{1}.png", url, provider.InternalName)));
                 }
                 if (Manager.HaveReturnToUrl)

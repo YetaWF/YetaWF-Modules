@@ -17,11 +17,6 @@ using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Modules;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
-
 
 namespace YetaWF.Modules.Identity.Components {
 
@@ -89,36 +84,35 @@ namespace YetaWF.Modules.Identity.Components {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public Task<string> RenderAsync(int? model) {
-            return RenderAsync(model??0);
-        }
-        public async Task<string> RenderAsync(int model) {
+        /// <inheritdoc/>
+        public async Task<string> RenderAsync(int? model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            ModuleAction actionDisplay = null;
-            ModuleAction actionLoginAs = null;
             using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                UserDefinition user = await dataProvider.GetItemByUserIdAsync(model);
-                string userName = "";
+                ModuleAction actionDisplay = null;
+                ModuleAction actionLoginAs = null;
+                UserDefinition user = null;
+                if (model != null && model != 0) 
+                    user = await dataProvider.GetItemByUserIdAsync((int)model);
+                string userName = null;
                 if (user == null) {
-                    if (model != 0)
+                    if (model != null && model != 0)
                         userName = string.Format("({0})", model);
                 } else {
                     userName = user.UserName;
-                    Modules.UsersDisplayModule modDisp = new Modules.UsersDisplayModule();
+                    UsersDisplayModule modDisp = new UsersDisplayModule();
                     actionDisplay = modDisp.GetAction_Display(null, userName);
-                    Modules.LoginModule modLogin = (Modules.LoginModule)await ModuleDefinition.CreateUniqueModuleAsync(typeof(Modules.LoginModule));
-                    actionLoginAs = await modLogin.GetAction_LoginAsAsync(model, userName);
+                    LoginModule modLogin = (LoginModule)await ModuleDefinition.CreateUniqueModuleAsync(typeof(LoginModule));
+                    actionLoginAs = await modLogin.GetAction_LoginAsAsync((int)model, userName);
                 }
-                hb.Append($"<span{FieldSetup(FieldType.Anonymous)} class='yt_yetawf_identity_userid t_display{GetClasses()}'>{HE(userName)}</span>");
+                hb.Append($@"
+<div{FieldSetup(FieldType.Anonymous)} class='yt_yetawf_identity_userid t_display{GetClasses()}'>
+    {HE(userName)}
+    {(actionDisplay != null ? await actionDisplay.RenderAsync(ModuleAction.RenderModeEnum.IconsOnly) : null)}
+    {(actionLoginAs != null ? await actionLoginAs.RenderAsync(ModuleAction.RenderModeEnum.IconsOnly) : null)}
+</div>");
             }
-
-            if (actionDisplay != null)
-                hb.Append(await actionDisplay.RenderAsync(ModuleAction.RenderModeEnum.IconsOnly));
-            if (actionLoginAs != null)
-                hb.Append(await actionLoginAs.RenderAsync(ModuleAction.RenderModeEnum.IconsOnly));
-
             return hb.ToString();
         }
     }

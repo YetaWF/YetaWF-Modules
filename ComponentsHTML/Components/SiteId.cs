@@ -35,11 +35,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
         public override string GetTemplateName() { return TemplateName; }
 
-        internal static Dictionary<int, string> Sites = null;
+        internal static Dictionary<int, string>? Sites = null;
 
         internal async Task<Dictionary<int, string>> GetSitesAsync() {
             Dictionary<int, string> sites = new Dictionary<int, string>();
-            List<DataProviderSortInfo> sorts = null;
+            List<DataProviderSortInfo>? sorts = null;
             sorts = DataProviderSortInfo.Join(sorts, new DataProviderSortInfo { Field = nameof(SiteDefinition.SiteDomain), Order = DataProviderSortInfo.SortDirection.Ascending });
             DataProviderGetRecords<SiteDefinition> recs = await SiteDefinition.GetSitesAsync(0, 0, null, null);
             foreach (SiteDefinition site in recs.Data)
@@ -98,7 +98,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             Sites ??= await GetSitesAsync();
 
             StringTT stringTT;
-            if (Sites.TryGetValue(model, out string name)) {
+            if (Sites.TryGetValue(model, out string? name)) {
                 stringTT = new StringTT {
                     Text = name,
                     Tooltip = __ResStr("siteId", "Site Id {0}", model),

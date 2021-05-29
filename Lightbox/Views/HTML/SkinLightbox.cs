@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Lightbox.Views {
 
         public Task<string> RenderViewAsync(SkinLightboxModule module, SkinLightboxModuleController.Model model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+            HtmlBuilder hb = new();
             hb.Append("<!-- A comment so we generate something, otherwise js/css is not included -->");
             return Task.FromResult(hb.ToString());
         }

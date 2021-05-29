@@ -60,7 +60,7 @@ namespace YetaWF.Modules.Scheduler.Components {
 
             // Hidden field, only needed so propertylist code can find the template
             // TODO: Research better way to handle this
-            Dictionary<string, object> hiddenAttributes = new Dictionary<string, object>(HtmlAttributes) {
+            Dictionary<string, object?> hiddenAttributes = new Dictionary<string, object?>(HtmlAttributes) {
                 { "__NoTemplate", true }
             };
             hb.Append(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, "", "Hidden", HtmlAttributes: hiddenAttributes, Validation: false));

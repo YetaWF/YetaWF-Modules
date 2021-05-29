@@ -31,10 +31,10 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         public class BrowseItem {
 
             [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands {
                 get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+                    List<ModuleAction> actions = new List<ModuleAction>();
 
                     LogDisplayModule dispMod = new LogDisplayModule();
                     actions.New(dispMod.GetAction_Display(Module.DisplayUrl, LogEntry), ModuleAction.ActionLocationEnum.GridLinks);
@@ -55,7 +55,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
             [Caption("Name"), Description("The name of the running scheduler item")]
             [UIHint("String"), ReadOnly]
-            public string Name { get; set; }
+            public string Name { get; set; } = null!;
 
             [Caption("Level"), Description("The message level")]
             [UIHint("Enum"), ReadOnly]
@@ -67,7 +67,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
             [Caption("Message"), Description("The message")]
             [UIHint("String"), ReadOnly]
-            public string Info { get; set; }
+            public string? Info { get; set; }
 
             private LogBrowseModule Module { get; set; }
 
@@ -79,7 +79,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
         public class BrowseModel {
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
             public bool LogAvailable { get; set; }
             public bool BrowsingSupported { get; set; }
         }
@@ -91,7 +91,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
                 RecordType = typeof(BrowseItem),
                 InitialPageSize = 20,
                 AjaxUrl = GetActionUrl(nameof(LogBrowse_GridData)),
-                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (LogDataProvider logDP = new LogDataProvider()) {
                         DataProviderGetRecords<LogData> browseItems = await logDP.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
@@ -134,8 +134,8 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         [Permission("Downloads")]
         public async Task<ActionResult> DownloadLog(long cookieToReturn) {
             using (LogDataProvider logDP = new LogDataProvider()) {
-                string filename = logDP.GetLogFileName();
-                if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
+                string? filename = logDP.GetLogFileName();
+                if (filename == null || !await FileSystem.FileSystemProvider.FileExistsAsync(filename))
                     throw new Error(this.__ResStr("logNotFound", "The scheduler log file '{0}' cannot be located", filename));
 #if MVC6
                 Response.Headers.Remove("Cookie");
@@ -160,8 +160,8 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         [Permission("Downloads")]
         public async Task<ActionResult> DownloadZippedLog(long cookieToReturn) {
             using (LogDataProvider dataProvider = new LogDataProvider()) {
-                string filename = dataProvider.GetLogFileName();
-                if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
+                string? filename = dataProvider.GetLogFileName();
+                if (filename == null || !await FileSystem.FileSystemProvider.FileExistsAsync(filename))
                     throw new Error(this.__ResStr("logNotFound", "The scheduler log file '{0}' cannot be located", filename));
 #if MVC6
 #else

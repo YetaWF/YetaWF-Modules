@@ -74,13 +74,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(Guid? model) {
 
-            ModuleDefinition mod = null;
+            ModuleDefinition? mod = null;
             if (model != null && model != Guid.Empty)
                 mod = await ModuleDefinition.LoadAsync((Guid)model, AllowNone: true);
 
             string modName;
             if (mod == null) {
-                if (model != null && model == Guid.Empty)
+                if (model == null || model == Guid.Empty)
                     modName = __ResStr("noLinkNone", "(none)");
                 else
                     modName = __ResStr("noLink", "(not found - {0})", ((Guid)model).ToString());
@@ -144,12 +144,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             [Caption("Module"), Description("Select one of the available modules"), AdditionalMetadata("Disable1OrLess", false)]
             public Guid? Module { get; set; }
             [UIHint("ModuleAction"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.NormalLinks)]
-            public ModuleAction ModuleAction { get; set; }
+            public ModuleAction? ModuleAction { get; set; }
         }
 
         internal class Setup {
-            public string AjaxUrl { get; set; }
-            public string AjaxUrlComplete { get; set; }
+            public string AjaxUrl { get; set; } = null!;
+            public string AjaxUrlComplete { get; set; } = null!;
         }
 
         /// <summary>
@@ -165,8 +165,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             bool useEditMod = false;
             Guid? editGuid = null;
 
-            ModuleSelectionUINew uiNew = null;
-            ModuleSelectionUIExisting uiExisting = null;
+            ModuleSelectionUINew? uiNew = null;
+            ModuleSelectionUIExisting? uiExisting = null;
             if (newMods) {
                 uiNew = new ModuleSelectionUINew {
                     Package = model,
@@ -194,8 +194,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                     hb.Append($@"
     <div class='t_packages'>
-        {await HtmlHelper.ForLabelAsync(uiNew, nameof(uiNew.Package))}
-        {await HtmlHelper.ForEditAsync(uiNew, nameof(uiNew.Package))}
+        {await HtmlHelper.ForLabelAsync(uiNew!, nameof(uiNew.Package))}
+        {await HtmlHelper.ForEditAsync(uiNew!, nameof(uiNew.Package))}
     </div>");
 
                 } else {
@@ -203,8 +203,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     hb.Append($@"
 
     <div class='t_packages'>
-        {await HtmlHelper.ForLabelAsync(uiExisting, nameof(uiExisting.Package))}
-        {await HtmlHelper.ForEditAsync(uiExisting, nameof(uiExisting.Package))}
+        {await HtmlHelper.ForLabelAsync(uiExisting!, nameof(uiExisting.Package))}
+        {await HtmlHelper.ForEditAsync(uiExisting!, nameof(uiExisting.Package))}
     </div>");
                 }
 
@@ -214,14 +214,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (newMods) {
 
                     hb.Append($@"
-        {await HtmlHelper.ForLabelAsync(uiNew, nameof(uiNew.Module))}
-        {await HtmlHelper.ForEditAsync(uiNew, nameof(uiNew.Module))}");
+        {await HtmlHelper.ForLabelAsync(uiNew!, nameof(uiNew.Module))}
+        {await HtmlHelper.ForEditAsync(uiNew!, nameof(uiNew.Module))}");
 
                 } else {
 
                     hb.Append($@"
-        {await HtmlHelper.ForLabelAsync(uiExisting, nameof(uiExisting.Module))}
-        {await HtmlHelper.ForEditAsync(uiExisting, nameof(uiExisting.Module))}");
+        {await HtmlHelper.ForLabelAsync(uiExisting!, nameof(uiExisting.Module))}
+        {await HtmlHelper.ForEditAsync(uiExisting!, nameof(uiExisting.Module))}");
 
                     useEditMod = PropData.GetAdditionalAttributeValue("EditSettings", false);
 
@@ -237,9 +237,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     </div>");
 
             if (useEditMod) {
-                ModuleDefinition modSettings = await ModuleDefinition.LoadAsync(Manager.CurrentSite.ModuleEditingServices, AllowNone: true);
+                ModuleDefinition? modSettings = await ModuleDefinition.LoadAsync(Manager.CurrentSite.ModuleEditingServices, AllowNone: true);
                 if (modSettings != null) {
-                    uiExisting.ModuleAction = await modSettings.GetModuleActionAsync("SettingsGenerate", editGuid);// force moduleaction
+                    uiExisting!.ModuleAction = await modSettings.GetModuleActionAsync("SettingsGenerate", editGuid);// force moduleaction
 
                     hb.Append($@"
     <div class='t_editsettings'>

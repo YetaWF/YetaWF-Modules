@@ -1,11 +1,7 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
 
-using YetaWF.Core.Controllers;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
+using YetaWF.Core.Controllers;
 
 namespace YetaWF.Modules.PageEdit.Controllers {
 
@@ -24,7 +20,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             //if (Manager.CurrentPage == null || Manager.CurrentPage.Temporary) return new EmptyResult();
 
             if (!Manager.CurrentPage.IsAuthorized_Edit())
-                new EmptyResult();
+                return new EmptyResult();
 
             return View(new Model());
         }

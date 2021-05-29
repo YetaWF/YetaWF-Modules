@@ -11,11 +11,8 @@ using YetaWF.Core.Modules;
 using System.Linq;
 using System;
 using YetaWF.Modules.DevTests.Modules;
-#if MVC6
+using YetaWF.Core.Localize;
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.DevTests.Controllers {
 
@@ -26,15 +23,13 @@ namespace YetaWF.Modules.DevTests.Controllers {
         public class BrowseItem {
 
             [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands {
                 get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
-
-                    TemplateGridModule gridMod = new TemplateGridModule();
+                    List<ModuleAction> actions = new List<ModuleAction>();
                     TemplateGridAjaxModule gridAjaxMod = new TemplateGridAjaxModule();
-                    actions.New(gridMod.GetAction_Display(null), ModuleAction.ActionLocationEnum.GridLinks);
-                    actions.New(gridAjaxMod.GetAction_Display(null), ModuleAction.ActionLocationEnum.GridLinks);
+                    actions.New(gridAjaxMod.GetAction_Dashboard(), ModuleAction.ActionLocationEnum.GridLinks);
+                    actions.New(gridAjaxMod.GetAction_User(), ModuleAction.ActionLocationEnum.GridLinks);
 
                     return actions;
                 }
@@ -54,7 +49,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
             [Caption("ShortName"), Description("Some string")]
             [UIHint("String"), ReadOnly]
-            public string ShortName { get; set; }
+            public string ShortName { get; set; } = null!;
 
             [Caption("Date/Time"), Description("Some date and time")]
             [UIHint("DateTime"), ReadOnly]
@@ -74,11 +69,11 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
             [Caption("Description"), Description("Description")]
             [UIHint("String"), ReadOnly]
-            public string Description { get; set; }
+            public string Description { get; set; } = null!;
 
             [Caption("Hidden"), Description("A hidden field")]
             [UIHint("Hidden"), ReadOnly]
-            public string Hidden { get; set; }
+            public string Hidden { get; set; } = null!;
 
             [Caption("ShortName 2"), Description("Some string")]
             [UIHint("String"), ReadOnly]
@@ -92,34 +87,61 @@ namespace YetaWF.Modules.DevTests.Controllers {
         public class BrowseModel {
             [Caption(""), Description("")]
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
         public class EntryElement {
             public int Id { get; set; }
             public decimal Decimal { get; set; }
             public bool BoolVal { get; set; }
-            public string ShortName { get; set; }
+            public string ShortName { get; set; } = null!;
             public string ShortName2 { get { return ShortName; } }
-            public string Hidden { get; set; }
-            public string Description { get; set; }
+            public string Hidden { get; set; } = null!;
+            public string Description { get; set; } = null!;
             public DateTime SomeDateTime { get; set; }
             public DateTime SomeDate { get; set; }
             public Guid Guid { get; set; }
             public ButtonTypeEnum SomeEnum { get; set; }
         }
+
         private GridDefinition GetGridModel() {
+
+            List<ModuleAction> actions = new List<ModuleAction>();
+            TemplateGridAjaxModule gridAjaxMod = new TemplateGridAjaxModule();
+            actions.New(gridAjaxMod.GetAction_Dashboard(), ModuleAction.ActionLocationEnum.GridLinks);
+            actions.New(gridAjaxMod.GetAction_User(), ModuleAction.ActionLocationEnum.GridLinks);
+            actions.New(gridAjaxMod.GetAction_Dashboard(), ModuleAction.ActionLocationEnum.GridLinks);
+            actions.New(gridAjaxMod.GetAction_User(), ModuleAction.ActionLocationEnum.GridLinks);
+#if NOT
+            actions.New(gridAjaxMod.GetAction_Dashboard(), ModuleAction.ActionLocationEnum.GridLinks);
+            actions.New(gridAjaxMod.GetAction_User(), ModuleAction.ActionLocationEnum.GridLinks);
+            actions.New(gridAjaxMod.GetAction_Dashboard(), ModuleAction.ActionLocationEnum.GridLinks);
+            actions.New(gridAjaxMod.GetAction_User(), ModuleAction.ActionLocationEnum.GridLinks);
+            actions.New(gridAjaxMod.GetAction_Dashboard(), ModuleAction.ActionLocationEnum.GridLinks);
+            actions.New(gridAjaxMod.GetAction_User(), ModuleAction.ActionLocationEnum.GridLinks);
+#endif
             return new GridDefinition {
+                InitialPageSize = 10,
                 ModuleGuid = Module.ModuleGuid,
                 SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = GetActionUrl(nameof(TemplateGridAjax_GridData)),
-                DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<EntryElement> browseItems = DataProviderImpl<EntryElement>.GetRecords(GetRandomData(), skip, take, sort, filters);
                     return Task.FromResult(new DataSourceResult {
                         Data = (from s in browseItems.Data select new BrowseItem(s)).ToList<object>(),
                         Total = browseItems.Total
                     });
                 },
+                PageSizes = new List<int> { 10, 20, GridDefinition.AllPages },
+                PanelHeader = true,
+                PanelHeaderTitle = "Test Grid",
+                PanelCanMinimize = true,
+                PanelHeaderAutoSearch = 300,
+                PanelHeaderColumnSelection = true,
+                PanelHeaderActions = actions,
+                PanelHeaderSearch = true,
+                PanelHeaderSearchColumns = new List<string> { nameof(BrowseItem.ShortName), nameof(BrowseItem.Description) },
+                PanelHeaderSearchTT = this.__ResStr("searchTT", "Enter text to search in the ShortName and Description column"),
             };
         }
 
@@ -137,8 +159,8 @@ namespace YetaWF.Modules.DevTests.Controllers {
             return await GridPartialViewAsync(GetGridModel(), gridPVData);
         }
 
-        const int MaxRecords = 300;
-        private static List<Guid> Guids = null;
+        const int MaxRecords = 100;
+        private static List<Guid>? Guids = null;
 
         private List<EntryElement> GetRandomData() {
             if (Guids == null) {

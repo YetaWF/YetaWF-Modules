@@ -23,9 +23,9 @@ namespace YetaWF.Modules.Search.Controllers {
             public bool HighlightSearch { get; set; }
 
             [UIHint("ModuleAction")]
-            public ModuleAction On { get; set; }
+            public ModuleAction On { get; set; } = null!;
             [UIHint("ModuleAction")]
-            public ModuleAction Off { get; set; }
+            public ModuleAction Off { get; set; } = null!;
         }
 
         [AllowGet]

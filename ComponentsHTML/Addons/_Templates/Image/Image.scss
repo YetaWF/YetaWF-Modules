@@ -2,8 +2,8 @@
 
 .yt_image.t_display {
     img {
-        border: 1px solid #ccc;
-        border-radius: 3px;
+        border: var(--prop-border);
+        border-radius: var(--prop-border-radius);
         padding: 1em;
     }
 }

@@ -36,7 +36,7 @@ namespace YetaWF.Modules.Visitors.Modules {
 
         [Category("General"), Caption("Display URL"), Description("The URL to display a visitor entry - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string DisplayUrl { get; set; }
+        public string? DisplayUrl { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
         public override List<RoleDefinition> ExtraRoles {
@@ -49,7 +49,7 @@ namespace YetaWF.Modules.Visitors.Modules {
             }
         }
 
-        public ModuleAction GetAction_Items(string url) {
+        public ModuleAction? GetAction_Items(string? url) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Browse",
@@ -63,7 +63,7 @@ namespace YetaWF.Modules.Visitors.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
             };
         }
-        public ModuleAction GetAction_UpdateGeoLocation() {
+        public ModuleAction? GetAction_UpdateGeoLocation() {
             if (!IsAuthorized("UpdateGeoLocation")) return null;
             using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
                 if (!visitorDP.Usable) return null;

@@ -51,11 +51,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     ///     SerializeForm = true,
     /// };
     /// </example>
-    public class FileUpload1EditComponent : FileUpload1ComponentBase, IYetaWFComponent<FileUpload1>, IYetaWFContainer<FileUpload1> {
+    public class FileUpload1EditComponent : FileUpload1ComponentBase, IYetaWFComponent<FileUpload1?>, IYetaWFContainer<FileUpload1?> {
 
         internal class Setup {
-            public string SaveUrl { get; set; }
-            public string RemoveUrl { get; set; }
+            public string SaveUrl { get; set; } = null!;
+            public string RemoveUrl { get; set; } = null!;
             public bool SerializeForm { get; set; }// serialize all form data when uploading a file
         }
 
@@ -76,7 +76,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Called by the framework when the component is used so the component can add component specific addons.
         /// </summary>
         public override async Task IncludeAsync() {
-            await JqueryUICore.UseAsync();
+            await jquery.UseAsync();
             await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "github.com.danielm.uploader");
             await base.IncludeAsync();
         }
@@ -85,7 +85,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<string> RenderAsync(FileUpload1 model) {
+        public Task<string> RenderAsync(FileUpload1? model) {
             return RenderContainerAsync(model);
         }
         /// <summary>
@@ -93,9 +93,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<string> RenderContainerAsync(FileUpload1 model) {
+        public async Task<string> RenderContainerAsync(FileUpload1? model) {
 
             HtmlBuilder hb = new HtmlBuilder();
+
+            if (model == null)
+                throw new System.ArgumentNullException(nameof(FileUpload1));
 
             Setup setup = new Setup {
                 SaveUrl = model.SaveURL,
@@ -106,7 +109,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             hb.Append($@"
 <div class='yt_fileupload1' id='{ControlId}' data-saveurl='{HAE(model.SaveURL)}' data-removeurl='{HAE(model.RemoveURL)}'>
-    <input type='button' class='t_upload' value='{HAE(model.SelectButtonText)}' title='{HAE(model.SelectButtonTooltip)}' />
+    <input type='button' class='y_button t_upload' value='{HAE(model.SelectButtonText)}' title='{HAE(model.SelectButtonTooltip)}' />
     <div class='t_drop'>{HAE(model.DropFilesText)}</div>
     {await HtmlHelper.ForDisplayAsync(ui, nameof(ui.ProgressBar))}");
 
@@ -116,7 +119,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
 
             hb.Append($@"
-    <input type='file' name='__filename' class='t_filename' style='display:none' />
+    <input type='file' name='__filename' class='t_filename t_button' style='display:none' />
 </div>");
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.FileUpload1Component('{ControlId}', {Utility.JsonSerialize(setup)});");

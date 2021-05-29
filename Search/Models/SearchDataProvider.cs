@@ -24,9 +24,9 @@ namespace YetaWF.Modules.Search.DataProvider {
         [Data_Index]
         public DateTime DateAdded { get; set; }
         [Data_Index, StringLength(MaxSearchTerm)]
-        public string SearchTerm { get; set; }
+        public string SearchTerm { get; set; } = null!;
         [Data_Index, StringLength(MultiString.MaxLanguage)]
-        public string Language { get; set; }
+        public string Language { get; set; } = null!;
         public int Count { get; set; }
         public bool AllowAnonymous { get; set; }
         public bool AllowAnyUser { get; set; }
@@ -37,23 +37,23 @@ namespace YetaWF.Modules.Search.DataProvider {
         [Data_DontSave]
         public PageDefinition.PageSecurityType PageSecurity { get; set; }
         [Data_DontSave]
-        public string PageUrl { get; set; }
+        public string PageUrl { get; set; } = null!;
         [Data_DontSave]
-        public string PageTitle { get; set; }
+        public string PageTitle { get; set; } = null!;
         [Data_DontSave]
         public DateTime DatePageCreated { get; set; }
         [Data_DontSave]
         public DateTime DatePageUpdated { get; set; }
         [Data_DontSave]
-        public string PageSummary { get; set; }
+        public string PageSummary { get; set; } = null!;
         [Data_DontSave]
-        public string CustomData { get; set; }
+        public string CustomData { get; set; } = null!;
 
         public SearchData() { }
     }
     public class SearchDataComparer : IEqualityComparer<SearchData> {
-        public bool Equals(SearchData x, SearchData y) {
-            return x.SearchDataUrlId == y.SearchDataUrlId;
+        public bool Equals(SearchData? x, SearchData? y) {
+            return x?.SearchDataUrlId == y?.SearchDataUrlId;
         }
         public int GetHashCode(SearchData obj) {
             return obj.SearchDataUrlId;
@@ -77,9 +77,9 @@ namespace YetaWF.Modules.Search.DataProvider {
         private IDataProvider<int, SearchData> DataProvider { get { return GetDataProvider(); } }
         private ISearchDataProviderIOMode DataProviderIOMode { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, SearchData> CreateDataProvider() {
+        private IDataProvider<int, SearchData>? CreateDataProvider() {
             Package package = YetaWF.Modules.Search.AreaRegistration.CurrentPackage;
-            dynamic dp = MakeDataProvider(package, package.AreaName + "_Data", SiteIdentity: SiteIdentity, Cacheable: true);
+            dynamic? dp = MakeDataProvider(package, package.AreaName + "_Data", SiteIdentity: SiteIdentity, Cacheable: true);
             if (dp != null)
                 Usable = true;
             return dp;
@@ -99,10 +99,10 @@ namespace YetaWF.Modules.Search.DataProvider {
             }
         }
 
-        internal async Task<SearchData> GetItemWithUrlAsync(int searchDataId) {
+        internal async Task<SearchData?> GetItemWithUrlAsync(int searchDataId) {
             if (!IsUsable) return null;
             using (SearchDataUrlDataProvider searchUrlDP = new SearchDataUrlDataProvider()) {
-                List<DataProviderFilterInfo> filters = null;
+                List<DataProviderFilterInfo>? filters = null;
                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(SearchData.SearchDataId), Operator = "==", Value = searchDataId });
                 List<JoinData> joins = new List<JoinData> {
                     new JoinData {MainDP = this, JoinDP= searchUrlDP, MainColumn = nameof(SearchDataUrl.SearchDataUrlId), JoinColumn = nameof(SearchData.SearchDataUrlId) },
@@ -115,14 +115,14 @@ namespace YetaWF.Modules.Search.DataProvider {
             if (!IsUsable) return false;
             return await DataProvider.AddAsync(data);
         }
-        public async Task<bool> AddItemsAsync(List<SearchData> list, string pageUrl, PageDefinition.PageSecurityType pageSecurity, string pageDescription, string pageSummary, DateTime pageCreated, DateTime? pageUpdated, DateTime searchStarted, string customData) {
+        public async Task<bool> AddItemsAsync(List<SearchData> list, string pageUrl, PageDefinition.PageSecurityType pageSecurity, string pageDescription, string pageSummary, DateTime pageCreated, DateTime? pageUpdated, DateTime searchStarted, string? customData) {
             if (!IsUsable) return false;
             bool status = false;
             using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_{nameof(SearchDataProvider)}")) {
                 if (pageUpdated != null && (DateTime)pageUpdated < pageCreated)
                     pageCreated = (DateTime)pageUpdated;
                 using (SearchDataUrlDataProvider searchUrlDP = new SearchDataUrlDataProvider()) {
-                    SearchDataUrl searchUrl = await searchUrlDP.GetItemByUrlAsync(pageUrl);
+                    SearchDataUrl? searchUrl = await searchUrlDP.GetItemByUrlAsync(pageUrl);
                     if (searchUrl == null) {
                         searchUrl = new SearchDataUrl {
                             DatePageCreated = pageCreated,
@@ -165,7 +165,7 @@ namespace YetaWF.Modules.Search.DataProvider {
             if (!IsUsable) return false;
             return await DataProvider.RemoveAsync(id);
         }
-        public async Task<DataProviderGetRecords<SearchData>> GetItemsWithUrlAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        public async Task<DataProviderGetRecords<SearchData>> GetItemsWithUrlAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
             if (!IsUsable)
                 return new DataProviderGetRecords<SearchData>();
             using (SearchDataUrlDataProvider searchUrlDP = new SearchDataUrlDataProvider()) {
@@ -175,7 +175,7 @@ namespace YetaWF.Modules.Search.DataProvider {
                 return await DataProvider.GetRecordsAsync(skip, take, sort, filters, Joins: joins);
             }
         }
-        public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
+        public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo>? filters) {
             if (!IsUsable) return 0;
             int count = 0;
             count = await DataProvider.RemoveRecordsAsync(filters);
@@ -192,7 +192,7 @@ namespace YetaWF.Modules.Search.DataProvider {
         public async Task RemoveOldItemsAsync(DateTime searchStarted) {
             if (!IsUsable) return;
             using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_{nameof(SearchDataProvider)}")) {
-                List<DataProviderFilterInfo> filters = null;
+                List<DataProviderFilterInfo>? filters = null;
                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(SearchData.DateAdded), Operator = "<", Value = searchStarted });
                 await RemoveItemsAsync(filters);
                 await RemoveUnusedUrlsAsync();
@@ -210,7 +210,7 @@ namespace YetaWF.Modules.Search.DataProvider {
             if (dateCreated == DateTime.MinValue && (dateUpdated == null || dateUpdated == DateTime.MinValue))// if no one supplied a date, we don't know
                 return true;
             using (SearchDataUrlDataProvider searchUrlDP = new SearchDataUrlDataProvider()) {
-                SearchDataUrl searchUrl = await searchUrlDP.GetItemByUrlAsync(pageUrl);
+                SearchDataUrl? searchUrl = await searchUrlDP.GetItemByUrlAsync(pageUrl);
                 if (searchUrl == null)
                     return true;
                 DateTime dataAge = searchUrl.DatePageCreated;

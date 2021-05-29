@@ -37,7 +37,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Internal component used by the PageSkin and PopupSkins components. Not intended for application use.
+    /// Internal component used by the Skin component. Not intended for application use.
     /// </summary>
     [PrivateComponent]
     public class SkinCollectionDisplayComponent : SkinCollectionComponentBase, IYetaWFComponent<string> {
@@ -58,20 +58,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // get all available skins
             SkinAccess skinAccess = new SkinAccess();
 
-            string desc = (from skinColl in skinAccess.GetAllSkinCollections() where model == skinColl.CollectionName select skinColl.CollectionDescription).FirstOrDefault();
+            string? desc = (from skinColl in skinAccess.GetAllSkinCollections() where model == skinColl.Name select skinColl.Description).FirstOrDefault();
             if (desc == null) {
                 bool useDefault = !PropData.GetAdditionalAttributeValue("NoDefault", false);
                 if (useDefault)
                     desc = __ResStr("siteDef", "(Site Default)");
             }
             if (string.IsNullOrWhiteSpace(desc))
-                return Task.FromResult<string>(null);
+                return Task.FromResult<string>(string.Empty);
             return Task.FromResult(HE(desc));
         }
     }
 
     /// <summary>
-    /// Internal component used by the PageSkin and PopupSkins components. Not intended for application use.
+    /// Internal component used by the Skin component. Not intended for application use.
     /// </summary>
     [PrivateComponent]
     public class SkinCollectionEditComponent : SkinCollectionComponentBase, IYetaWFComponent<string> {
@@ -91,17 +91,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // get all available skins
             SkinAccess skinAccess = new SkinAccess();
-            List<SelectionItem<string>> list = (from skinColl in skinAccess.GetAllSkinCollections() orderby skinColl.CollectionDescription select new SelectionItem<string>() {
-                Text = skinColl.CollectionDescription,
-                Value = skinColl.CollectionName,
+            List<SelectionItem<string>> list = (from skinColl in skinAccess.GetAllSkinCollections() orderby skinColl.Description select new SelectionItem<string>() {
+                Text = skinColl.Description,
+                Value = skinColl.Name,
             }).ToList();
-            bool useDefault = !PropData.GetAdditionalAttributeValue("NoDefault", false);
-            if (useDefault)
-                list.Insert(0, new SelectionItem<string> {
-                    Text = __ResStr("siteDef", "(Site Default)"),
-                    Tooltip = __ResStr("siteDefTT", "Use the site defined default skin"),
-                    Value = "",
-                });
             // display the skins in a drop down
             return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_skinselection");
         }

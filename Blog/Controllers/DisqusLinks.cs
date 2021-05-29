@@ -12,7 +12,7 @@ namespace YetaWF.Modules.Blog.Controllers {
         public DisqusLinksModuleController() { }
 
         public class DisplayModel {
-            public string? ShortName { get; set; }
+            public string ShortName { get; set; } = null!;
         }
 
         [AllowGet]

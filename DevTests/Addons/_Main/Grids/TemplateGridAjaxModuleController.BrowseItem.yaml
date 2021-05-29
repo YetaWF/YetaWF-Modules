@@ -1,0 +1,53 @@
+
+SizeStyle: SizeToFit
+
+Columns:
+    - Name: Commands
+      Icons: 2
+      Visibility: AlwaysShown
+    - Name: Id
+      Sort: true
+      Filter: true
+      Width: <Globals.ChId>
+      Align: Right
+      Visibility: NotShown
+    - Name: BoolVal
+      Sort: true
+      Filter: true
+      Width: 10
+      Align: Center
+    - Name: Decimal
+      Sort: true
+      Filter: true
+      Width: 20
+      Align: Right
+    - Name: SomeDateTime
+      Sort: true
+      Filter: true
+      Width: 20
+    - Name: SomeDate
+      Sort: true
+      Filter: true
+      Width: 20
+    - Name: SomeEnum
+      Filter: true
+      Width: 20
+    - Name: Guid
+      Sort: true
+      Filter: true
+      Width: 20
+    - Name: ShortName
+      Sort: true
+      DefaultSort: Ascending
+      Filter: true
+      Width: 40
+    - Name: Hidden
+      Hidden: true
+    - Name: Description
+      Sort: true
+      Filter: true
+      Width: 80
+    - Name: ShortName2
+      Sort: true
+      Filter: true
+      Width: 40

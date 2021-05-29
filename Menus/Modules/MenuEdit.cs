@@ -34,7 +34,6 @@ namespace YetaWF.Modules.Menus.Modules {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Edit",
                 QueryArgs = new { MenuGuid = menuGuid },
-                QueryArgsDict = new QueryHelper(new QueryDictionary { { Globals.Link_NoEditMode, "y" }, { Globals.Link_NoPageControl, "y" } }),
                 LinkText = this.__ResStr("editLink", "Menu Settings"),
                 MenuText = this.__ResStr("editText", "Menu Settings"),
                 Tooltip = this.__ResStr("editTooltip", "Edit menu settings"),

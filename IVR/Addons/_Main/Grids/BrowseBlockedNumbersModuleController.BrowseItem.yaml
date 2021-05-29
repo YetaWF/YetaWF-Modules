@@ -1,0 +1,29 @@
+# Generated from flat grid definition file on 2/7/2021 7:47:12 PM
+
+SizeStyle: SizeToFit
+Panel: {}
+Columns:
+- Name: Commands
+  Icons: 2
+  FilterOptions: []
+  Align: Center
+- Name: Number
+  DefaultSort: Ascending
+  Sort: true
+  Filter: true
+  Width: <Globals.ChPhoneNumber>
+  Align: Unspecified
+- Name: Description
+  FilterOptions: []
+  Width: 60
+  Align: Unspecified
+- Name: Created
+  Sort: true
+  Filter: true
+  Width: <Globals.ChDateTime>
+  Align: Unspecified
+- Name: Updated
+  Sort: true
+  Filter: true
+  Width: <Globals.ChDateTime>
+  Align: Unspecified

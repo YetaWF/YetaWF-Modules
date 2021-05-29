@@ -31,11 +31,11 @@ namespace YetaWF.Modules.Feedback.Modules {
 
         [Category("General"), Caption("Default Subject"), Description("The optional default subject of the message when new feedback is entered")]
         [UIHint("Text80"), StringLength(FeedbackData.MaxSubject), Trim]
-        public string DefaultSubject { get; set; }
+        public string? DefaultSubject { get; set; }
 
         [Category("General"), Caption("Default Message"), Description("The optional default message when new feedback is entered")]
         [UIHint("TextAreaSourceOnly"), StringLength(FeedbackData.MaxMessage), Trim]
-        public string DefaultMessage { get; set; }
+        public string? DefaultMessage { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 

@@ -24,7 +24,7 @@ namespace YetaWF.Modules.Search.DataProvider {
             return string.Format("{0}={1}", Info.UrlArg, Utility.HAE(string.Join(",", kwds)));
         }
 
-        internal async Task<SearchResultsInfo> ParseAsync(string searchTerms, int maxResults, string languageId, bool haveUser, List<DataProviderFilterInfo> extraFilters = null) {
+        internal async Task<SearchResultsInfo> ParseAsync(string searchTerms, int maxResults, string languageId, bool haveUser, List<DataProviderFilterInfo>? extraFilters = null) {
             using (SearchDataProvider searchDP = new SearchDataProvider()) {
                 bool haveMore = false;
 
@@ -59,8 +59,8 @@ namespace YetaWF.Modules.Search.DataProvider {
         private int parenLevel = 0;
 
         private class BuildNodesInfo {
-            public List<SearchData> Data { get; set; }
-            public string Search { get; set; }
+            public List<SearchData> Data { get; set; } = null!;
+            public string Search { get; set; } = null!;
         }
         // generate a list of url (ids) based on search terms
         private async Task<BuildNodesInfo> BuildNodesAsync(SearchDataProvider searchDP, string search, string languageId, bool haveUser, List<DataProviderFilterInfo> extraFilters) {
@@ -68,7 +68,7 @@ namespace YetaWF.Modules.Search.DataProvider {
             if (string.IsNullOrEmpty(search))
                 return new BuildNodesInfo();
 
-            BuildNodesInfo list = null;
+            BuildNodesInfo? list = null;
             for ( ; ; ) {
                 search = search.Trim();
                 if (search.Length <= 0)
@@ -81,7 +81,7 @@ namespace YetaWF.Modules.Search.DataProvider {
                     list = await BuildNodesAsync(searchDP, search, languageId, haveUser, extraFilters);
                     search = list.Search;
                 } else if (c == ')') {
-                    if (parenLevel <= 0)
+                    if (parenLevel <= 0 || list == null)
                         throw new Error(this.__ResStr("invQueryCloseParen", "Invalid query - too many ')'"));
                     parenLevel--;
                     list.Search = search.Remove(0, 1);
@@ -112,7 +112,7 @@ namespace YetaWF.Modules.Search.DataProvider {
                             search = rhsList.Search;
                             list.Data = list.Data.Intersect(rhsList.Data, new SearchDataComparer()).ToList();
                         } else {
-                            List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Copy(extraFilters);
+                            List<DataProviderFilterInfo>? filters = DataProviderFilterInfo.Copy(extraFilters);
                             if (token.EndsWith("*")) {
                                 token = token.TrimEnd(new char[] { '*' });
                                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(SearchData.SearchTerm), Operator = "StartsWith", Value = token });
@@ -122,7 +122,7 @@ namespace YetaWF.Modules.Search.DataProvider {
                             list.Data = list.Data.Intersect(rhsList.Data, new SearchDataComparer()).ToList();
                         }
                     } else {
-                        List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Copy(extraFilters);
+                        List<DataProviderFilterInfo>? filters = DataProviderFilterInfo.Copy(extraFilters);
                         if (token.EndsWith("*")) {
                             token = token.TrimEnd(new char[] { '*' });
                             filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(SearchData.SearchTerm), Operator = "StartsWith", Value = token });
@@ -136,7 +136,7 @@ namespace YetaWF.Modules.Search.DataProvider {
             }
             if (parenLevel > 0)
                 throw new Error(this.__ResStr("invQueryOpenParen", "Invalid query - unmatched '('"));
-            list.Search = search;
+            list!.Search = search;
             return list;
         }
     }

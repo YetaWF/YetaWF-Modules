@@ -28,15 +28,15 @@ namespace YetaWF.Modules.Packages.Controllers {
         public class ImportModel {
             [Category("Remote ZIP File"), Caption("ZIP File"), Description("Enter the Url of a ZIP file to download - Used to import a package (binary or source code package)")]
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Remote), StringLength(Globals.MaxUrl), UrlValidation, Required, Trim]
-            public string RemoteFile { get; set; }
+            public string? RemoteFile { get; set; }
 
             [Category("Remote ZIP File"), Caption("Submit"), Description("Click to download and install the package")]
             [UIHint("FormButton"), ReadOnly]
-            public FormButton RemoteGo { get; set; }
+            public FormButton? RemoteGo { get; set; }
 
             [Category("Local ZIP File"), Caption("ZIP File"), Description("Select a local ZIP file - Used to import a package (binary or source code package)")]
             [UIHint("FileUpload1")]
-            public FileUpload1 UploadFile { get; set; }
+            public FileUpload1? UploadFile { get; set; }
 
             public void Update(ImportModule mod, ImportModuleController ctrl) {
                 UploadFile = new FileUpload1 {
@@ -69,7 +69,7 @@ namespace YetaWF.Modules.Packages.Controllers {
 
             // Download the zip file
             FileUpload upload = new FileUpload();
-            string tempName = await upload.StoreTempPackageFileAsync(model.RemoteFile);
+            string tempName = await upload.StoreTempPackageFileAsync(model.RemoteFile!);
 
             // import it
             List<string> errorList = new List<string>();
@@ -78,7 +78,7 @@ namespace YetaWF.Modules.Packages.Controllers {
             // delete the temp file just uploaded
             await FileSystem.TempFileSystemProvider.DeleteFileAsync(tempName);
 
-            string msg = FormatMessage(success, errorList, model.RemoteFile);
+            string msg = FormatMessage(success, errorList, model.RemoteFile!);
             if (success) {
                 model.RemoteFile = null;
                 return FormProcessed(model, msg);

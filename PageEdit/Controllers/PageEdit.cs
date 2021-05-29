@@ -1,10 +1,14 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core;
+using YetaWF.Core.Addons;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
+using YetaWF.Core.Identity;
 using YetaWF.Core.Language;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -13,16 +17,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Site;
-using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
-using YetaWF.Core.Components;
-using YetaWF.Core.Addons;
-using YetaWF.Core.Identity;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.PageEdit.Controllers {
 
@@ -35,16 +30,16 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             [Category("Page"), Caption("Url"), Description("The Url used to identify this page - local Urls start with / and do not include http:// or https://")]
             [UIHint("Text80"), StringLength(Globals.MaxUrl), UrlValidation(urlType: UrlTypeEnum.New), Required, Trim]
-            public string Url { get; set; }
+            public string? Url { get; set; }
 
             [Category("Page"), Caption("Canonical Url"), Description("The optional complete Url used to identify this page (including query string) - If not specified, the Url is used instead - The data entered is used as-is but allows variable substitution - Special characters in the query string portion must be encoded")]
             [UIHint("Text80"), StringLength(Globals.MaxUrl), Trim]
-            public string CanonicalUrl { get; set; }
+            public string? CanonicalUrl { get; set; }
 
             [Category("Page"), Caption("Title"), Description("The page title which will appear as title in the browser window")]
             [UIHint("MultiString80"), StringLength(PageDefinition.MaxTitle), Trim]
-
             public MultiString Title { get; set; }
+
             [Category("Page"), Caption("Description"), Description("The page description - This description is used for meta tags and when information about this page is displayed")]
             [UIHint("MultiString80"), StringLength(PageDefinition.MaxDescription), Trim]
             public MultiString Description { get; set; }
@@ -58,7 +53,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public bool WantSearch { get; set; }
 
             [Category("Variables"), Caption("Temporary"), Description("Defines whether the current page is a temporary (generated) page")]
-            [UIHint("Boolean"), ReadOnly, SuppressIf("Debug", false)]
+            [UIHint("Boolean"), ReadOnly, SuppressIf(nameof(Debug), false)]
             public bool Temporary { get; set; }
 
             public bool Debug {
@@ -77,7 +72,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             [Category("Page"), Caption("Page Language"), Description("Defines the page's language - Specify a specific language if this page is not available in multiple languages")]
             [UIHint("LanguageId"), StringLength(LanguageData.MaxId), Trim]
-            public string LanguageId { get; set; }
+            public string? LanguageId { get; set; }
 
             [Category("Page"), Caption("Static Page"), Description("Defines whether the page is rendered as a static page (for anonymous users only) - A page whose content doesn't change can be marked as a static page, which results in faster page load for the end-user - Site Settings can be used to enable/disable the use of static pages globally using the StaticPages property - Static pages are only used with deployed sites")]
             [UIHint("Enum")]
@@ -87,10 +82,10 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [UIHint("Enum")]
             public PageDefinition.IFrameUseEnum IFrameUse { get; set; }
 
-            [Category("Page"), Caption("FavIcon"), Description("The icon representing this site (a 32x32 pixel PNG image) shown by the web browser used to display the page")]
+            [Category("Page"), Caption("FavIcon"), Description("The icon representing this page (a 32x32 pixel PNG image) shown by the web browser used to display the page")]
             [UIHint("Image"), AdditionalMetadata("ImageType", PageDefinition.ImageType)]
             [AdditionalMetadata("Width", 40), AdditionalMetadata("Height", 40)]
-            public string FavIcon {
+            public string? FavIcon {
                 get {
                     if (_favIcon == null) {
                         if (FavIcon_Data != null && FavIcon_Data.Length > 0)
@@ -102,9 +97,13 @@ namespace YetaWF.Modules.PageEdit.Controllers {
                     _favIcon = value;
                 }
             }
-            private string _favIcon = null;
+            private string? _favIcon = null;
 
-            public byte[] FavIcon_Data { get; set; }
+            public byte[]? FavIcon_Data { get; set; }
+
+            [Category("Page"), Caption("FavIcon (SVG)"), Description("The SVG icon representing this page (typically rendered as a 32x32 pixel image) shown in PageBars used to display the page - Use a complete <SVG> tag or reference a skin SVG by prefixing the icon name with # which locates the SVG in the skin's folder ./SVG/FAV_name (e.g., #UserSettings uses ./SVG/FAV_UserSettings.svg)")]
+            [UIHint("TextAreaSourceOnly"), AdditionalMetadata("EmHeight", 6), StringLength(PageDefinition.MaxFav_SVG)]
+            public string? Fav_SVG { get; set; }
 
             [Category("Page"), Caption("Copyright"), Description("Defines an optional copyright notice displayed on the page, if supported by the skin used - If not defined, a default copyright notice may be defined in Site Properties - Use <<Year>> for current year")]
             [UIHint("MultiString80"), StringLength(PageDefinition.MaxCopyright), Trim]
@@ -134,64 +133,53 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [Category("Urls"), Caption("Mobile Page Url"), Description("If this page is accessed by a mobile device, it is redirected to the Url defined here as mobile page Url - Redirection is not active in Site Edit Mode")]
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
             [StringLength(Globals.MaxUrl), Trim]
-            public string MobilePageUrl { get; set; }
+            public string? MobilePageUrl { get; set; }
 
             [Category("Urls"), Caption("Redirect To Page"), Description("If this page is accessed, it is redirected to the Url defined here - Redirection is not active in Site Edit Mode")]
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
             [StringLength(Globals.MaxUrl), Trim]
-            public string RedirectToPageUrl { get; set; }
+            public string? RedirectToPageUrl { get; set; }
 
             [Category("References"), Caption("Skin Modules"), Description("Defines modules which must be injected into this page")]
             [UIHint("ReferencedModules")]
             public SerializableList<ModuleDefinition.ReferencedModule> ReferencedModules { get; set; }
 
-            [Category("Skin"), Caption("Page Skin"), Description("The skin used to display the page")]
-            [UIHint("PageSkin"), Trim]
-            public SkinDefinition SelectedSkin { get; set; }
-
-            [Category("Skin"), Caption("Popup Skin"), Description("The skin used when the page is displayed in a popup window")]
-            [UIHint("PopupSkin"), Trim]
-            public SkinDefinition SelectedPopupSkin { get; set; }
+            [Category("Skin"), Caption("Popup Page"), Description("The popup page used for the popup window when this page is shown in a popup")]
+            [UIHint("SkinNamePopup"), AdditionalMetadata("NoDefault", false), StringLength(SiteDefinition.MaxPopupPage)]
+            public string? PopupPage { get; set; }
+            public string PopupPage_Collection { get { return Manager.CurrentSite.Skin.Collection; } }
 
             [Category("Skin"), Caption("Template"), Description("The local designed page used as a template for this page - All modules from the template are copied and rendered on this page in their defined pane - Modules in panes that are not available are not shown - Any page can be used as a template")]
             [UIHint("PageSelection"), Trim]
             public Guid? TemplateGuid { get; set; }
 
-            [Category("Skin"), Caption("jQuery UI Skin"), Description("The skin for jQuery-UI elements (buttons, modal dialogs, etc.) used on this page")]
-            [UIHint("jQueryUISkin"), StringLength(PageDefinition.MaxjQueryUISkin), Trim]
-            public string jQueryUISkin { get; set; }
-
-            [Category("Skin"), Caption("Kendo UI Skin"), Description("The skin for Kendo UI elements (buttons, modal dialogs, etc.) used on this page")]
-            [UIHint("KendoUISkin"), StringLength(PageDefinition.MaxKendoUISkin), Trim]
-            public string KendoUISkin { get; set; }
-
             [Category("Skin"), Caption("CSS Class"), Description("The optional CSS classes to be added to the page's <body> tag for further customization through stylesheets")]
             [UIHint("Text40"), StringLength(PageDefinition.MaxCssClass), CssClassesValidationAttribute, Trim]
-            public string CssClass { get; set; }
+            public string? CssClass { get; set; }
 
             [Category("Addons"), Caption("Analytics"), Description("Add analytics Javascript code (for example, the Universal Analytics tracking code used by Google Analytics or the code used by Clicky) - Any code that should be added at the end of the HTML page can be added here including <script></script> tags - If omitted, the site defined analytics code is used (Site Settings)")]
             [TextAbove("Analytics code is only available in deployed production sites and is ignored in debug builds (not marked deployed).")]
             [UIHint("TextAreaSourceOnly"), StringLength(SiteDefinition.MaxAnalytics), Trim]
-            public string Analytics { get; set; }
+            public string? Analytics { get; set; }
             [Category("Addons"), Caption("Analytics (Content)"), Description("Add analytics Javascript code that should be executed when a new page becomes active in an active Unified Page Set - Do not include <script></script> tags - Use <<Url>> to substitute the actual Url - If omitted, the site defined analytics code is used (Site Settings)")]
             [UIHint("TextAreaSourceOnly"), StringLength(SiteDefinition.MaxAnalytics), Trim]
-            public string AnalyticsContent { get; set; }
+            public string? AnalyticsContent { get; set; }
 
             [Category("Meta"), Caption("Meta Tags"), Description("Defines <meta> tags that are added to the page - If specified, this replaces the site meta tags defined using the PageMetaTags property (Site Settings)")]
             [UIHint("TextAreaSourceOnly"), StringLength(SiteDefinition.MaxMeta), Trim]
-            public string PageMetaTags { get; set; }
+            public string? PageMetaTags { get; set; }
 
             [Category("Addons"), Caption("<HEAD>"), Description("Any tags that should be added to the <HEAD> tag of each page can be added here")]
             [UIHint("TextAreaSourceOnly"), StringLength(SiteDefinition.MaxHead), Trim]
-            public string ExtraHead { get; set; }
+            public string? ExtraHead { get; set; }
 
             [Category("Addons"), Caption("<BODY> Top"), Description("Any tags that should be added to the top of the <BODY> tag of each page can be added here")]
             [UIHint("TextAreaSourceOnly"), StringLength(SiteDefinition.MaxBodyTop), Trim]
-            public string ExtraBodyTop { get; set; }
+            public string? ExtraBodyTop { get; set; }
 
             [Category("Addons"), Caption("<BODY> Bottom"), Description("Any tags that should be added to the bottom of the <BODY> tag of each page can be added here")]
             [UIHint("TextAreaSourceOnly"), StringLength(SiteDefinition.MaxBodyBottom), Trim]
-            public string ExtraBodyBottom { get; set; }
+            public string? ExtraBodyBottom { get; set; }
 
             [Category("Meta"), Caption("SiteMap Priority"), Description("Defines the page priority used for the site map")]
             [UIHint("Enum")]
@@ -202,19 +190,19 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             [Category("Variables"), Caption("Page Guid Name"), Description("The page name encoded using its unique id")]
             [UIHint("String"), ReadOnly]
-            public string PageGuidName { get; set; }
+            public string? PageGuidName { get; set; }
 
             [Category("Variables"), Caption("Page Url"), Description("Returns the user defined Url (Url property) or if none has been defined, a system generated Url")]
             [UIHint("String"), ReadOnly]
-            public string PageUrl { get; set; }
+            public string? PageUrl { get; set; }
 
             [Category("Variables"), Caption("Canonical Url Link"), Description("The Html used for the canonical Url")]
             [UIHint("String"), ReadOnly]
-            public string CanonicalUrlLink { get; set; }
+            public string? CanonicalUrlLink { get; set; }
 
             [Category("Variables"), Caption("Hreflang Html"), Description("The Html used for language definition (hreflang and metadata)")]
             [UIHint("String"), ReadOnly]
-            public string HrefLangHtml { get; set; }
+            public string? HrefLangHtml { get; set; }
 
             [Category("Variables"), Caption("Created"), Description("The date the page was created")]
             [UIHint("DateTime"), ReadOnly]
@@ -230,9 +218,16 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             [Category("Variables"), Caption("Copyright"), Description("The Copyright property with evaluated substitutions")]
             [UIHint("String"), ReadOnly]
-            public string CopyrightEvaluated { get; set; }
+            public string? CopyrightEvaluated { get; set; }
 
             public EditablePage() {
+                Title = new MultiString();
+                Description = new MultiString();
+                Keywords = new MultiString();
+                Copyright = new MultiString();
+                AllowedRoles = new SerializableList<PageDefinition.AllowedRole>();
+                AllowedUsers = new SerializableList<PageDefinition.AllowedUser>();
+                Panes = new List<string>();
                 ReferencedModules = new SerializableList<ModuleDefinition.ReferencedModule>();
             }
             public void UpdateData(PageDefinition page) {
@@ -274,7 +269,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             if (pageGuid == Guid.Empty)
                 throw new InternalError("No pageGuid provided");
 
-            PageDefinition page = await PageDefinition.LoadAsync(pageGuid);
+            PageDefinition? page = await PageDefinition.LoadAsync(pageGuid);
             if (page == null)
                 throw new Error(this.__ResStr("notFound", "Page {0} doesn't exist", pageGuid));
 
@@ -292,7 +287,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [ExcludeDemoMode]
         [ResourceAuthorize(CoreInfo.Resource_PageSettings)]
         public async Task<ActionResult> PageEdit_Partial(EditModel model) {
-            PageDefinition page = await PageDefinition.LoadAsync(model.PageGuid);
+            PageDefinition? page = await PageDefinition.LoadAsync(model.PageGuid);
             if (page == null)
                 throw new Error(this.__ResStr("alreadyDeleted", "This page has been removed and can no longer be updated."));
 
@@ -310,7 +305,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
 
             //$$$$ rename with querystring doesn't work
             OnPopupCloseEnum popupClose = OnPopupCloseEnum.ReloadModule;
-            if (PageDefinition.IsSamePage(Manager.QueryReturnToUrl.Url, model.Page.Url))
+            if (PageDefinition.IsSamePage(Manager.QueryReturnToUrl.Url, model.Page.Url??string.Empty))
                 popupClose = OnPopupCloseEnum.ReloadParentPage;
             return FormProcessed(model, this.__ResStr("okSaved", "Page settings saved"), OnPopupClose: popupClose);
         }
@@ -318,13 +313,13 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         [AllowPost]
         [ExcludeDemoMode]
         public async Task<ActionResult> RemovePage(Guid pageGuid) {
-            PageDefinition page = page = await PageDefinition.LoadAsync(pageGuid);
+            PageDefinition? page = page = await PageDefinition.LoadAsync(pageGuid);
             if (page == null)
                 throw new InternalError("Page {0} does not exist", pageGuid);
             if (!page.IsAuthorized_Remove())
                 return NotAuthorized();
             await PageDefinition.RemovePageDefinitionAsync(pageGuid);
-            return Redirect((string)null);
+            return Redirect((string?)null);
         }
     }
 }

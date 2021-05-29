@@ -9,6 +9,7 @@ namespace YetaWF_ComponentsHTML {
 
         public static readonly TEMPLATE: string = "yt_timespan";
         public static readonly SELECTOR: string = ".yt_timespan.t_edit";
+        public static readonly EVENTCHANGE: string = "timespan_change";
 
         public Hidden: HTMLInputElement;
         public InputDays: IntValueEditComponent|null;
@@ -19,7 +20,7 @@ namespace YetaWF_ComponentsHTML {
         constructor(controlId: string/*, setup: Setup*/) {
             super(controlId, TimeSpanEditComponent.TEMPLATE, TimeSpanEditComponent.SELECTOR, {
                 ControlType: ControlTypeEnum.Template,
-                ChangeEvent: "timespan_change",
+                ChangeEvent: TimeSpanEditComponent.EVENTCHANGE,
                 GetValue: (control: TimeSpanEditComponent): string | null => {
                     return control.Hidden.value;
                 },
@@ -47,29 +48,29 @@ namespace YetaWF_ComponentsHTML {
 
             // capture changes in all edit controls
             if (this.InputDays) {
-                this.InputDays.Control.addEventListener("intvalue_change", (evt: Event): void => {
+                this.InputDays.Control.addEventListener(IntValueEditComponent.EVENTCHANGE, (evt: Event): void => {
                     this.updateValue();
                 });
             }
             if (this.InputHours) {
-                this.InputHours.Control.addEventListener("intvalue_change", (evt: Event): void => {
+                this.InputHours.Control.addEventListener(IntValueEditComponent.EVENTCHANGE, (evt: Event): void => {
                     this.updateValue();
                 });
             }
             if (this.InputMins) {
-                this.InputMins.Control.addEventListener("intvalue_change", (evt: Event): void => {
+                this.InputMins.Control.addEventListener(IntValueEditComponent.EVENTCHANGE, (evt: Event): void => {
                     this.updateValue();
                 });
             }
             if (this.InputSecs) {
-                this.InputSecs.Control.addEventListener("intvalue_change", (evt: Event): void => {
+                this.InputSecs.Control.addEventListener(IntValueEditComponent.EVENTCHANGE, (evt: Event): void => {
                     this.updateValue();
                 });
             }
         }
         private sendUpdateEvent(): void {
             var event = document.createEvent("Event");
-            event.initEvent("timespan_change", false, true);
+            event.initEvent(TimeSpanEditComponent.EVENTCHANGE, false, true);
             this.Control.dispatchEvent(event);
         }
         private updateValue(): void {

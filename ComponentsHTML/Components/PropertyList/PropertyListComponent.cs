@@ -9,6 +9,7 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
@@ -100,7 +101,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal class UI {
             [UIHint("Tabs")]
-            public TabsDefinition TabsDef { get; set; }
+            public TabsDefinition TabsDef { get; set; } = null!;
         }
 
         /// <summary>
@@ -168,11 +169,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     break;
 
                 case PropertyList.PropertyListStyleEnum.BoxedWithCategories:
+                case PropertyList.PropertyListStyleEnum.BoxedWithHeaders:
 
                     await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.AreaName, "masonry.desandro.com");
 
+                    string style = setup.Style == PropertyList.PropertyListStyleEnum.BoxedWithHeaders ? "t_boxedhdr" : "t_boxedcat";
+
                     hb.Append($@"
-<div id='{divId}' class='yt_propertylist t_boxedcat {(readOnly ? "t_display" : "t_edit")}'>
+<div id='{divId}' class='yt_propertylist {style} {(readOnly ? "t_display" : "t_edit")}'>
     {await RenderHiddenAsync(model)}");
 
                     foreach (string category in categories) {
@@ -185,14 +189,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                 stat = (setup.InitialExpanded == category) ? " t_propexpandable t_propexpanded" : " t_propexpandable t_propcollapsed";
 
                             hb.Append($@"
-    <div class='t_proptable{stat} t_cat t_boxpanel-{GetCategoryNormalized(category)}'>
-        <div class='t_boxlabel'>{category}</div>");
+    <div class='t_proptable{stat} t_cat t_boxpanel-{GetCategoryNormalized(category)}'>");
 
                             if (setup.ExpandableList.Contains(category))
-                                hb.Append(@$"<div class='t_boxexpcoll t_show'></div>");
+                                hb.Append(@$"<div class='t_boxexpcoll'><span class='t_showimg'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-expand-arrows-alt")}</span><span class='t_hideimg'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-compress-arrows-alt")}</span></div>");
 
                             hb.Append($@"
-        {contents}
+        <div class='t_boxlabel'>{category}</div>
+        <div class='t_propcontents'>
+            {contents}
+        </div>
     </div>");
                         }
                     }
@@ -218,13 +224,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                 stat = (setup.InitialExpanded == category) ? " t_propexpandable t_propexpanded" : " t_propexpandable t_propcollapsed";
 
                             hb.Append($@"
-    <div class='t_proptable {stat} t_cat t_boxpanel-{GetCategoryNormalized(category)}'>");
+    <div class='t_proptable{stat} t_cat t_boxpanel-{GetCategoryNormalized(category)}'>");
 
                             if (setup.ExpandableList.Contains(category))
-                                hb.Append($"<div class='t_boxexpcoll t_show'></div>");
+                                hb.Append($"<div class='t_boxexpcoll'><span class='t_showimg'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-expand-arrows-alt")}</span><span class='t_hideimg'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-compress-arrows-alt")}</span></div>");
 
                             hb.Append($@"
-        {contents}
+        <div class='t_propcontents'>
+            {contents}
+        </div>
     </div>");
                         }
                     }
@@ -236,7 +244,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             RenderFooter(hb, classData);
 
-            ControlData cd = null;
+            ControlData? cd = null;
             if (!readOnly)
                 cd = GetControlSets(model, divId);
             if (setup.ExpandableList != null) {
@@ -279,7 +287,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
             RenderFooter(hb, classData);
 
-            ControlData cd = GetControlSets(model, divId);
+            ControlData? cd = GetControlSets(model, divId);
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.PropertyListComponent('{divId}', {Utility.JsonSerialize(new PropertyList.PropertyListSetup())}, {Utility.JsonSerialize(cd)});");
 
             return hb.ToString();

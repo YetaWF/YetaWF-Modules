@@ -2,6 +2,17 @@
 
 /* Popups implementation required by YetaWF */
 
+namespace YetaWF {
+    export interface IConfigs {
+        YetaWF_ComponentsHTML: YetaWF_ComponentsHTML.IPackageConfigs;
+    }
+}
+namespace YetaWF_ComponentsHTML {
+    export interface IPackageConfigs {
+        SVG_fas_multiply: string; // a close button
+    }
+}
+
 interface Document {
     YPopupWindowActive: HTMLDivElement | null;
     YPopupWindowStatic: boolean;
@@ -41,7 +52,7 @@ namespace YetaWF_ComponentsHTML {
             let win = window.parent;
             let popup = win.document.YPopupWindowActive;
 
-            let overlay = $YetaWF.getElement1BySelectorCond(".ui-widget-overlay.ui-front", [win.document.body]);
+            let overlay = $YetaWF.getElement1BySelectorCond("#ypopupOverlay", [window.parent.document.body]);
             if (overlay)
                 overlay.remove();
 
@@ -66,16 +77,12 @@ namespace YetaWF_ComponentsHTML {
             // we're already in a popup
             PopupsImpl.internalClosePopup();
 
-            let popup = <div id={PopupsImpl.POPUPID} tabindex="-1" role="dialog" class="yPopupDyn ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-dialog-buttons ui-draggable" aria-describedby="ypopupContent" aria-labelledby="ypopupTitle" style="display:none">
-                <div class="ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix ui-draggable-handle">
-                    <span id="ypopupTitle" class="ui-dialog-title">{result.PageTitle}</span>
-                    <button type="button" class="ui-button ui-corner-all ui-widget ui-button-icon-only ui-dialog-titlebar-close">
-                        <span class="ui-button-icon ui-icon ui-icon-closethick"></span>
-                        <span class="ui-button-icon-space"> </span>
-                        Close
-                    </button>
+            let popup = <div id={PopupsImpl.POPUPID} tabindex="-1" role="dialog" class="yPopupDyn" aria-describedby="ypopupContent" aria-labelledby="ypopupTitle" style="display:none">
+                <div class="t_titlebar">
+                    <div id="ypopupTitle" class="t_title">{result.PageTitle}</div>
+                    <button type="button" class="y_buttonlite t_close"></button>
                 </div>
-                <div id="ypopupContent" class="ui-dialog-content ui-widget-content"></div>
+                <div id="ypopupContent" class="t_content"></div>
             </div> as HTMLDivElement;
 
             $YetaWF.elementAddClass(popup, YVolatile.Skin.PopupCss);
@@ -115,7 +122,9 @@ namespace YetaWF_ComponentsHTML {
             done(popup);
 
             // handle close button
-            let closeButton = $YetaWF.getElement1BySelector(".ui-dialog-titlebar button", [popup]);
+            let closeButton = $YetaWF.getElement1BySelector(".t_titlebar button", [popup]);
+            // icon used fas-multiply
+            closeButton.innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_multiply;//close button image
             $YetaWF.registerEventHandler(closeButton, "click", null, (ev: MouseEvent): boolean => {
                 PopupsImpl.internalClosePopup();
                 return false;
@@ -131,7 +140,7 @@ namespace YetaWF_ComponentsHTML {
         }
 
         private static addOverlay(): void {
-            let overlay = <div class="ui-widget-overlay ui-front"></div> as HTMLDivElement;
+            let overlay = <div id="ypopupOverlay"></div> as HTMLDivElement;
             document.body.appendChild(overlay);
         }
 
@@ -204,7 +213,7 @@ namespace YetaWF_ComponentsHTML {
             let win = window.parent;
             let popup = win.document.YPopupWindowActive;
             if (!popup) return;
-            $YetaWF.registerEventHandler(popup, "mousedown", ".ui-dialog-titlebar", (ev: MouseEvent): boolean => {
+            $YetaWF.registerEventHandler(popup, "mousedown", ".t_titlebar", (ev: MouseEvent): boolean => {
                 let drect = popup!.getBoundingClientRect();
                 win.document.YPopupXOffset  = ev.clientX - drect.left;
                 win.document.YPopupYOffset = ev.clientY - drect.top;
@@ -234,16 +243,12 @@ namespace YetaWF_ComponentsHTML {
                 }
             }
 
-            let popup = <div id={PopupsImpl.POPUPID} tabindex="-1" role="dialog" class="yPopup ui-dialog ui-corner-all ui-widget ui-widget-content ui-front ui-dialog-buttons ui-draggable" aria-labelledby="ypopupTitle" style="display:none">
-                <div class="ui-dialog-titlebar ui-corner-all ui-widget-header ui-helper-clearfix ui-draggable-handle">
-                    <span id="ypopupTitle" class="ui-dialog-title">...</span>
-                    <button type="button" class="ui-button ui-corner-all ui-widget ui-button-icon-only ui-dialog-titlebar-close">
-                        <span class="ui-button-icon ui-icon ui-icon-closethick"></span>
-                        <span class="ui-button-icon-space"> </span>
-                        Close
-                    </button>
+            let popup = <div id={PopupsImpl.POPUPID} tabindex="-1" role="dialog" class="yPopup" aria-labelledby="ypopupTitle" style="display:none">
+                <div class="t_titlebar">
+                    <span id="ypopupTitle" class="t_title">...</span>
+                    <button type="button" class="y_buttonlite t_close"></button>
                 </div>
-                <iframe title="(???)" frameborder="0" class="ui-dialog-content ui-widget-content"></iframe>
+                <iframe title="(???)" frameborder="0"></iframe>
             </div> as HTMLDivElement;
 
             // mark that a popup is active
@@ -274,7 +279,8 @@ namespace YetaWF_ComponentsHTML {
             PopupsImpl.setupDragDrop();
 
             // handle close button
-            let closeButton = $YetaWF.getElement1BySelector(".ui-dialog-titlebar button", [popup]);
+            let closeButton = $YetaWF.getElement1BySelector(".t_titlebar button", [popup]);
+            closeButton.innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_multiply;//close button image
             $YetaWF.registerEventHandler(closeButton, "click", null, (ev: MouseEvent): boolean => {
                 PopupsImpl.internalClosePopup();
                 return false;
@@ -325,7 +331,7 @@ namespace YetaWF_ComponentsHTML {
                     clientY += drect.top;
 
                     // adjust clientY for title
-                    let title = $YetaWF.getElement1BySelector(".ui-dialog-titlebar", [popup]);
+                    let title = $YetaWF.getElement1BySelector(".t_titlebar", [popup]);
                     clientY += title.clientHeight;
 
                 }
@@ -355,12 +361,14 @@ namespace YetaWF_ComponentsHTML {
         return true;
     });
 
-    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, (ev: Event): boolean => {
-        PopupsImpl.reposition();
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, (ev: CustomEvent<YetaWF.DetailsEventContainerScroll>): boolean => {
+        if (ev.detail.container === document.body)
+            PopupsImpl.reposition();
         return true;
     });
-    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: Event): boolean => {
-        PopupsImpl.reposition();
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: CustomEvent<YetaWF.DetailsEventContainerResize>): boolean => {
+        if (ev.detail.container === document.body)
+            PopupsImpl.reposition();
         return true;
     });
 

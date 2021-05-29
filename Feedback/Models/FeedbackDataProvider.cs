@@ -22,19 +22,19 @@ namespace YetaWF.Modules.Feedback.DataProvider {
         public int Key { get; set; }
 
         [StringLength(MaxSubject)]
-        public string Subject { get; set; }
+        public string Subject { get; set; } = null!;
         [StringLength(MaxName)]
         [Data_NewValue]
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
         [StringLength(Globals.MaxEmail)]
-        public string Email { get; set; }
+        public string Email { get; set; } = null!;
 
         [StringLength(MaxMessage)]
-        public string Message { get; set; }
+        public string Message { get; set; } = null!;
 
         public DateTime Created { get; set; }
         [StringLength(Globals.MaxIP)]
-        public string IPAddress { get; set; }
+        public string IPAddress { get; set; } = null!;
 
         public FeedbackData() { }
     }
@@ -53,7 +53,7 @@ namespace YetaWF.Modules.Feedback.DataProvider {
 
         private IDataProvider<int, FeedbackData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, FeedbackData> CreateDataProvider() {
+        private IDataProvider<int, FeedbackData>? CreateDataProvider() {
             Package package = YetaWF.Modules.Feedback.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -62,7 +62,7 @@ namespace YetaWF.Modules.Feedback.DataProvider {
         // API
         // API
 
-        public Task<FeedbackData> GetItemAsync(int key) {
+        public Task<FeedbackData?> GetItemAsync(int key) {
             return DataProvider.GetAsync(key);
         }
         public Task<bool> AddItemAsync(FeedbackData data) {
@@ -79,7 +79,7 @@ namespace YetaWF.Modules.Feedback.DataProvider {
         public Task<DataProviderGetRecords<FeedbackData>> GetItemsAsync(List<DataProviderFilterInfo> filters) {
             return DataProvider.GetRecordsAsync(0, 0, null, filters);
         }
-        public Task<DataProviderGetRecords<FeedbackData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        public Task<DataProviderGetRecords<FeedbackData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
             return DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
         public Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {

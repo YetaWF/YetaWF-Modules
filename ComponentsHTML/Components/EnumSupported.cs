@@ -62,8 +62,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             bool showValues = UserSettings.GetProperty<bool>("ShowEnumValue");
             showValues = showValues && PropData.GetAdditionalAttributeValue("ShowEnumValue", true);
 
-            string desc;
-            string caption = ObjectSupport.GetEnumDisplayInfo(model, out desc, ShowValue: showValues);
+            string? desc;
+            string? caption = ObjectSupport.GetEnumDisplayInfo(model, out desc, ShowValue: showValues);
 
             if (HtmlAttributes.Count > 0 || !string.IsNullOrWhiteSpace(desc)) {
                 return Task.FromResult($"<span{FieldSetup(FieldType.Anonymous)} class='yt_enum t_display{GetClasses()}' {Basics.CssTooltipSpan}='{HAE(desc)}'>{HE(caption)}</span>");
@@ -101,8 +101,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // get all enum values in supported list
             List<int> supported = new List<int>();
-            object obj = GetSiblingProperty<object>($"{PropertyName}_Supported");
-            IEnumerable ienumerable = obj as IEnumerable;
+            object? obj = GetSiblingProperty<object>($"{PropertyName}_Supported");
+            if (obj == null) throw new InternalError($"{PropertyName}_Supported value is null");
+            IEnumerable ienumerable = (obj as IEnumerable)!;
             IEnumerator ienum = ienumerable.GetEnumerator();
             while (ienum.MoveNext()) {
                 supported.Add(Convert.ToInt32(ienum.Current));

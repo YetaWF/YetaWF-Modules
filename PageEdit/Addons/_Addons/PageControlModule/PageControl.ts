@@ -28,9 +28,10 @@ namespace YetaWF_PageEdit {
 
             this.PageControlMod = $YetaWF.getElementById(YConfigs.YetaWF_PageEdit.PageControlMod) as HTMLDivElement;
 
-            const pagebutton = $YetaWF.getElementById("tid_pagecontrolbutton");
+            const pagebutton = $YetaWF.getElement1BySelector(".t_controlpanel", [this.Module]);
             $YetaWF.registerEventHandler(pagebutton, "click", null, (ev: MouseEvent): boolean => {
                 this.toggleControlPanel();
+                this.updateURL();
                 return false;
             });
 
@@ -40,8 +41,17 @@ namespace YetaWF_PageEdit {
                 ComponentsHTMLHelper.processPropertyListVisible(this.PageControlMod);
             }
         }
+
+        private updateURL() : void {
+            let uri = new YetaWF.Url();
+            uri.parse(window.location.href);
+            uri.removeSearch("!Pagectl");
+            if (YVolatile.Basics.PageControlVisible)
+                uri.addSearch("!Pagectl", "y");
+            $YetaWF.setUrl(uri.toUrl());
+        }
+
         private toggleControlPanel() :void {
-            if (!this.PageControlMod) return;
             if ($YetaWF.isVisible(this.PageControlMod)) {
                 YVolatile.Basics.PageControlVisible = false;
                 ComponentsHTMLHelper.fadeOut(this.PageControlMod, this.FadeTime);
@@ -61,7 +71,7 @@ namespace YetaWF_PageEdit {
                 return;
             }
 
-            const pagebutton = $YetaWF.getElementByIdCond("tid_pagecontrolbutton");
+            const pagebutton = $YetaWF.getElement1BySelector(".t_controlpanel", [this.Module]);
             if (pagebutton) {
                 if (YVolatile.Basics.TemporaryPage) {
                     if (YVolatile.Basics.PageControlVisible) {
@@ -110,7 +120,7 @@ namespace YetaWF_PageEdit {
     }
 
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: CustomEvent<YetaWF.DetailsEventNavPageLoaded>): boolean => {
-        let mods = YetaWF.ModuleBaseDataImpl.getModules<PageControlModule>(PageControlModule.SELECTOR, ev.detail.containers);
+        let mods = YetaWF.ModuleBaseDataImpl.getModules<PageControlModule>(PageControlModule.SELECTOR);
         for (let mod of mods)
             mod.updateControlPanel();
         return true;

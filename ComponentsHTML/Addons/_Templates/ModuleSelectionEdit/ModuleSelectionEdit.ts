@@ -137,14 +137,14 @@ namespace YetaWF_ComponentsHTML {
 
                 var data = { "modGuid": modGuid };
                 this.SelectModule.ajaxUpdate(data, this.Setup.AjaxUrlComplete,
-                    (data: any): void => {
+                    (data: YetaWF_ComponentsHTML.DropDownListAjaxData): void => {
                         this.Hidden.value = modGuid;
-                        this.SelectPackage.value = data.extra;
+                        this.SelectPackage.value = data.ExtraData;
                         this.SelectModule.value = modGuid;
                         this.showDescription();
                         FormsSupport.validateElement(this.Hidden);
                     },
-                    (result: string): void => {
+                    (): void => {
                         this.clear();
                         FormsSupport.validateElement(this.Hidden);
                     }

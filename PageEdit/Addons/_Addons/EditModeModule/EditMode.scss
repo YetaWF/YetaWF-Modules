@@ -1,37 +1,47 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
 
-/* PANE TAG */
-.yPaneTag {
-    position: absolute;
-    top: -10px;
-    left: 0px;
-    color:#555;
-    background-color: silver;
-    font-size:9px;
-    z-index:1;
-}
-
 .YetaWF_PageEdit_EditMode {
-    position:absolute;
+    position:fixed;
     z-index:1510;
     left:2px;
     top:5px;
     #yEditControlDiv {
-        line-height:1;
-        > a {
-            line-height:1;
-            padding:4px 4px;
+        .t_display,
+        .t_edit {
+            height:16px;
+            width:16px;
+            padding:4px;
+            box-sizing: content-box;
+            svg {
+                vertical-align: top;
+                height:16px;
+                width:16px;
+            }
         }
     }
 }
 
-.yModule-current {
-    background-color: silver;
+/* PANE TAG */
+.yPaneTag {
+    position: absolute;
+    z-index:1;
+    top: -.7em;
+    left: .5em;
+    font-size: .7em;
+    background: var(--prop-cat-bg);
+    color: var(--prop-cat-clr);
+    padding: 0 0.2em;
 }
+
+.yModule-current {
+    background: var(--mod-current-bg);
+}
+
 .yModuleMenuEditIcon {
     position: absolute;
-    left:0; top: 0;
-    z-index:1500;
+    z-index: 1500;
+    left:0;
+    top: 0;
     text-align:left;/* in case module has a different default */
     .yModuleMenuContainer {
         ul.yModuleMenu {

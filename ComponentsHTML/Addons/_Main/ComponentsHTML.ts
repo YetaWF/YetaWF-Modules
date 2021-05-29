@@ -10,10 +10,7 @@ namespace YetaWF {
 }
 namespace YetaWF_ComponentsHTML {
     export interface IPackageVolatiles {
-        jqueryUI: boolean; // defines whether the jqueryui theme has been loaded
-        jqueryUITheme: string; // the theme in use
-        kendoUI: boolean; // defines whether kendoui has been loaded
-        kendoUITheme: string; // the theme in use
+        jquery: boolean; // defines whether jquery has been loaded
     }
     export interface IPackageConfigs {
 
@@ -36,40 +33,19 @@ namespace YetaWF_ComponentsHTML {
         // Loader
         // Loader
 
-        public MUSTHAVE_JQUERYUI(): void {
-            if (!YVolatile.YetaWF_ComponentsHTML.jqueryUI)
-                throw "jquery-ui is required but has not been loaded";
+        public MUSTHAVE_JQUERY(): void {
+            if (!YVolatile.YetaWF_ComponentsHTML.jquery)
+                throw "jquery is required but has not been loaded";
         }
 
-        public REQUIRES_JQUERYUI(run: () => void): void {
+        public REQUIRES_JQUERY(run: () => void): void {
 
-            if (!YVolatile.YetaWF_ComponentsHTML.jqueryUI) {
+            if (!YVolatile.YetaWF_ComponentsHTML.jquery) {
 
-                YVolatile.YetaWF_ComponentsHTML.jqueryUI = true;
+                YVolatile.YetaWF_ComponentsHTML.jquery = true;
 
                 $YetaWF.ContentHandling.loadAddons([
-                    { AreaName: "YetaWF_ComponentsHTML", ShortName: "jqueryui-themes", Argument1: YVolatile.YetaWF_ComponentsHTML.jqueryUITheme }
-                ], (): void => {
-                    run();
-                });
-            } else {
-                run();
-            }
-        }
-
-        public MUSTHAVE_KENDOUI(): void {
-            if (!YVolatile.YetaWF_ComponentsHTML.kendoUI)
-                throw "Kendo UI is required but has not been loaded";
-        }
-
-        public REQUIRES_KENDOUI(run: () => void): void {
-
-            if (!YVolatile.YetaWF_ComponentsHTML.kendoUI) {
-
-                YVolatile.YetaWF_ComponentsHTML.kendoUI = true;
-
-                $YetaWF.ContentHandling.loadAddons([
-                    { AreaName: "YetaWF_ComponentsHTML", ShortName: "telerik.com.Kendo_UI_Core", Argument1: YVolatile.YetaWF_ComponentsHTML.kendoUITheme }
+                    { AreaName: "YetaWF_ComponentsHTML", ShortName: "jquery", Argument1: null }
                 ], (): void => {
                     run();
                 });

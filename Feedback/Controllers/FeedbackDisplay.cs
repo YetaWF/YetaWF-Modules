@@ -28,23 +28,23 @@ namespace YetaWF.Modules.Feedback.Controllers {
 
             [Caption("Name"), Description("The user's name")]
             [UIHint("String"), ReadOnly]
-            public string Name { get; set; }
+            public string Name { get; set; } = null!;
 
             [Caption("Email Address"), Description("The user's email address")]
             [UIHint("String"), ReadOnly]
-            public string Email { get; set; }
+            public string Email { get; set; } = null!;
 
             [Caption("Subject"), Description("The subject of the message")]
             [UIHint("String"), ReadOnly]
-            public string Subject { get; set; }
+            public string Subject { get; set; } = null!;
 
             [Caption("IP Address"), Description("The IP address from which the feedback message was sent")]
             [UIHint("IPAddress"), ReadOnly]
-            public string IPAddress { get; set; }
+            public string IPAddress { get; set; } = null!;
 
             [Caption("Message"), Description("The feedback message")]
             [UIHint("TextArea"), ReadOnly]
-            public string Message { get; set; }
+            public string Message { get; set; } = null!;
 
             public void SetData(FeedbackData data) {
                 ObjectSupport.CopyData(data, this);
@@ -54,7 +54,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
         [AllowGet]
         public async Task<ActionResult> FeedbackDisplay(int key) {
             using (FeedbackDataProvider dataProvider = new FeedbackDataProvider()) {
-                FeedbackData data = await dataProvider.GetItemAsync(key);
+                FeedbackData? data = await dataProvider.GetItemAsync(key);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Feedback \"{0}\" not found."), key);
                 DisplayModel model = new DisplayModel();

@@ -4,11 +4,7 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Basics.Controllers {
 
@@ -18,41 +14,9 @@ namespace YetaWF.Modules.Basics.Controllers {
 
         public class DisplayModel {
 
-            [Caption("Page Skin"), Description("The skin used to for the current page")]
-            [UIHint("PageSkin")]
-            public SkinDefinition PageSelectedSkin { get; set; }
-
-            [Caption("Page Popup Skin"), Description("The skin used for the current page in a popup window")]
-            [UIHint("PopupSkin")]
-            public SkinDefinition PageSelectedPopupSkin { get; set; }
-
-            [Caption("Page jQuery UI Skin"), Description("The page skin for jQuery-UI elements (buttons, modal dialogs, etc.)")]
-            [UIHint("jQueryUISkin")]
-            public string PagejQueryUISkin { get; set; }
-
-            [Caption("Page Kendo UI Skin"), Description("The page skin for Kendo UI elements (buttons, modal dialogs, etc.)")]
-            [UIHint("KendoUISkin")]
-            public string PageKendoUISkin { get; set; }
-
-            [Caption("Site Default Page Skin"), Description("The default skin used for pages")]
-            [UIHint("PageSkin")]
+            [Caption("Site Defined Skin"), Description("The skin used for all pages/popups")]
+            [UIHint("Skin")]
             public SkinDefinition SiteSelectedSkin { get; set; }
-
-            [Caption("Site Default Popup Skin"), Description("The default skin used in a popup window")]
-            [UIHint("PopupSkin")]
-            public SkinDefinition SiteSelectedPopupSkin { get; set; }
-
-            [Caption("Site Default Bootstrap Skin"), Description("The default skin for overall page appearance and Bootstrap elements")]
-            [UIHint("BootstrapSkin")]
-            public string SiteBootstrapSkin { get; set; }
-
-            [Caption("Site Default jQuery UI Skin"), Description("The default skin for jQuery-UI elements (buttons, modal dialogs, etc.)")]
-            [UIHint("jQueryUISkin")]
-            public string SitejQueryUISkin { get; set; }
-
-            [Caption("Site Default Kendo UI Skin"), Description("The default skin for Kendo UI elements (buttons, modal dialogs, etc.)")]
-            [UIHint("KendoUISkin")]
-            public string SiteKendoUISkin { get; set; }
 
             [Caption("Letters"), Description("The letters used to calculate the average character width and height")]
             [UIHint("TextArea"), AdditionalMetadata("Encode", false), ReadOnly]
@@ -71,21 +35,16 @@ namespace YetaWF.Modules.Basics.Controllers {
             [Caption("Letters Height"), Description("The overall height of the letters shown, calculated using the current skin")]
             [UIHint("IntValue")]
             public int LettersHeight { get; set; }
+
+            public DisplayModel() {
+                SiteSelectedSkin = Manager.CurrentSite.Skin;
+                Characters = "<span class='t_chars'>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<br/>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</span>";
+            }
         }
 
         [AllowGet]
         public ActionResult ModuleSkinInfo() {
             DisplayModel model = new DisplayModel();
-            model.SiteSelectedSkin = Manager.CurrentSite.SelectedSkin;
-            model.SiteSelectedPopupSkin = Manager.CurrentSite.SelectedPopupSkin;
-            model.SiteBootstrapSkin = Manager.CurrentSite.BootstrapSkin;
-            model.SitejQueryUISkin = Manager.CurrentSite.jQueryUISkin;
-            model.SiteKendoUISkin = Manager.CurrentSite.KendoUISkin;
-            model.PageSelectedSkin = Manager.CurrentPage.SelectedSkin;
-            model.PageSelectedPopupSkin = Manager.CurrentPage.SelectedPopupSkin;
-            model.PagejQueryUISkin = Manager.CurrentPage.jQueryUISkin;
-            model.PageKendoUISkin = Manager.CurrentPage.KendoUISkin;
-            model.Characters = "<span class='t_chars'>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<br/>abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</span>";
             return View(model);
         }
     }

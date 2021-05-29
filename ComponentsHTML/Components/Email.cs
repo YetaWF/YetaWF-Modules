@@ -84,7 +84,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderAsync(string model) {
             HtmlAttributes.Add("class", "yt_text40");
-            StringLengthAttribute lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
+            StringLengthAttribute? lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
             if (lenAttr == null)
                 HtmlAttributes.Add("maxlength", Globals.MaxEmail.ToString());
             return await TextEditComponent.RenderTextAsync(this, model?.ToString() ?? "", "yt_email");

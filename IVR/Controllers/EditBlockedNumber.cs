@@ -26,11 +26,11 @@ namespace Softelvdm.Modules.IVR.Controllers {
 
             [Caption("Blocked Number"), Description("Shows the blocked phone number")]
             [UIHint("Softelvdm_IVR_PhoneNumber"), StringLength(Globals.MaxPhoneNumber), ReadOnly]
-            public string Number { get; set; }
+            public string? Number { get; set; }
 
             [Caption("Description"), Description("The description of the blocked number")]
             [UIHint("TextAreaSourceOnly"), StringLength(BlockedNumberEntry.MaxDescription)]
-            public string Description { get; set; }
+            public string? Description { get; set; }
 
             public BlockedNumberEntry GetData(BlockedNumberEntry data) {
                 ObjectSupport.CopyData(this, data);
@@ -38,7 +38,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
             }
 
             [UIHint("Hidden"), ReadOnly]
-            public string OriginalNumber { get; set; }
+            public string OriginalNumber { get; set; } = null!;
 
             public void SetData(BlockedNumberEntry data) {
                 ObjectSupport.CopyData(data, this);
@@ -51,7 +51,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
         public async Task<ActionResult> EditBlockedNumber(string number) {
             using (BlockedNumberDataProvider dataProvider = new BlockedNumberDataProvider()) {
                 EditModel model = new EditModel {};
-                BlockedNumberEntry data = await dataProvider.GetItemAsync(number);
+                BlockedNumberEntry? data = await dataProvider.GetItemAsync(number);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Blocked phone number \"{0}\" not found"), number);
                 model.SetData(data);
@@ -66,7 +66,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
         public async Task<ActionResult> EditBlockedNumber_Partial(EditModel model) {
 
             using (BlockedNumberDataProvider dataProvider = new BlockedNumberDataProvider()) {
-                BlockedNumberEntry data = await dataProvider.GetItemAsync(model.OriginalNumber);// get the original item
+                BlockedNumberEntry? data = await dataProvider.GetItemAsync(model.OriginalNumber);// get the original item
                 if (data == null) {
                     ModelState.AddModelError("Number", this.__ResStr("alreadyDeleted", "Blocked number {0} has been removed and can no longer be updated", model.OriginalNumber));
                     return PartialView(model);

@@ -8,11 +8,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.CurrencyConverter.DataProvider;
 using System;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.CurrencyConverter.Controllers {
 
@@ -26,7 +22,7 @@ namespace YetaWF.Modules.CurrencyConverter.Controllers {
             [Caption("App ID"), Description("App ID used by openexchangerates.org to identify your account - an account is needed to retrieve currency exchange rates - This account is used for all sites within this YetaWF instance")]
             [UIHint("Text40"), StringLength(ConfigData.MaxAppID), Trim]
             [ExcludeDemoMode]
-            public string AppID { get; set; }
+            public string? AppID { get; set; }
 
             [Caption("Use Https"), Description("Use https to access openexchangerates.org (requires a paid account) - This setting is used for all sites within this YetaWF instance")]
             [UIHint("Boolean")]

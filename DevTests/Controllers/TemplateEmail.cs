@@ -25,12 +25,12 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("Email"), StringLength(Globals.MaxEmail), EmailValidation, Trim]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string EmailReq { get; set; }
+            public string? EmailReq { get; set; }
 
             [Caption("Email"), Description("Email")]
             [UIHint("Email"), StringLength(Globals.MaxEmail), EmailValidation, Trim]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string Email { get; set; }
+            public string? Email { get; set; }
 
             [Caption("Email (Read/Only)"), Description("Email (read/only)")]
             [UIHint("Email"), ReadOnly]

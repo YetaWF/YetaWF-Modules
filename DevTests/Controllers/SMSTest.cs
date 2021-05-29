@@ -24,11 +24,11 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [Caption("Phone Number"), Description("The phone number which will receive the SMS message")]
             [TextBelow("The phone number is not validated - It is possible to specify an email address instead to test the email fallback if no SMS provider is available.")]
             [UIHint("Text20"), StringLength(30), Required, Trim]
-            public string PhoneNumber { get; set; }
+            public string? PhoneNumber { get; set; } = null!;
 
             [Caption("Text"), Description("The text message to send")]
             [UIHint("TextAreaSourceOnly"), StringLength(SendSMS.MaxMessageLength), Required]
-            public string Text { get; set; }
+            public string? Text { get; set; } = null!;
 
             public Model() { }
         }
@@ -46,7 +46,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
             SendSMS sendSMS = new SendSMS();
-            await sendSMS.SendMessageAsync(model.PhoneNumber, model.Text);
+            await sendSMS.SendMessageAsync(model.PhoneNumber!, model.Text!);
             return FormProcessed(model, this.__ResStr("ok", "SMS sent"));
         }
     }

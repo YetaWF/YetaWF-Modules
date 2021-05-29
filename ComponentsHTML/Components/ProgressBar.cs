@@ -67,8 +67,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             TryGetSiblingProperty<float>($"{PropertyName}_Max", out max);
 
             hb.Append($@"
-<div id='{DivId}' class='yt_progressbar t_display ui-progressbar ui-corner-all ui-widget ui-widget-content' role='progressbar' aria-valuemin='{min}' aria-valuemax='{max}' aria-valuenow='{model}'>
-    <div class='ui-progressbar-value ui-corner-left ui-widget-header' style='width:{model}%;'></div>
+<div id='{DivId}' class='yt_progressbar t_display' role='progressbar' aria-valuemin='{min}' aria-valuemax='{max}' aria-valuenow='{model}'>
+    <div class='t_value' style='width:{model}%;'></div>
 </div>");
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ProgressBarComponent('{DivId}');");

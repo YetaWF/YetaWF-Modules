@@ -11,7 +11,7 @@ using YetaWF.Core.Support.Repository;
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
     /// <summary>
-    /// This static class defines basic services offered by the Grid component.
+    /// This static class defines basic services offered by the Grid component used to save the current state of a grid, like column widths, sort order, visible columns, etc.
     /// </summary>
     internal static class GridLoadSave {
 
@@ -39,6 +39,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public int CurrentPage { get; set; }
 
             /// <summary>
+            /// Defines whether the current grid is collapsed (only applies to grids with a panel header).
+            /// </summary>
+            public bool Collapsed { get; set; }
+
+            /// <summary>
             /// Constructor.
             /// </summary>
             public GridSavedSettings() {
@@ -51,7 +56,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// Returns the current sort order for columns.
             /// </summary>
             /// <returns>A list of columns that have a defined sort order.</returns>
-            public List<DataProviderSortInfo> GetSortInfo() {
+            public List<DataProviderSortInfo>? GetSortInfo() {
                 foreach (var keyVal in Columns) {
                     string colName = keyVal.Key;
                     GridDefinition.ColumnInfo col = keyVal.Value;
@@ -70,7 +75,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// Returns the current filter settings for columns.
             /// </summary>
             /// <returns>A list of columns that have a defined filter setting.</returns>
-            public List<DataProviderFilterInfo> GetFilterInfo() {
+            public List<DataProviderFilterInfo>? GetFilterInfo() {
                 List<DataProviderFilterInfo> list = new List<DataProviderFilterInfo>();
                 foreach (var keyVal in Columns) {
                     string colName = keyVal.Key;
@@ -86,6 +91,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 return list.Count > 0 ? list : null;
             }
         }
+
+        public static bool UseGridSettings(Guid? moduleGuid) {
+            return moduleGuid != null && moduleGuid != Guid.Empty;
+        }
+
         /// <summary>
         /// Loads grid settings that have been previously saved for a specific module.
         /// If no saved settings are available, default settings are returned.
@@ -98,14 +108,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         ///
         /// This method is not used by applications. It is reserved for component implementation.</remarks>
         public static GridSavedSettings LoadModuleSettings(Guid moduleGuid, int defaultInitialPage = 1, int defaultPageSize = 10) {
-            SettingsDictionary modSettings = Manager.SessionSettings.GetModuleSettings(moduleGuid);
-            GridSavedSettings gridSavedSettings = modSettings.GetValue<GridSavedSettings>("GridSavedSettings");
-            if (gridSavedSettings == null) {
-                gridSavedSettings = new GridSavedSettings() {
-                    CurrentPage = defaultInitialPage,
-                    PageSize = defaultPageSize,
-                };
-            }
+            GridSavedSettings? gridSavedSettings;
+            if (UseGridSettings(moduleGuid)) {
+                SettingsDictionary modSettings = Manager.SessionSettings.GetModuleSettings(moduleGuid);
+                gridSavedSettings = modSettings.GetValue<GridSavedSettings>("GridSavedSettings");
+                if (gridSavedSettings == null) {
+                    gridSavedSettings = new GridSavedSettings() {
+                        CurrentPage = defaultInitialPage,
+                        PageSize = defaultPageSize,
+                    };
+                }
+            } else
+                throw new InternalError($"{nameof(moduleGuid)} not available to load grid settings");
             return gridSavedSettings;
         }
         /// <summary>
@@ -115,18 +129,21 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="gridSavedSettings">The grid settings to be saved.</param>
         /// <remarks>This method is not used by applications. It is reserved for component implementation.</remarks>
         public static void SaveModuleSettings(Guid moduleGuid, GridSavedSettings gridSavedSettings) {
-            SettingsDictionary modSettings = Manager.SessionSettings.GetModuleSettings(moduleGuid);
-            if (modSettings != null) {
-                modSettings.SetValue<GridSavedSettings>("GridSavedSettings", gridSavedSettings);
-                modSettings.Save();
-            }
+            if (UseGridSettings(moduleGuid)) {
+                SettingsDictionary modSettings = Manager.SessionSettings.GetModuleSettings(moduleGuid);
+                if (modSettings != null) {
+                    modSettings.SetValue<GridSavedSettings>("GridSavedSettings", gridSavedSettings);
+                    modSettings.Save();
+                }
+            } else
+                throw new InternalError($"{nameof(moduleGuid)} not available to save grid settings");
         }
 
         public static async Task SaveSettingsAsync(GridPartialData gridData) {
 
             // save the current sort order and page size
-            if (gridData.GridDef.SettingsModuleGuid != null && gridData.GridDef.SettingsModuleGuid != Guid.Empty) {
-                GridLoadSave.GridSavedSettings gridSavedSettings = GridLoadSave.LoadModuleSettings((Guid)gridData.GridDef.SettingsModuleGuid);
+            if (UseGridSettings(gridData.GridDef.SettingsModuleGuid)) {
+                GridLoadSave.GridSavedSettings? gridSavedSettings = GridLoadSave.LoadModuleSettings((Guid)gridData.GridDef.SettingsModuleGuid!);
                 gridSavedSettings.PageSize = gridData.Take;
                 if (gridData.Take == 0)
                     gridSavedSettings.CurrentPage = 1;
@@ -146,18 +163,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 GridDictionaryInfo.ReadGridDictionaryInfo dictInfo = await GridDictionaryInfo.LoadGridColumnDefinitionsAsync(gridData.GridDef);
                 foreach (GridDefinition.ColumnInfo col in gridSavedSettings.Columns.Values) {
                     col.FilterOperator = null;
-                    col.FilterValue = null;
+                    col.FilterValue = string.Empty;
                 }
-                if (gridData.Filters != null && dictInfo.SaveColumnFilters != false) {
+                if (!gridData.Search && gridData.Filters != null && dictInfo.SaveColumnFilters != false) {
                     foreach (var filterCol in gridData.Filters) {
-                        if (gridSavedSettings.Columns.ContainsKey(filterCol.Field)) {
-                            gridSavedSettings.Columns[filterCol.Field].FilterOperator = filterCol.Operator;
-                            gridSavedSettings.Columns[filterCol.Field].FilterValue = filterCol.ValueAsString;
-                        } else {
-                            gridSavedSettings.Columns.Add(filterCol.Field, new GridDefinition.ColumnInfo {
-                                FilterOperator = filterCol.Operator,
-                                FilterValue = filterCol.ValueAsString,
-                            });
+                        if (filterCol.Field != null) {
+                            if (gridSavedSettings.Columns.ContainsKey(filterCol.Field)) {
+                                gridSavedSettings.Columns[filterCol.Field].FilterOperator = filterCol.Operator;
+                                gridSavedSettings.Columns[filterCol.Field].FilterValue = filterCol.ValueAsString;
+                            } else {
+                                gridSavedSettings.Columns.Add(filterCol.Field, new GridDefinition.ColumnInfo {
+                                    FilterOperator = filterCol.Operator,
+                                    FilterValue = filterCol.ValueAsString,
+                                });
+                            }
                         }
                     }
                 }

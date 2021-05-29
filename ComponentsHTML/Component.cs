@@ -1,17 +1,16 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Extensions;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using System.Collections.Generic;
-using YetaWF.Core.Extensions;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using YetaWF.Core.Pages;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -47,7 +46,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// Defines the grid.
             /// </summary>
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
 
         /// <summary>
@@ -86,11 +85,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     hb.Append($@" name='{FieldName}'");
                     // error state
                     string errClass = GetErrorClass();
-                    if (errClass != null)
-                        HtmlAttributes.Add("class", errClass);
+                    if (!string.IsNullOrWhiteSpace(errClass))
+                        HtmlBuilder.AddClass(HtmlAttributes, errClass);
                     // client side validation
                     string validations = GetValidation();
-                    if (validations != null)
+                    if (!string.IsNullOrEmpty(validations))
                         HtmlAttributes.Add("data-v", validations);
                     break;
             }
@@ -101,7 +100,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Returns the CSS classes defined for this component.
         /// </summary>
         /// <returns>Returns the CSS classes defined in the HtmlAttributes property. An empty string is returned if no classes are defined.</returns>
-        public string GetClasses(string extraCss = null) {
+        public string GetClasses(string? extraCss = null) {
             return HtmlBuilder.GetClasses(HtmlAttributes, extraCss);
         }
         /// <summary>
@@ -109,17 +108,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="extraCss">Optional additional CSS classes.</param>
         /// <returns>Returns a complete class= CSS attribute including all classes defined in the HtmlAttributes property. An empty string is returned if no classes are defined.</returns>
-        public string GetClassAttribute(string extraCss = null) {
+        public string GetClassAttribute(string? extraCss = null) {
             return HtmlBuilder.GetClassAttribute(HtmlAttributes, extraCss);
         }
 
         internal string GetErrorClass() {
-            ModelStateEntry modelState;
-            if (HtmlHelper.ModelState.TryGetValue(FieldName, out modelState)) {
+            if (HtmlHelper.ModelState.TryGetValue(FieldName, out ModelStateEntry? modelState)) {
                 if (modelState.Errors.Count > 0)
                     return "v-valerror";
             }
-            return null;
+            return string.Empty;
         }
 
         private string GetValidation() {
@@ -130,8 +128,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 // GridAllowedRole and GridAllowedUser use a ResourceRedirectList with a property OUTSIDE of the model. This only works in grids (where it is used)
                 // but breaks when used elsewhere (like here) so we only call GetCaption if there is a validation attribute (FOR NOW).
                 // That whole resource  redirect business needs to be fixed (old and ugly, and fragile).
-                string caption = PropData.GetCaption(Container);
-                ValidationBase valBase = val.AddValidation(Container, PropData, caption);
+                string? caption = PropData.GetCaption(Container);
+                ValidationBase? valBase = val.AddValidation(Container, PropData, caption ?? string.Empty);
                 if (valBase != null) {
                     string method = valBase.Method;
                     if (string.IsNullOrWhiteSpace(method))
@@ -146,7 +144,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         throw new InternalError($"No method name found after removing Attribute and Validation suffixes");
                 }
             }
-            return objs.Count > 0 ? Utility.JsonSerialize(objs) : null;
+            return objs.Count > 0 ? Utility.JsonSerialize(objs) : string.Empty;
         }
 
         /// <summary>

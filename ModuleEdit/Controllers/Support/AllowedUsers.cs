@@ -61,7 +61,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
         [ConditionalAntiForgeryToken]
         public async Task<ActionResult> AllowedUsersEdit_SortFilter(GridPartialViewData gridPVData, Guid editGuid) {
             GridDefinition gridModel = AllowedUsersEditComponent.GetGridModel(false);
-            ModuleDefinition module = await ModuleDefinition.LoadAsync(editGuid);
+            ModuleDefinition? module = await ModuleDefinition.LoadAsync(editGuid);
             gridModel.ResourceRedirect = module;
             return await GridPartialViewAsync<ModuleDefinition.GridAllowedUser>(gridModel, gridPVData);
         }

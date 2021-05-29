@@ -1,15 +1,10 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 
+using Microsoft.AspNetCore.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Serializers;
 using YetaWF.Core.Skins;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.DevTests.Controllers {
 
@@ -22,43 +17,22 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
             public enum ControlStatusEnum { Normal, Disabled, }
 
-            [Caption("Page Skin"), Description("Page Skin")]
-            [UIHint("PageSkin"), Trim]
+            [Caption("Skin"), Description("Skin")]
+            [UIHint("Skin"), Trim]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public SkinDefinition PageSkin { get; set; }
+            public SkinDefinition Skin { get; set; }
 
-            [Caption("Popup Skin"), Description("Popup Skin")]
-            [UIHint("PopupSkin"), Trim]
-            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public SkinDefinition PopupSkin { get; set; }
-
-            [Caption("Module Skins"), Description("Module Skins")]
-            [UIHint("ModuleSkins"), Trim]
-            public SerializableList<SkinDefinition> ModuleSkins { get; set; }
-
-            [Caption("Page Skin (Read/Only)"), Description("Page Skin (Read/Only)")]
-            [UIHint("PageSkin"), ReadOnly]
-            public SkinDefinition PageSkinRO { get; set; }
-
-            [Caption("Popup Skin (Read/Only)"), Description("Popup Skin (Read/Only)")]
-            [UIHint("PopupSkin"), ReadOnly]
-            public SkinDefinition PopupSkinRO { get; set; }
-
-            [Caption("Module Skins (Read/Only)"), Description("Module Skins (Read/Only)")]
-            [UIHint("ModuleSkins"), ReadOnly]
-            public SerializableList<SkinDefinition> ModuleSkinsRO { get; set; }
+            [Caption("Skin (Read/Only)"), Description("Skin (Read/Only)")]
+            [UIHint("Skin"), ReadOnly]
+            public SkinDefinition SkinRO { get; set; }
 
             [Caption("Control Status"), Description("Defines the processing status of the controls")]
             [UIHint("Enum")]
             public ControlStatusEnum ControlStatus { get; set; }
 
             public Model() {
-                PageSkin = new SkinDefinition();
-                PageSkinRO = new SkinDefinition();
-                PopupSkin = new SkinDefinition();
-                PopupSkinRO = new SkinDefinition();
-                ModuleSkins = new SerializableList<SkinDefinition>();
-                ModuleSkinsRO = new SerializableList<SkinDefinition>();
+                Skin = new SkinDefinition();
+                SkinRO = new SkinDefinition();
             }
         }
 

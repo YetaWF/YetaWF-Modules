@@ -102,7 +102,7 @@ namespace YetaWF_Menus {
         constructor(setup: Setup) {
             this.Setup = setup;
 
-            var treeTag = $YetaWF.getElement1BySelector(`#${this.Setup.TreeId} ${YetaWF_ComponentsHTML.TreeComponent.SELECTOR}`);
+            let treeTag = $YetaWF.getElement1BySelector(`#${this.Setup.TreeId} ${YetaWF_ComponentsHTML.TreeComponent.SELECTOR}`);
             this.Tree = YetaWF.ComponentBaseDataImpl.getControlFromTag<YetaWF_ComponentsHTML.TreeComponent>(treeTag, YetaWF_ComponentsHTML.TreeComponent.SELECTOR);
             this.Details = $YetaWF.getElementById(this.Setup.DetailsId) as HTMLDivElement;
 
@@ -116,19 +116,36 @@ namespace YetaWF_Menus {
             this.ExpandAllButton = $YetaWF.getElement1BySelector("input[name='t_expandall']", [this.Details]) as HTMLInputElement;
             this.CollapseAllButton = $YetaWF.getElement1BySelector("input[name='t_collapseall']", [this.Details]) as HTMLInputElement;
 
-            this.Tree.Control.addEventListener("tree_click", (evt: Event): void => {
+            $YetaWF.registerCustomEventHandler(this.Tree.Control, YetaWF_ComponentsHTML.TreeComponent.EVENTCLICK, null, (ev: CustomEvent): boolean => {
+                this.changeSelection();
+                return false;
+            });
+            this.Tree.Control.addEventListener(YetaWF_ComponentsHTML.TreeComponent.EVENTSELECT, (evt: Event): void => {
                 this.changeSelection();
             });
-            this.Tree.Control.addEventListener("tree_select", (evt: Event): void => {
-                this.changeSelection();
-            });
-            this.Tree.Control.addEventListener("tree_drop", (evt: Event): void => {
+            this.Tree.Control.addEventListener(YetaWF_ComponentsHTML.TreeComponent.EVENTDROP, (evt: Event): void => {
                 this.sendEntireMenu();
+            });
+
+            // After submit (by Save button), submit the entire menu
+            let form = $YetaWF.Forms.getForm(this.Details);
+            $YetaWF.registerCustomEventHandler(form, YetaWF.Forms.EVENTPOSTSUBMIT, null, (ev: CustomEvent<YetaWF.DetailsPostSubmit>): boolean => {
+                if (ev.detail.success) {
+                    this.getFormControls();
+
+                    this.saveFields();
+                    this.Tree.setSelectText(this.MenuText.defaultValue);
+                    this.ActiveNew = false;
+
+                    this.sendEntireMenu();
+                    this.update();
+                }
+                return true;
             });
 
             $YetaWF.registerEventHandler(this.AddButton, "click", null, (ev: MouseEvent): boolean => {
                 if (this.ActiveEntry && this.changeSelection()) {
-                    var li = this.Tree.addEntry(this.ActiveEntry, YLocs.YetaWF_Menus.NewEntryText, this.Setup.NewEntry as any as YetaWF_ComponentsHTML.TreeEntry);
+                    let li = this.Tree.addEntry(this.ActiveEntry, YLocs.YetaWF_Menus.NewEntryText, this.Setup.NewEntry as any as YetaWF_ComponentsHTML.TreeEntry);
                     this.Tree.setSelect(li);
                     this.ActiveEntry = this.Tree.getSelect();
                     this.ActiveData = this.Tree.getSelectData() as Data|null;
@@ -139,7 +156,7 @@ namespace YetaWF_Menus {
             });
             $YetaWF.registerEventHandler(this.InsertButton, "click", null, (ev: MouseEvent): boolean => {
                 if (this.ActiveEntry && this.changeSelection()) {
-                    var li = this.Tree.insertEntry(this.ActiveEntry, YLocs.YetaWF_Menus.NewEntryText, this.Setup.NewEntry as any as YetaWF_ComponentsHTML.TreeEntry);
+                    let li = this.Tree.insertEntry(this.ActiveEntry, YLocs.YetaWF_Menus.NewEntryText, this.Setup.NewEntry as any as YetaWF_ComponentsHTML.TreeEntry);
                     this.Tree.setSelect(li);
                     this.ActiveEntry = this.Tree.getSelect();
                     this.ActiveData = this.Tree.getSelectData() as Data | null;
@@ -150,25 +167,15 @@ namespace YetaWF_Menus {
             });
 
             $YetaWF.registerEventHandler(this.SaveButton, "click", null, (ev: MouseEvent): boolean => {
-                var form = $YetaWF.Forms.getForm(this.Details);
-                $YetaWF.Forms.submit(form, true, "ValidateCurrent=true", (hasErrors: boolean): void => {
-                    this.getFormControls();
-                    if (!hasErrors) {
-                        this.saveFields();
-                        this.Tree.setSelectText(this.MenuText.defaultValue);
-                        this.ActiveNew = false;
-
-                        this.sendEntireMenu();
-                        this.update();
-                    }
-                });
+                let form = $YetaWF.Forms.getForm(this.Details);
+                $YetaWF.Forms.submit(form, true, "ValidateCurrent=true");
                 return false;
             });
             $YetaWF.registerEventHandler(this.DeleteButton, "click", null, (ev: MouseEvent): boolean => {
                 if (this.ActiveEntry) {
                     if (this.Tree.canCollapse(this.ActiveEntry))
                         this.Tree.collapse(this.ActiveEntry);
-                    var next = this.Tree.getNextVisibleEntry(this.ActiveEntry);
+                    let next = this.Tree.getNextVisibleEntry(this.ActiveEntry);
                     if (!next)
                         next = this.Tree.getPrevVisibleEntry(this.ActiveEntry);
                     this.Tree.removeEntry(this.ActiveEntry);
@@ -194,7 +201,7 @@ namespace YetaWF_Menus {
             $YetaWF.registerEventHandler(this.CollapseAllButton, "click", null, (ev: MouseEvent): boolean => {
                 if (this.changeSelection()) {
                     this.Tree.collapseAll();
-                    var li = this.Tree.getFirstVisibleItem();
+                    let li = this.Tree.getFirstVisibleItem();
                     if (li) {
                         // this.Tree.expand(li);
                         this.Tree.setSelect(li);
@@ -218,9 +225,9 @@ namespace YetaWF_Menus {
         }
 
         private buildHierarchy(): DataHierarchy[] {
-            var hierarchy: DataHierarchy[] = [];
+            let hierarchy: DataHierarchy[] = [];
 
-            var liElem = this.Tree.getFirstVisibleItem();
+            let liElem = this.Tree.getFirstVisibleItem();
             if (liElem)
                 this.addHierarchyEntry(hierarchy, liElem);
 
@@ -229,17 +236,17 @@ namespace YetaWF_Menus {
         private addHierarchyEntry(hierarchy: DataHierarchy[], liElem: HTMLLIElement): void {
 
             for (; ;) {
-                var data = this.Tree.getElementData(liElem) as any as Data;
-                var h = data as DataHierarchy;
+                let data = this.Tree.getElementData(liElem) as any as Data;
+                let h = data as DataHierarchy;
                 h.SubMenu = [];
                 hierarchy.push(h);
 
                 // child elems
-                var childLi = this.Tree.getFirstDirectChild(liElem);
+                let childLi = this.Tree.getFirstDirectChild(liElem);
                 if (childLi)
                     this.addHierarchyEntry(h.SubMenu, childLi);
 
-                var li = this.Tree.getNextSibling(liElem);
+                let li = this.Tree.getNextSibling(liElem);
                 if (!li)
                     break;
                 liElem = li;
@@ -269,7 +276,7 @@ namespace YetaWF_Menus {
             this.NeedsModuleContext = $YetaWF.getElement1BySelector("input[name='ModEntry.NeedsModuleContext']", [this.Details]) as HTMLInputElement;
             this.DontFollow = $YetaWF.getElement1BySelector("input[name='ModEntry.DontFollow']", [this.Details]) as HTMLInputElement;
 
-            $YetaWF.registerCustomEventHandler(this.EntryType.Control, "dropdownlist_change", null, (ev: Event): boolean => {
+            $YetaWF.registerCustomEventHandler(this.EntryType.Control, YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, null, (ev: Event): boolean => {
                 if (this.ActiveData) {
                     let data = this.ActiveData;
                     data.EntryType = Number(this.EntryType.value);
@@ -347,7 +354,7 @@ namespace YetaWF_Menus {
         }
         private saveFields(): void {
             if (!this.ActiveData) return;
-            var data = this.ActiveData;
+            let data = this.ActiveData;
             data.EntryType = Number(this.EntryType.value);
             data.Url = this.Url.value;
             data.SubModule = this.SubModule.value;
@@ -373,7 +380,7 @@ namespace YetaWF_Menus {
         }
 
         private update(): void {
-            var data = this.ActiveData;
+            let data = this.ActiveData;
             if (data) {
                 this.EntryType.value = data.EntryType.toString();
                 this.Url.value = data.Url;
@@ -520,7 +527,7 @@ namespace YetaWF_Menus {
         }
         private updateButtons(): void {
             // save, reset, delete, add new
-            var enable = (this.ActiveEntry && this.ActiveData) != null;
+            let enable = (this.ActiveEntry && this.ActiveData) != null;
             $YetaWF.elementEnableToggle(this.SaveButton, enable);
             $YetaWF.elementEnableToggle(this.DeleteButton, enable);
             $YetaWF.elementEnableToggle(this.ResetButton, enable);
@@ -531,35 +538,21 @@ namespace YetaWF_Menus {
         private sendEntireMenu(): void {
 
             if ($YetaWF.isLoading) return;
-            var form = $YetaWF.Forms.getForm(this.Details);
-            var menuVersionInput = $YetaWF.getElement1BySelector("input[name='MenuVersion']", [form]) as HTMLInputElement;
-            var menuVersion = menuVersionInput.value;
-            var menuGuidInput = $YetaWF.getElement1BySelector("input[name='MenuGuid']", [form]) as HTMLInputElement;
-            var menuGuid = menuGuidInput.value;
+            let form = $YetaWF.Forms.getForm(this.Details);
+            let menuVersionInput = $YetaWF.getElement1BySelector("input[name='MenuVersion']", [form]) as HTMLInputElement;
+            let menuVersion = menuVersionInput.value;
+            let menuGuidInput = $YetaWF.getElement1BySelector("input[name='MenuGuid']", [form]) as HTMLInputElement;
+            let menuGuid = menuGuidInput.value;
 
-            var uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
+            let uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
             uri.addFormInfo(form);
             uri.addSearch("menuGuid", menuGuid);
             uri.addSearch("menuVersion", menuVersion);
             uri.addSearch("EntireMenu", JSON.stringify(this.buildHierarchy()));
 
-            $YetaWF.setLoading(true);
-
-            var request: XMLHttpRequest = new XMLHttpRequest();
-            request.open("POST", this.Setup.AjaxUrl);
-            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-            request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            request.onreadystatechange = (ev: Event): any => {
-                if (request.readyState === 4 /*DONE*/) {
-                    $YetaWF.setLoading(false);
-                    $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, (result: string):void => {
-                        var sendResult: SendResult = JSON.parse(result);
-                        menuVersionInput.value = sendResult.NewVersion.toString();
-                    });
-                }
-            };
-            var data = uri.toFormData();
-            request.send(data);
+            $YetaWF.post(this.Setup.AjaxUrl, uri.toFormData(), (success: boolean, sendResult: SendResult): void => {
+                menuVersionInput.value = sendResult.NewVersion.toString();
+            });
         }
     }
 }

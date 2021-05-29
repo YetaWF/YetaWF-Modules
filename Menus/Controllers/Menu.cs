@@ -1,21 +1,16 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
 
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
-using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Support;
-using YetaWF.Modules.Menus.Modules;
-using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Core.Pages;
-using YetaWF.Core.Modules;
 using YetaWF.Core.IO;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
+using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Modules;
+using YetaWF.Core.Support;
+using YetaWF.Modules.ComponentsHTML.Components;
+using YetaWF.Modules.Menus.Modules;
 
 namespace YetaWF.Modules.Menus.Controllers {
 
@@ -23,17 +18,12 @@ namespace YetaWF.Modules.Menus.Controllers {
 
         [AllowGet]
         public async Task<ActionResult> MainMenu() {
-            // add some bootstrap specific classes
-            if (Manager.SkinInfo.UsingBootstrap)
-                Module.CssClass = CssManager.CombineCss(Module.CssClass, "navbar-collapse collapse");
             MenuModel model = new MenuModel {
                 Menu = new MenuComponentBase.MenuData {
                     MenuList = await GetMenu(Module, External: true),
-                    Direction = Module.Direction,
-                    Orientation = Module.Orientation,
                     HoverDelay = Module.HoverDelay,
                     CssClass = Module.CssClass,
-                    ShowPath = Module.ShowPath,
+                    SmallMenuMaxWidth = Module.SmallMenuMaxWidth
                 },
             };
             model.Menu.MenuList.LICssClass = Module.LICssClass;
@@ -44,7 +34,7 @@ namespace YetaWF.Modules.Menus.Controllers {
     public class MenuModuleController : ControllerImpl<YetaWF.Modules.Menus.Modules.MenuModule> {
 
         public class MenuModel {
-            [UIHint("Menu"), AdditionalMetadata("Style", MenuComponentBase.MenuStyleEnum.Automatic)]
+            [UIHint("Menu")]
             public MenuComponentBase.MenuData Menu { get; set; }
         }
 
@@ -53,11 +43,9 @@ namespace YetaWF.Modules.Menus.Controllers {
             MenuModel model = new MenuModel {
                 Menu = new MenuComponentBase.MenuData {
                     MenuList = await GetMenu(Module),
-                    Direction = Module.Direction,
-                    Orientation = Module.Orientation,
                     HoverDelay = Module.HoverDelay,
                     CssClass = Module.CssClass,
-                    ShowPath = Module.ShowPath,
+                    SmallMenuMaxWidth = Module.SmallMenuMaxWidth
                 },
             };
             model.Menu.MenuList.LICssClass = Module.LICssClass;

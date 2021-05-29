@@ -22,14 +22,14 @@ namespace YetaWF.Modules.TawkTo.DataProvider {
         public int Id { get; set; }
 
         [StringLength(MaxAccount)]
-        public string Account { get; set; }
+        public string? Account { get; set; }
         [StringLength(MaxAPIKey)]
-        public string APIKey { get; set; }
+        public string? APIKey { get; set; }
 
         [StringLength(MaxCss)]
-        public string ExcludedPagesCss { get; set; }
+        public string? ExcludedPagesCss { get; set; }
         [StringLength(MaxCss)]
-        public string IncludedPagesCss { get; set; }
+        public string? IncludedPagesCss { get; set; }
 
         public bool IsConfigured {
             get {
@@ -53,7 +53,7 @@ namespace YetaWF.Modules.TawkTo.DataProvider {
 
         private IDataProvider<int, ConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, ConfigData> CreateDataProvider() {
+        private IDataProvider<int, ConfigData>? CreateDataProvider() {
             Package package = YetaWF.Modules.TawkTo.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -68,7 +68,7 @@ namespace YetaWF.Modules.TawkTo.DataProvider {
             }
         }
         public async Task<ConfigData> GetItemAsync() {
-            ConfigData config = await DataProvider.GetAsync(KEY);
+            ConfigData? config = await DataProvider.GetAsync(KEY);
             if (config == null) {
                 config = new ConfigData();
                 await AddConfigAsync(config);
@@ -87,7 +87,7 @@ namespace YetaWF.Modules.TawkTo.DataProvider {
             );
         }
         public async Task UpdateConfigAsync(ConfigData data) {
-            ConfigData origConfig = Auditing.Active ? await GetItemAsync() : null;
+            ConfigData? origConfig = Auditing.Active ? await GetItemAsync() : null;
             data.Id = KEY;
             UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)

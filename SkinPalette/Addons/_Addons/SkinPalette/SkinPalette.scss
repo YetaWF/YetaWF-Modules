@@ -1,0 +1,46 @@
+/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SkinPalette#License */
+
+.YetaWF_SkinPalette_SkinPalette {
+    .t_palette {
+        display:block;
+        position: fixed;
+        left:58px;
+        top:5px;
+        z-index:901;
+        padding:4px;
+        width:16px;
+        height:16px;
+        box-sizing: content-box;
+        svg {
+            vertical-align: top;
+            width:16px;
+            height:16px;
+        }
+    }
+}
+
+.YetaWF_SkinPalette_SkinPalette {
+    // .t_tabstrip {
+    //     font-size:.6em;
+    // }
+    .t_contents {
+        z-index: 900;
+        position: fixed;
+        top: 0;
+        right: 0;
+        overflow-y:auto;
+        width: 400px;
+        max-width:100vw;
+        height:auto;
+        max-height: 100%;
+        font-size:.8em;
+        padding:1em;
+        background: var(--bar-bg);
+        border: var(--bar-border);
+        border-radius: var(--bar-border-radius);
+        textarea[name="CSSVariables"] {
+            overflow: auto;
+            white-space: pre;
+        }
+    }
+}

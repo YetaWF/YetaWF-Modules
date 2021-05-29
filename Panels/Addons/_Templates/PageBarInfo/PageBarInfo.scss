@@ -7,83 +7,74 @@ $large-entry-width: 250px;
 $small-screen: 1000px;
 $large-screen: 1500px;
 
-// t_noskin colors, when CSS variables are not available
-$bar-background: silver;
-$bar-hover: darken($bar-background, 10%);
-$bar-color: white;
-$bar-active: darken($bar-background, 20%);
-
-.yt_panels_pagebarinfo {
-    &.t_styleshorz,
-    &.t_stylesvert {
-        .yt_panels_pagebarinfo_list {
-            flex:none;
-            overflow-x:auto;
-            overflow-y: hidden;
-            white-space: nowrap;
-            .t_entry {
-                height:$entry-height;
-                width:$entry-width;
-                padding:20px 2px 0px 2px;
-                display:inline-block;
-                vertical-align:top;
-                text-align:center;
-            }
-        }
-        .t_area {
-            padding: 10px 20px 10px 20px;
-            width:100%;
-        }
-    }
-
-    &.t_skin {
-        .yt_panels_pagebarinfo_list {
-            background: transparent;// don't use jquery-ui ui-widget-content background
-        }
-    }
-
-    &.t_noskin {
-        .yt_panels_pagebarinfo_list {
-            background: $bar-background;
-            background: var(--bar-bg, $bar-background);
-            .t_entry {
-                &:hover {
-                    background: $bar-hover;
-                    background: var(--bar-bg-hover, $bar-hover);
-                    a {
-                        color: $bar-color;
-                        color: var(--bar-clr-hover, $bar-color);
-                    }
-                }
-                &.t_active {
-                    background: $bar-active;
-                    background: var(--bar-bg-active, $bar-active);
-                    a {
-                        color: $bar-color;
-                        color: var(--bar-clr-active, $bar-color);
-                    }
-                }
-                a {
-                    color: $bar-color;
-                    color: var(--bar-clr, $bar-color);
-                }
-            }
-        }
-    }
-}
-
 .yt_panels_pagebarinfo {
     .yt_panels_pagebarinfo_list {
+        flex:none;
+        overflow-x:auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+        background: var(--bar-bg);
+        border-right: var(--bar-border);
         .t_expcoll {
             cursor: pointer;
             display:none;
         }
-        .t_link {
+        .t_caption {
             font-size:.6rem;
             line-height:1.2;
-            .yaction-link {
-                white-space:normal;
+            white-space:normal;
+        }
+        .t_entry {
+            text-decoration: none;
+            background: var(--bar-bg);
+            color: var(--bar-clr);
+            &:hover {
+                background: var(--bar-bg-hover);
+                color: var(--bar-clr-hover);
             }
+            &.t_active {
+                text-decoration: none;
+                background: var(--bar-bg-active);
+                color: var(--bar-clr-active);
+            }
+            &:focus {
+                outline: thin dotted;
+            }
+            svg {
+                width: 32px;
+                height:32px;
+                opacity: 0.6;
+            }
+        }
+        .t_entry {
+            height:$entry-height;
+            width:$entry-width;
+            padding:20px 2px 0px 2px;
+            display:inline-block;
+            vertical-align:top;
+            text-align:center;
+        }
+    }
+    .t_area {
+        padding: .7em 1.3em .7em 1.3em;
+        width:100%;
+        .modStandard h1 {
+            font-size:var(--bar-h1-font-size);
+            line-height: 1;// we don't want to use the standard h1 line-height from --mstd-title-font
+            margin:0;
+            padding:0;
+            padding-bottom: .5em;
+        }
+    }
+}
+
+
+/* Wide Content */
+
+.widecontentfill {
+    .yt_panels_pagebarinfo {
+        .t_area .yModule {
+            margin-bottom:.8em;
         }
     }
 }
@@ -113,7 +104,7 @@ $bar-active: darken($bar-background, 20%);
             }
             .t_area {
                 flex:1;
-                padding: 10px 20px 10px 20px;
+                padding: .7em 1.3em .7em 1.3em;
                 overflow:hidden;
                 overflow-y:auto;
             }
@@ -127,7 +118,7 @@ $bar-active: darken($bar-background, 20%);
         &.t_stylesvert.t_expanded { // if expanded
             .yt_panels_pagebarinfo_list {
                 flex: 0 0  $large-entry-width;
-                overflow-x:auto;
+                overflow-x:hidden;
                 overflow-y:auto;
                 text-align:left;
                 white-space: nowrap;
@@ -139,17 +130,19 @@ $bar-active: darken($bar-background, 20%);
                     padding:5px 2px 5px 1em;
                     display:block;
                     vertical-align:initial;
-                    .t_image {
+                    img {
                         display:inline-block;
                         padding-right:.5em;
                     }
-                    .t_link {
+                    svg {
+                        display:inline-block;
+                        margin-right:.5em;
+                    }
+                    .t_caption {
                         font-size:.8rem;
                         display:inline-block;
+                        white-space:nowrap;
                         padding-bottom:0;
-                        .yaction-link {
-                            white-space:nowrap;
-                        }
                     }
                 }
             }
@@ -180,3 +173,8 @@ $bar-active: darken($bar-background, 20%);
     }
 }
 
+@media print {
+    .yt_panels_pagebarinfo_list {
+        display: none;
+    }
+}

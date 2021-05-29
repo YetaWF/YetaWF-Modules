@@ -24,21 +24,21 @@ namespace YetaWF.Modules.DevTests.Views {
             hb.Append($@"
 {await HtmlHelper.ForDisplayContainerAsync(model, "PropertyList")}
 
-<input type='button' value='clear()' name='Clear' />
-<input type='button' value='activateAll()' name='ActivateAll' />
-<input type='button' value='activateLast()' name='ActivateLast' />
+<input type='button' class='y_button' value='clear()' name='Clear' />
+<input type='button' class='y_button' value='activateAll()' name='ActivateAll' />
+<input type='button' class='y_button' value='activateLast()' name='ActivateLast' />
 <br/>
 <br/>
-<input type='button' value='step1' name='Step1' />
-<input type='button' value='step2' name='Step2' />
-<input type='button' value='step3' name='Step3' />
-<input type='button' value='step4' name='Step4' />
+<input type='button' class='y_button' value='step1' name='Step1' />
+<input type='button' class='y_button' value='step2' name='Step2' />
+<input type='button' class='y_button' value='step3' name='Step3' />
+<input type='button' class='y_button' value='step4' name='Step4' />
 <br/>
 <br/>
-<input type='button' value='step1' name='Step1' />
-<input type='button' value='step1-step2' name='Step12' />
-<input type='button' value='step1-step3' name='Step13' />
-<input type='button' value='step1-step4' name='Step14' />");
+<input type='button' class='y_button' value='step1' name='Step1' />
+<input type='button' class='y_button' value='step1-step2' name='Step12' />
+<input type='button' class='y_button' value='step1-step3' name='Step13' />
+<input type='button' class='y_button' value='step1-step4' name='Step14' />");
 
             Manager.ScriptManager.AddLast($@"
 if (typeof YetaWF_Panels !== 'undefined' && YetaWF_Panels.StepInfoComponent) {{

@@ -66,7 +66,7 @@ namespace YetaWF.Modules.Pages.Scheduler {
             DynamicUrlsImpl dynamicUrls = new DynamicUrlsImpl();
             List<Type> types = dynamicUrls.GetDynamicUrlTypes();
             foreach (Type type in types) {
-                ISiteMapDynamicUrls iSiteMap = Activator.CreateInstance(type) as ISiteMapDynamicUrls;
+                ISiteMapDynamicUrls? iSiteMap = Activator.CreateInstance(type) as ISiteMapDynamicUrls;
                 if (iSiteMap != null) {
                     await iSiteMap.FindDynamicUrlsAsync(AddSiteMapPageAsync, ValidForSiteMap);
                 }
@@ -74,9 +74,9 @@ namespace YetaWF.Modules.Pages.Scheduler {
 
             // search all designed modules that have dynamic urls
             foreach (DesignedModule desMod in await DesignedModules.LoadDesignedModulesAsync()) {
-                ModuleDefinition mod = await ModuleDefinition.LoadAsync(desMod.ModuleGuid, AllowNone: true);
+                ModuleDefinition? mod = await ModuleDefinition.LoadAsync(desMod.ModuleGuid, AllowNone: true);
                 if (mod != null) {
-                    ISiteMapDynamicUrls iSiteMap = mod as ISiteMapDynamicUrls;
+                    ISiteMapDynamicUrls? iSiteMap = mod as ISiteMapDynamicUrls;
                     if (iSiteMap != null) {
                         await iSiteMap.FindDynamicUrlsAsync(AddSiteMapPageAsync, ValidForSiteMap);
                     }
@@ -86,11 +86,11 @@ namespace YetaWF.Modules.Pages.Scheduler {
             // Designed pages
             List<Guid> pages = await PageDefinition.GetDesignedGuidsAsync();
             foreach (Guid pageGuid in pages) {
-                PageDefinition page = await PageDefinition.LoadAsync(pageGuid);
+                PageDefinition? page = await PageDefinition.LoadAsync(pageGuid);
                 if (page == null)
                     continue;
                 if (!PagesFound.Contains(page.PageGuid)) // don't include same again (this could be a page that generates dynamic Urls)
-                    await AddUrlAsync(page, page.EvaluatedCanonicalUrl, page.Updated, page.SiteMapPriority, page.ChangeFrequency);
+                    await AddUrlAsync(page, page.EvaluatedCanonicalUrl!, page.Updated, page.SiteMapPriority, page.ChangeFrequency);
             }
 
             // end

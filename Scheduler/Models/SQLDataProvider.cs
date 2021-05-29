@@ -23,10 +23,10 @@ namespace YetaWF.Modules.Scheduler.DataProvider.SQL {
             public async Task<bool> AddItemAsync(LogData data) {
                 return await AddAsync(data);
             }
-            public async Task<DataProviderGetRecords<LogData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+            public async Task<DataProviderGetRecords<LogData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
                 return await GetRecordsAsync(skip, take, sort, filters);
             }
-            public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
+            public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo>? filters) {
                 return await RemoveRecordsAsync(filters);
             }
             public bool CanBrowse {
@@ -35,7 +35,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider.SQL {
             public bool CanImportOrExport {
                 get { return true; }
             }
-            public string GetLogFileName() {
+            public string? GetLogFileName() {
                 return null;
             }
         }

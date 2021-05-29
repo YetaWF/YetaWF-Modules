@@ -35,14 +35,14 @@ namespace YetaWF.Modules.Languages.Components {
             }
 
             [UIHint("Hidden"), ResourceRedirect(nameof(NameFieldCaption), nameof(NameFieldDescription)), StringLength(LocalizationData.MaxString)]
-            public string Name { get; set; }
+            public string Name { get; set; } = null!;
             [UIHint("Text80"), ResourceRedirect(nameof(TextFieldCaption), nameof(TextFieldDescription)), StringLength(LocalizationData.MaxString)]
-            public string Text { get; set; }
+            public string? Text { get; set; }
 
-            public string NameFieldCaption { get; set; }
-            public string NameFieldDescription { get; set; }
-            public string TextFieldCaption { get; set; }
-            public string TextFieldDescription { get; set; }
+            public string? NameFieldCaption { get; set; }
+            public string? NameFieldDescription { get; set; }
+            public string? TextFieldCaption { get; set; }
+            public string? TextFieldDescription { get; set; }
         }
 
         public async Task<string> RenderAsync(SerializableList<LocalizationData.StringData> model) {

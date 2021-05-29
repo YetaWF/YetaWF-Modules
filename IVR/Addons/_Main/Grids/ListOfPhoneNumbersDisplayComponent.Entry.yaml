@@ -1,0 +1,18 @@
+# Generated from flat grid definition file on 3/19/2021 12:20:34 PM
+
+SizeStyle: SizeToFit
+Panel: {}
+Columns:
+- Name: PhoneNumber
+  DefaultSort: Ascending
+  Sort: true
+  FilterOptions: []
+  Width: <Globals.ChPhoneNumber>
+  Align: Unspecified
+  Truncate: true
+- Name: SendSMS
+  Sort: true
+  FilterOptions: []
+  Width: <Globals.ChBoolean>
+  Align: Center
+  Truncate: true

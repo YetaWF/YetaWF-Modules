@@ -74,7 +74,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             bool showValues = UserSettings.GetProperty<bool>("ShowEnumValue");
             showValues = showValues && PropData.GetAdditionalAttributeValue("ShowEnumValue", true);
 
-            string desc;
+            string? desc;
             string caption = ObjectSupport.GetEnumDisplayInfo(model, out desc, ShowValue: showValues);
 
             if (HtmlAttributes.Count > 0 || !string.IsNullOrWhiteSpace(desc)) {
@@ -91,18 +91,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// <remarks>
     /// Enum values are only shown if the user's User Settings (see User > Settings, standard YetaWF site) has the ShowEnumValue property set to true.
     /// </remarks>
-    /// <example>
-    /// public enum TabStyleEnum {
-    ///     [EnumDescription("JQuery", "JQuery-UI Tab Controls")]
-    ///     JQuery = 0,
-    ///     [EnumDescription("Kendo", "Kendo UI Core Tab Controls")]
-    ///     Kendo = 1,
-    /// }
-    ///
-    /// [Category("Skin"), Caption("Tab Style"), Description("Defines which UI provides the tab control implementation")]
-    /// [UIHint("Enum"), Required]
-    /// public TabStyleEnum TabStyle { get; set; }
-    /// </example>
     [UsesAdditionalAttribute("ShowSelect", "bool", "false", "If true, an entry showing \"(select)\" with a value of 0 is inserted as the first entry, in addition to all enum values. Otherwise, only the enum values are shown.")]
     public class EnumEditComponent : EnumComponentBase, IYetaWFComponent<object> {
 

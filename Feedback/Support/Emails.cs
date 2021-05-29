@@ -10,11 +10,11 @@ namespace YetaWF.Modules.Feedback.Support {
 
     public class Emails {
 
-        public Emails(YetaWFManager manager) { Manager = manager; }
+        public Emails() {  }
 
-        protected static YetaWFManager Manager { get; private set; }
+        protected static YetaWFManager Manager { get { return YetaWFManager.Manager; } }
 
-        public async Task SendFeedbackAsync(string toEmail, string fromEmail, string subject, string message, string name, string ccEmail = null) {
+        public async Task SendFeedbackAsync(string? toEmail, string? fromEmail, string subject, string message, string name, string? ccEmail = null) {
 
             if (string.IsNullOrWhiteSpace(toEmail) && string.IsNullOrWhiteSpace(ccEmail))
                 return;

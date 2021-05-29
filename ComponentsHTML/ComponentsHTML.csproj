@@ -15,6 +15,7 @@
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <RootNamespace>YetaWF.Modules.ComponentsHTML</RootNamespace>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -28,27 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="**\*.cshtml_MVC5" />
-    <None Remove="**\*.cshtml_MVC6" />
-    <Compile Remove="Addons\_Templates\ColorPickerEdit\**" />
-    <Compile Remove="Addons\_Templates\ColorPicker\**" />
-    <!-- TODO: Review for final release - this is a workaround for slow solution load -->
-    <Compile Remove="node_modules\**" />
-    <Content Remove="node_modules\**" />
-    <None Remove="Addons\_Templates\ColorPickerEdit\**" />
-    <None Remove="Addons\_Templates\ColorPicker\**" />
-    <None Remove="node_modules\**" />
-    <EmbeddedResource Remove="Addons\_Templates\ColorPickerEdit\**" />
-    <EmbeddedResource Remove="Addons\_Templates\ColorPicker\**" /><EmbeddedResource Remove="node_modules\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Components\ColorPicker.cs" />
-    <Compile Remove="Components\PropertyList\TabStrip.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="TimeZoneConverter" Version="3.3.0" />
+    <PackageReference Include="TimeZoneConverter" Version="3.5.0" />
   </ItemGroup>
 
 </Project>

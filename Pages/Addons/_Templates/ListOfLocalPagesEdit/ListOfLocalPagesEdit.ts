@@ -32,7 +32,6 @@ namespace YetaWF_Pages {
                 GetValue: null,
                 Enable: null,
             });
-
             this.Setup = setup;
 
             this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
@@ -43,9 +42,7 @@ namespace YetaWF_Pages {
             $YetaWF.registerEventHandler(this.buttonAdd, "click", null, (ev: MouseEvent): boolean => {
 
                 if (this.ReloadInProgress) return true;
-
                 this.ReloadInProgress = true;
-                $YetaWF.setLoading(true);
 
                 var uri = $YetaWF.parseUrl(this.Setup.AddUrl);
                 uri.addFormInfo(this.Control);
@@ -55,28 +52,16 @@ namespace YetaWF_Pages {
                 uri.addSearch("fieldPrefix", this.Grid.FieldName);
                 uri.addSearch("data", JSON.stringify(this.Grid.StaticData));
                 if (this.Grid.ExtraData) uri.addSearchSimpleObject(this.Grid.ExtraData);
-                var request: XMLHttpRequest = new XMLHttpRequest();
-                request.open("POST", this.Setup.AddUrl, true);
-                request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-                request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                request.onreadystatechange = (ev: Event): any => {
-                    if (request.readyState === 4 /*DONE*/) {
-                        this.ReloadInProgress = false;
-                        $YetaWF.setLoading(false);
-                        $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, (result: string): void => {
-                            var partial: GridRecordResult = JSON.parse(request.responseText);
-                            this.ReloadInProgress = false;
-                            $YetaWF.setLoading(false);
-                            this.Grid.AddRecord(partial.TR, partial.StaticData);
-                        });
-                    }
-                };
-                request.send(uri.toFormData());
 
+                $YetaWF.post(this.Setup.AddUrl, uri.toFormData(), (success: boolean, partial: GridRecordResult): void => {
+                    this.ReloadInProgress = false;
+                    if (success)
+                        this.Grid.AddRecord(partial.TR, partial.StaticData);
+                });
                 return false;
             });
 
-            this.SelectUrl.Control.addEventListener("url_change", (evt: Event): void => {
+            this.SelectUrl.Control.addEventListener(YetaWF_ComponentsHTML.UrlEditComponent.EVENTCHANGE, (evt: Event): void => {
                 this.toggleButton();
             });
             this.GridAll.Control.addEventListener("grid_selectionchange", (evt: Event): void => {

@@ -25,7 +25,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <remarks>This pattern should not be used and will be discontinued.</remarks>
         /// <param name="id">The ID of the HTML element.</param>
         /// <returns>The Javascript code.</returns>
-        protected string BeginDocumentReady(string id = null) {
+        protected string BeginDocumentReady(string? id = null) {
             if (string.IsNullOrWhiteSpace(id)) {
                 DocCloseParen = 0;
                 return "$YetaWF.addWhenReadyOnce(function (tag) {";
@@ -55,7 +55,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="ControllerName">Overrides the default controller name.</param>
         /// <param name="Method">The method used to submit the form (get/post)</param>
         /// <returns>Returns the HTML with the generated &lt;form&gt; tag.</returns>
-        protected async Task<string> RenderBeginFormAsync(object HtmlAttributes = null, bool SaveReturnUrl = false, bool ValidateImmediately = false, string ActionName = null, string ControllerName = null, string Method = "post") {
+        protected async Task<string> RenderBeginFormAsync(object? HtmlAttributes = null, bool SaveReturnUrl = false, bool ValidateImmediately = false, string? ActionName = null, string? ControllerName = null, string Method = "post") {
 
             await YetaWFCoreRendering.Render.AddFormsAddOnsAsync();
             await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Forms");// standard css, validation strings
@@ -71,11 +71,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (string.IsNullOrWhiteSpace(ControllerName))
                 ControllerName = ModuleBase.Controller;
 
-            IDictionary<string, object> attrs = HtmlBuilder.AnonymousObjectToHtmlAttributes(HtmlAttributes);
+            IDictionary<string, object?> attrs = HtmlBuilder.AnonymousObjectToHtmlAttributes(HtmlAttributes);
             if (SaveReturnUrl)
                 attrs.Add(Basics.CssSaveReturnUrl, string.Empty);
 
-            string css = null;
+            string? css = null;
             if (Manager.CurrentSite.FormErrorsImmed)
                 css = CssManager.CombineCss(css, "yValidateImmediately");
 
@@ -88,15 +88,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string id = HtmlBuilder.GetId(attrs);
             hb.Append($@"
 <form id='{id}' class='{Forms.CssFormAjax}{HtmlBuilder.GetClasses(attrs, css)}' autocomplete='{(ModuleBase.FormAutoComplete ? "on" : "off")}' action='{Utility.HAE(formAction)}' method='{Method}'{HtmlBuilder.Attributes(attrs)}>");
-
-            // show errors if already present
-            if (!HtmlHelper.ModelState.IsValid) {
-                Manager.ScriptManager.AddLast($@"
-var f = $YetaWF.getElementById('{id}');
-if ($YetaWF.Forms.hasErrors(f))
-    $YetaWF.Forms.showErrors(f);
-");
-            }
 
             return hb.ToString();
         }

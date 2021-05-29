@@ -37,7 +37,7 @@ namespace YetaWF_Scheduler {
 
             this.update();
 
-            this.DropDown.Control.addEventListener("dropdownlist_change", (evt: Event): void => {
+            this.DropDown.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, (evt: Event): void => {
                 this.update();
             });
         }

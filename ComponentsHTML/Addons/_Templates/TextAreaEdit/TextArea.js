@@ -8,6 +8,8 @@ var __extends = (this && this.__extends) || (function () {
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -29,7 +31,6 @@ var YetaWF_ComponentsHTML;
                     var editor = CKEDITOR.instances[control.id];
                     if (enable) {
                         control.removeAttribute("readonly");
-                        $YetaWF.elementRemoveClass(control, "k-state-disabled");
                         try {
                             editor.setReadOnly(false);
                         }
@@ -37,7 +38,6 @@ var YetaWF_ComponentsHTML;
                     }
                     else {
                         control.setAttribute("readonly", "readonly");
-                        $YetaWF.elementAddClass(control, "k-state-disabled");
                         try {
                             editor.setReadOnly(true);
                         }
@@ -93,7 +93,7 @@ var YetaWF_ComponentsHTML;
             var cked = ckeds_2[_i];
             var ck = CKEDITOR.instances[cked.Control.id];
             try {
-                ck.resize("100%", cked.Setup.EmHeight, true);
+                ck.resize("100%", cked.Setup.EmHeight + "em", true);
             }
             catch (e) { }
         }

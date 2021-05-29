@@ -57,7 +57,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(string model) {
 
-            string toolTip = GetSiblingProperty<string>($"{PropertyName}_ToolTip");
+            string? toolTip = GetSiblingProperty<string>($"{PropertyName}_ToolTip");
             string tt = string.Empty;
             if (!string.IsNullOrWhiteSpace(toolTip))
                 tt = $" {Basics.CssTooltipSpan}='{Utility.HAE(toolTip)}'";

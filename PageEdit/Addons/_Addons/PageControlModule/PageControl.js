@@ -8,6 +8,8 @@ var __extends = (this && this.__extends) || (function () {
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -21,9 +23,10 @@ var YetaWF_PageEdit;
             var _this = _super.call(this, id, PageControlModule.SELECTOR, null) || this;
             _this.FadeTime = 250;
             _this.PageControlMod = $YetaWF.getElementById(YConfigs.YetaWF_PageEdit.PageControlMod);
-            var pagebutton = $YetaWF.getElementById("tid_pagecontrolbutton");
+            var pagebutton = $YetaWF.getElement1BySelector(".t_controlpanel", [_this.Module]);
             $YetaWF.registerEventHandler(pagebutton, "click", null, function (ev) {
                 _this.toggleControlPanel();
+                _this.updateURL();
                 return false;
             });
             // on page load, show control panel if wanted
@@ -33,9 +36,15 @@ var YetaWF_PageEdit;
             }
             return _this;
         }
+        PageControlModule.prototype.updateURL = function () {
+            var uri = new YetaWF.Url();
+            uri.parse(window.location.href);
+            uri.removeSearch("!Pagectl");
+            if (YVolatile.Basics.PageControlVisible)
+                uri.addSearch("!Pagectl", "y");
+            $YetaWF.setUrl(uri.toUrl());
+        };
         PageControlModule.prototype.toggleControlPanel = function () {
-            if (!this.PageControlMod)
-                return;
             if ($YetaWF.isVisible(this.PageControlMod)) {
                 YVolatile.Basics.PageControlVisible = false;
                 ComponentsHTMLHelper.fadeOut(this.PageControlMod, this.FadeTime);
@@ -54,7 +63,7 @@ var YetaWF_PageEdit;
                 }
                 return;
             }
-            var pagebutton = $YetaWF.getElementByIdCond("tid_pagecontrolbutton");
+            var pagebutton = $YetaWF.getElement1BySelector(".t_controlpanel", [this.Module]);
             if (pagebutton) {
                 if (YVolatile.Basics.TemporaryPage) {
                     if (YVolatile.Basics.PageControlVisible) {
@@ -105,7 +114,7 @@ var YetaWF_PageEdit;
     }(YetaWF.ModuleBaseDataImpl));
     YetaWF_PageEdit.PageControlModule = PageControlModule;
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
-        var mods = YetaWF.ModuleBaseDataImpl.getModules(PageControlModule.SELECTOR, ev.detail.containers);
+        var mods = YetaWF.ModuleBaseDataImpl.getModules(PageControlModule.SELECTOR);
         for (var _i = 0, mods_1 = mods; _i < mods_1.length; _i++) {
             var mod = mods_1[_i];
             mod.updateControlPanel();

@@ -1,0 +1,30 @@
+# Generated from flat grid definition file on 1/30/2021 5:49:35 PM
+
+SizeStyle: SizeToFit
+Panel: {}
+Columns:
+- Name: Commands
+  Icons: 2
+  FilterOptions: []
+  Align: Center
+- Name: FileName
+  Sort: true
+  Filter: true
+  Width: 25
+  Align: Unspecified
+- Name: Created
+  DefaultSort: Descending
+  Sort: true
+  Filter: true
+  Width: 20
+  Align: Unspecified
+- Name: Size
+  Sort: true
+  FilterOptions: []
+  Width: 12
+  Align: Right
+- Name: FullFileName
+  Sort: true
+  Filter: true
+  Width: 120
+  Align: Unspecified

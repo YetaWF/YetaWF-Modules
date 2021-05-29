@@ -29,7 +29,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             [Caption("W3C Validation"), Description("The Url used to validate the current page using a W3C Validation service - Use {0} where the Url is inserted - If no Url is defined, the Control Panel will not display a W3C Validation link")]
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Remote)]
             [StringLength(Globals.MaxUrl), Trim]
-            public string W3CUrl { get; set; }
+            public string? W3CUrl { get; set; }
 
             [Category("General"), Caption("User List"), Description("List of user accounts that can be used to quickly log into the site")]
             [UIHint("YetaWF_Identity_ResourceUsers")]
@@ -43,7 +43,9 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public void SetData(ControlPanelConfigData data) {
                 ObjectSupport.CopyData(data, this);
             }
-            public Model() { }
+            public Model() {
+                Users = new SerializableList<User>();
+            }
         }
 
         [AllowGet]

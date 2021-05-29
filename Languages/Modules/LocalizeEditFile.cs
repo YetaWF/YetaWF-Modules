@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Languages.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_Edit(string url, string packageName, string typeName) {
+        public ModuleAction? GetAction_Edit(string? url, string packageName, string typeName) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = new { PackageName = packageName, TypeName = typeName },

@@ -1,0 +1,38 @@
+# Generated from flat grid definition file on 2/7/2021 7:47:28 PM
+
+SizeStyle: SizeToFit
+Panel: {}
+Columns:
+- Name: Commands
+  Icons: 1
+  FilterOptions: []
+  Align: Center
+- Name: TimeStamp
+  DefaultSort: Descending
+  Sort: true
+  Filter: true
+  Width: 20
+  Align: Unspecified
+- Name: RunId
+  Sort: true
+  Filter: true
+  Width: 16
+  Align: Unspecified
+- Name: Name
+  Sort: true
+  Filter: true
+  Width: 20
+  Align: Unspecified
+- Name: Level
+  Sort: true
+  Filter: true
+  Width: 10
+  Align: Unspecified
+- Name: SiteIdentity
+  Filter: true
+  Width: 10
+- Name: Info
+  Filter: true
+  Width: 80
+  Align: Unspecified
+  Truncate: true

@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core;
-using YetaWF.Core.Components;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -14,10 +13,6 @@ using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Scheduler.Controllers;
 using YetaWF.Modules.Scheduler.DataProvider;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Scheduler.Modules {
 
@@ -38,7 +33,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
 
         [Category("General"), Caption("Display Url"), Description("The Url to display a log entry - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string DisplayUrl { get; set; }
+        public string? DisplayUrl { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
         public override List<RoleDefinition> ExtraRoles {
@@ -54,8 +49,8 @@ namespace YetaWF.Modules.Scheduler.Modules {
             }
         }
 
-        public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
-            MenuList menuList = await base.GetModuleMenuListAsync(renderMode, location);
+        public override async Task<List<ModuleAction>> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
+            List<ModuleAction> menuList = await base.GetModuleMenuListAsync(renderMode, location);
             if (location == ModuleAction.ActionLocationEnum.ModuleLinks) {
                 using (LogDataProvider logDP = new LogDataProvider()) {
                     if (logDP.CanBrowse)
@@ -69,7 +64,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
             return menuList;
         }
 
-        public ModuleAction GetAction_Items(string url) {
+        public ModuleAction? GetAction_Items(string? url) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Browse",
@@ -83,7 +78,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
             };
         }
-        public async Task<ModuleAction> GetAction_RemoveAllAsync() {
+        public async Task<ModuleAction?> GetAction_RemoveAllAsync() {
             if (!IsAuthorized("RemoveLog")) return null;
             using (LogDataProvider logDP = new LogDataProvider()) {
                 if (!await logDP.IsInstalledAsync()) return null;
@@ -103,7 +98,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
                 ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to remove ALL scheduler log records?"),
             };
         }
-        public async Task<ModuleAction> GetAction_DownloadLogAsync() {
+        public async Task<ModuleAction?> GetAction_DownloadLogAsync() {
             if (!IsAuthorized("Downloads")) return null;
             using (LogDataProvider logDP = new LogDataProvider()) {
                 if (!await logDP.IsInstalledAsync()) return null;
@@ -123,7 +118,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
             };
         }
-        public async Task<ModuleAction> GetAction_DownloadZippedLogAsync() {
+        public async Task<ModuleAction?> GetAction_DownloadZippedLogAsync() {
             if (!IsAuthorized("Downloads")) return null;
             using (LogDataProvider logDP = new LogDataProvider()) {
                 if (!await logDP.IsInstalledAsync()) return null;

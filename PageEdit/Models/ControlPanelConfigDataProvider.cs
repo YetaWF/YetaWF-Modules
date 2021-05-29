@@ -47,7 +47,7 @@ namespace YetaWF.Modules.PageEdit.DataProvider {
 
         private IDataProvider<int, ControlPanelConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, ControlPanelConfigData> CreateDataProvider() {
+        private IDataProvider<int, ControlPanelConfigData>? CreateDataProvider() {
             Package package = YetaWF.Modules.PageEdit.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_ControlPanel_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -62,9 +62,9 @@ namespace YetaWF.Modules.PageEdit.DataProvider {
             }
         }
         public async Task<ControlPanelConfigData> GetItemAsync() {
-            ControlPanelConfigData config = await DataProvider.GetAsync(KEY);
+            ControlPanelConfigData? config = await DataProvider.GetAsync(KEY);
             if (config == null) {
-                config = await DataProvider.GetAsync(KEY);
+                config = new ControlPanelConfigData();
                 await AddConfigAsync(config);
             }
             return config;
@@ -81,7 +81,7 @@ namespace YetaWF.Modules.PageEdit.DataProvider {
             );
         }
         public async Task UpdateConfigAsync(ControlPanelConfigData data) {
-            ControlPanelConfigData origConfig = Auditing.Active ? await GetItemAsync() : null;
+            ControlPanelConfigData? origConfig = Auditing.Active ? await GetItemAsync() : null;
             data.Id = KEY;
             UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)

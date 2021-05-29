@@ -7,6 +7,7 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Panels.Models;
@@ -31,7 +32,7 @@ namespace YetaWF.Modules.Panels.Components {
 
         internal class UI {
             [UIHint("Tabs")]
-            public TabsDefinition TabsDef { get; set; }
+            public TabsDefinition TabsDef { get; set; } = null!;
         }
         internal class Setup {
             public PanelInfo.PanelStyleEnum Style { get; set; }
@@ -56,9 +57,9 @@ namespace YetaWF.Modules.Panels.Components {
 
                 for (int panelIndex = 0; panelIndex < model.Panels.Count; ++panelIndex) {
                     if (await model.Panels[panelIndex].IsAuthorizedAsync()) {
-                        string caption = model.Panels[panelIndex].Caption;
+                        string? caption = model.Panels[panelIndex].Caption;
                         if (string.IsNullOrWhiteSpace(caption)) { caption = this.__ResStr("noCaption", "(no caption)"); }
-                        string toolTip = model.Panels[panelIndex].ToolTip;
+                        string? toolTip = model.Panels[panelIndex].ToolTip;
                         if (string.IsNullOrWhiteSpace(toolTip)) { toolTip = null; }
                         ui.TabsDef.Tabs.Add(new TabEntry {
                             Caption = caption,
@@ -67,7 +68,7 @@ namespace YetaWF.Modules.Panels.Components {
                             RenderPaneAsync = async (int tabIndex) => {
                                 HtmlBuilder hbt = new HtmlBuilder();
                                 if (await model.Panels[tabIndex].IsAuthorizedAsync()) {
-                                    ModuleDefinition mod = await model.Panels[tabIndex].GetModuleAsync();
+                                    ModuleDefinition? mod = await model.Panels[tabIndex].GetModuleAsync();
                                     if (mod != null) {
                                         mod.ShowTitle = false;
                                         mod.UsePartialFormCss = false;
@@ -86,10 +87,10 @@ namespace YetaWF.Modules.Panels.Components {
         {await HtmlHelper.ForDisplayAsync(ui, nameof(ui.TabsDef), HtmlAttributes: new { __NoTemplate = true })}
     </div>");
 
-            } else if (model.Style == PanelInfo.PanelStyleEnum.AccordionjQuery) {
+            } else if (model.Style == PanelInfo.PanelStyleEnum.Accordion) {
 
                 hb.Append($@"
-    <div class='t_panels t_accjquery ui-accordion ui-widget ui-helper-reset' id='{DivId}' role='tablist'>");
+    <div class='t_panels t_accordion' id='{DivId}' role='tablist'>");
 
                 for (int panelIndex = 0; panelIndex < model.Panels.Count; ++panelIndex) {
 
@@ -98,16 +99,20 @@ namespace YetaWF.Modules.Panels.Components {
                     if (await model.Panels[panelIndex].IsAuthorizedAsync()) {
                         string caption = model.Panels[panelIndex].Caption;
                         if (string.IsNullOrWhiteSpace(caption)) { caption = this.__ResStr("noCaption", "(no caption)"); }
+
                         hb.Append($@"
-        <h3 class='ui-accordion-header ui-corner-top ui-state-default ui-accordion-icons {(active ? "ui-accordion-header-active ui-state-active" : "ui-accordion-header-collapsed ui-corner-all")}' role='tab'
+        <h2 class='t_accheader {(active ? "t_active" : "t_collapsed")}' role='tab'
             id='{DivId}_{panelIndex}_lb' aria-controls='{DivId}_{panelIndex}_pane' aria-selected='{(active ? "true" : "false")}' aria-expanded='{(active ? "true" : "false")}' tabindex='{(active ? "0" : "-1")}'>
-            <span class='ui-accordion-header-icon ui-icon ui-icon-triangle-1-s'></span>
+            <div class='t_accicon'>
+                {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-caret-down")}
+                {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-caret-up")}
+            </div>
             {Utility.HE(caption)}
-        </h3>
-        <div class='ui-accordion-content ui-corner-bottom ui-helper-reset ui-widget-content {(active ? "ui-accordion-content-active" : "")}' id='{DivId}_{panelIndex}_pane'
+        </h2>
+        <div class='t_panel t_acccontent {(active ? "t_active" : "")}' id='{DivId}_{panelIndex}_pane'
             aria-labelledby='{DivId}_{panelIndex}_lb' role='tabpanel' aria-hidden='{(active ? "false" : "true")}' style='overflow: hidden;{(active ? "" : "display:none")}'>");
 
-                        ModuleDefinition mod = await model.Panels[panelIndex].GetModuleAsync();
+                        ModuleDefinition? mod = await model.Panels[panelIndex].GetModuleAsync();
                         if (mod != null) {
                             mod.ShowTitle = false;
                             mod.UsePartialFormCss = false;
@@ -122,44 +127,9 @@ namespace YetaWF.Modules.Panels.Components {
                 hb.Append($@"
     </div>");
 
-            } else if (model.Style == PanelInfo.PanelStyleEnum.AccordionKendo) {
-
-                hb.Append($@"
-    <ul class='t_panels t_acckendo k-widget k-reset k-header k-panelbar' role='menu' tabindex='0'>");
-
-                for (int panelIndex = 0; panelIndex < model.Panels.Count; ++panelIndex) {
-
-                    bool active = panelIndex == model._ActiveTab;
-
-                    if (await model.Panels[panelIndex].IsAuthorizedAsync()) {
-                        string caption = model.Panels[panelIndex].Caption;
-                        if (string.IsNullOrWhiteSpace(caption)) { caption = this.__ResStr("noCaption", "(no caption)"); }
-
-                        hb.Append($@"
-        <li class='k-item{(panelIndex == 0 ? " k-first" : "")}{(panelIndex == model.Panels.Count - 1 ? " k-last" : "")} {(active ? "k-state-active k-state-highlight" : "")}' role='menuitem' aria-expanded='{(active ? "true" : "false")}' aria-selected='{(active ? "true" : "false")}'>
-            <span class='k-link k-header{(active ? " k-state-selected" : "")}'>
-                {Utility.HE(caption)}
-                <span class='k-icon {(active ? "k-i-arrow-60-up k-panelbar-collapse" : "k-i-arrow-60-down k-panelbar-expand")}'></span>
-            </span>
-            <div class='t_panel-kendo k-content' style='display:{(active ? "block" : "none")};{(active ? "height='auto';" : "")}overflow: hidden;' role='region' aria-hidden='{(active ? "false" : "true")}'>");
-
-                        ModuleDefinition mod = await model.Panels[panelIndex].GetModuleAsync();
-                        if (mod != null) {
-                            mod.ShowTitle = false;
-                            mod.UsePartialFormCss = false;
-                            hb.Append(await mod.RenderModuleAsync(HtmlHelper));
-                        } else {
-                            hb.Append(this.__ResStr("noModule", "(no module defined)"));
-                        }
-                        hb.Append($@"
-            </div>
-        </li>");
-                    }
-                }
-                hb.Append($@"
-    </ul>
-</div>");
             }
+            hb.Append($@"
+</div>");
 
             Setup setup = new Setup {
                 Style = model.Style,
@@ -181,7 +151,7 @@ namespace YetaWF.Modules.Panels.Components {
 
         internal class UI {
             [UIHint("Tabs")]
-            public TabsDefinition TabsDef { get; set; }
+            public TabsDefinition TabsDef { get; set; } = null!;
         }
 
         public async Task<string> RenderAsync(PanelInfo model) {
@@ -218,12 +188,12 @@ namespace YetaWF.Modules.Panels.Components {
         {await HtmlHelper.ForDisplayAsync(ui, nameof(ui.TabsDef), HtmlAttributes: new { __NoTemplate = true })}
     </div>
     <div class='t_buttons'>
-        <input type='button' class='t_apply' value='{this.__ResStr("btnApply", "Apply")}' title='{this.__ResStr("txtApply", "Click to apply the current changes")}' />
-        <input type='button' class='t_up' value='{this.__ResStr("btnUp", "<<")}' title='{this.__ResStr("txtUp", "Click to move the current panel")}' />
-        <input type='button' class='t_down' value='{this.__ResStr("btnDown", ">>")}' title='{this.__ResStr("txtDown", "Click to move the current panel")}' />
-        <input type='button' class='t_ins' value='{this.__ResStr("btnIns", "Insert")}' title='{this.__ResStr("txtIns", "Click to insert a new panel before the current panel")}' />
-        <input type='button' class='t_add' value='{this.__ResStr("btnAdd", "Add")}' title='{this.__ResStr("txtAdd", "Click to add a new panel after the current panel")}' />
-        <input type='button' class='t_delete' value='{this.__ResStr("btnDelete", "Remove")}' title='{this.__ResStr("txtDelete", "Click to remove the current panel")}' />
+        <input type='button' class='y_button t_apply' value='{this.__ResStr("btnApply", "Apply")}' title='{this.__ResStr("txtApply", "Click to apply the current changes")}' />
+        <input type='button' class='y_button t_up' value='{this.__ResStr("btnUp", "<<")}' title='{this.__ResStr("txtUp", "Click to move the current panel")}' />
+        <input type='button' class='y_button t_down' value='{this.__ResStr("btnDown", ">>")}' title='{this.__ResStr("txtDown", "Click to move the current panel")}' />
+        <input type='button' class='y_button t_ins' value='{this.__ResStr("btnIns", "Insert")}' title='{this.__ResStr("txtIns", "Click to insert a new panel before the current panel")}' />
+        <input type='button' class='y_button t_add' value='{this.__ResStr("btnAdd", "Add")}' title='{this.__ResStr("txtAdd", "Click to add a new panel after the current panel")}' />
+        <input type='button' class='y_button t_delete' value='{this.__ResStr("btnDelete", "Remove")}' title='{this.__ResStr("txtDelete", "Click to remove the current panel")}' />
     </div>
 </div>");
 

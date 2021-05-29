@@ -2,14 +2,19 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 .yt_tree {
   position: relative;
+  background: var(--tbl-bg);
+  color: var(--tbl-clr);
   width: 100%;
   height: inherit;
+  border: var(--tbl-border);
+  border-radius: var(--tbl-border-radius);
   font-weight: normal;
   box-sizing: border-box; }
   .yt_tree .tg_header {
+    background: var(--tbl-header-bg);
+    color: var(--tbl-header-clr);
     white-space: nowrap;
     font-size: 11px;
-    border: 0;
     padding: 2px 4px 2px 4px;
     -webkit-user-select: none;
         -ms-user-select: none;
@@ -25,9 +30,6 @@
   .yt_tree ul {
     padding: 0;
     margin: 0; }
-    .yt_tree ul ul.yActionIcons {
-      margin-left: .5ch;
-      display: inline-block; }
   .yt_tree ul ul {
     margin: 0 0 0 24px; }
   .yt_tree li {
@@ -85,17 +87,15 @@
   .yt_tree .t_entry {
     padding: 0 2px 0 2px;
     display: inline-block; }
-
-.yt_tree.tg_skin {
-  /* Skin dependent formatting */ }
-
-.yt_tree.tg_noskin {
-  /* Not skin dependent formatting, usually module specific */ }
-  .yt_tree.tg_noskin .t_entry {
-    color: gray; }
-    .yt_tree.tg_noskin .t_entry.t_select {
-      background-color: #beebff;
-      border-radius: 2px;
-      box-shadow: inset 0 0 1px #999; }
-  .yt_tree.tg_noskin li a, .yt_tree.tg_noskin li a:link, .yt_tree.tg_noskin li a:visited, .yt_tree.tg_noskin li a:hover, .yt_tree.tg_noskin li a:active, .yt_tree.tg_noskin li a:focus {
-    color: gray; }
+    .yt_tree .t_entry.t_select {
+      background: var(--tbl-bg-active);
+      color: var(--tbl-clr-active); }
+      .yt_tree .t_entry.t_select:focus {
+        background: var(--tbl-bg-focus);
+        color: var(--tbl-clr-focus); }
+    .yt_tree .t_entry:focus:not(.t_select) {
+      background: var(--tbl-bg-hover);
+      color: var(--tbl-clr-hover); }
+    .yt_tree .t_entry:hover:not(.t_select) {
+      background: var(--tbl-bg-hover);
+      color: var(--tbl-clr-hover); }

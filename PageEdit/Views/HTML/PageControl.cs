@@ -10,6 +10,7 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.PageEdit.Addons;
@@ -27,7 +28,7 @@ namespace YetaWF.Modules.PageEdit.Views {
 
         internal class UI {
             [UIHint("Tabs")]
-            public TabsDefinition TabsDef { get; set; }
+            public TabsDefinition TabsDef { get; set; } = null!;
         }
 
         public async Task<string> RenderViewAsync(PageControlModule module, PageControlModuleController.PageControlModel model) {
@@ -135,12 +136,15 @@ namespace YetaWF.Modules.PageEdit.Views {
             if (ui.TabsDef.Tabs.Count == 0)
                 return "&nbsp;";
 
-
-            ModuleAction action = await module.GetAction_PageControlAsync();
+            string toolTip = this.__ResStr("pageControlTT", "Control Panel - Add new or existing modules, add new pages, switch to edit mode, access page settings and other site management tasks");
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
-<div id='yPageControlDiv'>{await action.RenderAsButtonIconAsync("tid_pagecontrolbutton")}</div>
+<div id='yPageControlDiv'>
+    <a class='t_controlpanel y_button_outline y_button' {Basics.CssTooltip}='{HAE(toolTip)}' href='javascript: void(0);' rel='nofollow' data-button=''>
+        {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-tools")}
+    </a>
+</div>
 <div id='{id}'>
     {await HtmlHelper.ForDisplayAsync(ui, nameof(ui.TabsDef), HtmlAttributes: new { __NoTemplate = true })}
     {Globals.LazyHTMLOptimization /*Fix Firefox bug, where actions aren't broken into multiple lines, by leaving white space between actions*/}

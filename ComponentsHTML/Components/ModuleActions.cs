@@ -2,7 +2,9 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using YetaWF.Core;
 using YetaWF.Core.Components;
+using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
@@ -21,56 +23,113 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     [UsesAdditional("RenderAs", "YetaWF.Core.Modules.ModuleAction.RenderModeEnum", "ModuleAction.RenderModeEnum.Button", "Defines how the module actions are rendered.")]
     public class ModuleActionsComponent : YetaWFComponent, IYetaWFComponent<List<ModuleAction>> {
 
+        internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(ModuleActionsComponent), name, defaultValue, parms); }
+
         internal const string TemplateName = "ModuleActions";
 
-        /// <summary>
-        /// Returns the component type (edit/display).
-        /// </summary>
-        /// <returns>Returns the component type.</returns>
+        internal class ModuleActionsSetup {
+            public string MenuId { get; set; } = null!;
+        }
+
+        /// <inheritdoc/>
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        /// <summary>
-        /// Returns the package implementing the component.
-        /// </summary>
-        /// <returns>Returns the package implementing the component.</returns>
+        /// <inheritdoc/>
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        /// <summary>
-        /// Returns the component name.
-        /// </summary>
-        /// <returns>Returns the component name.</returns>
-        /// <remarks>Components in packages whose product name starts with "Component" use the exact name returned by GetTemplateName when used in UIHint attributes. These are considered core components.
-        /// Components in other packages use the package's area name as a prefix. E.g., the UserId component in the YetaWF.Identity package is named "YetaWF_Identity_UserId" when used in UIHint attributes.
-        ///
-        /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
+        /// <inheritdoc/>
         public override string GetTemplateName() { return TemplateName; }
 
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
+        /// <inheritdoc/>
+        public override async Task IncludeAsync() {
+            await Manager.AddOnManager.AddTemplateFromUIHintAsync(DropDownButtonComponent.TemplateName, YetaWFComponentBase.ComponentType.Display);
+            await base.IncludeAsync();
+        }
+
+        /// <inheritdoc/>
         public async Task<string> RenderAsync(List<ModuleAction> model) {
 
-            using (Manager.StartNestedComponent(FieldName)) {
+            ModuleAction.RenderModeEnum renderMode = PropData.GetAdditionalAttributeValue<ModuleAction.RenderModeEnum>("RenderAs", ModuleAction.RenderModeEnum.Button);
 
-                HtmlBuilder hb = new HtmlBuilder();
+            return await RenderAsync(this, model, renderMode);
+        }
 
-                ModuleAction.RenderModeEnum render = PropData.GetAdditionalAttributeValue<ModuleAction.RenderModeEnum>("RenderAs", ModuleAction.RenderModeEnum.Button);
+        internal static async Task<string> RenderAsync(YetaWFComponent component, List<ModuleAction> model, ModuleAction.RenderModeEnum renderMode) {
 
-                if (model != null && model.Count > 0) {
-
-                    hb.Append($@"
-<div class='yt_moduleactions t_display'>");
-
-                    foreach (ModuleAction a in model) {
-                        hb.Append($@"
-    { await a.RenderAsync(render) }");
-                    }
-                    hb.Append($@"
-</div>");
+            if (model != null && model.Count > 0) {
+                switch (renderMode) {
+                    case ModuleAction.RenderModeEnum.ButtonDropDown:
+                        return await RenderDropDownAsync(component, model, ModuleAction.RenderModeEnum.NormalMenu, false);
+                    case ModuleAction.RenderModeEnum.ButtonMiniDropDown:
+                        return await RenderDropDownAsync(component, model, ModuleAction.RenderModeEnum.NormalMenu, true);
+                    default:
+                        return await RenderModuleActionsAsync(model, renderMode);
                 }
-                return hb.ToString();
             }
+            return string.Empty;
+        }
+
+        private static async Task<string> RenderDropDownAsync(YetaWFComponent component, List<ModuleAction> model, ModuleAction.RenderModeEnum renderMode, bool mini) {
+
+            HtmlBuilder hb = new HtmlBuilder();
+
+            MenuList menu = new MenuList(model) {
+                RenderMode = renderMode
+            };
+            string buttonId = component.ControlId + "_btn";
+            ModuleActionsSetup setup = new ModuleActionsSetup {
+                MenuId = component.ControlId + "_menu",
+            };
+            string menuHTML = await MenuDisplayComponent.RenderMenuAsync(menu, setup.MenuId, Globals.CssGridActionMenu, HtmlHelper: component.HtmlHelper, Hidden: true);
+
+            if (!string.IsNullOrWhiteSpace(menuHTML)) {
+
+                if (!component.TryGetSiblingProperty($"{component.PropertyName}_Label", out string? label))
+                    label = __ResStr("dropdownText", "Manage");
+
+                DropDownButtonComponent.Model ddModel = new DropDownButtonComponent.Model {
+                    Text = label ?? string.Empty,
+                    Tooltip = null,
+                    ButtonId = buttonId,
+                    MenuHTML = menuHTML,
+                    Mini = mini,
+                };
+
+                hb.Append($@"
+<div class='yt_moduleactions{(mini ? " t_mini" : "")}' id='{component.ControlId}'>
+    {await component.HtmlHelper.ForDisplayContainerAsync(ddModel, DropDownButtonComponent.TemplateName)}
+</div>");
+
+                Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.ModuleActionsComponent('{component.ControlId}', {Utility.JsonSerialize(setup)});");
+            }
+
+            return hb.ToString();
+        }
+
+        internal static async Task<string> RenderModuleActionsAsync(List<ModuleAction> model, ModuleAction.RenderModeEnum renderMode) {
+
+            HtmlBuilder hb = new HtmlBuilder();
+            if (model.Count > 0) {
+
+                hb.Append($@"
+<div class='yt_moduleactionsplain t_display'>");
+
+                int firstIndex = 0;
+                int lastIndex = model.Count - 1;
+
+                int index = 0;
+                foreach (ModuleAction a in model) {
+                    string css = "t_middle";
+                    if (index == firstIndex && index == lastIndex) css = "t_firstlast";
+                    else if (index == firstIndex) css = "t_first";
+                    else if (index == lastIndex) css = "t_last";
+                    hb.Append(await a.RenderAsync(renderMode, Css: css));
+                    ++index;
+                }
+
+                hb.Append($@"
+</div>");
+            }
+            return hb.ToString();
         }
     }
 }

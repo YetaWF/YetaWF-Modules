@@ -6,7 +6,7 @@ using YetaWF.Core.Packages;
 using YetaWF.PackageAttributes;
 
 [assembly: AssemblyTitle("ComponentsHTML")]
-[assembly: AssemblyDescription("Components based on HTML (some jQuery & Kendo UI)")]
+[assembly: AssemblyDescription("Components based on HTML")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Softel vdm, Inc.")]
 [assembly: AssemblyProduct("ComponentsHTML")]
@@ -23,3 +23,5 @@ using YetaWF.PackageAttributes;
     "https://YetaWF.com/Documentation/YetaWFComponentsHTML#Support",
     "https://YetaWF.com/Documentation/YetaWFComponentsHTML#Release%20Notice",
     "https://YetaWF.com/Documentation/YetaWFComponentsHTML#License")]
+
+// TODO: All components (display/edit) should accept nullable types.

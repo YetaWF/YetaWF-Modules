@@ -28,9 +28,9 @@ namespace YetaWF.Modules.Packages.Controllers {
 
             [Caption("Name"), Description("List of site templates (located in the SiteTemplates folder)")]
             [UIHint("DropDownList")]
-            public string SiteTemplate { get; set; }
+            public string? SiteTemplate { get; set; }
 
-            public List<SelectionItem<string>> SiteTemplate_List { get; set; }
+            public List<SelectionItem<string>>? SiteTemplate_List { get; set; }
 
             public async Task UpdateDataAsync() {
                 PackagesDataProvider packagesDP = new PackagesDataProvider();
@@ -63,7 +63,7 @@ namespace YetaWF.Modules.Packages.Controllers {
             if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Site template processing is not possible when distributed caching is enabled");
 
             PackagesDataProvider packagesDP = new PackagesDataProvider();
-            await packagesDP.BuildSiteUsingTemplateAsync(model.SiteTemplate);
+            await packagesDP.BuildSiteUsingTemplateAsync(model.SiteTemplate!);
             return FormProcessed(model);
         }
     }

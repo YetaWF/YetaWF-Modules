@@ -14,18 +14,18 @@ namespace YetaWF.Modules.Text.Controllers {
         public class TextModel {
             [UIHint("TextArea"), AdditionalMetadata("EmHeight", 25)]
             [AdditionalMetadata("TextAreaSave", true), AdditionalMetadata("ImageBrowse", true), AdditionalMetadata("PageBrowse", true)]
-            public string Contents { get; set; }
+            public string? Contents { get; set; }
         }
         public class TextModelDisplay {
             [UIHint("TextArea"), AdditionalMetadata("Encode", false), ReadOnly]
-            public string Contents { get; set; }
+            public string? Contents { get; set; }
         }
 
         [AllowGet]
         public ActionResult Text() {
             if (Module.Feed) {
                 string rssUrl = string.IsNullOrWhiteSpace(Module.FeedMainUrl) ? Manager.CurrentSite.HomePageUrl : Module.FeedMainUrl;
-                Manager.LinkAltManager.AddLinkAltTag(AreaRegistration.CurrentPackage.AreaName, "application/rss+xml", Module.FeedTitle, rssUrl);
+                Manager.LinkAltManager.AddLinkAltTag(AreaRegistration.CurrentPackage.AreaName, "application/rss+xml", Module.FeedTitle??string.Empty, rssUrl);
             }
 
             if (Manager.EditMode && Module.EditOnPage && Module.IsAuthorized(ModuleDefinition.RoleDefinition.Edit)) {

@@ -12,6 +12,8 @@ var __extends = (this && this.__extends) || (function () {
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -42,7 +44,7 @@ var YetaWF_PageEar;
             _this.PeelImage = $YetaWF.getElement1BySelector(".t_img", [_this.PeelDiv]);
             _this.PeelMask = $YetaWF.getElement1BySelector(".t_mask", [_this.PeelDiv]);
             _this.PeelMask.style.backgroundImage = "url('" + _this.Setup.AdImage + "')";
-            document.body.prepend(_this.PeelDiv);
+            document.body.appendChild(_this.PeelDiv);
             _this.PeelImage.style.width = _this.Setup.SmallSize + "px";
             _this.PeelImage.style.height = _this.Setup.SmallSize + "px";
             _this.PeelMask.style.width = _this.Setup.SmallSize + "px";

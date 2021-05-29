@@ -29,10 +29,10 @@ namespace Softelvdm.Modules.IVR.Controllers {
         public class BrowseItem {
 
             [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands {
                 get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+                    List<ModuleAction> actions = new List<ModuleAction>();
 
                     EditBlockedNumberModule editMod = new EditBlockedNumberModule();
                     actions.New(editMod.GetAction_Edit(Module.EditUrl, Number), ModuleAction.ActionLocationEnum.GridLinks);
@@ -43,11 +43,11 @@ namespace Softelvdm.Modules.IVR.Controllers {
 
             [Caption("Blocked Number"), Description("Shows the blocked phone number")]
             [UIHint("Softelvdm_IVR_PhoneNumber"), StringLength(Globals.MaxPhoneNumber), ReadOnly]
-            public string Number { get; set; }
+            public string Number { get; set; } = null!;
 
             [Caption("Description"), Description("The description of the blocked number")]
             [UIHint("String"), StringLength(BlockedNumberEntry.MaxDescription), ReadOnly]
-            public string Description { get; set; }
+            public string? Description { get; set; }
 
             [Caption("Added"), Description("The date/time the entry was added")]
             [UIHint("DateTime"), ReadOnly]
@@ -63,7 +63,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
             public BrowseItem(BrowseBlockedNumbersModule module, BlockedNumberEntry data) {
                 Module = module;
                 ObjectSupport.CopyData(data, this);
-                data.Description = data.Description.Truncate(200);
+                data.Description = data.Description?.Truncate(200);
             }
         }
         private GridDefinition GetGridModel() {
@@ -72,7 +72,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
                 SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = GetActionUrl(nameof(BrowseBlockedNumbers_GridData)),
-                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (BlockedNumberDataProvider dataProvider = new BlockedNumberDataProvider()) {
                         DataProviderGetRecords<BlockedNumberEntry> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
@@ -87,7 +87,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
         public class BrowseModel {
             [Caption(""), Description("")] // empty entries required so property is shown in property list (but with a suppressed label)
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
 
         [AllowGet]

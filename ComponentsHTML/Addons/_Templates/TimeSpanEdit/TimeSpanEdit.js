@@ -8,6 +8,8 @@ var __extends = (this && this.__extends) || (function () {
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -22,7 +24,7 @@ var YetaWF_ComponentsHTML;
         function TimeSpanEditComponent(controlId /*, setup: Setup*/) {
             var _this = _super.call(this, controlId, TimeSpanEditComponent.TEMPLATE, TimeSpanEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: "timespan_change",
+                ChangeEvent: TimeSpanEditComponent.EVENTCHANGE,
                 GetValue: function (control) {
                     return control.Hidden.value;
                 },
@@ -55,22 +57,22 @@ var YetaWF_ComponentsHTML;
             _this.InputSecs = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond("input[name$='Seconds']", YetaWF_ComponentsHTML.IntValueEditComponent.SELECTOR, [_this.Control]);
             // capture changes in all edit controls
             if (_this.InputDays) {
-                _this.InputDays.Control.addEventListener("intvalue_change", function (evt) {
+                _this.InputDays.Control.addEventListener(YetaWF_ComponentsHTML.IntValueEditComponent.EVENTCHANGE, function (evt) {
                     _this.updateValue();
                 });
             }
             if (_this.InputHours) {
-                _this.InputHours.Control.addEventListener("intvalue_change", function (evt) {
+                _this.InputHours.Control.addEventListener(YetaWF_ComponentsHTML.IntValueEditComponent.EVENTCHANGE, function (evt) {
                     _this.updateValue();
                 });
             }
             if (_this.InputMins) {
-                _this.InputMins.Control.addEventListener("intvalue_change", function (evt) {
+                _this.InputMins.Control.addEventListener(YetaWF_ComponentsHTML.IntValueEditComponent.EVENTCHANGE, function (evt) {
                     _this.updateValue();
                 });
             }
             if (_this.InputSecs) {
-                _this.InputSecs.Control.addEventListener("intvalue_change", function (evt) {
+                _this.InputSecs.Control.addEventListener(YetaWF_ComponentsHTML.IntValueEditComponent.EVENTCHANGE, function (evt) {
                     _this.updateValue();
                 });
             }
@@ -78,7 +80,7 @@ var YetaWF_ComponentsHTML;
         }
         TimeSpanEditComponent.prototype.sendUpdateEvent = function () {
             var event = document.createEvent("Event");
-            event.initEvent("timespan_change", false, true);
+            event.initEvent(TimeSpanEditComponent.EVENTCHANGE, false, true);
             this.Control.dispatchEvent(event);
         };
         TimeSpanEditComponent.prototype.updateValue = function () {
@@ -101,6 +103,7 @@ var YetaWF_ComponentsHTML;
         };
         TimeSpanEditComponent.TEMPLATE = "yt_timespan";
         TimeSpanEditComponent.SELECTOR = ".yt_timespan.t_edit";
+        TimeSpanEditComponent.EVENTCHANGE = "timespan_change";
         return TimeSpanEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.TimeSpanEditComponent = TimeSpanEditComponent;

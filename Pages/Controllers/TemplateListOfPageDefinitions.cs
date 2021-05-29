@@ -65,7 +65,7 @@ namespace YetaWF.Modules.Pages.Controllers {
             // Validation
             UrlValidationAttribute attr = new UrlValidationAttribute(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local);
             if (!attr.IsValid(newUrl))
-                throw new Error(attr.ErrorMessage);
+                throw new Error(attr.ErrorMessage!);
             List<ListOfLocalPagesEditComponent.Entry> list = Utility.JsonDeserialize<List<ListOfLocalPagesEditComponent.Entry>>(data);
             if ((from l in list where l.Url.ToLower() == newUrl.ToLower() select l).FirstOrDefault() != null)
                 throw new Error(this.__ResStr("dupUrl", "Page {0} has already been added", newUrl));

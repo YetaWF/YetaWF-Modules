@@ -26,20 +26,20 @@ namespace Softelvdm.Modules.IVR.Controllers {
             [Caption("Extension"), Description("Defines the extension (digits)")]
             [UIHint("Text10"), Required, Trim]
             [StringLength(ExtensionEntry.MaxExtension)]
-            public string Extension { get; set; }
+            public string? Extension { get; set; }
 
             [Caption("Description"), Description("Describes the extension")]
             [UIHint("Text80"), Required, Trim]
             [StringLength(ExtensionEntry.MaxDescription)]
-            public string Description { get; set; }
+            public string? Description { get; set; }
 
             [Caption("Phone Numbers"), Description("Defines the phone numbers to call when this extension is entered - At least one phone number is required")]
             [UIHint("Softelvdm_IVR_ListOfPhoneNumbers"), Required]
-            public SerializableList<ExtensionPhoneNumber> PhoneNumbers { get; set; }
+            public SerializableList<ExtensionPhoneNumber>? PhoneNumbers { get; set; }
 
             [Caption("Users"), Description("Defines the users that can access voice mails for this extension")]
             [UIHint("YetaWF_Identity_ListOfUserNames")]
-            public SerializableList<User> Users { get; set; }
+            public SerializableList<User>? Users { get; set; }
 
             public AddModel() { }
 

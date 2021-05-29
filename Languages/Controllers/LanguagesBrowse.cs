@@ -24,10 +24,10 @@ namespace YetaWF.Modules.Languages.Controllers {
         public class BrowseItem {
 
             [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands {
                 get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+                    List<ModuleAction> actions = new List<ModuleAction>();
 
                     LanguageDisplayModule dispMod = new LanguageDisplayModule();
                     actions.New(dispMod.GetAction_Display(Module.DisplayUrl, Id), ModuleAction.ActionLocationEnum.GridLinks);
@@ -38,15 +38,15 @@ namespace YetaWF.Modules.Languages.Controllers {
 
             [Caption("ID"), Description("The language id - this is the same as the culture name used throughout .NET")]
             [UIHint("String"), ReadOnly]
-            public string Id { get; set; }
+            public string Id { get; set; } = null!;
 
             [Caption("Name"), Description("The language's short name, which is displayed in language selection controls so the user can select a language")]
             [UIHint("String"), ReadOnly]
-            public string ShortName { get; set; }
+            public string ShortName { get; set; } = null!;
 
             [Caption("Description"), Description("The description for the language - this is used for informational purposes only")]
             [UIHint("String"), ReadOnly]
-            public string Description { get; set; }
+            public string? Description { get; set; }
 
             private LanguagesBrowseModule Module { get; set; }
 
@@ -60,7 +60,7 @@ namespace YetaWF.Modules.Languages.Controllers {
         public class BrowseModel {
             [Caption(""), Description("")]
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
         private GridDefinition GetGridModel() {
             return new GridDefinition {
@@ -68,7 +68,7 @@ namespace YetaWF.Modules.Languages.Controllers {
                 SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = GetActionUrl(nameof(LanguagesBrowse_GridData)),
-                DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<LanguageEntryElement> browseItems = DataProviderImpl<LanguageEntryElement>.GetRecords(LanguageSection.Languages, skip, take, sort, filters);
                     return Task.FromResult(new DataSourceResult {
                         Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),

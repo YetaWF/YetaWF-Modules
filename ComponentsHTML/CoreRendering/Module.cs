@@ -31,16 +31,16 @@ namespace YetaWF.Modules.ComponentsHTML {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            MenuList moduleMenu = await mod.GetModuleMenuListAsync(renderMode, ModuleAction.ActionLocationEnum.ModuleLinks);
+            List<ModuleAction> list = await mod.GetModuleMenuListAsync(renderMode, ModuleAction.ActionLocationEnum.ModuleLinks);
+            string contents = await ModuleActionsComponent.RenderModuleActionsAsync(list, renderMode);
 
-            string menuContents = (await RenderMenuAsync(moduleMenu, null, Globals.CssModuleLinks));
-            if (!string.IsNullOrWhiteSpace(menuContents)) {
+            if (!string.IsNullOrWhiteSpace(contents)) {
 
-                await Manager.AddOnManager.AddTemplateFromUIHintAsync("ActionIcons", YetaWFComponentBase.ComponentType.Display); // action icons
+                await Manager.AddOnManager.AddTemplateFromUIHintAsync(ModuleActionsComponent.TemplateName, YetaWFComponentBase.ComponentType.Display); // action icons
 
                 hb.Append($@"
 <div class='{Manager.AddOnManager.CheckInvokedCssModule(cssClass)}'>
-    {menuContents}
+    {contents}
 </div>");
             }
             return hb.ToString();
@@ -55,14 +55,11 @@ namespace YetaWF.Modules.ComponentsHTML {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            MenuList moduleMenu = await mod.GetModuleMenuListAsync(ModuleAction.RenderModeEnum.NormalMenu, ModuleAction.ActionLocationEnum.ModuleMenu);
+            MenuList moduleMenu = new MenuList(await mod.GetModuleMenuListAsync(ModuleAction.RenderModeEnum.NormalMenu, ModuleAction.ActionLocationEnum.ModuleMenu)) { };
 
             string id = Manager.UniqueId();
-            string menuContents = (await RenderMenuAsync(moduleMenu, id, Globals.CssModuleMenu));
+            string menuContents = (await MenuDisplayComponent.RenderMenuAsync(moduleMenu, id, Globals.CssModuleMenu));
             if (!string.IsNullOrWhiteSpace(menuContents)) {
-
-                //await Manager.ScriptManager.AddKendoUICoreJsFile("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
-                await KendoUICore.AddFileAsync("kendo.menu.min.js");
 
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "Modules");// various module support
                 await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, "MenuUL", YetaWFComponentBase.ComponentType.Display);
@@ -84,18 +81,18 @@ namespace YetaWF.Modules.ComponentsHTML {
         /// <param name="action">The module action to render.</param>
         /// <param name="mode">The module action's rendering mode.</param>
         /// <param name="id">The ID to generate.</param>
+        /// <param name="cssClass">Option CSS class(es) added to the rendered module action.</param>
         /// <returns>Returns the module action as HTML.</returns>
-        public async Task<string> RenderModuleActionAsync(ModuleAction action, ModuleAction.RenderModeEnum mode, string id) {
-            return await RenderActionAsync(action, mode, id);
+        public async Task<string> RenderModuleActionAsync(ModuleAction action, ModuleAction.RenderModeEnum mode, string? id, string? cssClass) {
+            return await RenderActionAsync(action, mode, id, cssClass);
         }
 
-        internal static async Task<string> RenderActionAsync(ModuleAction action, ModuleAction.RenderModeEnum mode, string id,
-                ModuleAction.RenderEngineEnum RenderEngine = ModuleAction.RenderEngineEnum.KendoMenu, int BootstrapSmartMenuLevel = 0, bool HasSubmenu = false) {
+        internal static async Task<string> RenderActionAsync(ModuleAction action, ModuleAction.RenderModeEnum mode, string? id, string? cssClass, string? EndIcon = null) {
 
             // check if we're in the right mode
-            if (!await action.RendersSomethingAsync()) return null;
+            if (!await action.RendersSomethingAsync()) return string.Empty;
 
-            await Manager.AddOnManager.AddTemplateFromUIHintAsync("ActionIcons", YetaWFComponentBase.ComponentType.Display);// this is needed because we're not used by templates
+            await Manager.AddOnManager.AddTemplateFromUIHintAsync(ModuleActionsComponent.TemplateName, YetaWFComponentBase.ComponentType.Display);// this is needed because we're not used by templates
 
             if (!string.IsNullOrWhiteSpace(action.ConfirmationText) && (action.Style != ModuleAction.ActionStyleEnum.Post && action.Style != ModuleAction.ActionStyleEnum.Nothing))
                 throw new InternalError("When using ConfirmationText, the Style property must be set to Post");
@@ -146,8 +143,8 @@ namespace YetaWF.Modules.ComponentsHTML {
                     break;
             }
 
-            Dictionary<string, object> attrs = new Dictionary<string, object>();
-            string css = null;
+            Dictionary<string, object?> attrs = new Dictionary<string, object?>();
+            string? css = cssClass;
             if (!string.IsNullOrWhiteSpace(action.Tooltip))
                 attrs.Add(Basics.CssTooltip, action.Tooltip);
             if (!string.IsNullOrWhiteSpace(action.Name))
@@ -155,26 +152,16 @@ namespace YetaWF.Modules.ComponentsHTML {
             if (!action.Displayed)
                 attrs.Add("style", "display:none");
 
-            if (HasSubmenu) {
-                if (RenderEngine == ModuleAction.RenderEngineEnum.BootstrapSmartMenu) {
-                    css = CssManager.CombineCss(css, "dropdown-toggle");
-                    attrs.Add("data-toggle", "dropdown-toggle");
-                }
-                attrs.Add("aria-haspopup", "true");
-                attrs.Add("aria-expanded", "false");
-            }
-            if (RenderEngine == ModuleAction.RenderEngineEnum.BootstrapSmartMenu)
-                css = CssManager.CombineCss(css, BootstrapSmartMenuLevel <= 1 ? "nav-link" : "dropdown-item");
-
             if (!string.IsNullOrWhiteSpace(action.CssClass))
                 css = CssManager.CombineCss(css, Manager.AddOnManager.CheckInvokedCssModule(action.CssClass));
 
             string extraClass;
             switch (mode) {
                 default:
-                case ModuleAction.RenderModeEnum.Button: extraClass = "y_act_button"; break;
-                case ModuleAction.RenderModeEnum.ButtonIcon: extraClass = "y_act_buttonicon"; break;
-                case ModuleAction.RenderModeEnum.ButtonOnly: extraClass = "y_act_buttononly"; break;
+                case ModuleAction.RenderModeEnum.ButtonBar: extraClass = "y_button y_act_buttonbar"; break;
+                case ModuleAction.RenderModeEnum.Button: extraClass = "y_button y_act_button"; break;
+                case ModuleAction.RenderModeEnum.ButtonIcon: extraClass = "y_button y_act_buttonicon"; break;
+                case ModuleAction.RenderModeEnum.ButtonOnly: extraClass = "y_button y_act_buttononly"; break;
                 case ModuleAction.RenderModeEnum.IconsOnly: extraClass = "y_act_icon"; break;
                 case ModuleAction.RenderModeEnum.LinksOnly: extraClass = "y_act_link"; break;
                 case ModuleAction.RenderModeEnum.NormalLinks: extraClass = "y_act_normlink"; break;
@@ -186,11 +173,11 @@ namespace YetaWF.Modules.ComponentsHTML {
             if (!string.IsNullOrWhiteSpace(url)) {
                 attrs.Add("href", url);
                 if (Manager.CurrentPage != null) {
-                    string currUrl = Manager.CurrentPage.EvaluatedCanonicalUrl;
+                    string? currUrl = Manager.CurrentPage.EvaluatedCanonicalUrl;
                     if (!string.IsNullOrWhiteSpace(currUrl) && currUrl != "/") {// this doesn't work on home page because everything matches
                         if (action.Url == currUrl)
                             css = CssManager.CombineCss(css, "t_currenturl");
-                        if (currUrl.StartsWith(action.Url))
+                        if (action.Url != null && currUrl.StartsWith(action.Url))
                             css = CssManager.CombineCss(css, "t_currenturlpart");
                     }
                 }
@@ -247,22 +234,18 @@ namespace YetaWF.Modules.ComponentsHTML {
                 if (popupEdit)
                     attrs.Add(Basics.CssAttrDataSpecialEdit, string.Empty);
             }
-            if (mode == ModuleAction.RenderModeEnum.Button || mode == ModuleAction.RenderModeEnum.ButtonIcon || mode == ModuleAction.RenderModeEnum.ButtonOnly)
+            if (mode == ModuleAction.RenderModeEnum.Button || mode == ModuleAction.RenderModeEnum.ButtonIcon || mode == ModuleAction.RenderModeEnum.ButtonOnly || mode == ModuleAction.RenderModeEnum.ButtonBar)
                 attrs.Add(Basics.CssAttrActionButton, string.Empty);
 
             bool hasText = false, hasImg = false;
             string innerHtml = string.Empty;
             if (mode != ModuleAction.RenderModeEnum.LinksOnly && mode != ModuleAction.RenderModeEnum.ButtonOnly && !string.IsNullOrWhiteSpace(action.ImageUrlFinal)) {
                 string text = mode == ModuleAction.RenderModeEnum.NormalMenu ? action.MenuText : action.LinkText;
-                if (RenderEngine == ModuleAction.RenderEngineEnum.KendoMenu) {
-                    innerHtml = ImageHTML.BuildKnownIcon(action.ImageUrlFinal, alt: text, cssClass: Basics.CssNoTooltip + " k-image"); // k-image is needed to align <i> and <img> correctly
-                } else {
-                    innerHtml = ImageHTML.BuildKnownIcon(action.ImageUrlFinal, alt: text, cssClass: Basics.CssNoTooltip);
-                }
+                innerHtml = ImageHTML.BuildKnownIcon(action.ImageUrlFinal, alt: text, cssClass: Basics.CssNoTooltip);
                 hasImg = true;
             }
 
-            if (mode != ModuleAction.RenderModeEnum.IconsOnly && mode != ModuleAction.RenderModeEnum.ButtonIcon) {
+            if (mode != ModuleAction.RenderModeEnum.IconsOnly && mode != ModuleAction.RenderModeEnum.ButtonIcon && mode != ModuleAction.RenderModeEnum.ButtonBar) {
                 string text = mode == ModuleAction.RenderModeEnum.NormalMenu ? action.MenuText : action.LinkText;
                 if (!string.IsNullOrWhiteSpace(text)) {
                     innerHtml += Utility.HE(text);
@@ -282,10 +265,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                 }
             }
 
-            if (HasSubmenu && RenderEngine == ModuleAction.RenderEngineEnum.BootstrapSmartMenu)
-                innerHtml += " <span class='caret'></span>";
-
-            return $@"<a{(id != null ? $" id='{id}'" : null)} class='{Globals.CssModuleNoPrint}{HtmlBuilder.GetClasses(attrs, css)}'{HtmlBuilder.Attributes(attrs)}>{innerHtml}</a>";
+            return $@"<a{(id != null ? $" id='{id}'" : null)} class='{Globals.CssModuleNoPrint}{HtmlBuilder.GetClasses(attrs, css)}'{HtmlBuilder.Attributes(attrs)}>{innerHtml}{EndIcon}</a>";
         }
     }
 }

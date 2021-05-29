@@ -39,11 +39,11 @@ namespace YetaWF.Modules.Panels.Components {
 
             foreach (StepInfo.StepEntry step in model.Steps) {
 
-                string caption = model.Steps[stepIndex].Caption;
+                string? caption = model.Steps[stepIndex].Caption;
                 if (string.IsNullOrWhiteSpace(caption)) { caption = this.__ResStr("noCaption", "(no caption)"); }
-                string description = model.Steps[stepIndex].Description;
+                string? description = model.Steps[stepIndex].Description;
                 if (string.IsNullOrWhiteSpace(description)) { description = this.__ResStr("noDesc", "(no description)"); }
-                string name = model.Steps[stepIndex].Name;
+                string? name = model.Steps[stepIndex].Name;
                 if (string.IsNullOrWhiteSpace(name)) { name = "unnamed"; }
 
                 hb.Append($@"
@@ -74,7 +74,7 @@ namespace YetaWF.Modules.Panels.Components {
 
         internal class UI {
             [UIHint("Tabs")]
-            public TabsDefinition TabsDef { get; set; }
+            public TabsDefinition TabsDef { get; set; } = null!;
         }
 
         public async Task<string> RenderAsync(StepInfo model) {
@@ -109,12 +109,12 @@ namespace YetaWF.Modules.Panels.Components {
         {await HtmlHelper.ForDisplayAsync(ui, nameof(ui.TabsDef), HtmlAttributes: new { __NoTemplate = true })}
     </div>
     <div class='t_buttons'>
-        <input type='button' class='t_apply' value='{this.__ResStr("btnApply", "Apply")}' title='{this.__ResStr("txtApply", "Click to apply the current changes")}' />
-        <input type='button' class='t_up' value='{this.__ResStr("btnUp", "<<")}' title='{this.__ResStr("txtUp", "Click to move the current step")}' />
-        <input type='button' class='t_down' value='{this.__ResStr("btnDown", ">>")}' title='{this.__ResStr("txtDown", "Click to move the current step")}' />
-        <input type='button' class='t_ins' value='{this.__ResStr("btnIns", "Insert")}' title='{this.__ResStr("txtIns", "Click to insert a new step before the current step")}' />
-        <input type='button' class='t_add' value='{this.__ResStr("btnAdd", "Add")}' title='{this.__ResStr("txtAdd", "Click to add a new step after the current step")}' />
-        <input type='button' class='t_delete' value='{this.__ResStr("btnDelete", "Remove")}' title='{this.__ResStr("txtDelete", "Click to remove the current step")}' />
+        <input type='button' class='y_button t_apply' value='{this.__ResStr("btnApply", "Apply")}' title='{this.__ResStr("txtApply", "Click to apply the current changes")}' />
+        <input type='button' class='y_button t_up' value='{this.__ResStr("btnUp", "<<")}' title='{this.__ResStr("txtUp", "Click to move the current step")}' />
+        <input type='button' class='y_button t_down' value='{this.__ResStr("btnDown", ">>")}' title='{this.__ResStr("txtDown", "Click to move the current step")}' />
+        <input type='button' class='y_button t_ins' value='{this.__ResStr("btnIns", "Insert")}' title='{this.__ResStr("txtIns", "Click to insert a new step before the current step")}' />
+        <input type='button' class='y_button t_add' value='{this.__ResStr("btnAdd", "Add")}' title='{this.__ResStr("txtAdd", "Click to add a new step after the current step")}' />
+        <input type='button' class='y_button t_delete' value='{this.__ResStr("btnDelete", "Remove")}' title='{this.__ResStr("txtDelete", "Click to remove the current step")}' />
     </div>
 </div>");
 

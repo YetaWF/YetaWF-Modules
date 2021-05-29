@@ -1,0 +1,19 @@
+# Generated from flat grid definition file on 1/31/2021 9:56:31 AM
+
+SizeStyle: SizeToFit
+Panel: {}
+Columns:
+- Name: Delete
+  Icons: 1
+  FilterOptions: []
+  Align: Center
+- Name: UserName
+  DefaultSort: Ascending
+  Sort: true
+  FilterOptions: []
+  Width: 80
+  Align: Unspecified
+- Name: UserId
+  FilterOptions: []
+  Align: Unspecified
+  Hidden: true

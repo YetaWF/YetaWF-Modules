@@ -119,7 +119,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
         }
 
         private async Task<PageDefinition> LoadPageAsync(Guid pageGuid) {
-            PageDefinition page = await PageDefinition.LoadAsync(pageGuid);
+            PageDefinition? page = await PageDefinition.LoadAsync(pageGuid);
             if (page == null)
                 throw new Error(this.__ResStr("pageNotFound", "Page {0} doesn't exist"), pageGuid.ToString());
             return page;
@@ -127,7 +127,7 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
 
         [ResourceAuthorize(CoreInfo.Resource_ModuleExport)]
         public async Task<ActionResult> ExportModuleData(Guid moduleGuid, long cookieToReturn) {
-            ModuleDefinition mod = await ModuleDefinition.LoadAsync(moduleGuid);
+            ModuleDefinition mod = await ModuleDefinition.LoadAsync(moduleGuid) ?? throw new InternalError($"{nameof(ExportModuleData)} called for module {moduleGuid} which doesn't exist");
             YetaWFZipFile zipFile = await mod.ExportDataAsync();
             return new ZippedFileResult(zipFile, cookieToReturn);
         }

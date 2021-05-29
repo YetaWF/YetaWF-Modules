@@ -49,11 +49,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="ExternalUrl">Defines whether a full URL including domain is rendered (true) or whether just the path is used (false).</param>
         /// <param name="SecurityType">The security type of the rendered image URL.</param>
         /// <returns></returns>
-        public static string RenderImage(string imageType, int width, int height, string model, string CacheBuster = null, string Alt = null, bool ExternalUrl = false, PageDefinition.PageSecurityType SecurityType = PageDefinition.PageSecurityType.Any) {
+        public static string RenderImage(string imageType, int width, int height, string? model, string? CacheBuster = null, string? Alt = null, bool ExternalUrl = false, PageDefinition.PageSecurityType SecurityType = PageDefinition.PageSecurityType.Any) {
             string url = ImageHTML.FormatUrl(imageType, null, model, width, height, CacheBuster: CacheBuster, ExternalUrl: ExternalUrl, SecurityType: SecurityType);
             return $"<img class='t_preview' src='{HAE(url)}' alt='{HAE(Alt ?? __ResStr("altImg", "Image"))}'>";
         }
-        internal static async Task<string> RenderImageAttributesAsync(string model) {
+        internal static async Task<string> RenderImageAttributesAsync(string? model) {
             if (model == null) return "";
             System.Drawing.Size size = await ImageSupport.GetImageSizeAsync(model);
             if (size.IsEmpty) return "";
@@ -78,7 +78,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     [UsesAdditional("Height", "int", "0", "The height of the preview image. The aspect ratio of the original image is preserved. Specify 0 if the model defines an absolute URL.")]
     [UsesAdditional("ShowMissing", "bool", "true", "Defines whether an image that is not defined displays a \"No Image\" placeholder (ShowMissing=true, default) or whether no image is displayed (ShowMissing=false). Ignored if the model defines an absolute URL.")]
     [UsesAdditional("LinkToImage", "bool", "false", "Defines whether clicking on the image preview will display the image on a new page in its original size (LinkToImage=true). Otherwise, clinking on the image has no effect (LinkToImage=false, default). Ignored if the model defines an absolute URL.")]
-    public class ImageDisplayComponent : ImageComponentBase, IYetaWFComponent<string> {
+    public class ImageDisplayComponent : ImageComponentBase, IYetaWFComponent<string?> {
 
         /// <summary>
         /// Returns the component type (edit/display).
@@ -91,9 +91,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<string> RenderAsync(string model) {
+        public Task<string> RenderAsync(string? model) {
 
-            string imageType = PropData.GetAdditionalAttributeValue<string>("ImageType", null);
+            string? imageType = PropData.GetAdditionalAttributeValue<string>("ImageType");
             int width = PropData.GetAdditionalAttributeValue("Width", 0);
             int height = PropData.GetAdditionalAttributeValue("Height", 0);
 
@@ -109,11 +109,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 bool showMissing = PropData.GetAdditionalAttributeValue("ShowMissing", true);
                 if (string.IsNullOrWhiteSpace(model) && !showMissing)
-                    return Task.FromResult<string>(null);
+                    return Task.FromResult<string>(string.Empty);
 
-                string alt = null;
+                string? alt = null;
                 if (HtmlAttributes.ContainsKey("alt"))
-                    alt = (string)HtmlAttributes["alt"];
+                    alt = (string?) HtmlAttributes["alt"];
                 string imgTag = ImageComponentBase.RenderImage(imageType, width, height, model, Alt: alt);
 
                 bool linkToImage = PropData.GetAdditionalAttributeValue("LinkToImage", false);
@@ -150,7 +150,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
         internal class ImageEditSetup {
-            public string UploadId { get; set; }
+            public string UploadId { get; set; } = null!;
         }
 
         /// <summary>
@@ -162,7 +162,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // the upload control
             Core.Components.FileUpload1 setupUpload = new Core.Components.FileUpload1() {
-                SaveURL = Utility.UrlFor(typeof(FileUpload1Controller), nameof(FileUpload1Controller.SaveImage), new { __ModuleGuid = Manager.CurrentModule.ModuleGuid }),
+                SaveURL = Utility.UrlFor(typeof(FileUpload1Controller), nameof(FileUpload1Controller.SaveImage), new { __ModuleGuid = Manager.CurrentModule!.ModuleGuid }),
                 RemoveURL = Utility.UrlFor(typeof(FileUpload1Controller), nameof(FileUpload1Controller.RemoveImage), new { __ModuleGuid = Manager.CurrentModule.ModuleGuid }),
             };
 
@@ -182,7 +182,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         {await RenderImageAttributesAsync(model)}
     </div>
     <div class='t_haveimage' {(string.IsNullOrWhiteSpace(model) ? "style='display:none'" : "")}>
-        <input type='button' class='t_clear' value='{__ResStr("btnClear", "Clear")}' title='{__ResStr("txtClear", "Click to clear the current image")}' />
+        <input type='button' class='y_button t_clear' value='{__ResStr("btnClear", "Clear")}' title='{__ResStr("txtClear", "Click to clear the current image")}' />
     </div>
     {await HtmlHelper.ForEditContainerAsync(setupUpload, "FileUpload1", HtmlAttributes: new { id = uploadId })}
 </div>";

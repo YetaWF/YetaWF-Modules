@@ -35,11 +35,11 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
         /// <param name="module">The module on behalf of which the view is rendered.</param>
         /// <param name="model">The model being rendered by the view.</param>
         /// <returns>The HTML representing the view.</returns>
-        public Task<string> RenderViewAsync(ModuleDefinition module, object model) {
+        public Task<string> RenderViewAsync(ModuleDefinition module, object? model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            string message = model != null ? model.ToString() : "";
+            string message = model != null ? model.ToString()! : string.Empty;
 
             if (!string.IsNullOrWhiteSpace(message)) {
                  hb.Append($@"

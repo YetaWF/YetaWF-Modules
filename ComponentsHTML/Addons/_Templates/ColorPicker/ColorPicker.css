@@ -1,9 +1,0 @@
-@charset "UTF-8";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
-.yt_colorpicker.t_display {
-  border-radius: 4px;
-  min-width: 16px;
-  min-height: 16px; }
-
-.ui-jqgrid .yt_colorpicker.t_display {
-  margin: auto; }

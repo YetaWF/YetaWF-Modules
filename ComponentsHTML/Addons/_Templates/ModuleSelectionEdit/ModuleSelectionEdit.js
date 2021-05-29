@@ -8,6 +8,8 @@ var __extends = (this && this.__extends) || (function () {
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -138,11 +140,11 @@ var YetaWF_ComponentsHTML;
                 var data = { "modGuid": modGuid };
                 this.SelectModule.ajaxUpdate(data, this.Setup.AjaxUrlComplete, function (data) {
                     _this.Hidden.value = modGuid;
-                    _this.SelectPackage.value = data.extra;
+                    _this.SelectPackage.value = data.ExtraData;
                     _this.SelectModule.value = modGuid;
                     _this.showDescription();
                     FormsSupport.validateElement(_this.Hidden);
-                }, function (result) {
+                }, function () {
                     _this.clear();
                     FormsSupport.validateElement(_this.Hidden);
                 });

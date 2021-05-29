@@ -26,7 +26,7 @@ namespace YetaWF.Modules.UserSettings.Controllers {
 
             [Caption("Time Zone"), Description("Your time zone - all dates/times within this web site will be adjusted for the specified time zone")]
             [UIHint("TimeZone"), StringLength(UserData.MaxTimeZone), Required]
-            public string TimeZone { get; set; }
+            public string? TimeZone { get; set; }
 
             [Caption("Date Format"), Description("The desired date format when dates are displayed on this website")]
             [UIHint("Enum"), Required]

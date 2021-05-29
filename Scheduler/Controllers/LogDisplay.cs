@@ -32,7 +32,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
             [Caption("Name"), Description("The name of the running scheduler item")]
             [UIHint("String"), ReadOnly]
-            public string Name { get; set; }
+            public string Name { get; set; } = null!;
 
             [Caption("Level"), Description("The message level")]
             [UIHint("Enum"), ReadOnly]
@@ -44,7 +44,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
             [Caption("Message"), Description("The message")]
             [UIHint("String"), ReadOnly]
-            public string Info { get; set; }
+            public string? Info { get; set; }
 
             public void SetData(LogData data) {
                 ObjectSupport.CopyData(data, this);
@@ -54,7 +54,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         [AllowGet]
         public async Task<ActionResult> LogDisplay(int logEntry) {
             using (LogDataProvider logDP = new LogDataProvider()) {
-                LogData data = await logDP.GetItemAsync(logEntry);
+                LogData? data = await logDP.GetItemAsync(logEntry);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Scheduler log entry with id {0} not found"), logEntry);
                 DisplayModel model = new DisplayModel();

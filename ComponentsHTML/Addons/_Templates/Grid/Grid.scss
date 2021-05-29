@@ -1,37 +1,150 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-$fontsize: 11px;
-$fontsizenoskin: 14px;
-$fontsizesort: 12px;
-$menufontsize: 10px;
+$font: var(--tbl-font);
+$fontheader: var(--tbl-header-font);
 
-$headerhorzpadding: 4px;
-$headerverticalpadding: 2px;
-$cellhorzpadding: 2px;
-$cellverticalpadding: 2px;
+$fontsizesort: 1em;
+$menufontsize: .8em;
 
-$buttonfontsize: 8px;
-$buttonfontsizenoskin:12px;
-$buttonhorzpadding: 4px;
-$buttonvertpadding: 2px;
-$buttonvertmargin: 3px;
-$buttonhorzmargin: 3px;
+$headerhorzpadding: .25em;
+$headerverticalpadding: .25em;
+$cellhorzpadding: .25em;
+$cellverticalpadding: .25em;
 
-$smbuttonhorzpadding: 2px;
-$smbuttonvertpadding: 2px;
-$smbuttonvertmargin: 2px;
-$smbuttonhorzmargin: 2px;
+$buttonfontsize: .9em;
+$buttonfontsizenoskin: 1em;
+$buttonhorzpadding: .25em;
+$buttonvertpadding: .25em;
+$buttonvertmargin: .25em;
+$buttonhorzmargin: .25em;
+
+$smbuttonhorzpadding: .2em;
+$smbuttonvertpadding: .2em;
+$smbuttonvertmargin: .2em;
+$smbuttonhorzmargin: .2em;
 
 .yt_grid {
+
     position:relative;
-    font-weight:normal;
+
+    .yGridPanelTitle {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: left;
+        align-items: center;
+        border-bottom: var(--mpnl-border);
+        padding:.2em;
+        h1 {
+            font: var(--mpnl-title-font);
+            padding: 0;
+            margin: 0 .5em;
+            vertical-align: middle;
+        }
+        .yModuleLinksContainer {
+            flex: 1 1;
+            display: inline-block;
+            padding-right: .5em;
+            padding-left: .5em;
+            padding-top:.1em;
+            @media print {
+                display: none;
+            }
+            .yt_moduleactions,
+            .yt_moduleactionsplain {
+                margin:0;
+                padding:0;
+                .y_button { // smaller buttons
+                    font: var(--mpnl-link-font);
+                    margin-bottom:.1em;
+                    padding:.3em;
+                }
+            }
+        }
+        .yPanelActionsContainer {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            margin-left: auto;// forces to the right even when wrapped around
+            .tg_pgbtns {
+                .tg_reload {
+                    margin-right:1ch;
+                }
+            }
+            .tg_searchinput {
+                input {
+                    min-width:10ch;
+                }
+                margin-right:1ch;
+                font: var(--mpnl-link-font);
+            }
+            .tg_pgsel {
+                margin-right:1ch;
+                font: var(--mpnl-link-font);
+            }
+            .tg_pgcolsel {
+                margin-right:1ch;
+            }
+            .yModuleExpColl {
+                flex: 0 0;
+                margin:.2em;
+            }
+        }
+    }
+
     .tg_table {  // general rendering
         overflow-x:auto;
 
         table {
-            border-collapse:separate;
             box-sizing: border-box;
             table-layout: fixed;
+            .tg_header {
+                th {
+                    position: relative;
+                    overflow:hidden;
+                    white-space:nowrap;
+                    padding:$headerverticalpadding $headerhorzpadding $headerverticalpadding $headerhorzpadding;
+                    span {
+                        cursor:default;
+                    }
+                    .tg_resize {
+                        position:absolute;
+                        width:4px;
+                        height:100%;
+                        right:0;
+                        top:0;
+                        cursor:col-resize;
+                        user-select: none;
+                        overflow: hidden;
+                    }
+                    .tg_sorticon {
+                        position:relative;
+                        font-size: $fontsizesort;
+                        .tg_sortasc, .tg_sortdesc, .tg_sortboth {
+                            position:relative;
+                            display:none;
+                            padding-left:5px;
+                            &.tg_active {
+                                display:inline-block;
+                            }
+                            svg {
+                                width: 1em;
+                                height: 1em;
+                            }
+                        }
+                        .tg_sortasc {
+                            top:$fontsizesort/4;
+                        }
+                        .tg_sortdesc {
+                            top:-$fontsizesort/4;
+                        }
+                         .tg_sortboth {
+                            opacity: .2;
+                         }
+                    }
+                    user-select: none; /* Standard syntax */
+                }
+            }
             tr.tg_filter {
                 .tg_fentry {
                     display: table;
@@ -41,98 +154,72 @@ $smbuttonhorzmargin: 2px;
                     display: table-cell;
                     width:100%;
                     .yt_text_base,
-                    .k-widget { /* kendo ui controls */
+                    .yt_dropdownlist_base,
+                    .yt_number_container {
                         width:100%;
                     }
-                    select {
+                    .yt_datetime {
                         width:100%;
+                        input {
+                            width:100%;
+                        }
                     }
                     .tg_ffilter {
                         display:inline-block;
-                        width:10ch;
+                        vertical-align: middle;
                         text-align:center;
-                        font-size:$buttonfontsize;
                         margin:$smbuttonvertmargin $smbuttonhorzmargin $smbuttonvertmargin $smbuttonhorzmargin;
                         padding:$smbuttonvertpadding $smbuttonhorzpadding $smbuttonvertpadding $smbuttonhorzpadding;
                     }
                 }
                 .tg_fclear, .tg_fmenu {
                     display:inline-block;
-                    font-size:$buttonfontsize;
+                    vertical-align: middle;
+                    font-size:var(--pm-1-font);// use popup font size to match popup displayed by button
                     margin:$smbuttonvertmargin $smbuttonhorzmargin $smbuttonvertmargin $smbuttonhorzmargin;
                     padding:$smbuttonvertpadding $smbuttonhorzpadding $smbuttonvertpadding $smbuttonhorzpadding;
                 }
             }
-            tr {
-                /* highlighted row (with bool __highlight property) */
-                &.tg_highlight td,
-                &.tg_highlight.tg_lowlight td {
-                    background-color: silver;
+            tbody {
+                tr {
+                    outline:0;
+                    /* highlighted row (with bool __highlight property) */
+                    &.tg_highlight td,
+                    &.tg_highlight.tg_lowlight td {
+                        background: var(--tbl-bg-highlight);
+                        color: var(--tbl-clr-highlight);
+                    }
+                    /* lowlighted row (with bool __lowlight property) */
+                    &.tg_lowlight td {
+                        background: var(--tbl-bg-lowlight);
+                        color: var(--tbl-clr-lowlight);
+                    }
+                    &.tg_selecthighlight td {
+                        background: var(--tbl-bg-active);
+                        color: var(--tbl-clr-active);
+                    }
+                    &:hover {
+                        background: var(--tbl-bg-hover);
+                        color: var(--tbl-clr-hover);
+                    }
                 }
-                /* lowlighted row (with bool __lowlight property) */
-                &.tg_lowlight td {
-                    background-color: ghostwhite;
-                    color: darkslategray;
-                }
-            }
-            th {
-                overflow:hidden;
-                white-space:nowrap;
-                padding:$headerverticalpadding $headerhorzpadding $headerverticalpadding $headerhorzpadding;
-            }
-            .tg_header th {
-                position: relative;
-                span {
-                    cursor:default;
-                }
-                .tg_resize {
-                    position:absolute;
-                    width:4px;
-                    height:100%;
-                    right:0;
-                    top:0;
-                    cursor:col-resize;
-                    user-select: none;
-                    overflow: hidden;
-                }
-                .tg_sorticon {
-                    position:relative;
-                    font-size: $fontsizesort;
-                    .tg_sortasc, .tg_sortdesc, .tg_sortboth {
-                        position:relative;
-                        display:none;
-                        padding-left:5px;
-                        &.tg_active {
-                            display:inline-block;
+                td {
+                    padding:$cellverticalpadding $cellhorzpadding $cellverticalpadding $cellhorzpadding;
+                    .tg_emptydiv {
+                        padding:2em 0 2em 2ch;
+                        .yt_grid & { // nested grid, no padding
+                            padding:0;
                         }
                     }
-                    .tg_sortasc {
-                        top:$fontsizesort/4;
+                    .yt_moduleactions,
+                    .yt_moduleactionsplain {
+                        line-height:20px;// a little extra height in case of wrapping
                     }
-                    .tg_sortdesc {
-                        top:-$fontsizesort/4;
-                    }
-                     .tg_sortboth {
-                        opacity: 0.2;
-                     }
-                }
-                user-select: none; /* Standard syntax */
-            }
-            td {
-                overflow:hidden;
-                padding:$cellverticalpadding $cellhorzpadding $cellverticalpadding $cellhorzpadding;
-                .tg_emptydiv {
-                    padding:2em 0 2em 2ch;
-                    .yt_grid & { // nested grid, no padding
-                        padding:0;
-                    }
-                }
-                &.tg_truncate {
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
                 }
             }
             th, td {
+                font: var(--body-font);
+                overflow:hidden;
                 &.tg_left {
                     text-align:left;
                 }
@@ -142,48 +229,46 @@ $smbuttonhorzmargin: 2px;
                 &.tg_right {
                     text-align:right;
                 }
+                &.tg_truncate {
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
             }
         }
     }
     .tg_pager {
-        font-size:$fontsize;
-        .tg_reload, .tg_search, .tg_pgtop, .tg_pgnext, .tg_pgprev, .tg_pgbottom {
-            display: inline-block;
-            margin:$buttonvertmargin $buttonhorzmargin $buttonvertmargin $buttonhorzmargin;
-            .fas {
-                padding:$buttonvertpadding $buttonhorzpadding $buttonvertpadding $buttonhorzpadding;
-            }
-        }
         .tg_pgbtns, .tg_pgctl, .tg_pgnum, .tg_pgsel, .tg_totals {
-            display: inline-block;
+            display:inline-block;
             margin:$buttonvertmargin $buttonhorzmargin $buttonvertmargin $buttonhorzmargin;
         }
         .tg_pgbtns, .tg_pgctl, .tg_pgsel {
             margin-right:4ch;
+        }
+        .tg_reload, .tg_search, .tg_pgtop, .tg_pgnext, .tg_pgprev, .tg_pgbottom {
+            margin:$buttonvertmargin $buttonhorzmargin $buttonvertmargin $buttonhorzmargin;
+            .fas {
+                font-size:$buttonfontsize;
+                padding:$buttonvertpadding $buttonhorzpadding $buttonvertpadding $buttonhorzpadding;
+            }
         }
         label {
             padding: 0 $cellhorzpadding 0 $cellhorzpadding;
         }
         user-select: none; /* Standard syntax */
     }
-    .tg_button {
-        cursor: pointer;
-        &:disabled {
-            cursor: default;
-        }
-    }
-    .tg_loading {
+    .tg_loading { // Loading indicator not currently customizable
         position:absolute;
         left:0; right: 0; top: 0; bottom: 0;
-        background: rgba(255, 255, 255, 0.5);
+        background: var(--overlay-bg);
+        opacity: var(--overlay-opacity);
         .t_text {
             margin:auto;
             width:25ch;
-            background-color:white;
-            color:black;
+            background: var(--tbl-bg);
+            color: var(--tbl-clr);
             text-align:center;
-            border-radius:10px;
-            border: solid 1px #eee;
+            border:  var(--tbl-border);
+            border-radius: var(--tbl-border-radius);
 
             position: relative;
             top: 50%;
@@ -191,6 +276,28 @@ $smbuttonhorzmargin: 2px;
         }
     }
 }
+
+.yt_grid {
+    &.t_expanded {
+        .yGridPanelExpColl {
+            .t_exp {
+                display:none;
+            }
+        }
+    }
+    &.t_collapsed {
+        .yGridPanelExpColl {
+            .t_coll {
+                display:none;
+            }
+        }
+        .tg_table,
+        .tg_pager {
+            display:none;
+        }
+    }
+}
+
 ul.yt_grid_menu {
     font-size:$menufontsize;
     overflow:auto;
@@ -203,103 +310,90 @@ ul.yt_grid_menu {
     }
 }
 
-.yt_grid { // both tg_skin and tg_noskin
-    tbody tr:not(.ui-state-highlight):hover {
-        background-color: var(--tbl-bg-hover);
-        color: var(--tbl-clr-hover);
-    }
-}
-
-.yt_grid.tg_skin { /* Skin dependent formatting */
-    .tg_table.ui-widget { // jquery-ui rendering
+.yt_grid.tg_skin { /* Use skin theme */
+    background: var(--tbl-header-bg);
+    color: var(--tbl-header-clr);
+    border: var(--tbl-border);
+    border-radius: var(--tbl-border-radius);
+    box-shadow: var(--tbl-shadow);
+    .tg_table {
         table {
-            tr.ui-widget-content,
-            tr.ui-state-default {
-                border-width: 0;
-                border-style: none;
-
-                & > th {
-                    font-weight: inherit;
-                    border-width: 0;
-                    border-style: none;
-                    border-color: inherit;
-                    border-right-width: 1px;
-                    border-right-style: solid;
-                    border-bottom-width: 1px;
-                    border-bottom-style: solid;
+            border-collapse:collapse;
+            font: $font;
+            tbody {
+                background: var(--tbl-bg);
+                color: var(--tbl-clr);
+            }
+            .tg_header {
+                border-bottom: var(--tbl-border);
+            }
+            tr.tg_filter {
+                border-bottom: var(--tbl-border);
+            }
+            th {
+                font:$fontheader;
+                border-right: var(--tbl-border-lite);
+            }
+            td {
+                font:$font;
+                border-right: var(--tbl-border-lite);
+            }
+            th {
+                &:hover {
+                    background: var(--tbl-header-bg-hover);
+                    color: var(--tbl-header-clr-hover);
                 }
-
-                & > td {
-                    border-color: inherit;
-                    border-right-width: 1px;
-                    border-right-style: solid;
-                    border-bottom-width: 1px;
-                    border-bottom-style: solid;
-                }
+            }
+            td {
+                border-bottom: var(--tbl-border-lite);
             }
         }
     }
-
     .tg_pager {
-        border-top-style: none;
-    }
-}
-
-.yt_grid.tg_noskin { /* Not skin dependent formatting, usually module specific */
-    .tg_table {
-        input,
-        select,
-        textarea,
-        button { // Insures that jquery-ui doesn't override our font size for controls
-            font-size:$fontsizenoskin !important;
-        }
-        th, td {
-            font-size:$fontsizenoskin;
-        }
-    }
-    .tg_pager {
-        font-size:$fontsize;
-        .tg_reload, .tg_search, .tg_pgtop, .tg_pgnext, .tg_pgprev, .tg_pgbottom {
-            .fas {
-                font-size:$buttonfontsizenoskin;
-            }
-        }
-        .tg_pgbtns, .tg_pgctl, .tg_pgnum, .tg_pgsel, .tg_totals {
-            font-size:$fontsizenoskin;
-        }
-    }
-}
-.yt_grid.tg_skin { /* Not skin dependent formatting, usually module specific */
-    .tg_table {
-        input,
-        select,
-        textarea,
-        button { // Insures that jquery-ui doesn't override our font size for controls
-            font-size:$fontsize !important;
-        }
-        th, td {
-            font-size:$fontsize;
-        }
-    }
-    .tg_pager {
-        font-size:$fontsize;
+        background: var(--tbl-header-bg);
+        color: var(--tbl-header-clr);
+        border-top: var(--tbl-border);
+        font:$fontheader;
         .tg_reload, .tg_search, .tg_pgtop, .tg_pgnext, .tg_pgprev, .tg_pgbottom {
             .fas {
                 font-size:$buttonfontsize;
             }
         }
         .tg_pgbtns, .tg_pgctl, .tg_pgnum, .tg_pgsel, .tg_totals {
-            font-size:$fontsize;
+            font:$font;
         }
     }
 }
 
-.yt_grid.tg_skin .yt_grid.tg_noskin { /* NESTED GRID */
+.yt_grid.tg_noskin { /* Skin theme not used */
     .tg_table {
-        th, td {
-            font-size:$fontsize;
+        table {
+            font: var(--body-font);
+            th, td {
+                font: var(--body-font);
+            }
+            .tg_header th {
+                font-weight:bold;
+            }
+        }
+    }
+    .tg_pager {
+        font: var(--body-font);
+        .tg_reload, .tg_search, .tg_pgtop, .tg_pgnext, .tg_pgprev, .tg_pgbottom {
+            .fas {
+                font-size:$buttonfontsizenoskin;
+            }
+        }
+        .tg_pgbtns, .tg_pgctl, .tg_pgnum, .tg_pgsel, .tg_totals {
+            font: var(--body-font);
         }
     }
 }
 
+/* action menu in grids (added to body) */
+ul.yGridActionMenu { /* ul needed for specificity */
+    z-index:50000;
+    font: var(--pm-1-font);
+    position:absolute;
+}
 

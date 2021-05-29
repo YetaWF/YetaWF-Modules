@@ -34,31 +34,31 @@ namespace YetaWF.Modules.Visitors.DataProvider {
         public int Key { get; set; }
 
         [StringLength(MaxSessionId)]
-        public string SessionId { get; set; }
+        public string? SessionId { get; set; }
         [Data_Index]
         public DateTime AccessDateTime { get; set; }
         public int UserId { get; set; }
         [StringLength(Globals.MaxIP)]
-        public string IPAddress { get; set; }
+        public string IPAddress { get; set; } = null!;
         [StringLength(Globals.MaxUrl)]
-        public string Url { get; set; }
+        public string? Url { get; set; }
         [StringLength(Globals.MaxUrl)]
-        public string Referrer { get; set; }
+        public string? Referrer { get; set; }
         [StringLength(MaxUserAgent)]
-        public string UserAgent { get; set; }
+        public string? UserAgent { get; set; }
         [StringLength(MaxError)]
-        public string Error { get; set; }
+        public string? Error { get; set; }
 
         public float Latitude { get; set; }
         public float Longitude { get; set; }
         [StringLength(MaxContinentCode)]
-        public string ContinentCode { get; set; }
+        public string? ContinentCode { get; set; }
         [StringLength(MaxCountryCode)]
-        public string CountryCode { get; set; }
+        public string? CountryCode { get; set; }
         [StringLength(MaxRegionCode)]
-        public string RegionCode { get; set; }
+        public string? RegionCode { get; set; }
         [StringLength(MaxCity)]
-        public string City { get; set; }
+        public string? City { get; set; }
 
         public VisitorEntry() { }
     }
@@ -88,7 +88,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
         private IDataProvider<int, VisitorEntry> DataProvider { get { return GetDataProvider(); } }
         private VisitorEntryDataProviderIOMode DataProviderIOMode { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, VisitorEntry> CreateDataProvider() {
+        private IDataProvider<int, VisitorEntry>? CreateDataProvider() {
             Package package = YetaWF.Modules.Visitors.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true, Parms: new { NoLanguages = true } );
         }
@@ -97,14 +97,14 @@ namespace YetaWF.Modules.Visitors.DataProvider {
         // API
         // API
 
-        public async Task<VisitorEntry> GetItemAsync(int key) {
+        public async Task<VisitorEntry?> GetItemAsync(int key) {
             if (!Usable) return null;
             return await DataProvider.GetAsync(key);
         }
         public async Task<bool> AddItemAsync(VisitorEntry data) {
             if (!Usable || SiteIdentity == 0) return false;
-            data.Referrer = data.Referrer.Truncate(Globals.MaxUrl);
-            data.Url = data.Url.Truncate(Globals.MaxUrl);
+            data.Referrer = data.Referrer?.Truncate(Globals.MaxUrl);
+            data.Url = data.Url?.Truncate(Globals.MaxUrl);
             return await DataProvider.AddAsync(data);
         }
         public async Task<UpdateStatusEnum> UpdateItemAsync(VisitorEntry data) {
@@ -119,7 +119,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
             if (!Usable) return false;
             return await DataProvider.RemoveAsync(key);
         }
-        public async Task<DataProviderGetRecords<VisitorEntry>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        public async Task<DataProviderGetRecords<VisitorEntry>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
             if (!Usable)
                 return new DataProviderGetRecords<VisitorEntry>();
             return await DataProvider.GetRecordsAsync(skip, take, sort, filters);
@@ -156,7 +156,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
             return AddVisitEntryAsync(url);
         }
 
-        private static async Task AddVisitEntryAsync(string url, string error = null) {
+        private static async Task AddVisitEntryAsync(string? url, string? error = null) {
 
             if (!InCallback) {
                 InCallback = true;
@@ -171,7 +171,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
                         if (!visitorDP.Usable) return;
 
                         string userAgent;
-                        string sessionId = manager.CurrentSessionId;
+                        string? sessionId = manager.CurrentSessionId;
                         if (url == null)
                             url = manager.CurrentRequestUrl;
 #if MVC6
@@ -195,7 +195,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
                             CountryCode = VisitorEntry.Unknown,
                             RegionCode = VisitorEntry.Unknown,
                             City = VisitorEntry.Unknown,
-                            Error = error.Truncate(VisitorEntry.MaxError),
+                            Error = error?.Truncate(VisitorEntry.MaxError),
                         };
                         await visitorDP.AddItemAsync(visitorEntry);
                     }

@@ -36,19 +36,19 @@ namespace YetaWF.Modules.Languages.Components {
             }
 
             [UIHint("Hidden"), StringLength(LocalizationData.MaxString)]
-            public string Name { get; set; }
+            public string Name { get; set; } = null!;
             [UIHint("Hidden"), StringLength(LocalizationData.MaxString)]
-            public string BaseTypeName { get; set; }
+            public string? BaseTypeName { get; set; }
 
             [Caption("Class Header"), Description("Text found in [HeaderAttribute(...)]")]
             [UIHint("Text80"), StringLength(LocalizationData.MaxString)]
-            public string Header { get; set; }
+            public string? Header { get; set; }
             [Caption("Class Footer"), Description("Text found in [FooterAttribute(...)]")]
             [UIHint("Text80"), StringLength(LocalizationData.MaxString)]
-            public string Footer { get; set; }
+            public string? Footer { get; set; }
             [Caption("Class Legend"), Description("Text found in [LegendAttribute(...)]")]
             [UIHint("Text80"), StringLength(LocalizationData.MaxString)]
-            public string Legend { get; set; }
+            public string? Legend { get; set; }
         }
 
         public class UIPropertyData {
@@ -58,20 +58,20 @@ namespace YetaWF.Modules.Languages.Components {
             }
 
             [UIHint("Hidden"), ResourceRedirect(nameof(NameFieldCaption), nameof(NameFieldDescription)), StringLength(LocalizationData.MaxString)]
-            public string Name { get; set; }
+            public string Name { get; set; } = null!;
             [UIHint("Text40"), ResourceRedirect(nameof(NameFieldCaption)), StringLength(LocalizationData.MaxString)]
-            public string Caption { get; set; }
+            public string? Caption { get; set; }
             [UIHint("Text80"), ResourceRedirect(nameof(NameFieldCaption)), StringLength(LocalizationData.MaxString)]
-            public string Description { get; set; }
+            public string? Description { get; set; }
             [UIHint("Text80"), ResourceRedirect(nameof(NameFieldCaption)), StringLength(Globals.MaxUrl)]
-            public string HelpLink { get; set; }
+            public string? HelpLink { get; set; }
             [UIHint("Text80"), ResourceRedirect(nameof(NameFieldCaption)), StringLength(LocalizationData.MaxString)]
-            public string TextAbove { get; set; }
+            public string? TextAbove { get; set; }
             [UIHint("Text80"), ResourceRedirect(nameof(NameFieldCaption)), StringLength(LocalizationData.MaxString)]
-            public string TextBelow { get; set; }
+            public string? TextBelow { get; set; }
 
-            public string NameFieldCaption { get; set; }
-            public string NameFieldDescription { get; set; }
+            public string? NameFieldCaption { get; set; }
+            public string? NameFieldDescription { get; set; }
         }
 
         public async Task<string> RenderAsync(SerializableList<LocalizationData.ClassData> model) {

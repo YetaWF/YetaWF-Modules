@@ -28,7 +28,7 @@ namespace YetaWF_ComponentsHTML {
                 Enable: null,
             });
 
-            this.ValueDiv = $YetaWF.getElement1BySelector("div.ui-progressbar-value", [this.Control]) as HTMLDivElement;
+            this.ValueDiv = $YetaWF.getElement1BySelector(".t_value", [this.Control]) as HTMLDivElement;
 
             this.Min = Number($YetaWF.getAttribute(this.Control, "aria-valuemin"));
             this.Max = Number($YetaWF.getAttribute(this.Control, "aria-valuemax"));

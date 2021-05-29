@@ -1,13 +1,17 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
-.yt_yetawf_identity_userid.t_edit.t_large label {
-    padding-top:.5em;
-}
-
-.yt_yetawf_identity_userid.t_edit.t_small {
+.yt_yetawf_identity_userid.t_edit {
     display:inline;
-}
-
-.yt_yetawf_identity_userid.t_edit .t_name img {
-    margin-right:.5ch;
+    &.t_large label {
+        padding-top:.5em;
+    }
+    &.t_small {
+        display:inline;
+    }
+    .t_name img {
+        margin-right:.5ch;
+    }
+    a {
+        margin-left:.5ch;
+    }
 }

@@ -60,11 +60,13 @@ namespace YetaWF_Pages {
     }
 
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, (ev: CustomEvent<YetaWF.DetailsEventContainerScroll>): boolean => {
-        ScrollUp.evalScrollTop();
+        if (ev.detail.container === document.body)
+            ScrollUp.evalScrollTop();
         return true;
     });
-    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: Event): boolean => {
-        ScrollUp.evalScrollTop();
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: CustomEvent<YetaWF.DetailsEventContainerResize>): boolean => {
+        if (ev.detail.container === document.body)
+            ScrollUp.evalScrollTop();
         return true;
     });
 

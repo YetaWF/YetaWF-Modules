@@ -1,0 +1,124 @@
+/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+.y_button, .y_buttonform {
+    background: var(--button-bg);
+    color: var(--button-clr);
+    margin-bottom:.2em;// in case multiple wrap around
+    padding: .5em 1em;
+    line-height:1em;
+    text-align: center;
+    text-shadow: 0 1px 0 rgba(0,0,0,0.05);
+    text-decoration: none;
+    border: var(--button-border);
+    border-radius: var(--button-border-radius);
+    &.y_button_sm {
+        padding: .4em;
+    }
+    &.y_button_narrow {
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+    }
+    &.y_button_outline { // use body background instead of button background
+        background: var(--body-bg);
+        color: var(--body-clr);
+    }
+    &:not(:disabled) {
+        cursor: pointer;
+    }
+    &:hover:not(:disabled):not(.t_disabled) {
+        text-decoration: none;
+        background: var(--button-bg-hover);
+        color: var(--button-clr-hover);
+    }
+    &:focus {
+        outline: 0;
+        text-decoration: none;
+        background: var(--button-bg-focus);
+        color: var(--button-clr-focus);
+    }
+    &:disabled,
+    &.t_disabled {
+        text-decoration: none;
+        cursor: default;
+        opacity: var(--body-dis-opacity);
+        background: var(--button-bg);
+        color: var(--button-clr);
+        }
+    &.y_success {
+        border-color: var(--tst-info-bg);
+        background: var(--tst-info-bg);
+        color: var(--tst-info-clr);
+        &:hover:not(:disabled):not(.t_disabled) {
+            filter: brightness(85%);
+        }
+    }
+    &.y_warning {
+        border-color: var(--tst-warn-bg);
+        background: var(--tst-warn-bg);
+        color: var(--tst-warn-clr);
+        &:hover:not(:disabled):not(.t_disabled) {
+            filter: brightness(85%);
+        }
+    }
+    &.y_danger {
+        border-color: var(--tst-error-bg);
+        background: var(--tst-error-bg);
+        color: var(--tst-error-clr);
+        &:hover:not(:disabled):not(.t_disabled) {
+            filter: brightness(85%);
+        }
+    }
+}
+
+.y_buttonform {
+    margin:3px;// so outline,shadow is not clipped
+    box-shadow: var(--button-shadow);
+    &:focus {
+        box-shadow: var(--button-focus-shadow);
+    }
+}
+
+a.y_button, a.y_button:hover:not(:disabled):not(.t_disabled) {
+    text-decoration: none;
+    display:inline-block;
+}
+
+@media print {
+    .y_button {
+        display: none;
+    }
+}
+
+button.y_buttonlite, /* only intended with icons (no text) */
+button.y_buttonlite_text /* text only*/ {
+    background: var(--buttonlite-bg);
+    color: var(--buttonlite-clr);
+    line-height: 0;
+    padding: .2em;
+    border: var(--buttonlite-border);
+    border-radius: var(--buttonlite-border-radius);
+    &:not(:disabled) {
+        cursor: pointer;
+    }
+    &:hover:not(:disabled):not(.t_disabled) {
+        background: var(--buttonlite-bg-hover);
+        color: var(--buttonlite-clr-hover);
+    }
+    &:focus {
+        outline: 0;
+        background: var(--buttonlite-bg-focus);
+        color: var(--buttonlite-clr-focus);
+    }
+    &:disabled,
+    &.t_disabled {
+        cursor: default;
+        opacity: var(--body-dis-opacity);;
+    }
+    svg {
+        width:1em;
+        height:1em;
+    }
+}
+button.y_buttonlite_text /* text only*/ {
+    line-height:1em;
+}

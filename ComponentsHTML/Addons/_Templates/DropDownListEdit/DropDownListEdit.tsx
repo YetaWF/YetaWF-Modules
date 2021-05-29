@@ -8,7 +8,7 @@ namespace YetaWF_ComponentsHTML {
         DropDownHeightFactor: number;
     }
 
-    interface AjaxData {
+    export interface DropDownListAjaxData {
         OptionsHTML: string;
         ExtraData: string;
     }
@@ -54,7 +54,7 @@ namespace YetaWF_ComponentsHTML {
                         control.clear();
                 },
             }, false, (tag: HTMLElement, control: DropDownListEditComponent): void => {
-
+                control.closePopup(SendSelectEnum.No);
             });
 
             this.Setup = setup;
@@ -63,18 +63,20 @@ namespace YetaWF_ComponentsHTML {
             this.Select = $YetaWF.getElement1BySelector("select", [this.Control]) as HTMLSelectElement;
             this.Container = $YetaWF.getElement1BySelector(".t_container", [this.Control]) as HTMLDivElement;
 
+            this.Enabled = ! $YetaWF.elementHasClass(this.Container, "t_disabled");
+
             this.optionsUpdated();
 
             $YetaWF.registerEventHandler(this.Container, "mouseenter", null, (ev: MouseEvent): boolean => {
                 if (this.Enabled) {
-                    $YetaWF.elementRemoveClass(this.Container, "k-state-hover");
-                    $YetaWF.elementAddClass(this.Container, "k-state-hover");
+                    $YetaWF.elementRemoveClass(this.Container, "t_hover");
+                    $YetaWF.elementAddClass(this.Container, "t_hover");
                 }
                 return true;
             });
             $YetaWF.registerEventHandler(this.Container, "mouseleave", null, (ev: MouseEvent): boolean => {
                 if (this.Enabled)
-                    $YetaWF.elementRemoveClass(this.Container, "k-state-hover");
+                    $YetaWF.elementRemoveClass(this.Container, "t_hover");
                 return true;
             });
             $YetaWF.registerEventHandler(this.Container, "click", null, (ev: MouseEvent): boolean => {
@@ -85,14 +87,14 @@ namespace YetaWF_ComponentsHTML {
 
             $YetaWF.registerEventHandler(this.Control, "focusin", null, (ev: FocusEvent): boolean => {
                 if (this.Enabled) {
-                    $YetaWF.elementRemoveClass(this.Container, "k-state-focused");
-                    $YetaWF.elementAddClass(this.Container, "k-state-focused");
+                    $YetaWF.elementRemoveClass(this.Container, "t_focused");
+                    $YetaWF.elementAddClass(this.Container, "t_focused");
                     this.Focused = true;
                 }
                 return true;
             });
             $YetaWF.registerEventHandler(this.Control, "focusout", null, (ev: FocusEvent): boolean => {
-                $YetaWF.elementRemoveClass(this.Container, "k-state-focused");
+                $YetaWF.elementRemoveClass(this.Container, "t_focused");
                 this.Focused = false;
                 this.closePopup(SendSelectEnum.ChangeSinceOpen);
                 return true;
@@ -111,17 +113,17 @@ namespace YetaWF_ComponentsHTML {
                         }
                     } else {
                         if (key === "ArrowDown" || key === "Down" || key === "ArrowRight" || key === "Right") {
-                            ++this.selectedIndex;
+                            this.setSelectedIndex(this.selectedIndex+ 1);
                             return false;
                         } else if (key === "ArrowUp" || key === "Up" || key === "ArrowLeft" || key === "Left") {
-                            --this.selectedIndex;
+                            this.setSelectedIndex(this.selectedIndex-1);
                             return false;
                         } else if (key === "Home") {
-                            this.selectedIndex = 0;
+                            this.setSelectedIndex(0);
                             return false;
                         } else if (key === "End") {
                             let total = this.totalItems;
-                            this.selectedIndex = total - 1;
+                            this.setSelectedIndex(total - 1);
                             return false;
                         } else if (key === "Escape") {
                             if (this.isOpen) {
@@ -133,8 +135,10 @@ namespace YetaWF_ComponentsHTML {
                             this.closePopup(SendSelectEnum.ChangeSinceOpen);
                             return true;
                         } else if (key === "Enter") {
-                            this.closePopup(SendSelectEnum.ChangeSinceOpen);
-                            return true;
+                            if (this.Popup) {
+                                this.closePopup(SendSelectEnum.ChangeSinceOpen);
+                                return false;
+                            }
                         } else if (key.length === 1) {
                             // find an entry starting with the character pressed
                             const opts = this.Select.options;
@@ -142,7 +146,7 @@ namespace YetaWF_ComponentsHTML {
                             for (let i = this.selectedIndex + 1 ; i < len; ++i) {
                                 key = key.toLowerCase();
                                 if (opts[i].text.toLowerCase().startsWith(key)) {
-                                    this.selectedIndex = i;
+                                    this.setSelectedIndex(i);
                                     return true;
                                 }
                             }
@@ -151,7 +155,7 @@ namespace YetaWF_ComponentsHTML {
                                 for (let i = 0; i < end; ++i) {
                                     key = key.toLowerCase();
                                     if (opts[i].text.toLowerCase().startsWith(key)) {
-                                        this.selectedIndex = i;
+                                        this.setSelectedIndex(i);
                                         return true;
                                     }
                                 }
@@ -177,7 +181,7 @@ namespace YetaWF_ComponentsHTML {
         get selectedIndex(): number {
             return this.Select.selectedIndex;
         }
-        set selectedIndex(index: number) {
+        private setSelectedIndex(index: number, event?: boolean): void {
             let total = this.totalItems;
             if (index < 0 || index >= total)
                 return;
@@ -188,7 +192,7 @@ namespace YetaWF_ComponentsHTML {
             this.selectPopupItem();
             this.Input.innerText = this.Select.options[index].text;
 
-            if (!this.isOpen)
+            if (event !== false && !this.isOpen)
                 this.sendChangeEvent();
         }
         get totalItems(): number {
@@ -197,6 +201,13 @@ namespace YetaWF_ComponentsHTML {
 
         get isOpen(): boolean {
             return this.Popup != null;
+        }
+
+        public setOptionsHTML(optionsHTML: string): void {
+            this.Select.innerHTML = optionsHTML;
+            this.optionsUpdated();
+
+            this.setSelectedIndex(0);
         }
 
         // retrieve the tooltip for the nth item (index) in the dropdown list
@@ -209,16 +220,16 @@ namespace YetaWF_ComponentsHTML {
         }
         public clear(): void {
             this.closePopup(SendSelectEnum.No);
-            this.selectedIndex = 0;
+            this.setSelectedIndex(0, false);
         }
         public enable(enabled: boolean): void {
             this.closePopup(SendSelectEnum.No);
             $YetaWF.elementEnableToggle(this.Select, enabled);
             $YetaWF.elementEnableToggle(this.Container, enabled);
-            $YetaWF.elementRemoveClass(this.Container, "k-state-disabled");
+            $YetaWF.elementRemoveClass(this.Container, "t_disabled");
             this.Control.removeAttribute("tabindex");
             if (!enabled) {
-                $YetaWF.elementAddClass(this.Container, "k-state-disabled");
+                $YetaWF.elementAddClass(this.Container, "t_disabled");
                 $YetaWF.setAttribute(this.Control, "aria-disabled", "true");
             } else {
                 $YetaWF.setAttribute(this.Control, "tabindex", "0");
@@ -228,7 +239,6 @@ namespace YetaWF_ComponentsHTML {
         }
         public sendChangeEvent(): void {
             $YetaWF.sendCustomEvent(this.Control, DropDownListEditComponent.EVENTCHANGE);
-            $(this.Select).trigger("change"); // jquery use for legacy code that uses $(elem).on("change")...
             FormsSupport.validateElement(this.Select);
         }
 
@@ -251,10 +261,10 @@ namespace YetaWF_ComponentsHTML {
 
             DropDownListEditComponent.closeDropdowns();
             this.Popup =
-                <div id="yDDPopup" data-owner={this.ControlId} class="k-animation-container" aria-hidden="false">
-                    <div class="k-list-container k-popup k-group k-reset" data-role="popup" aria-hidden="false">
-                        <div class="k-list-scroller" unselectable="on">
-                            <ul unselectable="on" class="k-list k-reset" tabindex="-1" aria-hidden="true" aria-live="off" data-role="staticlist" role="listbox">
+                <div id={DropDownListEditComponent.POPUPID} data-owner={this.ControlId} aria-hidden="false">
+                    <div class="t_container" data-role="popup" aria-hidden="false">
+                        <div class="t_scroller" unselectable="on">
+                            <ul unselectable="on" class="t_list" tabindex="-1" aria-hidden="true" aria-live="off" data-role="staticlist" role="listbox">
                             </ul>
                         </div>
                     </div>
@@ -271,7 +281,7 @@ namespace YetaWF_ComponentsHTML {
                     tt = ` ${YConfigs.Basics.CssTooltip}="${tt}"`;
                 else
                     tt = "";
-                html += `<li tabindex="-1" role="option" unselectable="on" class="k-item" data-index="${i}"${tt}>${o.innerHTML}</li>`;
+                html += `<li tabindex="-1" role="option" unselectable="on" class="t_item" data-index="${i}"${tt}>${o.innerHTML}</li>`;
             }
             ul.innerHTML = html;
 
@@ -297,7 +307,7 @@ namespace YetaWF_ComponentsHTML {
                 let li = ev.__YetaWFElem as HTMLLIElement;
                 let index = Number($YetaWF.getAttribute(li, "data-index"));
                 if (this.MouseSelectedIndex === index) {
-                    this.selectedIndex = index;
+                    this.setSelectedIndex(index);
                     this.closePopup(SendSelectEnum.Yes);
                 } else {
                     this.MouseSelectedIndex = -1;
@@ -306,13 +316,13 @@ namespace YetaWF_ComponentsHTML {
             });
             $YetaWF.registerEventHandler(this.Popup, "mouseover", "ul li", (ev: MouseEvent): boolean => {
                 let li = ev.__YetaWFElem;
-                $YetaWF.elementRemoveClass(li, "k-state-hover");
-                $YetaWF.elementAddClass(li, "k-state-hover");
+                $YetaWF.elementRemoveClass(li, "t_hover");
+                $YetaWF.elementAddClass(li, "t_hover");
                 return true;
             });
             $YetaWF.registerEventHandler(this.Popup, "mouseout", "ul li", (ev: MouseEvent): boolean => {
                 let li = ev.__YetaWFElem;
-                $YetaWF.elementRemoveClass(li, "k-state-hover");
+                $YetaWF.elementRemoveClass(li, "t_hover");
                 return true;
             });
         }
@@ -342,13 +352,14 @@ namespace YetaWF_ComponentsHTML {
             if (!popup) return;
             let ownerId = $YetaWF.getAttribute(popup, "data-owner");
             let control = DropDownListEditComponent.getControlById<DropDownListEditComponent>(ownerId, DropDownListEditComponent.SELECTOR);
-            let scroller = $YetaWF.getElement1BySelector(".k-list-scroller", [popup]);
+            let scroller = $YetaWF.getElement1BySelector(".t_scroller", [popup]);
 
             // resize to fit
 
             let controlRect = control.Control.getBoundingClientRect();
             let desiredHeight = control.Setup.DropDownHeightFactor * DropDownListEditComponent.DEFAULTHEIGHT;
-            let desiredWidth = control.Setup.DropDownWidthFactor * control.DropDownWidth;
+            let desiredWidth = control.Setup.DropDownWidthFactor * controlRect.width;
+
             let bottomAvailable = window.innerHeight - controlRect.bottom;
             let topAvailable = controlRect.top;
 
@@ -409,15 +420,15 @@ namespace YetaWF_ComponentsHTML {
             if (this.Popup) {
                 let ul = $YetaWF.getElement1BySelector("ul", [this.Popup]);
                 let li = ul.children[index] as HTMLLIElement;
-                $YetaWF.elementRemoveClasses(li, ["k-state-selected", "k-state-focused"]);
-                $YetaWF.elementAddClass(li, "k-state-selected");
+                $YetaWF.elementRemoveClasses(li, ["t_selected", "t_focused"]);
+                $YetaWF.elementAddClass(li, "t_selected");
                 let ariaId = $YetaWF.getAttribute(this.Control, "aria-activedescendant");
                 li.id = ariaId;
                 $YetaWF.setAttribute(li, "aria-selected", "true");
                 if (this.Focused)
-                    $YetaWF.elementAddClass(li, "k-state-focused");
+                    $YetaWF.elementAddClass(li, "t_focused");
 
-                let scroller = $YetaWF.getElement1BySelector(".k-list-scroller", [this.Popup]);
+                let scroller = $YetaWF.getElement1BySelector(".t_scroller", [this.Popup]);
 
                 let rectElem = li.getBoundingClientRect();
                 let rectContainer = scroller.getBoundingClientRect();
@@ -428,9 +439,9 @@ namespace YetaWF_ComponentsHTML {
 
         private clearSelectedPopupItem(): void {
             if (this.Popup) {
-                let lis = $YetaWF.getElementsBySelector("ul li.k-state-selected", [this.Popup]);
+                let lis = $YetaWF.getElementsBySelector("ul li.t_selected", [this.Popup]);
                 for (const li of lis) {
-                    $YetaWF.elementRemoveClasses(li, ["k-state-selected", "k-state-focused"]);
+                    $YetaWF.elementRemoveClasses(li, ["t_selected", "t_focused"]);
                     $YetaWF.setAttribute(li, "aria-selected", "false");
                     li.id = "";
                 }
@@ -469,45 +480,31 @@ namespace YetaWF_ComponentsHTML {
             }
 
             // extra for dropdown selector
-            elem.innerText = "MMMM";// 4 characters
+            elem.innerText = "MMM";// 3 characters
             width += elem.clientWidth;
+            width += 4;// fudge factor
 
             elem.remove();
             return width;
         }
 
-        public ajaxUpdate(data: any, ajaxUrl: string, onSuccess?: (data: any) => void, onFailure?: (result: string) => void): void {
+        public ajaxUpdate(data: any, ajaxUrl: string, onSuccess?: (data: any) => void, onFailure?: () => void): void {
 
             this.closePopup(SendSelectEnum.No);
-
-            $YetaWF.setLoading(true);
 
             var uri = $YetaWF.parseUrl(ajaxUrl);
             uri.addSearchSimpleObject(data);
 
-            var request: XMLHttpRequest = new XMLHttpRequest();
-            request.open("POST", ajaxUrl);
-            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-            request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            request.onreadystatechange = (ev: Event): any => {
-                if (request.readyState === 4 /*DONE*/) {
-                    $YetaWF.setLoading(false);
-                    var retVal = $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, this.Control, undefined, undefined, (data: AjaxData): void => {
-
-                        this.Select.innerHTML = data.OptionsHTML;
-                        this.optionsUpdated();
-
-                        this.selectedIndex = 0;
-                        if (onSuccess)
-                            onSuccess(data);
-                    });
-                    if (!retVal) {
-                        if (onFailure)
-                            onFailure(request.responseText);
-                    }
+            $YetaWF.post(ajaxUrl, uri.toFormData(), (success: boolean, data: DropDownListAjaxData): void => {
+                if (success) {
+                    this.setOptionsHTML(data.OptionsHTML);
+                    if (onSuccess)
+                        onSuccess(data);
+                } else {
+                    if (onFailure)
+                        onFailure();
                 }
-            };
-            request.send(uri.toFormData());
+            });
         }
     }
 

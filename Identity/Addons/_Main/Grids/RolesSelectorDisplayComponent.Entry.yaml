@@ -1,0 +1,20 @@
+# Generated from flat grid definition file on 2/7/2021 7:48:00 PM
+
+SizeStyle: SizeToFit
+Panel: {}
+Columns:
+- Name: Used
+  Sort: true
+  FilterOptions: []
+  Width: <Globals.ChBoolean>
+  Align: Center
+- Name: Name
+  DefaultSort: Ascending
+  Sort: true
+  FilterOptions: []
+  Width: 25
+  Align: Unspecified
+- Name: Description
+  FilterOptions: []
+  Width: 60
+  Align: Unspecified

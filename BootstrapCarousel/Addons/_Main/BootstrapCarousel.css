@@ -1,8 +1,109 @@
 @charset "UTF-8";
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/BootstrapCarousel#License */
 /* BootstrapCarousel */
-.yt_bootstrapcarousel_slideshow.t_display img {
-  max-width: 100%;
-  height: auto;
-  border: 0;
-  padding: 0; }
+.yt_bootstrapcarousel_slideshow.t_display {
+  position: relative; }
+  .yt_bootstrapcarousel_slideshow.t_display .yt_image img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0; }
+  .yt_bootstrapcarousel_slideshow.t_display .t_indicators {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 15;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+            justify-content: center;
+    padding-left: 0;
+    margin-right: 15%;
+    margin-left: 15%;
+    list-style: none; }
+  .yt_bootstrapcarousel_slideshow.t_display .t_inner {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap; }
+    .yt_bootstrapcarousel_slideshow.t_display .t_inner .t_item {
+      position: relative;
+      display: inline-block; }
+      .yt_bootstrapcarousel_slideshow.t_display .t_inner .t_item a {
+        width: 100%; }
+    .yt_bootstrapcarousel_slideshow.t_display .t_inner .t_caption {
+      position: absolute;
+      left: 0;
+      top: 75%;
+      width: 100%;
+      color: white;
+      text-align: center;
+      padding: 0 10em;
+      font-weight: bold;
+      white-space: normal; }
+    .yt_bootstrapcarousel_slideshow.t_display .t_inner .t_description {
+      position: absolute;
+      left: 0;
+      top: 85%;
+      width: 100%;
+      color: white;
+      text-align: center;
+      font-weight: normal;
+      white-space: normal; }
+  .yt_bootstrapcarousel_slideshow.t_display .t_next, .yt_bootstrapcarousel_slideshow.t_display .t_prev {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+            align-items: center;
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+            justify-content: center;
+    width: 15%;
+    color: #fff;
+    text-align: center;
+    opacity: .5;
+    -webkit-transition: opacity .15s ease;
+    transition: opacity .15s ease; }
+    .yt_bootstrapcarousel_slideshow.t_display .t_next:hover, .yt_bootstrapcarousel_slideshow.t_display .t_prev:hover {
+      opacity: .9; }
+  .yt_bootstrapcarousel_slideshow.t_display .t_prev {
+    left: 0; }
+  .yt_bootstrapcarousel_slideshow.t_display .t_next {
+    right: 0; }
+  .yt_bootstrapcarousel_slideshow.t_display .t_next_icon, .yt_bootstrapcarousel_slideshow.t_display .t_prev_icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: no-repeat 50%/100% 100%; }
+  .yt_bootstrapcarousel_slideshow.t_display .t_indicators li {
+    box-sizing: content-box;
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 1 auto;
+            flex: 0 1 auto;
+    width: 30px;
+    height: 3px;
+    margin-right: 3px;
+    margin-left: 3px;
+    text-indent: -999px;
+    cursor: pointer;
+    background-color: #fff;
+    background-clip: padding-box;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    opacity: .5;
+    -webkit-transition: opacity .6s ease;
+    transition: opacity .6s ease; }
+    .yt_bootstrapcarousel_slideshow.t_display .t_indicators li:hover, .yt_bootstrapcarousel_slideshow.t_display .t_indicators li.t_active {
+      opacity: .9; }

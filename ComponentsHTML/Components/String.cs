@@ -52,7 +52,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 model = "";
             string t = model.ToString();
             if (string.IsNullOrWhiteSpace(t))
-                return Task.FromResult<string>(null);
+                return Task.FromResult<string>(string.Empty);
             t = Utility.HE(t);
 
             return Task.FromResult(t);

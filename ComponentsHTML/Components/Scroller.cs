@@ -52,7 +52,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     ///     public string Product Name { get; set; }
     /// }
     /// </example>
-    [UsesAdditional("Component", "string", null, "Defines the component used to render each object within the specified model ({i}objects{/i}). This attribute is required.")]
+    [UsesAdditional("Component", "string", "null", "Defines the component used to render each object within the specified model ({i}objects{/i}). This attribute is required.")]
     public class ScrollerDisplayComponent : ScrollerComponentBase, IYetaWFComponent<IEnumerable> {
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public async Task<string> RenderAsync(IEnumerable model) {
             HtmlBuilder hb = new HtmlBuilder();
 
-            string uiHint = PropData.GetAdditionalAttributeValue<string>("Template");
+            string? uiHint = PropData.GetAdditionalAttributeValue<string>("Template");
             if (uiHint == null) throw new InternalError("No UIHint available for scroller");
 
 

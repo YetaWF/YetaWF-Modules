@@ -1,0 +1,21 @@
+# Generated from flat grid definition file on 1/31/2021 9:45:32 AM
+
+SizeStyle: SizeToFit
+Panel: {}
+Columns:
+- Name: Delete
+  Icons: 1
+  FilterOptions: []
+  Align: Center
+- Name: UrlDisplay
+  FilterOptions: []
+  Width: 80
+  Align: Unspecified
+- Name: Popup
+  FilterOptions: []
+  Width: <Globals.ChBoolean>
+  Align: Center
+- Name: Url
+  FilterOptions: []
+  Align: Unspecified
+  Hidden: true

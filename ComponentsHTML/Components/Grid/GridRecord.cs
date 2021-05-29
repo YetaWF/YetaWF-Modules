@@ -1,5 +1,6 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using System;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Models;
@@ -39,8 +40,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override string GetTemplateName() { return TemplateName; }
 
         private class GridRecordResult {
-            public string TR { get; set; }
-            public object StaticData { get; internal set; }
+            public string TR { get; set; } = null!;
+            public object StaticData { get; internal set; } = null!;
         }
 
         /// <summary>
@@ -49,13 +50,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public async Task<string> RenderContainerAsync(GridRecordData model) {
-
-        ScriptBuilder sb = new ScriptBuilder();
+            
+            ScriptBuilder sb = new ScriptBuilder();
 
             GridDictionaryInfo.ReadGridDictionaryInfo dictInfo = await GridDictionaryInfo.LoadGridColumnDefinitionsAsync(model.GridDef);
 
+            GridDefinition.ColumnDictionary colDict = new GridDefinition.ColumnDictionary();
+            if (GridLoadSave.UseGridSettings(model.GridDef.SettingsModuleGuid)) {
+                GridLoadSave.GridSavedSettings gridSavedSettings = GridLoadSave.LoadModuleSettings((Guid)model.GridDef.SettingsModuleGuid!, 1, 10);
+                colDict = gridSavedSettings.Columns;
+            }
+
             // render record
-            string tr = await GridDisplayComponent.RenderRecordHTMLAsync(HtmlHelper, model.GridDef, dictInfo, model.FieldPrefix, model.Data, 0, 0, false);
+            string tr = await GridDisplayComponent.RenderRecordHTMLAsync(HtmlHelper, model.GridDef, dictInfo, colDict, model.FieldPrefix, model.Data, 0, 0, false);
 
             GridRecordResult result = new GridRecordResult {
                 TR = tr,

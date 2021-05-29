@@ -15,7 +15,7 @@ namespace YetaWF.Modules.Panels.Controllers {
         public class Model {
             public Model() { }
             [UIHint("YetaWF_Panels_SplitterInfo")]
-            public SplitterInfo SplitterInfo { get; set; }
+            public SplitterInfo SplitterInfo { get; set; } = null!;
         }
 
         [AllowGet]

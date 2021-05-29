@@ -8,12 +8,13 @@ var __extends = (this && this.__extends) || (function () {
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-// Kendo UI menu use
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     //export interface IPackageLocs {
@@ -79,7 +80,7 @@ var YetaWF_ComponentsHTML;
                     liElem = _this.getNextVisibleEntry(liElem);
                     if (!liElem)
                         return false;
-                    _this.setSelect(liElem, true);
+                    _this.setSelect(liElem);
                     _this.sendSelectEvent();
                     return false;
                 }
@@ -90,7 +91,7 @@ var YetaWF_ComponentsHTML;
                     liElem = _this.getPrevVisibleEntry(liElem);
                     if (!liElem)
                         return false;
-                    _this.setSelect(liElem, true);
+                    _this.setSelect(liElem);
                     _this.sendSelectEvent();
                     return false;
                 }
@@ -98,7 +99,7 @@ var YetaWF_ComponentsHTML;
                     var liElem = _this.getFirstVisibleItem();
                     if (!liElem)
                         return false;
-                    _this.setSelect(liElem, true);
+                    _this.setSelect(liElem);
                     _this.sendSelectEvent();
                     return false;
                 }
@@ -106,7 +107,7 @@ var YetaWF_ComponentsHTML;
                     var liElem = _this.getLastVisibleItem();
                     if (!liElem)
                         return false;
-                    _this.setSelect(liElem, true);
+                    _this.setSelect(liElem);
                     _this.sendSelectEvent();
                     return false;
                 }
@@ -120,7 +121,7 @@ var YetaWF_ComponentsHTML;
                         liElem = _this.getPrevVisibleEntry(liElem);
                         if (!liElem)
                             return false;
-                        _this.setSelect(liElem, true);
+                        _this.setSelect(liElem);
                         _this.sendSelectEvent();
                     }
                     return false;
@@ -135,7 +136,7 @@ var YetaWF_ComponentsHTML;
                         liElem = _this.getNextVisibleEntry(liElem);
                         if (!liElem)
                             return false;
-                        _this.setSelect(liElem, true);
+                        _this.setSelect(liElem);
                         _this.sendSelectEvent();
                     }
                     return false;
@@ -331,7 +332,6 @@ var YetaWF_ComponentsHTML;
             if (!this.Setup.AjaxUrl)
                 throw "Tree control doesn't have an AJAX URL - " + this.Control.outerHTML;
             if (!$YetaWF.isLoading) {
-                $YetaWF.setLoading(true);
                 // fetch data from servers
                 var uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
                 var recData = $YetaWF.getAttribute(liElem, "data-record");
@@ -340,32 +340,22 @@ var YetaWF_ComponentsHTML;
                 uri.addFormInfo(this.Control);
                 var uniqueIdCounters = { UniqueIdPrefix: this.ControlId + "ls", UniqueIdPrefixCounter: ++this.AddCounter, UniqueIdCounter: 0 };
                 uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
-                var request = new XMLHttpRequest();
-                request.open("POST", this.Setup.AjaxUrl);
-                request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-                request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                request.onreadystatechange = function (ev) {
-                    if (request.readyState === 4 /*DONE*/) {
-                        $YetaWF.setLoading(false);
-                        $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, function (result) {
-                            var partial = JSON.parse(request.responseText);
-                            var iElem = $YetaWF.getElement1BySelector("i.t_icright", [liElem]);
-                            $YetaWF.elementRemoveClasses(iElem, ["t_icright", "t_icdown", "t_icempty"]);
-                            if (partial.Records > 0) {
-                                // add new items
-                                $YetaWF.appendMixedHTML(liElem, partial.HTML);
-                                // mark expanded
-                                $YetaWF.elementAddClass(iElem, "t_icdown");
-                            }
-                            else {
-                                // mark not expandable
-                                $YetaWF.elementAddClass(iElem, "t_icempty");
-                            }
-                        });
+                $YetaWF.post(this.Setup.AjaxUrl, uri.toFormData(), function (success, partial) {
+                    if (success) {
+                        var iElem = $YetaWF.getElement1BySelector("i.t_icright", [liElem]);
+                        $YetaWF.elementRemoveClasses(iElem, ["t_icright", "t_icdown", "t_icempty"]);
+                        if (partial.Records > 0) {
+                            // add new items
+                            $YetaWF.appendMixedHTML(liElem, partial.HTML);
+                            // mark expanded
+                            $YetaWF.elementAddClass(iElem, "t_icdown");
+                        }
+                        else {
+                            // mark not expandable
+                            $YetaWF.elementAddClass(iElem, "t_icempty");
+                        }
                     }
-                };
-                var data = uri.toFormData();
-                request.send(data);
+                });
             }
         };
         // API
@@ -478,13 +468,12 @@ var YetaWF_ComponentsHTML;
             var liElem = $YetaWF.elementClosest(entry, "li");
             return liElem;
         };
-        TreeComponent.prototype.setSelect = function (liElem, focus) {
+        TreeComponent.prototype.setSelect = function (liElem) {
             this.clearSelect();
             $YetaWF.elementAddClass(liElem, "t_select");
             var entry = $YetaWF.getElement1BySelector(".t_entry", [liElem]);
             $YetaWF.elementAddClass(entry, this.Setup.SelectedCss);
-            if (focus === true)
-                entry.focus();
+            entry.focus();
         };
         TreeComponent.prototype.getSelectData = function () {
             var liElem = this.getSelect();

@@ -28,11 +28,11 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         public class SchedulerItem {
 
             [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands { get; set; }
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands { get; set; } = null!;
 
-            public async Task<MenuList> __GetCommandsAsync() {
-                MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+            public async Task<List<ModuleAction>> __GetCommandsAsync() {
+                List<ModuleAction> actions = new List<ModuleAction>();
 
                 SchedulerDisplayModule dispMod = new SchedulerDisplayModule();
                 actions.New(dispMod.GetAction_Display(Module.DisplayUrl, Name), ModuleAction.ActionLocationEnum.GridLinks);
@@ -52,11 +52,11 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
             [Caption("Name"), Description("The name of this scheduler item - the name is used to identify a scheduler item")]
             [UIHint("String"), ReadOnly]
-            public string Name { get; set; }
+            public string Name { get; set; } = null!;
 
             [Caption("Description"), Description("The description of this scheduler item")]
             [UIHint("TextArea"), ReadOnly]
-            public string Description { get; set; }
+            public string? Description { get; set; }
 
             [Caption("Enabled"), Description("The status of the scheduler item")]
             [UIHint("Boolean"), ReadOnly]
@@ -80,7 +80,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
             [Caption("Interval"), Description("The scheduler item's frequency")]
             [UIHint("YetaWF_Scheduler_Frequency"), AdditionalMetadata("ShowEnumValue", false), ReadOnly]
-            public SchedulerFrequency Frequency { get; set; }
+            public SchedulerFrequency Frequency { get; set; } = null!;
 
             [Caption("Last"), Description("The last time this item ran")]
             [UIHint("DateTime"), ReadOnly]
@@ -96,7 +96,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
             [Caption("Event"), Description("The event name running at the scheduled time")]
             [UIHint("YetaWF_Scheduler_Event"), ReadOnly]
-            public SchedulerEvent Event { get; set; }
+            public SchedulerEvent Event { get; set; } = null!;
 
             public bool __highlight { get { return IsRunning; } }
 
@@ -110,7 +110,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
         public class SchedulerBrowseModel {
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
         private GridDefinition GetGridModel() {
             return new GridDefinition {
@@ -119,7 +119,7 @@ namespace YetaWF.Modules.Scheduler.Controllers {
                 SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(SchedulerItem),
                 AjaxUrl = GetActionUrl(nameof(SchedulerBrowse_GridData)),
-                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
                         DataProviderGetRecords<SchedulerItemData> schedulerItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {

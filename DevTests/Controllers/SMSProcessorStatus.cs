@@ -17,7 +17,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
         public class DisplayModel {
             public int Available { get; set; }
-            public string ProcessorName { get; set; }
+            public string ProcessorName { get; set; } = null!;
             public bool TestMode { get; set; }
         }
 
@@ -29,7 +29,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             DisplayModel model = new DisplayModel() {
                 Available = info.Count,
                 TestMode = info.Processor != null ? await info.Processor.IsTestModeAsync() : false,
-                ProcessorName = info.Processor != null ? info.Processor.Name : null,
+                ProcessorName = info.Processor?.Name ?? string.Empty,
             };
             if (model.Available == 1 && !model.TestMode)
                 return new EmptyResult();

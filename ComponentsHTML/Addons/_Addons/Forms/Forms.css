@@ -2,7 +2,7 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 /* Hide all validation errors, we show icons with tooltips instead */
 img.yform-warningicon {
-  padding-left: .4ch;
+  padding-left: .4em;
   padding-top: 1px; }
 
 .yform-ajax .t_detailsbuttons {
@@ -12,8 +12,8 @@ img.yform-warningicon {
   .yform-ajax .t_detailsbuttons a.y_act_button,
   .yform-ajax .t_detailsbuttons a.y_act_buttononly,
   .yform-ajax .t_detailsbuttons a.y_act_buttonicon {
-    margin-right: .5ch;
-    margin-bottom: .5em; }
+    margin-right: .5em;
+    margin-bottom: .1em; }
   @media print {
     .yform-ajax .t_detailsbuttons {
       display: none; } }

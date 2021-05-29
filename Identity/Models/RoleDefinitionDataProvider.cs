@@ -104,7 +104,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 throw new Error(this.__ResStr("cantAddSuper", "Can't add built-in superuser role"));
             if (!await DataProvider.AddAsync(data))
                 return false;
-            GetAllUserRoles(true);
+            await GetAllUserRolesAsync(true);
             await Auditing.AddAuditAsync($"{nameof(RoleDefinitionDataProvider)}.{nameof(AddItemAsync)}", data.Name, Guid.Empty,
                 "Add Role",
                 DataBefore: null,
@@ -125,7 +125,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             RoleDefinition origRole = Auditing.Active ? await GetItemAsync(originalRole) : null;
             UpdateStatusEnum status = await DataProvider.UpdateAsync(originalRole, data.Name, data);
             if (status == UpdateStatusEnum.OK)
-                GetAllUserRoles(true);
+                await GetAllUserRolesAsync(true);
             await Auditing.AddAuditAsync($"{nameof(RoleDefinitionDataProvider)}.{nameof(UpdateItemAsync)}", originalRole, Guid.Empty,
                 "Update Role",
                 DataBefore: origRole,
@@ -143,7 +143,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             RoleDefinition origRole = Auditing.Active ? await GetItemAsync(role) : null;
             if (!await DataProvider.RemoveAsync(role))
                 return false;
-            GetAllUserRoles(true);
+            await GetAllUserRolesAsync(true);
             await Auditing.AddAuditAsync($"{nameof(RoleDefinitionDataProvider)}.{nameof(RemoveItemAsync)}", role, Guid.Empty,
                 "Remove Role",
                 DataBefore: origRole,
@@ -165,7 +165,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
             if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Removing roles is not possible when distributed caching is enabled");
             int count = await DataProvider.RemoveRecordsAsync(filters);
-            GetAllUserRoles(true);
+            await GetAllUserRolesAsync(true);
             return count;
         }
         public int GetAdministratorRoleId() { return GetRoleId(Globals.Role_Administrator); }
@@ -186,10 +186,19 @@ namespace YetaWF.Modules.Identity.DataProvider {
             return (role == Globals.Role_Superuser || role == Globals.Role_User || role == Globals.Role_UserDemo || role == Globals.Role_User2FA || role == Globals.Role_Editor || role == Globals.Role_Anonymous || role == Globals.Role_Administrator);
         }
 
-        // all user roles, plus User and Anonymous
-        public List<RoleDefinition> GetAllRoles(bool force = false) {
-            List<RoleDefinition> roles = GetAllUserRoles(force);
-            roles = (from r in roles select r).ToList();
+        /// <summary>
+        /// Returns a list of all roles, including User and Anonymous.
+        /// </summary>
+        /// <param name="force">Force reload ignorin g cached data if true. Otherwise the cached information is returned.</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// This method is cached and deliberately does not use async/await to simplify usage.
+        /// </remarks>
+        public List<RoleDefinition> GetAllRoles() {
+            List<RoleDefinition> roles = YetaWFManager.Syncify(async () => {
+                return await GetAllUserRolesAsync();
+            });
+            roles = roles.ToList(); // copy
             roles.Add(MakeUserRole());
             roles.Add(MakeUserDemoRole());
             roles.Add(MakeUser2FARole());
@@ -198,36 +207,30 @@ namespace YetaWF.Modules.Identity.DataProvider {
         }
 
         /// <summary>
-        /// Retrieve all roles except user and anonymous.
+        /// Retrieves list of all roles except User and Anonymous.
         /// </summary>
-        /// <remarks>
-        /// This method is cached and deliberately does not use async/await to simplify usage
-        /// </remarks>
-        public List<RoleDefinition> GetAllUserRoles(bool force = false) {
+        public async Task<List<RoleDefinition>> GetAllUserRolesAsync(bool force = false) {
 
-            bool isInstalled = YetaWFManager.Syncify<bool>(() => DataProvider.IsInstalledAsync()); // There's nothing really async about this
-            if (!isInstalled)
-                return new List<RoleDefinition>() { MakeSuperuserRole() };
+            using (ICacheDataProvider cacheDP = YetaWF.Core.IO.Caching.GetStaticSmallObjectCacheProvider()) {
 
-            List<RoleDefinition> roles;
-            if (!force) {
-                if (PermanentManager.TryGetObject<List<RoleDefinition>>(out roles))
-                    return roles;
-            }
+                string ROLESKEY = $"__RoleDefinitions_{YetaWFManager.Manager.CurrentSite.Identity}";
 
-            lock (_lockObject) { // lock this to build cached roles list
-                // See if we already have it as a permanent object
                 if (!force) {
-                    if (PermanentManager.TryGetObject<List<RoleDefinition>>(out roles))
-                        return roles;
+                    GetObjectInfo<List<RoleDefinition>> cache = await cacheDP.GetAsync<List<RoleDefinition>>(ROLESKEY);
+                    if (cache.Success)
+                        return cache.RequiredData;
                 }
-                // Load the roles
-                DataProviderGetRecords<RoleDefinition> list = YetaWFManager.Syncify<DataProviderGetRecords<RoleDefinition>>(() => GetItemsAsync()); // Only done once during startup and never again, all cached
-                roles = list.Data;
 
-                PermanentManager.AddObject<List<RoleDefinition>>(roles);
+                if (!await DataProvider.IsInstalledAsync())
+                    return new List<RoleDefinition>() { MakeSuperuserRole() };
+
+                // Load the roles
+                DataProviderGetRecords<RoleDefinition> list = await GetItemsAsync();
+                List<RoleDefinition> roles = list.Data;
+
+                await cacheDP.AddAsync(ROLESKEY, roles);
+                return roles;
             }
-            return roles;
         }
         private RoleDefinition MakeSuperuserRole() {
             return new RoleDefinition() {
@@ -256,7 +259,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                     Description = this.__ResStr("adminRole", "An administrator can do EVERYTHING on ONE site (the site where the user has the {0} role)", Globals.Role_Administrator)
                 }
             );
-            GetAllUserRoles(true);// reload
+            await GetAllUserRolesAsync(true);// reload
         }
         public async Task AddEditorRoleAsync() {
             if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Adding roles is not possible when distributed caching is enabled");
@@ -266,7 +269,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                     Description = this.__ResStr("editorRole", "An editor is a user who can perform editing actions on the site")
                 }
             );
-            GetAllUserRoles(true);// reload
+            await GetAllUserRolesAsync(true);// reload
         }
 
         // IINSTALLABLEMODEL

@@ -1,0 +1,21 @@
+# Generated from flat grid definition file on 1/30/2021 7:35:12 PM
+
+SizeStyle: SizeToFit
+Panel: {}
+Columns:
+- Name: IOModeName
+  Sort: true
+  Filter: true
+  Width: 10
+  Align: Unspecified
+- Name: TypeName
+  Sort: true
+  Filter: true
+  Width: 50
+  Align: Unspecified
+- Name: TypeImplName
+  DefaultSort: Ascending
+  Sort: true
+  Filter: true
+  Width: 50
+  Align: Unspecified

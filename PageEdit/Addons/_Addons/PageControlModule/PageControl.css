@@ -1,34 +1,39 @@
 @charset "UTF-8";
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
 .YetaWF_PageEdit_PageControl {
-  position: absolute;
+  position: fixed;
   z-index: 1510;
   left: 30px;
   top: 5px; }
-  .YetaWF_PageEdit_PageControl #yPageControlDiv {
-    line-height: 1; }
-    .YetaWF_PageEdit_PageControl #yPageControlDiv > a {
-      display: block;
-      line-height: 1;
-      padding: 4px 4px; }
+  .YetaWF_PageEdit_PageControl #yPageControlDiv .t_controlpanel {
+    height: 16px;
+    width: 16px;
+    padding: 4px;
+    box-sizing: content-box; }
+    .YetaWF_PageEdit_PageControl #yPageControlDiv .t_controlpanel svg {
+      vertical-align: top;
+      height: 16px;
+      width: 16px; }
 
 #yPageControlMod {
   display: none;
-  position: absolute;
-  left: 30px;
   width: 800px;
-  z-index: 1500; }
+  max-width: 90vw;
+  z-index: 1500;
+  font-size: .8em; }
   #yPageControlMod .yt_tabs {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0; }
-  #yPageControlMod .yt_moduleactions {
-    background-color: #e4e3e3;
+  #yPageControlMod .yt_moduleactionsplain {
+    display: block;
+    background: var(--panel-bg);
     padding: .5em;
-    border-bottom-left-radius: 3px;
-    border-bottom-right-radius: 3px; }
-    #yPageControlMod .yt_moduleactions a {
-      color: #2e2e2e;
+    border: var(--tabs-tab-border);
+    border-top: none;
+    border-bottom-left-radius: var(--tabs-tab-border-radius);
+    border-bottom-right-radius: var(--tabs-tab-border-radius); }
+    #yPageControlMod .yt_moduleactionsplain a {
       text-decoration: none;
       margin-bottom: .1rem; }
-      #yPageControlMod .yt_moduleactions a:hover {
+      #yPageControlMod .yt_moduleactionsplain a:hover {
         text-decoration: underline; }

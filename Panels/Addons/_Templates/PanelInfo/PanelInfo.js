@@ -8,6 +8,8 @@ var __extends = (this && this.__extends) || (function () {
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -18,8 +20,7 @@ var YetaWF_Panels;
     var StyleEnum;
     (function (StyleEnum) {
         StyleEnum[StyleEnum["Tabs"] = 0] = "Tabs";
-        StyleEnum[StyleEnum["AccordionjQuery"] = 1] = "AccordionjQuery";
-        StyleEnum[StyleEnum["AccordionKendo"] = 2] = "AccordionKendo";
+        StyleEnum[StyleEnum["Accordion"] = 1] = "Accordion";
     })(StyleEnum = YetaWF_Panels.StyleEnum || (YetaWF_Panels.StyleEnum = {}));
     var PanelInfoComponent = /** @class */ (function (_super) {
         __extends(PanelInfoComponent, _super);
@@ -31,112 +32,46 @@ var YetaWF_Panels;
                 Enable: null,
             }) || this;
             _this.Setup = setup;
-            if (_this.Setup.Style === StyleEnum.AccordionKendo) {
-                $YetaWF.registerEventHandler(_this.Control, "click", "ul.t_acckendo > li", function (ev) {
-                    var liActive = ev.__YetaWFElem;
-                    var contentActive = $YetaWF.getElement1BySelector(".k-content", [liActive]);
-                    var activeShown = _this.isShown(contentActive);
-                    var lis = $YetaWF.getElementsBySelector("ul.t_acckendo > li", [_this.Control]);
-                    for (var _i = 0, lis_1 = lis; _i < lis_1.length; _i++) {
-                        var li = lis_1[_i];
-                        var liContent = $YetaWF.getElement1BySelector(".k-content", [li]);
-                        _this.khide(li, liContent);
-                    }
-                    if (!activeShown)
-                        _this.kshow(liActive, contentActive);
-                    return false;
-                });
-            }
-            else if (_this.Setup.Style === StyleEnum.AccordionjQuery) {
-                $YetaWF.registerEventHandler(_this.Control, "click", "h3", function (ev) {
+            if (_this.Setup.Style === StyleEnum.Accordion) {
+                $YetaWF.registerEventHandler(_this.Control, "click", "h2", function (ev) {
                     var hActive = ev.__YetaWFElem;
                     var contentActive = hActive.nextElementSibling;
                     var activeShown = _this.isShown(contentActive);
-                    var headers = $YetaWF.getElementsBySelector("h3", [_this.Control]);
+                    var headers = $YetaWF.getElementsBySelector("h2", [_this.Control]);
                     for (var _i = 0, headers_1 = headers; _i < headers_1.length; _i++) {
                         var header = headers_1[_i];
-                        _this.jhide(header, header.nextElementSibling);
+                        _this.hide(header, header.nextElementSibling);
                     }
                     if (!activeShown)
-                        _this.jshow(hActive, hActive.nextElementSibling);
+                        _this.show(hActive, hActive.nextElementSibling);
                     return false;
                 });
             }
-            // Kendo hover
-            $YetaWF.registerEventHandler(_this.Control, "mousemove", "ul.t_acckendo > li .k-header", function (ev) {
-                var li = ev.__YetaWFElem;
-                $YetaWF.elementAddClass(li, "k-state-hover");
-                return true;
-            });
-            $YetaWF.registerEventHandler(_this.Control, "mouseout", "ul.t_acckendo > li .k-header", function (ev) {
-                var li = ev.__YetaWFElem;
-                $YetaWF.elementRemoveClass(li, "k-state-hover");
-                return true;
-            });
-            // jqueryui hover
-            $YetaWF.registerEventHandler(_this.Control, "mousemove", ".t_accjquery > h3", function (ev) {
-                var header = ev.__YetaWFElem;
-                $YetaWF.elementAddClass(header, "ui-state-hover");
-                return true;
-            });
-            $YetaWF.registerEventHandler(_this.Control, "mouseout", ".t_accjquery > h3", function (ev) {
-                var header = ev.__YetaWFElem;
-                $YetaWF.elementRemoveClass(header, "ui-state-hover");
-                return true;
-            });
             return _this;
         }
-        // Kendo
-        PanelInfoComponent.prototype.khide = function (li, tag) {
+        PanelInfoComponent.prototype.hide = function (header, tag) {
             this.collapse(tag);
-            $YetaWF.setAttribute(tag, "aria-hidden", "true");
-            $YetaWF.elementRemoveClasses(li, ["k-state-active", "k-state-highlight"]);
-            $YetaWF.setAttribute(li, "aria-expanded", "false");
-            $YetaWF.setAttribute(li, "aria-selected", "false");
-            var header = $YetaWF.getElement1BySelector(".k-header", [li]);
-            $YetaWF.elementRemoveClass(header, "k-state-selected");
-            var icon = $YetaWF.getElement1BySelector(".k-icon", [li]);
-            $YetaWF.elementRemoveClasses(icon, ["k-i-arrow-60-up", "k-panelbar-collapse", "k-i-arrow-60-down", "k-panelbar-expand"]);
-            $YetaWF.elementAddClasses(icon, ["k-i-arrow-60-down", "k-panelbar-expand"]);
-        };
-        PanelInfoComponent.prototype.kshow = function (li, tag) {
-            $YetaWF.setAttribute(tag, "aria-hidden", "false");
-            this.expand(tag);
-            $YetaWF.elementRemoveClasses(li, ["k-state-active", "k-state-highlight"]);
-            $YetaWF.elementAddClasses(li, ["k-state-active", "k-state-highlight"]);
-            $YetaWF.setAttribute(li, "aria-expanded", "true");
-            $YetaWF.setAttribute(li, "aria-selected", "true");
-            var header = $YetaWF.getElement1BySelector(".k-header", [li]);
-            $YetaWF.elementRemoveClass(header, "k-state-selected");
-            $YetaWF.elementAddClass(header, "k-state-selected");
-            var icon = $YetaWF.getElement1BySelector(".k-icon", [li]);
-            $YetaWF.elementRemoveClasses(icon, ["k-i-arrow-60-up", "k-panelbar-collapse", "k-i-arrow-60-down", "k-panelbar-expand"]);
-            $YetaWF.elementAddClasses(icon, ["k-i-arrow-60-up", "k-panelbar-collapse"]);
-        };
-        PanelInfoComponent.prototype.isShown = function (tag) {
-            return tag.style.display === "block" || tag.style.display === "";
-        };
-        // jQuery-ui
-        PanelInfoComponent.prototype.jhide = function (header, tag) {
-            this.collapse(tag);
-            $YetaWF.elementRemoveClasses(header, ["ui-accordion-header-active", "ui-state-active", "ui-accordion-header-collapsed", "ui-corner-all"]);
-            $YetaWF.elementAddClasses(header, ["ui-accordion-header-collapsed", "ui-corner-all"]);
+            $YetaWF.elementRemoveClasses(header, ["t_active", "t_collapsed"]);
+            $YetaWF.elementAddClass(header, "t_collapsed");
             $YetaWF.setAttribute(header, "aria-expanded", "false");
             $YetaWF.setAttribute(header, "aria-selected", "false");
             $YetaWF.setAttribute(header, "tabindex", "-1");
-            $YetaWF.elementRemoveClass(tag, "ui-accordion-content-active");
+            $YetaWF.elementRemoveClass(tag, "t_active");
             $YetaWF.setAttribute(tag, "aria-hidden", "true");
         };
-        PanelInfoComponent.prototype.jshow = function (header, tag) {
+        PanelInfoComponent.prototype.show = function (header, tag) {
             this.expand(tag);
-            $YetaWF.elementRemoveClasses(header, ["ui-accordion-header-active", "ui-state-active", "ui-accordion-header-collapsed", "ui-corner-all"]);
-            $YetaWF.elementAddClasses(header, ["ui-accordion-header-active", "ui-state-active"]);
+            $YetaWF.elementRemoveClasses(header, ["t_active", "t_collapsed"]);
+            $YetaWF.elementAddClass(header, "t_active");
             $YetaWF.setAttribute(header, "aria-expanded", "true");
             $YetaWF.setAttribute(header, "aria-selected", "true");
             $YetaWF.setAttribute(header, "tabindex", "0");
-            $YetaWF.elementRemoveClass(tag, "ui-accordion-content-active");
-            $YetaWF.elementAddClass(tag, "ui-accordion-content-active");
+            $YetaWF.elementRemoveClass(tag, "t_active");
+            $YetaWF.elementAddClass(tag, "t_active");
             $YetaWF.setAttribute(tag, "aria-hidden", "false");
+        };
+        PanelInfoComponent.prototype.isShown = function (tag) {
+            return tag.style.display === "block" || tag.style.display === "";
         };
         // helper
         PanelInfoComponent.prototype.expand = function (tag) {

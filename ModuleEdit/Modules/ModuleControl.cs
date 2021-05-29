@@ -45,7 +45,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public async Task<ModuleAction> GetAction_ExportModuleAsync(ModuleDefinition mod) {
+        public async Task<ModuleAction?> GetAction_ExportModuleAsync(ModuleDefinition mod) {
             if (!mod.ModuleHasSettings) return null;
             if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_ModuleExport)) return null;
             return new ModuleAction(this) {
@@ -66,16 +66,16 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             };
         }
 
-        public ModuleAction GetAction_Help(ModuleDefinition mod) {
-            string url = mod.HelpURL;
+        public ModuleAction? GetAction_Help(ModuleDefinition mod) {
+            string? url = mod.HelpURL;
             if (string.IsNullOrWhiteSpace(url)) {
                 Package package = Package.GetCurrentPackage(mod);
                 url = package.InfoLink;
             }
-            if (string.IsNullOrWhiteSpace(url)) return null;
+            if (string.IsNullOrWhiteSpace(url)) 
+                return null;
             return new ModuleAction(this) {
                 Url = url,
-                QueryArgsDict = new QueryHelper(new QueryDictionary { { Globals.Link_NoEditMode, "y" }, { Globals.Link_NoPageControl, "y" } }),
                 Image = "#Help",
                 LinkText = this.__ResStr("modHelpLink", "Help"),
                 MenuText = this.__ResStr("modHelpMenu", "Help"),
@@ -87,7 +87,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             };
         }
 
-        public async Task<ModuleAction> GetAction_MoveToPaneAsync(PageDefinition page, ModuleDefinition mod, string oldPane, string newPane) {
+        public async Task<ModuleAction?> GetAction_MoveToPaneAsync(PageDefinition? page, ModuleDefinition mod, string? oldPane, string? newPane) {
             if (page == null) return null;
             if (oldPane == null) return null;
             if (newPane == null) return null;
@@ -110,7 +110,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
                 Location = ModuleAction.ActionLocationEnum.ModuleMenu,
             };
         }
-        public async Task<ModuleAction> GetAction_MoveUpAsync(PageDefinition page, ModuleDefinition mod, string pane) {
+        public async Task<ModuleAction?> GetAction_MoveUpAsync(PageDefinition? page, ModuleDefinition mod, string? pane) {
             if (page == null) return null;
             if (pane == null) return null;
             if (!page.IsAuthorized_Edit()) return null;
@@ -134,7 +134,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
                 Location = ModuleAction.ActionLocationEnum.ModuleMenu,
             };
         }
-        public async Task<ModuleAction> GetAction_MoveDownAsync(PageDefinition page, ModuleDefinition mod, string pane) {
+        public async Task<ModuleAction?> GetAction_MoveDownAsync(PageDefinition? page, ModuleDefinition mod, string? pane) {
             if (page == null) return null;
             if (pane == null) return null;
             if (!page.IsAuthorized_Edit()) return null;
@@ -159,7 +159,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             };
         }
 
-        public async Task<ModuleAction> GetAction_MoveTopAsync(PageDefinition page, ModuleDefinition mod, string pane) {
+        public async Task<ModuleAction?> GetAction_MoveTopAsync(PageDefinition? page, ModuleDefinition mod, string? pane) {
             if (page == null) return null;
             if (pane == null) return null;
             if (!page.IsAuthorized_Edit()) return null;
@@ -184,7 +184,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             };
         }
 
-        public async Task<ModuleAction> GetAction_MoveBottomAsync(PageDefinition page, ModuleDefinition mod, string pane) {
+        public async Task<ModuleAction?> GetAction_MoveBottomAsync(PageDefinition? page, ModuleDefinition mod, string? pane) {
             if (page == null) return null;
             if (pane == null) return null;
             if (!page.IsAuthorized_Edit()) return null;
@@ -209,7 +209,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             };
         }
 
-        public ModuleAction GetAction_Remove(PageDefinition page, ModuleDefinition mod, Guid moduleGuid, string pane) {
+        public ModuleAction? GetAction_Remove(PageDefinition? page, ModuleDefinition? mod, Guid moduleGuid, string? pane) {
             if (mod != null && moduleGuid != Guid.Empty) throw new InternalError("Can't use module definition and module guid at the same time to remove the module");
             if (page == null) return null;
             if (pane == null) return null;
@@ -237,7 +237,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
                 ConfirmationText = this.__ResStr("confirmRemove", "Are you sure you want to remove this module?"),
             };
         }
-        public ModuleAction GetAction_RemovePermanent(PageDefinition page, ModuleDefinition mod, Guid moduleGuid, string pane) {
+        public ModuleAction? GetAction_RemovePermanent(PageDefinition? page, ModuleDefinition? mod, Guid moduleGuid, string? pane) {
             if (mod != null && moduleGuid != Guid.Empty) throw new InternalError("Can't use module definition and module guid at the same time to remove the module");
             if (page == null) return null;
             if (pane == null) return null;

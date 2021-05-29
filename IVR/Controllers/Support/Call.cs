@@ -76,18 +76,18 @@ namespace Softelvdm.Modules.IVR.Controllers {
 
                 using (CallLogDataProvider callLogDP = new CallLogDataProvider()) {
                     await callLogDP.AddItemAsync(new CallLogEntry {
-                        Caller = GetForm("From")?.Truncate(Globals.MaxPhoneNumber),
-                        CallerCity = GetForm("CallerCity")?.Truncate(CallLogEntry.MaxCity),
-                        CallerCountry = GetForm("CallerCountry")?.Truncate(CallLogEntry.MaxCountry),
-                        CallerState = GetForm("CallerState")?.Truncate(CallLogEntry.MaxState),
-                        CallerZip = GetForm("CallerZip")?.Truncate(CallLogEntry.MaxZip),
-                        To = GetForm("Called")?.Truncate(Globals.MaxPhoneNumber),
+                        Caller = GetForm("From").Truncate(Globals.MaxPhoneNumber),
+                        CallerCity = GetForm("CallerCity").Truncate(CallLogEntry.MaxCity),
+                        CallerCountry = GetForm("CallerCountry").Truncate(CallLogEntry.MaxCountry),
+                        CallerState = GetForm("CallerState").Truncate(CallLogEntry.MaxState),
+                        CallerZip = GetForm("CallerZip").Truncate(CallLogEntry.MaxZip),
+                        To = GetForm("Called").Truncate(Globals.MaxPhoneNumber),
                     });
                 }
 
                 // check for blocked numbers
                 using (BlockedNumberDataProvider blockedDP = new BlockedNumberDataProvider()) {
-                    BlockedNumberEntry blockedEntry = await blockedDP.GetItemAsync(GetForm("From"));
+                    BlockedNumberEntry? blockedEntry = await blockedDP.GetItemAsync(GetForm("From"));
                     if (blockedEntry != null)
                         return RejectResult($"Blocked number {GetForm("From")}");
                 }
@@ -107,7 +107,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
 
                 request = SECTION_MAIN;
                 using (HolidayEntryDataProvider holidayDP = new HolidayEntryDataProvider()) {
-                    HolidayEntry holiday = await holidayDP.GetItemAsync(DateTime.Now.Date.ToUniversalTime());
+                    HolidayEntry? holiday = await holidayDP.GetItemAsync(DateTime.Now.Date.ToUniversalTime());
                     if (holiday != null) {
                         request = SECTION_MAINHOLIDAY;
                     } else if (ivrConfig.OpeningHours.IsClosed(DateTime.UtcNow)) {
@@ -126,7 +126,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
             request = request.ToLower();
 
             using (ScriptDataProvider scriptDP = new ScriptDataProvider()) {
-                ScriptData script = await scriptDP.GetScriptAsync(called);
+                ScriptData? script = await scriptDP.GetScriptAsync(called);
                 if (script == null)
                     return RejectResult($"Script not found for {called}");
 
@@ -134,7 +134,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
                 if (request == SECTION_GATHEREXTENSION.ToLower()) {
                     string digits;
                     if (TryGetForm("Digits", out digits)) {
-                        Extension ext = script.FindExtension(digits);
+                        Extension? ext = script.FindExtension(digits);
                         if (ext != null) {
                             extension = ext.Digits;
                             request = SECTION_ENTEREDEXTENSION.ToLower(); // a valid extension was entered, run EnteredExtension instead
@@ -170,11 +170,11 @@ namespace Softelvdm.Modules.IVR.Controllers {
 
         private async Task<ActionResult> RunEntryAsync(IVRConfig ivrConfig, ScriptData script, string called, string extension, ScriptEntry entry, int errCount) {
 
-            string extensionName = null;
-            string extensionSpaced = null;
+            string? extensionName = null;
+            string? extensionSpaced = null;
             if (!string.IsNullOrWhiteSpace(extension)) {
                 extensionSpaced = Spaced(extension);
-                Extension e = script.FindExtension(extension);
+                Extension? e = script.FindExtension(extension);
                 if (e != null)
                     extensionName = e.Name;
             }
@@ -190,7 +190,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
 
             string token = DateTime.UtcNow.Ticks.ToString();
             string encryptedToken;
-            RSACrypto.Encrypt(ivrConfig.PublicKey, token, out encryptedToken);
+            RSACrypto.Encrypt(ivrConfig.PublicKey!, token, out encryptedToken);
 
             object parms = new {
                 Url = actionUrl,
@@ -214,7 +214,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
                 EncodingType = Variables.EncodingTypeEnum.XML
             };
 
-            Extension ext = script.FindExtension(digits);
+            Extension? ext = script.FindExtension(digits);
             if (ext != null)
                 text = RepeatableNumbers(ext, text);
 
@@ -241,8 +241,8 @@ namespace Softelvdm.Modules.IVR.Controllers {
                 if (!string.IsNullOrWhiteSpace(extension)) {
                     ext = script.FindExtension(extension);
                     if (ext != null) {
-                        DisplayVoiceMailModule dispMod = (DisplayVoiceMailModule)await ModuleDefinition.LoadAsync(ModuleDefinition.GetPermanentGuid(typeof(DisplayVoiceMailModule)));
-                        ModuleAction displayAction = await dispMod.GetAction_DisplayAsync(null, voiceMail.Id);
+                        DisplayVoiceMailModule? dispMod = (DisplayVoiceMailModule?)await ModuleDefinition.LoadAsync(ModuleDefinition.GetPermanentGuid(typeof(DisplayVoiceMailModule)));
+                        ModuleAction? displayAction = dispMod != null ? await dispMod.GetAction_DisplayAsync(null, voiceMail.Id) : null;
                         if (displayAction != null) {
                             string viewUrl = displayAction.GetCompleteUrl();
                             foreach (ExtensionNumber extNumber in ext.Numbers) {
@@ -310,7 +310,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
                 value = req.Form[name];
                 return true;
             }
-            value = null;
+            value = string.Empty;
             return false;
         }
 
@@ -320,7 +320,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
 #if DEBUG
                 throw new InternalError($"{name} not available");
 #else
-                return "";
+                return string.Empty;
 #endif
             }
             return value;

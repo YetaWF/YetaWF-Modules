@@ -57,21 +57,21 @@ namespace YetaWF.Modules.Text.Modules {
 
         [Category("Rss"), Caption("Feed Title"), Description("The Rss feed's title")]
         [UIHint("Text80"), StringLength(80), RequiredIf("Feed", true)]
-        public string FeedTitle { get; set; }
+        public string? FeedTitle { get; set; }
 
         [Category("Rss"), Caption("Feed Summary"), Description("The Rss feed's summary description")]
         [UIHint("Text80"), StringLength(200), RequiredIf("Feed", true)]
-        public string FeedSummary { get; set; }
+        public string? FeedSummary { get; set; }
 
         [Category("Rss"), Caption("Feed Main URL"), Description("The optional Rss feed's main URL")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
         [StringLength(Globals.MaxUrl), Trim]
-        public string FeedMainUrl { get; set; }
+        public string? FeedMainUrl { get; set; }
 
         [Category("Rss"), Caption("Feed Detail URL"), Description("The optional Rss feed's detail page for this Text module")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local)]
         [StringLength(Globals.MaxUrl), Trim]
-        public string FeedDetailUrl { get; set; }
+        public string? FeedDetailUrl { get; set; }
 
         [Category("Rss"), Caption("Feed Publish Date"), Description("The date this feed was published")]
         [UIHint("DateTime"), RequiredIf("Feed", true)]
@@ -85,7 +85,7 @@ namespace YetaWF.Modules.Text.Modules {
         [UIHint("Image"), AdditionalMetadata("ImageType", ModuleImageSupport.ImageType)]
         [AdditionalMetadata("Width", 200), AdditionalMetadata("Height", 200)]
         [DontSave]
-        public string FeedImage {
+        public string? FeedImage {
             get {
                 if (_feedImage == null) {
                     if (FeedImage_Data != null && FeedImage_Data.Length > 0)
@@ -97,7 +97,7 @@ namespace YetaWF.Modules.Text.Modules {
                 _feedImage = value;
             }
         }
-        private string _feedImage = null;
+        private string? _feedImage = null;
 
         [Data_Binary, CopyAttribute]
         public byte[] FeedImage_Data { get; set; }
@@ -106,12 +106,12 @@ namespace YetaWF.Modules.Text.Modules {
         [UIHint("TextArea"), AdditionalMetadata("ImageBrowse", true), StringLength(MaxContents), AdditionalMetadata("PageBrowse", true)]
         [DontSave]
         [NoModelChange]
-        public string Contents {
+        public string? Contents {
             get {
                 return CompleteContents[MultiString.ActiveLanguage];
             }
             set {
-                CompleteContents[MultiString.ActiveLanguage] = value;
+                CompleteContents[MultiString.ActiveLanguage] = value??string.Empty;
             }
         }
 
@@ -120,12 +120,12 @@ namespace YetaWF.Modules.Text.Modules {
         public override async Task<List<ModuleAction>> RetrieveModuleActionsAsync() {
             List<ModuleAction> actions = await base.RetrieveModuleActionsAsync();
             if (Feed)
-                actions.New(await GetAction_RssFeedAwait(ModuleGuid));
+                actions.New(await GetAction_RssFeedAsync(ModuleGuid));
             return actions;
         }
 
-        public async Task<ModuleAction> GetAction_RssFeedAwait(Guid moduleGuid) {
-            TextModule mod = (TextModule)await ModuleDefinition.LoadAsync(moduleGuid, AllowNone: true);
+        public async Task<ModuleAction?> GetAction_RssFeedAsync(Guid moduleGuid) {
+            TextModule? mod = (TextModule?)await ModuleDefinition.LoadAsync(moduleGuid, AllowNone: true);
             if (mod == null) return null;
             return new ModuleAction(this) {
                 Url = Utility.UrlFor(typeof(RssController), "RssFeed"),
@@ -142,8 +142,8 @@ namespace YetaWF.Modules.Text.Modules {
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks,
             };
         }
-        public async Task<ModuleAction> GetAction_RssDetailAsync(string url, Guid moduleGuid, string AnchorId = null) {
-            TextModule mod = (TextModule)await ModuleDefinition.LoadAsync(moduleGuid, AllowNone: true);
+        public async Task<ModuleAction?> GetAction_RssDetailAsync(string? url, Guid moduleGuid, string? AnchorId = null) {
+            TextModule? mod = (TextModule?)await ModuleDefinition.LoadAsync(moduleGuid, AllowNone: true);
             if (mod == null) return null;
             if (string.IsNullOrWhiteSpace(url))
                 url = Manager.CurrentSite.MakeUrl(GetModuleUrl(moduleGuid));

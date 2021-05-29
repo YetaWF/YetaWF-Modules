@@ -27,10 +27,10 @@ namespace Softelvdm.Modules.IVR.Controllers {
         public class BrowseItem {
 
             [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands {
                 get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+                    List<ModuleAction> actions = new List<ModuleAction>();
                     actions.New(Module.GetAction_Remove(Id), ModuleAction.ActionLocationEnum.GridLinks);
                     return actions;
                 }
@@ -42,7 +42,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
 
             [Caption("Description"), Description("The description of the holiday")]
             [UIHint("String"), StringLength(HolidayEntry.MaxDescription), ReadOnly]
-            public string Description { get; set; }
+            public string? Description { get; set; }
 
             public int Id { get; set; }
 
@@ -60,7 +60,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
                 //SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = GetActionUrl(nameof(BrowseHolidays_GridData)),
-                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (HolidayEntryDataProvider dataProvider = new HolidayEntryDataProvider()) {
                         DataProviderGetRecords<HolidayEntry> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
@@ -75,7 +75,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
         public class BrowseModel {
             [Caption(""), Description("")] // empty entries required so property is shown in property list (but with a suppressed label)
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
 
         [AllowGet]

@@ -65,13 +65,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 bool lookup = PropData.GetAdditionalAttributeValue("Lookup", true);
                 if (lookup) {
-                    ModuleDefinition modDisplay = await ModuleDefinition.LoadAsync(new Guid("{ad95564e-8eb7-4bcb-be64-dc6f1cd6b55d}"), AllowNone: true);
+                    ModuleDefinition? modDisplay = await ModuleDefinition.LoadAsync(new Guid("{ad95564e-8eb7-4bcb-be64-dc6f1cd6b55d}"), AllowNone: true);
                     if (modDisplay != null) {
-                        ModuleAction actionDisplay = await modDisplay.GetModuleActionAsync("DisplayHostName", null, model);
-                        if (modDisplay != null)
+                        ModuleAction? actionDisplay = await modDisplay.GetModuleActionAsync("DisplayHostName", null, model);
+                        if (actionDisplay != null)
                             hb.Append(await actionDisplay.RenderAsync(ModuleAction.RenderModeEnum.IconsOnly));
                         actionDisplay = await modDisplay.GetModuleActionAsync("DisplayGeoData", null, model);
-                        if (modDisplay != null)
+                        if (actionDisplay != null)
                             hb.Append(await actionDisplay.RenderAsync(ModuleAction.RenderModeEnum.IconsOnly));
                     }
                 }

@@ -27,18 +27,18 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         public DateTime Created { get; set; }
 
         [StringLength(Globals.MaxPhoneNumber)]
-        public string Caller { get; set; }
+        public string Caller { get; set; } = null!;
         [StringLength(MaxCity)]
-        public string CallerCity { get; set; }
+        public string CallerCity { get; set; } = null!;
         [StringLength(MaxState)]
-        public string CallerState { get; set; }
+        public string CallerState { get; set; } = null!;
         [StringLength(MaxZip)]
-        public string CallerZip { get; set; }
+        public string CallerZip { get; set; } = null!;
         [StringLength(MaxCountry)]
-        public string CallerCountry { get; set; }
+        public string CallerCountry { get; set; } = null!;
 
         [Data_Index, StringLength(Globals.MaxPhoneNumber)]
-        public string To { get; set; }
+        public string To { get; set; } = null!;
 
         public CallLogEntry() { }
     }
@@ -54,7 +54,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
 
         private IDataProviderIdentity<int, object, CallLogEntry> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderIdentity<int, object, CallLogEntry> CreateDataProvider() {
+        private IDataProviderIdentity<int, object, CallLogEntry>? CreateDataProvider() {
             Package package = Softelvdm.Modules.IVR.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_CallLog", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -63,7 +63,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         // LOAD/SAVE
         // LOAD/SAVE
 
-        public Task<CallLogEntry> GetItemByIdentityAsync(int id) {
+        public Task<CallLogEntry?> GetItemByIdentityAsync(int id) {
             return DataProvider.GetByIdentityAsync(id);
         }
         public async Task<bool> AddItemAsync(CallLogEntry data) {
@@ -79,7 +79,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         }
         public async Task<UpdateStatusEnum> UpdateItemAsync(CallLogEntry data) {
 
-            CallLogEntry origData = Auditing.Active ? await GetItemByIdentityAsync(data.Id) : null;
+            CallLogEntry? origData = Auditing.Active ? await GetItemByIdentityAsync(data.Id) : null;
 
             //data.Updated = DateTime.UtcNow;
             UpdateStatusEnum status = await DataProvider.UpdateByIdentityAsync(data.Id, data);
@@ -95,7 +95,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         }
         public async Task<bool> RemoveItemByIdentityAsync(int id) {
 
-            CallLogEntry origData = Auditing.Active ? await GetItemByIdentityAsync(id) : null;
+            CallLogEntry? origData = Auditing.Active ? await GetItemByIdentityAsync(id) : null;
 
             if (!await DataProvider.RemoveByIdentityAsync(id))
                 return false;
@@ -107,7 +107,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
             );
             return true;
         }
-        public Task<DataProviderGetRecords<CallLogEntry>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        public Task<DataProviderGetRecords<CallLogEntry>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
             return DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
     }

@@ -1,15 +1,10 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SyntaxHighlighter#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Packages;
 using YetaWF.Modules.SyntaxHighlighter.DataProvider;
-using YetaWF.Modules.SyntaxHighlighter.Support;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.SyntaxHighlighter.Controllers {
 
@@ -21,11 +16,8 @@ namespace YetaWF.Modules.SyntaxHighlighter.Controllers {
         public async Task<ActionResult> SkinHighlightJS() {
             ConfigData config = await ConfigDataProvider.GetConfigAsync();
 
-            // find theme specific skin
             Package package = AreaRegistration.CurrentPackage;
-            SkinAccess skinAccess = new SkinAccess();
-            string theme = skinAccess.FindHighlightJSSkin(config.HighlightJSSkin);
-            await Manager.AddOnManager.AddAddOnNamedAsync(package.AreaName, "SkinHighlightJS", theme);
+            await Manager.AddOnManager.AddAddOnNamedAsync(package.AreaName, "SkinHighlightJS", config.HighlightJSSkin);
 
             return new EmptyResult();
         }

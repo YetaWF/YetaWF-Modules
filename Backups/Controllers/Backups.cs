@@ -18,12 +18,7 @@ using YetaWF.Modules.Backups.DataProvider;
 using YetaWF.Modules.Backups.Modules;
 using YetaWF.Core.IO;
 using YetaWF.Core.Components;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web;
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Backups.Controllers {
 
@@ -32,11 +27,11 @@ namespace YetaWF.Modules.Backups.Controllers {
         public class BackupModel {
 
             [Caption("Actions"), Description("All available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands { get; set; }
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands { get; set; } = null!;
 
-            public async Task<MenuList> __GetCommandsAsync() {
-                MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+            public async Task<List<ModuleAction>> __GetCommandsAsync() {
+                List<ModuleAction> actions = new List<ModuleAction>();
                 actions.New(await Module.GetAction_DownloadLinkAsync(FileName), ModuleAction.ActionLocationEnum.GridLinks);
                 actions.New(Module.GetAction_RemoveLink(FileName), ModuleAction.ActionLocationEnum.GridLinks);
                 return actions;
@@ -44,7 +39,7 @@ namespace YetaWF.Modules.Backups.Controllers {
 
             [Caption("File Name"), Description("The site backup file name (located in the Backups folder)")]
             [UIHint("String"), ReadOnly]
-            public string FileName { get; set; }
+            public string FileName { get; set; } = null!;
 
             [Caption("Created"), Description("The date/time the site backup was created")]
             [UIHint("DateTime"), ReadOnly]
@@ -56,7 +51,7 @@ namespace YetaWF.Modules.Backups.Controllers {
 
             [Caption("Full File Name"), Description("The site backup file name")]
             [UIHint("String"), ReadOnly]
-            public string FullFileName { get; set; }
+            public string FullFileName { get; set; } = null!;
 
             public BackupsModule Module { get; private set; }
 
@@ -69,7 +64,7 @@ namespace YetaWF.Modules.Backups.Controllers {
 
         public class BackupsModel {
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
 
         private GridDefinition GetGridModel() {
@@ -78,7 +73,7 @@ namespace YetaWF.Modules.Backups.Controllers {
                 SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(BackupModel),
                 AjaxUrl = GetActionUrl(nameof(Backups_GridData)),
-                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (BackupsDataProvider dataProvider = new BackupsDataProvider()) {
                         DataProviderGetRecords<BackupEntry> backups = await dataProvider.GetBackupsAsync(skip, take, sort, filters);
                         return new DataSourceResult {

@@ -3,7 +3,7 @@
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     /**
-     * Implements a stand-alone tooltip so we don't need jqueryui/bootstrap
+     * Implements a stand-alone tooltip.
      */
     var Tooltips = /** @class */ (function () {
         function Tooltips() {
@@ -21,8 +21,8 @@ var YetaWF_ComponentsHTML;
             var noTTISel = this.buildNoTT("i", noTooltips);
             var a2 = YConfigs.Basics.CssTooltip;
             var a3 = YConfigs.Basics.CssTooltipSpan;
-            var ttMisc = ".ui-jqgrid span[" + a2 + "],th[" + a2 + "],span[" + a3 + "],li[" + a2 + "],div[" + a2 + "]";
-            var selectors = "label,input:not(.ui-button-disabled),a:not(.ui-button-disabled),button:not(.ui-button-disabled)," + noTTImgSel + "," + noTTASel + "," + noTTISel + "," + ttMisc;
+            var ttMisc = "th[" + a2 + "],span[" + a3 + "],li[" + a2 + "],div[" + a2 + "]";
+            var selectors = "label,input,a,button," + noTTImgSel + "," + noTTASel + "," + noTTISel + "," + ttMisc;
             $YetaWF.registerMultipleEventHandlersBody(["mouseover", "click"], "" + selectors, function (ev) {
                 var elem = ev.__YetaWFElem;
                 for (;;) {
@@ -44,9 +44,6 @@ var YetaWF_ComponentsHTML;
                     // we're in an IMG or I tag, find enclosing A (if any) and try again
                     elem = $YetaWF.elementClosestCond(elem, noTTASel);
                     if (!elem)
-                        return true;
-                    // if the a link is a menu, don't show a tooltip for the image because the tooltip would be in a bad location
-                    if ($YetaWF.elementClosestCond(elem, ".k-menu"))
                         return true;
                 }
                 // nothing so far, check <a> to external site

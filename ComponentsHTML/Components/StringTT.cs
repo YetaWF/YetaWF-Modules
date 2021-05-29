@@ -61,7 +61,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public Task<string> RenderAsync(StringTT model) {
             return RenderStringTTAsync(this, model, null);
         }
-        internal static Task<string> RenderStringTTAsync(YetaWFComponent component, StringTT model, string cssClass) {
+        internal static Task<string> RenderStringTTAsync(YetaWFComponent component, StringTT model, string? cssClass) {
 
             string css = string.Empty;
             if (!string.IsNullOrWhiteSpace(cssClass)) {

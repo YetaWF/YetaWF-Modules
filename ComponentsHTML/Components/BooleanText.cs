@@ -15,19 +15,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal const string TemplateName = "BooleanText";
 
-        /// <summary>
-        /// Returns the package implementing the component.
-        /// </summary>
-        /// <returns>Returns the package implementing the component.</returns>
+        /// <inheritdoc/>
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        /// <summary>
-        /// Returns the component name.
-        /// </summary>
-        /// <returns>Returns the component name.</returns>
-        /// <remarks>Components in packages whose product name starts with "Component" use the exact name returned by GetTemplateName when used in UIHint attributes. These are considered core components.
-        /// Components in other packages use the package's area name as a prefix. E.g., the UserId component in the YetaWF.Identity package is named "YetaWF_Identity_UserId" when used in UIHint attributes.
-        ///
-        /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
+        /// <inheritdoc/>
         public override string GetTemplateName() { return TemplateName; }
     }
 
@@ -43,32 +33,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     [UsesSibling("_Text", "string", "Defines the additional text shown next to the checkbox.")]
     public class BooleanTextDisplayComponent : BooleanTextComponentBase, IYetaWFComponent<bool?> {
 
-        /// <summary>
-        /// Returns the component type (edit/display).
-        /// </summary>
-        /// <returns>Returns the component type.</returns>
+        /// <inheritdoc/>
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
-        public async Task<string> RenderAsync(bool model) {
-            return await RenderAsync((bool?)model);
-        }
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
+        /// <inheritdoc/>
         public Task<string> RenderAsync(bool? model) {
 
             string check = string.Empty;
             if (model != null && (bool)model)
                 check = " checked='checked'";
 
-            TryGetSiblingProperty($"{PropertyName}_Text", out string text);
+            TryGetSiblingProperty($"{PropertyName}_Text", out string? text);
 
             return Task.FromResult( $@"<input{FieldSetup(FieldType.Anonymous)} class='yt_booleantext t_display{GetClasses()}' type='checkbox' disabled='disabled'{check}>{HE(text)}");
         }
@@ -87,27 +62,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </example>
     [UsesSibling("_Text", "string", "Defines the additional text shown next to the checkbox.")]
     [UsesSibling("_Tooltip", "string", "Defines the tooltip shown for the checkbox.")]
-    public class BooleanTextEditComponent : BooleanTextComponentBase, IYetaWFComponent<bool>, IYetaWFComponent<bool?> {
+    public class BooleanTextEditComponent : BooleanTextComponentBase, IYetaWFComponent<bool?> {
 
-        /// <summary>
-        /// Returns the component type (edit/display).
-        /// </summary>
-        /// <returns>Returns the component type.</returns>
+        /// <inheritdoc/>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
-        public async Task<string> RenderAsync(bool model) {
-            return await RenderAsync((bool?) model);
-        }
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
+        /// <inheritdoc/>
         public Task<string> RenderAsync(bool? model) {
 
             // add a hidden field so we always get "something" for check boxes (that means we have to deal with duplicates names)
@@ -116,9 +76,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (model != null && (bool)model)
                 check = " checked='checked'";
 
-            TryGetSiblingProperty($"{PropertyName}_Text", out string text);
+            TryGetSiblingProperty($"{PropertyName}_Text", out string? text);
 
-            if (TryGetSiblingProperty($"{PropertyName}_Tooltip", out string tooltip))
+            if (TryGetSiblingProperty($"{PropertyName}_Tooltip", out string? tooltip))
                 tooltip = $" data-tooltip='{Utility.HAE(tooltip)}'";
 
             return Task.FromResult($@"

@@ -28,10 +28,10 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         public class BrowseItem {
 
             [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands {
                 get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+                    List<ModuleAction> actions = new List<ModuleAction>();
                     AuditDisplayModule dispMod = new AuditDisplayModule();
                     actions.New(dispMod.GetAction_Display(Module.DisplayUrl, Id), ModuleAction.ActionLocationEnum.GridLinks);
                     //actions.New(Module.GetAction_Remove(Id), ModuleAction.ActionLocationEnum.GridLinks);
@@ -48,20 +48,20 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
             [Caption("Identifier/String"), Description("The identifying string of the record - Identifier String and Type both identify the source of this record")]
             [UIHint("String"), ReadOnly]
-            public string IdentifyString { get; set; }
+            public string IdentifyString { get; set; } = null!;
             [Caption("Identifier/Type"), Description("The type of the record - Identifier String and Type both identify the source of this record")]
             [UIHint("Guid"), ReadOnly]
             public Guid IdentifyGuid { get; set; }
 
             [Caption("Action"), Description("The action that created this record")]
             [UIHint("String"), ReadOnly]
-            public string Action { get; set; }
+            public string Action { get; set; } = null!;
             [Caption("Description"), Description("The description for this record")]
             [UIHint("String"), ReadOnly]
-            public string Description { get; set; }
+            public string? Description { get; set; }
             [Caption("Changes"), Description("The properties that were changed")]
             [UIHint("String"), ReadOnly]
-            public string Changes { get; set; }
+            public string? Changes { get; set; }
 
             [Caption("Site"), Description("The site that was changed")]
             [UIHint("SiteId"), ReadOnly]
@@ -86,10 +86,8 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                 Module = module;
                 ObjectSupport.CopyData(data, this);
                 Description = Description?.Truncate(100);
-                Changes = Changes?.Replace(",", ", ");
-                Changes = Changes.TruncateWithEllipse(100);
+                Changes = Changes?.Replace(",", ", ").TruncateWithEllipse(100);
             }
-            public BrowseItem() { }
         }
 
         public class BrowseModel {
@@ -109,7 +107,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [Caption(""), Description("")] // empty entries required so property is shown in property list (but with a suppressed label)
             [UIHint("Grid"), ReadOnly]
             [SuppressIf("AuditingActive", false)]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
         private GridDefinition GetGridModel() {
             return new GridDefinition {
@@ -118,7 +116,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                 InitialPageSize = 20,
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = GetActionUrl(nameof(AuditRecords_GridData)),
-                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (AuditInfoDataProvider dataProvider = new AuditInfoDataProvider()) {
                         DataProviderGetRecords<AuditInfo> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
@@ -134,7 +132,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         public async Task<ActionResult> AuditRecords() {
             using (AuditInfoDataProvider dataProvider = new AuditInfoDataProvider()) {
                 BrowseModel model = new BrowseModel {
-                    RestartPending = YetaWF.Core.Support.Startup.RestartPending || (YetaWF.Core.Audit.Auditing.Active ? await YetaWF.Core.Audit.Auditing.AuditProvider.HasPendingRestartAsync() : false),
+                    RestartPending = YetaWF.Core.Support.Startup.RestartPending || (YetaWF.Core.Audit.Auditing.Active ? await YetaWF.Core.Audit.Auditing.AuditProvider!.HasPendingRestartAsync() : false),
                     LastRestart = YetaWF.Core.Support.Startup.MultiInstanceStartTime,
                     GridDef = GetGridModel()
                 };

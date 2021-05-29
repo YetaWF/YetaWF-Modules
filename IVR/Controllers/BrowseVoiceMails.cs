@@ -27,11 +27,11 @@ namespace Softelvdm.Modules.IVR.Controllers {
         public class BrowseItem {
 
             [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), AdditionalMetadata("GridActionsEnum", Grid.GridActionsEnum.Icons), ReadOnly]
-            public MenuList Commands { get; set; }
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands { get; set; } = null!;
 
-            public async Task<MenuList> __GetCommandsAsync() {
-                MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+            public async Task<List<ModuleAction>> __GetCommandsAsync() {
+                List<ModuleAction> actions = new List<ModuleAction>();
                 actions.New(await DisplayModule.GetAction_DisplayAsync(Module.DisplayUrl, Id), ModuleAction.ActionLocationEnum.GridLinks);
                 actions.New(Module.GetAction_Remove(Id), ModuleAction.ActionLocationEnum.GridLinks);
                 return actions;
@@ -51,33 +51,33 @@ namespace Softelvdm.Modules.IVR.Controllers {
 
             [Caption("Call Sid"), Description("The id used by Twilio to identify the call")]
             [UIHint("String"), ReadOnly]
-            public string CallSid { get; set; }
+            public string CallSid { get; set; } = null!;
 
             [Caption("Phone Number"), Description("The phone number for which the voice mail message is saved")]
             [UIHint("Softelvdm_IVR_PhoneNumber"), ReadOnly]
-            public string To { get; set; }
+            public string? To { get; set; }
             [Caption("Extension"), Description("The extension for which the voice mail message is saved")]
             [UIHint("String"), ReadOnly]
-            public string Extension { get; set; }
+            public string? Extension { get; set; }
 
-            public string RecordingUrl { get; set; }
+            public string RecordingUrl { get; set; } = null!;
 
             [Caption("From"), Description("The caller's phone number")]
             [UIHint("Softelvdm_IVR_PhoneNumber"), ReadOnly]
             [ExcludeDemoMode]
-            public string Caller { get; set; }
+            public string? Caller { get; set; }
             [Caption("From City"), Description("The caller's city (if available)")]
             [UIHint("String"), ReadOnly]
-            public string CallerCity { get; set; }
+            public string? CallerCity { get; set; }
             [Caption("From State"), Description("The caller's state (if available)")]
             [UIHint("String"), ReadOnly]
-            public string CallerState { get; set; }
+            public string? CallerState { get; set; }
             [Caption("From Zip Code"), Description("The caller's ZIP code (if available)")]
             [UIHint("String"), ReadOnly]
-            public string CallerZip { get; set; }
+            public string? CallerZip { get; set; }
             [Caption("From Country"), Description("The caller's country (if available)")]
             [UIHint("String"), ReadOnly]
-            public string CallerCountry { get; set; }
+            public string? CallerCountry { get; set; }
 
             [Caption("Duration"), Description("The duration of the voice mail message (in seconds)")]
             [UIHint("IntValue"), ReadOnly]
@@ -99,7 +99,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
                 //SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = GetActionUrl(nameof(BrowseVoiceMails_GridData)),
-                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     List<string> extensions = new List<string>();
                     if (!Manager.HasSuperUserRole) {
                         using (ExtensionEntryDataProvider extDP = new ExtensionEntryDataProvider()) {
@@ -108,9 +108,9 @@ namespace Softelvdm.Modules.IVR.Controllers {
                         if (extensions.Count == 0)
                             throw new Error(this.__ResStr("noInbox", "No extension defined for the current user"));
                     }
-                    DisplayVoiceMailModule dispMod = (DisplayVoiceMailModule)await ModuleDefinition.LoadAsync(ModuleDefinition.GetPermanentGuid(typeof(DisplayVoiceMailModule)));
+                    DisplayVoiceMailModule dispMod = (DisplayVoiceMailModule?)await ModuleDefinition.LoadAsync(ModuleDefinition.GetPermanentGuid(typeof(DisplayVoiceMailModule))) ?? throw new InternalError("Display Module not available");
                     using (VoiceMailDataProvider dataProvider = new VoiceMailDataProvider()) {
-                        List<DataProviderFilterInfo> extFilters = null;
+                        List<DataProviderFilterInfo>? extFilters = null;
                         foreach (string extension in extensions) {
                             extFilters = DataProviderFilterInfo.Join(extFilters, new DataProviderFilterInfo { Field = nameof(ExtensionEntry.Extension), Operator = "==", Value = extension }, SimpleLogic: "||");
                         }
@@ -129,7 +129,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
         public class BrowseModel {
             [Caption(""), Description("")] // empty entries required so property is shown in property list (but with a suppressed label)
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
 
         [AllowGet]

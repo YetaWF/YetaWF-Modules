@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YetaWF.Core.Addons;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
@@ -30,13 +29,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// </summary>
             Tabbed = 0,
             /// <summary>
-            /// Render a boxed property list (if there are multiple categories) or a simple list (0 or 1 category), to be styled using CSS.
+            /// Render a boxed property list (if there are multiple categories) or a simple list (0 or 1 category).
             /// </summary>
             Boxed = 1,
             /// <summary>
-            /// Render a boxed property list with category labels (if there are multiple categories) or a simple list (0 or 1 category), to be styled using CSS.
+            /// Render a boxed property list with category labels (if there are multiple categories) or a simple list (0 or 1 category).
             /// </summary>
             BoxedWithCategories = 2,
+            /// <summary>
+            /// Render a boxed property list with category headers (1 or more categories). If there are no categories, a simple property list is rendered.
+            /// </summary>
+            BoxedWithHeaders = 3,
         }
 
         /// <summary>
@@ -57,13 +60,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// </remarks>
             public List<PropertyListColumnDef> ColumnStyles { get; set; }
             /// <summary>
-            /// Categories (boxes) that are expandable/collapsible. May be null or an empty collection, which means no categories are expandable.
+            /// For Boxed and BoxedWithCategories styles, categories (boxes) are expandable/collapsible. May be null or an empty collection, which means no categories are expandable.
             /// </summary>
             public List<string> ExpandableList { get; set; }
             /// <summary>
-            /// Category that is initially expanded. May be null which means no category is initially expanded.
+            /// For Boxed and BoxedWithCategories styles, defines the category that is initially expanded. May be null which means no category is initially expanded.
             /// </summary>
-            public string InitialExpanded { get; set; }
+            public string? InitialExpanded { get; set; }
             /// <summary>
             /// Category order. May be null or an empty collection, which means there is no explicit category order.
             /// </summary>
@@ -108,7 +111,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public static async Task<PropertyListSetup> LoadPropertyListDefinitionsAsync(Type model) {
             string controller;
             string objClass;
-            if (model.FullName.Contains("+")) {
+            if (model.FullName!.Contains("+")) {
                 string className = model.FullName.Split(new char[] { '.' }).Last();
                 string[] s = className.Split(new char[] { '+' });
                 int len = s.Length;
@@ -124,12 +127,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 controller = s[len-2];
                 objClass = s[len-1];
             }
-            string file = controller + "." + objClass;
+            string file = $"{controller}.{objClass}.json";
 
             Package package = Package.GetPackageFromType(model);
-            string predefUrl = VersionManager.GetAddOnPackageUrl(package.AreaName) + "PropertyLists/" + file;
-            string customUrl = VersionManager.GetCustomUrlFromUrl(predefUrl);
-            PropertyListSetup setup = null;
+            string predefUrl = Package.GetAddOnPackageUrl(package.AreaName) + "PropertyLists/" + file;
+            string customUrl = Package.GetCustomUrlFromUrl(predefUrl);
+            PropertyListSetup? setup = null;
             PropertyListSetup predefSetup = await ReadPropertyListSetupAsync(package, model, Utility.UrlToPhysical(predefUrl));
             if (predefSetup.ExplicitDefinitions)
                 setup = predefSetup;
@@ -148,7 +151,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 // Check cache first
                 GetObjectInfo<PropertyListSetup> info = await cacheDP.GetAsync<PropertyListSetup>(file);
                 if (info.Success)
-                    return info.Data;
+                    return info.Data!;
 
                 // Load the file
                 if (YetaWFManager.DiagnosticsMode) {// to avoid exception spam

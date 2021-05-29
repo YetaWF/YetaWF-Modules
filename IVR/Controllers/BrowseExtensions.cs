@@ -29,10 +29,10 @@ namespace Softelvdm.Modules.IVR.Controllers {
         public class BrowseItem {
 
             [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands {
                 get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+                    List<ModuleAction> actions = new List<ModuleAction>();
 
                     EditExtensionModule editMod = new EditExtensionModule();
                     actions.New(editMod.GetAction_Edit(Module.EditUrl, Extension), ModuleAction.ActionLocationEnum.GridLinks);
@@ -44,20 +44,20 @@ namespace Softelvdm.Modules.IVR.Controllers {
             [Caption("Extension"), Description("Defines the extension (digits)")]
             [UIHint("String"), ReadOnly]
             [StringLength(ExtensionEntry.MaxExtension)]
-            public string Extension { get; set; }
+            public string Extension { get; set; } = null!;
 
             [Caption("Description"), Description("Describes the extension")]
             [UIHint("String"), ReadOnly]
             [StringLength(ExtensionEntry.MaxDescription)]
-            public string Description { get; set; }
+            public string? Description { get; set; }
 
             [Caption("Phone Numbers / SMS"), Description("Shows the phone numbers to call when this extension is entered and the text messaging selection")]
             [UIHint("Softelvdm_IVR_ListOfPhoneNumbers"), AdditionalMetadata("UseSkinFormatting", false), AdditionalMetadata("Header", false), AdditionalMetadata("Pager", false), ReadOnly]
-            public SerializableList<ExtensionPhoneNumber> PhoneNumbers { get; set; }
+            public SerializableList<ExtensionPhoneNumber>? PhoneNumbers { get; set; }
 
             [Caption("Users"), Description("Shows the users that can access voice mails for this extension")]
             [UIHint("YetaWF_Identity_ListOfUserNames"), AdditionalMetadata("UseSkinFormatting", false), AdditionalMetadata("Header", false), AdditionalMetadata("Pager", false), ReadOnly]
-            public SerializableList<User> Users { get; set; }
+            public SerializableList<User>? Users { get; set; }
 
             [Caption("Created"), Description("The date/time the extension was added")]
             [UIHint("DateTime"), ReadOnly]
@@ -81,7 +81,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
                 SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = GetActionUrl(nameof(BrowseExtensions_GridData)),
-                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (ExtensionEntryDataProvider dataProvider = new ExtensionEntryDataProvider()) {
                         DataProviderGetRecords<ExtensionEntry> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
@@ -96,7 +96,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
         public class BrowseModel {
             [Caption(""), Description("")] // empty entries required so property is shown in property list (but with a suppressed label)
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
 
         [AllowGet]

@@ -19,7 +19,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="fieldName">The HTML field name.</param>
         /// <param name="htmlHelper">An instance of a YHtmlHelper.</param>
         /// <returns>Returns the client-side validation message for the component with the specified field name.</returns>
-        public static string ValidationMessage(this YHtmlHelper htmlHelper, string containerFieldPrefix, string fieldName) {
+        public static string ValidationMessage(this YHtmlHelper htmlHelper, string? containerFieldPrefix, string fieldName) {
             if (!string.IsNullOrEmpty(containerFieldPrefix))
                 fieldName = containerFieldPrefix + "." + fieldName;
             return htmlHelper.BuildValidationMessage(fieldName);
@@ -33,7 +33,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>Returns the client-side validation message for the component with the specified field name.</returns>
         public static string BuildValidationMessage(this YHtmlHelper htmlHelper, string fieldName) {
             var modelState = htmlHelper.ModelState[fieldName];
-            string error = null;
+            string error = string.Empty;
             bool hasError = false;
             if (modelState == null) {
                 // no errors

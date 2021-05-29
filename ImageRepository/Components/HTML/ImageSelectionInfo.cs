@@ -22,7 +22,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
 
         private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(ImageSelectionInfo), name, defaultValue, parms); }
 
-        public ImageSelectionInfo(ModuleDefinition owningModule, Guid folderGuid, string subFolder, string fileType = "Images") {
+        public ImageSelectionInfo(ModuleDefinition owningModule, Guid folderGuid, string? subFolder, string fileType = "Images") {
             OwningModule = owningModule;
             FolderGuid = folderGuid;
             SubFolder = subFolder;
@@ -74,11 +74,11 @@ namespace YetaWF.Modules.ImageRepository.Components {
         /// <summary>
         /// Optional subfolder, can be null
         /// </summary>
-        public string SubFolder { get; set; }
+        public string? SubFolder { get; set; }
         /// <summary>
         /// File type (defaults to "Images")
         /// </summary>
-        public string FileType { get; set; }
+        public string FileType { get; set; } = null!;
         /// <summary>
         /// Whether uploads are allowed
         /// </summary>
@@ -97,9 +97,9 @@ namespace YetaWF.Modules.ImageRepository.Components {
         public int PreviewHeight { get; set; }
 
         [UIHint("ModuleAction")]
-        public ModuleAction ClearImageButton { get; set; }
+        public ModuleAction ClearImageButton { get; set; } = null!;
         [UIHint("ModuleAction")]
-        public ModuleAction RemoveImageButton { get; set; }
+        public ModuleAction RemoveImageButton { get; set; } = null!;
         public ModuleDefinition OwningModule { get; set; }
 
         public string MakeImageUrl(string filename, int width = 0, int height = 0) {
@@ -111,18 +111,18 @@ namespace YetaWF.Modules.ImageRepository.Components {
                 _files = await ReadFilesAsync(FolderGuid, SubFolder, FileType);
             return _files;
         }
-        List<string> _files;
+        List<string>? _files;
 
         // Some of the following is not HTML dependent TODO: %%%%%%%%%%%%%%%%%%% ?
 
-        public static string StoragePath(Guid folderGuid, string subFolder, string fileType) {
+        public static string StoragePath(Guid folderGuid, string? subFolder, string fileType) {
             string path = ModuleDefinition.GetModuleDataFolder(folderGuid);
             if (!string.IsNullOrWhiteSpace(subFolder))
                 path = Path.Combine(path, subFolder);
             return Path.Combine(path, fileType);
         }
         // remove folder, then move up and remove all empty parent folders
-        public static async Task RemoveStorageAsync(Guid folderGuid, string subFolder, string fileType) {
+        public static async Task RemoveStorageAsync(Guid folderGuid, string? subFolder, string fileType) {
             string path = StoragePath(folderGuid, subFolder, fileType);
             try {
                 await FileSystem.FileSystemProvider.DeleteDirectoryAsync(path);
@@ -130,7 +130,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
                 return;
             }
             for (;;) {
-                path = Path.GetDirectoryName(path);
+                path = Path.GetDirectoryName(path)!;
                 try {
                     await FileSystem.FileSystemProvider.DeleteDirectoryAsync(path);
                 } catch (Exception) {
@@ -138,7 +138,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
                 }
             }
         }
-        public static async Task<List<string>> ReadFilesAsync(Guid folderGuid, string subFolder, string fileType) {
+        public static async Task<List<string>> ReadFilesAsync(Guid folderGuid, string? subFolder, string fileType) {
             List<string> files = await ReadFilePathsAsync(folderGuid, subFolder, fileType);
             List<string> list = new List<string>();
             foreach (string f in files) {
@@ -147,7 +147,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
             }
             return list;
         }
-        private static async Task<List<string>> ReadFilePathsAsync(Guid folderGuid, string subFolder, string fileType) {
+        private static async Task<List<string>> ReadFilePathsAsync(Guid folderGuid, string? subFolder, string fileType) {
             List<string> files = new List<string>();
             string storagePath = ImageSelectionInfo.StoragePath(folderGuid, subFolder, fileType);
             if (await FileSystem.FileSystemProvider.DirectoryExistsAsync(storagePath))

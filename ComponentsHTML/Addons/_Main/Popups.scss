@@ -7,36 +7,84 @@
 #ypopup {
 
     position: fixed;
+    z-index:2002 !important;
 
-    &.ui-dialog {
-       z-index:2002 !important;
-    }
+    font: var(--body-font);
+    background: var(--dialog-bg);
+    color: var(--dialog-clr);
+    border: var(--dialog-border);
+    border-radius: var(--dialog-border-radius);
+
+    padding: .2em;
 
     display: flex;
     flex-direction: column;
     overflow:hidden;
 
-    iframe.ui-dialog-content {
+    .t_titlebar {
+        display:flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        background: var(--dialog-title-bg);
+        color: var(--dialog-title-clr);
+        cursor: move;
+        padding: .4em .5em .4em 1em;
+        position: relative;
+        border: var(--dialog-border);
+        border-radius: var(--dialog-border-radius);
+        font: var(--dialog-title-font);
+        #ypopupTitle {
+            flex: 1 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .t_close {
+            margin-left: auto;
+            padding: .2em;
+            svg {
+                width:1rem;
+                height:1rem;
+            }
+        }
+    }
+    .t_content {
+        width: auto;
+        min-height: 2em;
+        max-height: none;
+        height: auto;
+        margin:0;
+        padding: .5em 1em;
+        overflow: auto;
+    }
+    iframe {
         padding:0;
         margin:0;
         height:100%;
+        width:100%;
         max-height:none;
-    }
-    #ypopupContent.ui-dialog-content {
-        margin:0;
-        padding: .5em 1em;
     }
 }
 
-.ui-widget-overlay.ui-front {
+#ypopupOverlay {
     z-index:2001 !important;
+    background: var(--overlay-bg);
+    opacity: var(--overlay-opacity);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    @media print {
+       display: none;
+    }
 }
 
 body.yPopup {
     padding: .5em 1em;
     height:100%;
-
 }
+
 body.yPopup,
 #ypopup.yPopupDyn {
     .yPane .yModule {

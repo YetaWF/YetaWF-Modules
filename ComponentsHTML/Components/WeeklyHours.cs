@@ -35,15 +35,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
-    //public class WeeklyHoursDisplayComponent : WeeklyHoursComponent, IYetaWFComponent<WeeklyHours> {
-
-    //    public override ComponentType GetComponentType() { return ComponentType.Display; }
-
-    //    public Task<string> RenderAsync(WeeklyHours model) {
-    //        HtmlBuilder hb = new HtmlBuilder();
-    //    }
-    //}
-
     /// <summary>
     /// Allows entry of time ranges for an entire week, two time ranges for each day (typically AM and PM), such as office opening hours, optionally "Closed". The model specifies the selected weekly daytime ranges.
     /// </summary>
@@ -52,7 +43,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [UIHint("WeeklyHours")]
     /// public WeeklyHours OpeningHours { get; set; }
     /// </example>
-    public class WeeklyHoursEditComponent : WeeklyHoursComponentBase, IYetaWFComponent<WeeklyHours> {
+    public class WeeklyHoursEditComponent : WeeklyHoursComponentBase, IYetaWFComponent<WeeklyHours?> {
 
         internal class WeeklyHoursUI {
 
@@ -114,11 +105,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             public WeeklyHours Week { get; set; }
 
-            public string AdditionalFieldCaption { get { return Week.AdditionalFieldCaption; } }
-            public string AdditionalFieldDescription { get { return Week.AdditionalFieldDescription; } }
+            public string? AdditionalFieldCaption { get { return Week.AdditionalFieldCaption; } }
+            public string? AdditionalFieldDescription { get { return Week.AdditionalFieldDescription; } }
 
-            public string ClosedFieldCaption { get { return Week.ClosedFieldCaption; } }
-            public string ClosedFieldDescription { get { return Week.ClosedFieldDescription; } }
+            public string? ClosedFieldCaption { get { return Week.ClosedFieldCaption; } }
+            public string? ClosedFieldDescription { get { return Week.ClosedFieldDescription; } }
         }
 
         /// <summary>
@@ -132,7 +123,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<string> RenderAsync(WeeklyHours model) {
+        public async Task<string> RenderAsync(WeeklyHours? model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 

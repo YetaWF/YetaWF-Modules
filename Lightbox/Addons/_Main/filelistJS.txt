@@ -1,1 +1,2 @@
-Lightbox.js
+LightboxPackage.ts
+Lightbox.tsx

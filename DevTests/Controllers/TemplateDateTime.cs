@@ -5,11 +5,9 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Components;
-#if MVC6
+using YetaWF.Modules.ComponentsHTML.Components;
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
+using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.DevTests.Controllers {
 
@@ -27,6 +25,16 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public DateTime DateTimeReq { get; set; }
+            //public DateTimeEditComponent.DateTimeSetup DateTimeReq_Setup {
+            //    get {
+            //        return new DateTimeEditComponent.DateTimeSetup {
+            //            MinDate = new DateTime(2011, 1, 1),
+            //            MaxDate = new DateTime(2029, 12, 31),
+            //            MinTime = new TimeSpan(8, 0, 0).TotalMinutes,
+            //            MaxTime = new TimeSpan(18, 0, 0).TotalMinutes,
+            //        };
+            //    } 
+            //}
 
             [Category("Date/Time"), Caption("Date/Time"), Description("Date/Time")]
             [UIHint("DateTime")]
@@ -52,20 +60,11 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("Date"), ReadOnly]
             public DateTime DateRO { get; set; }
 
-            [Category("Date/Time"), Caption("Time (Required)"), Description("Time (Required)")]
-            [UIHint("Time")]
-            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
-            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public DateTime TimeReq { get; set; }
-
-            [Category("Date/Time"), Caption("Time"), Description("Time")]
-            [UIHint("Time")]
-            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public DateTime? TimeOpt { get; set; }
-
-            [Category("Date/Time"), Caption("Time (Read/Only)"), Description("Time (Read/only)")]
-            [UIHint("Time"), ReadOnly]
-            public DateTime TimeRO { get; set; }
+            //[Category("Date/Time"), Caption("Date UTC Midnight (Required)"), Description("Date (Required)")]
+            //[UIHint("Date"), AdditionalMetadata("UTCMidnight", true)]
+            //[RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            //[ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
+            //public DateTime DateUtcMidnightReq { get; set; }
 
             [Category("Date/Time"), Caption("Time Of Day (Required)"), Description("Time Of Day (Required)")]
             [UIHint("TimeOfDay")]
@@ -73,7 +72,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public TimeOfDay TimeOfDayReq { get; set; }
 
-            [Category("Date/Time"), Caption("Time Of Day (Required)"), Description("Time Of Day")]
+            [Category("Date/Time"), Caption("Time Of Day"), Description("Time Of Day")]
             [UIHint("TimeOfDay")]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public TimeOfDay TimeOfDay { get; set; }
@@ -118,9 +117,6 @@ namespace YetaWF.Modules.DevTests.Controllers {
                 DateReq = DateTime.UtcNow;
                 DateOpt = DateTime.UtcNow;
                 DateRO = DateTime.UtcNow;
-                TimeReq = DateTime.UtcNow;
-                TimeOpt = DateTime.UtcNow;
-                TimeRO = DateTime.UtcNow;
                 TimeOfDayReq = new TimeOfDay(9, 0, 0);
                 TimeOfDay = new TimeOfDay(9, 0, 0);
                 TimeOfDayRO = new TimeOfDay(9, 0, 0);

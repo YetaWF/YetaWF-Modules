@@ -1,12 +1,12 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
@@ -18,19 +18,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal const string TemplateName = "Date";
 
-        /// <summary>
-        /// Returns the package implementing the component.
-        /// </summary>
-        /// <returns>Returns the package implementing the component.</returns>
+        /// <inheritdoc/>
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        /// <summary>
-        /// Returns the component name.
-        /// </summary>
-        /// <returns>Returns the component name.</returns>
-        /// <remarks>Components in packages whose product name starts with "Component" use the exact name returned by GetTemplateName when used in UIHint attributes. These are considered core components.
-        /// Components in other packages use the package's area name as a prefix. E.g., the UserId component in the YetaWF.Identity package is named "YetaWF_Identity_UserId" when used in UIHint attributes.
-        ///
-        /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
+        /// <inheritdoc/>
         public override string GetTemplateName() { return TemplateName; }
     }
 
@@ -48,28 +38,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </example>
     public class DateDisplayComponent : DateComponentBase, IYetaWFComponent<DateTime?> {
 
-        /// <summary>
-        /// Returns the component type (edit/display).
-        /// </summary>
-        /// <returns>Returns the component type.</returns>
+        /// <inheritdoc/>
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
-        public async Task<string> RenderAsync(DateTime model) {
-            return await RenderAsync((DateTime?)model);
-        }
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
+        /// <inheritdoc/>
         public Task<string> RenderAsync(DateTime? model) {
+
             if (model != null && (DateTime)model > DateTime.MinValue && (DateTime)model < DateTime.MaxValue) {
-                return Task.FromResult($@"<div{FieldSetup(FieldType.Anonymous)} class='yt_datetime t_display{GetClasses()}'>{HE(YetaWF.Core.Localize.Formatting.FormatDate(model))}</div>");
+
+                bool utcMidnight = PropData.GetAdditionalAttributeValue<bool>("UTCMidnight", false);
+                string displayValue = utcMidnight ? Formatting.FormatDateOnly(model) : Formatting.FormatDate(model);
+                return Task.FromResult($@"<div{FieldSetup(FieldType.Anonymous)} class='yt_datetime t_display{GetClasses()}'>{HE(displayValue)}</div>");
             }
             return Task.FromResult(string.Empty);
         }
@@ -90,10 +69,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </example>
     public class DateEditComponent : DateComponentBase, IYetaWFComponent<DateTime>, IYetaWFComponent<DateTime?> {
 
-        /// <summary>
-        /// Returns the component type (edit/display).
-        /// </summary>
-        /// <returns>Returns the component type.</returns>
+        /// <inheritdoc/>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
         internal class DateSetup {
@@ -101,53 +77,68 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public DateTime Max { get; set; }
         }
 
-        /// <summary>
-        /// Called by the framework when the component is used so the component can add component specific addons.
-        /// </summary>
+        /// <inheritdoc/>
         public override async Task IncludeAsync() {
-            await KendoUICore.AddFileAsync("kendo.calendar.min.js");
-            //await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
-            await KendoUICore.AddFileAsync("kendo.datepicker.min.js");
-            await KendoUICore.AddFileAsync("kendo.timepicker.min.js");
+            await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, DateTimeEditComponent.TemplateName, ComponentType.Edit);
             await base.IncludeAsync();
         }
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
+        /// <inheritdoc/>
         public async Task<string> RenderAsync(DateTime model) {
             return await RenderAsync((DateTime?) model);
         }
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
-        public async Task<string> RenderAsync(DateTime? model) {
+        /// <inheritdoc/>
+        public Task<string> RenderAsync(DateTime? model) {
+
+            DateTimeEditComponent.Setup setup = new DateTimeEditComponent.Setup {
+                Style = DateTimeEditComponent.Setup.DateTimeStyleEnum.Date
+            };
+            if (TryGetSiblingProperty($"{PropertyName}_Setup", out DateTimeEditComponent.DateTimeSetup? dateTimeSetup) && dateTimeSetup != null) {
+                setup.MinDate = dateTimeSetup.MinDate;
+                setup.MaxDate = dateTimeSetup.MaxDate;
+            }
+
+            bool utcMidnight = PropData.GetAdditionalAttributeValue<bool>("UTCMidnight", false);
+            setup.UtcMidnight = utcMidnight;
 
             // handle min/max date
-            DateSetup setup = new DateSetup {
-                Min = new DateTime(1900, 1, 1),
-                Max = new DateTime(2199, 12, 31),
-            };
-            MinimumDateAttribute minAttr = PropData.TryGetAttribute<MinimumDateAttribute>();
+            // attributes (like MinimumDateAttribute) override setup and defaults
+            MinimumDateAttribute? minAttr = PropData.TryGetAttribute<MinimumDateAttribute>();
             if (minAttr != null)
-                setup.Min = minAttr.MinDate;
-            MaximumDateAttribute maxAttr = PropData.TryGetAttribute<MaximumDateAttribute>();
+                setup.MinDate = minAttr.MinDate;
+            MaximumDateAttribute? maxAttr = PropData.TryGetAttribute<MaximumDateAttribute>();
             if (maxAttr != null)
-                setup.Max = maxAttr.MaxDate;
+                setup.MaxDate = maxAttr.MaxDate;
 
-            Dictionary<string, object> hiddenAttributes = new Dictionary<string, object>(HtmlAttributes) {
-                { "__NoTemplate", true }
-            };
-            string hidden = await HtmlHelper.ForEditComponentAsync(Container, PropertyName, null, "Hidden", HtmlAttributes: hiddenAttributes, Validation: Validation);
+            // model binding error handling
+            string internalValue;
+            if (model != null) {
+                internalValue = setup.InitialCalendarDate = utcMidnight ? $"{model.Value.Date:o}" : $"{model:o}";
+            } else {
+                internalValue = setup.InitialCalendarDate = string.Empty;
+            }
+            string displayValue = utcMidnight ? Formatting.FormatDateOnly(model) : Formatting.FormatDate(model);
+            if (Manager.HasModelBindingErrorManager && Manager.ModelBindingErrorManager.TryGetAttemptedValue(PropertyName, out string? attemptedValue)) {
+                displayValue = internalValue = attemptedValue;
+                setup.InitialCalendarDate = string.Empty;
+            }
 
-            string tags = $"<div id='{DivId}' class='yt_date t_edit'>{hidden}<input{FieldSetup(FieldType.Anonymous)} name='dtpicker' value='{(model != null ? HAE(Formatting.FormatDateTime((DateTime)model)) : null)}'></div>";
+            HtmlBuilder hb = new HtmlBuilder();
+            hb.Append($@"
+<div id='{ControlId}' class='yt_datetime yt_date t_edit'>
+    <input type='hidden' {FieldSetup(FieldType.Validated)} value='{HAE(internalValue)}'>
+    <input type='text'{GetClassAttribute()} maxlength='20' value='{HAE(displayValue)}'>
+    <div class='t_sels'>
+        <div class='t_date'>
+            {SkinSVGs.Get(AreaRegistration.CurrentPackage, "far-calendar-alt")}
+        </div>
+    </div>
+</div>");
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DateEditComponent('{DivId}', {Utility.JsonSerialize(setup)});");
+            string tags = hb.ToString();
 
-            return tags;
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DateTimeEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
+
+            return Task.FromResult(tags);
         }
     }
 }

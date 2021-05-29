@@ -88,7 +88,6 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
             Logging.AddLog("Site initialization starting");
 
-            //ClearAll();
             List<Package> installedPackages = await InstallPackagesAsync(WantedPackages);
             if (qs["From"] == "Data") {
                 await BuildSiteUsingDataAsync(false, installedPackages);
@@ -97,7 +96,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 await BuildSiteUsingTemplateAsync("InitialSite.txt");
                 //BuildSiteUsingTemplate("Custom Site (Initial Site).txt");
             }
-            PermanentManager.ClearAll();// clear any cached objects
+            
             await Package.SavePackageMapAsync();
 
             await SiteDefinition.RemoveInitialInstallAsync();
@@ -105,14 +104,10 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
             Logging.AddLog("Site initialization done");
 
-            // Cache is now invalid so we'll just restart
-#if MVC6
+            // Cache is now invalid so we need to  restart
+
             //Manager.RestartSite(); // don't restart or redirect (can't)
             // tell user in browser what to do
-#else
-            // Cache is now invalid so we'll just restart
-            Manager.RestartSite();
-#endif
         }
         public class InitialSiteLogging : ILogging {
 
@@ -125,7 +120,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 using (ILockObject lockObject = await FileSystem.FileSystemProvider.LockResourceAsync(LogFile)) {
                     if (await FileSystem.FileSystemProvider.FileExistsAsync(LogFile))
                         await FileSystem.FileSystemProvider.DeleteFileAsync(LogFile);
-                    await FileSystem.FileSystemProvider.CreateDirectoryAsync(Path.GetDirectoryName(LogFile));
+                    await FileSystem.FileSystemProvider.CreateDirectoryAsync(Path.GetDirectoryName(LogFile)!);
                     await lockObject.UnlockAsync();
                 }
             }
@@ -149,7 +144,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
         public class RetrieveInitialInstallLogInfo {
             public bool Ended { get; set; }
-            public List<string> Lines { get; set; }
+            public List<string> Lines { get; set; } = null!;
         }
 
         public static async Task<RetrieveInitialInstallLogInfo> RetrieveInitialInstallLogAsync() {
@@ -337,7 +332,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
 
             if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Installing new packagesis not possible when distributed caching is enabled");
 
-            string packageName = qs["Package"];
+            string? packageName = qs["Package"];
             if (string.IsNullOrWhiteSpace(packageName))
                 throw new InternalError("Package name missing");
             Package package = Package.GetPackageFromPackageName(packageName);
@@ -353,7 +348,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// Imports all package data from a zip file (created using Export Data) or from templates
         /// </summary>
         public async Task ImportDataAsync(QueryHelper qs) {
-            string zipFileName = qs["ZipFile"];
+            string? zipFileName = qs["ZipFile"];
             if (string.IsNullOrWhiteSpace(zipFileName))
                 throw new InternalError("Zip filename missing");
             List<string> errorList = new List<string>();
@@ -369,7 +364,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// </summary>
         public async Task ProcessTemplateAsync(QueryHelper qs) {
             if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Processing site templates is not possible when distributed caching is enabled");
-            string templateName = qs["Template"];
+            string? templateName = qs["Template"];
             if (string.IsNullOrWhiteSpace(templateName))
                 throw new InternalError("Template name missing");
             PackagesDataProvider packagesDP = new PackagesDataProvider();
@@ -380,7 +375,7 @@ namespace YetaWF.Modules.Packages.DataProvider {
         /// </summary>
         public async Task UndoTemplateAsync(QueryHelper qs) {
             if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Processing site templates is not possible when distributed caching is enabled");
-            string templateName = qs["Template"];
+            string? templateName = qs["Template"];
             if (string.IsNullOrWhiteSpace(templateName))
                 throw new InternalError("Template name missing");
             PackagesDataProvider packagesDP = new PackagesDataProvider();

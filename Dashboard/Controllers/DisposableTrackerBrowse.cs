@@ -25,35 +25,35 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         public class BrowseItem {
 
             [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands {
                 get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+                    List<ModuleAction> actions = new List<ModuleAction>();
                     return actions;
                 }
             }
 
             [Caption("Type"), Description("The object type of the disposable object that is currently in use")]
             [UIHint("String"), ReadOnly]
-            public string DisposableObject { get; set; }
+            public string DisposableObject { get; set; } = null!;
             [Caption("Time"), Description("The time the object was created")]
             [UIHint("DateTime"), ReadOnly]
             public DateTime Created { get; set; }
             [Caption("Callstack"), Description("The callstack at the time the object was created")]
             [UIHint("String"), ReadOnly]
-            public string CallStack { get; set; }
+            public string? CallStack { get; set; }
 
             public DisposableTrackerBrowseModule Module { get; set; }
 
             public BrowseItem(DisposableTrackerBrowseModule module, TrackedEntry data) {
                 Module = module;
                 ObjectSupport.CopyData(data, this);
+                DisposableObject = data.DisposableObject.GetType().FullName!;
             }
-            public BrowseItem() { }
         }
         public class BrowseModel {
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
         private GridDefinition GetGridModel() {
             return new GridDefinition {
@@ -62,7 +62,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                 SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = GetActionUrl(nameof(DisposableTrackerBrowse_GridData)),
-                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(data, skip, take, sorts, filters);
                     foreach (BrowseItem r in recs.Data)
                         r.Module = Module;
@@ -71,7 +71,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                         Total = recs.Total,
                     };
                 },
-                DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     List<BrowseItem> items = (from k in DisposableTracker.GetDisposableObjects() select new BrowseItem(Module, k)).ToList();
                     DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(items, skip, take, sort, filters);
                     DataSourceResult data = new DataSourceResult {

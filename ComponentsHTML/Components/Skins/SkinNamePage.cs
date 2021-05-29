@@ -34,7 +34,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Internal component used by the PageSkin and PopupSkins components. Not intended for application use.
+    /// Internal component used by the Skin component. Not intended for application use.
     /// </summary>
     [PrivateComponent]
     public class SkinNamePageDisplayComponent : SkinNamePageComponentBase, IYetaWFComponent<string> {
@@ -54,20 +54,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // get all available page skins for this collection
             SkinAccess skinAccess = new SkinAccess();
-            string collection = GetSiblingProperty<string>($"{PropertyName}_Collection");
+            string? collection = GetSiblingProperty<string>($"{PropertyName}_Collection");
             PageSkinList skinList = skinAccess.GetAllPageSkins(collection);
 
-            string desc = (from skin in skinList where skin.PageViewName == model select skin.Name).FirstOrDefault();
+            string? desc = (from skin in skinList where skin.ViewName == model select skin.Name).FirstOrDefault();
             if (desc == null)
                 desc = skinList.First().Description;
             if (string.IsNullOrWhiteSpace(desc))
-                return Task.FromResult<string>(null);
+                return Task.FromResult<string>(string.Empty);
             return Task.FromResult(HE(desc));
         }
     }
 
     /// <summary>
-    /// Internal component used by the PageSkin and PopupSkins components. Not intended for application use.
+    /// Internal component used by the Skin component. Not intended for application use.
     /// </summary>
     [PrivateComponent]
     public class SkinNamePageEditComponent : SkinNamePageComponentBase, IYetaWFComponent<string> {
@@ -87,26 +87,27 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // get all available page skins for this collection
             SkinAccess skinAccess = new SkinAccess();
-            string collection = GetSiblingProperty<string>($"{PropertyName}_Collection");
+            string? collection = GetSiblingProperty<string>($"{PropertyName}_Collection");
             PageSkinList skinList = skinAccess.GetAllPageSkins(collection);
             List<SelectionItem<string>> list = (from skin in skinList orderby skin.Description select new SelectionItem<string>() {
                 Text = skin.Name,
                 Tooltip = skin.Description,
-                Value = skin.PageViewName,
+                Value = skin.ViewName,
             }).ToList();
             // display the skins in a drop down
-            return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_skinname");
+            return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_skinnamepage");
         }
+
         internal static string RenderReplacementSkinsForCollection(string skinCollection) {
             SkinAccess skinAccess = new SkinAccess();
             PageSkinList skinList = skinAccess.GetAllPageSkins(skinCollection);
             List<SelectionItem<string>> list = (from skin in skinList orderby skin.Description select new SelectionItem<string>() {
                 Text = skin.Name,
                 Tooltip = skin.Description,
-                Value = skin.PageViewName,
+                Value = skin.ViewName,
             }).ToList();
             // render a new dropdown list
-            return DropDownListEditComponentBase<string>.RenderDataSource(list, null);
+            return DropDownListEditComponentBase<string>.GetOptionsHTML(list);
         }
     }
 }

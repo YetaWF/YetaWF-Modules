@@ -36,7 +36,7 @@ namespace YetaWF.Modules.PageEdit.Components {
 
             [Caption("Role"), Description("Role Description")]
             [UIHint("StringTT"), ReadOnly]
-            public StringTT RoleName { get; set; }
+            public StringTT RoleName { get; set; } = null!;
 
             [Caption("View"), Description("The role has permission to view the page")]
             [UIHint("Enum")]
@@ -63,7 +63,7 @@ namespace YetaWF.Modules.PageEdit.Components {
             return new GridDefinition {
                 RecordType = typeof(GridAllowedRole),
                 ShowHeader = header,
-                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<GridAllowedRole> recs = DataProviderImpl<GridAllowedRole>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
                         Data = recs.Data.ToList<object>(),
@@ -78,7 +78,7 @@ namespace YetaWF.Modules.PageEdit.Components {
             List<GridAllowedRole> roles = (from r in list orderby r.Name select new GridAllowedRole { RoleId = r.RoleId, RoleName = new StringTT { Text = r.Name, Tooltip = r.Description } }).ToList();
             if (allowedRoles != null) {
                 foreach (PageDefinition.AllowedRole allowedRole in allowedRoles) {
-                    GridAllowedRole role = (from r in roles where r.RoleId == allowedRole.RoleId select r).FirstOrDefault();
+                    GridAllowedRole? role = (from r in roles where r.RoleId == allowedRole.RoleId select r).FirstOrDefault();
                     if (role != null)
                         ObjectSupport.CopyData(allowedRole, role);
                 }
@@ -99,7 +99,7 @@ namespace YetaWF.Modules.PageEdit.Components {
             GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header)
             };
-            grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+            grid.GridDef.DirectDataAsync = (int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                 List<GridAllowedRole> list = GetGridAllowedRoleFromAllowedRoleList(model);
                 DataSourceResult data = new DataSourceResult {
                     Data = list.ToList<object>(),

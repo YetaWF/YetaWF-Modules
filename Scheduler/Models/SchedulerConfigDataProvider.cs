@@ -35,7 +35,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
 
         private IDataProvider<int, SchedulerConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, SchedulerConfigData> CreateDataProvider() {
+        private IDataProvider<int, SchedulerConfigData>? CreateDataProvider() {
             Package package = YetaWF.Modules.Scheduler.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", Cacheable: true);
         }
@@ -50,7 +50,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
             }
         }
         public async Task<SchedulerConfigData> GetItemAsync() {
-            SchedulerConfigData config = await DataProvider.GetAsync(KEY);
+            SchedulerConfigData? config = await DataProvider.GetAsync(KEY);
             if (config == null) {
                 config = new SchedulerConfigData();
                 await AddConfigAsync(config);
@@ -69,7 +69,7 @@ namespace YetaWF.Modules.Scheduler.DataProvider {
             );
         }
         public async Task UpdateConfigAsync(SchedulerConfigData data) {
-            SchedulerConfigData origConfig = Auditing.Active ? await GetItemAsync() : null;
+            SchedulerConfigData? origConfig = Auditing.Active ? await GetItemAsync() : null;
             data.Id = KEY;
             UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)

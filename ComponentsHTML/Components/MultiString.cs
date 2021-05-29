@@ -198,8 +198,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
         public override string GetTemplateName() { return TemplateName; }
 
-        internal string TemplateName { get; set; }
-        internal string ExtraClass { get; set; }
+        internal string TemplateName { get; set; } = null!;
+        internal string? ExtraClass { get; set; }
     }
 
     /// <summary>
@@ -229,11 +229,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(MultiString model) {
-            HtmlBuilder hb = new HtmlBuilder();
-            if (model != null) {
-                hb.Append(HE(model.ToString()));
-            }
-            return Task.FromResult(hb.ToString());
+            if (model != null)
+                return Task.FromResult(HE(model.ToString()));
+            return Task.FromResult(string.Empty);
         }
     }
 
@@ -244,10 +242,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal class MultiStringUI {
             [UIHint("Text")]
-            public string Input { get; set; }
+            public string? Input { get; set; }
             [UIHint("DropDownList")]
-            public string Language { get; set; }
-            public List<SelectionItem<string>> Language_List { get; set; }
+            public string? Language { get; set; }
+            public List<SelectionItem<string>>? Language_List { get; set; } = null!;
         }
 
         /// <summary>
@@ -279,7 +277,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hb = new HtmlBuilder();
 
             // handle StringLengthAttribute as maxlength
-            StringLengthAttribute lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
+            StringLengthAttribute? lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
             if (lenAttr == null)
                 throw new InternalError("No max string length given using StringLengthAttribute - {0}", FieldName);
 
@@ -307,10 +305,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append(await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model.DefaultText, "Hidden",
                 HtmlAttributes: new { __NoTemplate = true, @class = $"t_multistring_hidden {Forms.CssFormNoSubmit}" }));
 
-            // generate a dropdownlist for the available languages
-            List <SelectionItem<string>> selectLangList = new List<SelectionItem<string>>();
-            foreach (var lang in MultiString.Languages) {
-                selectLangList.Add(new SelectionItem<string> { Text = lang.ShortName, Value = lang.Id, Tooltip = lang.Description });
+
+            List<SelectionItem<string>>? selectLangList = null;
+            if (MultiString.Languages.Count > 1) {
+                // generate a dropdownlist for the available languages
+                selectLangList = new List<SelectionItem<string>>();
+                foreach (var lang in MultiString.Languages) {
+                    selectLangList.Add(new SelectionItem<string> { Text = lang.ShortName, Value = lang.Id, Tooltip = lang.Description });
+                }
             }
             MultiStringUI msUI = new MultiStringUI {
                 Input = model[selectLang],
@@ -329,12 +331,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     htmlAttr.Add("maxlength", lenAttr.MaximumLength);
                 hb.Append(await HtmlHelper.ForEditAsync(msUI, nameof(MultiStringUI.Input), HtmlAttributes: htmlAttr, Validation: false));
 
-                // Language dropdown
-                htmlAttr = new Dictionary<string, object>();
-                htmlAttr.Add("class", Forms.CssFormNoSubmit);
-                if (!Manager.CurrentSite.Localization || string.IsNullOrEmpty(model.DefaultText))
-                    htmlAttr.Add("disabled", "disabled");
-                hb.Append(await HtmlHelper.ForEditAsync(msUI, nameof(MultiStringUI.Language), HtmlAttributes: htmlAttr, Validation: false));
+                if (msUI.Language_List != null) {
+                    // Language dropdown
+                    htmlAttr = new Dictionary<string, object>();
+                    htmlAttr.Add("class", Forms.CssFormNoSubmit);
+                    if (!Manager.CurrentSite.Localization || string.IsNullOrEmpty(model.DefaultText))
+                        htmlAttr.Add("disabled", "disabled");
+                    hb.Append(await HtmlHelper.ForEditAsync(msUI, nameof(MultiStringUI.Language), HtmlAttributes: htmlAttr, Validation: false));
+                }
             }
 
             //Setup setup = new Setup {

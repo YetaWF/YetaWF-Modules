@@ -33,8 +33,8 @@ namespace YetaWF.Modules.Languages.Components {
                 ObjectSupport.CopyData(entry, this);
             }
             [UIHint("Hidden"), StringLength(LocalizationData.MaxString)]
-            public string Name { get; set; }
-            public SerializableList<LocalizationData.EnumDataEntry> Entries { get; set; }
+            public string Name { get; set; } = null!;
+            public SerializableList<LocalizationData.EnumDataEntry> Entries { get; set; } = null!;
         }
 
         public class UIEnumDataEntry {
@@ -44,20 +44,20 @@ namespace YetaWF.Modules.Languages.Components {
             }
 
             [UIHint("Hidden"), ResourceRedirect(nameof(NameFieldCaption), nameof(NameFieldDescription)), StringLength(LocalizationData.MaxString)]
-            public string Name { get; set; }
+            public string Name { get; set; } = null!;
             [UIHint("Hidden"), StringLength(LocalizationData.MaxString)]
-            public string Value { get; set; }
+            public string? Value { get; set; }
             [UIHint("Text40"), ResourceRedirect(nameof(CaptionFieldCaption), nameof(CaptionFieldDescription)), StringLength(LocalizationData.MaxString)]
-            public string Caption { get; set; }
+            public string? Caption { get; set; }
             [UIHint("Text80"), ResourceRedirect(nameof(DescriptionFieldCaption), nameof(DescriptionFieldDescription)), StringLength(LocalizationData.MaxString)]
-            public string Description { get; set; }
+            public string? Description { get; set; }
 
-            public string NameFieldCaption { get; set; }
-            public string NameFieldDescription { get; set; }
-            public string CaptionFieldCaption { get; set; }
-            public string CaptionFieldDescription { get; set; }
-            public string DescriptionFieldCaption { get; set; }
-            public string DescriptionFieldDescription { get; set; }
+            public string? NameFieldCaption { get; set; }
+            public string? NameFieldDescription { get; set; }
+            public string? CaptionFieldCaption { get; set; }
+            public string? CaptionFieldDescription { get; set; }
+            public string? DescriptionFieldCaption { get; set; }
+            public string? DescriptionFieldDescription { get; set; }
         }
 
 

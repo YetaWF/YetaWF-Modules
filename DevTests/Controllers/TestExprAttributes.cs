@@ -25,12 +25,12 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [Caption("String1"), Description("")]
             [UIHint("Text80"), StringLength(80), Trim]
             [ProcessIf(nameof(OnOff), true, Disable = true)]
-            public string String1 { get; set; }
+            public string? String1 { get; set; }
 
             [Caption("String2"), Description("")]
             [UIHint("Text80"), StringLength(80), Trim]
             [ProcessIf(nameof(OnOff), true)]
-            public string String2 { get; set; }
+            public string? String2 { get; set; }
 
             public EditModel() { }
         }

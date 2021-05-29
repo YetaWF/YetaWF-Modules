@@ -5,6 +5,7 @@ using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
@@ -48,19 +49,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// <summary>
             /// The text of the dropdown button.
             /// </summary>
-            public string Text { get; set; }
+            public string Text { get; set; } = null!;
             /// <summary>
             /// The optional tooltip of the dropdown button.
             /// </summary>
-            public string Tooltip { get; set; }
+            public string? Tooltip { get; set; }
             /// <summary>
             /// The HTML Id of the dropdown button.
             /// </summary>
-            public string ButtonId { get; set; }
+            public string ButtonId { get; set; } = null!;
             /// <summary>
             /// The HTML representing the dropdown menu (a &lt;ul&gt; tag).
             /// </summary>
-            public string MenuHTML { get; set; }
+            public string MenuHTML { get; set; } = null!;
             /// <summary>
             /// Defines whether a small dropdown button is used. A small dropdown button doesn't display the button text.
             /// </summary>
@@ -68,20 +69,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// <summary>
             /// The Optional CSS class added to the dropdown button tag.
             /// </summary>
-            public string CssClass { get; set; }
+            public string? CssClass { get; set; }
         }
 
-        /// <summary>
-        /// Called by the framework when the component is used so the component can add component specific addons.
-        /// </summary>
+        /// <inheritdoc/>
         public override async Task IncludeAsync() {
-            //await KendoUICore.AddFileAsync("kendo.popup.min.js"); // is now a prereq of kendo.window (2017.2.621)
-            await KendoUICore.AddFileAsync("kendo.button.min.js");
-
             // Add required menu support
-            await KendoUICore.AddFileAsync("kendo.menu.min.js");
             await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, "MenuUL", ComponentType.Display);
-
             await base.IncludeAsync();
         }
 
@@ -94,26 +88,24 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            string cssStyle = null;
+            string? cssStyle = null;
             if (model.CssClass != null)
-                cssStyle = $" {model.CssClass}";
+                cssStyle += $" {model.CssClass}";
+            if (model.Mini)
+                cssStyle += $" t_mini";
+
+            hb.Append($@"
+<button id='{model.ButtonId}' class='yt_dropdownbutton{cssStyle}' {Basics.CssTooltip}='{HAE(model.Tooltip)}'>");
 
             if (!model.Mini) {
-
                 hb.Append($@"
-<button id='{model.ButtonId}' type='button' class='yt_dropdownbutton{cssStyle}' {Basics.CssTooltip}='{HAE(model.Tooltip)}'>
-    {HE(model.Text)}<span class='k-icon k-i-arrow-60-down'></span>
-    {model.MenuHTML}
-</button>");
-
-            } else {
-
-                hb.Append($@"
-<button id='{model.ButtonId}' href='#' class='yt_dropdownbutton t_mini{cssStyle}'><span class='k-icon k-i-arrow-60-down'></span>
-    {model.MenuHTML}
-</button>");
-
+    {HE(model.Text)}");
             }
+
+            hb.Append($@"
+        {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-caret-down")}
+    {model.MenuHTML}
+</button>");
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DropDownButtonComponent('{model.ButtonId}');");
 

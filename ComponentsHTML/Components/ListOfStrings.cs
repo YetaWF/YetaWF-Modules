@@ -57,7 +57,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public Task<string> RenderAsync(List<string> model) {
             HtmlBuilder hb = new HtmlBuilder();
 
-            string delim = PropData.GetAdditionalAttributeValue("Delimiter", ", ");
+            string delim = PropData.GetAdditionalAttributeValue("Delimiter", ", ")!;
 
             hb.Append($@"
 <div class='yt_listofstrings t_display'>");

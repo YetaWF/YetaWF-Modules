@@ -28,21 +28,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="**\*.cshtml_MVC5" />
-    <None Remove="**\*.cshtml_MVC6" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="5.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="5.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="5.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="5.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="5.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="5.0.6" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <!-- TODO: Review for final release - this is a workaround for slow solution load -->
-    <Compile Remove="node_modules\**" />
-    <Content Remove="node_modules\**" />
-    <None Remove="node_modules\**" />
-    <EmbeddedResource Remove="node_modules\**" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,21 @@
+# Generated from flat grid definition file on 1/30/2021 7:35:26 PM
+
+SizeStyle: SizeToFit
+Panel: {}
+Columns:
+- Name: Created
+  DefaultSort: Descending
+  Sort: true
+  Filter: true
+  Width: <Globals.ChDateTime>
+  Align: Unspecified
+- Name: DisposableObject
+  FilterOptions: []
+  Width: 60
+  Align: Unspecified
+  Truncate: true
+- Name: CallStack
+  FilterOptions: []
+  Width: 500
+  Align: Unspecified
+  Truncate: true

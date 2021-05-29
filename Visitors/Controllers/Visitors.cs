@@ -28,10 +28,10 @@ namespace YetaWF.Modules.Visitors.Controllers {
         public class BrowseItem {
 
             [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands {
                 get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+                    List<ModuleAction> actions = new List<ModuleAction>();
 
                     VisitorDisplayModule dispMod = new VisitorDisplayModule();
                     actions.New(dispMod.GetAction_Display(Module.DisplayUrl, Key), ModuleAction.ActionLocationEnum.GridLinks);
@@ -45,7 +45,7 @@ namespace YetaWF.Modules.Visitors.Controllers {
 
             [Caption("Session Id"), Description("The session id used to identify the visitor")]
             [UIHint("String"), ReadOnly]
-            public string SessionId { get; set; }
+            public string? SessionId { get; set; }
 
             [Caption("Accessed"), Description("The date and time the visitor visited the site")]
             [UIHint("DateTime"), ReadOnly]
@@ -57,33 +57,33 @@ namespace YetaWF.Modules.Visitors.Controllers {
 
             [Caption("IP Address"), Description("The IP address of the site visitor")]
             [UIHint("IPAddress"), ReadOnly]
-            public string IPAddress { get; set; }
+            public string? IPAddress { get; set; }
 
             [Caption("Continent"), Description("The continent where the visitor is located, based on IP address (if available)")]
             [UIHint("String"), ReadOnly]
-            public string ContinentCode { get; set; }
+            public string? ContinentCode { get; set; }
             [Caption("Country"), Description("The country where the visitor is located, based on IP address (if available)")]
             [UIHint("String"), ReadOnly]
-            public string CountryCode { get; set; }
+            public string? CountryCode { get; set; }
             [Caption("Region"), Description("The region where the visitor is located, based on IP address (if available)")]
             [UIHint("String"), ReadOnly]
-            public string RegionCode { get; set; }
+            public string? RegionCode { get; set; }
             [Caption("City"), Description("The city where the visitor is located, based on IP address (if available)")]
             [UIHint("String"), ReadOnly]
-            public string City { get; set; }
+            public string? City { get; set; }
 
             [Caption("Url"), Description("The Url accessed by the site visitor")]
             [UIHint("Url"), ReadOnly]
-            public string Url { get; set; }
+            public string? Url { get; set; }
             [Caption("Referrer"), Description("The Url where the site visitor came from")]
             [UIHint("Url"), ReadOnly]
-            public string Referrer { get; set; }
+            public string? Referrer { get; set; }
             [Caption("User Agent"), Description("The web browser's user agent")]
             [UIHint("String"), ReadOnly]
-            public string UserAgent { get; set; }
+            public string? UserAgent { get; set; }
             [Caption("Error"), Description("Shows any error that may have occurred")]
             [UIHint("String"), ReadOnly]
-            public string Error { get; set; }
+            public string? Error { get; set; }
 
             private VisitorsModule Module { get; set; }
 
@@ -95,7 +95,7 @@ namespace YetaWF.Modules.Visitors.Controllers {
 
         public class BrowseModel {
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
         private GridDefinition GetGridModel() {
             return new GridDefinition {
@@ -104,7 +104,7 @@ namespace YetaWF.Modules.Visitors.Controllers {
                 InitialPageSize = 20,
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = GetActionUrl(nameof(Visitors_GridData)),
-                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (VisitorEntryDataProvider dataProvider = new VisitorEntryDataProvider()) {
                         DataProviderGetRecords<VisitorEntry> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {

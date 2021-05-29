@@ -6,7 +6,7 @@ var YetaWF_Basics;
 (function (YetaWF_Basics) {
     var AlertDisplayModule = /** @class */ (function () {
         function AlertDisplayModule() {
-            $YetaWF.registerEventHandlerBody("click", ".YetaWF_Basics_AlertDisplay .t_close img", function (ev) {
+            $YetaWF.registerEventHandlerBody("click", ".YetaWF_Basics_AlertDisplay .t_close button", function (ev) {
                 AlertDisplayModule.dismissed = true;
                 var alert = $YetaWF.getElement1BySelector(".YetaWF_Basics_AlertDisplay");
                 var close = $YetaWF.getElement1BySelector(".t_close", [alert]);
@@ -24,7 +24,7 @@ var YetaWF_Basics;
         AlertDisplayModule.prototype.initAlert = function () {
             var alert = $YetaWF.getElement1BySelector(".YetaWF_Basics_AlertDisplay");
             if (!AlertDisplayModule.dismissed && AlertDisplayModule.on)
-                alert.style.display = "";
+                alert.style.display = "block";
             else
                 alert.style.display = "none";
         };

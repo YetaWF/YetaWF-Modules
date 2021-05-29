@@ -1,28 +1,27 @@
 @charset "UTF-8";
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
-span.k-widget.yt_intvalue_base {
+.yt_intvalue_base {
   max-width: 100%; }
-
-span.k-widget input.yt_intvalue_base {
-  text-align: right;
-  padding-right: 0.5ch; }
-  span.k-widget input.yt_intvalue_base::-webkit-input-placeholder {
-    opacity: 0.6; }
-  span.k-widget input.yt_intvalue_base:-ms-input-placeholder {
-    opacity: 0.6; }
-  span.k-widget input.yt_intvalue_base::-ms-input-placeholder {
-    opacity: 0.6; }
-  span.k-widget input.yt_intvalue_base::placeholder {
-    opacity: 0.6; }
-
-span.k-widget.yt_intvalue {
-  width: 14em; }
-
-span.k-widget.yt_intvalue2 {
-  width: 5em; }
-
-span.k-widget.yt_intvalue4 {
-  width: 6em; }
-
-span.k-widget.yt_intvalue6 {
-  width: 7em; }
+  .yt_intvalue_base input {
+    text-align: right;
+    padding-right: 0.5ch; }
+    .yt_intvalue_base input::-webkit-input-placeholder {
+      color: var(--inp-ph-clr);
+      opacity: var(--inp-ph-opacity); }
+    .yt_intvalue_base input:-ms-input-placeholder {
+      color: var(--inp-ph-clr);
+      opacity: var(--inp-ph-opacity); }
+    .yt_intvalue_base input::-ms-input-placeholder {
+      color: var(--inp-ph-clr);
+      opacity: var(--inp-ph-opacity); }
+    .yt_intvalue_base input::placeholder {
+      color: var(--inp-ph-clr);
+      opacity: var(--inp-ph-opacity); }
+  .yt_intvalue_base.yt_intvalue {
+    width: 14em; }
+  .yt_intvalue_base.yt_intvalue2 {
+    width: 5em; }
+  .yt_intvalue_base.yt_intvalue4 {
+    width: 6em; }
+  .yt_intvalue_base.yt_intvalue6 {
+    width: 7em; }

@@ -25,7 +25,7 @@ namespace YetaWF.Modules.TinyLogin.Views {
             if (model.LoggedOn) {
 
                 ModuleAction logoffAction = await module.GetAction_LogoffAsync(model.LogoffUrl);
-                ModuleAction userNameAction = await module.GetAction_UserNameAsync(model.UserUrl, model.UserName, model.UserTooltip);
+                ModuleAction userNameAction = await module.GetAction_UserNameAsync(model.UserUrl, model.UserName!, model.UserTooltip);
 
                 hb.Append($@"
 <div class='t_haveuser t_link'>
@@ -37,7 +37,7 @@ namespace YetaWF.Modules.TinyLogin.Views {
             } else {
 
                 ModuleAction loginAction = await module.GetAction_LoginAsync(model.LogonUrl);
-                ModuleAction registerAction = await module.GetAction_RegisterAsync(model.RegisterUrl);
+                ModuleAction? registerAction = await module.GetAction_RegisterAsync(model.RegisterUrl);
 
                 hb.Append($@"
 <div class='t_nouser t_logon'>

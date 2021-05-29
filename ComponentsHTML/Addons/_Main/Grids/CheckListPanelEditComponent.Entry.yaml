@@ -1,0 +1,22 @@
+
+SizeStyle: SizeToFit
+Panel: {}
+
+Columns:
+- Name: Value
+  Sort: false
+  Width: <Globals.ChBoolean>
+  Align: Center
+- Name: Text
+  DefaultSort: Ascending
+  Sort: true
+  FilterOptions: []
+  Width: 20
+  Align: Left
+- Name: Tooltip
+  Sort: false
+  FilterOptions: []
+  Width: 60
+  Align: Left
+- Name: Key
+  Hidden: true

@@ -27,10 +27,10 @@ namespace Softelvdm.Modules.IVR.DataProvider {
 
         [Data_PrimaryKey]
         [StringLength(Globals.MaxPhoneNumber)]
-        public string Number { get; set; }
+        public string Number { get; set; } = null!;
 
         [StringLength(MaxDescription)]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public BlockedNumberEntry() { }
     }
@@ -46,7 +46,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
 
         private IDataProviderIdentity<string, object, BlockedNumberEntry> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderIdentity<string, object, BlockedNumberEntry> CreateDataProvider() {
+        private IDataProviderIdentity<string, object, BlockedNumberEntry>? CreateDataProvider() {
             Package package = Softelvdm.Modules.IVR.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_BlockedNumbers", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -55,11 +55,11 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         // LOAD/SAVE
         // LOAD/SAVE
 
-        public Task<BlockedNumberEntry> GetItemAsync(string number) {
+        public Task<BlockedNumberEntry?> GetItemAsync(string number) {
             number = PhoneNumberAttribute.GetE164(number);
             return DataProvider.GetAsync(number, null);
         }
-        public Task<BlockedNumberEntry> GetItemByIdentityAsync(int id) {
+        public Task<BlockedNumberEntry?> GetItemByIdentityAsync(int id) {
             return DataProvider.GetByIdentityAsync(id);
         }
         public async Task<bool> AddItemAsync(BlockedNumberEntry data) {
@@ -78,7 +78,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         }
         public async Task<UpdateStatusEnum> UpdateItemAsync(BlockedNumberEntry data) {
 
-            BlockedNumberEntry origData = Auditing.Active ? await GetItemByIdentityAsync(data.Id) : null;
+            BlockedNumberEntry? origData = Auditing.Active ? await GetItemByIdentityAsync(data.Id) : null;
 
             data.Updated = DateTime.UtcNow;
             data.Number = PhoneNumberAttribute.GetE164(data.Number);
@@ -95,7 +95,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         }
         public async Task<bool> RemoveItemByIdentityAsync(int id) {
 
-            BlockedNumberEntry origData = Auditing.Active ? await GetItemByIdentityAsync(id) : null;
+            BlockedNumberEntry? origData = Auditing.Active ? await GetItemByIdentityAsync(id) : null;
 
             if (!await DataProvider.RemoveByIdentityAsync(id))
                 return false;
@@ -107,7 +107,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
             );
             return true;
         }
-        public Task<DataProviderGetRecords<BlockedNumberEntry>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        public Task<DataProviderGetRecords<BlockedNumberEntry>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
             return DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
     }

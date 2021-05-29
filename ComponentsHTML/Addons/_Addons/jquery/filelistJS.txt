@@ -1,3 +1,2 @@
-https://code.jquery.com/jquery-3.5.1.min.js,CDN
+https://code.jquery.com/jquery-3.6.0.min.js,CDN
 /node_modules/jquery/dist/jquery.min.js,noCDN
-

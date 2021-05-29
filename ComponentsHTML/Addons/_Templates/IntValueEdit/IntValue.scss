@@ -1,14 +1,13 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-span.k-widget {
-    &.yt_intvalue_base {
-        max-width:100%;
-    }
-    input.yt_intvalue_base {
+.yt_intvalue_base {
+    max-width:100%;
+    input {
         text-align: right;
         padding-right: 0.5ch;
         &::placeholder {
-            opacity:0.6;
+            color: var(--inp-ph-clr);
+            opacity: var(--inp-ph-opacity);
         }
     }
     &.yt_intvalue {

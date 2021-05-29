@@ -36,7 +36,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
 
         private IDataProvider<int, VisitorsConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, VisitorsConfigData> CreateDataProvider() {
+        private IDataProvider<int, VisitorsConfigData>? CreateDataProvider() {
             Package package = YetaWF.Modules.Visitors.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -51,7 +51,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
             }
         }
         public async Task<VisitorsConfigData> GetItemAsync() {
-            VisitorsConfigData config = await DataProvider.GetAsync(KEY);
+            VisitorsConfigData? config = await DataProvider.GetAsync(KEY);
             if (config == null) {
                 config = new VisitorsConfigData();
                 await AddConfigAsync(config);
@@ -70,7 +70,7 @@ namespace YetaWF.Modules.Visitors.DataProvider {
             );
         }
         public async Task UpdateConfigAsync(VisitorsConfigData data) {
-            VisitorsConfigData origConfig = Auditing.Active ? await GetItemAsync() : null;
+            VisitorsConfigData? origConfig = Auditing.Active ? await GetItemAsync() : null;
             data.Id = KEY;
             UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)

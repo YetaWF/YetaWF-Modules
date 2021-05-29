@@ -1,0 +1,14 @@
+@charset "UTF-8";
+/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+.yt_skin .t_collection label, .yt_skin .t_skinpage label, .yt_skin .t_skinpopup label {
+  display: inline-block;
+  padding-right: 1ch;
+  width: 25ch; }
+
+.yt_skin.t_edit .t_collection .yt_dropdownlist_base {
+  max-width: 100%; }
+
+.yt_skin.t_edit .t_skinpage .yt_dropdownlist_base,
+.yt_skin.t_edit .t_skinpopup .yt_dropdownlist_base {
+  max-width: 100%;
+  width: 30ch; }

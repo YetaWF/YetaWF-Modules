@@ -13,10 +13,6 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -43,33 +39,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         ///
         /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
         public override string GetTemplateName() { return TemplateName; }
-
-        internal static JsonSerializerSettings JsonSettings = new JsonSerializerSettings {
-            ContractResolver = new TreeEntryContractResolver(),
-            Formatting = Newtonsoft.Json.Formatting.None,
-        };
-
-        // Custom serializer to minimize static data being transferred
-
-        internal class TreeEntryContractResolver : DefaultContractResolver {
-
-            public TreeEntryContractResolver() { }
-
-            protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization) {
-                IList<JsonProperty> properties = base.CreateProperties(type, memberSerialization);
-                if (type != typeof(object)) {
-                    List<string> propList = new List<string>();
-                    List<PropertyData> props = ObjectSupport.GetPropertyData(type);
-                    foreach (PropertyData prop in props) {
-                        if (prop.Name.StartsWith("__") || (prop.PropInfo.CanRead && prop.PropInfo.CanWrite)) {
-                            propList.Add(prop.Name);
-                        }
-                    }
-                    properties = (from p in properties where propList.Contains(p.PropertyName) select p).ToList();
-                }
-                return properties;
-            }
-        }
     }
 
     internal class TreeSetup {
@@ -77,16 +46,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public bool DragDrop { get; set; } // Supports drag & drop
         public bool ContextMenu { get; set; } // Supports context menu
 
-        public string HoverCss { get; set; }
-        public string HighlightCss { get; set; }
-        public string DisabledCss { get; set; }
-        public string RowHighlightCss { get; set; }
-        public string RowDragDropHighlightCss { get; set; }
-        public string SelectedCss { get; set; }
+        public string HoverCss { get; set; } = null!;
+        public string HighlightCss { get; set; } = null!;
+        public string DisabledCss { get; set; } = null!;
+        public string RowHighlightCss { get; set; } = null!;
+        public string RowDragDropHighlightCss { get; set; } = null!;
+        public string SelectedCss { get; set; } = null!;
 
-        public string ContentTargetId { get; set; }
-        public string ContentTargetPane { get; set; }
-        public string AjaxUrl { get; set; } // for dynamic population during expand
+        public string? ContentTargetId { get; set; }
+        public string? ContentTargetPane { get; set; }
+        public string? AjaxUrl { get; set; } // for dynamic population during expand
 
         public TreeSetup() { }
     }
@@ -108,14 +77,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
         /// <summary>
-        /// Called by the framework when the component is used so the component can add component specific addons.
-        /// </summary>
-        public override async Task IncludeAsync() {
-            await JqueryUICore.UseAsync();// needed for css
-            await base.IncludeAsync();
-        }
-
-        /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
@@ -124,9 +85,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            TreeDefinition treeModel = GetSiblingProperty<TreeDefinition>($"{FieldName}_TreeDefinition");
+            TreeDefinition? treeModel = GetSiblingProperty<TreeDefinition>($"{FieldName}_TreeDefinition");
+            if (treeModel == null) throw new InternalError($"No value provided for {FieldName}_TreeDefinition property");
 
-            IEnumerable<object> ienum = model as IEnumerable<object>;
+            IEnumerable<object> ienum = (model as IEnumerable<object>)!;
             List<TreeEntry> data = (from t in ienum select (TreeEntry)(object)t).ToList();
 
 
@@ -145,7 +107,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 dd = " ondragstart='YetaWF_ComponentsHTML.TreeComponent.onDragStart(event)' ondrop='YetaWF_ComponentsHTML.TreeComponent.onDrop(event)' ondragend='YetaWF_ComponentsHTML.TreeComponent.onDragEnd(event)' ondragover='YetaWF_ComponentsHTML.TreeComponent.onDragOver(event)'";
 
             hb.Append($@"
-<div id='{treeModel.Id}' class='yt_tree t_display {(treeModel.UseSkinFormatting ? "tg_skin ui-corner-top ui-widget ui-widget-content" : "tg_noskin")}'{dd}>
+<div id='{treeModel.Id}' class='yt_tree t_display'{dd}>
     {headerHTML}
     {html}
 </div>");
@@ -163,11 +125,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 PropertyData prop = ObjectSupport.GetPropertyData(treeModel.RecordType, nameof(TreeEntry.Text));
                 // Caption
-                string caption = treeModel.Header.ToString();
+                string? caption = treeModel.Header.ToString();
                 if (string.IsNullOrWhiteSpace(caption))
                     caption = prop.GetCaption(null);
                 // Description
-                string description = null;
+                string? description = null;
                 if (treeModel.HeaderTooltip != null) {
                     description = treeModel.HeaderTooltip.ToString();
                     if (string.IsNullOrWhiteSpace(description))
@@ -178,8 +140,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 // Render column header
                 hb.Append($@"
-    <div class='{alignCss} tg_header{(treeModel.UseSkinFormatting ? " ui-state-default" : "")}' {Basics.CssTooltip}='{HAE(description ?? "")}'>
-        <span>{HE(caption)}</span>
+    <div class='{alignCss} tg_header'>
+        <span {Basics.CssTooltipSpan}='{HAE(description ?? "")}'>{HE(caption)}</span>
     </div>");
 
             }
@@ -215,7 +177,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 </ul>");
             } else {
                 // when initially rendering a tree with 0 records, we have to prepare for all templates
-                await YetaWFComponentExtender.AddComponentForType(treeModel.RecordType);
+                await YetaWFComponentExtender.AddComponentsForType(treeModel.RecordType);
             }
 
             return hb.ToString();
@@ -255,7 +217,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // check for SubEntriesProperty
             bool collapsed = record.Collapsed;
             bool dynSubs = false;
-            List<TreeEntry> items = record.SubEntries;
+            List<TreeEntry>? items = record.SubEntries;
             if (items == null || items.Count == 0) {
                 items = null;
                 if (record.DynamicSubEntries) {
@@ -265,8 +227,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 }
             }
 
-            string urlNew = record.UrlNew;
-            string urlContent = record.UrlContent;
+            string? urlNew = record.UrlNew;
+            string? urlContent = record.UrlContent;
 
             // selected
             bool selected = record.Selected;
@@ -303,10 +265,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // entry
 
             string text = await htmlHelper.ForDisplayAsync(record, nameof(TreeEntry.Text));
-            string beforeText = null;
+            string? beforeText = null;
             if (record.BeforeText != null)
                 beforeText = await htmlHelper.ForDisplayAsync(record, nameof(TreeEntry.BeforeText));
-            string afterText = null;
+            string? afterText = null;
             if (record.AfterText != null)
                 afterText = await htmlHelper.ForDisplayAsync(record, nameof(TreeEntry.AfterText));
 
@@ -325,7 +287,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             string recData = "";
             if (treeModel.JSONData) {
-                string json = JsonConvert.SerializeObject(record, JsonSettings);
+                string json = JsonConvert.SerializeObject(record, Utility.JsonSettingsGetSet);
                 recData = $" data-record='{HAE(json)}'";
             }
 
@@ -361,12 +323,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             TreeSetup setup = new TreeSetup() {
                 DragDrop = treeModel.DragDrop,
                 ContextMenu = treeModel.ContextMenu,
-                HoverCss = treeModel.UseSkinFormatting ? "ui-state-hover" : "tg_hover",
-                HighlightCss = treeModel.UseSkinFormatting ? "ui-state-highlight" : "tg_highlight",
-                DisabledCss = treeModel.UseSkinFormatting ? "ui-state-disabled" : "tg_disabled",
-                RowHighlightCss = treeModel.UseSkinFormatting ? "ui-state-highlight" : "tg_highlight",
-                RowDragDropHighlightCss = treeModel.UseSkinFormatting ? "ui-state-active" : "tg_dragdrophighlight",
-                SelectedCss = treeModel.UseSkinFormatting ? "ui-state-active" : "t_select",
+                HighlightCss = "tg_highlight",
+                DisabledCss = "tg_disabled",
+                RowHighlightCss = "tg_highlight",
+                RowDragDropHighlightCss = "tg_dragdrophighlight",
+                SelectedCss = "t_select",
                 ContentTargetId = treeModel.ContentTargetPane,
                 ContentTargetPane = treeModel.ContentTargetPane,
                 AjaxUrl = treeModel.AjaxUrl,

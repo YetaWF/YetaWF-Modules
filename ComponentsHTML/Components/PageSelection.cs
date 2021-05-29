@@ -42,11 +42,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// <summary>
     /// Displays the page name based on the model's page Guid.
     /// </summary>
-    /// <example>
-    /// [Caption("Master Page"), Description("Defines the master page for the Unified Page Set that defines the skin, referenced modules, authorization and all other page attributes")]
-    /// [UIHint("PageSelection"), ReadOnly]
-    /// public Guid MasterPageGuid { get; set; }
-    /// </example>
     public class PageSelectionComponentDisplay : PageSelectionComponentBase, IYetaWFComponent<Guid>, IYetaWFComponent<Guid?> {
 
         /// <summary>
@@ -72,9 +67,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hb = new HtmlBuilder();
 
             if (model != null) {
-                PageDefinition page = await PageDefinition.LoadPageDefinitionAsync((Guid)model);
+                PageDefinition? page = await PageDefinition.LoadPageDefinitionAsync((Guid)model);
                 if (page == null)
-                    hb.Append(__ResStr("notFound", "(Page not found - {0})", model.ToString()));
+                    hb.Append(__ResStr("notFound", "(Page not found - {0})", model.ToString()!));
                 else
                     hb.Append(HE(page.Url));
             }
@@ -124,16 +119,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         Text = p.Url,
                         Value = p.PageGuid.ToString(),
                     }).ToList<SelectionItem<string>>();
-            list.Insert(0, new SelectionItem<string> { Text = __ResStr("select", "(select)"), Value = null });
+            list.Insert(0, new SelectionItem<string> { Text = __ResStr("select", "(select)"), Value = string.Empty });
 
             string ddList = await DropDownListComponent.RenderDropDownListAsync(this, (model ?? Guid.Empty).ToString(), list, null);
 
-            PageDefinition page = null;
+            PageDefinition? page = null;
             if (model != null)
                 page = await PageDefinition.LoadAsync((Guid)model);
 
             // link
-            string href = page != null ? page.EvaluatedCanonicalUrl : string.Empty;
+            string href = page?.EvaluatedCanonicalUrl ?? string.Empty;
             string tt =__ResStr("linkTT", "Click to preview the page in a new window - not all pages can be displayed correctly and may require additional parameters");
 
             string tags = $@"

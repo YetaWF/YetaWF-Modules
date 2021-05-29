@@ -58,7 +58,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         Tooltip = this.__ResStr("packageTT", "{0} - {1}", p.Description.ToString(), p.CompanyDisplayName),
                     }).ToList<SelectionItem<string>>();
             list = (from l in list orderby l.Text select l).ToList();
-            list.Insert(0, new SelectionItem<string> { Text = this.__ResStr("selectPackage", "(select)"), Value = null });
+            list.Insert(0, new SelectionItem<string> { Text = this.__ResStr("selectPackage", "(select)"), Value = string.Empty });
 
             return await DropDownListComponent.RenderDropDownListAsync(this, areaName, list, null);
         }

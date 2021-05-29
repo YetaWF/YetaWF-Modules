@@ -1,7 +1,72 @@
-/* Copyright © 2020 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright Â© 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-/* jquery tab height adjustment */
-
-.yt_tabs.ui-tabs > ul > li {
-    line-height:1.1
+.yt_tabs {
+    position:relative;
+    padding:.2em;
+    background: var(--tabs-bg);
+    color: var(--tabs-clr);
+    border: var(--tabs-tab-border);
+    border-radius: var(--tabs-tab-border-radius);
+    > ul.t_tabstrip {
+        display: table;
+        width:100%;
+        margin:0;
+        padding: .2em .2em 0 .2em;
+        background: var(--tabs-strip-bg);
+        border: var(--tabs-strip-border);
+        border-radius: var(--tabs-tab-border-radius);
+        > li.t_tab {
+            list-style: none;
+            float: left;
+            position: relative;
+            top: 0;
+            margin: 1px .2em 0 0;
+            padding: 0;
+            outline:none;
+            line-height:2em;
+            white-space: nowrap;
+            user-select: none;
+            background: var(--tabs-tab-bg);
+            color: var(--tabs-tab-clr);
+            border-left: var(--tabs-tab-border);
+            border-top: var(--tabs-tab-border);
+            border-right: var(--tabs-tab-border);
+            border-top-left-radius: var(--tabs-tab-border-radius);
+            border-top-right-radius: var(--tabs-tab-border-radius);
+            cursor: pointer;
+            &.t_tabactive {
+                margin-bottom: -1px;
+                padding-bottom: 1px;
+                background: var(--tabs-tab-bg-active);
+                color: var(--tabs-tab-clr-active);
+                > a.t_tabanchor {
+                    color: var(--tabs-tab-clr-active);
+                }
+            }
+            &:hover:not(.t_tabactive) {
+                background: var(--tabs-tab-bg-hover);
+                color: var(--tabs-tab-clr-hover);
+                > a.t_tabanchor {
+                    color: var(--tabs-tab-clr-hover);
+                    &:hover {
+                        color: var(--tabs-tab-clr-hover);
+                    }
+                }
+            }
+            &:focus {
+                background: var(--tabs-tab-bg-focus);
+                color: var(--tabs-tab-clr-focus);
+            }
+            > a.t_tabanchor {
+                 padding: 0 1em 0 1em;
+                 text-decoration: none;
+                 color: var(--tabs-tab-clr);
+            }
+        }
+    }
+    .t_tabpanel {
+        padding: 1em;
+        background: var(--body-bg);
+        color: var(--body-clr);
+    }
 }

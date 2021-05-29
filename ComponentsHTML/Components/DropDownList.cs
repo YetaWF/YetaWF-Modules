@@ -8,6 +8,7 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
@@ -78,25 +79,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     public abstract class DropDownListEditComponentBase<TYPE> : YetaWFComponent, IYetaWFComponent<TYPE> {
 
-        /// <summary>
-        /// Returns the component type (edit/display).
-        /// </summary>
-        /// <returns>Returns the component type.</returns>
+        /// <inheritdoc/>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        /// <summary>
-        /// Returns the package implementing the component.
-        /// </summary>
-        /// <returns>Returns the package implementing the component.</returns>
+        /// <inheritdoc/>
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        /// <summary>
-        /// Returns the component name.
-        /// </summary>
-        /// <returns>Returns the component name.</returns>
-        /// <remarks>Components in packages whose product name starts with "Component" use the exact name returned by GetTemplateName when used in UIHint attributes. These are considered core components.
-        /// Components in other packages use the package's area name as a prefix. E.g., the UserId component in the YetaWF.Identity package is named "YetaWF_Identity_UserId" when used in UIHint attributes.
-        ///
-        /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
+        /// <inheritdoc/>
         public override string GetTemplateName() { return TemplateName; }
 
         internal string TemplateName { get; set; }
@@ -114,23 +102,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public DropDownListEditComponentBase(string templateName) {
             TemplateName = templateName;
         }
+
         /// <summary>
         /// Adds all addons for the DropDownList component to the current page.
         /// </summary>
         public static async Task IncludeExplicitAsync() { // this component is reusable so we need to explicitly include all js/css
-            await KendoUICore.UseAsync();// needed for css
             await Manager.AddOnManager.AddTemplateAsync(AreaRegistration.CurrentPackage.AreaName, "DropDownList",  ComponentType.Edit);
         }
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
+        /// <inheritdoc/>
         public Task<string> RenderAsync(TYPE model) {
 
-            List<SelectionItem<TYPE>> list;
-            if (!TryGetSiblingProperty($"{PropertyName}_List", out list))
-                list = new List<SelectionItem<TYPE>>();
+            TryGetSiblingProperty($"{PropertyName}_List", out List<SelectionItem<TYPE>>? list);
+            list ??= new List<SelectionItem<TYPE>>();
             return RenderDropDownListAsync(this, model, list, "yt_dropdownlist");
         }
 
@@ -142,9 +125,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="list">A collection of items to render.</param>
         /// <param name="cssClass">A CSS class to add to the &lt;select&gt; tag. May be null.</param>
         /// <returns></returns>
-        public static async Task<string> RenderDropDownListAsync(YetaWFComponent component, TYPE model, List<SelectionItem<TYPE>> list, string cssClass) {
-
-            // Uses kendo styles (k-widget, k-dropdown , k-dropdown-wrap, k-input, k-select)
+        public static async Task<string> RenderDropDownListAsync(YetaWFComponent component, TYPE model, List<SelectionItem<TYPE>> list, string? cssClass) {
 
             await IncludeExplicitAsync();
 
@@ -171,7 +152,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder tagHtml = new HtmlBuilder();
 
             // find the selected value
-            SelectionItem<TYPE> selItem = null;
+            SelectionItem<TYPE>? selItem = null;
             foreach (SelectionItem<TYPE> item in list) {
                 if (Equals(item.Value, model)) {
                     selItem = item;
@@ -187,12 +168,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (list.Count > 0) {
                 foreach (var item in list) {
 
-                    string desc = null;
-                    string t = item.Tooltip?.ToString();
+                    string? desc = null;
+                    string? t = item.Tooltip?.ToString();
                     if (!string.IsNullOrWhiteSpace(t))
                         desc = $" {Basics.CssTooltip}='{HAE(t)}'";
 
-                    string selected = null;
+                    string? selected = null;
                     if (item == selItem)
                         selected = " selected='selected'";
 
@@ -201,15 +182,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
 
             string tags = $@"
-<div id='{component.ControlId}' class='k-widget k-dropdown yt_dropdownlist_base t_edit {cssClass}' {(disabled ? "aria-disabled='true'" : "tabindex='0' aria-disabled='false'")} unselectable='on' role='listbox' aria-haspopup='true' aria-expanded='false' aria-owns='yDDPopup' aria-live='polite' aria-busy='false'
+<div id='{component.ControlId}' class='yt_dropdownlist_base t_edit {cssClass}' {(disabled ? "aria-disabled='true'" : "tabindex='0' aria-disabled='false'")} unselectable='on' role='listbox' aria-haspopup='true' aria-expanded='false' aria-owns='yDDPopup' aria-live='polite' aria-busy='false'
         aria-activedescendant='{Guid.NewGuid().ToString()}'>
-    <div unselectable='on' class='t_container k-dropdown-wrap k-state-default {(disabled ? "k-state-disabled" : "")}' {(disabled ? "disabled='disabled'" : "")}>
-        <div unselectable='on' class='t_input k-input'>{HAE(selItem != null ? selItem.Text : null)}</div>
+    <div unselectable='on' class='t_container {(disabled ? "t_disabled" : "")}' {(disabled ? "disabled='disabled'" : "")}>
+        <div unselectable='on' class='t_input'>{HAE(selItem != null ? selItem.Text : null)}</div>
         <div unselectable='on' class='t_select' aria-label='select'>
-            <div class='t_img'></div>
+            {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-caret-down")}
         </div>
     </div>
-    <select{component.FieldSetup(disabled ? (component.Validation ? FieldType.Validated : FieldType.Normal) : FieldType.Normal)}{component.GetClassAttribute(css)}>{tagHtml.ToString()}</select>
+    <select{component.FieldSetup(disabled ? FieldType.Normal : (component.Validation ? FieldType.Validated : FieldType.Normal))}{component.GetClassAttribute(css)}>{tagHtml.ToString()}</select>
 </div>";
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DropDownListEditComponent('{component.ControlId}', {Utility.JsonSerialize(setup)});");
@@ -218,8 +199,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         internal class AjaxData {
-            public string OptionsHTML { get; set; }
-            public string ExtraData { get; set; }
+            public string OptionsHTML { get; set; } = null!;
+            public string? ExtraData { get; set; }
         }
 
         /// <summary>
@@ -228,7 +209,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="extraData">Optional data to be returned in JSON object as 'extra:' data.</param>
         /// <param name="list">A list of all items part of the DropDownList component.</param>
         /// <returns>A JSON object containing data and tooltips to update the contents of a DropDownList.</returns>
-        public static string RenderDataSource(List<SelectionItem<TYPE>> list, string extraData) {
+        public static string RenderDataSource(List<SelectionItem<TYPE>> list, string? extraData) {
 
             AjaxData data = new AjaxData {
                 ExtraData = extraData,
@@ -242,13 +223,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return sb.ToString();
         }
 
-        private static string GetOptionsHTML(List<SelectionItem<TYPE>> list) {
+        /// <summary>
+        /// Returns HTML for a dropdownlist with the available &lt;option&gt;s.
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public static string GetOptionsHTML(List<SelectionItem<TYPE>> list) {
 
             HtmlBuilder tagHtml = new HtmlBuilder();
 
             foreach (var item in list) {
-                string desc = null;
-                string t = item.Tooltip?.ToString();
+                string? desc = null;
+                string? t = item.Tooltip?.ToString();
                 if (!string.IsNullOrWhiteSpace(t))
                     desc = $" {Basics.CssTooltip}='{HAE(t)}'";
                 tagHtml.Append($"<option value='{item.Value?.ToString()}'{desc}>{HE(item.Text.ToString())}</option>");

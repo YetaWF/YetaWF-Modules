@@ -8,6 +8,8 @@ var __extends = (this && this.__extends) || (function () {
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -20,6 +22,7 @@ var YetaWF_ComponentsHTML;
         PropertyListStyleEnum[PropertyListStyleEnum["Tabbed"] = 0] = "Tabbed";
         PropertyListStyleEnum[PropertyListStyleEnum["Boxed"] = 1] = "Boxed";
         PropertyListStyleEnum[PropertyListStyleEnum["BoxedWithCategories"] = 2] = "BoxedWithCategories";
+        PropertyListStyleEnum[PropertyListStyleEnum["BoxedWithHeaders"] = 3] = "BoxedWithHeaders";
     })(PropertyListStyleEnum || (PropertyListStyleEnum = {}));
     var PropertyListComponent = /** @class */ (function (_super) {
         __extends(PropertyListComponent, _super);
@@ -52,7 +55,7 @@ var YetaWF_ComponentsHTML;
             _this.ControlData = controlData;
             _this.Setup = setup;
             // column handling
-            if (_this.Setup.Style === PropertyListStyleEnum.Boxed || _this.Setup.Style === PropertyListStyleEnum.BoxedWithCategories) {
+            if (_this.Setup.Style === PropertyListStyleEnum.Boxed || _this.Setup.Style === PropertyListStyleEnum.BoxedWithCategories || _this.Setup.Style === PropertyListStyleEnum.BoxedWithHeaders) {
                 _this.MinWidth = _this.Setup.ColumnStyles.length > 0 ? _this.Setup.ColumnStyles[0].MinWindowSize : 0;
                 if (_this.Setup.InitialExpanded) {
                     var box = $YetaWF.getElement1BySelector(".t_propexpanded", [_this.Control]);
@@ -65,8 +68,8 @@ var YetaWF_ComponentsHTML;
                 }
             }
             // expand/collapse handling
-            if (_this.Setup.Style === PropertyListStyleEnum.Boxed || _this.Setup.Style === PropertyListStyleEnum.BoxedWithCategories) {
-                $YetaWF.registerEventHandler(_this.Control, "click", ".t_boxexpcoll.t_show", function (ev) {
+            if (_this.Setup.Style === PropertyListStyleEnum.Boxed || _this.Setup.Style === PropertyListStyleEnum.BoxedWithCategories || _this.Setup.Style === PropertyListStyleEnum.BoxedWithHeaders) {
+                $YetaWF.registerEventHandler(_this.Control, "click", ".t_boxexpcoll", function (ev) {
                     _this.expandCollapseBox($YetaWF.elementClosest(ev.__YetaWFElem, ".t_proptable"));
                     return false;
                 });
@@ -170,9 +173,6 @@ var YetaWF_ComponentsHTML;
                 var b = boxes_1[_i];
                 $YetaWF.elementRemoveClasses(b, ["t_propexpanded", "t_propcollapsed", "t_prophide"]);
                 $YetaWF.elementAddClass(b, "t_propcollapsed");
-                var expcoll = $YetaWF.getElement1BySelector(".t_boxexpcoll", [b]);
-                $YetaWF.elementRemoveClasses(expcoll, ["t_hide", "t_show"]);
-                $YetaWF.elementAddClass(expcoll, "t_show");
             }
             // show apply/save/cancel buttons again
             this.toggleFormButtons(true);
@@ -186,12 +186,8 @@ var YetaWF_ComponentsHTML;
                 $YetaWF.elementRemoveClasses(b, ["t_propexpanded", "t_propcollapsed", "t_prophide"]);
                 if (b !== box)
                     $YetaWF.elementAddClass(b, "t_prophide");
-                var expcoll_1 = $YetaWF.getElement1BySelector(".t_boxexpcoll", [b]);
-                $YetaWF.elementRemoveClasses(expcoll_1, ["t_hide", "t_show"]);
             }
             $YetaWF.elementAddClass(box, "t_propexpanded");
-            var expcoll = $YetaWF.getElement1BySelector(".t_boxexpcoll", [box]);
-            $YetaWF.elementAddClass(expcoll, "t_show");
             // hide apply/save/cancel buttons while expanded
             this.toggleFormButtons(false);
             $YetaWF.sendContainerResizeEvent(box);
@@ -215,17 +211,12 @@ var YetaWF_ComponentsHTML;
             this.ColumnDefIndex = this.getColumnDefIndex();
             var cols = this.Setup.ColumnStyles[this.ColumnDefIndex].Columns;
             $YetaWF.elementAddClass(this.Control, "t_col" + cols);
+            $YetaWF.elementAddClass(this.Control, "t_hasmasonry");
             var boxes = $YetaWF.getElementsBySelector(".t_proptable", [this.Control]);
             for (var _i = 0, boxes_3 = boxes; _i < boxes_3.length; _i++) {
                 var b = boxes_3[_i];
                 $YetaWF.elementRemoveClasses(b, ["t_propexpanded", "t_propcollapsed"]);
                 $YetaWF.elementAddClass(b, "t_propcollapsed");
-            }
-            var expcolls = $YetaWF.getElementsBySelector(".t_proptable .t_boxexpcoll", [this.Control]);
-            for (var _a = 0, expcolls_1 = expcolls; _a < expcolls_1.length; _a++) {
-                var expcoll = expcolls_1[_a];
-                $YetaWF.elementRemoveClasses(expcoll, ["t_hide", "t_show"]);
-                $YetaWF.elementAddClass(expcoll, "t_show");
             }
             return new Masonry(this.Control, {
                 itemSelector: ".t_proptable",
@@ -243,23 +234,12 @@ var YetaWF_ComponentsHTML;
                 this.ColumnDefIndex = -1;
                 this.MasonryElem.destroy();
                 this.MasonryElem = null;
-                $YetaWF.elementRemoveClass(this.Control, "t_col1");
-                $YetaWF.elementRemoveClass(this.Control, "t_col2");
-                $YetaWF.elementRemoveClass(this.Control, "t_col3");
-                $YetaWF.elementRemoveClass(this.Control, "t_col4");
-                $YetaWF.elementRemoveClass(this.Control, "t_col5");
+                $YetaWF.elementRemoveClasses(this.Control, ["t_hasmasonry", "t_col1", "t_col2", "t_col3", "t_col4", "t_col5"]);
             }
             var boxes = $YetaWF.getElementsBySelector(".t_proptable", [this.Control]);
             for (var _i = 0, boxes_4 = boxes; _i < boxes_4.length; _i++) {
                 var b = boxes_4[_i];
                 $YetaWF.elementRemoveClasses(b, ["t_propexpanded", "t_propcollapsed", "t_prophide"]);
-                $YetaWF.elementAddClass(b, "t_propcollapsed");
-            }
-            var expcolls = $YetaWF.getElementsBySelector(".t_proptable .t_boxexpcoll", [this.Control]);
-            for (var _a = 0, expcolls_2 = expcolls; _a < expcolls_2.length; _a++) {
-                var expcoll = expcolls_2[_a];
-                $YetaWF.elementRemoveClasses(expcoll, ["t_show", "t_hide"]);
-                $YetaWF.elementAddClass(expcoll, "t_hide");
             }
         };
         PropertyListComponent.prototype.getColumnDefIndex = function () {
@@ -502,7 +482,7 @@ var YetaWF_ComponentsHTML;
             }
         };
         PropertyListComponent.prototype.resize = function () {
-            if (this.Setup.Style === PropertyListStyleEnum.Boxed || this.Setup.Style === PropertyListStyleEnum.BoxedWithCategories) {
+            if (this.Setup.Style === PropertyListStyleEnum.Boxed || this.Setup.Style === PropertyListStyleEnum.BoxedWithCategories || this.Setup.Style === PropertyListStyleEnum.BoxedWithHeaders) {
                 this.layout();
             }
         };

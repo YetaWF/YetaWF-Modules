@@ -21,14 +21,14 @@ namespace YetaWF.Modules.Search.Controllers {
         public class Model {
 
             [UIHint("Hidden")]
-            public string SearchTerms { get; set; }
+            public string SearchTerms { get; set; } = null!;
             public bool MoreResults { get; set; }
             public int MaxResults { get; set; }
-            public List<SearchResult> SearchResults { get; set; }
+            public List<SearchResult> SearchResults { get; set; } = null!;
             public bool ShowUrl { get; set; }
             public bool ShowSummary { get; set; }
             public bool NewWindow { get; set; }
-            public string QSArgs { get; set; }
+            public string QSArgs { get; set; } = null!;
         }
 
         [AllowGet]

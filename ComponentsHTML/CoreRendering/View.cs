@@ -22,8 +22,8 @@ namespace YetaWF.Modules.ComponentsHTML {
 
             string css = Manager.AddOnManager.CheckInvokedCssModule(Forms.CssFormPartial);
 
-            string id = null;
-            string divId = null;
+            string? id = null;
+            string? divId = null;
             if (Manager.IsPostRequest) {
                 divId = Manager.UniqueId();
                 id = $" id='{divId}'";

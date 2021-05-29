@@ -7,11 +7,7 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Modules.SyntaxHighlighter.DataProvider;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.SyntaxHighlighter.Controllers {
 
@@ -28,29 +24,16 @@ namespace YetaWF.Modules.SyntaxHighlighter.Controllers {
 
             [Category("Highlight.js"), Caption("Skin"), Description("The skin used for syntax highlighting")]
             [UIHint("YetaWF_SyntaxHighlighter_HighlightJS"), StringLength(ConfigData.MaxSkinName), AdditionalMetadata("NoDefault", true), Trim]
-            public string HighlightJSSkin { get; set; }
+            public string? HighlightJSSkin { get; set; }
 
             [TextAbove("The syntax highlighter uses Highlight.js.")]
             [Category("Highlight.js"), Caption("Help"), Description("The syntax highlighter uses Highlight.js")]
             [UIHint("Url"), ReadOnly]
-            public string HighlightJSUrl { get; set; }
+            public string HighlightJSUrl { get; set; } 
 
             [Category("Highlight.js"), Caption("Languages"), Description("Displays help for the languages that can be used by Highlight.js for syntax coloring - Not all may be installed and available")]
             [UIHint("Url"), ReadOnly]
             public string LanguagesHighlightJSUrl { get; set; }
-
-            [Category("Alex Gorbatchev"), Caption("Skin"), Description("The skin used for syntax highlighting")]
-            [UIHint("YetaWF_SyntaxHighlighter_SyntaxHighlighter"), StringLength(ConfigData.MaxSkinName), AdditionalMetadata("NoDefault", true), Trim]
-            public string SyntaxHighlighterSkin { get; set; }
-
-            [TextAbove("The syntax highlighter uses Alex Gorbatchev's SyntaxHighlighter.")]
-            [Category("Alex Gorbatchev"), Caption("Help"), Description("The syntax highlighter uses Alex Gorbatchev's SyntaxHighlighter")]
-            [UIHint("Url"), ReadOnly]
-            public string SyntaxHighlighterUrl { get; set; }
-
-            [Category("Alex Gorbatchev"), Caption("Languages"), Description("Displays help for the languages (brushes) that can be used by Alex Gorbatchev's syntax highlighter - Not all may be installed and available")]
-            [UIHint("Url"), ReadOnly]
-            public string LanguagesSyntaxHighlighterUrl { get; set; }
 
             public ConfigData GetData(ConfigData data) {
                 ObjectSupport.CopyData(this, data);
@@ -58,12 +41,11 @@ namespace YetaWF.Modules.SyntaxHighlighter.Controllers {
             }
             public void SetData(ConfigData data) {
                 ObjectSupport.CopyData(data, this);
-                SyntaxHighlighterUrl = "http://alexgorbatchev.com/SyntaxHighlighter/";
+            }
+            public Model() {
                 HighlightJSUrl = "https://highlightjs.org";
                 LanguagesHighlightJSUrl = "http://highlightjs.readthedocs.io/en/latest/css-classes-reference.html#language-names-and-aliases";
-                LanguagesSyntaxHighlighterUrl = "http://alexgorbatchev.com/SyntaxHighlighter/manual/brushes/";
             }
-            public Model() { }
         }
 
         [AllowGet]

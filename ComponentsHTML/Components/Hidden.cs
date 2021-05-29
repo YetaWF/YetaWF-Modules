@@ -45,7 +45,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [UIHint("Hidden"), ReadOnly]
     /// public int Identity { get; set; }
     /// </example>
-    public class HiddenDisplayComponent : HiddenComponentBase, IYetaWFComponent<object> {
+    public class HiddenDisplayComponent : HiddenComponentBase, IYetaWFComponent<object?> {
 
         /// <summary>
         /// Returns the component type (edit/display).
@@ -58,7 +58,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<string> RenderAsync(object model) {
+        public Task<string> RenderAsync(object? model) {
 
             string css = string.Empty;
             if (HtmlAttributes.ContainsKey("--NoTemplate"))
@@ -75,18 +75,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (model.GetType().IsEnum)
                     value = ((int)model).ToString();
                 else
-                    value = model.ToString();
+                    value = model.ToString() ?? string.Empty;
             }
 
-            StringLengthAttribute lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
-#if NOTYET
-            if (lenAttr == null)
-                throw new InternalError($"No max string length given using StringLengthAttribute - {FieldName}");
-#endif
-            if (lenAttr != null && lenAttr.MaximumLength > 0 && lenAttr.MaximumLength <= 8000)
-                HtmlAttributes.Add("maxlength", lenAttr.MaximumLength.ToString());
+            // maxlength not allowed on input type=hidden
+//            StringLengthAttribute lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
+//#if NOTYET
+//            if (lenAttr == null)
+//                throw new InternalError($"No max string length given using StringLengthAttribute - {FieldName}");
+//#endif
+//            if (lenAttr != null && lenAttr.MaximumLength > 0 && lenAttr.MaximumLength <= 8000)
+//                HtmlAttributes.Add("maxlength", lenAttr.MaximumLength.ToString());
 
-            string id = HtmlBuilder.GetIdCond(HtmlAttributes);
+            string? id = HtmlBuilder.GetIdCond(HtmlAttributes);
             if (id != null)
                 id = $" id='{id}'";
             return Task.FromResult($"<input{id}{FieldSetup(FieldType.Normal)} type='hidden' value='{value}'{css}>");
@@ -133,10 +134,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (model.GetType().IsEnum)
                     value = ((int)model).ToString();
                 else
-                    value = model.ToString();
+                    value = model.ToString() ?? string.Empty;
             }
 
-            StringLengthAttribute lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
+            StringLengthAttribute? lenAttr = PropData.TryGetAttribute<StringLengthAttribute>();
 #if NOTYET
             if (lenAttr == null)
                 throw new InternalError($"No max string length given using StringLengthAttribute - {FieldName}");
@@ -144,7 +145,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (lenAttr != null && lenAttr.MaximumLength > 0 && lenAttr.MaximumLength <= 8000)
                 HtmlAttributes.Add("maxlength", lenAttr.MaximumLength.ToString());
 
-            string id = HtmlBuilder.GetIdCond(HtmlAttributes);
+            string? id = HtmlBuilder.GetIdCond(HtmlAttributes);
             if (id != null)
                 id = $" id='{id}'";
             return Task.FromResult($"<input{id}{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} type='hidden' value='{value}'{css}>");

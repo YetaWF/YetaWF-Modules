@@ -64,7 +64,7 @@ namespace YetaWF.Modules.Blog.Controllers {
             public string? Title { get; set; }
 
             [Caption("Comment"), Description("The comment")]
-            [UIHint("TextArea"), AdditionalMetadata("EmHeight", 10), StringLength(BlogComment.MaxComment)]
+            [UIHint("TextArea"), AdditionalMetadata("EmHeight", 10), StringLength(BlogComment.MaxComment), Required]
             [AdditionalMetadata("TextAreaSave", false), AdditionalMetadata("RestrictedHtml", true)]
             public string? Comment { get; set; }
 

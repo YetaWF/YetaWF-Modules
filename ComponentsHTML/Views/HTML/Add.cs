@@ -40,16 +40,16 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
 
         HtmlBuilder hb = new HtmlBuilder();
 
-            string actionName = (string)HtmlHelper.RouteData.Values["action"];
+            string? actionName = (string?)HtmlHelper.RouteData.Values["action"];
 
-            string submit = null, submitTT = null; bool submitShown; ButtonTypeEnum submitType = ButtonTypeEnum.Submit; string submitName = null;
+            string? submit = null, submitTT = null; bool submitShown; ButtonTypeEnum submitType = ButtonTypeEnum.Submit; string? submitName = null;
             if (ObjectSupport.TryGetPropertyValue<bool>(model, "__submitShown", out submitShown, true) && submitShown) {
                 ObjectSupport.TryGetPropertyValue<string>(model, "__submitTT", out submitTT);
                 ObjectSupport.TryGetPropertyValue<string>(model, "__submit", out submit);
                 ObjectSupport.TryGetPropertyValue<ButtonTypeEnum>(model, "__submitType", out submitType, ButtonTypeEnum.Submit);
                 ObjectSupport.TryGetPropertyValue<string>(model, "__submitName", out submitName);
             }
-            string cancel = null, cancelTT = null; bool cancelShown; ButtonTypeEnum cancelType = ButtonTypeEnum.Cancel;
+            string? cancel = null, cancelTT = null; bool cancelShown; ButtonTypeEnum cancelType = ButtonTypeEnum.Cancel;
             if (ObjectSupport.TryGetPropertyValue<bool>(model, "__cancelShown", out cancelShown, true) && cancelShown) {
                 ObjectSupport.TryGetPropertyValue<string>(model, "__cancelTT", out cancelTT);
                 ObjectSupport.TryGetPropertyValue<string>(model, "__cancel", out cancel);

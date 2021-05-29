@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Addons {
@@ -35,9 +36,11 @@ namespace YetaWF.Modules.ComponentsHTML.Addons {
 
             ScriptManager scripts = manager.ScriptManager;
             Package package = AreaRegistration.CurrentPackage;
-            string areaName = AreaRegistration.CurrentPackage.AreaName;
+            string areaName = package.AreaName;
 
-            scripts.AddConfigOption(areaName, "LoaderGif", manager.GetCDNUrl(VersionManager.GetAddOnPackageUrl(package.AreaName) + "images/ajax-loader.gif"));
+            scripts.AddConfigOption(areaName, "LoaderGif", manager.GetCDNUrl(Package.GetAddOnPackageUrl(package.AreaName) + "images/ajax-loader.gif"));
+
+            scripts.AddConfigOption(areaName, "SVG_fas_multiply", SkinSVGs.Get(package, "fas-multiply"));// BasicsImpl.ts toast/ Dialog.tsx Dialog close button
 
             return Task.CompletedTask;
         }

@@ -51,7 +51,7 @@ namespace YetaWF.Modules.Search.Modules {
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local)]
         [StringLength(Globals.MaxUrl), Required, Trim]
         [Data_NewValue]
-        public string ResultsUrl { get; set; }
+        public string? ResultsUrl { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 

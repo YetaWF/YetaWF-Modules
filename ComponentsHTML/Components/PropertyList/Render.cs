@@ -42,7 +42,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
             return hb.ToString();
         }
-        private async Task<string> RenderListAsync(object model, string category, bool showVariables, bool readOnly) {
+        private async Task<string> RenderListAsync(object model, string? category, bool showVariables, bool readOnly) {
 
             bool focusSet = Manager.WantFocus ? false : true;
             List<PropertyListEntry> properties = GetPropertiesByCategory(model, category);
@@ -51,13 +51,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             foreach (PropertyListEntry property in properties) {
                 bool haveValue = false;
-                string shtml = null;
+                string? shtml = null;
                 if (property.Restricted) {
                     shtml = __ResStr("demo", "This property is not available in Demo Mode");
                     haveValue = true;
                 } else if (readOnly || !property.Editable) {
                     shtml = await HtmlHelper.ForDisplayAsync(model, property.Name);
-                    string s = shtml?.ToString().Trim();
+                    string s = shtml.Trim();
                     if (string.IsNullOrWhiteSpace(s)) {
                         if (property.SuppressEmpty)
                             continue;

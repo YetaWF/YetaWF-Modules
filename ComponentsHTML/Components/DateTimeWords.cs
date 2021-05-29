@@ -79,9 +79,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 string wordsTT = Formatting.FormatLongDateTime(last);
                 return Task.FromResult($@"<div{FieldSetup(FieldType.Anonymous)}{HtmlBuilder.GetClassAttribute(HtmlAttributes)} {Basics.CssTooltip}='{HAE(wordsTT)}'>{HE(words)}</div>");
             } else {
-                string text;
-                if (!TryGetSiblingProperty($"{PropertyName}_EmptyHTML", out text))
-                    return Task.FromResult<string>(null);
+                if (!TryGetSiblingProperty($"{PropertyName}_EmptyHTML", out string? text))
+                    return Task.FromResult<string>(string.Empty);
                 return Task.FromResult($@"<div{FieldSetup(FieldType.Anonymous)}{HtmlBuilder.GetClassAttribute(HtmlAttributes)}>{text}</div>");
             }
         }

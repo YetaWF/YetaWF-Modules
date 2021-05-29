@@ -19,12 +19,12 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
             [Caption("Title"), Description("Defines the title of the message to be sent")]
             [UIHint("Text80"), StringLength(DataProvider.SiteAnnouncement.MaxTitle), Trim, Required]
-            public string Title { get; set; } = null!;
+            public string? Title { get; set; } = null!;
 
             [TextAbove("Please enter the message to be sent to all users that are currently using the site (anonymous and logged on users).")]
             [Caption("Message"), Description("Defines the message to be sent")]
             [UIHint("TextArea"), AdditionalMetadata("PageBrowse", true), AdditionalMetadata("Encode", false), StringLength(DataProvider.SiteAnnouncement.MaxMessage), Trim, Required]
-            public string Message { get; set; } = null!;
+            public string? Message { get; set; } = null!;
 
             [Caption("Test Mode"), Description("Select to test sending a message to yourself (no other users will receive this message)")]
             [UIHint("Boolean"), SuppressIf(nameof(IsDemoMode), false), ReadOnly]
@@ -78,7 +78,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
             } else {
                 using (SiteAnnouncementDataProvider siteAnnounceDP = new SiteAnnouncementDataProvider()) {
 
-                    await YetaWF_Messenger_SiteAnnouncementsHub.SendMessageAsync(model.Message, model.Title);
+                    await YetaWF_Messenger_SiteAnnouncementsHub.SendMessageAsync(model.Message!, model.Title!);
 
                     if (await siteAnnounceDP.IsInstalledAsync()) {
                         if (!await siteAnnounceDP.AddItemAsync(model.GetData()))

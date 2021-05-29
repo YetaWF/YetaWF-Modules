@@ -3,7 +3,6 @@
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
-using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Menus;
 using YetaWF.Modules.Menus.Controllers;
@@ -19,10 +18,7 @@ namespace YetaWF.Modules.Menu.Views {
         public override string GetViewName() { return ViewName; }
 
         public async Task<string> RenderViewAsync(MainMenuModule module, MainMenuModuleController.MenuModel model) {
-
-            HtmlBuilder hb = new HtmlBuilder();
-            hb.Append($@"{await HtmlHelper.ForDisplayAsync(model, nameof(model.Menu))}");
-            return hb.ToString();
+            return await HtmlHelper.ForDisplayAsync(model, nameof(model.Menu));
         }
     }
 }

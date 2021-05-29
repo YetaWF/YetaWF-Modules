@@ -23,15 +23,15 @@ namespace YetaWF.Modules.Languages.Controllers {
 
             [Caption("ID"), Description("The language id - this is the same as the culture name used throughout .NET")]
             [UIHint("String"), ReadOnly]
-            public string Id { get; set; }
+            public string Id { get; set; } = null!;
 
             [Caption("Name"), Description("The language's name, which is displayed in language selection controls so the user can select a language")]
             [UIHint("String"), ReadOnly]
-            public string ShortName { get; set; }
+            public string ShortName { get; set; } = null!;
 
             [Caption("Description"), Description("The description for the language - this is used for informational purposes only")]
             [UIHint("String"), ReadOnly]
-            public string Description { get; set; }
+            public string? Description { get; set; }
 
             public void SetData(LanguageEntryElement data) {
                 ObjectSupport.CopyData(data, this);
@@ -40,7 +40,7 @@ namespace YetaWF.Modules.Languages.Controllers {
 
         [AllowGet]
         public ActionResult LanguageDisplay(string id) {
-            LanguageEntryElement language = (from l in LanguageSection.Languages where id == l.Id select l).FirstOrDefault();
+            LanguageEntryElement? language = (from l in LanguageSection.Languages where id == l.Id select l).FirstOrDefault();
             if (language == null)
                 throw new Error(this.__ResStr("notFound", "Language \"{0}\" not found"), id);
             DisplayModel model = new DisplayModel();

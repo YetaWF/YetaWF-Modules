@@ -1,6 +1,5 @@
 "use strict";
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
-/* Basics implementation required by YetaWF */
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     var Severity;
@@ -234,8 +233,6 @@ var YetaWF_ComponentsHTML;
          * Closes any open overlays, menus, dropdownlists, tooltips, etc. (Popup windows are not handled and are explicitly closed using $YetaWF.Popups)
          */
         BasicsImpl.prototype.closeOverlays = function () {
-            // Close open bootstrap nav menus (if any) by clicking on the page
-            $("body").trigger("click"); // jQuery use
             // all MenuUL menus
             if (YetaWF_ComponentsHTML.MenuULComponent)
                 YetaWF_ComponentsHTML.MenuULComponent.closeMenus();
@@ -244,18 +241,9 @@ var YetaWF_ComponentsHTML;
             // dropdowns
             if (YetaWF_ComponentsHTML.DropDownListEditComponent)
                 YetaWF_ComponentsHTML.DropDownListEditComponent.closeDropdowns();
-            // Close any open kendo menus (if any) //TODO: This is sloppy and prob unnecessary
-            var $menus = $(".k-menu"); // jQuery use
-            $menus.each(function (index, element) {
-                var menu = $(element).data("kendoMenu");
-                if (menu)
-                    menu.close("li.k-item");
-            });
-            // Close any open smartmenus
-            try {
-                $(".YetaWF_Menus").collapse("hide"); // jQuery use
-            }
-            catch (e) { }
+            // Close any open menus
+            if (YetaWF_ComponentsHTML.MenuComponent)
+                YetaWF_ComponentsHTML.MenuComponent.closeAllMenus();
         };
         /**
          * Enable/disable an element.
@@ -263,50 +251,13 @@ var YetaWF_ComponentsHTML;
          * Also used to update visual styles to reflect the status.
          */
         BasicsImpl.prototype.elementEnableToggle = function (elem, enable) {
-            if ($YetaWF.elementHasClass(elem, "ui-button")) {
-                // Handle buttons
-                // jquery-ui button
-                elem.removeAttribute("disabled");
-                $YetaWF.elementRemoveClass(elem, "ui-state-disabled");
-                if (!enable) {
-                    elem.setAttribute("disabled", "disabled");
-                    $YetaWF.elementAddClass(elem, "ui-state-disabled");
-                }
-            }
-            else if ($YetaWF.elementHasClass(elem, "btn")) {
-                // bootstrap button (using a tag)
-                elem.removeAttribute("disabled");
-                elem.removeAttribute("aria-disabled");
-                if (enable) {
-                    $YetaWF.elementRemoveClass(elem, "disabled");
-                }
-                else {
-                    $YetaWF.elementAddClass(elem, "disabled");
-                    elem.setAttribute("disabled", "disabled");
-                    $YetaWF.setAttribute(elem, "aria-disabled", "true");
-                }
-            }
-            else if (YetaWF_ComponentsHTML.TextEditComponent && $YetaWF.elementHasClass(elem, YetaWF_ComponentsHTML.TextEditComponent.TEMPLATE)) { // using template name as class name
-                // Handle text/input
-                elem.removeAttribute("disabled");
+            elem.removeAttribute("disabled");
+            if (!enable)
+                elem.setAttribute("disabled", "disabled");
+            if (elem.tagName === "A") {
+                $YetaWF.elementRemoveClass(elem, "t_disabled");
                 if (!enable)
-                    elem.setAttribute("disabled", "disabled");
-                $YetaWF.elementRemoveClass(elem, "k-state-disabled");
-                if (!enable)
-                    $YetaWF.elementAddClass(elem, "k-state-disabled");
-            }
-            else if (YetaWF_ComponentsHTML.TextAreaSourceOnlyEditComponent && $YetaWF.elementHasClass(elem, YetaWF_ComponentsHTML.TextAreaSourceOnlyEditComponent.TEMPLATE)) { // using template name as class name
-                elem.removeAttribute("readonly");
-                $YetaWF.elementRemoveClass(elem, "k-state-disabled");
-                if (!enable) {
-                    elem.setAttribute("readonly", "readonly");
-                    $YetaWF.elementAddClass(elem, "k-state-disabled");
-                }
-            }
-            else {
-                elem.removeAttribute("disabled");
-                if (!enable)
-                    elem.setAttribute("disabled", "disabled");
+                    $YetaWF.elementAddClass(elem, "t_disabled");
             }
             // mark submit/nosubmit
             if (enable) {
@@ -317,6 +268,16 @@ var YetaWF_ComponentsHTML;
                 if (!$YetaWF.elementHasClass(elem, "yform-nosubmit"))
                     $YetaWF.elementAddClasses(elem, ["yform-novalidate", "yform-nosubmit-temp", "yform-nosubmit"]);
             }
+        };
+        /**
+         * Returns whether the element is enabled.
+         */
+        BasicsImpl.prototype.isEnabled = function (elem) {
+            if ($YetaWF.getAttributeCond(elem, "disabled") != null)
+                return false;
+            if ($YetaWF.elementHasClass(elem, "t_disabled"))
+                return false;
+            return true;
         };
         /**
          * Given an element, returns the owner (typically a module) that owns the element.
@@ -367,7 +328,8 @@ var YetaWF_ComponentsHTML;
             if (title)
                 html += "<div class='t_title'>" + $YetaWF.htmlEscape(title) + "</div>";
             if (options.canClose)
-                html += "<div class='t_close' aria-label='Close'></div>";
+                //close button image
+                html += "<div class='t_close' aria-label='Close'>" + YConfigs.YetaWF_ComponentsHTML.SVG_fas_multiply + "</div>";
             if (message) {
                 if (!options.encoded) {
                     // change \n to <br/>

@@ -8,6 +8,8 @@ var __extends = (this && this.__extends) || (function () {
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -25,7 +27,7 @@ var YetaWF_ComponentsHTML;
         function UrlEditComponent(controlId, setup) {
             var _this = _super.call(this, controlId, UrlEditComponent.TEMPLATE, UrlEditComponent.SELECTOR, {
                 ControlType: YetaWF_ComponentsHTML.ControlTypeEnum.Template,
-                ChangeEvent: UrlEditComponent.EVENT,
+                ChangeEvent: UrlEditComponent.EVENTCHANGE,
                 GetValue: function (control) {
                     return control.value;
                 },
@@ -35,13 +37,14 @@ var YetaWF_ComponentsHTML;
                         control.clear();
                 },
             }) || this;
+            _this.selectType = null;
             _this.selectPage = null;
             _this.inputUrl = null;
             _this.divLocal = null;
             _this.divRemote = null;
             _this.Setup = setup;
             _this.inputHidden = $YetaWF.getElement1BySelector(".t_hidden", [_this.Control]);
-            _this.selectType = YetaWF.ComponentBaseDataImpl.getControlFromSelector(".yt_urltype", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
+            _this.selectType = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond(".yt_urltype", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
             // eslint-disable-next-line no-bitwise
             if (_this.Setup.Type & UrlTypeEnum.Local) {
                 _this.selectPage = YetaWF.ComponentBaseDataImpl.getControlFromSelector(".yt_urldesignedpage", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [_this.Control]);
@@ -54,14 +57,14 @@ var YetaWF_ComponentsHTML;
             }
             _this.aLink = $YetaWF.getElement1BySelector(".t_link a", [_this.Control]);
             _this.value = _this.Setup.Url;
-            if (!_this.inputUrl || !_this.selectPage)
-                _this.selectType.enable(false);
-            _this.selectType.Control.addEventListener("dropdownlist_change", function (evt) {
-                _this.updateStatus();
-                _this.sendEvent();
-            });
+            if (_this.selectType) {
+                _this.selectType.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, function (evt) {
+                    _this.updateStatus();
+                    _this.sendEvent();
+                });
+            }
             if (_this.selectPage) {
-                _this.selectPage.Control.addEventListener("dropdownlist_change", function (evt) {
+                _this.selectPage.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, function (evt) {
                     _this.updateStatus();
                     _this.sendEvent();
                 });
@@ -76,32 +79,43 @@ var YetaWF_ComponentsHTML;
             return _this;
         }
         UrlEditComponent.prototype.updateStatus = function () {
-            var tp = Number(this.selectType.value);
-            switch (tp) {
-                case UrlTypeEnum.Local:
-                    if (this.divLocal)
-                        this.divLocal.style.display = "";
-                    if (this.divRemote)
-                        this.divRemote.style.display = "none";
-                    if (this.selectPage)
-                        this.inputHidden.value = this.selectPage.value.trim();
-                    break;
-                case UrlTypeEnum.Remote:
-                    if (this.divLocal)
-                        this.divLocal.style.display = "none";
-                    if (this.divRemote)
-                        this.divRemote.style.display = "";
-                    if (this.inputUrl)
-                        this.inputHidden.value = this.inputUrl.value.trim();
-                    break;
+            var tp;
+            if (!this.selectType) {
+                if (this.selectPage) {
+                    this.inputHidden.value = this.selectPage.value.trim();
+                    tp = UrlTypeEnum.Local;
+                }
+                else if (this.inputUrl) {
+                    this.inputHidden.value = this.inputUrl.value.trim();
+                    tp = UrlTypeEnum.Remote;
+                }
+                else
+                    throw "Can't determine UrlType";
+            }
+            else {
+                tp = Number(this.selectType.value);
+                switch (tp) {
+                    case UrlTypeEnum.Local:
+                        if (this.divLocal)
+                            this.divLocal.style.display = "";
+                        if (this.divRemote)
+                            this.divRemote.style.display = "none";
+                        if (this.selectPage)
+                            this.inputHidden.value = this.selectPage.value.trim();
+                        break;
+                    case UrlTypeEnum.Remote:
+                        if (this.divLocal)
+                            this.divLocal.style.display = "none";
+                        if (this.divRemote)
+                            this.divRemote.style.display = "";
+                        if (this.inputUrl)
+                            this.inputHidden.value = this.inputUrl.value.trim();
+                        break;
+                }
             }
             var url = this.inputHidden.value.trim();
             if (url && url.length > 0) {
                 if (tp === UrlTypeEnum.Local) {
-                    var uri = $YetaWF.parseUrl(url);
-                    uri.removeSearch(YConfigs.Basics.Link_NoEditMode);
-                    uri.addSearch(YConfigs.Basics.Link_NoEditMode, "y");
-                    this.aLink.href = uri.toUrl();
                 }
                 else {
                     this.aLink.href = url;
@@ -116,7 +130,7 @@ var YetaWF_ComponentsHTML;
         UrlEditComponent.prototype.sendEvent = function () {
             FormsSupport.validateElement(this.inputHidden);
             var event = document.createEvent("Event");
-            event.initEvent(UrlEditComponent.EVENT, true, true);
+            event.initEvent(UrlEditComponent.EVENTCHANGE, true, true);
             this.Control.dispatchEvent(event);
         };
         Object.defineProperty(UrlEditComponent.prototype, "value", {
@@ -125,36 +139,38 @@ var YetaWF_ComponentsHTML;
                 return this.inputHidden.value;
             },
             set: function (url) {
-                var sel = Number(this.selectType.value); // current selection
-                if (this.Setup.Type === UrlTypeEnum.Local + UrlTypeEnum.Remote && this.selectPage) {
-                    if (url != null && (url.startsWith("//") || url.startsWith("http"))) {
-                        // remote
-                        if (this.inputUrl)
-                            sel = UrlTypeEnum.Remote;
+                if (this.selectType) {
+                    var sel = Number(this.selectType.value); // current selection
+                    if (this.Setup.Type === UrlTypeEnum.Local + UrlTypeEnum.Remote && this.selectPage) {
+                        if (url != null && (url.startsWith("//") || url.startsWith("http"))) {
+                            // remote
+                            if (this.inputUrl)
+                                sel = UrlTypeEnum.Remote;
+                        }
+                        else {
+                            // try local
+                            this.selectPage.value = url;
+                            if (this.selectPage.value !== url)
+                                sel = UrlTypeEnum.Remote; // have to use remote as there was no match in the designed pages
+                            else
+                                sel = UrlTypeEnum.Local;
+                        }
+                    }
+                    else if (this.Setup.Type === UrlTypeEnum.Local && this.selectPage) {
+                        sel = UrlTypeEnum.Local;
                     }
                     else {
-                        // try local
+                        sel = UrlTypeEnum.Remote;
+                    }
+                    this.selectType.value = sel.toString();
+                    if (sel === UrlTypeEnum.Local && this.selectPage) {
                         this.selectPage.value = url;
-                        if (this.selectPage.value !== url)
-                            sel = UrlTypeEnum.Remote; // have to use remote as there was no match in the designed pages
-                        else
-                            sel = UrlTypeEnum.Local;
+                    }
+                    else if (sel === UrlTypeEnum.Remote && this.inputUrl) {
+                        this.inputUrl.value = url;
                     }
                 }
-                else if (this.Setup.Type === UrlTypeEnum.Local && this.selectPage) {
-                    sel = UrlTypeEnum.Local;
-                }
-                else {
-                    sel = UrlTypeEnum.Remote;
-                }
                 this.inputHidden.value = url;
-                this.selectType.value = sel.toString();
-                if (sel === UrlTypeEnum.Local && this.selectPage) {
-                    this.selectPage.value = url;
-                }
-                else if (sel === UrlTypeEnum.Remote && this.inputUrl) {
-                    this.inputUrl.value = url;
-                }
                 this.updateStatus();
             },
             enumerable: false,
@@ -164,7 +180,7 @@ var YetaWF_ComponentsHTML;
             this.value = "";
         };
         UrlEditComponent.prototype.enable = function (enabled) {
-            if (this.inputUrl && this.selectPage)
+            if (this.selectType)
                 this.selectType.enable(enabled);
             if (this.selectPage)
                 this.selectPage.enable(enabled);
@@ -173,7 +189,7 @@ var YetaWF_ComponentsHTML;
         };
         UrlEditComponent.TEMPLATE = "yt_url";
         UrlEditComponent.SELECTOR = ".yt_url.t_edit";
-        UrlEditComponent.EVENT = "url_change";
+        UrlEditComponent.EVENTCHANGE = "url_change";
         return UrlEditComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.UrlEditComponent = UrlEditComponent;

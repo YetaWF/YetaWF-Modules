@@ -25,11 +25,11 @@ namespace YetaWF.Modules.Sites.Controllers {
         public class BrowseItem {
 
             [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands { get; set; }
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands { get; set; }
 
-            public async Task<MenuList> __GetCommandsAsync() {
-                MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+            public async Task<List<ModuleAction>> __GetCommandsAsync() {
+                List<ModuleAction> actions = new List<ModuleAction>();
 
                 actions.New(Module.GetAction_SiteDisplay(SiteData), ModuleAction.ActionLocationEnum.GridLinks);
                 actions.New(await SiteEditModule.GetModuleActionAsync("EditSite", null, SiteDomain), ModuleAction.ActionLocationEnum.GridLinks);

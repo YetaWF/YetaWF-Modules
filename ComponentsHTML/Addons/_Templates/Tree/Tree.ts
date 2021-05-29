@@ -1,7 +1,5 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-// Kendo UI menu use
-
 namespace YetaWF_ComponentsHTML {
 
     //export interface IPackageLocs {
@@ -107,7 +105,7 @@ namespace YetaWF_ComponentsHTML {
                     if (!liElem) return false;
                     liElem = this.getNextVisibleEntry(liElem);
                     if (!liElem) return false;
-                    this.setSelect(liElem, true);
+                    this.setSelect(liElem);
                     this.sendSelectEvent();
                     return false;
                 } else if (key === "ArrowUp" || key === "Up") {
@@ -115,19 +113,19 @@ namespace YetaWF_ComponentsHTML {
                     if (!liElem) return false;
                     liElem = this.getPrevVisibleEntry(liElem);
                     if (!liElem) return false;
-                    this.setSelect(liElem, true);
+                    this.setSelect(liElem);
                     this.sendSelectEvent();
                     return false;
                 } else if (key === "Home") {
                     var liElem = this.getFirstVisibleItem();
                     if (!liElem) return false;
-                    this.setSelect(liElem, true);
+                    this.setSelect(liElem);
                     this.sendSelectEvent();
                     return false;
                 } else if (key === "End") {
                     var liElem = this.getLastVisibleItem();
                     if (!liElem) return false;
-                    this.setSelect(liElem, true);
+                    this.setSelect(liElem);
                     this.sendSelectEvent();
                     return false;
                 } else if (key === "ArrowLeft" || key === "Left") {
@@ -138,7 +136,7 @@ namespace YetaWF_ComponentsHTML {
                     else {
                         liElem = this.getPrevVisibleEntry(liElem);
                         if (!liElem) return false;
-                        this.setSelect(liElem, true);
+                        this.setSelect(liElem);
                         this.sendSelectEvent();
                     }
                     return false;
@@ -150,7 +148,7 @@ namespace YetaWF_ComponentsHTML {
                     else {
                         liElem = this.getNextVisibleEntry(liElem);
                         if (!liElem) return false;
-                        this.setSelect(liElem, true);
+                        this.setSelect(liElem);
                         this.sendSelectEvent();
                     }
                     return false;
@@ -351,7 +349,6 @@ namespace YetaWF_ComponentsHTML {
                 throw `Tree control doesn't have an AJAX URL - ${this.Control.outerHTML}`;
 
             if (!$YetaWF.isLoading) {
-                $YetaWF.setLoading(true);
 
                 // fetch data from servers
                 var uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
@@ -362,32 +359,21 @@ namespace YetaWF_ComponentsHTML {
                 let uniqueIdCounters: YetaWF.UniqueIdInfo = { UniqueIdPrefix: `${this.ControlId}ls`, UniqueIdPrefixCounter: ++this.AddCounter, UniqueIdCounter: 0 };
                 uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
 
-                var request: XMLHttpRequest = new XMLHttpRequest();
-                request.open("POST", this.Setup.AjaxUrl);
-                request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-                request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                request.onreadystatechange = (ev: Event): any => {
-                    if (request.readyState === 4 /*DONE*/) {
-                        $YetaWF.setLoading(false);
-                        $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, (result: string): void => {
-                            let partial: TreePartialResult = JSON.parse(request.responseText);
-
-                            let iElem = $YetaWF.getElement1BySelector("i.t_icright", [liElem]);
-                            $YetaWF.elementRemoveClasses(iElem, ["t_icright", "t_icdown", "t_icempty"]);
-                            if (partial.Records > 0) {
-                                // add new items
-                                $YetaWF.appendMixedHTML(liElem, partial.HTML);
-                                // mark expanded
-                                $YetaWF.elementAddClass(iElem, "t_icdown");
-                            } else {
-                                // mark not expandable
-                                $YetaWF.elementAddClass(iElem, "t_icempty");
-                            }
-                        });
+                $YetaWF.post(this.Setup.AjaxUrl, uri.toFormData(), (success: boolean, partial: TreePartialResult): void =>{
+                    if (success) {
+                        let iElem = $YetaWF.getElement1BySelector("i.t_icright", [liElem]);
+                        $YetaWF.elementRemoveClasses(iElem, ["t_icright", "t_icdown", "t_icempty"]);
+                        if (partial.Records > 0) {
+                            // add new items
+                            $YetaWF.appendMixedHTML(liElem, partial.HTML);
+                            // mark expanded
+                            $YetaWF.elementAddClass(iElem, "t_icdown");
+                        } else {
+                            // mark not expandable
+                            $YetaWF.elementAddClass(iElem, "t_icempty");
+                        }
                     }
-                };
-                let data = uri.toFormData();
-                request.send(data);
+                });
             }
         }
 
@@ -497,13 +483,12 @@ namespace YetaWF_ComponentsHTML {
             let liElem = $YetaWF.elementClosest(entry, "li") as HTMLLIElement | null;
             return liElem;
         }
-        public setSelect(liElem: HTMLLIElement, focus?:boolean): void {
+        public setSelect(liElem: HTMLLIElement): void {
             this.clearSelect();
             $YetaWF.elementAddClass(liElem, "t_select");
             let entry = $YetaWF.getElement1BySelector(".t_entry", [liElem]);
             $YetaWF.elementAddClass(entry, this.Setup.SelectedCss);
-            if (focus === true)
-                entry.focus();
+            entry.focus();
         }
         public getSelectData<T = TreeEntry>(): T | null {
             var liElem = this.getSelect();

@@ -48,7 +48,7 @@ namespace YetaWF.Modules.Packages.Modules {
             }
         }
 
-        public ModuleAction GetAction_Packages(string url) {
+        public ModuleAction? GetAction_Packages(string? url) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Browse",
@@ -61,7 +61,7 @@ namespace YetaWF.Modules.Packages.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
             };
         }
-        public async Task<ModuleAction> GetAction_InfoLinkAsync(string infoLink) {
+        public async Task<ModuleAction?> GetAction_InfoLinkAsync(string? infoLink) {
             if (string.IsNullOrWhiteSpace(infoLink)) return null;
             return new ModuleAction(this) {
                 Url = infoLink,
@@ -73,7 +73,7 @@ namespace YetaWF.Modules.Packages.Modules {
                 Legend = this.__ResStr("infoLegend", "Links to the product's website and display product information"),
             };
         }
-        public async Task<ModuleAction> GetAction_SupportLinkAsync(string supportLink) {
+        public async Task<ModuleAction?> GetAction_SupportLinkAsync(string? supportLink) {
             if (string.IsNullOrWhiteSpace(supportLink)) return null;
             return new ModuleAction(this) {
                 Url = supportLink,
@@ -86,7 +86,7 @@ namespace YetaWF.Modules.Packages.Modules {
             };
         }
 
-        public async Task<ModuleAction> GetAction_LicenseLinkAsync(string licenseLink) {
+        public async Task<ModuleAction?> GetAction_LicenseLinkAsync(string? licenseLink) {
             if (string.IsNullOrWhiteSpace(licenseLink)) return null;
             return new ModuleAction(this) {
                 Url = licenseLink,
@@ -98,7 +98,7 @@ namespace YetaWF.Modules.Packages.Modules {
                 Legend = this.__ResStr("licenseLegend", "Links to the product's website and displays the licensing information"),
             };
         }
-        public async Task<ModuleAction> GetAction_ReleaseNoticeLinkAsync(string releaseNoticeLink) {
+        public async Task<ModuleAction?> GetAction_ReleaseNoticeLinkAsync(string? releaseNoticeLink) {
             if (string.IsNullOrWhiteSpace(releaseNoticeLink)) return null;
             return new ModuleAction(this) {
                 Url = releaseNoticeLink,
@@ -110,9 +110,9 @@ namespace YetaWF.Modules.Packages.Modules {
                 Legend = this.__ResStr("noticeLegend", "Links to the product's website and displays the release notice"),
             };
         }
-        public async Task<ModuleAction> GetAction_ExportPackageAsync(Package package) {
+        public async Task<ModuleAction?> GetAction_ExportPackageAsync(Package package) {
 #if DEBUG
-            return await Task.FromResult<ModuleAction>(null);
+            return await Task.FromResult<ModuleAction?>(null);
 #else
             if (!IsAuthorized("Imports")) return null;
             if (!await package.GetHasSourceAsync()) return null;
@@ -131,9 +131,9 @@ namespace YetaWF.Modules.Packages.Modules {
             };
 #endif
         }
-        public async Task<ModuleAction> GetAction_ExportPackageWithSourceAsync(Package package) {
+        public async Task<ModuleAction?> GetAction_ExportPackageWithSourceAsync(Package package) {
 #if DEBUG
-            return await Task.FromResult<ModuleAction>(null);
+            return await Task.FromResult<ModuleAction?>(null);
 #else
             if (!IsAuthorized("Imports")) return null;
             if (!await package.GetHasSourceAsync()) return null;
@@ -152,7 +152,7 @@ namespace YetaWF.Modules.Packages.Modules {
             };
 #endif
         }
-        public async Task<ModuleAction> GetAction_ExportPackageDataAsync(Package package) {
+        public async Task<ModuleAction?> GetAction_ExportPackageDataAsync(Package package) {
             if (!package.IsModulePackage) return null;
             if (!IsAuthorized("Imports")) return null;
             return new ModuleAction(this) {
@@ -168,7 +168,7 @@ namespace YetaWF.Modules.Packages.Modules {
                 Style = ModuleAction.ActionStyleEnum.Normal,
             };
         }
-        public async Task<ModuleAction> GetAction_InstallPackageModelsAsync(Package package) {
+        public async Task<ModuleAction?> GetAction_InstallPackageModelsAsync(Package package) {
             if (!package.IsModulePackage && !package.IsCorePackage && !package.IsDataProviderPackage) return null;
             if (!IsAuthorized("Installs")) return null;
             return new ModuleAction(this) {
@@ -184,7 +184,7 @@ namespace YetaWF.Modules.Packages.Modules {
                 Category = ModuleAction.ActionCategoryEnum.Update,
             };
         }
-        public async Task<ModuleAction> GetAction_UninstallPackageModelsAsync(Package package) {
+        public async Task<ModuleAction?> GetAction_UninstallPackageModelsAsync(Package package) {
             if (!package.IsModulePackage) return null;
             if (!IsAuthorized("Installs")) return null;
             return new ModuleAction(this) {
@@ -200,7 +200,7 @@ namespace YetaWF.Modules.Packages.Modules {
                 Category = ModuleAction.ActionCategoryEnum.Update,
             };
         }
-        public async Task<ModuleAction> GetAction_LocalizePackageAsync(Package package) {
+        public async Task<ModuleAction?> GetAction_LocalizePackageAsync(Package package) {
             if (YetaWFManager.Deployed) return null; // can't do this on a deployed site
             if (!package.IsModulePackage && !package.IsCorePackage && !package.IsSkinPackage) return null;
             if (!IsAuthorized("Localize")) return null;
@@ -217,7 +217,7 @@ namespace YetaWF.Modules.Packages.Modules {
                 Category = ModuleAction.ActionCategoryEnum.Update,
             };
         }
-        public async Task<ModuleAction> GetAction_LocalizeAllPackagesAsync() {
+        public async Task<ModuleAction?> GetAction_LocalizeAllPackagesAsync() {
             if (YetaWFManager.Deployed) return null; // can't do this on a deployed site
             if (!IsAuthorized("Localize")) return null;
             return new ModuleAction(this) {
@@ -235,15 +235,15 @@ namespace YetaWF.Modules.Packages.Modules {
                 PleaseWaitText = this.__ResStr("localizePlsWait", "Updating default localization resources ({0})...", MultiString.DefaultLanguage),
             };
         }
-        public async Task<ModuleAction> GetAction_LocalizeAllPackagesDataAsync() {
-            ModuleDefinition modLocalize = await ModuleDefinition.LoadAsync(Manager.CurrentSite.PackageLocalizationServices, AllowNone: true);
+        public async Task<ModuleAction?> GetAction_LocalizeAllPackagesDataAsync() {
+            ModuleDefinition? modLocalize = await ModuleDefinition.LoadAsync(Manager.CurrentSite.PackageLocalizationServices, AllowNone: true);
             if (modLocalize == null) return null;
-            ModuleAction action = await modLocalize.GetModuleActionAsync("LocalizeAllPackagesData");
+            ModuleAction? action = await modLocalize.GetModuleActionAsync("LocalizeAllPackagesData");
             if (action == null) return null;
             action.Location = ModuleAction.ActionLocationEnum.ModuleLinks;
             return action;
         }
-        public ModuleAction GetAction_RemovePackage(Package package) {
+        public ModuleAction? GetAction_RemovePackage(Package package) {
             if (!package.IsDataProviderPackage && !package.IsModulePackage && !package.IsSkinPackage) return null;
             if (!IsAuthorized("Installs")) return null;
             return new ModuleAction(this) {
@@ -260,9 +260,9 @@ namespace YetaWF.Modules.Packages.Modules {
                 Category = ModuleAction.ActionCategoryEnum.Significant,
             };
         }
-        public async Task<ModuleAction> GetAction_CreateAllInstalledLocalizationsAsync() {
+        public async Task<ModuleAction?> GetAction_CreateAllInstalledLocalizationsAsync() {
             if (YetaWFManager.Deployed) return null; // can't do this on a deployed site
-            ModuleDefinition modLocalize = await ModuleDefinition.LoadAsync(Manager.CurrentSite.PackageLocalizationServices, AllowNone: true);
+            ModuleDefinition? modLocalize = await ModuleDefinition.LoadAsync(Manager.CurrentSite.PackageLocalizationServices, AllowNone: true);
             if (modLocalize == null)
                 throw new InternalError("No localization services available - no module has been defined");
             return await modLocalize.GetModuleActionAsync("CreateAllInstalledLocalizations");

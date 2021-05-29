@@ -16,8 +16,8 @@ namespace YetaWF.Modules.TawkTo.Addons {
             string area = AreaRegistration.CurrentPackage.AreaName;
 
             ConfigData config = await ConfigDataProvider.GetConfigAsync();
-            scripts.AddConfigOption(area, "ExcludedPagesCss", config.ExcludedPagesCss);
-            scripts.AddConfigOption(area, "IncludedPagesCss", config.IncludedPagesCss);
+            scripts.AddConfigOption(area, "ExcludedPagesCss", config.ExcludedPagesCss ?? string.Empty);
+            scripts.AddConfigOption(area, "IncludedPagesCss", config.IncludedPagesCss ?? string.Empty);
         }
     }
 }

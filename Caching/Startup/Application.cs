@@ -55,11 +55,11 @@ namespace YetaWF.Modules.Caching.Startup {
             // permanently created data providers (never disposed)
             bool distributed = WebConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, Distributed, false);
 
+            YetaWF.Core.IO.Caching.GetLocalCacheProvider = LocalCacheObjectDataProvider.GetProvider;
+            YetaWF.Core.IO.Caching.GetStaticSmallObjectCacheProvider = StaticSmallObjectLocalDataProvider.GetProvider;
             if (distributed) {
                 YetaWF.Core.Support.Startup.MultiInstance = true;
                 // distributed caching uses local and shared cache
-                YetaWF.Core.IO.Caching.GetLocalCacheProvider = LocalCacheObjectDataProvider.GetProvider;
-
                 CacheProvider = WebConfigHelper.GetValue(package.AreaName, "CacheProvider", RedisCacheProvider)!.ToLower();
                 if (CacheProvider == RedisCacheProvider) {
                     string configString = WebConfigHelper.GetValue(package.AreaName, "RedisCacheConfig", DefaultRedisConfig)!;
@@ -80,7 +80,6 @@ namespace YetaWF.Modules.Caching.Startup {
             } else {
                 YetaWF.Core.Support.Startup.MultiInstance = false;
                 // non-distributed caching uses local cache only
-                YetaWF.Core.IO.Caching.GetLocalCacheProvider = LocalCacheObjectDataProvider.GetProvider;
                 YetaWF.Core.IO.Caching.GetSharedCacheProvider = LocalCacheObjectDataProvider.GetProvider;
                 YetaWF.Core.IO.Caching.GetStaticCacheProvider = StaticObjectSingleDataProvider.GetProvider;
             }
@@ -113,10 +112,6 @@ namespace YetaWF.Modules.Caching.Startup {
             } else {
                 throw new InternalError($"Unsupported pub/sub provider: {PubSubProvider}");
             }
-
-            // Small Object Local cache provider
-            YetaWF.Core.IO.Caching.GetStaticSmallObjectCacheProvider = StaticSmallObjectLocalDataProvider.GetProvider;
-
         }
         /// <summary>
         /// Called when the first node of a multi-instance site is starting up.

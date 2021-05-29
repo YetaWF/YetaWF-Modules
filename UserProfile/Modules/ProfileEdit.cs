@@ -36,13 +36,13 @@ namespace YetaWF.Modules.UserProfile.Modules {
         [Category("General"), Caption("Post Save Url"), Description("Defines the page to display once the form is saved - If omitted, the Url to return to is determined automatically - This property is ignored when the module is displayed in a popup")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
         [StringLength(Globals.MaxUrl), Trim]
-        public string PostSaveUrl { get; set; }
+        public string? PostSaveUrl { get; set; }
 
         [Category("General"), Caption("Save Message"), Description("Defines the message displayed when the profile is successfully saved - If omitted, a default message is shown")]
         [UIHint("Text80"), StringLength(ModuleDefinition.MaxTitle), Trim]
-        public string SaveMessage { get; set; }
+        public string? SaveMessage { get; set; }
 
-        public ModuleAction GetAction_Edit(string url) {
+        public ModuleAction? GetAction_Edit(string? url) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Edit",

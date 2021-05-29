@@ -49,7 +49,6 @@ namespace YetaWF.Modules.Panels.Components {
             hb.Append($@"
 <div class='yt_panels_pagepanelinfo t_display {styleCss}' id='{ControlId}'>");
 
-
             foreach (PagePanelInfo.PanelEntry entry in model.Panels) {
                 string caption = entry.Caption.ToString();
                 if (string.IsNullOrWhiteSpace(caption))

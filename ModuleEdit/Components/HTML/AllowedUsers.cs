@@ -39,15 +39,15 @@ namespace YetaWF.Modules.ModuleEdit.Components {
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
         public class AllowedUsersSetup {
-            public string GridId { get; set; }
-            public string AddUrl { get; set; }
-            public string GridAllId { get; internal set; }
+            public string GridId { get; set; } = null!;
+            public string AddUrl { get; set; } = null!;
+            public string GridAllId { get; set; } = null!;
         }
 
         public class NewModel {
             [Caption("New User"), Description("Enter a new user name and click Add")]
             [UIHint("Text40"), StringLength(Globals.MaxUser), Trim]
-            public string NewValue { get; set; }
+            public string? NewValue { get; set; }
         }
         public class ExtraData {
             public Guid EditGuid { get; set; }
@@ -57,7 +57,7 @@ namespace YetaWF.Modules.ModuleEdit.Components {
 
             [Caption("User"), Description("User Name")]
             [UIHint("String"), ReadOnly]
-            public string UserName { get; set; }
+            public string? UserName { get; set; }
 
             public AllEntry(UserDefinition user) {
                 ObjectSupport.CopyData(user, this);
@@ -71,7 +71,7 @@ namespace YetaWF.Modules.ModuleEdit.Components {
                 PageSizes = new List<int>() { 5, 10, 20 },
                 ShowHeader = header,
                 AjaxUrl = Utility.UrlFor(typeof(AllowedUsersController), nameof(AllowedUsersController.AllowedUsersEdit_SortFilter)),
-                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<ModuleDefinition.GridAllowedUser> recs = DataProviderImpl<ModuleDefinition.GridAllowedUser>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
                         Data = recs.Data.ToList<object>(),
@@ -89,7 +89,7 @@ namespace YetaWF.Modules.ModuleEdit.Components {
                 RecordType = typeof(AllEntry),
                 InitialPageSize = 10,
                 AjaxUrl = Utility.UrlFor(typeof(AllowedUsersController), nameof(AllowedUsersController.AllowedUsersBrowse_GridData)),
-                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
                         DataProviderGetRecords<UserDefinition> browseItems = await userDP.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
@@ -110,8 +110,8 @@ namespace YetaWF.Modules.ModuleEdit.Components {
             GridModel grid = new GridModel() {
                 GridDef = GetGridModel(header)
             };
-            grid.GridDef.ExtraData = new ExtraData { EditGuid = Manager.CurrentModuleEdited.ModuleGuid };
-            grid.GridDef.DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+            grid.GridDef.ExtraData = new ExtraData { EditGuid = Manager.CurrentModuleEdited!.ModuleGuid };
+            grid.GridDef.DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                 List<ModuleDefinition.GridAllowedUser> list = new List<ModuleDefinition.GridAllowedUser>();
                 if (model != null) {
                     foreach (ModuleDefinition.AllowedUser u in model) {
@@ -139,7 +139,7 @@ namespace YetaWF.Modules.ModuleEdit.Components {
     <div class='t_newvalue'>
         {await HtmlHelper.ForLabelAsync(newModel, nameof(newModel.NewValue))}
         {await HtmlHelper.ForEditAsync(newModel, nameof(newModel.NewValue))}
-        <input name='btnAdd' type='button' value='Add' disabled='disabled' />
+        <input name='btnAdd' type='button' class='y_button' value='Add' disabled='disabled' />
     </div>");
 
             }
@@ -176,7 +176,7 @@ new YetaWF_ModuleEdit.AllowedUsersEditComponent('{DivId}', {Utility.JsonSerializ
                 FieldPrefix = fieldPrefix,
             };
             // module being edited
-            ModuleDefinition module = await ModuleDefinition.LoadAsync(editGuid);
+            ModuleDefinition? module = await ModuleDefinition.LoadAsync(editGuid);
             record.GridDef.ResourceRedirect = module;
 
             return record;

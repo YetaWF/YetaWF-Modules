@@ -33,29 +33,29 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         public DateTime Created { get; set; }
 
         [Data_PrimaryKey, StringLength(MaxSid)]
-        public string CallSid { get; set; }
+        public string CallSid { get; set; } = null!;
         [Data_PrimaryKey, StringLength(MaxSid)]
-        public string RecordingSid { get; set; }
+        public string RecordingSid { get; set; } = null!;
         [Data_Index, StringLength(Globals.MaxPhoneNumber)]
-        public string To { get; set; }
+        public string To { get; set; } = null!;
         [Data_Index, StringLength(MaxExtension)]
-        public string Extension { get; set; }
+        public string Extension { get; set; } = null!;
 
         [StringLength(Globals.MaxUrl)]
-        public string RecordingUrl { get; set; }
+        public string RecordingUrl { get; set; } = null!;
 
         public bool Heard { get; set; }
 
         [StringLength(Globals.MaxPhoneNumber)]
-        public string Caller { get; set; }
+        public string Caller { get; set; } = null!;
         [StringLength(MaxCity)]
-        public string CallerCity { get; set; }
+        public string CallerCity { get; set; } = null!;
         [StringLength(MaxState)]
-        public string CallerState { get; set; }
+        public string CallerState { get; set; } = null!;
         [StringLength(MaxZip)]
-        public string CallerZip { get; set; }
+        public string CallerZip { get; set; } = null!;
         [StringLength(MaxCountry)]
-        public string CallerCountry { get; set; }
+        public string CallerCountry { get; set; } = null!;
 
         public int Duration { get; set; }
 
@@ -73,7 +73,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
 
         private IDataProviderIdentity<string, object, VoiceMailData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProviderIdentity<string, object, VoiceMailData> CreateDataProvider() {
+        private IDataProviderIdentity<string, object, VoiceMailData>? CreateDataProvider() {
             Package package = Softelvdm.Modules.IVR.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_VoiceMails", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -84,7 +84,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
                 TwilioData config = await TwilioConfigDataProvider.GetConfigAsync();
                 if (!config.IsConfigured())
                     throw new Error(this.__ResStr("notConfigured", "Twilio is not configured."));
-                string acctSid = null, acctToken = null;
+                string? acctSid = null, acctToken = null;
                 if (config.TestMode) {
                     acctSid = config.TestAccountSid;
                     acctToken = config.TestAuthToken;
@@ -102,10 +102,10 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         // LOAD/SAVE
         // LOAD/SAVE
 
-        public Task<VoiceMailData> GetItemAsync(string callSid) {
+        public Task<VoiceMailData?> GetItemAsync(string callSid) {
             return DataProvider.GetAsync(callSid, null);
         }
-        public Task<VoiceMailData> GetItemByIdentityAsync(int id) {
+        public Task<VoiceMailData?> GetItemByIdentityAsync(int id) {
             return DataProvider.GetByIdentityAsync(id);
         }
         public async Task<bool> AddItemAsync(VoiceMailData data) {
@@ -120,7 +120,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
             return true;
         }
         public async Task UpdateItemAsync(VoiceMailData data) {
-            VoiceMailData origEmail = Auditing.Active ? await GetItemAsync(data.CallSid) : null;
+            VoiceMailData? origEmail = Auditing.Active ? await GetItemAsync(data.CallSid) : null;
             UpdateStatusEnum status = await DataProvider.UpdateByIdentityAsync(data.Id, data);
             if (status != UpdateStatusEnum.OK)
                 throw new InternalError("Unexpected error {0} updating item", status);
@@ -132,17 +132,19 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         }
         public async Task<bool> RemoveItemByIdentityAsync(int id) {
 
-            VoiceMailData origData = Auditing.Active ? await GetItemByIdentityAsync(id) : null;
+            VoiceMailData? origData = Auditing.Active ? await GetItemByIdentityAsync(id) : null;
 
             if (!await DataProvider.RemoveByIdentityAsync(id))
                 return false;
 
             await SetupClient();
             try {
-                if (YetaWFManager.IsSync())
-                    RecordingResource.Delete(pathSid: origData.RecordingSid);
-                else
-                    await RecordingResource.DeleteAsync(pathSid: origData.RecordingSid);
+                if (origData != null) {
+                    if (YetaWFManager.IsSync())
+                        RecordingResource.Delete(pathSid: origData.RecordingSid);
+                    else
+                        await RecordingResource.DeleteAsync(pathSid: origData.RecordingSid);
+                }
             } catch (Exception) { }
 
             await Auditing.AddAuditAsync($"{nameof(VoiceMailDataProvider)}.{nameof(RemoveItemByIdentityAsync)}", Dataset, Guid.Empty,
@@ -152,7 +154,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
             );
             return true;
         }
-        public Task<DataProviderGetRecords<VoiceMailData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        public Task<DataProviderGetRecords<VoiceMailData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
             return DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
     }

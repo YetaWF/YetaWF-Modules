@@ -1,6 +1,7 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Components;
@@ -12,12 +13,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Menus.DataProvider;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Menus.Modules {
 
@@ -36,19 +32,12 @@ namespace YetaWF.Modules.Menus.Modules {
             Menu = null;
 #pragma warning restore 0618 // Type or member is obsolete
             MenuVersion = 0;
-            Direction = MenuComponentBase.DirectionEnum.Bottom;
-            Orientation = MenuComponentBase.OrientationEnum.Horizontal;
             HoverDelay = 500;
             ShowTitle = false;
             WantSearch = false;
             WantFocus = false;
-            ShowPath = false;
-            //UseAnimation = true;
-            //OpenAnimation = AnimationEnum.ExpandsDown;
-            //OpenDuration = 300;
-            //CloseAnimation = AnimationEnum.ExpandsUp;
-            //CloseDuration = 300;
             Print = false;
+            SmallMenuMaxWidth = 750;
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new MenuModuleDataProvider(); }
@@ -106,50 +95,23 @@ namespace YetaWF.Modules.Menus.Modules {
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string EditUrl { get; set; }
 
+        [Category("General"), Caption("Small Screen Maximum Size"), Description("Defines the largest screen size where the small menu is used - If the screen is wider, the large menu is shown.")]
+        [UIHint("IntValue4"), Range(0, 999999), Required]
+        [Data_NewValue]
+        public int SmallMenuMaxWidth { get; set; }
+
         [Category("General"), Caption("<LI> Css Class"), Description("The optional Css class added to every <LI> tag in the menu")]
         [UIHint("Text40"), StringLength(MaxLICssClass)]
         public string LICssClass { get; set; }
 
-        [Category("General"), Caption("Opening Direction"), Description("The direction in which submenus open - Ignored for Bootstrap menus")]
-        [UIHint("Enum")]
-        public MenuComponentBase.DirectionEnum Direction { get; set; }
-
-        [Category("General"), Caption("Orientation"), Description("The basic orientation of the menu - Ignored for Bootstrap menus")]
-        [UIHint("Enum")]
-        public MenuComponentBase.OrientationEnum Orientation { get; set; }
-
-        [Category("General"), Caption("Hover Delay"), Description("Specifies the delay (in milliseconds) before the menu is opened/closed - Used to avoid accidental closure on leaving - Ignored for Bootstrap menus")]
+        [Category("General"), Caption("Hover Delay"), Description("Specifies the delay (in milliseconds) before the menu is closed - Used to avoid accidental closure on leaving")]
         [UIHint("IntValue4"), Required, Range(0, 10000)]
         public int HoverDelay { get; set; }
 
-        [Category("General"), Caption("Show Path"), Description("!!!Currently Broken!!! - Mark entries that partially or completely match the current page's Url as active (highlight)")]
-        [UIHint("Boolean")]
-        public bool ShowPath { get; set; }
-
-        //[Category("General"), Caption("Use Animations"), Description("Specifies whether open/close animations are used - if this is not selected, animation properties are ignored")]
-        //[UIHint("Boolean")]
-        //public bool UseAnimation { get; set; }
-
-        //[Category("General"), Caption("Open Animation"), Description("The animation used to open a submenu")]
-        //[UIHint("Enum")]
-        //public AnimationEnum OpenAnimation { get; set; }
-
-        //[Category("General"), Caption("Open Effect Duration"), Description("Specifies the duration of the open effect (in milliseconds) as a submenu is opened")]
-        //[UIHint("IntValue4"), Required, Range(0, 1000)]
-        //public int OpenDuration { get; set; }
-
-        //[Category("General"), Caption("Close Animation"), Description("The animation used to close a submenu")]
-        //[UIHint("Enum")]
-        //public AnimationEnum CloseAnimation { get; set; }
-
-        //[Category("General"), Caption("Close Effect Duration"), Description("Specifies the duration of the close effect (in milliseconds) as a submenu is closed")]
-        //[UIHint("IntValue4"), Required, Range(0, 1000)]
-        //public int CloseDuration { get; set; }
-
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
-            MenuList menuList = await base.GetModuleMenuListAsync(renderMode, location);
+        public override async Task<List<ModuleAction>> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
+            List<ModuleAction> menuList = await base.GetModuleMenuListAsync(renderMode, location);
             MenuEditModule mod = new MenuEditModule();
             menuList.New(mod.GetAction_Edit(EditUrl, ModuleGuid), location);
             return menuList;

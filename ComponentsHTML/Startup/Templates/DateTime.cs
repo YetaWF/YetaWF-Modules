@@ -1,8 +1,12 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using System;
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
+using YetaWF.Core.Localize;
+using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Addons.Templates {
@@ -20,9 +24,18 @@ namespace YetaWF.Modules.ComponentsHTML.Addons.Templates {
         public Task AddSupportAsync(YetaWFManager manager) {
 
             ScriptManager scripts = manager.ScriptManager;
-            string area = AreaRegistration.CurrentPackage.AreaName;
-            scripts.AddVolatileOption(area, "DateTimeFormat", YetaWF.Core.Localize.Formatting.GetFormatDateTimeFormat());
+            Package package = AreaRegistration.CurrentPackage;
+            string area = package.AreaName;
 
+            scripts.AddConfigOption(area, "SVG_fas_caret_left", SkinSVGs.Get(package, "fas-caret-left"));
+            scripts.AddConfigOption(area, "SVG_fas_caret_right", SkinSVGs.Get(package, "fas-caret-right"));
+
+            scripts.AddLocalization(area, "DateFormat", UserSettings.GetProperty<Formatting.DateFormatEnum>("DateFormat"));
+            scripts.AddLocalization(area, "TimeFormat", UserSettings.GetProperty<Formatting.TimeFormatEnum>("TimeFormat"));
+
+            scripts.AddLocalization(area, "WeekDays2", Formatting.GetDayName2CharsArr());
+            scripts.AddLocalization(area, "WeekDays", Formatting.GetDayNamesArr());
+            scripts.AddLocalization(area, "MonthNames", Formatting.GetMonthNamesArr());
             return Task.CompletedTask;
         }
     }

@@ -2,31 +2,28 @@
 
 .yt_panels_stepinfo {
 
-    $bgcolor: rgb(177, 223, 187);
-    $bgcoloractive: rgb(92, 184, 92);
-
-    margin-top: 2em;
-
     &.t_display {
-        background-color: $bgcolor;
+        background: var(--step-bg);
+        color: var(--step-clr);
         overflow: hidden;
-        .t_step {
+        a.t_step {
             display: inline-block;
             position:relative;
             text-decoration:none;
+            background: var(--step-bg);
+            color: var(--step-clr);
             padding: 20px 0px 20px 40px;
             &.t_active, &.t_enabled {
-                background-color: $bgcoloractive;
+                background: var(--step-bg-active);
+                color: var(--step-clr-active);
             }
             .t_caption {
-                color: #fff;
                 font-size:15px;
                 font-weight: bold;
                 display:block;
                 user-select:none;
             }
             .t_description {
-                color: #fff;
                 font-size:13px;
                 font-weight: normal;
                 display:block;
@@ -47,7 +44,7 @@
             margin-left:2px;
             border-top: transparent solid 50px;
             border-bottom: transparent solid 50px;
-            border-left: #ddd solid 30px;
+            border-left: var(--body-bg) solid 30px;
         }
         .t_step:after {
             content: " ";
@@ -59,10 +56,10 @@
 
             border-top: transparent solid 50px;
             border-bottom: transparent solid 50px;
-            border-left: $bgcolor solid 30px;
+            border-left: var(--step-bg) solid 30px;
         }
         .t_step.t_active:after, .t_step.t_enabled:after {
-            border-left: $bgcoloractive solid 30px;
+            border-left: var(--step-bg-active) solid 30px;
         }
     }
 }

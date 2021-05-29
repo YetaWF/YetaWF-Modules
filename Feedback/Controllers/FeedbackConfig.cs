@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Feedback.Controllers {
 
             [Caption("Email Address"), Description("The email address where all feedback messages are sent")]
             [UIHint("Email"), StringLength(Globals.MaxEmail), EmailValidation, Trim]
-            public string Email { get; set; }
+            public string? Email { get; set; }
 
             [Caption("Copy Feedback Emails"), Description("Defines whether the site administrator receives a copy of all feedback messages")]
             [UIHint("Boolean")]

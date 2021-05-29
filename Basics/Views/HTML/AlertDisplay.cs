@@ -1,10 +1,10 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Basics#License */
 
 using System.Threading.Tasks;
-using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Basics.Controllers;
 using YetaWF.Modules.Basics.Modules;
@@ -23,7 +23,7 @@ namespace YetaWF.Modules.Basics.Views {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            string rootUrl = VersionManager.GetAddOnPackageUrl(Package.AreaName);
+            string rootUrl = Package.GetAddOnPackageUrl(Package.AreaName);
             string closeUrl = Manager.GetCDNUrl(System.IO.Path.Combine(rootUrl, "Icons", "Close.png"));
 
             if (model.MessageHandling == DataProvider.AlertConfig.MessageHandlingEnum.DisplayUntilOff) {
@@ -32,7 +32,9 @@ namespace YetaWF.Modules.Basics.Views {
 
                 hb.Append($@"
     <div class='t_close' data-ajaxurl='{Utility.HAE(ajaxUrl)}'>
-        <img src='{Utility.HAE(closeUrl)}' alt='{HAE(this.__ResStr("clsButtonAlt", "Close Button"))}' title='{HAE(this.__ResStr("clsButtonTT", "Click to close alert"))}' />
+        <button class='y_buttonlite' {YetaWF.Core.Addons.Basics.CssTooltip}='{HAE(this.__ResStr("clsButtonTT", "Click to close alert"))}'>
+            {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-multiply")}
+        </button>
     </div>");
 
             }

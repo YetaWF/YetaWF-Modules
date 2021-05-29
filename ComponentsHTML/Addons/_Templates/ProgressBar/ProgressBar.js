@@ -8,6 +8,8 @@ var __extends = (this && this.__extends) || (function () {
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -29,7 +31,7 @@ var YetaWF_ComponentsHTML;
             _this.Timer = 0;
             _this.ShownValue = 0;
             _this.NewValue = 0;
-            _this.ValueDiv = $YetaWF.getElement1BySelector("div.ui-progressbar-value", [_this.Control]);
+            _this.ValueDiv = $YetaWF.getElement1BySelector(".t_value", [_this.Control]);
             _this.Min = Number($YetaWF.getAttribute(_this.Control, "aria-valuemin"));
             _this.Max = Number($YetaWF.getAttribute(_this.Control, "aria-valuemax"));
             _this.Value = Number($YetaWF.getAttribute(_this.Control, "aria-valuenow"));

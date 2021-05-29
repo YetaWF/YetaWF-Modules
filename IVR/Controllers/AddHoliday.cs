@@ -28,7 +28,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
 
             [Caption("Description"), Description("The description of the holiday")]
             [UIHint("Text80"), StringLength(HolidayEntry.MaxDescription), Trim]
-            public string Description { get; set; }
+            public string? Description { get; set; }
 
             public AddModel() { }
 

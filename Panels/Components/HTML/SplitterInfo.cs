@@ -8,6 +8,7 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Panels.Models;
@@ -33,7 +34,7 @@ namespace YetaWF.Modules.Panels.Components {
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
         public class Setup {
-            public string ContentId { get; set; }
+            public string ContentId { get; set; } = null!;
             public int Height { get; set; }// 0 (auto-fill), or pixels
             public int MinWidth { get; set; }// pixels
             public int Width { get; set; }// percentage
@@ -43,11 +44,11 @@ namespace YetaWF.Modules.Panels.Components {
 
             HtmlBuilder hbLeft = new HtmlBuilder();
 
-            string titleText = model.TitleText;
-            string titleTooltip = model.TitleTooltip;
+            string? titleText = model.TitleText;
+            string? titleTooltip = model.TitleTooltip;
 
             if (await model.IsAuthorizedLeftAsync()) {
-                ModuleDefinition mod = await model.GetModuleLeftAsync();
+                ModuleDefinition? mod = await model.GetModuleLeftAsync();
                 if (mod != null) {
                     hbLeft.Append(await mod.RenderModuleViewAsync(HtmlHelper));
                     // get title & text from module
@@ -60,7 +61,7 @@ namespace YetaWF.Modules.Panels.Components {
 
             HtmlBuilder hbRight = new HtmlBuilder();
             if (await model.IsAuthorizedRightAsync()) {
-                ModuleDefinition mod = await model.GetModuleRightAsync();
+                ModuleDefinition? mod = await model.GetModuleRightAsync();
                 if (mod != null) {
                     hbRight.Append(await mod.RenderModuleViewAsync(HtmlHelper));
                 } else {
@@ -68,7 +69,7 @@ namespace YetaWF.Modules.Panels.Components {
                 }
             }
 
-            string heightStyle = null;
+            string? heightStyle = null;
             if (Manager.EditMode)
                 heightStyle = $" style='height:300px'";
             else if (model.Height > 0)
@@ -81,7 +82,7 @@ namespace YetaWF.Modules.Panels.Components {
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
 <div class='yt_panels_splitterinfo t_display t_expanded' id='{ControlId}'{heightStyle}>
-    <div class='yt_panels_splitterinfo_left d-print-none yNoPrint'{leftStyle}>
+    <div class='yt_panels_splitterinfo_left'{leftStyle}>
         <div class='t_area'>");
 
             if (!string.IsNullOrWhiteSpace(titleText)) {
@@ -93,7 +94,12 @@ namespace YetaWF.Modules.Panels.Components {
 
             hb.Append($@"
             <div class='yt_panels_splitterinfo_cmds'>
-                <div class='yt_panels_splitterinfo_colldesc'>{HE(model.CollapseText)}</div><div class='yt_panels_splitterinfo_coll' {Basics.CssTooltip}='{HAE(model.CollapseToolTip)}'></div>
+                <div class='yt_panels_splitterinfo_colldesc'>
+                    {HE(model.CollapseText)}
+                </div>
+                <div class='yt_panels_splitterinfo_coll' {Basics.CssTooltip}='{HAE(model.CollapseToolTip)}'>
+                    {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-compress-arrows-alt")}
+                </div>
             </div>
             {hbLeft.ToString()}
         </div>
@@ -102,9 +108,11 @@ namespace YetaWF.Modules.Panels.Components {
         <div class='t_area' id='{contentId}'>
             {hbRight.ToString()}
         </div>
-        <div class='yt_panels_splitterinfo_resize d-print-none yNoPrint'></div>
+        <div class='yt_panels_splitterinfo_resize'></div>
     </div>
-    <div class='yt_panels_splitterinfo_exp d-print-none yNoPrint' {Basics.CssTooltip}='{HAE(model.ExpandToolTip)}'></div>
+    <div class='yt_panels_splitterinfo_exp' {Basics.CssTooltip}='{HAE(model.ExpandToolTip)}'>
+        {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-expand-arrows-alt")}
+    </div>
 </div>");
 
             Setup setup = new Setup {

@@ -1,21 +1,16 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Packages#License */
 
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
+using YetaWF.Core.IO;
+using YetaWF.Core.Packages;
+using YetaWF.Core.Site;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Packages.DataProvider;
-using YetaWF.Core.Site;
-using YetaWF.Core.Packages;
-using System.Collections.Generic;
-using System.Linq;
-using YetaWF.Core.IO;
-using System.IO;
-using YetaWF.Core.Addons;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Packages.Controllers {
 
@@ -28,7 +23,7 @@ namespace YetaWF.Modules.Packages.Controllers {
         [AllowGet]
         public async Task<ActionResult> Show() {
 
-            string url = VersionManager.GetAddOnPackageUrl(AreaRegistration.CurrentPackage.AreaName);
+            string url = Package.GetAddOnPackageUrl(AreaRegistration.CurrentPackage.AreaName);
             string path = Utility.UrlToPhysical(url);
 
             string file;
@@ -65,7 +60,6 @@ namespace YetaWF.Modules.Packages.Controllers {
 
         static List<string> RequiredPackages = new List<string> {
                 "YetaWF.Basics",
-                "YetaWF.BootstrapSkin",
                 "YetaWF.Caching",
                 "YetaWF.Core",
                 "YetaWF.Core.CssHttpHandler",

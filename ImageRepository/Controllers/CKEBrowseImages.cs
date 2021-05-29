@@ -24,21 +24,21 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
 
             [Caption("Image Selection"), Description("Select an image or upload a new image")]
             [UIHint("YetaWF_ImageRepository_ImageSelection"), Required, Trim]
-            public string ImageName { get; set; }
+            public string? ImageName { get; set; }
 
-            public ImageSelectionInfo ImageName_Info { get; set; }
+            public ImageSelectionInfo? ImageName_Info { get; set; }
 
             [UIHint("Hidden")]
             public Guid FolderGuid { get; set; }
             [UIHint("Hidden")]
-            public string SubFolder { get; set; }
+            public string? SubFolder { get; set; }
 
             [UIHint("Hidden")]
-            public string CKEditor { get; set; }
+            public string CKEditor { get; set; } = null!;
             [UIHint("Hidden")]
             public int CKEditorFuncNum { get; set; }
             [UIHint("Hidden")]
-            public string LangCode { get; set; }
+            public string LangCode { get; set; } = null!;
 
             public Model() { }
 
@@ -72,7 +72,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
                 return PartialView(model);
 
             // build javascript to return selected image to CKEditor
-            string imageUrl = model.ImageName_Info.MakeImageUrl(model.ImageName);
+            string imageUrl = model.ImageName_Info!.MakeImageUrl(model.ImageName!);
             string js = string.Format("window.opener.CKEDITOR.tools.callFunction({0}, '{1}');", model.CKEditorFuncNum, Utility.JserEncode(imageUrl));
 
             return FormProcessed(model, /*this.__ResStr("okSaved", "Image saved"), */ OnClose: OnCloseEnum.CloseWindow, OnPopupClose: OnPopupCloseEnum.ReloadNothing, PreSaveJavaScript: js);

@@ -23,15 +23,15 @@ namespace YetaWF.Modules.Scheduler.Support {
             if (logDP != null)
                 logDP.Dispose();
         }
-        private LogDataProvider logDP;
+        private LogDataProvider logDP = null!;
 
         internal void LimitTo(YetaWFManager manager) {
             LimitToManager = manager;
         }
-        private YetaWFManager LimitToManager;
+        private YetaWFManager? LimitToManager;
 
         private long CurrentId { get; set; }
-        private string CurrentName { get; set; }
+        private string? CurrentName { get; set; }
         private int CurrentSiteId { get; set; }
 
         internal void SetCurrent(long currentId, int currentSiteId, string currentName) {

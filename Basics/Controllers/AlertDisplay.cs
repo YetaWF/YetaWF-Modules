@@ -17,7 +17,7 @@ namespace YetaWF.Modules.Basics.Controllers {
 
         public class DisplayModel {
             public AlertConfig.MessageHandlingEnum MessageHandling { get; set; }
-            public string Message { get; set; }
+            public string Message { get; set; } = null!;
         }
 
         [AllowGet]

@@ -35,14 +35,14 @@ namespace YetaWF.Modules.Panels.Components {
 
         public class Setup {
             public bool Resize { get; set; }
-            public string ActiveCss { get; set; }
-            public string ExpandCollapseUrl { get; set; }
+            public string ActiveCss { get; set; } = null!;
+            public string ExpandCollapseUrl { get; set; } = null!;
         }
 
         public async Task<string> RenderAsync(PageBarInfo model) {
             HtmlBuilder hb = new HtmlBuilder();
 
-            string pane = model.ContentPane;
+            string? pane = model.ContentPane;
 
             string styleCss;
             string styleListCss = "";
@@ -56,30 +56,22 @@ namespace YetaWF.Modules.Panels.Components {
                     styleCss = "t_styleshorz";
                     break;
             }
-            if (model.UseSkinFormatting) {
-                await JqueryUICore.UseAsync();// needed for css
-                styleCss += " t_skin";
-                styleListCss = " ui-widget-content";
-                activeCss = " t_active ui-state-active";
-            } else {
-                styleCss += " t_noskin";
-                activeCss = " t_active";
-            }
+            activeCss = " t_active";
 
             string paneContents = "";
             if (model.ContentPage != null)
-                paneContents = await model.ContentPage.RenderPaneAsync(HtmlHelper, pane == "" ? Globals.MainPane : pane, PaneDiv: false);
+                paneContents = await model.ContentPage.RenderPaneAsync(HtmlHelper, string.IsNullOrWhiteSpace(pane) ? Globals.MainPane : pane, PaneDiv: false);
 
             if (PageBarDataProvider.GetExpanded())
                 styleCss += " t_expanded";
 
-            string pageUrl = Manager.CurrentPage.EvaluatedCanonicalUrl;
+            string pageUrl = Manager.CurrentPage.EvaluatedCanonicalUrl!;
             string pageUrlOnly;
             QueryHelper qh = QueryHelper.FromUrl(pageUrl, out pageUrlOnly);
 
             hb.Append($@"
 <div class='yt_panels_pagebarinfo t_display {styleCss}' id='{ControlId}'>
-    <div class='yt_panels_pagebarinfo_list yNoPrint{styleListCss}'>
+    <div class='yt_panels_pagebarinfo_list{styleListCss}'>
         <div class='t_expcoll'></div>");
 
             foreach (PageBarInfo.PanelEntry entry in model.Panels) {
@@ -87,7 +79,6 @@ namespace YetaWF.Modules.Panels.Components {
                 string caption = entry.Caption.ToString();
                 if (string.IsNullOrWhiteSpace(caption))
                     caption = this.__ResStr("emptyCaption", "(no caption - Page Title)");
-                string actionLinkClass = "yaction-link";
 
                 string active = "";
                 if (model.ContentUri != null) {
@@ -98,20 +89,24 @@ namespace YetaWF.Modules.Panels.Components {
                 }
 
                 qh.Add("!ContentUrl", entry.Url, Replace: true);
-                string anchor = $"<a class='{actionLinkClass}' data-contenttarget='{DivId}' data-contentpane='{HAE(pane == "" ? "MainPane" : pane)}' {Basics.CssSaveReturnUrl}='' href='{HAE(qh.ToUrl(pageUrlOnly))}' data-tooltip='{HAE(entry.ToolTip.ToString())}'>";
+                string anchor = $"";
 
                 hb.Append($@"
-        <div class='t_entry{active}'>
-            <div class='t_image'>
-                {anchor}
-                    <img src='{HAE(entry.ImageUrl)}' alt='{HAE(caption)}' title='{HAE(entry.ToolTip.ToString())}' />
-                </a>
+        <a class='t_entry{active} yaction-link' data-contenttarget='{DivId}' data-contentpane='{HAE(pane == "" ? "MainPane" : pane)}' {Basics.CssSaveReturnUrl}='' href='{HAE(qh.ToUrl(pageUrlOnly))}' data-tooltip='{HAE(entry.ToolTip.ToString())}'>");
+
+                if (entry.ImageSVG != null) {
+                    hb.Append($@"
+            {entry.ImageSVG}");
+                } else {
+                    hb.Append($@"
+            <img src='{HAE(entry.ImageUrl)}' alt='{HAE(caption)}' title='{HAE(entry.ToolTip.ToString())}' />");
+                }
+
+                hb.Append($@"
+            <div class='t_caption'>
+                {HE(caption)}
             </div>
-            <div class='t_link'>
-                {anchor}
-                {HE(caption)}</a>
-            </div>
-        </div>");
+        </a>");
 
             }
 

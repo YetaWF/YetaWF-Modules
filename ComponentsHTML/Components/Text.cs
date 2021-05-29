@@ -232,8 +232,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
         public override string GetTemplateName() { return TemplateName; }
 
-        internal string TemplateName { get; set; }
-        internal string TemplateClass { get; set; }
+        internal string TemplateName { get; set; } = null!;
+        internal string TemplateClass { get; set; } = null!;
     }
 
     /// <summary>
@@ -258,15 +258,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         /// <summary>
-        /// Called by the framework when the component is used so the component can add component specific addons.
-        /// </summary>
-        public override async Task IncludeAsync() {
-            await KendoUICore.UseAsync();// needed for css
-            //await KendoUICore.AddFileAsync("kendo.maskedtextbox.min.js");
-            await Manager.AddOnManager.AddTemplateAsync(AreaRegistration.CurrentPackage.AreaName, "Text", ComponentType.Display);
-            await base.IncludeAsync();
-        }
-        /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
@@ -279,8 +270,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             bool rdonly = PropData.GetAdditionalAttributeValue<bool>("ReadOnly", false);
 
             string css = string.Empty;
-            if (!rdonly)
-                css = CssManager.CombineCss(css, "k-state-disabled"); // USE KENDO style
 
             string readOnly = string.Empty;
             string disabled = string.Empty;
@@ -292,11 +281,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (!string.IsNullOrWhiteSpace(css))
                 css = $" {css}";
 
-            // adding k-textbox to the control makes it look like a kendo maskedtext box without the overhead of actually calling kendoMaskedTextBox
-            string id = HtmlBuilder.GetIdCond(HtmlAttributes);
+            string? id = HtmlBuilder.GetIdCond(HtmlAttributes);
             if (id != null)
                 id = $" id='{id}'";
-            hb.Append($@"<input{id}{FieldSetup(FieldType.Anonymous)} type='text' value='{HAE(model ?? string.Empty)}' class='k-textbox t_display {TemplateClass}{css}'{readOnly}{disabled}>");
+            hb.Append($@"<input{id}{FieldSetup(FieldType.Anonymous)} type='text' value='{HAE(model ?? string.Empty)}' class='t_display yt_text_base {TemplateClass}{css}'{readOnly}{disabled}>");
 
             if (copy) {
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "clipboardjs.com.clipboard");// add clipboard support
@@ -334,8 +322,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Adds all addons for the Text component to the current page.
         /// </summary>
         public static async Task IncludeExplicitAsync() { // this component is reusable so we need to explicitly include all js/css
-            //await KendoUICore.AddFileAsync("kendo.maskedtextbox.min.js");
-            await KendoUICore.UseAsync();// needed for css
             await Manager.AddOnManager.AddTemplateAsync(AreaRegistration.CurrentPackage.AreaName, "Text", ComponentType.Edit);
         }
         /// <summary>
@@ -353,15 +339,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model.</param>
         /// <param name="templateCssClass">The CSS class to add to the template (starting with yt_).</param>
         /// <returns>The component rendered as HTML.</returns>
-        public static async Task<string> RenderTextAsync(YetaWFComponent component, string model, string templateCssClass) {
+        public static async Task<string> RenderTextAsync(YetaWFComponent component, string model, string? templateCssClass) {
 
             await IncludeExplicitAsync();
 
-            string css = null;
+            string? css = null;
             css = CssManager.CombineCss(css, templateCssClass);
             css = CssManager.CombineCss(css, component.GetClasses());
 
-            string autoComplete = component.PropData.GetAdditionalAttributeValue<string>("AutoComplete", null);
+            string? autoComplete = component.PropData.GetAdditionalAttributeValue<string>("AutoComplete");
             if (autoComplete == null) {
                 if (Manager.CurrentModule != null && Manager.CurrentModule.FormAutoComplete)
                     autoComplete = "on";
@@ -369,13 +355,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     autoComplete = "off";
             }
 
-            string placeHolder = string.Empty;
-            component.TryGetSiblingProperty<string>($"{component.PropertyName}_PlaceHolder", out placeHolder);
+            component.TryGetSiblingProperty<string>($"{component.PropertyName}_PlaceHolder", out string? placeHolder);
             if (!string.IsNullOrWhiteSpace(placeHolder))
                 placeHolder = $"placeholder='{HAE(placeHolder)}'";
 
             // handle StringLengthAttribute as maxlength
-            StringLengthAttribute lenAttr = component.PropData.TryGetAttribute<StringLengthAttribute>();
+            StringLengthAttribute? lenAttr = component.PropData.TryGetAttribute<StringLengthAttribute>();
             if (lenAttr != null) {
 #if DEBUG
                 if (component.HtmlAttributes.ContainsKey("maxlength"))
@@ -390,9 +375,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 throw new InternalError("No max string length given using StringLengthAttribute or maxlength - {0}", component.FieldName);
 #endif
 
-            // adding k-textbox to the control makes it look like a kendo maskedtext box without the overhead of actually calling kendoMaskedTextBox
             HtmlBuilder hb = new HtmlBuilder();
-            hb.Append($@"<input{component.FieldSetup(component.Validation ? FieldType.Validated : FieldType.Normal)} id='{component.ControlId}' type='text' value='{HAE(model??string.Empty)}' class='yt_text_base k-textbox t_edit {css}' autocomplete='{autoComplete}'{placeHolder}>");
+            hb.Append($@"<input{component.FieldSetup(component.Validation ? FieldType.Validated : FieldType.Normal)} id='{component.ControlId}' type='text' value='{HAE(model??string.Empty)}' class='yt_text_base t_edit {css}' autocomplete='{autoComplete}'{placeHolder}>");
 
             bool copy = component.PropData.GetAdditionalAttributeValue<bool>("Copy", false);
             if (copy) {

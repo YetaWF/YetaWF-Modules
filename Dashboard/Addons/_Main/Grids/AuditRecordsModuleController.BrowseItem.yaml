@@ -1,0 +1,67 @@
+# Generated from flat grid definition file on 1/30/2021 1:54:16 PM
+
+SizeStyle: SizeToFit
+Panel: {}
+Columns:
+- Name: Commands
+  Icons: 1
+  FilterOptions: []
+  Align: Center
+- Name: Created
+  DefaultSort: Descending
+  Sort: true
+  Filter: true
+  Width: <Globals.ChDateTime>
+  Align: Unspecified
+- Name: Description
+  Sort: true
+  Filter: true
+  Width: 15
+  Align: Unspecified
+  Truncate: true
+- Name: Changes
+  Sort: true
+  Filter: true
+  Width: 25
+  Align: Unspecified
+  Truncate: true
+- Name: Action
+  Sort: true
+  Filter: true
+  Width: 15
+  Align: Unspecified
+  Truncate: true
+- Name: IdentifyGuid
+  Sort: true
+  Filter: true
+  Width: <Globals.ChGuid>
+  Align: Unspecified
+- Name: IdentifyString
+  Sort: true
+  Filter: true
+  Width: 25
+  Align: Unspecified
+  Truncate: true
+- Name: SiteIdentity
+  Filter: true
+  Width: 25
+  Align: Unspecified
+- Name: UserId
+  Filter: true
+  Width: <Globals.ChUserName>
+  Align: Unspecified
+- Name: RequiresRestart
+  Sort: true
+  Filter: true
+  Width: <Globals.ChBoolean>
+  Align: Center
+- Name: ExpensiveMultiInstance
+  Sort: true
+  Filter: true
+  Width: <Globals.ChBoolean>
+  Align: Center
+- Name: Id
+  Sort: true
+  Filter: true
+  Width: <Globals.ChId>
+  Align: Right

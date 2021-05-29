@@ -10,12 +10,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     public abstract partial class PropertyListComponentBase {
 
         internal class ControlData {
-            public string Id { get; set; }
+            public string Id { get; set; } = null!;
 
             /// <summary>
             /// The controls in this collection affect other controls when changed.
             /// </summary>
-            public List<string> Controls { get; set; }
+            public List<string> Controls { get; set; } = null!;
             /// <summary>
             /// The controls in this collection are affected by controls in the Controls collection.
             /// </summary>
@@ -27,8 +27,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
         internal class Dependent {
 
-            public string Prop { get; set; } // Full name of property
-            public string PropShort { get; set; } // Name of property
+            public string Prop { get; set; } = null!; // Full name of property
+            public string PropShort { get; set; } = null!; // Name of property
 
             public List<ExprEntry> ProcessValues { get; set; } // If an entry matching all conditions is found the dependent property is processed
             public List<ExprEntry> HideValues { get; set; } // If an entry matching all conditions is found the dependent property is hidden
@@ -42,7 +42,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public ExprAttribute.OpEnum Op { get; set; }
             public bool Disable { get; set; }
             public bool ClearOnDisable{ get; set; }
-            public List<ExprAttribute.Expr> ExprList { get; set; }
+            public List<ExprAttribute.Expr> ExprList { get; set; } = null!;
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model for which the control set is generated.</param>
         /// <param name="id">The HTML id of the property list.</param>
         /// <returns>The data used client-side to show/hide properties and to enable/disable validation.</returns>
-        internal ControlData GetControlSets(object model, string id) {
+        internal ControlData? GetControlSets(object model, string id) {
 
             ControlData cd = new ControlData();
             List<string> selectionControls = new List<string>();
@@ -100,7 +100,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         private Dependent FindDependent(ControlData cd, string name, string shortName) {
-            Dependent dep = (from d in cd.Dependents where d.Prop == name select d).FirstOrDefault();
+            Dependent? dep = (from d in cd.Dependents where d.Prop == name select d).FirstOrDefault();
             if (dep == null) {
                 dep = new Dependent {
                     Prop = name,

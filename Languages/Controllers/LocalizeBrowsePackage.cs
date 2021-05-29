@@ -35,10 +35,10 @@ namespace YetaWF.Modules.Languages.Controllers {
         public class BrowseItem {
 
             [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands {
                 get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+                    List<ModuleAction> actions = new List<ModuleAction>();
 
                     LocalizeEditFileModule editMod = new LocalizeEditFileModule();
                     actions.New(editMod.GetAction_Edit(Module.EditUrl, PackageName, FileName), ModuleAction.ActionLocationEnum.GridLinks);
@@ -64,10 +64,10 @@ namespace YetaWF.Modules.Languages.Controllers {
 
         public class BrowseModel {
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
 
             public class ExtraData {
-                public string PackageName { get; set; }
+                public string PackageName { get; set; } = null!;
             }
         }
         private GridDefinition GetGridModel(Package package) {
@@ -77,7 +77,7 @@ namespace YetaWF.Modules.Languages.Controllers {
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = GetActionUrl(nameof(LocalizeBrowsePackage_GridData)),
                 ExtraData = new BrowseModel.ExtraData { PackageName = package.Name },
-                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     List<LocalizeFile> files = (from s in await Localization.GetFilesAsync(package, MultiString.DefaultLanguage, false) select new LocalizeFile { FileName = Path.GetFileName(s) }).ToList();
                     DataProviderGetRecords<LocalizeFile> recs = DataProviderImpl<LocalizeFile>.GetRecords(files, skip, take, sort, filters);
                     return new DataSourceResult {
@@ -99,7 +99,7 @@ namespace YetaWF.Modules.Languages.Controllers {
         }
 
         public class LocalizeFile {
-            public string FileName { get; set; }
+            public string FileName { get; set; } = null!;
         }
 
         [AllowPost]
@@ -152,7 +152,7 @@ namespace YetaWF.Modules.Languages.Controllers {
             List<string> strings = new List<string>();
             List<LocalizationData> allData = new List<LocalizationData>();
             foreach (LocalizeFile file in files) {
-                LocalizationData data = Localization.Load(package, file.FileName, Localization.Location.DefaultResources);
+                LocalizationData data = Localization.Load(package, file.FileName, Localization.Location.DefaultResources) ?? throw new InternalError($"Localization file {file.FileName} not found");
                 allData.Add(data);
                 foreach (LocalizationData.ClassData cd in data.Classes) {
                     if (!string.IsNullOrWhiteSpace(cd.Header))
@@ -287,7 +287,7 @@ namespace YetaWF.Modules.Languages.Controllers {
         public class TextItem {
             public int Offset { get; set; }
             public int Length { get; set; }
-            public string Text { get; set; }
+            public string Text { get; set; } = null!;
         }
 
         public async Task<string> TranslateComplexStringAsync(string text, string language, Func<List<string>, Task<List<string>>> translateStringsAsync) {
@@ -384,7 +384,7 @@ namespace YetaWF.Modules.Languages.Controllers {
             return FormProcessed(null, popupText: this.__ResStr("packDataGenerated", "Translated package data successfully generated"), OnClose: OnCloseEnum.Nothing);
         }
         private async Task LocalizeOneTypeAsync(Type type, string language) {
-            object instMod = Activator.CreateInstance(type);
+            object instMod = Activator.CreateInstance(type)!;
             using ((IDisposable)instMod) {
                 IInstallableModel model = (IInstallableModel)instMod;
                 await model.LocalizeModelAsync(language, (t) => IsHtml(t), (t) => TranslateStringsAsync(language, t), (t) => TranslateComplexStringAsync(t, language, (c) => TranslateStringsAsync(language, c)));

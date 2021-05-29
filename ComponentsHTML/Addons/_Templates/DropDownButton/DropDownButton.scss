@@ -1,7 +1,44 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-.yt_dropdownbutton.t_mini {
-    &, button.k-button { // for specificity
+$ddwidth:   1em;
+$ddheight: 1em;
+
+.yt_dropdownbutton {
+    outline:none;
+    vertical-align: middle;
+
+    background: var(--dd-bg);
+    color: var(--dd-clr);
+
+    border: var(--dd-border);
+    border-radius: var(--dd-border-radius);
+
+    padding: .3em .8em .3em .8em;
+
+    &:hover:not(:focus):not(:disabled) {
+        background: var(--dd-bg-hover);
+        color: var(--dd-clr-hover);
+        border: var(--dd-border-hover);
+    }
+    &:focus  {
+        outline:none;
+        background: var(--dd-bg-focus);
+        color: var(--dd-clr-focus);
+        border: var(--inp-border-focus);
+    }
+    &:disabled {
+        opacity: var(--body-dis-opacity);
+        .t_select {
+            opacity: var(--body-dis-opacity);
+        }
+    }
+    svg {
+        width:$ddwidth;
+        height:$ddheight;
+        vertical-align: initial;
+    }
+
+    &.t_mini {
         padding:0;
     }
 }

@@ -44,23 +44,23 @@ namespace YetaWF.Modules.UserProfile.DataProvider {
         public DateTime? Updated { get; set; }
 
         [StringLength(MaxName)]
-        public string Name { get; set; }
+        public string Name { get; set; } = null!;
         [StringLength(MaxCompanyName)]
-        public string CompanyName { get; set; }
+        public string CompanyName { get; set; } = null!;
         [StringLength(MaxAddress)]
-        public string Address1 { get; set; }
+        public string Address1 { get; set; } = null!;
         [StringLength(MaxAddress)]
-        public string Address2 { get; set; }
+        public string Address2 { get; set; } = null!;
         [StringLength(MaxCity)]
-        public string City { get; set; }
+        public string City { get; set; } = null!;
         [StringLength(MaxState)]
-        public string State { get; set; }
+        public string State { get; set; } = null!;
         [StringLength(MaxZip)]
-        public string Zip { get; set; }
+        public string Zip { get; set; } = null!;
         [StringLength(MaxCountry)]
-        public string Country { get; set; }
+        public string Country { get; set; } = null!;
         [StringLength(MaxTelephone)]
-        public string Telephone { get; set; }
+        public string Telephone { get; set; } = null!;
 
         public string CityCombined { get { return CountryISO3166.CombineCityStateZip(Country, City, State, Zip); } }
     }
@@ -76,7 +76,7 @@ namespace YetaWF.Modules.UserProfile.DataProvider {
 
         private IDataProvider<int, UserInfo> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, UserInfo> CreateDataProvider() {
+        private IDataProvider<int, UserInfo>? CreateDataProvider() {
             Package package = YetaWF.Modules.UserProfile.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -85,8 +85,8 @@ namespace YetaWF.Modules.UserProfile.DataProvider {
         // API
         // API
 
-        public async Task<UserInfo> GetItemAsync(int key) {
-            UserInfo userInfo = await DataProvider.GetAsync(key);
+        public async Task<UserInfo?> GetItemAsync(int key) {
+            UserInfo? userInfo = await DataProvider.GetAsync(key);
             if (userInfo == null) return null;
             if (string.IsNullOrWhiteSpace(userInfo.Country)) userInfo.Country = Globals.DefaultCountry;
             return userInfo;
@@ -103,7 +103,7 @@ namespace YetaWF.Modules.UserProfile.DataProvider {
             return result;
         }
         public async Task<UpdateStatusEnum> UpdateItemAsync(UserInfo userInfo) {
-            UserInfo origUserInfo = Auditing.Active ? await GetItemAsync(userInfo.UserId) : null;
+            UserInfo? origUserInfo = Auditing.Active ? await GetItemAsync(userInfo.UserId) : null;
             userInfo.Updated = DateTime.UtcNow;
             if (string.IsNullOrWhiteSpace(userInfo.Country)) userInfo.Country = Globals.DefaultCountry;
             UpdateStatusEnum result = await DataProvider.UpdateAsync(userInfo.UserId, userInfo.UserId, userInfo);
@@ -115,7 +115,7 @@ namespace YetaWF.Modules.UserProfile.DataProvider {
             return result;
         }
         public async Task<bool> RemoveItemAsync(int key) {
-            UserInfo origUserInfo = Auditing.Active ? await GetItemAsync(key) : null;
+            UserInfo? origUserInfo = Auditing.Active ? await GetItemAsync(key) : null;
             bool result = await DataProvider.RemoveAsync(key);
             await Auditing.AddAuditAsync($"{nameof(UserInfoDataProvider)}.{nameof(RemoveItemAsync)}", key.ToString(), Guid.Empty,
                 "Remove UserInfo",

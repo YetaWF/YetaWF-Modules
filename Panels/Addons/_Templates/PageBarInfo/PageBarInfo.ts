@@ -26,7 +26,7 @@ namespace YetaWF_Panels {
             this.resize();
 
             // Link click, activate entry
-            $YetaWF.registerEventHandler(this.Control, "click", ".yt_panels_pagebarinfo_list a", (ev: MouseEvent): boolean => {
+            $YetaWF.registerEventHandler(this.Control, "click", ".yt_panels_pagebarinfo_list a.t_entry", (ev: MouseEvent): boolean => {
                 this.activateEntry(ev.__YetaWFElem);
                 return true;// allow link click to be processed
             });
@@ -106,12 +106,12 @@ namespace YetaWF_Panels {
         public get count(): number {
             return this.entries.length;
         }
-        public get entries(): HTMLElement[] {
-            return $YetaWF.getElementsBySelector(".yt_panels_pagebarinfo_list .t_entry", [this.Control]);
+        private get entries(): HTMLAnchorElement[] {
+            return $YetaWF.getElementsBySelector(".yt_panels_pagebarinfo_list .t_entry", [this.Control]) as HTMLAnchorElement[];
         }
         public get activeEntry(): number {
             let entries = this.entries;
-            let active = $YetaWF.getElement1BySelectorCond(".yt_panels_pagebarinfo_list .t_entry.t_active", [this.Control]);
+            let active = $YetaWF.getElement1BySelectorCond(".yt_panels_pagebarinfo_list .t_entry.t_active", [this.Control]) as HTMLAnchorElement|null;
             if (!active)
                 return -1;
             let index = entries.indexOf(active);
@@ -122,9 +122,8 @@ namespace YetaWF_Panels {
             if (index < 0 || index >= entries.length) throw `Panel index ${index} is invalid`;
             let entry = entries[index];
             // and make panel active
-            let anchor = $YetaWF.getElement1BySelector(".t_link a", [entry]);
-            anchor.focus();
-            anchor.click();
+            entry.focus();
+            entry.click();
         }
         public toggleExpandCollapse(): void {
             if ($YetaWF.elementHasClass(this.Control, "t_expanded")) {

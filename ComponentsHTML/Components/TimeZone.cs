@@ -71,7 +71,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     model = TZConvert.WindowsToIana(model);
                 } catch (Exception) { }
             }
-            TimeZoneInfo tzi = null;
+            TimeZoneInfo? tzi = null;
             try {
                 tzi = TimeZoneInfo.FindSystemTimeZoneById(model);
             } catch (Exception) { }
@@ -136,7 +136,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 try {
                     model = TZConvert.WindowsToIana(model);
                 } catch (Exception) {
-                    model = null;
+                    model = string.Empty;
                 }
                 tzis = (from tzi in tzis orderby tzi.BaseUtcOffset, tzi.Id select tzi).ToList();
 
@@ -166,18 +166,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Called before action runs.
         /// </summary>
         /// <remarks>Used to normalize timezones.</remarks>
-        public static Task<string> ControllerPreprocessActionAsync(string propName, string model, ModelStateDictionary modelState) {
+        public static Task<string> ControllerPreprocessActionAsync(string propName, string? model, ModelStateDictionary modelState) {
             if (!System.Runtime.InteropServices.RuntimeInformation.IsOSPlatform(System.Runtime.InteropServices.OSPlatform.Windows)) {
                 // On linux we need to translate the timezone id to a "windows" timezone id
                 if (!string.IsNullOrWhiteSpace(model)) {
                     try {
                         model = TZConvert.IanaToWindows(model);
                     } catch (Exception) {
-                        model = null;
+                        model = string.Empty;
                     }
                 }
             }
-            return Task.FromResult(model);
+            return Task.FromResult(model ?? string.Empty);
         }
     }
 }

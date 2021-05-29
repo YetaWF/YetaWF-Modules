@@ -5,6 +5,8 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Components;
 using System.Collections.Generic;
+using YetaWF.Core.Support;
+using System.Linq;
 #if MVC6
 using Microsoft.AspNetCore.Mvc;
 #else
@@ -26,7 +28,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [UIHint("DropDownList"), StringLength(20)]
             [SelectionRequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
-            public string DropDownList { get; set; }
+            public string? DropDownList { get; set; }
             public List<SelectionItem<string>> DropDownList_List { get; set; }
 
             [Category("Core"), Caption("DropDownListInt"), Description("DropDownListInt (SelectionRequired)")]
@@ -41,6 +43,14 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public SampleEnum Enum { get; set; }
+
+            [Category("Core"), Caption("DropDownSearch"), Description("DropDownSearch (Required)")]
+            [UIHint("DropDownSearchInt"), AdditionalMetadataAttribute("PlaceHolder", "Enter/select an entry")]
+            [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
+            public int DropDownSearch { get; set; }
+            public string DropDownSearch_AjaxUrl { get { return Utility.UrlFor(typeof(DropDownSearchDataController), nameof(DropDownSearchDataController.DropDownSearchData_GetData)); } }
+            public string DropDownSearch_Text { get { return (from l in DropDownSearchDataController.GetSampleData() where l.Value == DropDownSearch select l.Text).FirstOrDefault(); } } 
 
             // ENUM
             public enum SampleEnum {

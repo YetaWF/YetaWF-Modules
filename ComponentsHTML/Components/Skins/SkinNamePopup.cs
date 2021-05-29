@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
@@ -14,6 +15,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// Base class for the SkinNamePopup component implementation.
     /// </summary>
     public abstract class SkinNamePopupComponentBase : YetaWFComponent {
+
+        internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(SkinNamePopupComponentBase), name, defaultValue, parms); }
 
         internal const string TemplateName = "SkinNamePopup";
 
@@ -34,7 +37,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Internal component used by the PageSkin and PopupSkins components. Not intended for application use.
+    /// Internal component used by the Skin component. Not intended for application use.
     /// </summary>
     [PrivateComponent]
     public class SkinNamePopupDisplayComponent : SkinNamePopupComponentBase, IYetaWFComponent<string> {
@@ -54,22 +57,23 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // get all available popup skins for this collection
             SkinAccess skinAccess = new SkinAccess();
-            string collection = GetSiblingProperty<string>($"{PropertyName}_Collection");
+            string? collection = GetSiblingProperty<string>($"{PropertyName}_Collection");
             PageSkinList skinList = skinAccess.GetAllPopupSkins(collection);
 
-            string desc = (from skin in skinList where skin.PageViewName == model select skin.Name).FirstOrDefault();
+            string? desc = (from skin in skinList where skin.ViewName == model select skin.Name).FirstOrDefault();
             if (desc == null)
                 desc = skinList.First().Name;
             if (string.IsNullOrWhiteSpace(desc))
-                return Task.FromResult<string>(null);
+                return Task.FromResult<string>(string.Empty);
             return Task.FromResult(HE(desc));
         }
     }
 
     /// <summary>
-    /// Internal component used by the PageSkin and PopupSkins components. Not intended for application use.
+    /// Internal component used by the Skin component. Not intended for application use.
     /// </summary>
     [PrivateComponent]
+    [UsesAdditional("NoDefault", "bool", "true", "Defines whether a \"(Site Default)\" entry is automatically added as the first entry, with a value of null")]
     public class SkinNamePopupEditComponent : SkinNamePopupComponentBase, IYetaWFComponent<string> {
 
         /// <summary>
@@ -87,26 +91,36 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // get all available popup skins for this collection
             SkinAccess skinAccess = new SkinAccess();
-            string collection = GetSiblingProperty<string>($"{PropertyName}_Collection");
+            string? collection = GetSiblingProperty<string>($"{PropertyName}_Collection");
             PageSkinList skinList = skinAccess.GetAllPopupSkins(collection);
             List<SelectionItem<string>> list = (from skin in skinList orderby skin.Description select new SelectionItem<string>() {
                 Text = skin.Name,
                 Tooltip = skin.Description,
-                Value = skin.PageViewName,
+                Value = skin.ViewName,
             }).ToList();
+
+            bool useDefault = !PropData.GetAdditionalAttributeValue<bool>("NoDefault");
+            if (useDefault)
+                list.Insert(0, new SelectionItem<string> {
+                    Text = __ResStr("default", "(Site Default)"),
+                    Tooltip = __ResStr("defaultTT", "Use the site defined default"),
+                    Value = "",
+                });
+
             // display the skins in a drop down
-            return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_skinname");
+            return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_skinnamepopup");
         }
+
         internal static string RenderReplacementSkinsForCollection(string skinCollection) {
             SkinAccess skinAccess = new SkinAccess();
             PageSkinList skinList = skinAccess.GetAllPopupSkins(skinCollection);
             List<SelectionItem<string>> list = (from skin in skinList orderby skin.Description select new SelectionItem<string>() {
                 Text = skin.Name,
                 Tooltip = skin.Description,
-                Value = skin.PageViewName,
+                Value = skin.ViewName,
             }).ToList();
             // render a new dropdown list
-            return DropDownListEditComponentBase<string>.RenderDataSource(list, null);
+            return DropDownListEditComponentBase<string>.GetOptionsHTML(list);
         }
     }
 }

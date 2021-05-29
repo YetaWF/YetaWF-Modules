@@ -27,24 +27,24 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [Caption("YetaWF Version"), Description("The YetaWF version installed (Core Package)")]
             [UIHint("String"), ReadOnly]
             [HelpLink("https://YetaWF.com")]
-            public string CoreVersion{ get; set; }
+            public string CoreVersion{ get; set; } = null!;
 
             [Caption("Operating System"), Description("")]
             [UIHint("String"), ReadOnly]
-            public string OSDescription { get; set; }
+            public string OSDescription { get; set; } = null!;
             [Caption("Framework"), Description("")]
             [UIHint("String"), ReadOnly]
-            public string FrameworkDescription { get; set; }
+            public string FrameworkDescription { get; set; } = null!;
             [Caption("Operating System Architecture"), Description("")]
             [UIHint("String"), ReadOnly]
-            public string OSArchitecture { get; set; }
+            public string OSArchitecture { get; set; } = null!;
             [Caption("Processor Architecture"), Description("")]
             [UIHint("String"), ReadOnly]
-            public string ProcessArchitecture { get; set; }
+            public string ProcessArchitecture { get; set; } = null!;
 
             [Caption("Deployment Type"), Description("The deployment type used for the current site")]
             [UIHint("String"), ReadOnly]
-            public string BlueGreenDeploy { get; set; }
+            public string BlueGreenDeploy { get; set; } = null!;
 
             [Caption("Multi-Instance Enabled"), Description("Defines whether multiple running instances (container/webfarm/webgarden) support is enabled using shared caching")]
             [UIHint("Boolean"), ReadOnly]
@@ -60,11 +60,11 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
             [Caption("Build"), Description("The type of build that is currently running")]
             [UIHint("String"), ReadOnly]
-            public string Build { get; set; }
+            public string Build { get; set; } = null!;
 
             [Caption("LetsEncrypt"), Description("Shows whether LetsEncrypt is enabled")]
             [UIHint("String"), ReadOnly, SuppressEmpty]
-            public string LetsEncrypt { get; set; }
+            public string LetsEncrypt { get; set; } = null!;
 
         }
 
@@ -113,7 +113,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             } else {
                 model.BlueGreenDeploy = this.__ResStr("blueGreenNone", "N/A");
             }
-            model.LetsEncrypt = YetaWF2.LetsEncrypt.LetsEncrypt.Enabled ? this.__ResStr("letsEncryptEnabled", "Enabled") : null;
+            model.LetsEncrypt = YetaWF2.LetsEncrypt.LetsEncrypt.Enabled ? this.__ResStr("letsEncryptEnabled", "Enabled") : string.Empty;
 
             return View(model);
         }

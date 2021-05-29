@@ -76,12 +76,12 @@ namespace YetaWF.Modules.Pages.DataProvider {
                 return await pageDP.CreatePageDefinitionAsync(url);
             }
         }
-        private async Task<PageDefinition> LoadPageDefinitionAsync(Guid key) {
+        private async Task<PageDefinition?> LoadPageDefinitionAsync(Guid key) {
             using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
                 return await pageDP.LoadPageDefinitionAsync(key);
             }
         }
-        private async Task<PageDefinition> LoadPageDefinitionAsync(string url) {
+        private async Task<PageDefinition?> LoadPageDefinitionAsync(string url) {
             using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
                 return await pageDP.LoadPageDefinitionAsync(url);
             }
@@ -114,7 +114,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
         private IDataProvider<Guid, PageDefinition> DataProvider { get { return GetDataProvider(); } }
         private IPageDefinitionIOMode DataProviderIOMode { get { return GetDataProvider(); } }
 
-        private IDataProvider<Guid, PageDefinition> CreateDataProvider() {
+        private IDataProvider<Guid, PageDefinition>? CreateDataProvider() {
             Package package = YetaWF.Modules.Pages.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -127,7 +127,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
             return string.Format("__Page_{0}_{1}", YetaWFManager.Manager.CurrentSite.Identity, guid);
         }
         private class GetCachedPageInfo {
-            public PageDefinition Page { get; set; }
+            public PageDefinition? Page { get; set; }
             public bool Success { get; set; }
         }
         private async Task<GetCachedPageInfo> GetCachedPageAsync(Guid guid) {
@@ -142,7 +142,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
             if (objInfo.Data != null) {
                 // make a type correct copy of the data, we don't want caller to modify the cached page
                 Type objType = objInfo.Data.GetType();
-                PageDefinition newObj = (PageDefinition)Activator.CreateInstance(objType);
+                PageDefinition newObj = (PageDefinition)Activator.CreateInstance(objType)!;
                 ObjectSupport.CopyData(objInfo.Data, newObj);
                 pageInfo.Page = newObj;
             }
@@ -199,9 +199,9 @@ namespace YetaWF.Modules.Pages.DataProvider {
             return page;
         }
 
-        public async Task<PageDefinition> LoadPageDefinitionAsync(Guid key) {
+        public async Task<PageDefinition?> LoadPageDefinitionAsync(Guid key) {
             GetCachedPageInfo pageInfo = await GetCachedPageAsync(key);
-            PageDefinition page;
+            PageDefinition? page;
             if (pageInfo.Success) {
                 page = pageInfo.Page;
                 if (page != null)
@@ -216,7 +216,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
             }
             return page;
         }
-        public async Task<PageDefinition> LoadPageDefinitionAsync(string url) {
+        public async Task<PageDefinition?> LoadPageDefinitionAsync(string url) {
             Guid guid = GetGuidFromUrl(url);
             if (guid == Guid.Empty)
                 guid = await FindPageAsync(url);
@@ -238,7 +238,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
             if (page.Temporary)
                 throw new InternalError("Page {0} is a temporary page and can't be saved", page.PageGuid);
 
-            PageDefinition oldPage = null;
+            PageDefinition? oldPage = null;
 
             using (ILockObject lockObject = await LockDesignedPagesAsync()) {
 
@@ -293,7 +293,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
             page.AllowedUsers = new SerializableList<PageDefinition.AllowedUser>((from u in page.AllowedUsers where u.UserId != superuserId && !u.IsEmpty() select u).ToList());
         }
         public async Task<bool> RemovePageDefinitionAsync(Guid pageGuid) {
-            PageDefinition page;
+            PageDefinition? page;
             using (ILockObject lockObject = await LockDesignedPagesAsync()) {
                 page = await LoadPageDefinitionAsync(pageGuid);
                 if (page == null)
@@ -314,7 +314,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
             return true;
         }
 
-        public async Task<DataProviderGetRecords<PageDefinition>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        public async Task<DataProviderGetRecords<PageDefinition>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
             DataProviderGetRecords<PageDefinition> list = await DataProvider.GetRecordsAsync(skip, take, sort, filters);
             foreach (PageDefinition page in list.Data)
                 page.Temporary = false;
@@ -339,7 +339,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
                     data = await DataProviderIOMode.GetDesignedPagesAsync();
                     await staticCacheDP.AddAsync(DESIGNEDPAGESKEY, data);
                 } else
-                    data = info.Data;
+                    data = info.RequiredData;
                 return data;
             }
         }
@@ -365,7 +365,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
         /// Searching page by guid is slow - use Url instead
         /// </summary>
         protected async Task<Guid> FindPageAsync(string url) {
-            PageDefinition.DesignedPage designedPage;
+            PageDefinition.DesignedPage? designedPage;
             DesignedPagesDictionaryByUrl designedPagesByUrl = await GetDesignedPagesWithoutLockAsync();
             if (designedPagesByUrl.TryGetValue(url.ToLower(), out designedPage))
                 return designedPage.PageGuid;

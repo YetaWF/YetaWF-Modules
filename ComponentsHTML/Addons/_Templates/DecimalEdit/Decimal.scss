@@ -5,7 +5,8 @@
         text-align: right;
         padding-right: 0.5ch;
         &::placeholder {
-            opacity:0.6;
+            color: var(--inp-ph-clr);
+            opacity: var(--inp-ph-opacity);
         }
     }
 }

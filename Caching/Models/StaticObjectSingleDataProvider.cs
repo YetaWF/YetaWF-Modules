@@ -8,7 +8,7 @@ using YetaWF.Core.Support;
 namespace YetaWF.Modules.Caching.DataProvider {
 
     /// <summary>
-    /// A shared cache implementation in-memory ONLY for a single instance (really not shared).
+    /// A in-memory ONLY cache implementation for a single instance (really shared) without serialization/deserialization (not suitable for ModuleDefinition).
     /// This is intended as a way to preserve "static" in-memory data. This is equivalent to the StaticObjectMultiDataProvider class on a multi-instance site.
     /// </summary>
     internal class StaticObjectSingleDataProvider : ICacheDataProvider {
@@ -57,7 +57,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
                 if (StaticObjects.TryGetValue(key, out obj)) {
                     return Task.FromResult(new GetObjectInfo<TYPE> {
                         Success = true,
-                        Data = (TYPE)obj,
+                        Data = (TYPE?)obj,
                     });
                 }
             }

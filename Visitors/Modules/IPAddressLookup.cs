@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Visitors.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_DisplayHostName(string url, string ipAddress) {
+        public ModuleAction? GetAction_DisplayHostName(string? url, string ipAddress) {
             if (string.IsNullOrWhiteSpace(ipAddress)) return null;
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
@@ -45,7 +45,7 @@ namespace YetaWF.Modules.Visitors.Modules {
                 SaveReturnUrl = true,
             };
         }
-        public async Task<ModuleAction> GetAction_DisplayGeoDataAsync(string url, string ipAddress) {
+        public async Task<ModuleAction?> GetAction_DisplayGeoDataAsync(string? url, string ipAddress) {
             if (string.IsNullOrWhiteSpace(ipAddress)) return null;
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,

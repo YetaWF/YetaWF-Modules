@@ -34,7 +34,7 @@ namespace YetaWF.Modules.Scheduler.Support {
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
                 IScheduling schedEvt;
                 try {
-                    schedEvt = (IScheduling)Activator.CreateInstance(type);
+                    schedEvt = (IScheduling)Activator.CreateInstance(type)!;
                 } catch (Exception exc) {
                     throw new InternalError("The specified object does not support the required IScheduling interface.", exc);
                 }
@@ -44,8 +44,8 @@ namespace YetaWF.Modules.Scheduler.Support {
                         SchedulerItemData evnt = new SchedulerItemData();
                         ObjectSupport.CopyData(item, evnt);
                         evnt.Event.Name = item.EventName;
-                        evnt.Event.ImplementingAssembly = type.Assembly.GetName().Name;
-                        evnt.Event.ImplementingType = type.FullName;
+                        evnt.Event.ImplementingAssembly = type.Assembly.GetName().Name!;
+                        evnt.Event.ImplementingType = type.FullName!;
                         evnt.Enabled = false; // new scheduler items are always disabled when added
                         evnt.EnableOnStartup = false;
                         await dataProvider.AddItemAsync(evnt);// we ignore whether the add fails - it's OK if it already exists
@@ -68,12 +68,12 @@ namespace YetaWF.Modules.Scheduler.Support {
         /// Uninstall all events for the given object type. This is typically used to uninstall scheduler items while removing packages.
         /// </summary>
         private async Task UninstallItemsAsync(Type type) {
-            string asmName = type.Assembly.GetName().Name;
+            string asmName = type.Assembly.GetName().Name!;
             string eventType = type.FullName + ", " + asmName;
             using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
-                IScheduling schedEvt = null;
+                IScheduling? schedEvt = null;
                 try {
-                    schedEvt = (IScheduling)Activator.CreateInstance(type);
+                    schedEvt = (IScheduling)Activator.CreateInstance(type)!;
                 } catch (Exception exc) {
                     throw new InternalError("The specified object does not support the required IScheduling interface.", exc);
                 }

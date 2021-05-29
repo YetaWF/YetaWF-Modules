@@ -16,17 +16,17 @@ namespace YetaWF.Modules.Search.DataProvider {
 
         public int Count { get; set; }
         [UIHint("Url")]
-        public string PageUrl { get; set; }
+        public string? PageUrl { get; set; }
         [UIHint("String")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
         [UIHint("DateTime")]
         public DateTime DateCreated { get; set; }
         [UIHint("DateTime")]
         public DateTime? DateUpdated { get; set; }
         [UIHint("String")]
-        public string PageSummary { get; set; }
+        public string? PageSummary { get; set; }
         public PageDefinition.PageSecurityType PageSecurity { get; set; }
-        public string CustomData { get; set; }
+        public string? CustomData { get; set; }
 
         public SearchResult() { }
     }
@@ -42,7 +42,7 @@ namespace YetaWF.Modules.Search.DataProvider {
 
         private IDataProvider<int, SearchResult> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, SearchResult> CreateDataProvider() {
+        private IDataProvider<int, SearchResult>? CreateDataProvider() {
             if (SearchDataProvider.IsUsable) {
                 Package package = YetaWF.Modules.Search.AreaRegistration.CurrentPackage;
                 return MakeDataProvider(package, package.AreaName + "_Urls", SiteIdentity: SiteIdentity, Cacheable: true);
@@ -69,7 +69,7 @@ namespace YetaWF.Modules.Search.DataProvider {
             }
         }
 
-        public async Task<SearchResultsInfo> GetSearchResultsAsync(string searchTerms, int maxResults, string languageId, bool haveUser, List<DataProviderFilterInfo> Filters = null) {
+        public async Task<SearchResultsInfo> GetSearchResultsAsync(string searchTerms, int maxResults, string languageId, bool haveUser, List<DataProviderFilterInfo>? Filters = null) {
             if (!SearchDataProvider.IsUsable) return new SearchResultsInfo();
             SearchResultsInfo info = await ParseAsync(searchTerms, maxResults, languageId, haveUser, Filters);
             return info;

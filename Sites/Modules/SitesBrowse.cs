@@ -11,6 +11,7 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Site;
 using YetaWF.DataProvider;
 using YetaWF.Core.Components;
+using System.Collections.Generic;
 #if MVC6
 using YetaWF.Core.Support;
 #else
@@ -40,8 +41,8 @@ namespace YetaWF.Modules.Sites.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return SuperuserLevel_DefaultAllowedRoles; } }
 
-        public override async Task<MenuList> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
-            MenuList menuList = await base.GetModuleMenuListAsync(renderMode, location);
+        public override async Task<List<ModuleAction>> GetModuleMenuListAsync(ModuleAction.RenderModeEnum renderMode, ModuleAction.ActionLocationEnum location) {
+            List<ModuleAction> menuList = await base.GetModuleMenuListAsync(renderMode, location);
             SiteAddModule mod = new SiteAddModule();
             menuList.New(mod.GetAction_Add(AddUrl), location);
             return menuList;

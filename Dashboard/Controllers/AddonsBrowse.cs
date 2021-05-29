@@ -12,11 +12,8 @@ using YetaWF.Core;
 using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider;
 using System.Threading.Tasks;
-#if MVC6
+using YetaWF.Core.Packages;
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Dashboard.Controllers {
 
@@ -25,10 +22,10 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         public class BrowseItem {
 
             [Caption("Actions"), Description("The available actions")]
-            [UIHint("ActionIcons"), ReadOnly]
-            public MenuList Commands {
+            [UIHint("ModuleActionsGrid"), ReadOnly]
+            public List<ModuleAction> Commands {
                 get {
-                    MenuList actions = new MenuList() { RenderMode = ModuleAction.RenderModeEnum.IconsOnly };
+                    List<ModuleAction> actions = new List<ModuleAction>();
 
                     AddonDisplayModule dispMod = new AddonDisplayModule();
                     actions.New(dispMod.GetAction_Display(Module.DisplayUrl, AddonKey), ModuleAction.ActionLocationEnum.GridLinks);
@@ -39,56 +36,51 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
             [Caption("Type"), Description("The AddOn type")]
             [UIHint("Enum"), ReadOnly]
-            public VersionManager.AddOnType Type { get; set; }
+            public Package.AddOnType Type { get; set; }
             [Caption("Domain"), Description("The domain owning this AddOn")]
             [UIHint("String"), ReadOnly]
-            public string Domain { get; set; }
+            public string Domain { get; set; } = null!;
             [Caption("Product"), Description("The AddOn's product name")]
             [UIHint("String"), ReadOnly]
-            public string Product { get; set; }
+            public string Product { get; set; } = null!;
             [Caption("Version"), Description("The AddOn's version")]
             [UIHint("String"), ReadOnly]
-            public string Version { get; set; }
+            public string Version { get; set; } = null!;
             [Caption("Name"), Description("The AddOn's internal name")]
             [UIHint("String"), ReadOnly]
-            public string Name { get; set; }
+            public string Name { get; set; } = null!;
             [Caption("Url"), Description("The AddOn's Url where its files are located")]
             [UIHint("String"), ReadOnly]
-            public string Url { get; set; }
+            public string Url { get; set; } = null!;
 
             public AddonsBrowseModule Module { get; set; }
 
             [UIHint("Hidden"), ReadOnly]
-            public string AddonKey { get; set; }
+            public string AddonKey { get; set; } = null!;
 
-            public BrowseItem(AddonsBrowseModule module, VersionManager.AddOnProduct data) {
+            public BrowseItem(AddonsBrowseModule module, Package.AddOnProduct data) {
                 Module = module;
                 ObjectSupport.CopyData(data, this);
             }
-            public BrowseItem() { }
         }
 
         public class BrowseModel {
 
             [Caption("AddOns Url"), Description("The Url containing all AddOns")]
             [UIHint("String"), ReadOnly]
-            public string AddOnsUrl { get; set; }
+            public string AddOnsUrl { get; set; } = null!;
 
             [Caption("Custom AddOns Url"), Description("The Url containing all customized AddOns (if any)")]
             [UIHint("String"), ReadOnly]
-            public string AddOnsCustomUrl { get; set; }
+            public string AddOnsCustomUrl { get; set; } = null!;
 
             [Caption("NPM Url"), Description("The Url containing npm modules")]
             [UIHint("String"), ReadOnly]
-            public string NodeModulesUrl { get; set; }
-
-            [Caption("Bower Url"), Description("The Url containing Bower components")]
-            [UIHint("String"), ReadOnly]
-            public string BowerComponentsUrl { get; set; }
+            public string NodeModulesUrl { get; set; } = null!;
 
             [Caption("Installed AddOns"), Description("Displays all installed AddOns")]
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
         }
         private GridDefinition GetGridModel() {
             return new GridDefinition {
@@ -97,7 +89,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                 SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = GetActionUrl(nameof(AddonsBrowse_GridData)),
-                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(data, skip, take, sorts, filters);
                     foreach (BrowseItem r in recs.Data)
                         r.Module = Module;
@@ -106,8 +98,8 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                         Total = recs.Total,
                     };
                 },
-                DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
-                    List<VersionManager.AddOnProduct> list = VersionManager.GetAvailableAddOns();
+                DirectDataAsync = (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
+                    List<Package.AddOnProduct> list = Package.GetAvailableAddOns();
                     DataSourceResult data = new DataSourceResult {
                         Data = (from l in list select new BrowseItem(Module, l)).ToList<object>(),
                         Total = list.Count,
@@ -120,10 +112,9 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         [AllowGet]
         public ActionResult AddonsBrowse() {
             BrowseModel model = new BrowseModel {
-                AddOnsUrl = VersionManager.AddOnsUrl,
-                AddOnsCustomUrl = VersionManager.AddOnsCustomUrl,
+                AddOnsUrl = Package.AddOnsUrl,
+                AddOnsCustomUrl = Package.AddOnsCustomUrl,
                 NodeModulesUrl = Globals.NodeModulesUrl,
-                BowerComponentsUrl = Globals.BowerComponentsUrl,
                 GridDef = GetGridModel()
             };
             return View(model);

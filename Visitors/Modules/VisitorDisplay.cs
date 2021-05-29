@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Visitors.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_Display(string url, int key) {
+        public ModuleAction? GetAction_Display(string? url, int key) {
             using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
                 if (!visitorDP.Usable) return null;
             }

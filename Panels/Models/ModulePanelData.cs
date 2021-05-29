@@ -32,10 +32,8 @@ namespace YetaWF.Modules.Panels.Models {
         public enum PanelStyleEnum {
             [EnumDescription("Tabs","Tabs are used to switch between panels")]
             Tabs = 0,
-            [EnumDescription("Accordion (jQuery UI)", "A jQuery UI accordion is used to switch between panels")]
-            AccordionjQuery = 1,
-            [EnumDescription("Accordion (Kendo)", "A Kendo accordion is used to switch between panels")]
-            AccordionKendo = 2,
+            [EnumDescription("Accordion", "An accordion-style display is used to switch between panels")]
+            Accordion = 1,
         }
         public class PanelEntry {
 
@@ -54,21 +52,21 @@ namespace YetaWF.Modules.Panels.Models {
             [UIHint("MultiString80"), StringLength(MaxToolTip), Trim]
             public MultiString ToolTip { get; set; }
 
-            public async Task<ModuleDefinition> GetModuleAsync() {
+            public async Task<ModuleDefinition?> GetModuleAsync() {
                 if (_moduleDef == null) {
                     _moduleDef = NoModule;
-                    ModuleDefinition mod = await ModuleDefinition.LoadAsync(Module, AllowNone: true);
+                    ModuleDefinition? mod = await ModuleDefinition.LoadAsync(Module, AllowNone: true);
                     if (mod != null)
                         _moduleDef = mod;
                 }
                 if (_moduleDef == NoModule) return null;
                 return _moduleDef;
             }
-            private ModuleDefinition _moduleDef = null;
+            private ModuleDefinition? _moduleDef = null;
             private static readonly ModuleDefinition NoModule = new ModuleDefinition();
 
             public async Task<bool> IsAuthorizedAsync() {
-                ModuleDefinition mod = await GetModuleAsync();
+                ModuleDefinition? mod = await GetModuleAsync();
                 if (mod == null) return false;
                 return mod.IsAuthorized(null);
             }

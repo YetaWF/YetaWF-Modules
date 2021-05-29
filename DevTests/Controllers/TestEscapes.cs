@@ -24,7 +24,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [TextBelow("Special characters in the text below the field (TextBelowAttribute) <A> &amp; & @ {0}")]
             [Caption("Caption <A> &amp; & @ {0}"), Description("A description <A> &amp; & @ {0}")]
             [UIHint("Text80"), StringLength(80), Trim]
-            public string String1 { get; set; }
+            public string? String1 { get; set; } = null!;
 
             public EditModel() { }
         }

@@ -26,11 +26,11 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Category"), Description("The name of this blog category")]
             [UIHint("MultiString40"), StringLength(BlogCategory.MaxCategory), Required, Trim]
-            public MultiString Category { get; set; } = null!;
+            public MultiString Category { get; set; }
 
             [Caption("Description"), Description("The description of the blog category - the category's description is shown at the top of each blog entry to describe your blog")]
             [UIHint("MultiString80"), StringLength(BlogCategory.MaxDescription), Required, Trim]
-            public MultiString Description { get; set; } = null!;
+            public MultiString Description { get; set; } 
 
             [Caption("Use Captcha"), Description("Defines whether anonymous users entering comments are presented with a Captcha to insure they are not automated spam scripts")]
             [UIHint("Boolean")]
@@ -50,7 +50,7 @@ namespace YetaWF.Modules.Blog.Controllers {
 
             [Caption("Syndication Copyright"), Description("The optional copyright information shown when the blog is accessed by news readers")]
             [UIHint("MultiString80"), StringLength(BlogCategory.MaxCopyright), Trim]
-            public MultiString SyndicationCopyright { get; set; } = null!;
+            public MultiString SyndicationCopyright { get; set; }
 
             [UIHint("Hidden")]
             public int Identity { get; set; }
@@ -63,7 +63,11 @@ namespace YetaWF.Modules.Blog.Controllers {
                 ObjectSupport.CopyData(data, this);
                 DisplayIdentity = Identity;
             }
-            public EditModel() { }
+            public EditModel() {
+                Category = new MultiString();
+                Description = new MultiString();
+                SyndicationCopyright = new MultiString();
+            }
         }
 
         [AllowGet]

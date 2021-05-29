@@ -16,43 +16,30 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal const string TemplateName = "SSN";
 
-        /// <summary>
-        /// Returns the package implementing the component.
-        /// </summary>
-        /// <returns>Returns the package implementing the component.</returns>
+        /// <inheritdoc/>
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        /// <summary>
-        /// Returns the component name.
-        /// </summary>
-        /// <returns>Returns the component name.</returns>
-        /// <remarks>Components in packages whose product name starts with "Component" use the exact name returned by GetTemplateName when used in UIHint attributes. These are considered core components.
-        /// Components in other packages use the package's area name as a prefix. E.g., the UserId component in the YetaWF.Identity package is named "YetaWF_Identity_UserId" when used in UIHint attributes.
-        ///
-        /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
+        /// <inheritdoc/>
         public override string GetTemplateName() { return TemplateName; }
+
+        internal class Setup {
+            public string Mask { get; set; } = null!;
+        }
     }
 
     /// <summary>
     /// Displays the model formatted as a Social Security Number.
     /// </summary>
-    public class SSNDisplayComponent : SSNComponentBase, IYetaWFComponent<string> {
+    public class SSNDisplayComponent : SSNComponentBase, IYetaWFComponent<string?> {
 
-        /// <summary>
-        /// Returns the component type (edit/display).
-        /// </summary>
-        /// <returns>Returns the component type.</returns>
+        /// <inheritdoc/>
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
-        public Task<string> RenderAsync(string model) {
+        /// <inheritdoc/>
+        public Task<string> RenderAsync(string? model) {
             HtmlBuilder hb = new HtmlBuilder();
             if (model != null && model.Length == 9) {
                 hb.Append($@"
-<div class='yt_ssn t_display'>
+<div class='yt_ssn yt_maskededit_base t_display'>
     {HE(SSNValidationAttribute.GetDisplay(model))}
 </div>");
             }
@@ -63,42 +50,40 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// <summary>
     /// Allows entry of a Social Security Number.
     /// </summary>
-    public class SSNEditComponent : SSNComponentBase, IYetaWFComponent<string> {
+    public class SSNEditComponent : SSNComponentBase, IYetaWFComponent<string?> {
 
-        /// <summary>
-        /// Returns the component type (edit/display).
-        /// </summary>
-        /// <returns>Returns the component type.</returns>
+        Setup setup = new Setup {
+            Mask = "NNN-NN-NNNN",
+        };
+
+        /// <inheritdoc/>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        /// <summary>
-        /// Called by the framework when the component is used so the component can add component specific addons.
-        /// </summary>
+        /// <inheritdoc/>
         public override async Task IncludeAsync() {
-            await KendoUICore.AddFileAsync("kendo.maskedtextbox.min.js");
+            await Manager.AddOnManager.AddTemplateAsync(AreaRegistration.CurrentPackage.AreaName, "MaskedEdit", ComponentType.Edit);
+            await Manager.AddOnManager.AddTemplateAsync(AreaRegistration.CurrentPackage.AreaName, "Text", ComponentType.Edit);
             await base.IncludeAsync();
         }
-        /// <summary>
-        /// Called by the framework when the component needs to be rendered as HTML.
-        /// </summary>
-        /// <param name="model">The model being rendered by the component.</param>
-        /// <returns>The component rendered as HTML.</returns>
-        public async Task<string> RenderAsync(string model) {
-
-            Dictionary<string, object> hiddenAttributes = new Dictionary<string, object>(HtmlAttributes) {
-                { "__NoTemplate", true }
-            };
-            string hidden = await HtmlHelper.ForEditComponentAsync(Container, PropertyName, null, "Hidden", HtmlAttributes: hiddenAttributes, Validation: Validation);
+        /// <inheritdoc/>
+        public Task<string> RenderAsync(string? model) {
 
             string value = string.Empty;
             if (model != null)
                 value = model;
 
-            string tags = $"<div id='{ControlId}' class='yt_ssn t_edit'>{hidden}<input{FieldSetup(FieldType.Anonymous)} name='ssninput' value='{value}'></div>";
+            HtmlBuilder hb = new HtmlBuilder();
+            hb.Append($@"
+<div id='{ControlId}' class='yt_ssn yt_maskededit_base t_edit'>
+    <input type='text' value='{HAE(value)}'{HtmlBuilder.GetClassAttribute(HtmlAttributes, "yt_text_base t_edit")}{HtmlBuilder.Attributes(HtmlAttributes)}>
+    <input type='hidden' value='{HAE(value)}'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} maxlength='200'>
+</div>");
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.SSNEditComponent('{ControlId}');");
+            string tags = hb.ToString();
 
-            return tags;
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.SSNEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
+
+            return Task.FromResult(tags);
         }
     }
 }

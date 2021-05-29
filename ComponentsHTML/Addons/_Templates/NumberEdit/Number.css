@@ -1,0 +1,61 @@
+@charset "UTF-8";
+/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+.yt_number_container {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  width: auto;
+  padding-right: 2em;
+  background: var(--dd-bg);
+  color: var(--dd-clr);
+  border: var(--dd-border);
+  border-radius: var(--dd-border-radius); }
+  .yt_number_container input[type='text'] {
+    line-height: 1.5em;
+    padding: .18em 0.2em;
+    width: 100%;
+    background: var(--inp-bg);
+    color: var(--inp-clr);
+    border: var(--dd-border);
+    border-color: var(--inp-bg);
+    border-radius: var(--dd-border-radius);
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    outline: none;
+    text-overflow: ellipsis; }
+    .yt_number_container input[type='text']:focus {
+      text-overflow: clip; }
+  .yt_number_container:hover:not(.t_disabled):not(.t_focused) {
+    background: var(--dd-bg-hover);
+    color: var(--dd-clr-hover);
+    border: var(--dd-border-hover); }
+  .yt_number_container.t_focused {
+    background: var(--dd-bg-focus);
+    color: var(--dd-clr-focus);
+    border: var(--dd-border-focus); }
+  .yt_number_container.t_disabled {
+    opacity: var(--body-dis-opacity); }
+  .yt_number_container.t_readonly {
+    opacity: var(--body-dis-opacity); }
+  .yt_number_container .t_updown {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 2em;
+    text-align: center;
+    border-left: var(--dd-border); }
+  .yt_number_container .t_up, .yt_number_container .t_down {
+    height: 50%; }
+    .yt_number_container .t_up svg, .yt_number_container .t_down svg {
+      width: 1em;
+      height: 1em;
+      vertical-align: top; }
+  .yt_number_container .t_warn {
+    width: 1.2em;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 2.5em;
+    bottom: 0;
+    color: var(--inp-error-clr); }

@@ -27,16 +27,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         [Caption("Markdown Text"), HelpLink("https://www.markdownguide.org/cheat-sheet/")]
         [UIHint("TextAreaSourceOnly")]
-        public virtual string Text { get; set; }
+        public virtual string? Text { get; set; } = null!;
         /// <summary>
         /// The HTML rendering of the markdown text.
         /// </summary>
-        public virtual string HTML { get; set; }
+        public virtual string? HTML { get; set; } = null!;
         /// <summary>
         /// Implicit conversion to string.
         /// </summary>
         /// <param name="md">The MarkdownStringBase object to convert.</param>
-        public static implicit operator string(MarkdownStringBase md) {
+        public static implicit operator string?(MarkdownStringBase md) {
             return md.Text;
         }
     }
@@ -67,7 +67,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns> An System.Object that represents the converted value.</returns>
         public override Object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, Object value, Type destinationType) {
             if (destinationType == typeof(string))
-                return (string)(MarkdownStringBase)value;
+                return ((string?)(MarkdownStringBase)value) ?? string.Empty;
             return base.ConvertTo(context, culture, value, destinationType);
         }
     }
@@ -165,7 +165,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal class UI {
             [UIHint("Tabs")]
-            public TabsDefinition TabsDef { get; set; }
+            public TabsDefinition TabsDef { get; set; } = null!;
         }
 
         /// <summary>

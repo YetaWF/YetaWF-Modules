@@ -12,32 +12,15 @@ var YetaWF_ComponentsHTML;
             // PropertyListVisible
             this.PropertyListVisibleHandlers = [];
         }
-        ComponentsHTML.prototype.MUSTHAVE_JQUERYUI = function () {
-            if (!YVolatile.YetaWF_ComponentsHTML.jqueryUI)
-                throw "jquery-ui is required but has not been loaded";
+        ComponentsHTML.prototype.MUSTHAVE_JQUERY = function () {
+            if (!YVolatile.YetaWF_ComponentsHTML.jquery)
+                throw "jquery is required but has not been loaded";
         };
-        ComponentsHTML.prototype.REQUIRES_JQUERYUI = function (run) {
-            if (!YVolatile.YetaWF_ComponentsHTML.jqueryUI) {
-                YVolatile.YetaWF_ComponentsHTML.jqueryUI = true;
+        ComponentsHTML.prototype.REQUIRES_JQUERY = function (run) {
+            if (!YVolatile.YetaWF_ComponentsHTML.jquery) {
+                YVolatile.YetaWF_ComponentsHTML.jquery = true;
                 $YetaWF.ContentHandling.loadAddons([
-                    { AreaName: "YetaWF_ComponentsHTML", ShortName: "jqueryui-themes", Argument1: YVolatile.YetaWF_ComponentsHTML.jqueryUITheme }
-                ], function () {
-                    run();
-                });
-            }
-            else {
-                run();
-            }
-        };
-        ComponentsHTML.prototype.MUSTHAVE_KENDOUI = function () {
-            if (!YVolatile.YetaWF_ComponentsHTML.kendoUI)
-                throw "Kendo UI is required but has not been loaded";
-        };
-        ComponentsHTML.prototype.REQUIRES_KENDOUI = function (run) {
-            if (!YVolatile.YetaWF_ComponentsHTML.kendoUI) {
-                YVolatile.YetaWF_ComponentsHTML.kendoUI = true;
-                $YetaWF.ContentHandling.loadAddons([
-                    { AreaName: "YetaWF_ComponentsHTML", ShortName: "telerik.com.Kendo_UI_Core", Argument1: YVolatile.YetaWF_ComponentsHTML.kendoUITheme }
+                    { AreaName: "YetaWF_ComponentsHTML", ShortName: "jquery", Argument1: null }
                 ], function () {
                     run();
                 });

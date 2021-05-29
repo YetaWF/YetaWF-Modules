@@ -56,7 +56,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 text = HE(model);
             string label = $"<label{FieldSetup(FieldType.Anonymous)}{HtmlBuilder.GetClassAttribute(HtmlAttributes)}>{text}</label>";
 
-            if (TryGetSiblingProperty<string>($"{PropertyName}_HelpLink", out string helpLink) && !string.IsNullOrWhiteSpace(helpLink)) {
+            if (TryGetSiblingProperty<string>($"{PropertyName}_HelpLink", out string? helpLink) && !string.IsNullOrWhiteSpace(helpLink)) {
                 helpLink = $"<a href='{HAE(helpLink)}' class='yt_extlabel_img' target='_blank' rel='noopener noreferrer'>{ImageHTML.BuildKnownIcon("#Help")}</a>";
                 return Task.FromResult(label + helpLink);
             }

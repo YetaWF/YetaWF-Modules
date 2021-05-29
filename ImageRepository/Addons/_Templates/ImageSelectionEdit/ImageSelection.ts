@@ -53,44 +53,20 @@ namespace YetaWF_ImageRepository {
                 // get url to remove the file
 
                 if ($YetaWF.isLoading) return false;
-                $YetaWF.setLoading(true);
 
                 var uri = $YetaWF.parseUrl(this.RemoveButton.href);
                 uri.removeSearch("Name");
                 uri.addSearch("Name", this.Hidden.value);
 
-                var request: XMLHttpRequest = new XMLHttpRequest();
-                request.open("POST", uri.toUrl(), true);
-                request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-                request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                request.onreadystatechange = (ev: Event): any => {
-                    if (request.readyState === 4 /*DONE*/) {
-                        $YetaWF.setLoading(false);
-                        $YetaWF.processAjaxReturn(request.responseText, request.statusText, request, undefined, undefined, (result: string): void => {
+                $YetaWF.post(uri.toUrl(), null, (success: boolean, resp: YetaWF_ComponentsHTML.FileUploadRemoveResponse): void => {
+                    if (success) {
+                        // eslint-disable-next-line no-eval
+                        eval(resp.Result);
 
-                            $YetaWF.setLoading(false);
-
-                            if (result.startsWith(YConfigs.Basics.AjaxJavascriptReturn)) {
-                                var script = result.substring(YConfigs.Basics.AjaxJavascriptReturn.length);
-                                // eslint-disable-next-line no-eval
-                                eval(script);
-                                return;
-                            } else if (result.startsWith(YConfigs.Basics.AjaxJavascriptErrorReturn)) {
-                                var script = result.substring(YConfigs.Basics.AjaxJavascriptErrorReturn.length);
-                                // eslint-disable-next-line no-eval
-                                eval(script);
-                                return;
-                            }
-                            var resp: YetaWF_ComponentsHTML.FileUploadRemoveResponse = JSON.parse(result);
-                            // eslint-disable-next-line no-eval
-                            eval(resp.Result);
-
-                            this.List.innerHTML = resp.List;
-                            this.clearFileName();
-                        });
+                        this.List.innerHTML = resp.List;
+                        this.clearFileName();
                     }
-                };
-                request.send();
+                });
                 return false;
             });
         }

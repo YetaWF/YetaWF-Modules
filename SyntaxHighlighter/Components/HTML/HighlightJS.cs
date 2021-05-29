@@ -9,7 +9,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Modules.SyntaxHighlighter.Support;
+using YetaWF.Modules.SyntaxHighlighter.Startup;
 
 namespace YetaWF.Modules.SyntaxHighlighter.Components {
 
@@ -72,7 +72,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.Components {
                     Value = "",
                 });
             else if (model == null)
-                model = SkinAccess.GetHighlightJSDefaultSkin();
+                model = SkinAccess.GetHighlightJSDefaultTheme();
 
             return await DropDownListComponent.RenderDropDownListAsync(this, model, list, "yt_yetawf_syntaxhighlighter_highlightjs");
         }

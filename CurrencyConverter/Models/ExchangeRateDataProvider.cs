@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
-using YetaWF.Core.Addons;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
@@ -20,9 +19,9 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
         public const int MaxCurrencyName = 50;
         public const int MaxCode = 10;
         [StringLength(MaxCurrencyName)]
-        public string CurrencyName { get; set; }
+        public string CurrencyName { get; set; } = null!;
         [StringLength(MaxCode)]
-        public string Code { get; set; }
+        public string Code { get; set; } = null!;
         public decimal Rate { get; set; }
     }
 
@@ -51,7 +50,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
 
         private IDataProvider<int, ExchangeRateData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, ExchangeRateData> CreateDataProvider() {
+        private IDataProvider<int, ExchangeRateData>? CreateDataProvider() {
             Package package = YetaWF.Modules.CurrencyConverter.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Data", Cacheable: true);
         }
@@ -66,7 +65,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
 
             string jsFileName = GetJSFileName();
             using (ILockObject lockObject = await FileSystem.FileSystemProvider.LockResourceAsync(jsFileName)) {
-                ExchangeRateData data = await DataProvider.GetAsync(KEY);
+                ExchangeRateData? data = await DataProvider.GetAsync(KEY);
                 if (data != null && data.SaveTime.Add(config.RefreshInterval) < DateTime.UtcNow)
                     data = null;
                 if (data != null && !await FileSystem.FileSystemProvider.FileExistsAsync(jsFileName))
@@ -102,8 +101,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
             var rates = jsonObject.rates;
             foreach (var rate in rates) {
                 string code = rate.Name;
-                object currency;
-                if (!currencies.TryGetValue(code, out currency))// replace 3 digit codes by actual name
+                if (!currencies.TryGetValue(code, out object? currency))// replace 3 digit codes by actual name
                     currency = code;
                 decimal val = (decimal)rate.Value;
                 data.Rates.Add(new ExchangeRateEntry { Code = code, CurrencyName = (string)currency, Rate = val });
@@ -132,7 +130,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
         }
 
         private static string GetJSFileName() {
-            string url = VersionManager.GetAddOnPackageUrl(AreaRegistration.CurrentPackage.AreaName);
+            string url = Package.GetAddOnPackageUrl(AreaRegistration.CurrentPackage.AreaName);
             string path = Utility.UrlToPhysical(url);
             return Path.Combine(path, JSFile);
         }

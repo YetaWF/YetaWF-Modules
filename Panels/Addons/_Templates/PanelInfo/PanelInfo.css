@@ -1,4 +1,52 @@
 @charset "UTF-8";
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
-.yt_panels_panelinfo .t_panels .t_panel-kendo {
-  padding: 16px 16px 16px 16px; }
+.yt_panels_panelinfo .t_panels.t_accordion > .t_accheader {
+  position: relative;
+  display: block;
+  outline: none;
+  cursor: pointer;
+  margin: 2px 0 0 0;
+  padding: .5em .5em .5em .7em;
+  background: var(--tabs-tab-bg);
+  color: var(--tabs-tab-clr);
+  font: var(--body-font);
+  border: var(--tabs-tab-border);
+  border-radius: var(--tabs-tab-border-radius); }
+  .yt_panels_panelinfo .t_panels.t_accordion > .t_accheader:hover:not(.t_active) {
+    background: var(--tabs-tab-bg-hover);
+    color: var(--tabs-tab-clr-hover); }
+    .yt_panels_panelinfo .t_panels.t_accordion > .t_accheader:hover:not(.t_active) .t_accicon {
+      color: var(--tabs-tab-clr-hover); }
+  .yt_panels_panelinfo .t_panels.t_accordion > .t_accheader.t_active {
+    background: var(--tabs-tab-bg-active);
+    color: var(--tabs-tab-clr-active);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0; }
+    .yt_panels_panelinfo .t_panels.t_accordion > .t_accheader.t_active .t_accicon {
+      color: var(--tabs-tab-clr-active); }
+      .yt_panels_panelinfo .t_panels.t_accordion > .t_accheader.t_active .t_accicon svg.t_up {
+        display: inline-block; }
+      .yt_panels_panelinfo .t_panels.t_accordion > .t_accheader.t_active .t_accicon svg.t_down {
+        display: none; }
+    .yt_panels_panelinfo .t_panels.t_accordion > .t_accheader.t_active:focus {
+      background: var(--tabs-tab-bg-focus);
+      color: var(--tabs-tab-clr-focus); }
+  .yt_panels_panelinfo .t_panels.t_accordion > .t_accheader .t_accicon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    color: var(--tabs-tab-clr); }
+    .yt_panels_panelinfo .t_panels.t_accordion > .t_accheader .t_accicon svg.t_up {
+      display: none; }
+    .yt_panels_panelinfo .t_panels.t_accordion > .t_accheader .t_accicon svg.t_down {
+      display: inline-block; }
+
+.yt_panels_panelinfo .t_panels.t_accordion > .t_acccontent {
+  padding: 1em;
+  font: var(--body-font);
+  background: var(--tabs-bg);
+  color: var(--tabs-clr);
+  border: var(--tabs-tab-border);
+  border-top: 0;
+  border-bottom-left-radius: var(--tabs-tab-border-radius);
+  border-bottom-right-radius: var(--tabs-tab-border-radius); }

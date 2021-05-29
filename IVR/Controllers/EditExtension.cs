@@ -29,23 +29,23 @@ namespace Softelvdm.Modules.IVR.Controllers {
             [Caption("Extension"), Description("Defines the extension (digits)")]
             [UIHint("Text10"), ExtensionValidation, Required, Trim]
             [StringLength(ExtensionEntry.MaxExtension)]
-            public string Extension { get; set; }
+            public string? Extension { get; set; } = null!;
 
             [Caption("Description"), Description("Describes the extension - This text is used to identify the extension when call screening")]
             [UIHint("Text40"), Required, Trim]
             [StringLength(ExtensionEntry.MaxDescription)]
-            public string Description { get; set; }
+            public string? Description { get; set; }
 
             [Caption("Phone Numbers"), Description("Defines the phone numbers to call when this extension is entered - At least one phone number is required")]
             [UIHint("Softelvdm_IVR_ListOfPhoneNumbers"), Required]
-            public SerializableList<ExtensionPhoneNumber> PhoneNumbers { get; set; }
+            public SerializableList<ExtensionPhoneNumber>? PhoneNumbers { get; set; }
 
             [Caption("Users"), Description("Defines the users that can access voice mails for this extension")]
             [UIHint("YetaWF_Identity_ListOfUserNames")]
-            public SerializableList<User> Users { get; set; }
+            public SerializableList<User>? Users { get; set; }
 
             [UIHint("Hidden")]
-            public string OriginalExtension { get; set; }
+            public string OriginalExtension { get; set; } = null!;
 
             public ExtensionEntry GetData(ExtensionEntry data) {
                 ObjectSupport.CopyData(this, data);
@@ -54,7 +54,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
 
             public void SetData(ExtensionEntry data) {
                 ObjectSupport.CopyData(data, this);
-                OriginalExtension = Extension;
+                OriginalExtension = data.Extension;
             }
             public EditModel() { }
         }
@@ -63,7 +63,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
         public async Task<ActionResult> EditExtension(string extension) {
             using (ExtensionEntryDataProvider dataProvider = new ExtensionEntryDataProvider()) {
                 EditModel model = new EditModel { };
-                ExtensionEntry data = await dataProvider.GetItemAsync(extension);
+                ExtensionEntry? data = await dataProvider.GetItemAsync(extension);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Extension \"{0}\" not found"), extension);
                 model.SetData(data);
@@ -79,7 +79,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
             string originalExtension = model.OriginalExtension;
 
             using (ExtensionEntryDataProvider dataProvider = new ExtensionEntryDataProvider()) {
-                ExtensionEntry data = await dataProvider.GetItemAsync(originalExtension);// get the original item
+                ExtensionEntry? data = await dataProvider.GetItemAsync(originalExtension);// get the original item
                 if (data == null) {
                     ModelState.AddModelError("Extension", this.__ResStr("alreadyDeleted", "Extension {0} has been removed and can no longer be updated", originalExtension));
                     return PartialView(model);

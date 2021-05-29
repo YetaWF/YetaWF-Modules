@@ -41,7 +41,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         private class TreePartialResult {
             public int Records { get; set; }
-            public string HTML { get; set; }
+            public string HTML { get; set; } = null!;
         }
 
         /// <summary>
