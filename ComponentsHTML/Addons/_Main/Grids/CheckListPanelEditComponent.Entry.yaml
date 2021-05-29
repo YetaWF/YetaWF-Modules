@@ -4,7 +4,7 @@ Panel: {}
 
 Columns:
 - Name: Value
-  Sort: true
+  Sort: false
   Width: <Globals.ChBoolean>
   Align: Center
 - Name: Text

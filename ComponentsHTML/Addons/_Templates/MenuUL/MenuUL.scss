@@ -67,6 +67,7 @@ ul.yt_menuul {
             &:hover, &:focus {
                 background: var(--pm-1-a-bg-hover);
                 color: var(--pm-1-a-clr-hover);
+                text-decoration: none;
             }
             &.t_disabled {
                 opacity: var(--body-dis-opacity);
@@ -153,6 +154,7 @@ ul.yt_menuul {
                     &:hover, &:focus {
                         background: var(--pm-2-a-bg-hover);
                         color: var(--pm-2-a-clr-hover);
+                        text-decoration: none;
                     }
                     &.t_disabled {
                         opacity: var(--body-dis-opacity);

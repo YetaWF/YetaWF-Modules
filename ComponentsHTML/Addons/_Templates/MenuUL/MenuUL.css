@@ -54,7 +54,8 @@ ul.yt_menuul {
         color: var(--pm-1-a-clr-path); }
       ul.yt_menuul > li > a:hover, ul.yt_menuul > li > a:focus {
         background: var(--pm-1-a-bg-hover);
-        color: var(--pm-1-a-clr-hover); }
+        color: var(--pm-1-a-clr-hover);
+        text-decoration: none; }
       ul.yt_menuul > li > a.t_disabled {
         opacity: var(--body-dis-opacity); }
       ul.yt_menuul > li > a i, ul.yt_menuul > li > a img {
@@ -121,7 +122,8 @@ ul.yt_menuul {
             color: var(--pm-2-a-clr-path); }
           ul.yt_menuul > li > ul > li > a:hover, ul.yt_menuul > li > ul > li > a:focus {
             background: var(--pm-2-a-bg-hover);
-            color: var(--pm-2-a-clr-hover); }
+            color: var(--pm-2-a-clr-hover);
+            text-decoration: none; }
           ul.yt_menuul > li > ul > li > a.t_disabled {
             opacity: var(--body-dis-opacity); }
           ul.yt_menuul > li > ul > li > a i, ul.yt_menuul > li > ul > li > a img {
