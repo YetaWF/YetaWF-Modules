@@ -316,7 +316,7 @@ var YetaWF_ComponentsHTML;
             get: function () {
                 var small = false;
                 if (this.Setup.SmallMenuMaxWidth !== 0) {
-                    if (window.outerWidth <= this.Setup.SmallMenuMaxWidth)
+                    if (window.innerWidth < this.Setup.SmallMenuMaxWidth)
                         small = true;
                 }
                 else {

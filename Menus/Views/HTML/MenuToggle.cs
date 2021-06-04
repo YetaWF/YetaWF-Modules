@@ -20,7 +20,6 @@ namespace YetaWF.Modules.Menus.Views {
 
         public class Setup {
             public string ButtonId { get; set; }
-            public int MaxWidth { get; set; }
             public string Target { get; set; } = null!;
         }
 

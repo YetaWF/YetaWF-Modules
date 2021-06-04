@@ -125,15 +125,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // we generate a large menu (not knowing the screen size).
             // on small screens the large menu is hidden by javascript, which is a bit too late
             // (explicit selector (specificity) below needed for specificity to hide large menu on small sreen during full page load)
-            hb.Append($@"
+            if (model.SmallMenuMaxWidth > 0) {
+                hb.Append($@"
 <style>
-    @media (max-width: {model.SmallMenuMaxWidth}px) {{
+    @media (max-width: {model.SmallMenuMaxWidth-1}px) {{
         .yPageMenu ul.yt_menu.t_display.t_large {{
             display: none;
         }}
     }}
-</style>
+</style>");
+                hb.Append($@"
 {menuHTML}");
+            }
 
             MenuSetup setup = new MenuSetup {
                 SmallMenuMaxWidth = model.SmallMenuMaxWidth,
