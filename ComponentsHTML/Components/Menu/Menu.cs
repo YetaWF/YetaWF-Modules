@@ -134,9 +134,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }}
     }}
 </style>");
-                hb.Append($@"
-{menuHTML}");
             }
+
+            hb.Append($@"
+{menuHTML}");
 
             MenuSetup setup = new MenuSetup {
                 SmallMenuMaxWidth = model.SmallMenuMaxWidth,

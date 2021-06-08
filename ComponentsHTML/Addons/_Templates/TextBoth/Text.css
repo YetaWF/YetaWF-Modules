@@ -49,9 +49,6 @@
   .yt_text_base.t_edit:-ms-input-placeholder, .yt_text_base.t_display:-ms-input-placeholder {
     color: var(--inp-ph-clr);
     opacity: var(--inp-ph-opacity); }
-  .yt_text_base.t_edit::-ms-input-placeholder, .yt_text_base.t_display::-ms-input-placeholder {
-    color: var(--inp-ph-clr);
-    opacity: var(--inp-ph-opacity); }
   .yt_text_base.t_edit::placeholder,
   .yt_text_base.t_display::placeholder {
     color: var(--inp-ph-clr);
