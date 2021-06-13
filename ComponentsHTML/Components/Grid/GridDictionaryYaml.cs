@@ -84,7 +84,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
         }
 
-        private static async Task<ReadGridDictionaryInfo> ReadGridDictionaryYamlAsync(Package package, Type recordType, string file) {
+        private static async Task<ReadGridDictionaryInfo> ReadGridDictionaryYamlAsync(Package package, string file) {
 
             using (ICacheDataProvider cacheDP = YetaWF.Core.IO.Caching.GetStaticSmallObjectCacheProvider()) {
 
@@ -140,7 +140,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     Dictionary<string, GridColumnInfo> colInfo = new Dictionary<string, GridColumnInfo>();
                     foreach (Column col in config.Columns) {
                         GridColumnInfo c = new GridColumnInfo();
-                        if (col.Icons > 0) col.Align = GridHAlignmentEnum.Center;
+                        if (col.Icons > 0) {
+                            if (col.Align == GridHAlignmentEnum.Unspecified)
+                                col.Align = GridHAlignmentEnum.Center;
+                        }
                         if (col.Filter) {
                             if (col.FilterOptions.Count <= 0)
                                 col.FilterOptions = allFilters;

@@ -125,7 +125,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>A GridDictionaryInfo.ReadGridDictionaryInfo object describing the grid.</returns>
         /// <remarks>This method is not used by applications. It is reserved for component implementation.</remarks>
         private static async Task<GridDictionaryInfo.ReadGridDictionaryInfo> LoadGridColumnDefinitionsAsync(Type recordType) {
-            Dictionary<string, GridColumnInfo> dict = new Dictionary<string, GridColumnInfo>();
             string className = recordType.FullName!.Split(new char[] { '.' }).Last();
             string[] s = className.Split(new char[] { '+' });
             int len = s.Length;
@@ -138,10 +137,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string customUrl = Package.GetCustomUrlFromUrl(predefUrl);
 
             GridDictionaryInfo.ReadGridDictionaryInfo? info = null;
-            GridDictionaryInfo.ReadGridDictionaryInfo yamlInfo = await GridDictionaryInfo.ReadGridDictionaryYamlAsync(package, recordType, Utility.UrlToPhysical(predefUrl + ".yaml"));
+            GridDictionaryInfo.ReadGridDictionaryInfo yamlInfo = await GridDictionaryInfo.ReadGridDictionaryYamlAsync(package, Utility.UrlToPhysical(predefUrl + ".yaml"));
             if (yamlInfo.Success) {
                 info = yamlInfo;
-                GridDictionaryInfo.ReadGridDictionaryInfo customYamlInfo = await GridDictionaryInfo.ReadGridDictionaryYamlAsync(package, recordType, Utility.UrlToPhysical(customUrl + ".yaml"));
+                GridDictionaryInfo.ReadGridDictionaryInfo customYamlInfo = await GridDictionaryInfo.ReadGridDictionaryYamlAsync(package, Utility.UrlToPhysical(customUrl + ".yaml"));
                 if (customYamlInfo.Success)
                     info = customYamlInfo;
             } else {

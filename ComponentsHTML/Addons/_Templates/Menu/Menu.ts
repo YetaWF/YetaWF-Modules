@@ -336,7 +336,7 @@ namespace YetaWF_ComponentsHTML {
         public get isSmall(): boolean {
             let small = false;
             if (this.Setup.SmallMenuMaxWidth !== 0) {
-                if (window.innerWidth < this.Setup.SmallMenuMaxWidth)
+                if (window.innerWidth <= this.Setup.SmallMenuMaxWidth)
                     small = true;
             } else {
                 small = false;

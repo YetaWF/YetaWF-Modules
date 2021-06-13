@@ -159,8 +159,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (model.DropdownActionWidth == null)
                 model.DropdownActionWidth = GetDropdownActionWidthInChars();
 
-            string idEmpty = UniqueId();
-
             GridDictionaryInfo.ReadGridDictionaryInfo dictInfo = await GridDictionaryInfo.LoadGridColumnDefinitionsAsync(model);
 
             GridLoadSave.GridSavedSettings gridSavedSettings;
@@ -475,9 +473,6 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
 
                 // Description
                 string? description = prop.GetDescription(gridDef.ResourceRedirect);
-
-                // Locked
-                bool locked = gridCol.Locked;
 
                 // Width
                 int widthPix = 0, widthCh = 0;

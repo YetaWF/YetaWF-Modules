@@ -128,7 +128,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (model.SmallMenuMaxWidth > 0) {
                 hb.Append($@"
 <style>
-    @media (max-width: {model.SmallMenuMaxWidth-1}px) {{
+    @media (max-width: {model.SmallMenuMaxWidth}px) {{
         .yPageMenu ul.yt_menu.t_display.t_large {{
             display: none;
         }}
