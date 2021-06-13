@@ -90,7 +90,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string? id = HtmlBuilder.GetIdCond(HtmlAttributes);
             if (id != null)
                 id = $" id='{id}'";
-            return Task.FromResult($"<input{id}{FieldSetup(FieldType.Normal)} type='hidden' value='{value}'{css}>");
+            return Task.FromResult($"<input{id}{FieldSetup(FieldType.Normal)} type='hidden' value='{HAE(value)}'{css}>");
         }
     }
 
@@ -148,7 +148,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string? id = HtmlBuilder.GetIdCond(HtmlAttributes);
             if (id != null)
                 id = $" id='{id}'";
-            return Task.FromResult($"<input{id}{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} type='hidden' value='{value}'{css}>");
+            return Task.FromResult($"<input{id}{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} type='hidden' value='{HAE(value)}'{css}>");
         }
     }
 }
