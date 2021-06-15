@@ -17,9 +17,6 @@ namespace YetaWF_ComponentsHTML {
         RowHighlightCss: string;
         RowDragDropHighlightCss: string;
         SelectedCss: string;
-
-        ContentTargetId: string;
-        ContentTargetPane: string;
         AjaxUrl: string;
     }
     interface TreePartialResult {

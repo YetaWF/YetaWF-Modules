@@ -52,9 +52,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public string RowHighlightCss { get; set; } = null!;
         public string RowDragDropHighlightCss { get; set; } = null!;
         public string SelectedCss { get; set; } = null!;
-
-        public string? ContentTargetId { get; set; }
-        public string? ContentTargetPane { get; set; }
         public string? AjaxUrl { get; set; } // for dynamic population during expand
 
         public TreeSetup() { }
@@ -281,7 +278,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (!string.IsNullOrWhiteSpace(urlNew))
                 output = $"<a class='t_entry{selectedCss}{extraCss} yaction-link' target='_blank' href='{HAE(urlNew)}'{dd}>{text}</a>";
             else if (!string.IsNullOrWhiteSpace(urlContent))
-                output = $"<a class='t_entry{selectedCss}{extraCss} yaction-link' data-contenttarget='{treeModel.ContentTargetId}' data-contentpane='{treeModel.ContentTargetPane}' href='{HAE(urlContent)}'{dd}>{text}</a>";
+                output = $"<a class='t_entry{selectedCss}{extraCss} yaction-link' href='{HAE(urlContent)}'{dd}>{text}</a>";
             else
                 output = $"<a class='t_entry yaction-link{selectedCss}{extraCss}' data-nohref='true' href='#'{dd}>{text}</a>";
 
@@ -328,8 +325,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 RowHighlightCss = "tg_highlight",
                 RowDragDropHighlightCss = "tg_dragdrophighlight",
                 SelectedCss = "t_select",
-                ContentTargetId = treeModel.ContentTargetPane,
-                ContentTargetPane = treeModel.ContentTargetPane,
                 AjaxUrl = treeModel.AjaxUrl,
             };
             return setup;
