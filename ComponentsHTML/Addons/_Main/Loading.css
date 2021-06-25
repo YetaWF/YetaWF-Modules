@@ -8,4 +8,6 @@
   z-index: 30000; }
   #yLoading img {
     display: block;
-    margin: 7px 0 0 7px; }
+    margin: 7px 0 0 7px;
+    padding: 0;
+    border: none; }

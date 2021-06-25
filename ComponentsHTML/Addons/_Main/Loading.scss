@@ -1,15 +1,17 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 #yLoading {
-	position: absolute;
-	background: url(images/Loading.png) top left no-repeat;
-	height: 30px;
-	width: 30px;
-	z-index: 30000;
+    position: absolute;
+    background: url(images/Loading.png) top left no-repeat;
+    height: 30px;
+    width: 30px;
+    z-index: 30000;
 
-	img {
-		display: block;
-		margin: 7px 0 0 7px;
-	}
+    img {
+        display: block;
+        margin: 7px 0 0 7px;
+        padding: 0;
+        border: none;
+    }
 }
 

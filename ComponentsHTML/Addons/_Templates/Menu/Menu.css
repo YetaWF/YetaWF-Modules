@@ -83,6 +83,8 @@ ul.yt_menu.t_display.t_large {
           background: var(--mm-1-mm-bg);
           color: var(--mm-1-mm-clr);
           font: var(--mm-1-mm-font); }
+          ul.yt_menu.t_display.t_large > li > ul > li.t_megamenu_content a, ul.yt_menu.t_display.t_large > li > ul > li.t_megamenu_content a:hover, ul.yt_menu.t_display.t_large > li > ul > li.t_megamenu_content a:focus {
+            color: var(--mm-1-mm-clr); }
         ul.yt_menu.t_display.t_large > li > ul > li > a {
           position: relative;
           display: block;
@@ -240,6 +242,8 @@ ul.yt_menu.t_display.t_small {
           background: var(--mm-1-mm-bg);
           color: var(--mm-1-mm-clr);
           font: var(--mm-1-mm-font); }
+          ul.yt_menu.t_display.t_small > li > ul > li.t_megamenu_content a, ul.yt_menu.t_display.t_small > li > ul > li.t_megamenu_content a:hover, ul.yt_menu.t_display.t_small > li > ul > li.t_megamenu_content a:focus {
+            color: var(--mm-1-mm-clr); }
         ul.yt_menu.t_display.t_small > li > ul > li > a {
           position: relative;
           display: block;
