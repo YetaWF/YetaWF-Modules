@@ -24,6 +24,9 @@ textarea.yt_textareasourceonly {
   textarea.yt_textareasourceonly:-ms-input-placeholder {
     color: var(--inp-ph-clr);
     opacity: var(--inp-ph-opacity); }
+  textarea.yt_textareasourceonly::-ms-input-placeholder {
+    color: var(--inp-ph-clr);
+    opacity: var(--inp-ph-opacity); }
   textarea.yt_textareasourceonly::placeholder {
     color: var(--inp-ph-clr);
     opacity: var(--inp-ph-opacity); }
