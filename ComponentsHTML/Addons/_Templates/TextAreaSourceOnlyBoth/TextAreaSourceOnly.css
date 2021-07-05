@@ -16,9 +16,14 @@ textarea.yt_textareasourceonly {
     border: var(--inp-border-focus); }
   textarea.yt_textareasourceonly:disabled {
     opacity: var(--body-dis-opacity); }
+  textarea.yt_textareasourceonly:-moz-read-only {
+    opacity: var(--body-dis-opacity); }
   textarea.yt_textareasourceonly:read-only {
     opacity: var(--body-dis-opacity); }
   textarea.yt_textareasourceonly::-webkit-input-placeholder {
+    color: var(--inp-ph-clr);
+    opacity: var(--inp-ph-opacity); }
+  textarea.yt_textareasourceonly::-moz-placeholder {
     color: var(--inp-ph-clr);
     opacity: var(--inp-ph-opacity); }
   textarea.yt_textareasourceonly:-ms-input-placeholder {

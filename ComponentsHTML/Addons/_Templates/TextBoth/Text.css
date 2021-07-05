@@ -23,6 +23,8 @@
   .yt_text_base.t_edit:disabled,
   .yt_text_base.t_display:disabled {
     opacity: var(--body-dis-opacity); }
+  .yt_text_base.t_edit:-moz-read-only, .yt_text_base.t_display:-moz-read-only {
+    opacity: var(--body-dis-opacity); }
   .yt_text_base.t_edit:read-only,
   .yt_text_base.t_display:read-only {
     opacity: var(--body-dis-opacity); }
@@ -44,6 +46,9 @@
     max-width: 100%;
     width: 62ch; }
   .yt_text_base.t_edit::-webkit-input-placeholder, .yt_text_base.t_display::-webkit-input-placeholder {
+    color: var(--inp-ph-clr);
+    opacity: var(--inp-ph-opacity); }
+  .yt_text_base.t_edit::-moz-placeholder, .yt_text_base.t_display::-moz-placeholder {
     color: var(--inp-ph-clr);
     opacity: var(--inp-ph-opacity); }
   .yt_text_base.t_edit:-ms-input-placeholder, .yt_text_base.t_display:-ms-input-placeholder {
