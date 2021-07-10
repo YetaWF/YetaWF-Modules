@@ -169,14 +169,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     break;
 
                 case PropertyList.PropertyListStyleEnum.BoxedWithCategories:
-                case PropertyList.PropertyListStyleEnum.BoxedWithHeaders:
 
                     await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.AreaName, "masonry.desandro.com");
 
-                    string style = setup.Style == PropertyList.PropertyListStyleEnum.BoxedWithHeaders ? "t_boxedhdr" : "t_boxedcat";
-
                     hb.Append($@"
-<div id='{divId}' class='yt_propertylist {style} {(readOnly ? "t_display" : "t_edit")}'>
+<div id='{divId}' class='yt_propertylist t_boxedcat {(readOnly ? "t_display" : "t_edit")}'>
     {await RenderHiddenAsync(model)}");
 
                     foreach (string category in categories) {
@@ -195,7 +192,52 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                 hb.Append(@$"<div class='t_boxexpcoll'><span class='t_showimg'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-expand-arrows-alt")}</span><span class='t_hideimg'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-compress-arrows-alt")}</span></div>");
 
                             hb.Append($@"
-        <div class='t_boxlabel'>{category}</div>
+        <div class='t_boxlabel'>
+            <div class='t_boxtitle'>
+                {category}
+            </div>
+        </div>
+        <div class='t_propcontents'>
+            {contents}
+        </div>
+    </div>");
+                        }
+                    }
+                    hb.Append($@"
+</div>");
+                    break;
+
+                case PropertyList.PropertyListStyleEnum.BoxedWithHeaders:
+
+                    await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.AreaName, "masonry.desandro.com");
+
+                    hb.Append($@"
+<div id='{divId}' class='yt_propertylist t_boxedhdr {(readOnly ? "t_display" : "t_edit")}'>
+    {await RenderHiddenAsync(model)}");
+
+                    foreach (string category in categories) {
+
+                        string contents = await RenderListAsync(model, category, showVariables, readOnly);
+                        if (!string.IsNullOrWhiteSpace(contents)) {
+
+                            string stat = "";
+                            if (setup.ExpandableList.Contains(category))
+                                stat = (setup.InitialExpanded == category) ? " t_propexpandable t_propexpanded" : " t_propexpandable t_propcollapsed";
+
+                            hb.Append($@"
+    <div class='t_proptable{stat} t_cat t_boxpanel-{GetCategoryNormalized(category)}'>");
+
+                            hb.Append($@"
+        <div class='t_boxlabel'>
+            <div class='t_boxtitle'>
+                {category}
+            </div>");
+
+                            if (setup.ExpandableList.Contains(category))
+                                hb.Append(@$"<div class='t_boxexpcoll'><span class='t_showimg'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-expand-arrows-alt")}</span><span class='t_hideimg'>{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-compress-arrows-alt")}</span></div>");
+
+                            hb.Append($@"
+        </div>
         <div class='t_propcontents'>
             {contents}
         </div>

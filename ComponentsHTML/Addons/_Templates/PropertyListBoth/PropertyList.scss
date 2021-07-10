@@ -161,14 +161,18 @@
 .yt_propertylist.t_boxedhdr {
     .t_proptable {
         .t_boxlabel {
-            width:100%;
+            display: flex;
+            align-items: center;
             background: var(--prop-cat-bg);
             color: var(--prop-cat-clr);
             border-bottom: var(--prop-cat-border);
             border-radius: 0;
-            padding:0 1em;
+            padding:0 .5em 0 1em;
             line-height:1.7;
             text-align: left;
+            .t_boxexpcoll {
+                margin-left:auto;
+            }
         }
         .t_propcontents {
             padding:1em;
@@ -177,15 +181,8 @@
 }
 
 .yt_propertylist.t_boxed,
-.yt_propertylist.t_boxedcat,
-.yt_propertylist.t_boxedhdr {
+.yt_propertylist.t_boxedcat {
     .t_proptable {
-        &.t_propexpandable.t_propexpanded .t_boxexpcoll .t_hideimg {
-            display: initial;
-        }
-        &.t_propexpandable.t_propcollapsed .t_boxexpcoll .t_showimg {
-            display: initial;
-        }
         .t_boxexpcoll {
             position: absolute;
             top:5px;
@@ -202,9 +199,35 @@
                 height:16px;
             }
         }
+    }
+}
+
+.yt_propertylist.t_boxed,
+.yt_propertylist.t_boxedcat,
+.yt_propertylist.t_boxedhdr {
+    .t_proptable {
+        &.t_propexpandable.t_propexpanded .t_boxexpcoll .t_hideimg {
+            display: initial;
+        }
+        &.t_propexpandable.t_propcollapsed .t_boxexpcoll .t_showimg {
+            display: initial;
+        }
         &.t_prophide,
         &.t_propsuppress {
             display: none;
+        }
+        .t_boxexpcoll {
+            width:16px;
+            height:16px;
+            .t_showimg, .t_hideimg {
+                display:none;
+            }
+            svg {
+                cursor: pointer;
+                vertical-align: top;
+                width:16px;
+                height:16px;
+            }
         }
     }
     &.t_col1 .t_proptable {

@@ -114,17 +114,42 @@
     padding: 2em 1em 1em 1em; }
 
 .yt_propertylist.t_boxedhdr .t_proptable .t_boxlabel {
-  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
   background: var(--prop-cat-bg);
   color: var(--prop-cat-clr);
   border-bottom: var(--prop-cat-border);
   border-radius: 0;
-  padding: 0 1em;
+  padding: 0 .5em 0 1em;
   line-height: 1.7;
   text-align: left; }
+  .yt_propertylist.t_boxedhdr .t_proptable .t_boxlabel .t_boxexpcoll {
+    margin-left: auto; }
 
 .yt_propertylist.t_boxedhdr .t_proptable .t_propcontents {
   padding: 1em; }
+
+.yt_propertylist.t_boxed .t_proptable .t_boxexpcoll,
+.yt_propertylist.t_boxedcat .t_proptable .t_boxexpcoll {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 16px;
+  height: 16px; }
+  .yt_propertylist.t_boxed .t_proptable .t_boxexpcoll .t_showimg, .yt_propertylist.t_boxed .t_proptable .t_boxexpcoll .t_hideimg,
+  .yt_propertylist.t_boxedcat .t_proptable .t_boxexpcoll .t_showimg,
+  .yt_propertylist.t_boxedcat .t_proptable .t_boxexpcoll .t_hideimg {
+    display: none; }
+  .yt_propertylist.t_boxed .t_proptable .t_boxexpcoll svg,
+  .yt_propertylist.t_boxedcat .t_proptable .t_boxexpcoll svg {
+    cursor: pointer;
+    vertical-align: top;
+    width: 16px;
+    height: 16px; }
 
 .yt_propertylist.t_boxed .t_proptable.t_propexpandable.t_propexpanded .t_boxexpcoll .t_hideimg,
 .yt_propertylist.t_boxedcat .t_proptable.t_propexpandable.t_propexpanded .t_boxexpcoll .t_hideimg,
@@ -136,12 +161,16 @@
 .yt_propertylist.t_boxedhdr .t_proptable.t_propexpandable.t_propcollapsed .t_boxexpcoll .t_showimg {
   display: initial; }
 
+.yt_propertylist.t_boxed .t_proptable.t_prophide, .yt_propertylist.t_boxed .t_proptable.t_propsuppress,
+.yt_propertylist.t_boxedcat .t_proptable.t_prophide,
+.yt_propertylist.t_boxedcat .t_proptable.t_propsuppress,
+.yt_propertylist.t_boxedhdr .t_proptable.t_prophide,
+.yt_propertylist.t_boxedhdr .t_proptable.t_propsuppress {
+  display: none; }
+
 .yt_propertylist.t_boxed .t_proptable .t_boxexpcoll,
 .yt_propertylist.t_boxedcat .t_proptable .t_boxexpcoll,
 .yt_propertylist.t_boxedhdr .t_proptable .t_boxexpcoll {
-  position: absolute;
-  top: 5px;
-  right: 5px;
   width: 16px;
   height: 16px; }
   .yt_propertylist.t_boxed .t_proptable .t_boxexpcoll .t_showimg, .yt_propertylist.t_boxed .t_proptable .t_boxexpcoll .t_hideimg,
@@ -157,13 +186,6 @@
     vertical-align: top;
     width: 16px;
     height: 16px; }
-
-.yt_propertylist.t_boxed .t_proptable.t_prophide, .yt_propertylist.t_boxed .t_proptable.t_propsuppress,
-.yt_propertylist.t_boxedcat .t_proptable.t_prophide,
-.yt_propertylist.t_boxedcat .t_proptable.t_propsuppress,
-.yt_propertylist.t_boxedhdr .t_proptable.t_prophide,
-.yt_propertylist.t_boxedhdr .t_proptable.t_propsuppress {
-  display: none; }
 
 .yt_propertylist.t_boxed.t_col1 .t_proptable,
 .yt_propertylist.t_boxedcat.t_col1 .t_proptable,
