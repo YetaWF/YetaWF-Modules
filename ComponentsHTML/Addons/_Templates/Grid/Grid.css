@@ -85,7 +85,6 @@
         white-space: nowrap;
         padding: 0.25em 0.25em 0.25em 0.25em;
         -webkit-user-select: none;
-           -moz-user-select: none;
             -ms-user-select: none;
                 user-select: none;
         /* Standard syntax */ }
@@ -99,7 +98,6 @@
           top: 0;
           cursor: col-resize;
           -webkit-user-select: none;
-             -moz-user-select: none;
               -ms-user-select: none;
                   user-select: none;
           overflow: hidden; }
@@ -187,7 +185,6 @@
           white-space: nowrap; }
   .yt_grid .tg_pager {
     -webkit-user-select: none;
-       -moz-user-select: none;
         -ms-user-select: none;
             user-select: none;
     /* Standard syntax */ }

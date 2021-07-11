@@ -6,10 +6,10 @@
   .yt_currency.t_edit input::-webkit-input-placeholder {
     color: var(--inp-ph-clr);
     opacity: var(--inp-ph-opacity); }
-  .yt_currency.t_edit input::-moz-placeholder {
+  .yt_currency.t_edit input:-ms-input-placeholder {
     color: var(--inp-ph-clr);
     opacity: var(--inp-ph-opacity); }
-  .yt_currency.t_edit input:-ms-input-placeholder {
+  .yt_currency.t_edit input::-ms-input-placeholder {
     color: var(--inp-ph-clr);
     opacity: var(--inp-ph-opacity); }
   .yt_currency.t_edit input::placeholder {
