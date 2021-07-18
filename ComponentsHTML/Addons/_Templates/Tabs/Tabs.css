@@ -26,6 +26,7 @@
       line-height: 2em;
       white-space: nowrap;
       -webkit-user-select: none;
+         -moz-user-select: none;
           -ms-user-select: none;
               user-select: none;
       background: var(--tabs-tab-bg);

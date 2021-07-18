@@ -8,10 +8,10 @@
     .yt_intvalue_base input::-webkit-input-placeholder {
       color: var(--inp-ph-clr);
       opacity: var(--inp-ph-opacity); }
-    .yt_intvalue_base input:-ms-input-placeholder {
+    .yt_intvalue_base input::-moz-placeholder {
       color: var(--inp-ph-clr);
       opacity: var(--inp-ph-opacity); }
-    .yt_intvalue_base input::-ms-input-placeholder {
+    .yt_intvalue_base input:-ms-input-placeholder {
       color: var(--inp-ph-clr);
       opacity: var(--inp-ph-opacity); }
     .yt_intvalue_base input::placeholder {
