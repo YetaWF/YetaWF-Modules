@@ -1,6 +1,8 @@
 @charset "UTF-8";
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 div.yt_url.t_display {
-  display: inline; }
-  div.yt_url.t_display a img {
-    margin-left: .5ch; }
+  display: inline;
+}
+div.yt_url.t_display a img {
+  margin-left: 0.5ch;
+}

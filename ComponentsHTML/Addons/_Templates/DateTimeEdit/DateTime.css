@@ -10,219 +10,262 @@
   background: var(--dd-bg);
   color: var(--dd-clr);
   border: var(--dd-border);
-  border-radius: var(--dd-border-radius); }
-  .yt_datetime.t_edit input[type='text'] {
-    line-height: 1.5em;
-    padding: .18em 0.2em;
-    width: 20ch;
-    background: var(--inp-bg);
-    color: var(--inp-clr);
-    border: var(--dd-border);
-    border-color: var(--inp-bg);
-    border-radius: var(--dd-border-radius);
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    outline: none;
-    text-overflow: ellipsis; }
-    .yt_datetime.t_edit input[type='text']:focus {
-      text-overflow: clip; }
-  .yt_datetime.t_edit:hover:not(.t_disabled):not(.t_focused) {
-    background: var(--dd-bg-hover);
-    color: var(--dd-clr-hover);
-    border: var(--dd-border-hover); }
-  .yt_datetime.t_edit.t_focused {
-    background: var(--dd-bg-focus);
-    color: var(--dd-clr-focus);
-    border: var(--dd-border-focus); }
-  .yt_datetime.t_edit.t_disabled {
-    opacity: var(--body-dis-opacity); }
-  .yt_datetime.t_edit.t_readonly {
-    opacity: var(--body-dis-opacity); }
-  .yt_datetime.t_edit .t_sels {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    width: 4em;
-    text-align: center;
-    border-left: var(--dd-border); }
-    .yt_datetime.t_edit .t_sels .t_date {
-      display: inline-block;
-      width: 1.5em;
-      height: 100%;
-      cursor: pointer; }
-      .yt_datetime.t_edit .t_sels .t_date svg {
-        width: 1em;
-        height: 100%;
-        vertical-align: middle; }
-    .yt_datetime.t_edit .t_sels .t_time {
-      display: inline-block;
-      width: 1.5em;
-      height: 100%;
-      cursor: pointer; }
-      .yt_datetime.t_edit .t_sels .t_time svg {
-        width: 1em;
-        height: 100%;
-        vertical-align: middle; }
-  .yt_datetime.t_edit .t_warn {
-    width: 1.2em;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    right: 4.5em;
-    bottom: 0;
-    color: var(--inp-error-clr); }
+  border-radius: var(--dd-border-radius);
+}
+.yt_datetime.t_edit input[type=text] {
+  line-height: 1.5em;
+  padding: 0.18em 0.2em;
+  width: 20ch;
+  background: var(--inp-bg);
+  color: var(--inp-clr);
+  border: var(--dd-border);
+  border-color: var(--inp-bg);
+  border-radius: var(--dd-border-radius);
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  outline: none;
+  text-overflow: ellipsis;
+}
+.yt_datetime.t_edit input[type=text]:focus {
+  text-overflow: clip;
+}
+.yt_datetime.t_edit:hover:not(.t_disabled):not(.t_focused) {
+  background: var(--dd-bg-hover);
+  color: var(--dd-clr-hover);
+  border: var(--dd-border-hover);
+}
+.yt_datetime.t_edit.t_focused {
+  background: var(--dd-bg-focus);
+  color: var(--dd-clr-focus);
+  border: var(--dd-border-focus);
+}
+.yt_datetime.t_edit.t_disabled {
+  opacity: var(--body-dis-opacity);
+}
+.yt_datetime.t_edit.t_readonly {
+  opacity: var(--body-dis-opacity);
+}
+.yt_datetime.t_edit .t_sels {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 4em;
+  text-align: center;
+  border-left: var(--dd-border);
+}
+.yt_datetime.t_edit .t_sels .t_date {
+  display: inline-block;
+  width: 1.5em;
+  height: 100%;
+  cursor: pointer;
+}
+.yt_datetime.t_edit .t_sels .t_date svg {
+  width: 1em;
+  height: 100%;
+  vertical-align: middle;
+}
+.yt_datetime.t_edit .t_sels .t_time {
+  display: inline-block;
+  width: 1.5em;
+  height: 100%;
+  cursor: pointer;
+}
+.yt_datetime.t_edit .t_sels .t_time svg {
+  width: 1em;
+  height: 100%;
+  vertical-align: middle;
+}
+.yt_datetime.t_edit .t_warn {
+  width: 1.2em;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 4.5em;
+  bottom: 0;
+  color: var(--inp-error-clr);
+}
 
 .yt_date.t_edit,
 .yt_time.t_edit,
 .yt_timeofday.t_edit {
-  padding-right: 2em; }
-  .yt_date.t_edit .t_sels,
-  .yt_time.t_edit .t_sels,
-  .yt_timeofday.t_edit .t_sels {
-    width: 2em; }
-  .yt_date.t_edit .t_warn,
-  .yt_time.t_edit .t_warn,
-  .yt_timeofday.t_edit .t_warn {
-    right: 2.5em; }
+  padding-right: 2em;
+}
+.yt_date.t_edit .t_sels,
+.yt_time.t_edit .t_sels,
+.yt_timeofday.t_edit .t_sels {
+  width: 2em;
+}
+.yt_date.t_edit .t_warn,
+.yt_time.t_edit .t_warn,
+.yt_timeofday.t_edit .t_warn {
+  right: 2.5em;
+}
 
-.yt_date.t_edit input[type='text'] {
-  width: 14ch; }
+.yt_date.t_edit input[type=text] {
+  width: 14ch;
+}
 
-.yt_time.t_edit input[type='text'],
-.yt_timeofday.t_edit input[type='text'] {
-  width: 10ch; }
+.yt_time.t_edit input[type=text],
+.yt_timeofday.t_edit input[type=text] {
+  width: 10ch;
+}
 
 #yt_datetime_popup {
   position: absolute;
-  z-index: 2500; }
-  #yt_datetime_popup .t_container {
-    padding: .12em;
-    background: var(--dd-p-bg);
-    color: var(--dd-p-clr);
-    border: var(--dd-p-border);
-    border-radius: var(--dd-p-border-radius);
-    box-shadow: var(--dd-p-shadow); }
-    #yt_datetime_popup .t_container .t_scroller {
-      overflow: auto; }
-      #yt_datetime_popup .t_container .t_scroller .t_list {
-        outline: 0;
-        list-style: none;
-        padding-left: 0;
-        margin: 0;
-        height: auto;
-        max-height: 250px; }
-        #yt_datetime_popup .t_container .t_scroller .t_list li {
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          padding: 0 .25em;
-          line-height: 1.8em;
-          min-height: 1.8em;
-          cursor: default;
-          border: 1px solid transparent;
-          border-radius: 3px; }
-          #yt_datetime_popup .t_container .t_scroller .t_list li:hover:not(.t_focused):not(.t_selected) {
-            background: var(--dd-p-bg-hover);
-            color: var(--dd-p-clr-hover); }
-          #yt_datetime_popup .t_container .t_scroller .t_list li.t_focused, #yt_datetime_popup .t_container .t_scroller .t_list li.t_selected {
-            background: var(--dd-p-bg-focus);
-            color: var(--dd-p-clr-focus);
-            box-shadow: var(--dd-p-shadow-focus); }
+  z-index: 2500;
+}
+#yt_datetime_popup .t_container {
+  padding: 0.12em;
+  background: var(--dd-p-bg);
+  color: var(--dd-p-clr);
+  border: var(--dd-p-border);
+  border-radius: var(--dd-p-border-radius);
+  box-shadow: var(--dd-p-shadow);
+}
+#yt_datetime_popup .t_container .t_scroller {
+  overflow: auto;
+}
+#yt_datetime_popup .t_container .t_scroller .t_list {
+  outline: 0;
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  height: auto;
+  max-height: 250px;
+}
+#yt_datetime_popup .t_container .t_scroller .t_list li {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 0.25em;
+  line-height: 1.8em;
+  min-height: 1.8em;
+  cursor: default;
+  border: 1px solid transparent;
+  border-radius: 3px;
+}
+#yt_datetime_popup .t_container .t_scroller .t_list li:hover:not(.t_focused):not(.t_selected) {
+  background: var(--dd-p-bg-hover);
+  color: var(--dd-p-clr-hover);
+}
+#yt_datetime_popup .t_container .t_scroller .t_list li.t_focused, #yt_datetime_popup .t_container .t_scroller .t_list li.t_selected {
+  background: var(--dd-p-bg-focus);
+  color: var(--dd-p-clr-focus);
+  box-shadow: var(--dd-p-shadow-focus);
+}
 
 #yt_datetime_calendarpopup {
   position: absolute;
   z-index: 2500;
-  box-sizing: content-box; }
-  #yt_datetime_calendarpopup .t_container {
-    padding: .12em;
-    background: var(--dd-p-bg);
-    color: var(--dd-p-clr);
-    border: var(--dd-p-border);
-    border-radius: var(--dd-p-border-radius);
-    box-shadow: var(--dd-p-shadow); }
-    #yt_datetime_calendarpopup .t_container .t_header {
-      position: relative;
-      width: 100%;
-      background: var(--tbl-header-bg);
-      color: var(--tbl-header-clr);
-      border: none;
-      text-align: center;
-      padding: .3em 0; }
-      #yt_datetime_calendarpopup .t_container .t_header .t_title {
-        text-decoration: none; }
-        #yt_datetime_calendarpopup .t_container .t_header .t_title .t_month, #yt_datetime_calendarpopup .t_container .t_header .t_title .t_year {
-          padding: .1em .2em;
-          cursor: pointer; }
-          #yt_datetime_calendarpopup .t_container .t_header .t_title .t_month:hover, #yt_datetime_calendarpopup .t_container .t_header .t_title .t_year:hover {
-            background: var(--tbl-header-bg-hover);
-            color: var(--tbl-header-clr-hover); }
-      #yt_datetime_calendarpopup .t_container .t_header .t_prev svg, #yt_datetime_calendarpopup .t_container .t_header .t_next svg {
-        position: absolute;
-        top: 0;
-        bottom: 0px;
-        width: 1em;
-        height: 1em;
-        margin: .1em;
-        padding: .3em; }
-        #yt_datetime_calendarpopup .t_container .t_header .t_prev svg:hover, #yt_datetime_calendarpopup .t_container .t_header .t_next svg:hover {
-          background: var(--tbl-header-bg-hover);
-          color: var(--tbl-header-clr-hover); }
-      #yt_datetime_calendarpopup .t_container .t_header .t_prev svg {
-        left: 0; }
-      #yt_datetime_calendarpopup .t_container .t_header .t_next svg {
-        right: 0; }
-    #yt_datetime_calendarpopup .t_container .t_calendarbody table {
-      outline: none;
-      width: 100%; }
-      #yt_datetime_calendarpopup .t_container .t_calendarbody table th {
-        padding: .25em .15px;
-        text-align: center;
-        font-weight: 400;
-        cursor: default;
-        text-align: center;
-        background: var(--dd-p-bg);
-        color: var(--dd-p-clr);
-        border-top: var(--dd-p-border);
-        border-bottom: var(--dd-p-border);
-        border-radius: 0 0 var(--dd-p-border-radius) var(--dd-p-border-radius); }
-      #yt_datetime_calendarpopup .t_container .t_calendarbody table tr {
-        height: 2.5em; }
-      #yt_datetime_calendarpopup .t_container .t_calendarbody table td {
-        font-weight: 400;
-        cursor: default;
-        text-align: center;
-        background: var(--dd-p-bg);
-        color: var(--dd-p-clr);
-        border-radius: var(--buttonlite-border-radius); }
-        #yt_datetime_calendarpopup .t_container .t_calendarbody table td .t_link {
-          background: var(--dd-p-bg);
-          color: var(--dd-p-clr);
-          width: 2.5em;
-          height: 2.5em;
-          margin: auto;
-          padding: .5em .5em;
-          text-decoration: none;
-          opacity: 1; }
-        #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_today,
-        #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_today .t_link {
-          background: var(--dd-p-bg-focus);
-          color: var(--dd-p-clr-focus);
-          opacity: .7; }
-        #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_selected,
-        #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_selected .t_link {
-          background: var(--dd-p-bg-focus);
-          color: var(--dd-p-clr-focus);
-          opacity: 1; }
-        #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_hover,
-        #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_hover .t_link {
-          background: var(--dd-p-bg-hover);
-          color: var(--dd-p-clr-hover);
-          opacity: 1;
-          box-shadow: none; }
-        #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_othermonth:not(.t_today) {
-          opacity: .7; }
-        #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_weekend:not(.t_today) {
-          opacity: .5; }
-    #yt_datetime_calendarpopup .t_container .t_footer {
-      padding: .3em;
-      text-align: center; }
+  box-sizing: content-box;
+}
+#yt_datetime_calendarpopup .t_container {
+  padding: 0.12em;
+  background: var(--dd-p-bg);
+  color: var(--dd-p-clr);
+  border: var(--dd-p-border);
+  border-radius: var(--dd-p-border-radius);
+  box-shadow: var(--dd-p-shadow);
+}
+#yt_datetime_calendarpopup .t_container .t_header {
+  position: relative;
+  width: 100%;
+  background: var(--tbl-header-bg);
+  color: var(--tbl-header-clr);
+  border: none;
+  text-align: center;
+  padding: 0.3em 0;
+}
+#yt_datetime_calendarpopup .t_container .t_header .t_title {
+  text-decoration: none;
+}
+#yt_datetime_calendarpopup .t_container .t_header .t_title .t_month, #yt_datetime_calendarpopup .t_container .t_header .t_title .t_year {
+  padding: 0.1em 0.2em;
+  cursor: pointer;
+}
+#yt_datetime_calendarpopup .t_container .t_header .t_title .t_month:hover, #yt_datetime_calendarpopup .t_container .t_header .t_title .t_year:hover {
+  background: var(--tbl-header-bg-hover);
+  color: var(--tbl-header-clr-hover);
+}
+#yt_datetime_calendarpopup .t_container .t_header .t_prev svg, #yt_datetime_calendarpopup .t_container .t_header .t_next svg {
+  position: absolute;
+  top: 0;
+  bottom: 0px;
+  width: 1em;
+  height: 1em;
+  margin: 0.1em;
+  padding: 0.3em;
+}
+#yt_datetime_calendarpopup .t_container .t_header .t_prev svg:hover, #yt_datetime_calendarpopup .t_container .t_header .t_next svg:hover {
+  background: var(--tbl-header-bg-hover);
+  color: var(--tbl-header-clr-hover);
+}
+#yt_datetime_calendarpopup .t_container .t_header .t_prev svg {
+  left: 0;
+}
+#yt_datetime_calendarpopup .t_container .t_header .t_next svg {
+  right: 0;
+}
+#yt_datetime_calendarpopup .t_container .t_calendarbody table {
+  outline: none;
+  width: 100%;
+}
+#yt_datetime_calendarpopup .t_container .t_calendarbody table th {
+  padding: 0.25em 0.15px;
+  text-align: center;
+  font-weight: 400;
+  cursor: default;
+  text-align: center;
+  background: var(--dd-p-bg);
+  color: var(--dd-p-clr);
+  border-top: var(--dd-p-border);
+  border-bottom: var(--dd-p-border);
+  border-radius: 0 0 var(--dd-p-border-radius) var(--dd-p-border-radius);
+}
+#yt_datetime_calendarpopup .t_container .t_calendarbody table tr {
+  height: 2.5em;
+}
+#yt_datetime_calendarpopup .t_container .t_calendarbody table td {
+  font-weight: 400;
+  cursor: default;
+  text-align: center;
+  background: var(--dd-p-bg);
+  color: var(--dd-p-clr);
+  border-radius: var(--buttonlite-border-radius);
+}
+#yt_datetime_calendarpopup .t_container .t_calendarbody table td .t_link {
+  background: var(--dd-p-bg);
+  color: var(--dd-p-clr);
+  width: 2.5em;
+  height: 2.5em;
+  margin: auto;
+  padding: 0.5em 0.5em;
+  text-decoration: none;
+  opacity: 1;
+}
+#yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_today, #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_today .t_link {
+  background: var(--dd-p-bg-focus);
+  color: var(--dd-p-clr-focus);
+  opacity: 0.7;
+}
+#yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_selected, #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_selected .t_link {
+  background: var(--dd-p-bg-focus);
+  color: var(--dd-p-clr-focus);
+  opacity: 1;
+}
+#yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_hover, #yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_hover .t_link {
+  background: var(--dd-p-bg-hover);
+  color: var(--dd-p-clr-hover);
+  opacity: 1;
+  box-shadow: none;
+}
+#yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_othermonth:not(.t_today) {
+  opacity: 0.7;
+}
+#yt_datetime_calendarpopup .t_container .t_calendarbody table td.t_weekend:not(.t_today) {
+  opacity: 0.5;
+}
+#yt_datetime_calendarpopup .t_container .t_footer {
+  padding: 0.3em;
+  text-align: center;
+}

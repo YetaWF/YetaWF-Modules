@@ -9,11 +9,13 @@
   padding: 4px;
   width: 16px;
   height: 16px;
-  box-sizing: content-box; }
-  .YetaWF_SkinPalette_SkinPalette .t_palette svg {
-    vertical-align: top;
-    width: 16px;
-    height: 16px; }
+  box-sizing: content-box;
+}
+.YetaWF_SkinPalette_SkinPalette .t_palette svg {
+  vertical-align: top;
+  width: 16px;
+  height: 16px;
+}
 
 .YetaWF_SkinPalette_SkinPalette .t_contents {
   z-index: 900;
@@ -25,11 +27,13 @@
   max-width: 100vw;
   height: auto;
   max-height: 100%;
-  font-size: .8em;
+  font-size: 0.8em;
   padding: 1em;
   background: var(--bar-bg);
   border: var(--bar-border);
-  border-radius: var(--bar-border-radius); }
-  .YetaWF_SkinPalette_SkinPalette .t_contents textarea[name="CSSVariables"] {
-    overflow: auto;
-    white-space: pre; }
+  border-radius: var(--bar-border-radius);
+}
+.YetaWF_SkinPalette_SkinPalette .t_contents textarea[name=CSSVariables] {
+  overflow: auto;
+  white-space: pre;
+}

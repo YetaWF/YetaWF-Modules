@@ -5,8 +5,10 @@
   border: var(--pbar-border);
   border-radius: var(--pbar-border-radius);
   height: 2em;
-  overflow: hidden; }
-  .yt_progressbar.t_display .t_value {
-    margin: -1px;
-    height: 100%;
-    background: var(--pbar-value-bg); }
+  overflow: hidden;
+}
+.yt_progressbar.t_display .t_value {
+  margin: -1px;
+  height: 100%;
+  background: var(--pbar-value-bg);
+}

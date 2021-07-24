@@ -1,7 +1,9 @@
 @charset "UTF-8";
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Packages#License */
 .modPanel.YetaWF_Packages_Packages .yModuleContents {
-  padding: 0; }
-  .modPanel.YetaWF_Packages_Packages .yModuleContents .yt_grid {
-    border: none;
-    box-shadow: none; }
+  padding: 0;
+}
+.modPanel.YetaWF_Packages_Packages .yModuleContents .yt_grid {
+  border: none;
+  box-shadow: none;
+}

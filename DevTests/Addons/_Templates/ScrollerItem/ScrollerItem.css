@@ -7,19 +7,24 @@
   text-align: left;
   padding-left: 20px;
   padding-right: 20px;
-  border-right: var(--prop-border); }
-  .yt_yetawf_devtests_scrolleritem .yt_image img {
-    border: 0;
-    padding: 0; }
-  .yt_yetawf_devtests_scrolleritem .t_image {
-    padding-top: .7em;
-    padding-bottom: 2em; }
-  .yt_yetawf_devtests_scrolleritem .t_title {
-    font-size: 1em;
-    font-weight: bold;
-    padding-bottom: 2em; }
-  .yt_yetawf_devtests_scrolleritem .t_summary {
-    font-size: .7em;
-    font-weight: normal;
-    max-height: 200px;
-    overflow: auto; }
+  border-right: var(--prop-border);
+}
+.yt_yetawf_devtests_scrolleritem .yt_image img {
+  border: 0;
+  padding: 0;
+}
+.yt_yetawf_devtests_scrolleritem .t_image {
+  padding-top: 0.7em;
+  padding-bottom: 2em;
+}
+.yt_yetawf_devtests_scrolleritem .t_title {
+  font-size: 1em;
+  font-weight: bold;
+  padding-bottom: 2em;
+}
+.yt_yetawf_devtests_scrolleritem .t_summary {
+  font-size: 0.7em;
+  font-weight: normal;
+  max-height: 200px;
+  overflow: auto;
+}

@@ -1,10 +1,12 @@
 @charset "UTF-8";
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 .yt_yetawf_identity_listofusernames.t_edit > .t_newvalue {
-  padding-top: .5em; }
-  .yt_yetawf_identity_listofusernames.t_edit > .t_newvalue label, .yt_yetawf_identity_listofusernames.t_edit > .t_newvalue input {
-    margin-right: 1ch; }
-
-.yt_yetawf_identity_listofusernames.t_edit .y_act_normlink[data-name="Collapse"] {
-  margin-bottom: .5em;
-  display: inline-block; }
+  padding-top: 0.5em;
+}
+.yt_yetawf_identity_listofusernames.t_edit > .t_newvalue label, .yt_yetawf_identity_listofusernames.t_edit > .t_newvalue input {
+  margin-right: 1ch;
+}
+.yt_yetawf_identity_listofusernames.t_edit .y_act_normlink[data-name=Collapse] {
+  margin-bottom: 0.5em;
+  display: inline-block;
+}

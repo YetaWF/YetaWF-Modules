@@ -32,7 +32,8 @@ ul.yt_menu.t_display.t_large {
         font: var(--mm-0-font);
 
         > a {
-            display:block;
+            display:flex;
+            align-items: center;
             outline:none;
             text-decoration: none;
 
@@ -51,7 +52,6 @@ ul.yt_menu.t_display.t_large {
                 color: var(--mm-0-a-clr-hover);
             }
             svg {
-                vertical-align: initial;
                 margin-left: .5ch;
                 width: var(--mm-0-ddwidth);
                 height: var(--mm-0-ddheight);
@@ -106,10 +106,12 @@ ul.yt_menu.t_display.t_large {
 
                 > a {
                     position:relative;
-                    display:block;
+                    display:flex;
+                    align-items: center;
                     outline:none;
-                    padding: var(--mm-1-a-padding);
                     text-decoration: none;
+
+                    padding: var(--mm-1-a-padding);
 
                     background: var(--mm-1-a-bg);
                     color: var(--mm-1-a-clr);
@@ -127,9 +129,7 @@ ul.yt_menu.t_display.t_large {
                         margin-right:.5ch;
                     }
                     svg {
-                        position: absolute;
-                        vertical-align: middle;
-                        right: .5em;
+                        margin-left: auto;
                         width: var(--mm-1-ddwidth);
                         height: var(--mm-1-ddheight);
                     }
@@ -170,10 +170,12 @@ ul.yt_menu.t_display.t_large {
 
                         > a {
                             position:relative;
-                            display:block;
+                            display:flex;
+                            align-items: center;
                             outline:none;
-                            padding: var(--mm-2-a-padding);
                             text-decoration: none;
+
+                            padding: var(--mm-2-a-padding);
 
                             background: var(--mm-2-a-bg);
                             color: var(--mm-2-a-clr);
@@ -191,8 +193,7 @@ ul.yt_menu.t_display.t_large {
                                 margin-right:.5ch;
                             }
                             svg {
-                                position: absolute;
-                                vertical-align: middle;
+                                margin-left: auto;
                                 right: .5em;
                                 width: var(--mm-2-ddwidth);
                                 height: var(--mm-2-ddheight);

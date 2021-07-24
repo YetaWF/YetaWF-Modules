@@ -2,16 +2,17 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 .yt_currency.t_edit input {
   text-align: right;
-  padding-right: 0.5ch; }
-  .yt_currency.t_edit input::-webkit-input-placeholder {
-    color: var(--inp-ph-clr);
-    opacity: var(--inp-ph-opacity); }
-  .yt_currency.t_edit input::-moz-placeholder {
-    color: var(--inp-ph-clr);
-    opacity: var(--inp-ph-opacity); }
-  .yt_currency.t_edit input:-ms-input-placeholder {
-    color: var(--inp-ph-clr);
-    opacity: var(--inp-ph-opacity); }
-  .yt_currency.t_edit input::placeholder {
-    color: var(--inp-ph-clr);
-    opacity: var(--inp-ph-opacity); }
+  padding-right: 0.5ch;
+}
+.yt_currency.t_edit input::-webkit-input-placeholder {
+  color: var(--inp-ph-clr);
+  opacity: var(--inp-ph-opacity);
+}
+.yt_currency.t_edit input::-moz-placeholder {
+  color: var(--inp-ph-clr);
+  opacity: var(--inp-ph-opacity);
+}
+.yt_currency.t_edit input::placeholder {
+  color: var(--inp-ph-clr);
+  opacity: var(--inp-ph-opacity);
+}

@@ -1,6 +1,8 @@
 @charset "UTF-8";
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 .yt_yetawf_identity_email.t_display {
-  display: inline; }
-  .yt_yetawf_identity_email.t_display a {
-    margin-left: .5ch; }
+  display: inline;
+}
+.yt_yetawf_identity_email.t_display a {
+  margin-left: 0.5ch;
+}

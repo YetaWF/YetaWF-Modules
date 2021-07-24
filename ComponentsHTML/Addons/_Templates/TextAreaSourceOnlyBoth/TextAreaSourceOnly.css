@@ -1,34 +1,40 @@
 @charset "UTF-8";
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 textarea.yt_textareasourceonly {
-  padding-left: .5ch;
-  padding-right: .5ch;
+  padding-left: 0.5ch;
+  padding-right: 0.5ch;
   width: 100%;
   resize: none;
   background: var(--inp-bg);
   color: var(--inp-clr);
   border: var(--inp-border);
   border-radius: var(--inp-border-radius);
-  outline: none; }
-  textarea.yt_textareasourceonly:hover:not(:disabled):not(:focus) {
-    border: var(--inp-border-hover); }
-  textarea.yt_textareasourceonly:focus {
-    border: var(--inp-border-focus); }
-  textarea.yt_textareasourceonly:disabled {
-    opacity: var(--body-dis-opacity); }
-  textarea.yt_textareasourceonly:-moz-read-only {
-    opacity: var(--body-dis-opacity); }
-  textarea.yt_textareasourceonly:read-only {
-    opacity: var(--body-dis-opacity); }
-  textarea.yt_textareasourceonly::-webkit-input-placeholder {
-    color: var(--inp-ph-clr);
-    opacity: var(--inp-ph-opacity); }
-  textarea.yt_textareasourceonly::-moz-placeholder {
-    color: var(--inp-ph-clr);
-    opacity: var(--inp-ph-opacity); }
-  textarea.yt_textareasourceonly:-ms-input-placeholder {
-    color: var(--inp-ph-clr);
-    opacity: var(--inp-ph-opacity); }
-  textarea.yt_textareasourceonly::placeholder {
-    color: var(--inp-ph-clr);
-    opacity: var(--inp-ph-opacity); }
+  outline: none;
+}
+textarea.yt_textareasourceonly:hover:not(:disabled):not(:focus) {
+  border: var(--inp-border-hover);
+}
+textarea.yt_textareasourceonly:focus {
+  border: var(--inp-border-focus);
+}
+textarea.yt_textareasourceonly:disabled {
+  opacity: var(--body-dis-opacity);
+}
+textarea.yt_textareasourceonly:-moz-read-only {
+  opacity: var(--body-dis-opacity);
+}
+textarea.yt_textareasourceonly:read-only {
+  opacity: var(--body-dis-opacity);
+}
+textarea.yt_textareasourceonly::-webkit-input-placeholder {
+  color: var(--inp-ph-clr);
+  opacity: var(--inp-ph-opacity);
+}
+textarea.yt_textareasourceonly::-moz-placeholder {
+  color: var(--inp-ph-clr);
+  opacity: var(--inp-ph-opacity);
+}
+textarea.yt_textareasourceonly::placeholder {
+  color: var(--inp-ph-clr);
+  opacity: var(--inp-ph-opacity);
+}

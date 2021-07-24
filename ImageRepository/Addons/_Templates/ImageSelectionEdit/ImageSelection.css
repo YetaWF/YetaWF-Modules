@@ -2,16 +2,17 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ImageRepository#License */
 .yt_imagerepository_imageselection .t_list {
   float: left;
-  margin-right: 2ch; }
-
+  margin-right: 2ch;
+}
 .yt_imagerepository_imageselection .t_list select {
-  width: 30ch; }
-
+  width: 30ch;
+}
 .yt_imagerepository_imageselection .t_haveimage,
 .yt_imagerepository_imageselection .t_uploadarea {
-  padding-top: .5em;
-  clear: both; }
-
+  padding-top: 0.5em;
+  clear: both;
+}
 .yt_imagerepository_imageselection .t_haveimage .yt_moduleaction {
   display: inline;
-  padding-right: 1ch; }
+  padding-right: 1ch;
+}

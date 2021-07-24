@@ -4,4 +4,5 @@
 .YetaWF_Dashboard_AddonsBrowse .t_row.t_griddef .t_vals {
   /* the grid should fill entire width */
   float: none;
-  clear: both; }
+  clear: both;
+}

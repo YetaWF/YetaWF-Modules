@@ -1,5 +1,7 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+@use "sass:math";
+
 $font: var(--tbl-font);
 $fontheader: var(--tbl-header-font);
 
@@ -133,10 +135,10 @@ $smbuttonhorzmargin: .2em;
                             }
                         }
                         .tg_sortasc {
-                            top:$fontsizesort/4;
+                            top: math.div($fontsizesort, 4);
                         }
                         .tg_sortdesc {
-                            top:-$fontsizesort/4;
+                            top: math.div(-$fontsizesort, 4);
                         }
                          .tg_sortboth {
                             opacity: .2;

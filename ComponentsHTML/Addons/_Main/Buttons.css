@@ -3,104 +3,129 @@
 .y_button, .y_buttonform {
   background: var(--button-bg);
   color: var(--button-clr);
-  margin-bottom: .2em;
-  padding: .5em 1em;
+  margin-bottom: 0.2em;
+  padding: 0.5em 1em;
   line-height: 1em;
   text-align: center;
   text-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
   text-decoration: none;
   border: var(--button-border);
-  border-radius: var(--button-border-radius); }
-  .y_button.y_button_sm, .y_buttonform.y_button_sm {
-    padding: .4em; }
-  .y_button.y_button_narrow, .y_buttonform.y_button_narrow {
-    padding-left: 0.5em;
-    padding-right: 0.5em; }
-  .y_button.y_button_outline, .y_buttonform.y_button_outline {
-    background: var(--body-bg);
-    color: var(--body-clr); }
-  .y_button:not(:disabled), .y_buttonform:not(:disabled) {
-    cursor: pointer; }
-  .y_button:hover:not(:disabled):not(.t_disabled), .y_buttonform:hover:not(:disabled):not(.t_disabled) {
-    text-decoration: none;
-    background: var(--button-bg-hover);
-    color: var(--button-clr-hover); }
-  .y_button:focus, .y_buttonform:focus {
-    outline: 0;
-    text-decoration: none;
-    background: var(--button-bg-focus);
-    color: var(--button-clr-focus); }
-  .y_button:disabled, .y_button.t_disabled, .y_buttonform:disabled, .y_buttonform.t_disabled {
-    text-decoration: none;
-    cursor: default;
-    opacity: var(--body-dis-opacity);
-    background: var(--button-bg);
-    color: var(--button-clr); }
-  .y_button.y_success, .y_buttonform.y_success {
-    border-color: var(--tst-info-bg);
-    background: var(--tst-info-bg);
-    color: var(--tst-info-clr); }
-    .y_button.y_success:hover:not(:disabled):not(.t_disabled), .y_buttonform.y_success:hover:not(:disabled):not(.t_disabled) {
-      -webkit-filter: brightness(85%);
-              filter: brightness(85%); }
-  .y_button.y_warning, .y_buttonform.y_warning {
-    border-color: var(--tst-warn-bg);
-    background: var(--tst-warn-bg);
-    color: var(--tst-warn-clr); }
-    .y_button.y_warning:hover:not(:disabled):not(.t_disabled), .y_buttonform.y_warning:hover:not(:disabled):not(.t_disabled) {
-      -webkit-filter: brightness(85%);
-              filter: brightness(85%); }
-  .y_button.y_danger, .y_buttonform.y_danger {
-    border-color: var(--tst-error-bg);
-    background: var(--tst-error-bg);
-    color: var(--tst-error-clr); }
-    .y_button.y_danger:hover:not(:disabled):not(.t_disabled), .y_buttonform.y_danger:hover:not(:disabled):not(.t_disabled) {
-      -webkit-filter: brightness(85%);
-              filter: brightness(85%); }
+  border-radius: var(--button-border-radius);
+}
+.y_button.y_button_sm, .y_buttonform.y_button_sm {
+  padding: 0.4em;
+}
+.y_button.y_button_narrow, .y_buttonform.y_button_narrow {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+.y_button.y_button_outline, .y_buttonform.y_button_outline {
+  background: var(--body-bg);
+  color: var(--body-clr);
+}
+.y_button:not(:disabled), .y_buttonform:not(:disabled) {
+  cursor: pointer;
+}
+.y_button:hover:not(:disabled):not(.t_disabled), .y_buttonform:hover:not(:disabled):not(.t_disabled) {
+  text-decoration: none;
+  background: var(--button-bg-hover);
+  color: var(--button-clr-hover);
+}
+.y_button:focus, .y_buttonform:focus {
+  outline: 0;
+  text-decoration: none;
+  background: var(--button-bg-focus);
+  color: var(--button-clr-focus);
+}
+.y_button:disabled, .y_button.t_disabled, .y_buttonform:disabled, .y_buttonform.t_disabled {
+  text-decoration: none;
+  cursor: default;
+  opacity: var(--body-dis-opacity);
+  background: var(--button-bg);
+  color: var(--button-clr);
+}
+.y_button.y_success, .y_buttonform.y_success {
+  border-color: var(--tst-info-bg);
+  background: var(--tst-info-bg);
+  color: var(--tst-info-clr);
+}
+.y_button.y_success:hover:not(:disabled):not(.t_disabled), .y_buttonform.y_success:hover:not(:disabled):not(.t_disabled) {
+  -webkit-filter: brightness(85%);
+          filter: brightness(85%);
+}
+.y_button.y_warning, .y_buttonform.y_warning {
+  border-color: var(--tst-warn-bg);
+  background: var(--tst-warn-bg);
+  color: var(--tst-warn-clr);
+}
+.y_button.y_warning:hover:not(:disabled):not(.t_disabled), .y_buttonform.y_warning:hover:not(:disabled):not(.t_disabled) {
+  -webkit-filter: brightness(85%);
+          filter: brightness(85%);
+}
+.y_button.y_danger, .y_buttonform.y_danger {
+  border-color: var(--tst-error-bg);
+  background: var(--tst-error-bg);
+  color: var(--tst-error-clr);
+}
+.y_button.y_danger:hover:not(:disabled):not(.t_disabled), .y_buttonform.y_danger:hover:not(:disabled):not(.t_disabled) {
+  -webkit-filter: brightness(85%);
+          filter: brightness(85%);
+}
 
 .y_buttonform {
   margin: 3px;
-  box-shadow: var(--button-shadow); }
-  .y_buttonform:focus {
-    box-shadow: var(--button-focus-shadow); }
+  box-shadow: var(--button-shadow);
+}
+.y_buttonform:focus {
+  box-shadow: var(--button-focus-shadow);
+}
 
 a.y_button, a.y_button:hover:not(:disabled):not(.t_disabled) {
   text-decoration: none;
-  display: inline-block; }
+  display: inline-block;
+}
 
 @media print {
   .y_button {
-    display: none; } }
-
+    display: none;
+  }
+}
 button.y_buttonlite,
 button.y_buttonlite_text {
   background: var(--buttonlite-bg);
   color: var(--buttonlite-clr);
   line-height: 0;
-  padding: .2em;
+  padding: 0.2em;
   border: var(--buttonlite-border);
-  border-radius: var(--buttonlite-border-radius); }
-  button.y_buttonlite:not(:disabled),
-  button.y_buttonlite_text:not(:disabled) {
-    cursor: pointer; }
-  button.y_buttonlite:hover:not(:disabled):not(.t_disabled),
-  button.y_buttonlite_text:hover:not(:disabled):not(.t_disabled) {
-    background: var(--buttonlite-bg-hover);
-    color: var(--buttonlite-clr-hover); }
-  button.y_buttonlite:focus,
-  button.y_buttonlite_text:focus {
-    outline: 0;
-    background: var(--buttonlite-bg-focus);
-    color: var(--buttonlite-clr-focus); }
-  button.y_buttonlite:disabled, button.y_buttonlite.t_disabled,
-  button.y_buttonlite_text:disabled,
-  button.y_buttonlite_text.t_disabled {
-    cursor: default;
-    opacity: var(--body-dis-opacity); }
-  button.y_buttonlite svg,
-  button.y_buttonlite_text svg {
-    width: 1em;
-    height: 1em; }
+  border-radius: var(--buttonlite-border-radius);
+}
+button.y_buttonlite:not(:disabled),
+button.y_buttonlite_text:not(:disabled) {
+  cursor: pointer;
+}
+button.y_buttonlite:hover:not(:disabled):not(.t_disabled),
+button.y_buttonlite_text:hover:not(:disabled):not(.t_disabled) {
+  background: var(--buttonlite-bg-hover);
+  color: var(--buttonlite-clr-hover);
+}
+button.y_buttonlite:focus,
+button.y_buttonlite_text:focus {
+  outline: 0;
+  background: var(--buttonlite-bg-focus);
+  color: var(--buttonlite-clr-focus);
+}
+button.y_buttonlite:disabled, button.y_buttonlite.t_disabled,
+button.y_buttonlite_text:disabled,
+button.y_buttonlite_text.t_disabled {
+  cursor: default;
+  opacity: var(--body-dis-opacity);
+}
+button.y_buttonlite svg,
+button.y_buttonlite_text svg {
+  width: 1em;
+  height: 1em;
+}
 
 button.y_buttonlite_text {
-  line-height: 1em; }
+  line-height: 1em;
+}

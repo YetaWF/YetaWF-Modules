@@ -9,7 +9,10 @@
   height: 38px;
   /* Height of image */
   position: fixed;
-  z-Index: 9000; }
-  @media print {
-    #YetaWF_Pages_ScrollTop {
-      display: none; } }
+  z-Index: 9000;
+}
+@media print {
+  #YetaWF_Pages_ScrollTop {
+    display: none;
+  }
+}

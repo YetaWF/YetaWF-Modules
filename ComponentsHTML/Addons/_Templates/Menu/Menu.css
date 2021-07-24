@@ -16,152 +16,186 @@ ul.yt_menu.t_display.t_large {
   background: var(--mm-0-bg);
   color: var(--mm-0-clr);
   border: var(--mm-0-border);
-  border-radius: var(--mm-0-border-radius); }
-  ul.yt_menu.t_display.t_large > li {
-    position: relative;
-    list-style: none;
-    line-height: 1;
-    cursor: pointer;
-    padding: 0;
-    margin: 0;
-    background: var(--mm-0-bg);
-    color: var(--mm-0-clr);
-    font: var(--mm-0-font); }
-    ul.yt_menu.t_display.t_large > li > a {
-      display: block;
-      outline: none;
-      text-decoration: none;
-      padding: var(--mm-0-a-padding);
-      background: var(--mm-0-a-bg);
-      color: var(--mm-0-a-clr);
-      font: var(--mm-0-font); }
-      ul.yt_menu.t_display.t_large > li > a.t_path {
-        background: var(--mm-0-a-bg-path);
-        color: var(--mm-0-a-clr-path); }
-      ul.yt_menu.t_display.t_large > li > a:hover, ul.yt_menu.t_display.t_large > li > a:focus {
-        background: var(--mm-0-a-bg-hover);
-        color: var(--mm-0-a-clr-hover); }
-      ul.yt_menu.t_display.t_large > li > a svg {
-        vertical-align: initial;
-        margin-left: .5ch;
-        width: var(--mm-0-ddwidth);
-        height: var(--mm-0-ddheight); }
-    ul.yt_menu.t_display.t_large > li > ul {
-      position: absolute;
-      z-index: 1000;
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: flex;
-      -webkit-box-orient: vertical;
-      -webkit-box-direction: normal;
-      -webkit-flex-direction: column;
-              flex-direction: column;
-      -webkit-flex-wrap: nowrap;
-              flex-wrap: nowrap;
-      padding: var(--mm-1-padding);
-      margin: 0;
-      list-style: none;
-      background: var(--mm-1-bg);
-      color: var(--mm-1-clr);
-      border: var(--mm-1-border);
-      border-radius: var(--mm-1-border-radius); }
-      ul.yt_menu.t_display.t_large > li > ul.t_megamenu_content {
-        width: var(--mm-1-mm-width); }
-      ul.yt_menu.t_display.t_large > li > ul > li {
-        position: relative;
-        list-style: none;
-        line-height: 1;
-        cursor: pointer;
-        margin: 0;
-        padding: 0;
-        height: auto;
-        width: auto;
-        background: var(--mm-1-bg);
-        color: var(--mm-1-clr);
-        font: var(--mm-1-font); }
-        ul.yt_menu.t_display.t_large > li > ul > li.t_megamenu_content {
-          background: var(--mm-1-mm-bg);
-          color: var(--mm-1-mm-clr);
-          font: var(--mm-1-mm-font); }
-          ul.yt_menu.t_display.t_large > li > ul > li.t_megamenu_content a, ul.yt_menu.t_display.t_large > li > ul > li.t_megamenu_content a:hover, ul.yt_menu.t_display.t_large > li > ul > li.t_megamenu_content a:focus {
-            color: var(--mm-1-mm-clr); }
-        ul.yt_menu.t_display.t_large > li > ul > li > a {
-          position: relative;
-          display: block;
-          outline: none;
-          padding: var(--mm-1-a-padding);
-          text-decoration: none;
-          background: var(--mm-1-a-bg);
-          color: var(--mm-1-a-clr);
-          font: var(--mm-1-font); }
-          ul.yt_menu.t_display.t_large > li > ul > li > a.t_path {
-            background: var(--mm-1-a-bg-path);
-            color: var(--mm-1-a-clr-path); }
-          ul.yt_menu.t_display.t_large > li > ul > li > a:hover, ul.yt_menu.t_display.t_large > li > ul > li > a:focus {
-            background: var(--mm-1-a-bg-hover);
-            color: var(--mm-1-a-clr-hover); }
-          ul.yt_menu.t_display.t_large > li > ul > li > a i, ul.yt_menu.t_display.t_large > li > ul > li > a img {
-            margin-right: .5ch; }
-          ul.yt_menu.t_display.t_large > li > ul > li > a svg {
-            position: absolute;
-            vertical-align: middle;
-            right: .5em;
-            width: var(--mm-1-ddwidth);
-            height: var(--mm-1-ddheight); }
-        ul.yt_menu.t_display.t_large > li > ul > li > ul {
-          position: absolute;
-          z-index: 1000;
-          display: -webkit-box;
-          display: -webkit-flex;
-          display: flex;
-          -webkit-box-orient: vertical;
-          -webkit-box-direction: normal;
-          -webkit-flex-direction: column;
-                  flex-direction: column;
-          -webkit-flex-wrap: nowrap;
-                  flex-wrap: nowrap;
-          padding: var(--mm-2-padding);
-          margin: 0;
-          list-style: none;
-          background: var(--mm-2-bg);
-          color: var(--mm-2-clr);
-          border: var(--mm-2-border);
-          border-radius: var(--mm-2-border-radius); }
-          ul.yt_menu.t_display.t_large > li > ul > li > ul > li {
-            position: relative;
-            list-style: none;
-            line-height: 1;
-            cursor: pointer;
-            margin: 0;
-            padding: 0;
-            height: auto;
-            width: auto;
-            background: var(--mm-2-bg);
-            color: var(--mm-2-clr);
-            font: var(--mm-2-font); }
-            ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a {
-              position: relative;
-              display: block;
-              outline: none;
-              padding: var(--mm-2-a-padding);
-              text-decoration: none;
-              background: var(--mm-2-a-bg);
-              color: var(--mm-2-a-clr);
-              font: var(--mm-2-font); }
-              ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a.t_path {
-                background: var(--mm-2-a-bg-path);
-                color: var(--mm-2-a-clr-path); }
-              ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a:hover, ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a:focus {
-                background: var(--mm-2-a-bg-hover);
-                color: var(--mm-2-a-clr-hover); }
-              ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a i, ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a img {
-                margin-right: .5ch; }
-              ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a svg {
-                position: absolute;
-                vertical-align: middle;
-                right: .5em;
-                width: var(--mm-2-ddwidth);
-                height: var(--mm-2-ddheight); }
+  border-radius: var(--mm-0-border-radius);
+}
+ul.yt_menu.t_display.t_large > li {
+  position: relative;
+  list-style: none;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  background: var(--mm-0-bg);
+  color: var(--mm-0-clr);
+  font: var(--mm-0-font);
+}
+ul.yt_menu.t_display.t_large > li > a {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  outline: none;
+  text-decoration: none;
+  padding: var(--mm-0-a-padding);
+  background: var(--mm-0-a-bg);
+  color: var(--mm-0-a-clr);
+  font: var(--mm-0-font);
+}
+ul.yt_menu.t_display.t_large > li > a.t_path {
+  background: var(--mm-0-a-bg-path);
+  color: var(--mm-0-a-clr-path);
+}
+ul.yt_menu.t_display.t_large > li > a:hover, ul.yt_menu.t_display.t_large > li > a:focus {
+  background: var(--mm-0-a-bg-hover);
+  color: var(--mm-0-a-clr-hover);
+}
+ul.yt_menu.t_display.t_large > li > a svg {
+  margin-left: 0.5ch;
+  width: var(--mm-0-ddwidth);
+  height: var(--mm-0-ddheight);
+}
+ul.yt_menu.t_display.t_large > li > ul {
+  position: absolute;
+  z-index: 1000;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-flex-wrap: nowrap;
+          flex-wrap: nowrap;
+  padding: var(--mm-1-padding);
+  margin: 0;
+  list-style: none;
+  background: var(--mm-1-bg);
+  color: var(--mm-1-clr);
+  border: var(--mm-1-border);
+  border-radius: var(--mm-1-border-radius);
+}
+ul.yt_menu.t_display.t_large > li > ul.t_megamenu_content {
+  width: var(--mm-1-mm-width);
+}
+ul.yt_menu.t_display.t_large > li > ul > li {
+  position: relative;
+  list-style: none;
+  line-height: 1;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  height: auto;
+  width: auto;
+  background: var(--mm-1-bg);
+  color: var(--mm-1-clr);
+  font: var(--mm-1-font);
+}
+ul.yt_menu.t_display.t_large > li > ul > li.t_megamenu_content {
+  background: var(--mm-1-mm-bg);
+  color: var(--mm-1-mm-clr);
+  font: var(--mm-1-mm-font);
+}
+ul.yt_menu.t_display.t_large > li > ul > li.t_megamenu_content a, ul.yt_menu.t_display.t_large > li > ul > li.t_megamenu_content a:hover, ul.yt_menu.t_display.t_large > li > ul > li.t_megamenu_content a:focus {
+  color: var(--mm-1-mm-clr);
+}
+ul.yt_menu.t_display.t_large > li > ul > li > a {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  outline: none;
+  text-decoration: none;
+  padding: var(--mm-1-a-padding);
+  background: var(--mm-1-a-bg);
+  color: var(--mm-1-a-clr);
+  font: var(--mm-1-font);
+}
+ul.yt_menu.t_display.t_large > li > ul > li > a.t_path {
+  background: var(--mm-1-a-bg-path);
+  color: var(--mm-1-a-clr-path);
+}
+ul.yt_menu.t_display.t_large > li > ul > li > a:hover, ul.yt_menu.t_display.t_large > li > ul > li > a:focus {
+  background: var(--mm-1-a-bg-hover);
+  color: var(--mm-1-a-clr-hover);
+}
+ul.yt_menu.t_display.t_large > li > ul > li > a i, ul.yt_menu.t_display.t_large > li > ul > li > a img {
+  margin-right: 0.5ch;
+}
+ul.yt_menu.t_display.t_large > li > ul > li > a svg {
+  margin-left: auto;
+  width: var(--mm-1-ddwidth);
+  height: var(--mm-1-ddheight);
+}
+ul.yt_menu.t_display.t_large > li > ul > li > ul {
+  position: absolute;
+  z-index: 1000;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-flex-wrap: nowrap;
+          flex-wrap: nowrap;
+  padding: var(--mm-2-padding);
+  margin: 0;
+  list-style: none;
+  background: var(--mm-2-bg);
+  color: var(--mm-2-clr);
+  border: var(--mm-2-border);
+  border-radius: var(--mm-2-border-radius);
+}
+ul.yt_menu.t_display.t_large > li > ul > li > ul > li {
+  position: relative;
+  list-style: none;
+  line-height: 1;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  height: auto;
+  width: auto;
+  background: var(--mm-2-bg);
+  color: var(--mm-2-clr);
+  font: var(--mm-2-font);
+}
+ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  outline: none;
+  text-decoration: none;
+  padding: var(--mm-2-a-padding);
+  background: var(--mm-2-a-bg);
+  color: var(--mm-2-a-clr);
+  font: var(--mm-2-font);
+}
+ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a.t_path {
+  background: var(--mm-2-a-bg-path);
+  color: var(--mm-2-a-clr-path);
+}
+ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a:hover, ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a:focus {
+  background: var(--mm-2-a-bg-hover);
+  color: var(--mm-2-a-clr-hover);
+}
+ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a i, ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a img {
+  margin-right: 0.5ch;
+}
+ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a svg {
+  margin-left: auto;
+  right: 0.5em;
+  width: var(--mm-2-ddwidth);
+  height: var(--mm-2-ddheight);
+}
 
 ul.yt_menu.t_display.t_small {
   display: -webkit-box;
@@ -179,145 +213,168 @@ ul.yt_menu.t_display.t_small {
   background: var(--mm-0-bg);
   color: var(--mm-0-clr);
   border: var(--mm-0-border);
-  border-radius: var(--mm-0-border-radius); }
-  ul.yt_menu.t_display.t_small > li {
-    list-style: none;
-    line-height: 1;
-    background: var(--mm-0-bg);
-    color: var(--mm-0-clr);
-    font: var(--mm-0-font); }
-    ul.yt_menu.t_display.t_small > li > a {
-      display: block;
-      outline: none;
-      text-decoration: none;
-      padding: var(--mm-0-a-small-padding);
-      background: var(--mm-0-a-bg);
-      color: var(--mm-0-a-clr); }
-      ul.yt_menu.t_display.t_small > li > a.t_path {
-        background: var(--mm-0-a-bg-path);
-        color: var(--mm-0-a-clr-path); }
-      ul.yt_menu.t_display.t_small > li > a:hover, ul.yt_menu.t_display.t_small > li > a:focus {
-        background: var(--mm-0-a-bg-hover);
-        color: var(--mm-0-a-clr-hover); }
-      ul.yt_menu.t_display.t_small > li > a svg {
-        border: var(--mm-svg-small-border);
-        border-radius: var(--mm-svg-small-border-radius);
-        float: right;
-        vertical-align: top;
-        margin-left: 1ch;
-        width: var(--mm-0-ddwidth);
-        height: var(--mm-0-ddheight); }
-    ul.yt_menu.t_display.t_small > li > ul {
-      display: -webkit-box;
-      display: -webkit-flex;
-      display: flex;
-      -webkit-box-orient: vertical;
-      -webkit-box-direction: normal;
-      -webkit-flex-direction: column;
-              flex-direction: column;
-      -webkit-flex-wrap: nowrap;
-              flex-wrap: nowrap;
-      width: 95%;
-      overflow: hidden;
-      margin: var(--mm-1-small-margin);
-      padding: var(--mm-1-small-padding);
-      list-style: none;
-      background: var(--mm-1-bg);
-      color: var(--mm-1-clr);
-      border: var(--mm-1-border);
-      border-radius: var(--mm-1-border-radius); }
-      ul.yt_menu.t_display.t_small > li > ul.t_megamenu_content {
-        width: 85%; }
-      ul.yt_menu.t_display.t_small > li > ul > li {
-        list-style: none;
-        line-height: 1;
-        margin: 0;
-        padding: 0;
-        height: auto;
-        width: auto;
-        background: var(--mm-1-bg);
-        color: var(--mm-1-clr);
-        font: var(--mm-1-font); }
-        ul.yt_menu.t_display.t_small > li > ul > li.t_megamenu_content {
-          background: var(--mm-1-mm-bg);
-          color: var(--mm-1-mm-clr);
-          font: var(--mm-1-mm-font); }
-          ul.yt_menu.t_display.t_small > li > ul > li.t_megamenu_content a, ul.yt_menu.t_display.t_small > li > ul > li.t_megamenu_content a:hover, ul.yt_menu.t_display.t_small > li > ul > li.t_megamenu_content a:focus {
-            color: var(--mm-1-mm-clr); }
-        ul.yt_menu.t_display.t_small > li > ul > li > a {
-          position: relative;
-          display: block;
-          outline: none;
-          padding: var(--mm-1-a-small-padding);
-          text-decoration: none;
-          background: var(--mm-1-a-bg);
-          color: var(--mm-1-a-clr); }
-          ul.yt_menu.t_display.t_small > li > ul > li > a.t_path {
-            background: var(--mm-1-a-bg-path);
-            color: var(--mm-1-a-clr-path); }
-          ul.yt_menu.t_display.t_small > li > ul > li > a:hover, ul.yt_menu.t_display.t_small > li > ul > li > a:focus {
-            background: var(--mm-1-a-bg-hover);
-            color: var(--mm-1-a-clr-hover); }
-          ul.yt_menu.t_display.t_small > li > ul > li > a i, ul.yt_menu.t_display.t_small > li > ul > li > a img {
-            margin-right: .5ch; }
-          ul.yt_menu.t_display.t_small > li > ul > li > a svg {
-            position: absolute;
-            vertical-align: middle;
-            right: .5em;
-            width: var(--mm-1-ddwidth);
-            height: var(--mm-1-ddheight);
-            border: var(--mm-svg-small-border);
-            border-radius: var(--mm-svg-small-border-radius); }
-        ul.yt_menu.t_display.t_small > li > ul > li > ul {
-          display: -webkit-box;
-          display: -webkit-flex;
-          display: flex;
-          -webkit-box-orient: vertical;
-          -webkit-box-direction: normal;
-          -webkit-flex-direction: column;
-                  flex-direction: column;
-          -webkit-flex-wrap: nowrap;
-                  flex-wrap: nowrap;
-          width: 90%;
-          overflow: hidden;
-          margin: var(--mm-2-small-margin);
-          padding: var(--mm-2-small-padding);
-          list-style: none;
-          background: var(--mm-2-bg);
-          color: var(--mm-2-clr);
-          border: var(--mm-2-border);
-          border-radius: var(--mm-2-border-radius); }
-          ul.yt_menu.t_display.t_small > li > ul > li > ul > li {
-            list-style: none;
-            line-height: 1;
-            margin: 0;
-            padding: 0;
-            height: auto;
-            width: auto;
-            background: var(--mm-2-bg);
-            color: var(--mm-2-clr);
-            font: var(--mm-2-font); }
-            ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a {
-              position: relative;
-              display: block;
-              outline: none;
-              padding: var(--mm-2-a-small-padding);
-              text-decoration: none;
-              background: var(--mm-2-a-bg);
-              color: var(--mm-2-a-clr); }
-              ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a.t_path {
-                background: var(--mm-2-a-bg-path);
-                color: var(--mm-2-a-clr-path); }
-              ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a:hover, ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a:focus {
-                background: var(--mm-2-a-bg-hover);
-                color: var(--mm-2-a-clr-hover); }
-              ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a i, ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a img {
-                margin-right: .5ch; }
-              ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a svg {
-                position: absolute;
-                vertical-align: middle;
-                right: .5em;
-                width: var(--mm-2-ddwidth);
-                height: var(--mm-2-ddheight);
-                border: var(--mm-svg-small-border);
-                border-radius: var(--mm-svg-small-border-radius); }
+  border-radius: var(--mm-0-border-radius);
+}
+ul.yt_menu.t_display.t_small > li {
+  list-style: none;
+  line-height: 1;
+  background: var(--mm-0-bg);
+  color: var(--mm-0-clr);
+  font: var(--mm-0-font);
+}
+ul.yt_menu.t_display.t_small > li > a {
+  display: block;
+  outline: none;
+  text-decoration: none;
+  padding: var(--mm-0-a-small-padding);
+  background: var(--mm-0-a-bg);
+  color: var(--mm-0-a-clr);
+}
+ul.yt_menu.t_display.t_small > li > a.t_path {
+  background: var(--mm-0-a-bg-path);
+  color: var(--mm-0-a-clr-path);
+}
+ul.yt_menu.t_display.t_small > li > a:hover, ul.yt_menu.t_display.t_small > li > a:focus {
+  background: var(--mm-0-a-bg-hover);
+  color: var(--mm-0-a-clr-hover);
+}
+ul.yt_menu.t_display.t_small > li > a svg {
+  border: var(--mm-svg-small-border);
+  border-radius: var(--mm-svg-small-border-radius);
+  float: right;
+  vertical-align: top;
+  margin-left: 1ch;
+  width: var(--mm-0-ddwidth);
+  height: var(--mm-0-ddheight);
+}
+ul.yt_menu.t_display.t_small > li > ul {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-flex-wrap: nowrap;
+          flex-wrap: nowrap;
+  width: 95%;
+  overflow: hidden;
+  margin: var(--mm-1-small-margin);
+  padding: var(--mm-1-small-padding);
+  list-style: none;
+  background: var(--mm-1-bg);
+  color: var(--mm-1-clr);
+  border: var(--mm-1-border);
+  border-radius: var(--mm-1-border-radius);
+}
+ul.yt_menu.t_display.t_small > li > ul.t_megamenu_content {
+  width: 85%;
+}
+ul.yt_menu.t_display.t_small > li > ul > li {
+  list-style: none;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+  height: auto;
+  width: auto;
+  background: var(--mm-1-bg);
+  color: var(--mm-1-clr);
+  font: var(--mm-1-font);
+}
+ul.yt_menu.t_display.t_small > li > ul > li.t_megamenu_content {
+  background: var(--mm-1-mm-bg);
+  color: var(--mm-1-mm-clr);
+  font: var(--mm-1-mm-font);
+}
+ul.yt_menu.t_display.t_small > li > ul > li.t_megamenu_content a, ul.yt_menu.t_display.t_small > li > ul > li.t_megamenu_content a:hover, ul.yt_menu.t_display.t_small > li > ul > li.t_megamenu_content a:focus {
+  color: var(--mm-1-mm-clr);
+}
+ul.yt_menu.t_display.t_small > li > ul > li > a {
+  position: relative;
+  display: block;
+  outline: none;
+  padding: var(--mm-1-a-small-padding);
+  text-decoration: none;
+  background: var(--mm-1-a-bg);
+  color: var(--mm-1-a-clr);
+}
+ul.yt_menu.t_display.t_small > li > ul > li > a.t_path {
+  background: var(--mm-1-a-bg-path);
+  color: var(--mm-1-a-clr-path);
+}
+ul.yt_menu.t_display.t_small > li > ul > li > a:hover, ul.yt_menu.t_display.t_small > li > ul > li > a:focus {
+  background: var(--mm-1-a-bg-hover);
+  color: var(--mm-1-a-clr-hover);
+}
+ul.yt_menu.t_display.t_small > li > ul > li > a i, ul.yt_menu.t_display.t_small > li > ul > li > a img {
+  margin-right: 0.5ch;
+}
+ul.yt_menu.t_display.t_small > li > ul > li > a svg {
+  position: absolute;
+  vertical-align: middle;
+  right: 0.5em;
+  width: var(--mm-1-ddwidth);
+  height: var(--mm-1-ddheight);
+  border: var(--mm-svg-small-border);
+  border-radius: var(--mm-svg-small-border-radius);
+}
+ul.yt_menu.t_display.t_small > li > ul > li > ul {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-flex-wrap: nowrap;
+          flex-wrap: nowrap;
+  width: 90%;
+  overflow: hidden;
+  margin: var(--mm-2-small-margin);
+  padding: var(--mm-2-small-padding);
+  list-style: none;
+  background: var(--mm-2-bg);
+  color: var(--mm-2-clr);
+  border: var(--mm-2-border);
+  border-radius: var(--mm-2-border-radius);
+}
+ul.yt_menu.t_display.t_small > li > ul > li > ul > li {
+  list-style: none;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+  height: auto;
+  width: auto;
+  background: var(--mm-2-bg);
+  color: var(--mm-2-clr);
+  font: var(--mm-2-font);
+}
+ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a {
+  position: relative;
+  display: block;
+  outline: none;
+  padding: var(--mm-2-a-small-padding);
+  text-decoration: none;
+  background: var(--mm-2-a-bg);
+  color: var(--mm-2-a-clr);
+}
+ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a.t_path {
+  background: var(--mm-2-a-bg-path);
+  color: var(--mm-2-a-clr-path);
+}
+ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a:hover, ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a:focus {
+  background: var(--mm-2-a-bg-hover);
+  color: var(--mm-2-a-clr-hover);
+}
+ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a i, ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a img {
+  margin-right: 0.5ch;
+}
+ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a svg {
+  position: absolute;
+  vertical-align: middle;
+  right: 0.5em;
+  width: var(--mm-2-ddwidth);
+  height: var(--mm-2-ddheight);
+  border: var(--mm-svg-small-border);
+  border-radius: var(--mm-svg-small-border-radius);
+}

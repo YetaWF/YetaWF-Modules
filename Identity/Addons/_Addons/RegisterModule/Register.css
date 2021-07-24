@@ -1,17 +1,19 @@
 @charset "UTF-8";
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 .YetaWF_Identity_Register .yt_propertylist .t_row.t_passwordrules .t_vals {
-  max-width: 50ch; }
-
+  max-width: 50ch;
+}
 .YetaWF_Identity_Register .yt_propertylist .t_row.t_partnername {
-  display: none; }
-
-.YetaWF_Identity_Register .t_detailsbuttons input[type='submit'] {
-  width: 25ch; }
-
+  display: none;
+}
+.YetaWF_Identity_Register .t_detailsbuttons input[type=submit] {
+  width: 25ch;
+}
 .YetaWF_Identity_Register .t_external .t_extentry {
   display: inline-block;
   padding-bottom: 0.3em;
-  padding-right: 3ch; }
-  .YetaWF_Identity_Register .t_external .t_extentry img {
-    margin-right: .5ch; }
+  padding-right: 3ch;
+}
+.YetaWF_Identity_Register .t_external .t_extentry img {
+  margin-right: 0.5ch;
+}

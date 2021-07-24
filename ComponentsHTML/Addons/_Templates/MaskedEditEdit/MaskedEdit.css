@@ -2,12 +2,14 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 div.yt_maskededit_base {
   display: inline;
-  position: relative; }
-  div.yt_maskededit_base .t_warn {
-    width: 1.2em;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    right: .5em;
-    bottom: 0;
-    color: var(--inp-error-clr); }
+  position: relative;
+}
+div.yt_maskededit_base .t_warn {
+  width: 1.2em;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0.5em;
+  bottom: 0;
+  color: var(--inp-error-clr);
+}

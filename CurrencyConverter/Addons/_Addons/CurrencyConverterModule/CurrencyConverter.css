@@ -1,28 +1,29 @@
 @charset "UTF-8";
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/CurrencyConverter#License */
 .YetaWF_CurrencyConverter_CurrencyConverter .t_button {
-  padding: 1em 0 1em 0; }
-
+  padding: 1em 0 1em 0;
+}
 .YetaWF_CurrencyConverter_CurrencyConverter .t_result_from,
 .YetaWF_CurrencyConverter_CurrencyConverter .t_result_to,
 .YetaWF_CurrencyConverter_CurrencyConverter .t_result_is {
   font-size: medium;
-  font-weight: bold; }
-
+  font-weight: bold;
+}
 .YetaWF_CurrencyConverter_CurrencyConverter .t_result_is {
   visibility: hidden;
   /* in order to reserve the space */
-  padding: 0 1ch 0 1ch; }
-
+  padding: 0 1ch 0 1ch;
+}
 .YetaWF_CurrencyConverter_CurrencyConverter .t_disclaimer {
   font-size: x-small;
   line-height: 90%;
-  padding-top: 1em; }
-
+  padding-top: 1em;
+}
 .YetaWF_CurrencyConverter_CurrencyConverter .t_result_from,
 .YetaWF_CurrencyConverter_CurrencyConverter .t_result_is,
 .YetaWF_CurrencyConverter_CurrencyConverter .t_result_to {
-  float: left; }
-
+  float: left;
+}
 .YetaWF_CurrencyConverter_CurrencyConverter .t_disclaimer {
-  clear: both; }
+  clear: both;
+}

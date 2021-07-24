@@ -3,11 +3,12 @@
 .yt_yetawf_languages_localizeenums .t_enumtype {
   padding-top: 1em;
   padding-bottom: 1em;
-  font-weight: bold; }
-
+  font-weight: bold;
+}
 .yt_yetawf_languages_localizeenums div.t_name {
   float: left;
-  width: 30ch; }
-
+  width: 30ch;
+}
 .yt_yetawf_languages_localizeenums div.t_enumvars {
-  float: left; }
+  float: left;
+}

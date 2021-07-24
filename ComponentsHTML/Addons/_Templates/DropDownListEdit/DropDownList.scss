@@ -50,9 +50,10 @@ $ddheight: 1em;
             white-space: nowrap;
             text-overflow: ellipsis;
             overflow: hidden;
-            &:after {// add an invisible character to use full height if .t_input is empty
-                content: '\200b';
-            }
+            // sass
+            // &:after {// add an invisible character to use full height if .t_input is empty
+            //     content: "\200b";
+            // }
         }
         .t_select {
             position: absolute;

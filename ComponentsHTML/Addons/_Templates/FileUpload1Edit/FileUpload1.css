@@ -6,13 +6,16 @@
   cursor: default;
   -webkit-user-select: none;
      -moz-user-select: none;
-      -ms-user-select: none;
           user-select: none;
-  touch-action: none; }
-  .yt_fileupload1 .t_upload {
-    margin-right: .5ch; }
-  .yt_fileupload1 .t_drop {
-    display: inline; }
-  .yt_fileupload1 .yt_progressbar {
-    margin-top: .5em;
-    margin-right: 1ch; }
+  touch-action: none;
+}
+.yt_fileupload1 .t_upload {
+  margin-right: 0.5ch;
+}
+.yt_fileupload1 .t_drop {
+  display: inline;
+}
+.yt_fileupload1 .yt_progressbar {
+  margin-top: 0.5em;
+  margin-right: 1ch;
+}

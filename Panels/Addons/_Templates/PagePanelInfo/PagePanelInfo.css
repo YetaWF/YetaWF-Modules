@@ -1,59 +1,63 @@
 @charset "UTF-8";
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
 .yt_panels_pagepanelinfo.t_styledefault.t_display .t_image img {
-  padding: 3px; }
-
+  padding: 3px;
+}
 .yt_panels_pagepanelinfo.t_styledefault.t_display .t_entry {
   display: inline-block;
   width: 200px;
   height: 120px;
   padding: 16px 16px 16px 16px;
-  text-align: center; }
-  .yt_panels_pagepanelinfo.t_styledefault.t_display .t_entry .t_link {
-    font-size: smaller; }
-
+  text-align: center;
+}
+.yt_panels_pagepanelinfo.t_styledefault.t_display .t_entry .t_link {
+  font-size: smaller;
+}
 .yt_panels_pagepanelinfo.t_stylesmallvert .t_image img {
-  padding: 3px; }
-
+  padding: 3px;
+}
 .yt_panels_pagepanelinfo.t_stylesmallvert .t_image {
   display: inline-block;
-  padding-right: 1ch; }
-
+  padding-right: 1ch;
+}
 .yt_panels_pagepanelinfo.t_stylesmallvert .t_link {
-  display: inline-block; }
-
+  display: inline-block;
+}
 .yt_panels_pagepanelinfo.t_stylesmalltable .t_image img {
-  padding: 2px; }
-
+  padding: 2px;
+}
 .yt_panels_pagepanelinfo.t_stylesmalltable .t_entry {
-  clear: both; }
-
+  clear: both;
+}
 .yt_panels_pagepanelinfo.t_stylesmalltable .t_image {
   float: left;
   display: block;
-  padding-right: 1ch; }
-
+  padding-right: 1ch;
+}
 .yt_panels_pagepanelinfo.t_stylesmalltable .t_link {
   float: left;
   width: 25ch;
   padding-right: 1ch;
-  display: block; }
-  .yt_panels_pagepanelinfo.t_stylesmalltable .t_link a {
-    white-space: normal; }
-
+  display: block;
+}
+.yt_panels_pagepanelinfo.t_stylesmalltable .t_link a {
+  white-space: normal;
+}
 .yt_panels_pagepanelinfo.t_stylesmalltable .t_desc {
   float: none;
   display: block;
-  overflow: hidden; }
+  overflow: hidden;
+}
 
 body.yCondense .yt_panels_pagepanelinfo.t_stylesmalltable .t_image {
   float: none;
-  display: inline-block; }
-
+  display: inline-block;
+}
 body.yCondense .yt_panels_pagepanelinfo.t_stylesmalltable .t_link {
   float: none;
   width: auto;
-  display: inline-block; }
-
+  display: inline-block;
+}
 body.yCondense .yt_panels_pagepanelinfo.t_stylesmalltable .t_desc {
-  padding-left: 10ch; }
+  padding-left: 10ch;
+}

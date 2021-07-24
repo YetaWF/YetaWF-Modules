@@ -2,7 +2,8 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SiteProperties#License */
 .YetaWF_SiteProperties_LockedStatus div.yDivAlert {
   text-align: center;
-  margin: 0; }
-
+  margin: 0;
+}
 .YetaWF_SiteProperties_LockedStatus .yModuleMenuEditIcon {
-  z-index: 1510; }
+  z-index: 1510;
+}

@@ -1,13 +1,18 @@
 @charset "UTF-8";
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 div.yt_daytimerange.t_edit {
-  display: inline; }
-  div.yt_daytimerange.t_edit .t_from, div.yt_daytimerange.t_edit .t_to, div.yt_daytimerange.t_edit .t_from2, div.yt_daytimerange.t_edit .t_to2, div.yt_daytimerange.t_edit .t_add, div.yt_daytimerange.t_edit .t_closed {
-    display: inline-block; }
-    div.yt_daytimerange.t_edit .t_from label, div.yt_daytimerange.t_edit .t_to label, div.yt_daytimerange.t_edit .t_from2 label, div.yt_daytimerange.t_edit .t_to2 label, div.yt_daytimerange.t_edit .t_add label, div.yt_daytimerange.t_edit .t_closed label {
-      padding-right: 1ch; }
-  div.yt_daytimerange.t_edit .t_to label, div.yt_daytimerange.t_edit .t_to2 label {
-    padding-left: 1ch; }
-  div.yt_daytimerange.t_edit .t_to, div.yt_daytimerange.t_edit .t_to2, div.yt_daytimerange.t_edit .t_add, div.yt_daytimerange.t_edit .t_closed {
-    display: inline-block;
-    padding-right: 1ch; }
+  display: inline;
+}
+div.yt_daytimerange.t_edit .t_from, div.yt_daytimerange.t_edit .t_to, div.yt_daytimerange.t_edit .t_from2, div.yt_daytimerange.t_edit .t_to2, div.yt_daytimerange.t_edit .t_add, div.yt_daytimerange.t_edit .t_closed {
+  display: inline-block;
+}
+div.yt_daytimerange.t_edit .t_from label, div.yt_daytimerange.t_edit .t_to label, div.yt_daytimerange.t_edit .t_from2 label, div.yt_daytimerange.t_edit .t_to2 label, div.yt_daytimerange.t_edit .t_add label, div.yt_daytimerange.t_edit .t_closed label {
+  padding-right: 1ch;
+}
+div.yt_daytimerange.t_edit .t_to label, div.yt_daytimerange.t_edit .t_to2 label {
+  padding-left: 1ch;
+}
+div.yt_daytimerange.t_edit .t_to, div.yt_daytimerange.t_edit .t_to2, div.yt_daytimerange.t_edit .t_add, div.yt_daytimerange.t_edit .t_closed {
+  display: inline-block;
+  padding-right: 1ch;
+}

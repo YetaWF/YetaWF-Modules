@@ -4,32 +4,37 @@
   position: fixed;
   z-index: 1510;
   left: 2px;
-  top: 5px; }
-  .YetaWF_PageEdit_EditMode #yEditControlDiv .t_display,
-  .YetaWF_PageEdit_EditMode #yEditControlDiv .t_edit {
-    height: 16px;
-    width: 16px;
-    padding: 4px;
-    box-sizing: content-box; }
-    .YetaWF_PageEdit_EditMode #yEditControlDiv .t_display svg,
-    .YetaWF_PageEdit_EditMode #yEditControlDiv .t_edit svg {
-      vertical-align: top;
-      height: 16px;
-      width: 16px; }
+  top: 5px;
+}
+.YetaWF_PageEdit_EditMode #yEditControlDiv .t_display,
+.YetaWF_PageEdit_EditMode #yEditControlDiv .t_edit {
+  height: 16px;
+  width: 16px;
+  padding: 4px;
+  box-sizing: content-box;
+}
+.YetaWF_PageEdit_EditMode #yEditControlDiv .t_display svg,
+.YetaWF_PageEdit_EditMode #yEditControlDiv .t_edit svg {
+  vertical-align: top;
+  height: 16px;
+  width: 16px;
+}
 
 /* PANE TAG */
 .yPaneTag {
   position: absolute;
   z-index: 1;
-  top: -.7em;
-  left: .5em;
-  font-size: .7em;
+  top: -0.7em;
+  left: 0.5em;
+  font-size: 0.7em;
   background: var(--prop-cat-bg);
   color: var(--prop-cat-clr);
-  padding: 0 0.2em; }
+  padding: 0 0.2em;
+}
 
 .yModule-current {
-  background: var(--mod-current-bg); }
+  background: var(--mod-current-bg);
+}
 
 .yModuleMenuEditIcon {
   position: absolute;
@@ -37,6 +42,8 @@
   left: 0;
   top: 0;
   text-align: left;
-  /* in case module has a different default */ }
-  .yModuleMenuEditIcon .yModuleMenuContainer ul.yModuleMenu {
-    display: none; }
+  /* in case module has a different default */
+}
+.yModuleMenuEditIcon .yModuleMenuContainer ul.yModuleMenu {
+  display: none;
+}

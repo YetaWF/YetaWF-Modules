@@ -3,9 +3,11 @@
 .yt_image.t_display img {
   border: var(--prop-border);
   border-radius: var(--prop-border-radius);
-  padding: 1em; }
+  padding: 1em;
+}
 
 /* images in a grid */
 .yt_grid .yt_image.t_display img {
   border: 0;
-  padding: 0; }
+  padding: 0;
+}
