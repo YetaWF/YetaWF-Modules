@@ -145,10 +145,8 @@
 
 .yt_propertylist.t_boxedhdr .t_proptable .t_boxlabel {
   display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
           align-items: center;
   background: var(--prop-cat-bg);
   color: var(--prop-cat-clr);

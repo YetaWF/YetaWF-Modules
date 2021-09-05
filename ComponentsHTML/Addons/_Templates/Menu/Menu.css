@@ -2,14 +2,11 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 ul.yt_menu.t_display.t_large {
   display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-  -webkit-flex-direction: row;
           flex-direction: row;
-  -webkit-flex-wrap: wrap;
-          flex-wrap: wrap;
+  flex-wrap: wrap;
   padding: var(--mm-0-padding);
   margin: 0;
   list-style: none;
@@ -31,10 +28,8 @@ ul.yt_menu.t_display.t_large > li {
 }
 ul.yt_menu.t_display.t_large > li > a {
   display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
           align-items: center;
   outline: none;
   text-decoration: none;
@@ -60,14 +55,11 @@ ul.yt_menu.t_display.t_large > li > ul {
   position: absolute;
   z-index: 1000;
   display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
           flex-direction: column;
-  -webkit-flex-wrap: nowrap;
-          flex-wrap: nowrap;
+  flex-wrap: nowrap;
   padding: var(--mm-1-padding);
   margin: 0;
   list-style: none;
@@ -103,10 +95,8 @@ ul.yt_menu.t_display.t_large > li > ul > li.t_megamenu_content a, ul.yt_menu.t_d
 ul.yt_menu.t_display.t_large > li > ul > li > a {
   position: relative;
   display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
           align-items: center;
   outline: none;
   text-decoration: none;
@@ -135,14 +125,11 @@ ul.yt_menu.t_display.t_large > li > ul > li > ul {
   position: absolute;
   z-index: 1000;
   display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
           flex-direction: column;
-  -webkit-flex-wrap: nowrap;
-          flex-wrap: nowrap;
+  flex-wrap: nowrap;
   padding: var(--mm-2-padding);
   margin: 0;
   list-style: none;
@@ -167,10 +154,8 @@ ul.yt_menu.t_display.t_large > li > ul > li > ul > li {
 ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a {
   position: relative;
   display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
           align-items: center;
   outline: none;
   text-decoration: none;
@@ -199,14 +184,11 @@ ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a svg {
 
 ul.yt_menu.t_display.t_small {
   display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
           flex-direction: column;
-  -webkit-flex-wrap: nowrap;
-          flex-wrap: nowrap;
+  flex-wrap: nowrap;
   padding: var(--mm-0-padding);
   margin: 0;
   list-style: none;
@@ -249,14 +231,11 @@ ul.yt_menu.t_display.t_small > li > a svg {
 }
 ul.yt_menu.t_display.t_small > li > ul {
   display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
           flex-direction: column;
-  -webkit-flex-wrap: nowrap;
-          flex-wrap: nowrap;
+  flex-wrap: nowrap;
   width: 95%;
   overflow: hidden;
   margin: var(--mm-1-small-margin);
@@ -320,14 +299,11 @@ ul.yt_menu.t_display.t_small > li > ul > li > a svg {
 }
 ul.yt_menu.t_display.t_small > li > ul > li > ul {
   display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
           flex-direction: column;
-  -webkit-flex-wrap: nowrap;
-          flex-wrap: nowrap;
+  flex-wrap: nowrap;
   width: 90%;
   overflow: hidden;
   margin: var(--mm-2-small-margin);

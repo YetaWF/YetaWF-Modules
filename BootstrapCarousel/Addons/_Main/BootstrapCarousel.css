@@ -20,10 +20,8 @@
   left: 0;
   z-index: 15;
   display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
           justify-content: center;
   padding-left: 0;
   margin-right: 15%;
@@ -70,13 +68,10 @@
   bottom: 0;
   z-index: 1;
   display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
   -webkit-box-align: center;
-  -webkit-align-items: center;
           align-items: center;
   -webkit-box-pack: center;
-  -webkit-justify-content: center;
           justify-content: center;
   width: 15%;
   color: #fff;
@@ -103,7 +98,6 @@
 .yt_bootstrapcarousel_slideshow.t_display .t_indicators li {
   box-sizing: content-box;
   -webkit-box-flex: 0;
-  -webkit-flex: 0 1 auto;
           flex: 0 1 auto;
   width: 30px;
   height: 3px;

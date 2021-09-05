@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Apis.Translate.v2" Version="1.52.0.875" />
+    <PackageReference Include="Google.Apis.Translate.v2" Version="1.54.0.875" />
     <PackageReference Include="System.Runtime.Serialization.Json" Version="4.3.0" />
     <PackageReference Include="System.Private.DataContractSerialization" Version="4.3.0" />
   </ItemGroup>
