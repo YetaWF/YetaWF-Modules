@@ -106,6 +106,7 @@ $smbuttonhorzmargin: .2em;
                     overflow:hidden;
                     white-space:nowrap;
                     padding:$headerverticalpadding $headerhorzpadding $headerverticalpadding $headerhorzpadding;
+                    text-overflow: ellipsis;
                     span {
                         cursor:default;
                     }

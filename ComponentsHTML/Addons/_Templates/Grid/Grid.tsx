@@ -932,6 +932,7 @@ namespace YetaWF_ComponentsHTML {
                     if (this.Setup.StaticData)
                         uri.addSearch("data", JSON.stringify(this.Setup.StaticData));
 
+                    this.setReloading(true);
                     $YetaWF.post(this.Setup.AjaxUrl, uri.toFormData(), (success: boolean, partial: GridPartialResult): void => {
                         if (success) {
                             $YetaWF.processClearDiv(this.TBody);
@@ -950,12 +951,14 @@ namespace YetaWF_ComponentsHTML {
                                 if (this.SubmitCheckCol >= 0)
                                     this.setInitialSubmitStatus();
                             }
+                            this.setReloading(false);
                             this.updateStatus();
                             if (done)
                                 done();
                             this.setExpandCollapseStatus(true);
                             this.sendEventSelect();
-                        }
+                        } else
+                            this.setReloading(false);
                     });
                 }
             }

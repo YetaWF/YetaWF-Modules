@@ -867,6 +867,7 @@ var YetaWF_ComponentsHTML;
                     uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
                     if (this.Setup.StaticData)
                         uri.addSearch("data", JSON.stringify(this.Setup.StaticData));
+                    this.setReloading(true);
                     $YetaWF.post(this.Setup.AjaxUrl, uri.toFormData(), function (success, partial) {
                         if (success) {
                             $YetaWF.processClearDiv(_this.TBody);
@@ -885,12 +886,15 @@ var YetaWF_ComponentsHTML;
                                 if (_this.SubmitCheckCol >= 0)
                                     _this.setInitialSubmitStatus();
                             }
+                            _this.setReloading(false);
                             _this.updateStatus();
                             if (done)
                                 done();
                             _this.setExpandCollapseStatus(true);
                             _this.sendEventSelect();
                         }
+                        else
+                            _this.setReloading(false);
                     });
                 }
             }
