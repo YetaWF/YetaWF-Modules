@@ -72,8 +72,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             if (model == null)
                 return string.Empty;
-            string? contents = await GetHelpFileContentsAsync(model);
-            if (contents == null)
+            string contents = await GetHelpFileContentsAsync(model);
+            if (string.IsNullOrWhiteSpace(contents))
                 return string.Empty;
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
