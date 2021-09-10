@@ -322,7 +322,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Adds all addons for the Text component to the current page.
         /// </summary>
         public static async Task IncludeExplicitAsync() { // this component is reusable so we need to explicitly include all js/css
-            await Manager.AddOnManager.AddTemplateAsync(AreaRegistration.CurrentPackage.AreaName, "Text", ComponentType.Edit);
+            await Manager.AddOnManager.AddTemplateFromUIHintAsync(null, "Text", ComponentType.Edit);
         }
         /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.

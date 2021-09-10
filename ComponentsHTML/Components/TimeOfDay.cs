@@ -1,8 +1,11 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
@@ -58,7 +61,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         /// <inheritdoc/>
         public override async Task IncludeAsync() {
-            await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, DateTimeEditComponent.TemplateName, ComponentType.Edit);
+            await Manager.AddOnManager.AddTemplateFromUIHintAsync(null, DateTimeEditComponent.TemplateName, ComponentType.Edit);
             await base.IncludeAsync();
         }
 
@@ -80,14 +83,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // model binding error handling
             string internalValue = setup.InitialCalendarDate = (model != null) ? $"{model.AsDateTime():o}" : string.Empty;
             string displayValue = Formatting.FormatTimeOfDay(model != null && model.HasTimeOfDay ? model : null);
-            if (Manager.HasModelBindingErrorManager && Manager.ModelBindingErrorManager.TryGetAttemptedValue(PropertyName, out string? attemptedValue)) {
-                displayValue = internalValue = attemptedValue;
-            }
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
 <div id='{ControlId}' class='yt_datetime yt_timeofday t_edit'>
-    <input type='hidden' {FieldSetup(FieldType.Validated)} value='{HAE(internalValue)}'>
+    <input type='hidden' {FieldSetup(FieldType.Validated, new List<YIClientValidation> { new ComponentsHTML_TimeOfDayValidation() })} value='{HAE(internalValue)}'>
     <input type='text'{GetClassAttribute()} maxlength='20' value='{HAE(displayValue)}'>
     <div class='t_sels'>
         <div class='t_time'>
@@ -101,6 +101,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DateTimeEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
             return Task.FromResult(tags);
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
+    internal class ComponentsHTML_TimeOfDayValidation : Attribute, YIClientValidation {
+
+        internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(TimeOfDayComponentBase), name, defaultValue, parms); }
+
+        public ComponentsHTML_TimeOfDayValidation() { }
+        public ValidationBase AddValidation(object container, PropertyData propData, string caption) {
+            return new ValidationBase {
+                Method = nameof(ComponentsHTML_TimeOfDayValidation),
+                Message = __ResStr("timeOfDayVal", "The time is invalid (field '{0}')", caption),
+            };
         }
     }
 }

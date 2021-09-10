@@ -18,7 +18,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(TextAreaSourceOnlyComponentBase), name, defaultValue, parms); }
 
-        internal const string TemplateName = "TextAreaSourceOnly";
+        /// <summary>
+        /// Defines the component's name.
+        /// </summary>
+        public const string TemplateName = "TextAreaSourceOnly";
 
         /// <summary>
         /// Returns the package implementing the component.

@@ -16,7 +16,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     public abstract class TextAreaComponentBase : YetaWFComponent {
 
-        internal const string TemplateName = "TextArea";
+        /// <summary>
+        /// Defines the component's name.
+        /// </summary>
+        public const string TemplateName = "TextArea";
 
         /// <summary>
         /// Returns the package implementing the component.

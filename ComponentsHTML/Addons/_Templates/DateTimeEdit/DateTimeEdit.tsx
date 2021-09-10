@@ -80,6 +80,13 @@ namespace YetaWF_ComponentsHTML {
         success: boolean;
     }
 
+    interface ValidationDateTime {
+        M: string;
+        Method: string;
+    }
+    interface ValidationDate extends ValidationDateTime { }
+    interface ValidationTimeOfDay extends ValidationDateTime { }
+
     export class DateTimeEditComponent extends YetaWF.ComponentBaseDataImpl {
 
         public static readonly TEMPLATE: string = "yt_datetime";
@@ -181,7 +188,7 @@ namespace YetaWF_ComponentsHTML {
                 $YetaWF.elementRemoveClass(this.Control, "t_focused");
                 this.close();
                 this.setHiddenInvalid(this.InputControl.value);
-                if (this.validateInput())
+                if (this.validateInput(true))
                     this.sendChangeEvent();
                 else
                     this.flashError();
@@ -337,7 +344,7 @@ namespace YetaWF_ComponentsHTML {
             FormsSupport.validateElement(this.InputHidden);
         }
 
-        private validateInput(): boolean {
+        public validateInput(updateHidden: boolean): boolean {
             // validate input control and update hidden field
             let text = this.InputControl.value.trim();
             if (text.length === 0) return true;
@@ -354,8 +361,10 @@ namespace YetaWF_ComponentsHTML {
                     if (!tt.success) return false;
                     text = tt.text;
                     if (text.length > 0) return false;
-                    this.SelectedUser = dt.token;
-                    this.TimeSelectedUser = tt.token;
+                    if (updateHidden) {
+                        this.SelectedUser = dt.token;
+                        this.TimeSelectedUser = tt.token;
+                    }
                     break;
                 }
                 case DateTimeStyleEnum.Date:
@@ -363,17 +372,20 @@ namespace YetaWF_ComponentsHTML {
                     if (!dt.success) return false;
                     text = dt.text;
                     if (text.length > 0) return false;
-                    this.dateSelectedValue = dt.token;
+                    if (updateHidden)
+                        this.dateSelectedValue = dt.token;
                     break;
                 case DateTimeStyleEnum.Time:
                     let tt = this.extractInputTime(text);
                     if (!tt.success) return false;
                     text = tt.text;
                     if (text.length > 0) return false;
-                    this.TimeSelectedUser = tt.token;
+                    if (updateHidden)
+                        this.TimeSelectedUser = tt.token;
                     break;
             }
-            this.setHidden(this.SelectedUser);
+            if (updateHidden)
+                this.setHidden(this.SelectedUser);
             return true;
         }
 
@@ -1316,6 +1328,18 @@ namespace YetaWF_ComponentsHTML {
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: CustomEvent<YetaWF.DetailsEventContainerResize>): boolean => {
         DateTimeEditComponent.closeAll();
         return true;
+    });
+    YetaWF_ComponentsHTML_Validation.registerValidator("componentshtml_datetime", (form: HTMLFormElement, elem: HTMLElement, val: ValidationDateTime): boolean => {
+        let comp = DateTimeEditComponent.getControlFromTag<DateTimeEditComponent>(elem, DateTimeEditComponent.SELECTOR);
+        return comp.validateInput(false);
+    });
+    YetaWF_ComponentsHTML_Validation.registerValidator("componentshtml_date", (form: HTMLFormElement, elem: HTMLElement, val: ValidationDate): boolean => {
+        let comp = DateTimeEditComponent.getControlFromTag<DateTimeEditComponent>(elem, DateTimeEditComponent.SELECTOR);
+        return comp.validateInput(false);
+    });
+    YetaWF_ComponentsHTML_Validation.registerValidator("componentshtml_timeofday", (form: HTMLFormElement, elem: HTMLElement, val: ValidationTimeOfDay): boolean => {
+        let comp = DateTimeEditComponent.getControlFromTag<DateTimeEditComponent>(elem, DateTimeEditComponent.SELECTOR);
+        return comp.validateInput(false);
     });
 }
 

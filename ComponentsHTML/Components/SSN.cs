@@ -61,8 +61,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         /// <inheritdoc/>
         public override async Task IncludeAsync() {
-            await Manager.AddOnManager.AddTemplateAsync(AreaRegistration.CurrentPackage.AreaName, "MaskedEdit", ComponentType.Edit);
-            await Manager.AddOnManager.AddTemplateAsync(AreaRegistration.CurrentPackage.AreaName, "Text", ComponentType.Edit);
+            await Manager.AddOnManager.AddTemplateFromUIHintAsync(null, "MaskedEdit", ComponentType.Edit);
+            await Manager.AddOnManager.AddTemplateFromUIHintAsync(null, "Text", ComponentType.Edit);
             await base.IncludeAsync();
         }
         /// <inheritdoc/>

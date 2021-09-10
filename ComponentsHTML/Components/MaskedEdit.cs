@@ -6,23 +6,12 @@ using YetaWF.Core.Components;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
-    internal class NumberSetup {
-        public double Min { get; set; }
-        public double Max { get; set; }
-        public double Step { get; set; }
-        public string? Lead { get; set; }
-        public string? Trail { get; set; }
-        public int Digits { get; set; }
-        public string? Currency { get; set; }
-        public string? Locale { get; set; }
-    }
-
     /// <summary>
-    /// Base class for the Number component implementation. Used to load the JavaScript/CSS support for the Number component.
+    /// Base class for the MaskedEdit component implementation. Used to load the JavaScript/CSS support for the MaskedEdit component.
     /// </summary>
-    public abstract class NumberComponentBase : YetaWFComponent {
+    public abstract class MaskedEditComponentBase : YetaWFComponent {
 
-        internal const string TemplateName = "Number";
+        internal const string TemplateName = "MaskedEdit";
 
         /// <inheritdoc/>
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
@@ -31,9 +20,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     }
 
     /// <summary>
-    /// Renders nothing. Used to load the JavaScript/CSS support for the Number component.
+    /// Renders nothing. Used to load the JavaScript/CSS support for the MaskedEdit component.
     /// </summary>
-    public class NumberEditComponent : NumberComponentBase, IYetaWFComponent<object?> {
+    public class MaskedEditEditComponent : MaskedEditComponentBase, IYetaWFComponent<object?> {
 
         /// <inheritdoc/>
         public override ComponentType GetComponentType() { return ComponentType.Edit; }

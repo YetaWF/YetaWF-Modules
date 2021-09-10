@@ -124,7 +124,7 @@ var YetaWF_ComponentsHTML;
                 $YetaWF.elementRemoveClass(_this.Control, "t_focused");
                 _this.close();
                 _this.setHiddenInvalid(_this.InputControl.value);
-                if (_this.validateInput())
+                if (_this.validateInput(true))
                     _this.sendChangeEvent();
                 else
                     _this.flashError();
@@ -309,7 +309,7 @@ var YetaWF_ComponentsHTML;
             $YetaWF.sendCustomEvent(this.Control, DateTimeEditComponent.EVENTCHANGE);
             FormsSupport.validateElement(this.InputHidden);
         };
-        DateTimeEditComponent.prototype.validateInput = function () {
+        DateTimeEditComponent.prototype.validateInput = function (updateHidden) {
             // validate input control and update hidden field
             var text = this.InputControl.value.trim();
             if (text.length === 0)
@@ -331,8 +331,10 @@ var YetaWF_ComponentsHTML;
                     text = tt_1.text;
                     if (text.length > 0)
                         return false;
-                    this.SelectedUser = dt_1.token;
-                    this.TimeSelectedUser = tt_1.token;
+                    if (updateHidden) {
+                        this.SelectedUser = dt_1.token;
+                        this.TimeSelectedUser = tt_1.token;
+                    }
                     break;
                 }
                 case DateTimeStyleEnum.Date:
@@ -342,7 +344,8 @@ var YetaWF_ComponentsHTML;
                     text = dt.text;
                     if (text.length > 0)
                         return false;
-                    this.dateSelectedValue = dt.token;
+                    if (updateHidden)
+                        this.dateSelectedValue = dt.token;
                     break;
                 case DateTimeStyleEnum.Time:
                     var tt = this.extractInputTime(text);
@@ -351,10 +354,12 @@ var YetaWF_ComponentsHTML;
                     text = tt.text;
                     if (text.length > 0)
                         return false;
-                    this.TimeSelectedUser = tt.token;
+                    if (updateHidden)
+                        this.TimeSelectedUser = tt.token;
                     break;
             }
-            this.setHidden(this.SelectedUser);
+            if (updateHidden)
+                this.setHidden(this.SelectedUser);
             return true;
         };
         DateTimeEditComponent.prototype.extractInputDate = function (text) {
@@ -1309,6 +1314,18 @@ var YetaWF_ComponentsHTML;
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, function (ev) {
         DateTimeEditComponent.closeAll();
         return true;
+    });
+    YetaWF_ComponentsHTML_Validation.registerValidator("componentshtml_datetime", function (form, elem, val) {
+        var comp = DateTimeEditComponent.getControlFromTag(elem, DateTimeEditComponent.SELECTOR);
+        return comp.validateInput(false);
+    });
+    YetaWF_ComponentsHTML_Validation.registerValidator("componentshtml_date", function (form, elem, val) {
+        var comp = DateTimeEditComponent.getControlFromTag(elem, DateTimeEditComponent.SELECTOR);
+        return comp.validateInput(false);
+    });
+    YetaWF_ComponentsHTML_Validation.registerValidator("componentshtml_timeofday", function (form, elem, val) {
+        var comp = DateTimeEditComponent.getControlFromTag(elem, DateTimeEditComponent.SELECTOR);
+        return comp.validateInput(false);
     });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 

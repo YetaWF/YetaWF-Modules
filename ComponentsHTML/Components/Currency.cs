@@ -101,7 +101,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         /// <inheritdoc/>
         public override async Task IncludeAsync() {
-            await Manager.AddOnManager.AddTemplateAsync(AreaRegistration.CurrentPackage.AreaName, "Number", ComponentType.Edit);
+            await Manager.AddOnManager.AddTemplateFromUIHintAsync(null, "Number", ComponentType.Edit);
             await base.IncludeAsync();
         }
 
@@ -143,10 +143,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             string? internalValue = model?.ToString();
             string displayValue = model != null ? ((decimal)model).ToString(currency.Format) : string.Empty;
-            if (Manager.HasModelBindingErrorManager && Manager.ModelBindingErrorManager.TryGetAttemptedValue(PropertyName, out string? attemptedValue)) {
-                displayValue = internalValue = attemptedValue;
-            }
-
             placeHolder = string.IsNullOrWhiteSpace(placeHolder) ? string.Empty : $" placeholder={HAE(placeHolder)}";
 
             string tags =

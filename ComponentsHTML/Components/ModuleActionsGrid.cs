@@ -33,7 +33,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         /// <inheritdoc/>
         public override async Task IncludeAsync() {
-            await Manager.AddOnManager.AddTemplateFromUIHintAsync(ModuleActionsComponent.TemplateName, YetaWFComponentBase.ComponentType.Display);
+            await Manager.AddOnManager.AddTemplateFromUIHintAsync(null, ModuleActionsComponent.TemplateName, YetaWFComponentBase.ComponentType.Display);
             await base.IncludeAsync();
         }
 

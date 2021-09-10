@@ -87,16 +87,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             public TimeOfDay Start { get; set; }
             [Caption("To"), Description("Ending time")]
             [UIHint("TimeOfDay")]
-            [DayTimeRangeToValidation, RequiredIf(nameof(Closed), false)]
+            [ComponentsHTML_DayTimeRangeToValidation, RequiredIf(nameof(Closed), false)]
             public TimeOfDay End { get; set; }
 
             [Caption("From"), Description("Starting time")]
             [UIHint("TimeOfDay")]
-            [DayTimeRangeFrom2Validation, RequiredIf(nameof(Additional), true)]
+            [ComponentsHTML_DayTimeRangeFrom2Validation, RequiredIf(nameof(Additional), true)]
             public TimeOfDay Start2 { get; set; }
             [Caption("To"), Description("Ending time")]
             [UIHint("TimeOfDay")]
-            [DayTimeRangeToValidation, RequiredIf(nameof(Additional), true)]
+            [ComponentsHTML_DayTimeRangeToValidation, RequiredIf(nameof(Additional), true)]
             public TimeOfDay End2 { get; set; }
 
             [ResourceRedirect(nameof(AdditionalFieldCaption), nameof(AdditionalFieldDescription))]
@@ -168,28 +168,28 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
-        internal class DayTimeRangeToValidation : Attribute, YIClientValidation {
+        internal class ComponentsHTML_DayTimeRangeToValidation : Attribute, YIClientValidation {
 
             internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(DayTimeRangeComponent), name, defaultValue, parms); }
 
-            public DayTimeRangeToValidation() { }
+            public ComponentsHTML_DayTimeRangeToValidation() { }
             public ValidationBase AddValidation(object container, PropertyData propData, string caption) {
                 return new ValidationBase {
-                    Method = nameof(DayTimeRangeToValidation),
+                    Method = nameof(ComponentsHTML_DayTimeRangeToValidation),
                     Message = __ResStr("dtrTo", "The end time in the field labeled '{0}' must be later than the start time", caption),
                 };
             }
         }
 
         [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
-        internal class DayTimeRangeFrom2Validation : Attribute, YIClientValidation {
+        internal class ComponentsHTML_DayTimeRangeFrom2Validation : Attribute, YIClientValidation {
 
             internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(DayTimeRangeComponent), name, defaultValue, parms); }
 
-            public DayTimeRangeFrom2Validation() { }
+            public ComponentsHTML_DayTimeRangeFrom2Validation() { }
             public ValidationBase AddValidation(object container, PropertyData propData, string caption) {
                 return new ValidationBase {
-                    Method = nameof(DayTimeRangeFrom2Validation),
+                    Method = nameof(ComponentsHTML_DayTimeRangeFrom2Validation),
                     Message = __ResStr("dtrFrom2", "The starting time in the field labeled '{0}' must be later than the start and end time of the first time range", caption),
                 };
             }

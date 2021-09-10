@@ -62,18 +62,19 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Includes required JavaScript, CSS files for this component.
         /// </summary>
         public virtual async Task IncludeAsync() {
-            await Manager.AddOnManager.AddTemplateAsync(Package.AreaName, GetTemplateName(), GetComponentType());
+            await Manager.AddOnManager.AddBasicTemplateAsync(GetPackage().AreaName, GetTemplateName(), GetComponentType());
         }
 
         /// <summary>
         /// Returns HTML attributes and name= attribute for the component, used on the HTML tag.
         /// </summary>
         /// <param name="fieldType">The type of the field.</param>
+        /// <param name="validations">Optional list of additional validations.</param>
         /// <remarks>FieldSetup should be call first, as it adds entries to the HtmlAttributes collection, including additional CSS classes.
         /// This is used for the main tag of a template. Automatically adds the components HtmlAttributes.
         /// 
         /// Adds validation attributes depending on the field's type <paramref name="fieldType"/>.</remarks>
-        public string FieldSetup(FieldType fieldType) {
+        public string FieldSetup(FieldType fieldType, List<YIClientValidation>? validations = null) {
             HtmlBuilder hb = new HtmlBuilder();
             switch (fieldType) {
                 case FieldType.Anonymous:
@@ -88,9 +89,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     if (!string.IsNullOrWhiteSpace(errClass))
                         HtmlBuilder.AddClass(HtmlAttributes, errClass);
                     // client side validation
-                    string validations = GetValidation();
-                    if (!string.IsNullOrEmpty(validations))
-                        HtmlAttributes.Add("data-v", validations);
+                    string validationData = GetValidation(validations);
+                    if (!string.IsNullOrEmpty(validationData))
+                        HtmlAttributes.Add("data-v", validationData);
                     break;
             }
             hb.Append(HtmlBuilder.Attributes(HtmlAttributes));
@@ -120,10 +121,13 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return string.Empty;
         }
 
-        private string GetValidation() {
+        private string GetValidation(List<YIClientValidation>? extraValidations = null) {
             // Build validation attribute
             List<object> objs = new List<object>();
-            foreach (YIClientValidation val in PropData.ClientValidationAttributes) {
+            List<YIClientValidation>  validations = PropData.ClientValidationAttributes;
+            if (extraValidations != null)
+                validations.AddRange(extraValidations);
+            foreach (YIClientValidation val in validations) {
                 // TODO: GetCaption can fail for redirects (ModuleDefinition) so we can't call it when there are no validation attributes
                 // GridAllowedRole and GridAllowedUser use a ResourceRedirectList with a property OUTSIDE of the model. This only works in grids (where it is used)
                 // but breaks when used elsewhere (like here) so we only call GetCaption if there is a validation attribute (FOR NOW).

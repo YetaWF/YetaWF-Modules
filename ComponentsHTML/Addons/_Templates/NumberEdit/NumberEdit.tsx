@@ -68,14 +68,14 @@ namespace YetaWF_ComponentsHTML {
             warn.innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_exclamation_triangle;
             // icons used: fas-caret-up, fas-caret-down
             let updown =
-                <div class="t_updown">
-                    <div class="t_up">
+                <div class="t_number_updown">
+                    <div class="t_number_up">
                     </div>
-                    <div class="t_down">
+                    <div class="t_number_down">
                     </div>
                 </div>;
-            $YetaWF.getElement1BySelector(".t_up", [updown]).innerHTML =  YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_up;
-            $YetaWF.getElement1BySelector(".t_down", [updown]).innerHTML =  YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_down;
+            $YetaWF.getElement1BySelector(".t_number_up", [updown]).innerHTML =  YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_up;
+            $YetaWF.getElement1BySelector(".t_number_down", [updown]).innerHTML =  YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_down;
 
             this.InputControl.insertAdjacentElement("afterend", updown);
             this.InputControl.insertAdjacentElement("afterend", warn);
@@ -125,21 +125,21 @@ namespace YetaWF_ComponentsHTML {
                 return true;
             });
 
-            $YetaWF.registerEventHandler(this.Control, "mousedown", ".t_up", (ev: Event): boolean => {
+            $YetaWF.registerEventHandler(this.Control, "mousedown", ".t_number_up", (ev: Event): boolean => {
                 if (!this.enabled) return true;
                 this.InputControl.focus();
                 this.setNewSpinValue(true);
                 this.startSpin(true);
                 return false;
             });
-            $YetaWF.registerEventHandler(this.Control, "mousedown", ".t_down", (ev: Event): boolean => {
+            $YetaWF.registerEventHandler(this.Control, "mousedown", ".t_number_down", (ev: Event): boolean => {
                 if (!this.enabled) return true;
                 this.InputControl.focus();
                 this.setNewSpinValue(false);
                 this.startSpin(false);
                 return false;
             });
-            $YetaWF.registerMultipleEventHandlers([this.Control], ["mouseup", "mouseout"], ".t_down,.t_up", (ev: Event): boolean => {
+            $YetaWF.registerMultipleEventHandlers([this.Control], ["mouseup", "mouseout"], ".t_number_down,.t_number_up", (ev: Event): boolean => {
                 if (!this.enabled) return true;
                 this.clearSpin();
                 return false;

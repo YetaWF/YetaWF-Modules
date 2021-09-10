@@ -139,7 +139,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <inheritdoc/>
         public override async Task IncludeAsync() {
             // Add required menu support
-            await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, "MenuUL", ComponentType.Display);
+            await Manager.AddOnManager.AddTemplateFromUIHintAsync(null, "MenuUL", ComponentType.Display);
             await base.IncludeAsync();
         }
 
@@ -1019,7 +1019,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             } else {
                 if (!Manager.IsPostRequest) {
                     // when initially rendering a grid with 0 records, we have to prepare for all templates
-                    await YetaWFComponentExtender.AddComponentsForType(model.RecordType);
+                    await YetaWFComponentExtender.AddComponentSupportForType(model.RecordType);
                 }
             }
 

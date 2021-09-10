@@ -26,7 +26,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         /// <inheritdoc/>
         public override async Task IncludeAsync() {
-            await Manager.AddOnManager.AddTemplateAsync(AreaRegistration.CurrentPackage.AreaName, "Number", ComponentType.Edit);
+            await Manager.AddOnManager.AddTemplateFromUIHintAsync(null, "Number", ComponentType.Edit);
             await base.IncludeAsync();
         }
 

@@ -44,7 +44,7 @@
 .yt_number_container.t_readonly {
   opacity: var(--body-dis-opacity);
 }
-.yt_number_container .t_updown {
+.yt_number_container .t_number_updown {
   position: absolute;
   top: 0;
   right: 0;
@@ -53,10 +53,10 @@
   text-align: center;
   border-left: var(--dd-border);
 }
-.yt_number_container .t_up, .yt_number_container .t_down {
+.yt_number_container .t_number_up, .yt_number_container .t_number_down {
   height: 50%;
 }
-.yt_number_container .t_up svg, .yt_number_container .t_down svg {
+.yt_number_container .t_number_up svg, .yt_number_container .t_number_down svg {
   width: 1em;
   height: 1em;
   vertical-align: top;

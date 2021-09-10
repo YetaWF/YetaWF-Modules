@@ -61,7 +61,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Called by the framework when the component is used so the component can add component specific addons.
         /// </summary>
         public override async Task IncludeAsync() {
-            await Manager.AddOnManager.AddTemplateAsync(AreaRegistration.CurrentPackage.AreaName, "TimeSpan", ComponentType.Edit);
+            await Manager.AddOnManager.AddTemplateFromUIHintAsync(null, "TimeSpan", ComponentType.Edit);
             await base.IncludeAsync();
         }
         /// <summary>

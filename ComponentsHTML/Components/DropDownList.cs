@@ -107,7 +107,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Adds all addons for the DropDownList component to the current page.
         /// </summary>
         public static async Task IncludeExplicitAsync() { // this component is reusable so we need to explicitly include all js/css
-            await Manager.AddOnManager.AddTemplateAsync(AreaRegistration.CurrentPackage.AreaName, "DropDownList",  ComponentType.Edit);
+            await Manager.AddOnManager.AddTemplateFromUIHintAsync(null, "DropDownList",  ComponentType.Edit);
         }
         /// <inheritdoc/>
         public Task<string> RenderAsync(TYPE model) {

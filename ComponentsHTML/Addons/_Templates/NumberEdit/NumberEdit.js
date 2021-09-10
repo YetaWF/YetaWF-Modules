@@ -42,11 +42,11 @@ var YetaWF_ComponentsHTML;
             var warn = $YetaWF.createElement("div", { class: "t_warn", style: "display:none" });
             warn.innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_exclamation_triangle;
             // icons used: fas-caret-up, fas-caret-down
-            var updown = $YetaWF.createElement("div", { class: "t_updown" },
-                $YetaWF.createElement("div", { class: "t_up" }),
-                $YetaWF.createElement("div", { class: "t_down" }));
-            $YetaWF.getElement1BySelector(".t_up", [updown]).innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_up;
-            $YetaWF.getElement1BySelector(".t_down", [updown]).innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_down;
+            var updown = $YetaWF.createElement("div", { class: "t_number_updown" },
+                $YetaWF.createElement("div", { class: "t_number_up" }),
+                $YetaWF.createElement("div", { class: "t_number_down" }));
+            $YetaWF.getElement1BySelector(".t_number_up", [updown]).innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_up;
+            $YetaWF.getElement1BySelector(".t_number_down", [updown]).innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_caret_down;
             _this.InputControl.insertAdjacentElement("afterend", updown);
             _this.InputControl.insertAdjacentElement("afterend", warn);
             $YetaWF.registerMultipleEventHandlers([_this.InputControl], ["change", "input"], null, function (ev) {
@@ -100,7 +100,7 @@ var YetaWF_ComponentsHTML;
                 }
                 return true;
             });
-            $YetaWF.registerEventHandler(_this.Control, "mousedown", ".t_up", function (ev) {
+            $YetaWF.registerEventHandler(_this.Control, "mousedown", ".t_number_up", function (ev) {
                 if (!_this.enabled)
                     return true;
                 _this.InputControl.focus();
@@ -108,7 +108,7 @@ var YetaWF_ComponentsHTML;
                 _this.startSpin(true);
                 return false;
             });
-            $YetaWF.registerEventHandler(_this.Control, "mousedown", ".t_down", function (ev) {
+            $YetaWF.registerEventHandler(_this.Control, "mousedown", ".t_number_down", function (ev) {
                 if (!_this.enabled)
                     return true;
                 _this.InputControl.focus();
@@ -116,7 +116,7 @@ var YetaWF_ComponentsHTML;
                 _this.startSpin(false);
                 return false;
             });
-            $YetaWF.registerMultipleEventHandlers([_this.Control], ["mouseup", "mouseout"], ".t_down,.t_up", function (ev) {
+            $YetaWF.registerMultipleEventHandlers([_this.Control], ["mouseup", "mouseout"], ".t_number_down,.t_number_up", function (ev) {
                 if (!_this.enabled)
                     return true;
                 _this.clearSpin();

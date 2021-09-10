@@ -78,8 +78,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Adds all addons for the DropDownSearch component to the current page.
         /// </summary>
         public static async Task IncludeExplicitAsync() { // this component is reusable so we need to explicitly include all js/css
-            await Manager.AddOnManager.AddTemplateFromUIHintAsync("Text", ComponentType.Edit);// input is uses Text css
-            await Manager.AddOnManager.AddTemplateAsync(AreaRegistration.CurrentPackage.AreaName, DropDownSearchComponent.TemplateName, ComponentType.Edit);
+            await Manager.AddOnManager.AddTemplateFromUIHintAsync(null, "Text", ComponentType.Edit);// input is uses Text css
+            await Manager.AddOnManager.AddTemplateFromUIHintAsync(null, DropDownSearchComponent.TemplateName, ComponentType.Edit);
         }
         /// <inheritdoc/>
         public Task<string> RenderAsync(TYPE model) {

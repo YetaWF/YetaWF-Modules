@@ -71,6 +71,12 @@
   -webkit-filter: brightness(85%);
           filter: brightness(85%);
 }
+.y_button img, .y_buttonform img {
+  margin-right: 0.5ch;
+}
+.y_button i, .y_buttonform i {
+  margin-right: 0.5ch;
+}
 
 .y_buttonform {
   margin: 3px;

@@ -56,7 +56,7 @@ $spinwidth: 2em;
         opacity: var(--body-dis-opacity);
     }
 
-    .t_updown {
+    .t_number_updown {
         position: absolute;
         top: 0;
         right: 0;
@@ -69,7 +69,7 @@ $spinwidth: 2em;
         // border-top-left-radius: 0;
         // border-bottom-left-radius: 0;
     }
-    .t_up, .t_down {
+    .t_number_up, .t_number_down {
         height:50%;
         svg {
             width:$w;

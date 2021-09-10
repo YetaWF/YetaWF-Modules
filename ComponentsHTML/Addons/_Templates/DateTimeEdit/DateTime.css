@@ -191,10 +191,10 @@
   position: absolute;
   top: 0;
   bottom: 0px;
-  width: 1em;
-  height: 1em;
+  width: 1.4em;
+  height: 1.4em;
   margin: 0.1em;
-  padding: 0.3em;
+  padding: 0.2em;
 }
 #yt_datetime_calendarpopup .t_container .t_header .t_prev svg:hover, #yt_datetime_calendarpopup .t_container .t_header .t_next svg:hover {
   background: var(--tbl-header-bg-hover);

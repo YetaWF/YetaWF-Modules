@@ -36,7 +36,7 @@ namespace YetaWF.Modules.ComponentsHTML {
 
             if (!string.IsNullOrWhiteSpace(contents)) {
 
-                await Manager.AddOnManager.AddTemplateFromUIHintAsync(ModuleActionsComponent.TemplateName, YetaWFComponentBase.ComponentType.Display); // action icons
+                await Manager.AddOnManager.AddTemplateFromUIHintAsync(null, ModuleActionsComponent.TemplateName, YetaWFComponentBase.ComponentType.Display); // action icons
 
                 hb.Append($@"
 <div class='{Manager.AddOnManager.CheckInvokedCssModule(cssClass)}'>
@@ -62,7 +62,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             if (!string.IsNullOrWhiteSpace(menuContents)) {
 
                 await Manager.AddOnManager.AddAddOnNamedAsync(Package.AreaName, "Modules");// various module support
-                await Manager.AddOnManager.AddTemplateAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, "MenuUL", YetaWFComponentBase.ComponentType.Display);
+                await Manager.AddOnManager.AddTemplateFromUIHintAsync(null, "MenuUL", YetaWFComponentBase.ComponentType.Display);
 
                 hb.Append($@"
 <div class={Manager.AddOnManager.CheckInvokedCssModule(Globals.CssModuleMenuEditIcon)} style='display:none'>
@@ -92,7 +92,7 @@ namespace YetaWF.Modules.ComponentsHTML {
             // check if we're in the right mode
             if (!await action.RendersSomethingAsync()) return string.Empty;
 
-            await Manager.AddOnManager.AddTemplateFromUIHintAsync(ModuleActionsComponent.TemplateName, YetaWFComponentBase.ComponentType.Display);// this is needed because we're not used by templates
+            await Manager.AddOnManager.AddTemplateFromUIHintAsync(null, ModuleActionsComponent.TemplateName, YetaWFComponentBase.ComponentType.Display);// this is needed because we're not used by templates
 
             if (!string.IsNullOrWhiteSpace(action.ConfirmationText) && (action.Style != ModuleAction.ActionStyleEnum.Post && action.Style != ModuleAction.ActionStyleEnum.Nothing))
                 throw new InternalError("When using ConfirmationText, the Style property must be set to Post");

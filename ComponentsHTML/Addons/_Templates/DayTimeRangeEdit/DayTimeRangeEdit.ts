@@ -93,45 +93,46 @@ namespace YetaWF_ComponentsHTML {
             }
         }
     }
+
+    YetaWF_ComponentsHTML_Validation.registerValidator("componentshtml_daytimerangeto", (form: HTMLFormElement, elem: HTMLElement, val: YetaWF_ComponentsHTML.ValidationBase): boolean => {
+
+        let value = (elem as HTMLInputElement).value;
+        if (!value) return true;
+
+        const isRange1 = $YetaWF.elementClosestCond(elem, ".t_to") != null;
+        const control = $YetaWF.elementClosestCond(elem, ".yt_daytimerange");
+        if (!control) return false;
+
+        var fromRange: HTMLInputElement;
+        if (isRange1)
+            fromRange = $YetaWF.getElement1BySelector("input[name$='.Start']", [control]) as HTMLInputElement;
+        else
+            fromRange = $YetaWF.getElement1BySelector("input[name$='.Start2']", [control]) as HTMLInputElement;
+        try {
+            const dtTo = new Date(value);
+            const dtFrom = new Date(fromRange.value);
+            if (dtTo >= dtFrom) return true;
+        } finally { }
+
+        return false;
+    });
+
+    YetaWF_ComponentsHTML_Validation.registerValidator("componentshtml_daytimerangefrom2", (form: HTMLFormElement, elem: HTMLElement, val: YetaWF_ComponentsHTML.ValidationBase): boolean => {
+
+        let value = (elem as HTMLInputElement).value;
+        if (!value) return true;
+
+        const control = $YetaWF.elementClosestCond(elem, ".yt_daytimerange");
+        if (!control) return false;
+
+        const endRange1 = $YetaWF.getElement1BySelector("input[name$='.End']", [control]) as HTMLInputElement;
+        try {
+            const dtFrom2 = new Date(value);
+            const dtTo1 = new Date(endRange1.value);
+            if (dtFrom2 >= dtTo1) return true;
+        } finally { }
+
+        return false;
+    });
 }
 
-YetaWF_ComponentsHTML_Validation.registerValidator("daytimerangeto", (form: HTMLFormElement, elem: HTMLElement, val: YetaWF_ComponentsHTML.ValidationBase): boolean => {
-
-    let value = (elem as HTMLInputElement).value;
-    if (!value) return true;
-
-    const isRange1 = $YetaWF.elementClosestCond(elem, ".t_to") != null;
-    const control = $YetaWF.elementClosestCond(elem, ".yt_daytimerange");
-    if (!control) return false;
-
-    var fromRange: HTMLInputElement;
-    if (isRange1)
-        fromRange = $YetaWF.getElement1BySelector("input[name$='.Start']", [control]) as HTMLInputElement;
-    else
-        fromRange = $YetaWF.getElement1BySelector("input[name$='.Start2']", [control]) as HTMLInputElement;
-    try {
-        const dtTo = new Date(value);
-        const dtFrom = new Date(fromRange.value);
-        if (dtTo >= dtFrom) return true;
-    } finally { }
-
-    return false;
-});
-
-YetaWF_ComponentsHTML_Validation.registerValidator("daytimerangefrom2", (form: HTMLFormElement, elem: HTMLElement, val: YetaWF_ComponentsHTML.ValidationBase): boolean => {
-
-    let value = (elem as HTMLInputElement).value;
-    if (!value) return true;
-
-    const control = $YetaWF.elementClosestCond(elem, ".yt_daytimerange");
-    if (!control) return false;
-
-    const endRange1 = $YetaWF.getElement1BySelector("input[name$='.End']", [control]) as HTMLInputElement;
-    try {
-        const dtFrom2 = new Date(value);
-        const dtTo1 = new Date(endRange1.value);
-        if (dtFrom2 >= dtTo1) return true;
-    } finally { }
-
-    return false;
-});

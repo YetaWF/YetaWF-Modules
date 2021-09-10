@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
@@ -165,15 +166,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             // model binding error handling
             string internalValue = setup.InitialCalendarDate = model != null ? $"{model:o}" : string.Empty;
             string displayValue = Formatting.FormatDateTime(model);
-            if (Manager.HasModelBindingErrorManager && Manager.ModelBindingErrorManager.TryGetAttemptedValue(PropertyName, out string? attemptedValue)) {
-                displayValue = internalValue = attemptedValue;
-                setup.InitialCalendarDate = string.Empty;
-            }
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"
 <div id='{ControlId}' class='yt_datetime t_edit'>
-    <input type='hidden' {FieldSetup(FieldType.Validated)} value='{HAE(internalValue)}'>
+    <input type='hidden' {FieldSetup(FieldType.Validated, new List<YIClientValidation> { new ComponentsHTML_DateTimeValidation() })} value='{HAE(internalValue)}'>
     <input type='text'{GetClassAttribute()} maxlength='20' value='{HAE(displayValue)}'>
     <div class='t_sels'>
         <div class='t_date'>
@@ -190,6 +187,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DateTimeEditComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
             return Task.FromResult(tags);
+        }
+    }
+
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
+    internal class ComponentsHTML_DateTimeValidation : Attribute, YIClientValidation {
+
+        internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(DateTimeComponentBase), name, defaultValue, parms); }
+
+        public ComponentsHTML_DateTimeValidation() { }
+        public ValidationBase AddValidation(object container, PropertyData propData, string caption) {
+            return new ValidationBase {
+                Method = nameof(ComponentsHTML_DateTimeValidation),
+                Message = __ResStr("dateTimeVal", "The date/time is invalid (field '{0}')", caption),
+            };
         }
     }
 }
