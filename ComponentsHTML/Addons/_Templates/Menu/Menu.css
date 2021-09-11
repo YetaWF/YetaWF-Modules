@@ -34,6 +34,7 @@ ul.yt_menu.t_display.t_large > li > a {
   outline: none;
   text-decoration: none;
   padding: var(--mm-0-a-padding);
+  margin: 0;
   background: var(--mm-0-a-bg);
   color: var(--mm-0-a-clr);
   font: var(--mm-0-font);
@@ -101,6 +102,7 @@ ul.yt_menu.t_display.t_large > li > ul > li > a {
   outline: none;
   text-decoration: none;
   padding: var(--mm-1-a-padding);
+  margin: 0;
   background: var(--mm-1-a-bg);
   color: var(--mm-1-a-clr);
   font: var(--mm-1-font);
@@ -160,6 +162,7 @@ ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a {
   outline: none;
   text-decoration: none;
   padding: var(--mm-2-a-padding);
+  margin: 0;
   background: var(--mm-2-a-bg);
   color: var(--mm-2-a-clr);
   font: var(--mm-2-font);
@@ -176,6 +179,67 @@ ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a i, ul.yt_menu.t_displa
   margin-right: 0.5ch;
 }
 ul.yt_menu.t_display.t_large > li > ul > li > ul > li > a svg {
+  margin-left: auto;
+  right: 0.5em;
+  width: var(--mm-2-ddwidth);
+  height: var(--mm-2-ddheight);
+}
+ul.yt_menu.t_display.t_large > li > ul > li > ul > li > ul {
+  position: absolute;
+  z-index: 1000;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
+  flex-wrap: nowrap;
+  padding: var(--mm-2-padding);
+  margin: 0;
+  list-style: none;
+  background: var(--mm-2-bg);
+  color: var(--mm-2-clr);
+  border: var(--mm-2-border);
+  border-radius: var(--mm-2-border-radius);
+}
+ul.yt_menu.t_display.t_large > li > ul > li > ul > li > ul > li {
+  position: relative;
+  list-style: none;
+  line-height: 1;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  height: auto;
+  width: auto;
+  background: var(--mm-2-bg);
+  color: var(--mm-2-clr);
+  font: var(--mm-2-font);
+}
+ul.yt_menu.t_display.t_large > li > ul > li > ul > li > ul > li > a {
+  position: relative;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+          align-items: center;
+  outline: none;
+  text-decoration: none;
+  padding: var(--mm-2-a-padding);
+  margin: 0;
+  background: var(--mm-2-a-bg);
+  color: var(--mm-2-a-clr);
+  font: var(--mm-2-font);
+}
+ul.yt_menu.t_display.t_large > li > ul > li > ul > li > ul > li > a.t_path {
+  background: var(--mm-2-a-bg-path);
+  color: var(--mm-2-a-clr-path);
+}
+ul.yt_menu.t_display.t_large > li > ul > li > ul > li > ul > li > a:hover, ul.yt_menu.t_display.t_large > li > ul > li > ul > li > ul > li > a:focus {
+  background: var(--mm-2-a-bg-hover);
+  color: var(--mm-2-a-clr-hover);
+}
+ul.yt_menu.t_display.t_large > li > ul > li > ul > li > ul > li > a i, ul.yt_menu.t_display.t_large > li > ul > li > ul > li > ul > li > a img {
+  margin-right: 0.5ch;
+}
+ul.yt_menu.t_display.t_large > li > ul > li > ul > li > ul > li > a svg {
   margin-left: auto;
   right: 0.5em;
   width: var(--mm-2-ddwidth);
@@ -346,6 +410,63 @@ ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a i, ul.yt_menu.t_displa
   margin-right: 0.5ch;
 }
 ul.yt_menu.t_display.t_small > li > ul > li > ul > li > a svg {
+  position: absolute;
+  vertical-align: middle;
+  right: 0.5em;
+  width: var(--mm-2-ddwidth);
+  height: var(--mm-2-ddheight);
+  border: var(--mm-svg-small-border);
+  border-radius: var(--mm-svg-small-border-radius);
+}
+ul.yt_menu.t_display.t_small > li > ul > li > ul > li > ul {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+          flex-direction: column;
+  flex-wrap: nowrap;
+  width: 90%;
+  overflow: hidden;
+  margin: var(--mm-2-small-margin);
+  padding: var(--mm-2-small-padding);
+  list-style: none;
+  background: var(--mm-2-bg);
+  color: var(--mm-2-clr);
+  border: var(--mm-2-border);
+  border-radius: var(--mm-2-border-radius);
+}
+ul.yt_menu.t_display.t_small > li > ul > li > ul > li > ul > li {
+  list-style: none;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+  height: auto;
+  width: auto;
+  background: var(--mm-2-bg);
+  color: var(--mm-2-clr);
+  font: var(--mm-2-font);
+}
+ul.yt_menu.t_display.t_small > li > ul > li > ul > li > ul > li > a {
+  position: relative;
+  display: block;
+  outline: none;
+  padding: var(--mm-2-a-small-padding);
+  text-decoration: none;
+  background: var(--mm-2-a-bg);
+  color: var(--mm-2-a-clr);
+}
+ul.yt_menu.t_display.t_small > li > ul > li > ul > li > ul > li > a.t_path {
+  background: var(--mm-2-a-bg-path);
+  color: var(--mm-2-a-clr-path);
+}
+ul.yt_menu.t_display.t_small > li > ul > li > ul > li > ul > li > a:hover, ul.yt_menu.t_display.t_small > li > ul > li > ul > li > ul > li > a:focus {
+  background: var(--mm-2-a-bg-hover);
+  color: var(--mm-2-a-clr-hover);
+}
+ul.yt_menu.t_display.t_small > li > ul > li > ul > li > ul > li > a i, ul.yt_menu.t_display.t_small > li > ul > li > ul > li > ul > li > a img {
+  margin-right: 0.5ch;
+}
+ul.yt_menu.t_display.t_small > li > ul > li > ul > li > ul > li > a svg {
   position: absolute;
   vertical-align: middle;
   right: 0.5em;

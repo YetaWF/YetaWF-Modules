@@ -38,6 +38,7 @@ ul.yt_menu.t_display.t_large {
             text-decoration: none;
 
             padding:var(--mm-0-a-padding);
+            margin: 0;
 
             background: var(--mm-0-a-bg);
             color: var(--mm-0-a-clr);
@@ -112,6 +113,7 @@ ul.yt_menu.t_display.t_large {
                     text-decoration: none;
 
                     padding: var(--mm-1-a-padding);
+                    margin: 0;
 
                     background: var(--mm-1-a-bg);
                     color: var(--mm-1-a-clr);
@@ -176,6 +178,7 @@ ul.yt_menu.t_display.t_large {
                             text-decoration: none;
 
                             padding: var(--mm-2-a-padding);
+                            margin: 0;
 
                             background: var(--mm-2-a-bg);
                             color: var(--mm-2-a-clr);
@@ -197,6 +200,74 @@ ul.yt_menu.t_display.t_large {
                                 right: .5em;
                                 width: var(--mm-2-ddwidth);
                                 height: var(--mm-2-ddheight);
+                            }
+                        }
+                        > ul {
+                            position:absolute;
+                            z-index:1000;
+
+                            display: flex;
+                            flex-direction: column;
+                            flex-wrap: nowrap;
+
+                            padding:var(--mm-2-padding);
+                            margin:0;
+                            list-style:none;
+
+                            background: var(--mm-2-bg);
+                            color: var(--mm-2-clr);
+                            border: var(--mm-2-border);
+                            border-radius: var(--mm-2-border-radius);
+
+                            > li {
+
+                                position: relative;
+                                list-style: none;
+                                line-height:1;
+                                cursor:pointer;
+
+                                margin:0;
+                                padding:0;
+
+                                height:auto;
+                                width:auto;
+
+                                background: var(--mm-2-bg);
+                                color: var(--mm-2-clr);
+                                font: var(--mm-2-font);
+
+                                > a {
+                                    position:relative;
+                                    display:flex;
+                                    align-items: center;
+                                    outline:none;
+                                    text-decoration: none;
+
+                                    padding: var(--mm-2-a-padding);
+                                    margin: 0;
+
+                                    background: var(--mm-2-a-bg);
+                                    color: var(--mm-2-a-clr);
+                                    font: var(--mm-2-font);
+
+                                    &.t_path {
+                                        background: var(--mm-2-a-bg-path);
+                                        color: var(--mm-2-a-clr-path);
+                                    }
+                                    &:hover, &:focus {
+                                        background: var(--mm-2-a-bg-hover);
+                                        color: var(--mm-2-a-clr-hover);
+                                    }
+                                    i, img {
+                                        margin-right:.5ch;
+                                    }
+                                    svg {
+                                        margin-left: auto;
+                                        right: .5em;
+                                        width: var(--mm-2-ddwidth);
+                                        height: var(--mm-2-ddheight);
+                                    }
+                                }
                             }
                         }
                     }
@@ -395,6 +466,71 @@ ul.yt_menu.t_display.t_small {
                                 height: var(--mm-2-ddheight);
                                 border: var(--mm-svg-small-border);
                                 border-radius: var(--mm-svg-small-border-radius);
+                            }
+                        }
+                        > ul {
+
+                            display: flex;
+                            flex-direction: column;
+                            flex-wrap: nowrap;
+                            width: 90%;
+                            overflow: hidden;
+
+                            margin: var(--mm-2-small-margin);
+                            padding:var(--mm-2-small-padding);
+                            list-style:none;
+
+                            background: var(--mm-2-bg);
+                            color: var(--mm-2-clr);
+                            border: var(--mm-2-border);
+                            border-radius: var(--mm-2-border-radius);
+
+                            > li {
+
+                                list-style: none;
+                                line-height:1;
+
+                                margin:0;
+                                padding:0;
+
+                                height:auto;
+                                width:auto;
+
+                                background: var(--mm-2-bg);
+                                color: var(--mm-2-clr);
+                                font: var(--mm-2-font);
+
+                                > a {
+                                    position: relative;
+                                    display:block;
+                                    outline:none;
+                                    padding: var(--mm-2-a-small-padding);
+                                    text-decoration: none;
+
+                                    background: var(--mm-2-a-bg);
+                                    color: var(--mm-2-a-clr);
+
+                                    &.t_path {
+                                        background: var(--mm-2-a-bg-path);
+                                        color: var(--mm-2-a-clr-path);
+                                    }
+                                    &:hover, &:focus {
+                                        background: var(--mm-2-a-bg-hover);
+                                        color: var(--mm-2-a-clr-hover);
+                                    }
+                                    i, img {
+                                        margin-right:.5ch;
+                                    }
+                                    svg {
+                                        position: absolute;
+                                        vertical-align: middle;
+                                        right: .5em;
+                                        width: var(--mm-2-ddwidth);
+                                        height: var(--mm-2-ddheight);
+                                        border: var(--mm-svg-small-border);
+                                        border-radius: var(--mm-svg-small-border-radius);
+                                    }
+                                }
                             }
                         }
                     }
