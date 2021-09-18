@@ -77,6 +77,12 @@ var YetaWF_ComponentsHTML;
             $YetaWF.registerEventHandler(_this.InputControl, "keypress", null, function (ev) {
                 var key = ev.key;
                 switch (key) {
+                    case "-":
+                        if (_this.Setup.Min >= 0) {
+                            _this.flashError();
+                            return false;
+                        }
+                        break;
                     case "0":
                     case "1":
                     case "2":
