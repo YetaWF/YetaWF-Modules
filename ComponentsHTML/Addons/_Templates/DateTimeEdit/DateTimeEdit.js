@@ -124,8 +124,9 @@ var YetaWF_ComponentsHTML;
                 $YetaWF.elementRemoveClass(_this.Control, "t_focused");
                 _this.close();
                 _this.setHiddenInvalid(_this.InputControl.value);
-                if (_this.validateInput(true))
-                    _this.sendChangeEvent();
+                if (_this.validateInput(true)) {
+                    ; //this.sendChangeEvent();
+                }
                 else
                     _this.flashError();
                 return true;

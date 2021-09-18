@@ -188,9 +188,9 @@ namespace YetaWF_ComponentsHTML {
                 $YetaWF.elementRemoveClass(this.Control, "t_focused");
                 this.close();
                 this.setHiddenInvalid(this.InputControl.value);
-                if (this.validateInput(true))
-                    this.sendChangeEvent();
-                else
+                if (this.validateInput(true)) {
+                    ; //this.sendChangeEvent(); causes change event just leaving the field
+                } else
                     this.flashError();
                 return true;
             });
