@@ -502,10 +502,21 @@ var YetaWF_ComponentsHTML;
         }
         return true;
     });
-    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
-        var proplists = $YetaWF.getElementsBySelector(PropertyListComponent.SELECTOR, ev.detail.containers);
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTENTRESIZED, null, function (ev) {
+        var proplists = $YetaWF.getElementsBySelector(PropertyListComponent.SELECTOR);
         for (var _i = 0, proplists_3 = proplists; _i < proplists_3.length; _i++) {
             var proplist = proplists_3[_i];
+            if ($YetaWF.elementHas(proplist, ev.detail.tag)) {
+                var list = YetaWF.ComponentBaseDataImpl.getControlFromTag(proplist, PropertyListComponent.SELECTOR);
+                list.resize();
+            }
+        }
+        return true;
+    });
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
+        var proplists = $YetaWF.getElementsBySelector(PropertyListComponent.SELECTOR, ev.detail.containers);
+        for (var _i = 0, proplists_4 = proplists; _i < proplists_4.length; _i++) {
+            var proplist = proplists_4[_i];
             var list = YetaWF.ComponentBaseDataImpl.getControlFromTag(proplist, PropertyListComponent.SELECTOR);
             list.resize();
         }

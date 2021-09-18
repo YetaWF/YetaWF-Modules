@@ -572,6 +572,16 @@ namespace YetaWF_ComponentsHTML {
         }
         return true;
     });
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTENTRESIZED, null, (ev: CustomEvent<YetaWF.DetailsEventContentResized>): boolean => {
+        let proplists = $YetaWF.getElementsBySelector(PropertyListComponent.SELECTOR);
+        for (let proplist of proplists) {
+            if ($YetaWF.elementHas(proplist, ev.detail.tag)) {
+                let list = YetaWF.ComponentBaseDataImpl.getControlFromTag<PropertyListComponent>(proplist, PropertyListComponent.SELECTOR);
+                list.resize();
+            }
+        }
+        return true;
+    });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: CustomEvent<YetaWF.DetailsEventNavPageLoaded>): boolean => {
         let proplists = $YetaWF.getElementsBySelector(PropertyListComponent.SELECTOR, ev.detail.containers);
         for (let proplist of proplists) {
