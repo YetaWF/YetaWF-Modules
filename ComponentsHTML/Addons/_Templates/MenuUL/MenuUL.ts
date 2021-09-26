@@ -295,7 +295,6 @@ namespace YetaWF_ComponentsHTML {
                 this.isOpen = false;
 
                 if (this.Setup.AutoRemove) {
-                    this.destroy();
                     $YetaWF.processClearDiv(this.Control);
                     this.Control.remove();
                 }
