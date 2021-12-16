@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Identity.Views {
     {await model.ChangePasswordAction.RenderAsLinkAsync()}
 </div>");
 
-            Manager.ScriptManager.AddLast($@"$('#{module.ModuleHtmlId}').prependTo('body');");
+            Manager.ScriptManager.AddLast($@"document.body.insertBefore( $YetaWF.getElementById('{module.ModuleHtmlId}') , document.body.firstChild);");
 
             return hb.ToString();
         }

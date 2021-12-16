@@ -23,8 +23,6 @@ namespace YetaWF.Modules.Languages.Views {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            string btnReset = UniqueId();
-
             if (!LocalizationSupport.UseLocalizationResources) {
                 hb.Append($@"
 <div class='{Globals.CssDivWarning}'>
@@ -43,18 +41,10 @@ namespace YetaWF.Modules.Languages.Views {
     {await FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Apply, Text=this.__ResStr("btnApply", "Apply") },
         new FormButton() { ButtonType= ButtonTypeEnum.Submit },
-        new FormButton() { ButtonType= ButtonTypeEnum.Button, Text=this.__ResStr("btnReset", "Restore Defaults"), Title = this.__ResStr("btnResetTT", "Removes custom and installed localization resources for the current language (US-English default resources are never removed)"), Id = btnReset },
+        new FormButton() { ButtonType= ButtonTypeEnum.Button, Text=this.__ResStr("btnReset", "Restore Defaults"), Title = this.__ResStr("btnResetTT", "Removes custom and installed localization resources for the current language (US-English default resources are never removed)"), Name="Reset" },
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
     })}
 {await RenderEndFormAsync()}");
-
-            Manager.ScriptManager.AddLast($@"
-$('#{btnReset}').on('click', function (e) {{
-    var form = $YetaWF.Forms.getForm(this);
-    $YetaWF.alertYesNo('{JE(this.__ResStr("confirmResetText","Are you sure you want to restore the default settings?"))}', null, function () {{
-            $YetaWF.Forms.submit(form, true, 'RestoreDefaults=true');
-    }});
-}});");
 
             return hb.ToString();
         }
