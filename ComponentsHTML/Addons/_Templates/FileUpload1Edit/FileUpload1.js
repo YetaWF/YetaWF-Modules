@@ -33,113 +33,81 @@ var YetaWF_ComponentsHTML;
             _this.SuccessfullUploadCallback = null;
             _this.GetFileNameCallback = null;
             _this.Setup = setup;
-            _this.uploadButton = $YetaWF.getElement1BySelector(".t_upload", [_this.Control]);
-            _this.inputFileName = $YetaWF.getElement1BySelector("input.t_filename", [_this.Control]);
+            _this.UploadButton = $YetaWF.getElement1BySelector(".t_upload", [_this.Control]);
+            _this.InputFileName = $YetaWF.getElement1BySelector("input.t_filename", [_this.Control]);
             _this.ProgressBar = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond(YetaWF_ComponentsHTML.ProgressBarComponent.SELECTOR, YetaWF_ComponentsHTML.ProgressBarComponent.SELECTOR, [_this.Control]);
             if (_this.ProgressBar)
                 _this.ProgressBar.hide();
-            _this.$Control = $(_this.Control);
-            // trigger upload button
-            $YetaWF.registerEventHandler(_this.uploadButton, "click", null, function (ev) {
-                $(_this.inputFileName).trigger("click");
+            $YetaWF.registerEventHandler(_this.UploadButton, "click", null, function (ev) {
+                _this.InputFileName.click();
                 return false;
             });
-            // Uploader control
-            _this.$Control.dmUploader({
-                url: _this.Setup.SaveUrl,
-                //dataType: 'json',  //don't use otherwise response is not recognized in case of errors
-                //allowedTypes: '*',
-                //extFilter: 'jpg,png,gif',
-                fileName: "__filename",
-                onInit: function () { },
-                onBeforeUpload: function (id) {
-                    $YetaWF.setLoading(true);
-                },
-                onExtraData: function (id, data) {
-                    if (_this.GetFileNameCallback) {
-                        var filename = _this.GetFileNameCallback();
-                        data.append("__lastInternalName", filename); // the previous real filename of the file to remove
-                    }
-                    if (_this.Setup.SerializeForm) {
-                        var form = $YetaWF.Forms.getForm(_this.Control);
-                        var formData = $YetaWF.Forms.serializeFormArray(form);
-                        for (var _i = 0, formData_1 = formData; _i < formData_1.length; _i++) {
-                            var f = formData_1[_i];
-                            data.append(f.name, f.value);
-                        }
-                    }
-                },
-                onNewFile: function (id, file) {
-                    console.log("onNewFile #" + id + " " + file);
-                },
-                onComplete: function () {
-                    if (_this.ProgressBar)
-                        _this.ProgressBar.hide();
-                },
-                onUploadProgress: function (id, percent) {
-                    if (_this.ProgressBar) {
-                        _this.ProgressBar.show();
-                        _this.ProgressBar.value = Number(percent);
-                    }
-                },
-                onUploadError: function (id, message) {
-                    $YetaWF.setLoading(false);
-                    if (message === "")
-                        $YetaWF.error(YLocs.YetaWF_ComponentsHTML.StatusUploadNoResp);
-                    else
-                        $YetaWF.error(YLocs.YetaWF_ComponentsHTML.StatusUploadFailed.format(message));
-                },
-                onFileTypeError: function (file) {
-                    $YetaWF.error(YLocs.YetaWF_ComponentsHTML.FileTypeError);
-                },
-                onFileSizeError: function (file) {
-                    $YetaWF.error(YLocs.YetaWF_ComponentsHTML.FileSizeError);
-                },
-                onFallbackMode: function (message) {
-                    $YetaWF.error(YLocs.YetaWF_ComponentsHTML.FallbackMode);
-                },
-                onUploadSuccess: function (id, data) {
-                    //{
-                    //    "result":      "$YetaWF.confirm(\"Image \\\"logo_233x133.jpg\\\" successfully uploaded\");",
-                    //    "filename": "tempc8eb1eb6-31ef-4e5d-9100-9fab50761a81.jpg",
-                    //    "realFilename": "logo_233x133.jpg",
-                    //    "attributes": "233 x 123 (w x h)"
-                    //}
-                    $YetaWF.setLoading(false);
-                    if (typeof data === "string") {
-                        if (data.startsWith(YConfigs.Basics.AjaxJavascriptReturn)) {
-                            var script = data.substring(YConfigs.Basics.AjaxJavascriptReturn.length);
-                            // eslint-disable-next-line no-eval
-                            eval(script);
-                            return;
-                        }
-                        if (data.startsWith(YConfigs.Basics.AjaxJavascriptErrorReturn)) {
-                            var script = data.substring(YConfigs.Basics.AjaxJavascriptErrorReturn.length);
-                            // eslint-disable-next-line no-eval
-                            eval(script);
-                            return;
-                        }
-                        throw "Unexpected return value " + data;
-                    }
-                    // result has quotes around it
-                    if (_this.SuccessfullUploadCallback)
-                        _this.SuccessfullUploadCallback(data);
-                    // eslint-disable-next-line no-eval
-                    eval(data.Result);
-                },
+            $YetaWF.registerEventHandler(_this.Control, "drop", null, function (ev) {
+                var _a;
+                if (!$YetaWF.isEnabled(_this.Control))
+                    return false;
+                var files = (_a = ev.dataTransfer) === null || _a === void 0 ? void 0 : _a.files;
+                _this.InputFileName.files = files;
+                _this.uploadFile();
+                return false;
+            });
+            $YetaWF.registerEventHandler(_this.InputFileName, "change", null, function (ev) {
+                _this.uploadFile();
+                return false;
             });
             return _this;
         }
+        FileUpload1Component.prototype.uploadFile = function () {
+            var _this = this;
+            var fd = new FormData();
+            $YetaWF.setLoading(true);
+            if (this.ProgressBar)
+                this.ProgressBar.show();
+            var request = new XMLHttpRequest();
+            request.open("POST", this.Setup.SaveUrl, true);
+            //request.setRequestHeader // doesn't work
+            fd.append("__filename", this.InputFileName.files[0]);
+            if (this.GetFileNameCallback) {
+                var filename = this.GetFileNameCallback();
+                fd.append("__lastInternalName", filename); // the previous real filename of the file to remove
+            }
+            if (this.Setup.SerializeForm) {
+                var form = $YetaWF.Forms.getForm(this.Control);
+                var formData = $YetaWF.Forms.serializeFormArray(form);
+                for (var _i = 0, formData_1 = formData; _i < formData_1.length; _i++) {
+                    var f = formData_1[_i];
+                    fd.append(f.name, f.value);
+                }
+            }
+            request.onprogress = function (ev) {
+                var percent = 0;
+                var position = ev.loaded;
+                var total = ev.total;
+                if (ev.lengthComputable) {
+                    percent = Math.ceil(position / total * 100);
+                    if (_this.ProgressBar)
+                        _this.ProgressBar.value = Number(percent);
+                }
+            };
+            $YetaWF.handleReadyStateChange(request, function (success, response) {
+                if (_this.ProgressBar)
+                    _this.ProgressBar.hide();
+                if (success) {
+                    _this.InputFileName.files = null;
+                    _this.InputFileName.value = "";
+                    if (_this.SuccessfullUploadCallback)
+                        _this.SuccessfullUploadCallback(response);
+                    if (response.Result)
+                        eval(response.Result);
+                }
+            });
+            request.send(fd);
+        };
         // API
         FileUpload1Component.prototype.RemoveFile = function (name) {
-            $.ajax({
-                url: this.Setup.RemoveUrl,
-                type: "post",
-                data: "__internalName=" + encodeURIComponent(name) + "&__filename=" + encodeURIComponent(name),
-                success: function (result, textStatus, jqXHR) { },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    $YetaWF.error(YLocs.Forms.AjaxError.format(jqXHR.status, jqXHR.statusText), YLocs.Forms.AjaxErrorTitle);
-                }
+            $YetaWF.post(this.Setup.RemoveUrl, null, function (success, data) {
+                if (success && data.Result)
+                    $YetaWF.message(data.Result);
             });
         };
         FileUpload1Component.prototype.SetSuccessfullUpload = function (callback) {
@@ -150,13 +118,29 @@ var YetaWF_ComponentsHTML;
         };
         FileUpload1Component.prototype.enable = function (enabled) {
             $YetaWF.elementEnableToggle(this.Control, enabled);
-            $YetaWF.elementEnableToggle(this.uploadButton, enabled);
+            $YetaWF.elementEnableToggle(this.UploadButton, enabled);
         };
         FileUpload1Component.TEMPLATE = "yt_fileupload1";
         FileUpload1Component.SELECTOR = ".yt_fileupload1";
         return FileUpload1Component;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.FileUpload1Component = FileUpload1Component;
+    // Disable document d&d events to prevent opening the file when we drop it
+    document.addEventListener("dragenter", function (ev) {
+        ev.stopPropagation();
+        ev.preventDefault();
+        return false;
+    });
+    document.addEventListener("dragover", function (ev) {
+        ev.stopPropagation();
+        ev.preventDefault();
+        return false;
+    });
+    document.addEventListener("drop", function (ev) {
+        ev.stopPropagation();
+        ev.preventDefault();
+        return false;
+    });
 })(YetaWF_ComponentsHTML || (YetaWF_ComponentsHTML = {}));
 
 //# sourceMappingURL=FileUpload1.js.map

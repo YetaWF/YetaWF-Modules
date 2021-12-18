@@ -10,12 +10,8 @@ using YetaWF.Core.Upload;
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Components;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.ComponentsHTML.Controllers {
 
@@ -32,11 +28,7 @@ namespace YetaWF.Modules.ComponentsHTML.Controllers {
         /// <returns>An action result.</returns>
         [AllowPost]
         [ResourceAuthorize(CoreInfo.Resource_UploadImages)]
-#if MVC6
         public async Task<ActionResult> SaveImage(IFormFile __filename, string __lastInternalName) {
-#else
-        public async Task<ActionResult> SaveImage(HttpPostedFileBase __filename, string __lastInternalName) {
-#endif
             FileUpload upload = new FileUpload();
             string tempName = await upload.StoreTempImageFileAsync(__filename);
 
