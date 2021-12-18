@@ -1,5 +1,6 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using System;
 using System.Threading.Tasks;
 using YetaWF.Core.Support;
 
@@ -16,6 +17,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <summary>
         /// Called by components that use jquery to add the basic jquery to the page.
         /// </summary>
+        [Obsolete("jquery should not be used any longer")]
         public static async Task UseAsync() {
 
             if (Manager.IsPostRequest) return;// can't add this while processing a post request

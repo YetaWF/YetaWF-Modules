@@ -2,6 +2,10 @@
 
 namespace YetaWF_ComponentsHTML {
 
+    export interface IPackageLocs {
+        Only1FileSupported: string;
+    }
+
     interface FileUpload1Setup {
         SaveUrl: string;
         RemoveUrl: string;
@@ -62,7 +66,13 @@ namespace YetaWF_ComponentsHTML {
             $YetaWF.registerEventHandler(this.Control, "drop", null, (ev: DragEvent): boolean => {
                 if (!$YetaWF.isEnabled(this.Control))
                     return false;
-                const files: FileList = ev.dataTransfer?.files!;
+
+                if (!ev.dataTransfer || !ev.dataTransfer.files || ev.dataTransfer!.files!.length !== 1) {
+                    $YetaWF.error(YLocs.YetaWF_ComponentsHTML.Only1FileSupported);
+                    return false;
+                }
+
+                const files: FileList = ev.dataTransfer.files;
                 this.InputFileName.files = files;
                 this.uploadFile();
                 return false;
@@ -100,11 +110,11 @@ namespace YetaWF_ComponentsHTML {
                 }
             }
 
-            request.onprogress = (ev: ProgressEvent<EventTarget>): any => {
+            request.upload.onprogress = (ev: ProgressEvent<EventTarget>): any => {
                 let percent = 0;
                 const position = ev.loaded;
                 const total = ev.total;
-                if(ev.lengthComputable) {
+                if (ev.lengthComputable) {
                     percent = Math.ceil(position / total * 100);
                     if (this.ProgressBar)
                         this.ProgressBar.value = Number(percent);
@@ -112,9 +122,10 @@ namespace YetaWF_ComponentsHTML {
             };
 
             $YetaWF.handleReadyStateChange(request, (success: boolean, response: FileUploadResponse): void => {
-                if (this.ProgressBar)
+                if (this.ProgressBar) {
                     this.ProgressBar.hide();
-
+                    this.ProgressBar.reset();
+                }
                 if (success) {
                     this.InputFileName.files = null;
                     this.InputFileName.value = "";

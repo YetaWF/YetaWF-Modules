@@ -82,6 +82,15 @@ var YetaWF_ComponentsHTML;
             enumerable: false,
             configurable: true
         });
+        ProgressBarComponent.prototype.reset = function (value) {
+            if (this.Timer) {
+                clearInterval(this.Timer);
+                this.Timer = 0;
+            }
+            value = value || this.Min;
+            this.Value = this.NewValue = this.ShownValue = value;
+            this.ValueDiv.style.width = value + "%";
+        };
         ProgressBarComponent.prototype.show = function () {
             this.Control.style.display = "";
         };

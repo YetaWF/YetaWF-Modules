@@ -177,6 +177,8 @@ namespace YetaWF_ComponentsHTML {
             this.selectPopupItem();
             if (this.selectedIndex >= 0)
                 this.Input.innerText = this.Select.options[this.selectedIndex].text;
+            else
+                this.Input.innerHTML = "&zwj;";
         }
         get selectedIndex(): number {
             return this.Select.selectedIndex;
@@ -446,7 +448,7 @@ namespace YetaWF_ComponentsHTML {
                     li.id = "";
                 }
             }
-            this.Input.innerText = "";
+            this.Input.innerHTML = "&zwj;";
         }
 
         public static closeDropdowns(): void {

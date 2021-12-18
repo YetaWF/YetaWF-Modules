@@ -78,6 +78,16 @@ namespace YetaWF_ComponentsHTML {
                 val = this.Min;
             this.setValue(val);
         }
+        public reset(value?: number): void {
+            if (this.Timer) {
+                clearInterval(this.Timer);
+                this.Timer = 0;
+            }
+            value = value || this.Min;
+            this.Value = this.NewValue = this.ShownValue = value;
+            this.ValueDiv.style.width = `${value}%`;
+        }
+
         public show(): void {
             this.Control.style.display = "";
         }

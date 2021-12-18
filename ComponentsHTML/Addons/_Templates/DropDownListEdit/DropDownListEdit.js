@@ -169,6 +169,8 @@ var YetaWF_ComponentsHTML;
                 this.selectPopupItem();
                 if (this.selectedIndex >= 0)
                     this.Input.innerText = this.Select.options[this.selectedIndex].text;
+                else
+                    this.Input.innerHTML = "&zwj;";
             },
             enumerable: false,
             configurable: true
@@ -435,7 +437,7 @@ var YetaWF_ComponentsHTML;
                     li.id = "";
                 }
             }
-            this.Input.innerText = "";
+            this.Input.innerHTML = "&zwj;";
         };
         DropDownListEditComponent.closeDropdowns = function () {
             var popup = $YetaWF.getElementByIdCond(DropDownListEditComponent.POPUPID);

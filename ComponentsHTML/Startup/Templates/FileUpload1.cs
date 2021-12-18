@@ -2,6 +2,7 @@
 
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Addons.Templates {
@@ -12,11 +13,14 @@ namespace YetaWF.Modules.ComponentsHTML.Addons.Templates {
     /// </summary>
     public class FileUpload1Edit : IAddOnSupport {
 
-        /// <summary>
-        /// Called by the framework so the component can add component specific client-side configuration options and localizations to the page.
-        /// </summary>
-        /// <param name="manager">The YetaWF.Core.Support.Manager instance of current HTTP request.</param>
+        /// <inheritdoc/>
         public Task AddSupportAsync(YetaWFManager manager) {
+
+            ScriptManager scripts = manager.ScriptManager;
+            string area = AreaRegistration.CurrentPackage.AreaName;
+
+            scripts.AddLocalization(area, "Only1FileSupported", "Please drag one single file at a time - Multiple files are not supported");
+
             return Task.CompletedTask;
         }
     }

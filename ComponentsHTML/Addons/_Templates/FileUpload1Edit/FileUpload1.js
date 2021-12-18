@@ -43,10 +43,13 @@ var YetaWF_ComponentsHTML;
                 return false;
             });
             $YetaWF.registerEventHandler(_this.Control, "drop", null, function (ev) {
-                var _a;
                 if (!$YetaWF.isEnabled(_this.Control))
                     return false;
-                var files = (_a = ev.dataTransfer) === null || _a === void 0 ? void 0 : _a.files;
+                if (!ev.dataTransfer || !ev.dataTransfer.files || ev.dataTransfer.files.length !== 1) {
+                    $YetaWF.error(YLocs.YetaWF_ComponentsHTML.Only1FileSupported);
+                    return false;
+                }
+                var files = ev.dataTransfer.files;
                 _this.InputFileName.files = files;
                 _this.uploadFile();
                 return false;
@@ -79,7 +82,7 @@ var YetaWF_ComponentsHTML;
                     fd.append(f.name, f.value);
                 }
             }
-            request.onprogress = function (ev) {
+            request.upload.onprogress = function (ev) {
                 var percent = 0;
                 var position = ev.loaded;
                 var total = ev.total;
@@ -90,8 +93,10 @@ var YetaWF_ComponentsHTML;
                 }
             };
             $YetaWF.handleReadyStateChange(request, function (success, response) {
-                if (_this.ProgressBar)
+                if (_this.ProgressBar) {
                     _this.ProgressBar.hide();
+                    _this.ProgressBar.reset();
+                }
                 if (success) {
                     _this.InputFileName.files = null;
                     _this.InputFileName.value = "";
