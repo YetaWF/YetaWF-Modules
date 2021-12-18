@@ -2,6 +2,7 @@
 
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
+using YetaWF.Core.Localize;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 
@@ -19,7 +20,7 @@ namespace YetaWF.Modules.ComponentsHTML.Addons.Templates {
             ScriptManager scripts = manager.ScriptManager;
             string area = AreaRegistration.CurrentPackage.AreaName;
 
-            scripts.AddLocalization(area, "Only1FileSupported", "Please drag one single file at a time - Multiple files are not supported");
+            scripts.AddLocalization(area, "Only1FileSupported", this.__ResStr("oneFile", "Please drag one single file at a time - Multiple files are not supported"));
 
             return Task.CompletedTask;
         }
