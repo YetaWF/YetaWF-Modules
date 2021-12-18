@@ -120,8 +120,10 @@ namespace YetaWF_ComponentsHTML {
                     this.InputFileName.value = "";
                     if (this.SuccessfullUploadCallback)
                         this.SuccessfullUploadCallback(response);
-                    if (response.Result)
+                    if (response.Result) {
+                        // eslint-disable-next-line no-eval
                         eval(response.Result);
+                    }
                 }
             });
 
