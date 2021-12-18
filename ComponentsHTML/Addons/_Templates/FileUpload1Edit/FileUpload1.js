@@ -97,8 +97,10 @@ var YetaWF_ComponentsHTML;
                     _this.InputFileName.value = "";
                     if (_this.SuccessfullUploadCallback)
                         _this.SuccessfullUploadCallback(response);
-                    if (response.Result)
+                    if (response.Result) {
+                        // eslint-disable-next-line no-eval
                         eval(response.Result);
+                    }
                 }
             });
             request.send(fd);
