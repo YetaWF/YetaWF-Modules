@@ -87,6 +87,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// public decimal SalesTaxRate { get; set; }
     /// </example>
     [UsesAdditional("Step", "double", "1.0", "The increment/decrement used when clicking on the up/down arrows of the edit control.")]
+    [UsesAdditional("Plain", "bool", "false", "Defines whether the number is shown using the defined locale.")]
     [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
     public class DecimalEditComponent : DecimalComponentBase, IYetaWFComponent<Decimal>, IYetaWFComponent<Decimal?> {
 
@@ -118,6 +119,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(Decimal? model) {
 
+            bool plain = PropData.GetAdditionalAttributeValue<bool>("Plain", false);
             TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out string? placeHolder);
 
             NumberSetup setup = new NumberSetup {
@@ -125,6 +127,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 Max = 999999999.99,
                 Step = PropData.GetAdditionalAttributeValue<double>("Step", 1.0),
                 Digits = 2,
+                Plain = plain,
                 Locale = MultiString.ActiveLanguage,
             };
 

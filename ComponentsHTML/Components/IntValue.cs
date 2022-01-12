@@ -199,6 +199,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// Base class for the IntValue edit component implementation.
     /// </summary>
     [UsesAdditional("Step", "int", "1", "The increment/decrement used when clicking on the up/down arrows of the edit control.")]
+    [UsesAdditional("Plain", "bool", "false", "Defines whether the number is shown using the defined locale.")]
     [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
     public abstract class IntValueEditComponentBase : YetaWFComponent, IYetaWFComponent<int>, IYetaWFComponent<int?> {
 
@@ -258,6 +259,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>The component rendered as HTML.</returns>
         public Task<string> RenderAsync(int? model) {
 
+            bool plain = PropData.GetAdditionalAttributeValue<bool>("Plain", false);
             TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out string? placeHolder);
 
             NumberSetup setup = new NumberSetup {
@@ -265,6 +267,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 Max = 999999999,
                 Step = PropData.GetAdditionalAttributeValue<int>("Step", 1),
                 Digits = 0,
+                Plain = plain,
                 Locale = MultiString.ActiveLanguage,
             };
 

@@ -214,7 +214,10 @@ var YetaWF_ComponentsHTML;
                     else {
                         var l = this.Setup.Lead ? this.Setup.Lead + " " : "";
                         var t = this.Setup.Trail ? " " + this.Setup.Trail : "";
-                        this.InputControl.value = "" + l + val.toLocaleString(this.Setup.Locale, { style: "decimal", minimumFractionDigits: this.Setup.Digits, maximumFractionDigits: this.Setup.Digits }) + t;
+                        if (this.Setup.Plain)
+                            this.InputControl.value = "" + l + val.toFixed(this.Setup.Digits) + t;
+                        else
+                            this.InputControl.value = "" + l + val.toLocaleString(this.Setup.Locale, { style: "decimal", minimumFractionDigits: this.Setup.Digits, maximumFractionDigits: this.Setup.Digits }) + t;
                     }
                 }
             },

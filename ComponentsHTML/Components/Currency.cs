@@ -90,6 +90,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </example>
     [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the control is rendered read/only.")]
     [UsesAdditional("Disabled", "bool", "false", "Defines whether the control is disabled.")]
+    [UsesAdditional("Plain", "bool", "false", "Defines whether the number is shown using the defined locale.")]
     [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
     public class CurrencyEditComponent : CurrencyComponentBase, IYetaWFComponent<decimal?> {
 
@@ -121,6 +122,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (rdonly)
                 ro = " readonly='readonly'";
 
+            bool plain = PropData.GetAdditionalAttributeValue<bool>("Plain", false);
             TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out string? placeHolder);
 
             CurrencyISO4217.Currency currency = Manager.CurrentSite.CurrencyInfo;
@@ -130,6 +132,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 Max = 999999999.99,
                 Step = 1,
                 Digits = Manager.CurrentSite.CurrencyDecimals,
+                Plain = plain,
                 Locale = MultiString.ActiveLanguage,
                 Lead = currency.Lead,
                 Trail = currency.Trail,
