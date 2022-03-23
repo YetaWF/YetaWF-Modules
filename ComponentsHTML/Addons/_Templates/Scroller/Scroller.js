@@ -76,7 +76,7 @@ var YetaWF_ComponentsHTML;
             this.updateButtons();
             var offs = this.Panel * itemwidth;
             this.DivItems.style.transition = "all 250ms";
-            this.DivItems.style.left = -offs + "px";
+            this.DivItems.style.left = "".concat(-offs, "px");
         };
         ScrollerComponent.TEMPLATE = "yt_scroller";
         ScrollerComponent.SELECTOR = ".yt_scroller.t_display";

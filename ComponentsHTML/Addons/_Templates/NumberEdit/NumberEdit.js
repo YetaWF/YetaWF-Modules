@@ -208,16 +208,16 @@ var YetaWF_ComponentsHTML;
                         var v = val.toLocaleString(this.Setup.Locale, { style: "currency", currency: this.Setup.Currency });
                         // special case for $US
                         if (v.startsWith("$"))
-                            v = "$ " + v.substring(1);
+                            v = "$ ".concat(v.substring(1));
                         this.InputControl.value = v;
                     }
                     else {
-                        var l = this.Setup.Lead ? this.Setup.Lead + " " : "";
-                        var t = this.Setup.Trail ? " " + this.Setup.Trail : "";
+                        var l = this.Setup.Lead ? "".concat(this.Setup.Lead, " ") : "";
+                        var t = this.Setup.Trail ? " ".concat(this.Setup.Trail) : "";
                         if (this.Setup.Plain)
-                            this.InputControl.value = "" + l + val.toFixed(this.Setup.Digits) + t;
+                            this.InputControl.value = "".concat(l).concat(val.toFixed(this.Setup.Digits)).concat(t);
                         else
-                            this.InputControl.value = "" + l + val.toLocaleString(this.Setup.Locale, { style: "decimal", minimumFractionDigits: this.Setup.Digits, maximumFractionDigits: this.Setup.Digits }) + t;
+                            this.InputControl.value = "".concat(l).concat(val.toLocaleString(this.Setup.Locale, { style: "decimal", minimumFractionDigits: this.Setup.Digits, maximumFractionDigits: this.Setup.Digits })).concat(t);
                     }
                 }
             },

@@ -54,7 +54,7 @@ var YetaWF_ComponentsHTML;
                 this.DivLink.style.display = "inline";
                 //$desc.show();
             }
-            this.APage.href = "/!Page/" + pageGuid; // Globals.PageUrl
+            this.APage.href = "/!Page/".concat(pageGuid); // Globals.PageUrl
             //$desc.text(desc);
         };
         PageSelectionEditComponent.TEMPLATE = "yt_pageselection";

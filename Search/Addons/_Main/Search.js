@@ -151,7 +151,7 @@ var YetaWF_Search;
         var request = new XMLHttpRequest();
         request.open("POST", "/YetaWF_Search/SearchControlModule/Switch", true);
         request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-        request.send("Value=true&" + YConfigs.Basics.ModuleGuid + "=" + encodeURIComponent($YetaWF.getModuleGuidFromTag(onButton)));
+        request.send("Value=true&".concat(YConfigs.Basics.ModuleGuid, "=").concat(encodeURIComponent($YetaWF.getModuleGuidFromTag(onButton))));
         return false;
     });
     $YetaWF.registerEventHandlerBody("click", ".YetaWF_Search_SearchControl a[data-name='Off']", function (ev) {
@@ -165,7 +165,7 @@ var YetaWF_Search;
         var request = new XMLHttpRequest();
         request.open("POST", "/YetaWF_Search/SearchControlModule/Switch", true);
         request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-        request.send("Value=false&" + YConfigs.Basics.ModuleGuid + "=" + encodeURIComponent($YetaWF.getModuleGuidFromTag(offButton)));
+        request.send("Value=false&".concat(YConfigs.Basics.ModuleGuid, "=").concat(encodeURIComponent($YetaWF.getModuleGuidFromTag(offButton))));
         return false;
     });
 })(YetaWF_Search || (YetaWF_Search = {}));

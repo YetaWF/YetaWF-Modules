@@ -105,7 +105,7 @@ var YetaWF_ComponentsHTML;
                         default:
                         case YetaWF_ComponentsHTML.ControlTypeEnum.Template:
                             if (!item.ChangeEvent)
-                                throw "No ChangeEvent for control type " + item.ControlType;
+                                throw "No ChangeEvent for control type ".concat(item.ControlType);
                             var control_1 = $YetaWF.getObjectData(item.Template);
                             $YetaWF.registerCustomEventHandler(control_1.Control, item.ChangeEvent, null, function (evt) {
                                 _this.update();
@@ -210,7 +210,7 @@ var YetaWF_ComponentsHTML;
             this.CurrWidth = winRect.width;
             this.ColumnDefIndex = this.getColumnDefIndex();
             var cols = this.Setup.ColumnStyles[this.ColumnDefIndex].Columns;
-            $YetaWF.elementAddClass(this.Control, "t_col" + cols);
+            $YetaWF.elementAddClass(this.Control, "t_col".concat(cols));
             $YetaWF.elementAddClass(this.Control, "t_hasmasonry");
             var boxes = $YetaWF.getElementsBySelector(".t_proptable", [this.Control]);
             for (var _i = 0, boxes_3 = boxes; _i < boxes_3.length; _i++) {
@@ -265,7 +265,7 @@ var YetaWF_ComponentsHTML;
             var deps = this.ControlData.Dependents;
             for (var _i = 0, deps_1 = deps; _i < deps_1.length; _i++) {
                 var dep = deps_1[_i];
-                var depRow = $YetaWF.getElement1BySelectorCond(".t_row.t_" + dep.PropShort.toLowerCase(), [this.Control]); // the propertylist row affected
+                var depRow = $YetaWF.getElement1BySelectorCond(".t_row.t_".concat(dep.PropShort.toLowerCase()), [this.Control]); // the propertylist row affected
                 if (!depRow)
                     continue;
                 var hidden = false;
@@ -293,7 +293,7 @@ var YetaWF_ComponentsHTML;
                             break;
                         }
                         default:
-                            throw "Unexpected Op " + expr.Op + " in update(HideValues)";
+                            throw "Unexpected Op ".concat(expr.Op, " in update(HideValues)");
                     }
                     if (hidden)
                         break;
@@ -330,7 +330,7 @@ var YetaWF_ComponentsHTML;
                                     break;
                                 }
                                 default:
-                                    throw "Unexpected Op " + expr.Op + " in update(ProcessValues)";
+                                    throw "Unexpected Op ".concat(expr.Op, " in update(ProcessValues)");
                             }
                             if (process)
                                 break;
@@ -442,7 +442,7 @@ var YetaWF_ComponentsHTML;
             }
         };
         PropertyListComponent.prototype.expandBoxByCategory = function (name) {
-            var box = $YetaWF.getElement1BySelector(".t_proptable.t_propexpandable.t_boxpanel-" + name.toLocaleLowerCase(), [this.Control]);
+            var box = $YetaWF.getElement1BySelector(".t_proptable.t_propexpandable.t_boxpanel-".concat(name.toLocaleLowerCase()), [this.Control]);
             this.expandCollapseBox(box);
             this.update();
         };
@@ -453,7 +453,7 @@ var YetaWF_ComponentsHTML;
             }
         };
         PropertyListComponent.prototype.hideBoxByCategory = function (name) {
-            var box = $YetaWF.getElement1BySelectorCond(".t_proptable.t_propexpandable.t_boxpanel-" + name.toLocaleLowerCase(), [this.Control]);
+            var box = $YetaWF.getElement1BySelectorCond(".t_proptable.t_propexpandable.t_boxpanel-".concat(name.toLocaleLowerCase()), [this.Control]);
             if (!box)
                 return;
             $YetaWF.elementRemoveClasses(box, ["t_propsuppress"]);
@@ -466,7 +466,7 @@ var YetaWF_ComponentsHTML;
             }
         };
         PropertyListComponent.prototype.showBoxByCategory = function (name) {
-            var box = $YetaWF.getElement1BySelectorCond(".t_proptable.t_propexpandable.t_boxpanel-" + name.toLocaleLowerCase(), [this.Control]);
+            var box = $YetaWF.getElement1BySelectorCond(".t_proptable.t_propexpandable.t_boxpanel-".concat(name.toLocaleLowerCase()), [this.Control]);
             if (!box)
                 return;
             $YetaWF.elementRemoveClasses(box, ["t_propsuppress", YConfigs.Forms.CssFormNoSubmitContents]);

@@ -81,7 +81,7 @@ var YetaWF_Panels;
             }
         };
         StepInfoComponent.prototype.activate = function (option) {
-            var steps = $YetaWF.getElementsBySelector("a[data-name=" + option.Name + "].t_step", [this.Control]);
+            var steps = $YetaWF.getElementsBySelector("a[data-name=".concat(option.Name, "].t_step"), [this.Control]);
             for (var _i = 0, steps_2 = steps; _i < steps_2.length; _i++) {
                 var step = steps_2[_i];
                 $YetaWF.elementAddClass(step, "t_active");
@@ -90,7 +90,7 @@ var YetaWF_Panels;
         StepInfoComponent.prototype.activateAll = function (names) {
             for (var _i = 0, names_1 = names; _i < names_1.length; _i++) {
                 var name_1 = names_1[_i];
-                var steps = $YetaWF.getElementsBySelector("a[data-name^=" + name_1 + "].t_step", [this.Control]);
+                var steps = $YetaWF.getElementsBySelector("a[data-name^=".concat(name_1, "].t_step"), [this.Control]);
                 var count = 0;
                 for (var _a = 0, steps_3 = steps; _a < steps_3.length; _a++) {
                     var step = steps_3[_a];
@@ -105,7 +105,7 @@ var YetaWF_Panels;
         StepInfoComponent.prototype.activateLast = function (names) {
             for (var _i = 0, names_2 = names; _i < names_2.length; _i++) {
                 var name_2 = names_2[_i];
-                var steps = $YetaWF.getElementsBySelector("a[data-name^=" + name_2 + "].t_step", [this.Control]);
+                var steps = $YetaWF.getElementsBySelector("a[data-name^=".concat(name_2, "].t_step"), [this.Control]);
                 if (steps.length > 0) {
                     $YetaWF.elementAddClass(steps[steps.length - 1], "t_active");
                 }
@@ -114,7 +114,7 @@ var YetaWF_Panels;
         StepInfoComponent.prototype.enable = function (options) {
             for (var _i = 0, options_1 = options; _i < options_1.length; _i++) {
                 var option = options_1[_i];
-                var steps = $YetaWF.getElementsBySelector("a[data-name=" + option.Name + "].t_step", [this.Control]);
+                var steps = $YetaWF.getElementsBySelector("a[data-name=".concat(option.Name, "].t_step"), [this.Control]);
                 for (var _a = 0, steps_4 = steps; _a < steps_4.length; _a++) {
                     var step = steps_4[_a];
                     $YetaWF.elementAddClass(step, "t_enabled");

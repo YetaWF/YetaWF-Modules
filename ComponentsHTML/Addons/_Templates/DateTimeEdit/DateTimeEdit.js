@@ -657,7 +657,7 @@ var YetaWF_ComponentsHTML;
                 var extra = "";
                 if (val === selValue)
                     extra = " t_selected";
-                html += "<li tabindex=\"-1\" role=\"option\" unselectable=\"on\" class=\"t_item" + extra + "\" data-value=\"" + val + "\">" + o + "</li>"; //Format
+                html += "<li tabindex=\"-1\" role=\"option\" unselectable=\"on\" class=\"t_item".concat(extra, "\" data-value=\"").concat(val, "\">").concat(o, "</li>"); //Format
             }
             ul.innerHTML = html;
             var style = window.getComputedStyle(this.Control);
@@ -666,7 +666,7 @@ var YetaWF_ComponentsHTML;
             this.TimePopup.style.fontWeight = style.fontWeight;
             this.TimePopup.style.fontSize = style.fontSize;
             var ctrlRect = this.Control.getBoundingClientRect();
-            this.TimePopup.style.width = ctrlRect.width + "px";
+            this.TimePopup.style.width = "".concat(ctrlRect.width, "px");
             $YetaWF.positionLeftAlignedBelow(this.Control, this.TimePopup);
             document.body.appendChild(this.TimePopup);
             this.Control.setAttribute("aria-expanded", "true");
@@ -905,7 +905,7 @@ var YetaWF_ComponentsHTML;
                 var extra = "";
                 if (i === selValue)
                     extra = " t_selected";
-                html += "<li tabindex=\"-1\" role=\"option\" unselectable=\"on\" class=\"t_item" + extra + "\" data-value=\"" + i + "\">" + i + "</li>"; //Format
+                html += "<li tabindex=\"-1\" role=\"option\" unselectable=\"on\" class=\"t_item".concat(extra, "\" data-value=\"").concat(i, "\">").concat(i, "</li>"); //Format
             }
             ul.innerHTML = html;
             var yearSel = $YetaWF.getElement1BySelector(".t_header .t_year", [this.CalendarPopup]);
@@ -985,7 +985,7 @@ var YetaWF_ComponentsHTML;
                 var extra = "";
                 if (i === selValue)
                     extra = " t_selected";
-                html += "<li tabindex=\"-1\" role=\"option\" unselectable=\"on\" class=\"t_item" + extra + "\" data-value=\"" + i + "\">" + this.MonthNames[i] + "</li>"; //Format
+                html += "<li tabindex=\"-1\" role=\"option\" unselectable=\"on\" class=\"t_item".concat(extra, "\" data-value=\"").concat(i, "\">").concat(this.MonthNames[i], "</li>"); //Format
             }
             ul.innerHTML = html;
             var monthSel = $YetaWF.getElement1BySelector(".t_header .t_month", [this.CalendarPopup]);
@@ -1074,23 +1074,23 @@ var YetaWF_ComponentsHTML;
             switch (YLocs.YetaWF_ComponentsHTML.DateFormat) {
                 default:
                 case DateFormatEnum.MMDDYYYY:
-                    return this.zeroPad(m, 2) + "/" + this.zeroPad(d, 2) + "/" + y;
+                    return "".concat(this.zeroPad(m, 2), "/").concat(this.zeroPad(d, 2), "/").concat(y);
                 case DateFormatEnum.MMDDYYYYdash:
-                    return this.zeroPad(m, 2) + "-" + this.zeroPad(d, 2) + "-" + y;
+                    return "".concat(this.zeroPad(m, 2), "-").concat(this.zeroPad(d, 2), "-").concat(y);
                 case DateFormatEnum.MMDDYYYYdot:
-                    return this.zeroPad(m, 2) + "." + this.zeroPad(d, 2) + "." + y;
+                    return "".concat(this.zeroPad(m, 2), ".").concat(this.zeroPad(d, 2), ".").concat(y);
                 case DateFormatEnum.DDMMYYYY:
-                    return this.zeroPad(d, 2) + "/" + this.zeroPad(m, 2) + "/" + y;
+                    return "".concat(this.zeroPad(d, 2), "/").concat(this.zeroPad(m, 2), "/").concat(y);
                 case DateFormatEnum.DDMMYYYYdash:
-                    return this.zeroPad(d, 2) + "-" + this.zeroPad(m, 2) + "-" + y;
+                    return "".concat(this.zeroPad(d, 2), "-").concat(this.zeroPad(m, 2), "-").concat(y);
                 case DateFormatEnum.DDMMYYYYdot:
-                    return this.zeroPad(d, 2) + "." + this.zeroPad(m, 2) + "." + y;
+                    return "".concat(this.zeroPad(d, 2), ".").concat(this.zeroPad(m, 2), ".").concat(y);
                 case DateFormatEnum.YYYYMMDD:
-                    return y + "/" + this.zeroPad(m, 2) + "/" + this.zeroPad(d, 2);
+                    return "".concat(y, "/").concat(this.zeroPad(m, 2), "/").concat(this.zeroPad(d, 2));
                 case DateFormatEnum.YYYYMMDDdash:
-                    return y + "-" + this.zeroPad(m, 2) + "-" + this.zeroPad(d, 2);
+                    return "".concat(y, "-").concat(this.zeroPad(m, 2), "-").concat(this.zeroPad(d, 2));
                 case DateFormatEnum.YYYYMMDDdot:
-                    return y + "." + this.zeroPad(m, 2) + "." + this.zeroPad(d, 2);
+                    return "".concat(y, ".").concat(this.zeroPad(m, 2), ".").concat(this.zeroPad(d, 2));
             }
         };
         DateTimeEditComponent.prototype.getFormattedTime = function (time) {
@@ -1109,17 +1109,17 @@ var YetaWF_ComponentsHTML;
                         default:
                         case TimeFormatEnum.HHMMAM:
                         case TimeFormatEnum.HHMMSSAM:
-                            return this.zeroPad(hour, 2) + ":" + this.zeroPad(m, 2) + " " + (h < 12 ? "AM" : "PM");
+                            return "".concat(this.zeroPad(hour, 2), ":").concat(this.zeroPad(m, 2), " ").concat(h < 12 ? "AM" : "PM");
                         case TimeFormatEnum.HHMMAMdot:
                         case TimeFormatEnum.HHMMSSAMdot:
-                            return this.zeroPad(hour, 2) + "." + this.zeroPad(m, 2) + " " + (h < 12 ? "AM" : "PM");
+                            return "".concat(this.zeroPad(hour, 2), ".").concat(this.zeroPad(m, 2), " ").concat(h < 12 ? "AM" : "PM");
                     }
                 case TimeFormatEnum.HHMM:
                 case TimeFormatEnum.HHMMSS:
-                    return this.zeroPad(h, 2) + ":" + this.zeroPad(m, 2);
+                    return "".concat(this.zeroPad(h, 2), ":").concat(this.zeroPad(m, 2));
                 case TimeFormatEnum.HHMMdot:
                 case TimeFormatEnum.HHMMSSdot:
-                    return this.zeroPad(h, 2) + "." + this.zeroPad(m, 2);
+                    return "".concat(this.zeroPad(h, 2), ".").concat(this.zeroPad(m, 2));
             }
         };
         DateTimeEditComponent.prototype.zeroPad = function (val, pos) {
@@ -1140,15 +1140,15 @@ var YetaWF_ComponentsHTML;
                 case DateFormatEnum.MMDDYYYY:
                 case DateFormatEnum.MMDDYYYYdash:
                 case DateFormatEnum.MMDDYYYYdot:
-                    return this.WeekDays[day] + ", " + this.MonthNames[m] + " " + dom + ", " + y;
+                    return "".concat(this.WeekDays[day], ", ").concat(this.MonthNames[m], " ").concat(dom, ", ").concat(y);
                 case DateFormatEnum.DDMMYYYY:
                 case DateFormatEnum.DDMMYYYYdash:
                 case DateFormatEnum.DDMMYYYYdot:
-                    return this.WeekDays[day] + ", " + dom + " " + this.MonthNames[m] + ", " + y;
+                    return "".concat(this.WeekDays[day], ", ").concat(dom, " ").concat(this.MonthNames[m], ", ").concat(y);
                 case DateFormatEnum.YYYYMMDD:
                 case DateFormatEnum.YYYYMMDDdash:
                 case DateFormatEnum.YYYYMMDDdot:
-                    return y + ", " + this.MonthNames[m] + " " + dom + ", " + this.WeekDays[day];
+                    return "".concat(y, ", ").concat(this.MonthNames[m], " ").concat(dom, ", ").concat(this.WeekDays[day]);
             }
         };
         DateTimeEditComponent.prototype.setSelectedIndex = function (popup, index) {
@@ -1185,9 +1185,9 @@ var YetaWF_ComponentsHTML;
             var s = "";
             if (dateVal != null) {
                 if (this.Setup.Style === DateTimeStyleEnum.DateTime || this.Setup.Style === DateTimeStyleEnum.Time || (this.Setup.Style === DateTimeStyleEnum.Date && !this.Setup.UtcMidnight))
-                    s = dateVal.getUTCFullYear() + "-" + this.zeroPad(dateVal.getUTCMonth() + 1, 2) + "-" + this.zeroPad(dateVal.getUTCDate(), 2) + "T" + this.zeroPad(dateVal.getUTCHours(), 2) + ":" + this.zeroPad(dateVal.getUTCMinutes(), 2) + ":00.000Z";
+                    s = "".concat(dateVal.getUTCFullYear(), "-").concat(this.zeroPad(dateVal.getUTCMonth() + 1, 2), "-").concat(this.zeroPad(dateVal.getUTCDate(), 2), "T").concat(this.zeroPad(dateVal.getUTCHours(), 2), ":").concat(this.zeroPad(dateVal.getUTCMinutes(), 2), ":00.000Z");
                 else if (this.Setup.Style === DateTimeStyleEnum.Date && this.Setup.UtcMidnight)
-                    s = dateVal.getUTCFullYear() + "-" + this.zeroPad(dateVal.getUTCMonth() + 1, 2) + "-" + this.zeroPad(dateVal.getUTCDate(), 2) + "T00:00:00.000Z";
+                    s = "".concat(dateVal.getUTCFullYear(), "-").concat(this.zeroPad(dateVal.getUTCMonth() + 1, 2), "-").concat(this.zeroPad(dateVal.getUTCDate(), 2), "T00:00:00.000Z");
             }
             this.InputHidden.setAttribute("value", s);
         };

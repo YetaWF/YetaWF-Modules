@@ -85,7 +85,7 @@ var YetaWF_ComponentsHTML;
             var s = "";
             for (var _a = 0, errs_1 = errs; _a < errs_1.length; _a++) {
                 var err = errs_1[_a];
-                s += err + "(+nl)";
+                s += "".concat(err, "(+nl)");
             }
             $YetaWF.error(YLocs.Forms.FormErrors + s);
         };
@@ -102,7 +102,7 @@ var YetaWF_ComponentsHTML;
                     ($YetaWF.getAttributeCond(elem, "disabled") && !$YetaWF.elementHasClass(elem, "disabled-submit")) || // don't submit disabled fields
                     ($YetaWF.getAttributeCond(elem, "readonly") && !$YetaWF.elementHasClass(elem, "readonly-submit")) || // don't submit readonly fields
                     $YetaWF.elementHasClass(elem, YConfigs.Forms.CssFormNoSubmit) || // don't submit nosubmit fields
-                    $YetaWF.elementClosestCond(elem, "." + YConfigs.Forms.CssFormNoSubmitContents)) // don't submit input fields in containers (usually grids)
+                    $YetaWF.elementClosestCond(elem, ".".concat(YConfigs.Forms.CssFormNoSubmitContents))) // don't submit input fields in containers (usually grids)
                     continue;
                 array.push({
                     name: name_1,
@@ -148,33 +148,33 @@ var YetaWF_ComponentsHTML;
         FormsImpl.prototype.resequenceFields = function (rows, prefix) {
             var index = 0;
             var prefixEsc = prefix.replace("[", "\\[");
-            var re1 = new RegExp(prefixEsc + "[[0-9]+]", "gim");
+            var re1 = new RegExp("".concat(prefixEsc, "[[0-9]+]"), "gim");
             for (var _i = 0, rows_1 = rows; _i < rows_1.length; _i++) {
                 var row = rows_1[_i];
                 // input fields
-                var fields = $YetaWF.getElementsBySelector("[name^='" + prefix + "[']", [row]);
+                var fields = $YetaWF.getElementsBySelector("[name^='".concat(prefix, "[']"), [row]);
                 for (var _a = 0, fields_1 = fields; _a < fields_1.length; _a++) {
                     var field = fields_1[_a];
                     var name_2 = $YetaWF.getAttribute(field, "name");
-                    name_2 = name_2.replace(re1, prefix + "[" + index.toString() + "]");
+                    name_2 = name_2.replace(re1, "".concat(prefix, "[").concat(index.toString(), "]"));
                     $YetaWF.setAttribute(field, "name", name_2);
                     var v = $YetaWF.getAttributeCond(field, "data-v");
                     if (v) {
-                        v = v.replace(re1, prefix + "[" + index.toString() + "]");
+                        v = v.replace(re1, "".concat(prefix, "[").concat(index.toString(), "]"));
                         $YetaWF.setAttribute(field, "data-v", v);
                     }
                 }
                 // validation fields
-                fields = $YetaWF.getElementsBySelector("[data-v-for^='" + prefix + "[']", [row]);
+                fields = $YetaWF.getElementsBySelector("[data-v-for^='".concat(prefix, "[']"), [row]);
                 for (var _b = 0, fields_2 = fields; _b < fields_2.length; _b++) {
                     var field = fields_2[_b];
                     var name_3 = $YetaWF.getAttribute(field, "data-v-for");
-                    name_3 = name_3.replace(re1, prefix + "[" + index.toString() + "]");
+                    name_3 = name_3.replace(re1, "".concat(prefix, "[").concat(index.toString(), "]"));
                     $YetaWF.setAttribute(field, "data-v-for", name_3);
                     var img = $YetaWF.getElement1BySelectorCond("img", [field]);
                     if (img) {
                         name_3 = $YetaWF.getAttribute(img, "name");
-                        name_3 = name_3.replace(re1, prefix + "[" + index.toString() + "]");
+                        name_3 = name_3.replace(re1, "".concat(prefix, "[").concat(index.toString(), "]"));
                         $YetaWF.setAttribute(field, "name", name_3);
                     }
                 }

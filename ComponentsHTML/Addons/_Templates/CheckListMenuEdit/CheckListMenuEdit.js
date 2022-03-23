@@ -42,14 +42,14 @@ var YetaWF_ComponentsHTML;
         CheckListMenuEditComponent.prototype.openMenu = function () {
             var _this = this;
             var menu = this.Menu.cloneNode(true);
-            menu.id = this.Menu.id + "_live";
+            menu.id = "".concat(this.Menu.id, "_live");
             // update checkboxes from hidden fields
             var lis = $YetaWF.getElementsBySelector("li", [menu]);
             for (var _i = 0, lis_1 = lis; _i < lis_1.length; _i++) {
                 var li = lis_1[_i];
                 var name_1 = $YetaWF.getAttribute(li, "data-name");
-                var input = $YetaWF.getElement1BySelector("input[name$='.Value'][data-name='" + name_1 + "']", [this.Control]);
-                var check = $YetaWF.getElement1BySelector("li[data-name='" + name_1 + "'] input[type=\"checkbox\"]", [menu]);
+                var input = $YetaWF.getElement1BySelector("input[name$='.Value'][data-name='".concat(name_1, "']"), [this.Control]);
+                var check = $YetaWF.getElement1BySelector("li[data-name='".concat(name_1, "'] input[type=\"checkbox\"]"), [menu]);
                 check.checked = input.value === "True";
             }
             document.body.appendChild(menu);
@@ -67,7 +67,7 @@ var YetaWF_ComponentsHTML;
                         check.checked = !check.checked;
                         // update hidden field
                         var name = $YetaWF.getAttribute(liElem, "data-name");
-                        var input = $YetaWF.getElement1BySelector("input[name$='.Value'][data-name='" + name + "']", [_this.Control]);
+                        var input = $YetaWF.getElement1BySelector("input[name$='.Value'][data-name='".concat(name, "']"), [_this.Control]);
                         input.value = check.checked ? "True" : "False";
                         _this.sendChangeEvent();
                     }, 1);
@@ -84,7 +84,7 @@ var YetaWF_ComponentsHTML;
             for (var _i = 0, lis_2 = lis; _i < lis_2.length; _i++) {
                 var li = lis_2[_i];
                 var name_2 = $YetaWF.getAttribute(li, "data-name");
-                var input = $YetaWF.getElement1BySelector("input[name$='.Value'][data-name='" + name_2 + "']", [this.Control]);
+                var input = $YetaWF.getElement1BySelector("input[name$='.Value'][data-name='".concat(name_2, "']"), [this.Control]);
                 entries.push({ Name: name_2, Checked: input.value === "True" });
             }
             return entries;
@@ -92,12 +92,12 @@ var YetaWF_ComponentsHTML;
         CheckListMenuEditComponent.prototype.replaceValues = function (values) {
             var lis = $YetaWF.getElementsBySelector("li", [this.Menu]);
             if (lis.length !== values.length)
-                throw "replaceValues expected " + lis.length + " values, received " + values.length;
+                throw "replaceValues expected ".concat(lis.length, " values, received ").concat(values.length);
             var valIndex = 0;
             for (var _i = 0, lis_3 = lis; _i < lis_3.length; _i++) {
                 var li = lis_3[_i];
                 var name_3 = $YetaWF.getAttribute(li, "data-name");
-                var input = $YetaWF.getElement1BySelector("input[name$='.Value'][data-name='" + name_3 + "']", [this.Control]);
+                var input = $YetaWF.getElement1BySelector("input[name$='.Value'][data-name='".concat(name_3, "']"), [this.Control]);
                 input.value = values[valIndex] ? "True" : "False";
                 ++valIndex;
             }

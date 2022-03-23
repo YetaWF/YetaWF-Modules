@@ -43,12 +43,12 @@ var YetaWF_PageEar;
                 $YetaWF.createElement("div", { class: "t_mask" }));
             _this.PeelImage = $YetaWF.getElement1BySelector(".t_img", [_this.PeelDiv]);
             _this.PeelMask = $YetaWF.getElement1BySelector(".t_mask", [_this.PeelDiv]);
-            _this.PeelMask.style.backgroundImage = "url('" + _this.Setup.AdImage + "')";
+            _this.PeelMask.style.backgroundImage = "url('".concat(_this.Setup.AdImage, "')");
             document.body.appendChild(_this.PeelDiv);
-            _this.PeelImage.style.width = _this.Setup.SmallSize + "px";
-            _this.PeelImage.style.height = _this.Setup.SmallSize + "px";
-            _this.PeelMask.style.width = _this.Setup.SmallSize + "px";
-            _this.PeelMask.style.height = _this.Setup.SmallSize + "px";
+            _this.PeelImage.style.width = "".concat(_this.Setup.SmallSize, "px");
+            _this.PeelImage.style.height = "".concat(_this.Setup.SmallSize, "px");
+            _this.PeelMask.style.width = "".concat(_this.Setup.SmallSize, "px");
+            _this.PeelMask.style.height = "".concat(_this.Setup.SmallSize, "px");
             _this.Increment = (_this.Setup.LargeSize - _this.Setup.SmallSize) / (PageEarModule.TIME / PageEarModule.STEPTIME);
             $YetaWF.registerEventHandler(_this.PeelDiv, "mouseover", null, function (ev) {
                 _this.maximize();
@@ -111,10 +111,10 @@ var YetaWF_PageEar;
                     width = this.Setup.SmallSize;
                 done = true;
             }
-            this.PeelImage.style.width = width + "px";
-            this.PeelImage.style.height = width + "px";
-            this.PeelMask.style.width = width + "px";
-            this.PeelMask.style.height = width + "px";
+            this.PeelImage.style.width = "".concat(width, "px");
+            this.PeelImage.style.height = "".concat(width, "px");
+            this.PeelMask.style.width = "".concat(width, "px");
+            this.PeelMask.style.height = "".concat(width, "px");
             if (done)
                 this.clearInterval();
         };

@@ -131,22 +131,22 @@ var YetaWF_ComponentsHTML;
                 return;
             var setup = DialogClass.Setup;
             if (window.innerWidth <= setup.width) {
-                dialog.style.width = window.innerWidth - 20 + "px";
-                dialog.style.height = setup.height > 0 ? setup.height + "px" : "auto";
+                dialog.style.width = "".concat(window.innerWidth - 20, "px");
+                dialog.style.height = setup.height > 0 ? "".concat(setup.height, "px") : "auto";
             }
             else {
-                dialog.style.width = setup.width + "px";
+                dialog.style.width = "".concat(setup.width, "px");
                 dialog.style.height = "auto";
             }
             // set maxheight for message text
             var text = $YetaWF.getElementById("yAlert");
-            text.style.maxHeight = window.innerHeight * 3 / 4 + "px";
+            text.style.maxHeight = "".concat(window.innerHeight * 3 / 4, "px");
             // center
             var drect = dialog.getBoundingClientRect();
             var left = (window.innerWidth - drect.width) / 2;
             var top = (window.innerHeight - drect.height) / 2;
-            dialog.style.left = left + "px"; // or + window.pageXOffset if position:absolute
-            dialog.style.top = top + "px"; //  + window.pageYOffset
+            dialog.style.left = "".concat(left, "px"); // or + window.pageXOffset if position:absolute
+            dialog.style.top = "".concat(top, "px"); //  + window.pageYOffset
         };
         DialogClass.DragDropInProgress = false;
         DialogClass.XOffsetDD = 0;
@@ -178,8 +178,8 @@ var YetaWF_ComponentsHTML;
                 top_1 = window.innerHeight - drect.height;
             if (top_1 < 0)
                 top_1 = 0;
-            dialog.style.left = left + "px";
-            dialog.style.top = top_1 + "px";
+            dialog.style.left = "".concat(left, "px");
+            dialog.style.top = "".concat(top_1, "px");
             return false;
         }
         return true;

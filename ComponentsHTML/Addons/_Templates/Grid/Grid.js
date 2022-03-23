@@ -217,11 +217,11 @@ var YetaWF_ComponentsHTML;
                         var entry = entries_1[_i];
                         if (entry.Checked) {
                             if (!_this.Setup.Columns[colIndex].Visible)
-                                uri.addSearch("ColumnsOn[" + colOnIndex++ + "]", entry.Name);
+                                uri.addSearch("ColumnsOn[".concat(colOnIndex++, "]"), entry.Name);
                         }
                         else {
                             if (_this.Setup.Columns[colIndex].Visible)
-                                uri.addSearch("ColumnsOff[" + colOffIndex++ + "]", entry.Name);
+                                uri.addSearch("ColumnsOff[".concat(colOffIndex++, "]"), entry.Name);
                         }
                         colIndex++;
                     }
@@ -273,7 +273,7 @@ var YetaWF_ComponentsHTML;
                     if (!_this.reloadInProgress) {
                         var colIndex = Array.prototype.indexOf.call(ev.__YetaWFElem.parentElement.children, ev.__YetaWFElem);
                         if (colIndex < 0 || colIndex >= _this.Setup.Columns.length)
-                            throw "Invalid column index " + colIndex + " - max is " + _this.Setup.Columns.length; /*DEBUG*/
+                            throw "Invalid column index ".concat(colIndex, " - max is ").concat(_this.Setup.Columns.length); /*DEBUG*/
                         var col = _this.Setup.Columns[colIndex];
                         if (col.Sortable) {
                             if (col.Sort === SortByEnum.NotSpecified) {
@@ -302,7 +302,7 @@ var YetaWF_ComponentsHTML;
                     var ulElem = $YetaWF.getElementById(_this.Setup.Columns[colIndex].MenuId);
                     if (!YetaWF_ComponentsHTML.MenuULComponent.closeMenus()) {
                         var menuDiv = ulElem.cloneNode(true);
-                        menuDiv.id = ulElem.id + "_live";
+                        menuDiv.id = "".concat(ulElem.id, "_live");
                         $YetaWF.elementAddClass(menuDiv, "yt_grid_menu");
                         document.body.appendChild(menuDiv);
                         new YetaWF_ComponentsHTML.MenuULComponent(menuDiv.id, {
@@ -449,7 +449,7 @@ var YetaWF_ComponentsHTML;
                 if (_this.SubmitCheckCol >= 0) {
                     _this.setInitialSubmitStatus();
                     // update static data with new checkbox value
-                    $YetaWF.registerEventHandler(_this.TBody, "change", "tr td:nth-child(" + (_this.SubmitCheckCol + 1) + ") input[type='checkbox']", function (ev) {
+                    $YetaWF.registerEventHandler(_this.TBody, "change", "tr td:nth-child(".concat(_this.SubmitCheckCol + 1, ") input[type='checkbox']"), function (ev) {
                         if (!_this.Setup.StaticData)
                             return true;
                         var tr = $YetaWF.elementClosest(ev.__YetaWFElem, "tr");
@@ -604,7 +604,7 @@ var YetaWF_ComponentsHTML;
         Grid.prototype.submitLocalData = function (form) {
             if (!this.Setup.StaticData)
                 return;
-            var div = "<div class='" + $YetaWF.Forms.DATACLASS + "' style='display:none'>";
+            var div = "<div class='".concat($YetaWF.Forms.DATACLASS, "' style='display:none'>");
             // retrieve all rows and add input/select fields to data div, resequence to make mvc serialization of lists work
             var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
             var row = 0;
@@ -622,7 +622,7 @@ var YetaWF_ComponentsHTML;
                         if (name_1) {
                             var copy = input.cloneNode();
                             // replace name with serialized name[row] so mvc serialization works
-                            name_1 = name_1.replace(re1, "[" + row.toString() + "]");
+                            name_1 = name_1.replace(re1, "[".concat(row.toString(), "]"));
                             $YetaWF.setAttribute(copy, "name", name_1);
                             div += copy.outerHTML;
                             copied = true;
@@ -684,7 +684,7 @@ var YetaWF_ComponentsHTML;
                 if (wstyle.endsWith("ch")) {
                     var w = parseFloat(wstyle) + 2; // we'll add some for padding
                     w *= avgChar;
-                    th.style.width = w + "px";
+                    th.style.width = "".concat(w, "px");
                 }
             }
             if (this.Setup.SizeStyle === SizeStyleEnum.SizeGiven) {
@@ -695,7 +695,7 @@ var YetaWF_ComponentsHTML;
                     total += w;
                 }
                 var table = $YetaWF.getElement1BySelector("table", [this.Control]);
-                table.style.width = total + "px";
+                table.style.width = "".concat(total, "px");
             }
         };
         Grid.prototype.calcCharWidth = function () {
@@ -722,7 +722,7 @@ var YetaWF_ComponentsHTML;
                 var givenWidth = Number(currentControl.ColumnResizeHeader.style.width.replace("px", ""));
                 var diff = newActualWidth - actualWidth; // <0 shring, >0 expand
                 var newGivenWidth = givenWidth + diff;
-                currentControl.ColumnResizeHeader.style.width = newGivenWidth + "px";
+                currentControl.ColumnResizeHeader.style.width = "".concat(newGivenWidth, "px");
             }
             return false;
         };
@@ -825,9 +825,9 @@ var YetaWF_ComponentsHTML;
                         for (var _a = 0, searchCols_1 = searchCols; _a < searchCols_1.length; _a++) {
                             var searchCol = searchCols_1[_a];
                             if (searchText) {
-                                uri.addSearch("filters[" + fcount + "].field", searchCol);
-                                uri.addSearch("filters[" + fcount + "].operator", "Contains");
-                                uri.addSearch("filters[" + fcount + "].valueAsString", searchText);
+                                uri.addSearch("filters[".concat(fcount, "].field"), searchCol);
+                                uri.addSearch("filters[".concat(fcount, "].operator"), "Contains");
+                                uri.addSearch("filters[".concat(fcount, "].valueAsString"), searchText);
                                 ++fcount;
                             }
                         }
@@ -842,9 +842,9 @@ var YetaWF_ComponentsHTML;
                             var val = this.getColSortValue(colIndex);
                             if (val) {
                                 if (col_2.FilterType === "complex") {
-                                    uri.addSearch("filters[" + fcount + "].field", col_2.Name);
-                                    uri.addSearch("filters[" + fcount + "].operator", "Complex");
-                                    uri.addSearch("filters[" + fcount + "].valueAsString", val);
+                                    uri.addSearch("filters[".concat(fcount, "].field"), col_2.Name);
+                                    uri.addSearch("filters[".concat(fcount, "].operator"), "Complex");
+                                    uri.addSearch("filters[".concat(fcount, "].valueAsString"), val);
                                     ++fcount;
                                 }
                                 else {
@@ -852,9 +852,9 @@ var YetaWF_ComponentsHTML;
                                     if (overrideColFilter && overrideColFilter.ColIndex === colIndex)
                                         oper = overrideColFilter.FilterOp;
                                     if (oper != null) {
-                                        uri.addSearch("filters[" + fcount + "].field", col_2.Name);
-                                        uri.addSearch("filters[" + fcount + "].operator", this.GetFilterOpString(oper));
-                                        uri.addSearch("filters[" + fcount + "].valueAsString", val);
+                                        uri.addSearch("filters[".concat(fcount, "].field"), col_2.Name);
+                                        uri.addSearch("filters[".concat(fcount, "].operator"), this.GetFilterOpString(oper));
+                                        uri.addSearch("filters[".concat(fcount, "].valueAsString"), val);
                                         ++fcount;
                                     }
                                 }
@@ -863,7 +863,7 @@ var YetaWF_ComponentsHTML;
                         }
                     }
                     uri.addFormInfo(this.Control);
-                    var uniqueIdCounters = { UniqueIdPrefix: this.ControlId + "gr", UniqueIdPrefixCounter: 0, UniqueIdCounter: 0 };
+                    var uniqueIdCounters = { UniqueIdPrefix: "".concat(this.ControlId, "gr"), UniqueIdPrefixCounter: 0, UniqueIdCounter: 0 };
                     uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
                     if (this.Setup.StaticData)
                         uri.addSearch("data", JSON.stringify(this.Setup.StaticData));
@@ -978,7 +978,7 @@ var YetaWF_ComponentsHTML;
                         }
                     }
                 }
-                this.PagerTotals.innerHTML = "<span>" + totals + "</span>";
+                this.PagerTotals.innerHTML = "<span>".concat(totals, "</span>");
             }
             if (this.BtnTop)
                 $YetaWF.elementEnableToggle(this.BtnTop, this.Setup.Page > 0);
@@ -1033,7 +1033,7 @@ var YetaWF_ComponentsHTML;
             this.updateStatus();
         };
         Grid.prototype.clearFilterMenuHighlights = function (ulElem) {
-            var menuLis = $YetaWF.getElementsBySelector("li." + this.Setup.HighlightCss, [ulElem]);
+            var menuLis = $YetaWF.getElementsBySelector("li.".concat(this.Setup.HighlightCss), [ulElem]);
             for (var _i = 0, menuLis_1 = menuLis; _i < menuLis_1.length; _i++) {
                 var menuLi = menuLis_1[_i];
                 $YetaWF.elementRemoveClass(menuLi, this.Setup.HighlightCss);
@@ -1075,7 +1075,7 @@ var YetaWF_ComponentsHTML;
                     case "enum":
                     case "dynenum":
                         // handle selection change
-                        $YetaWF.registerCustomEventHandlerDocument(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, "#" + col.FilterId, function (ev) {
+                        $YetaWF.registerCustomEventHandlerDocument(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, "#".concat(col.FilterId), function (ev) {
                             if (_this.InputPanelSearch)
                                 _this.InputPanelSearch.value = "";
                             _this.reload(0);
@@ -1191,7 +1191,7 @@ var YetaWF_ComponentsHTML;
                     return edit.value;
                 }
                 default:
-                    throw "Unexpected filter type " + col.FilterType + " for column " + colIndex;
+                    throw "Unexpected filter type ".concat(col.FilterType, " for column ").concat(colIndex);
             }
         };
         Grid.prototype.clearColSortValue = function (colIndex) {
@@ -1239,7 +1239,7 @@ var YetaWF_ComponentsHTML;
                     break;
                 }
                 default:
-                    throw "Unexpected filter type " + col.FilterType + " for column " + colIndex;
+                    throw "Unexpected filter type ".concat(col.FilterType, " for column ").concat(colIndex);
             }
         };
         Grid.prototype.GetFilterOpString = function (op) {
@@ -1257,7 +1257,7 @@ var YetaWF_ComponentsHTML;
                 case FilterOptionEnum.Endswith: return "EndsWith";
                 case FilterOptionEnum.NotEndswith: return "NotEndsWith";
             }
-            throw "Unexpected filter op " + op;
+            throw "Unexpected filter op ".concat(op);
         };
         // add/remove (static grid)
         Grid.prototype.removeRecord = function (trElem, recNum, colName) {
@@ -1308,7 +1308,7 @@ var YetaWF_ComponentsHTML;
             for (var _i = 0, inps_1 = inps; _i < inps_1.length; _i++) {
                 var inp = inps_1[_i];
                 var name_2 = $YetaWF.getAttribute(inp, "name");
-                name_2 = name_2.replace("[" + origNum + "]", "[" + newNum + "]");
+                name_2 = name_2.replace("[".concat(origNum, "]"), "[".concat(newNum, "]"));
                 $YetaWF.setAttribute(inp, "name", name_2);
             }
         };
@@ -1378,7 +1378,7 @@ var YetaWF_ComponentsHTML;
             if (!this.Setup.StaticData)
                 throw "Static grids only";
             if (index < 0 || index >= this.Setup.StaticData.length)
-                throw "Index " + index + " out of bounds";
+                throw "Index ".concat(index, " out of bounds");
             var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
             // insert the new tr
             var indexTr = trs[index];
@@ -1400,8 +1400,8 @@ var YetaWF_ComponentsHTML;
             if (!this.Setup.StaticData)
                 throw "Static grids only";
             if (index < 0 || index >= this.Setup.StaticData.length)
-                throw "Index " + index + " out of bounds";
-            var tr = $YetaWF.getElement1BySelector("tr[data-origin='" + index.toString() + "']", [this.TBody]);
+                throw "Index ".concat(index, " out of bounds");
+            var tr = $YetaWF.getElement1BySelector("tr[data-origin='".concat(index.toString(), "']"), [this.TBody]);
             tr.remove();
             this.Setup.StaticData.splice(index, 1);
             this.Setup.Records--;
@@ -1428,9 +1428,9 @@ var YetaWF_ComponentsHTML;
             if (!this.Setup.StaticData)
                 throw "Static grids only";
             if (sel < 0 || sel >= this.Setup.StaticData.length)
-                throw "Index sel=" + sel + " out of bounds";
+                throw "Index sel=".concat(sel, " out of bounds");
             if (index < 0 || index > this.Setup.StaticData.length)
-                throw "Index index=" + index + " out of bounds";
+                throw "Index index=".concat(index, " out of bounds");
             if (index === sel || index === sel + 1)
                 return; // nothing to move
             var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
@@ -1456,7 +1456,7 @@ var YetaWF_ComponentsHTML;
             this.updateStatus();
         };
         Grid.prototype.SelectedIndex = function () {
-            var sel = $YetaWF.getElement1BySelectorCond("tr." + this.Setup.RowHighlightCss + ",tr." + this.Setup.RowDragDropHighlightCss, [this.TBody]);
+            var sel = $YetaWF.getElement1BySelectorCond("tr.".concat(this.Setup.RowHighlightCss, ",tr.").concat(this.Setup.RowDragDropHighlightCss), [this.TBody]);
             if (sel == null)
                 return -1;
             var trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
@@ -1471,7 +1471,7 @@ var YetaWF_ComponentsHTML;
             $YetaWF.elementToggleClass(trs[index], this.Setup.RowHighlightCss, true);
         };
         Grid.prototype.ClearSelection = function () {
-            var sel = $YetaWF.getElement1BySelectorCond("tr." + this.Setup.RowHighlightCss + ",tr." + this.Setup.RowDragDropHighlightCss, [this.TBody]);
+            var sel = $YetaWF.getElement1BySelectorCond("tr.".concat(this.Setup.RowHighlightCss, ",tr.").concat(this.Setup.RowDragDropHighlightCss), [this.TBody]);
             if (sel) {
                 $YetaWF.elementToggleClass(sel, this.Setup.RowHighlightCss, false);
                 $YetaWF.elementToggleClass(sel, this.Setup.RowDragDropHighlightCss, false);
@@ -1484,14 +1484,14 @@ var YetaWF_ComponentsHTML;
             if (!this.Setup.StaticData)
                 throw "Static grids only";
             if (index < 0 || index >= this.Setup.StaticData.length)
-                throw "Index " + index + " out of bounds";
+                throw "Index ".concat(index, " out of bounds");
             return this.Setup.StaticData[index];
         };
         Grid.prototype.GetTR = function (index) {
             if (this.Setup.StaticData)
                 ++index; // the first row in an <no records> indicator
             if (index < 0 || index >= this.TBody.children.length)
-                throw "Index " + index + " out of bounds";
+                throw "Index ".concat(index, " out of bounds");
             return this.TBody.children[index];
         };
         Grid.prototype.HitTest = function (x, y) {
@@ -1575,7 +1575,7 @@ var YetaWF_ComponentsHTML;
             if (this.Setup.StaticData && this.Setup.NoSubmitContents) {
                 this.SubmitCheckCol = this.getSubmitCheckCol();
                 if (this.SubmitCheckCol >= 0) {
-                    var checks = $YetaWF.getElementsBySelector("td:nth-child(" + (this.SubmitCheckCol + 1) + ") input[type='checkbox']", [this.Control]);
+                    var checks = $YetaWF.getElementsBySelector("td:nth-child(".concat(this.SubmitCheckCol + 1, ") input[type='checkbox']"), [this.Control]);
                     for (var _i = 0, checks_1 = checks; _i < checks_1.length; _i++) {
                         var check = checks_1[_i];
                         if (!check.disabled) {
@@ -1593,7 +1593,7 @@ var YetaWF_ComponentsHTML;
             if (this.Setup.StaticData && this.Setup.NoSubmitContents) {
                 this.SubmitCheckCol = this.getSubmitCheckCol();
                 if (this.SubmitCheckCol >= 0) {
-                    var checks = $YetaWF.getElementsBySelector("td:nth-child(" + (this.SubmitCheckCol + 1) + ") input[type='checkbox']", [this.Control]);
+                    var checks = $YetaWF.getElementsBySelector("td:nth-child(".concat(this.SubmitCheckCol + 1, ") input[type='checkbox']"), [this.Control]);
                     for (var _i = 0, checks_2 = checks; _i < checks_2.length; _i++) {
                         var check = checks_2[_i];
                         if (!check.disabled) {

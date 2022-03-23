@@ -37,7 +37,7 @@ var YetaWF_ComponentsHTML;
         }
         ModuleActionsComponent.prototype.openMenu = function () {
             var menuDiv = this.MenuControl.cloneNode(true);
-            menuDiv.id = this.MenuControl.id + "_live";
+            menuDiv.id = "".concat(this.MenuControl.id, "_live");
             document.body.appendChild(menuDiv);
             new YetaWF_ComponentsHTML.MenuULComponent(menuDiv.id, { "Owner": this.MenuControl, "AutoOpen": true, "AutoRemove": true, "AttachTo": this.ButtonControl.Control, Dynamic: true });
         };

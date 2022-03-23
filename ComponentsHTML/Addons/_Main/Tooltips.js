@@ -21,9 +21,9 @@ var YetaWF_ComponentsHTML;
             var noTTISel = this.buildNoTT("i", noTooltips);
             var a2 = YConfigs.Basics.CssTooltip;
             var a3 = YConfigs.Basics.CssTooltipSpan;
-            var ttMisc = "th[" + a2 + "],span[" + a3 + "],li[" + a2 + "],div[" + a2 + "]";
-            var selectors = "label,input,a,button," + noTTImgSel + "," + noTTASel + "," + noTTISel + "," + ttMisc;
-            $YetaWF.registerMultipleEventHandlersBody(["mouseover", "click"], "" + selectors, function (ev) {
+            var ttMisc = "th[".concat(a2, "],span[").concat(a3, "],li[").concat(a2, "],div[").concat(a2, "]");
+            var selectors = "label,input,a,button,".concat(noTTImgSel, ",").concat(noTTASel, ",").concat(noTTISel, ",").concat(ttMisc);
+            $YetaWF.registerMultipleEventHandlersBody(["mouseover", "click"], "".concat(selectors), function (ev) {
                 var elem = ev.__YetaWFElem;
                 for (;;) {
                     if (!elem)
@@ -64,7 +64,7 @@ var YetaWF_ComponentsHTML;
                 _this.removeTooltips();
                 return true;
             });
-            $YetaWF.registerEventHandlerBody("mouseout", "." + this.TOOLTIPACTIVEELEMCLASS, function (ev) {
+            $YetaWF.registerEventHandlerBody("mouseout", ".".concat(this.TOOLTIPACTIVEELEMCLASS), function (ev) {
                 if (_this.activeTooltip && _this.activeTooltipElem && (ev.__YetaWFElem === _this.activeTooltipElem && !_this.activeTooltipElem.contains(ev.relatedTarget))) {
                     var elem_1 = _this.activeTooltip;
                     if (ComponentsHTMLHelper.isActiveFadeInOut(_this.CancelObject)) {
@@ -94,10 +94,10 @@ var YetaWF_ComponentsHTML;
             return sel;
         };
         Tooltips.prototype.buildNoTT = function (sel, noTooltips) {
-            var s = "" + sel;
+            var s = "".concat(sel);
             for (var _i = 0, noTooltips_1 = noTooltips; _i < noTooltips_1.length; _i++) {
                 var n = noTooltips_1[_i];
-                s += ":not(." + n + ")";
+                s += ":not(.".concat(n, ")");
             }
             return s;
         };
@@ -165,7 +165,7 @@ var YetaWF_ComponentsHTML;
                 var diff = (ttLeft + ttWidth + 35) - winWidth;
                 ttLeft -= diff;
             }
-            tooltip.setAttribute("style", "top:" + (winYOffset + ttTop) + "px;left:" + (winXOffset + ttLeft) + "px;width:" + ttWidth + "px");
+            tooltip.setAttribute("style", "top:".concat(winYOffset + ttTop, "px;left:").concat(winXOffset + ttLeft, "px;width:").concat(ttWidth, "px"));
             if (ComponentsHTMLHelper.isActiveFadeInOut(this.CancelObject)) {
                 ComponentsHTMLHelper.cancelFadeInOut(this.CancelObject);
                 tooltip.style.display = "block";

@@ -283,8 +283,8 @@ var YetaWF_ComponentsHTML;
             var controlRect = control.Control.getBoundingClientRect();
             var desiredHeight = control.Setup.DropDownHeightFactor * DropDownSearchEditComponent.DEFAULTHEIGHT;
             var desiredWidth = control.Setup.DropDownWidthFactor * controlRect.width;
-            scroller.style.maxHeight = desiredHeight + "px";
-            popup.style.width = desiredWidth + "px";
+            scroller.style.maxHeight = "".concat(desiredHeight, "px");
+            popup.style.width = "".concat(desiredWidth, "px");
             $YetaWF.positionLeftAlignedBelow(this.Control, popup);
         };
         DropDownSearchEditComponent.prototype.selectPopupItem = function (index) {

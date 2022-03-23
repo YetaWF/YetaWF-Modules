@@ -37,7 +37,7 @@ var YetaWF_Identity;
                     return true;
                 var uri = $YetaWF.parseUrl(_this.Setup.AddUrl);
                 uri.addFormInfo(_this.Control);
-                var uniqueIdCounters = { UniqueIdPrefix: _this.ControlId + "ls", UniqueIdPrefixCounter: 0, UniqueIdCounter: ++_this.AddCounter };
+                var uniqueIdCounters = { UniqueIdPrefix: "".concat(_this.ControlId, "ls"), UniqueIdPrefixCounter: 0, UniqueIdCounter: ++_this.AddCounter };
                 uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
                 uri.addSearch("newUser", _this.InputUserName.value);
                 uri.addSearch("fieldPrefix", _this.Grid.FieldName);

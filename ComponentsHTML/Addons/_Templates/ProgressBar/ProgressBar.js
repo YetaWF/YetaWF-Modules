@@ -63,7 +63,7 @@ var YetaWF_ComponentsHTML;
                         }
                     }
                     _this.ShownValue = newValue;
-                    _this.ValueDiv.style.width = newValue + "%";
+                    _this.ValueDiv.style.width = "".concat(newValue, "%");
                 }, ProgressBarComponent.INCRTIME);
             }
         };
@@ -89,7 +89,7 @@ var YetaWF_ComponentsHTML;
             }
             value = value || this.Min;
             this.Value = this.NewValue = this.ShownValue = value;
-            this.ValueDiv.style.width = value + "%";
+            this.ValueDiv.style.width = "".concat(value, "%");
         };
         ProgressBarComponent.prototype.show = function () {
             this.Control.style.display = "";

@@ -79,7 +79,7 @@ var YetaWF_Lightbox;
         };
         LightboxModule.prototype.getImages = function (link) {
             var requestedGroup = $YetaWF.getAttributeCond(link, "data-lightbox") || "";
-            var elems = $YetaWF.getElementsBySelector("[data-lightbox='" + requestedGroup + "']");
+            var elems = $YetaWF.getElementsBySelector("[data-lightbox='".concat(requestedGroup, "']"));
             this.ImageLinks = [];
             var index = 0;
             for (var _i = 0, elems_1 = elems; _i < elems_1.length; _i++) {
@@ -92,7 +92,7 @@ var YetaWF_Lightbox;
                     else if (elem.tagName === "AREA")
                         this.ImageLinks.push({ Url: elem.href, Title: title || "", Group: group || "" });
                     else
-                        throw "Unexpected tag " + elem.tagName;
+                        throw "Unexpected tag ".concat(elem.tagName);
                     if (elem === link)
                         this.ImageIndex = index;
                     ++index;
@@ -130,8 +130,8 @@ var YetaWF_Lightbox;
             var containerImg = $YetaWF.getElement1BySelector(".t_container img", [this.LightboxDiv]);
             var maxWidth = window.innerWidth - this.paddingWidth;
             var maxHeight = window.innerHeight - this.paddingHeight;
-            containerImg.style.maxWidth = maxWidth + "px";
-            containerImg.style.maxHeight = maxHeight + "px";
+            containerImg.style.maxWidth = "".concat(maxWidth, "px");
+            containerImg.style.maxHeight = "".concat(maxHeight, "px");
         };
         Object.defineProperty(LightboxModule.prototype, "paddingWidth", {
             get: function () {

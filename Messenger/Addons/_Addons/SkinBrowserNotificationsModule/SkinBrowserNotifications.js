@@ -10,7 +10,7 @@ var YetaWF_Messenger;
                 return;
             }
             var connection = new signalR.HubConnectionBuilder()
-                .withUrl(YConfigs.SignalR.Url + "/" + SkinBrowserNotificationsModule.PROXY)
+                .withUrl("".concat(YConfigs.SignalR.Url, "/").concat(SkinBrowserNotificationsModule.PROXY))
                 .configureLogging(signalR.LogLevel.Information)
                 .build();
             connection.on("Message", function (title, text, icon, timeout, url) {

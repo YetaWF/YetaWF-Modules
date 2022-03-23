@@ -6,7 +6,7 @@ var YetaWF_Messenger;
         function SkinSiteAnnouncementsModule() {
             var _this = this;
             var connection = new signalR.HubConnectionBuilder()
-                .withUrl(YConfigs.SignalR.Url + "/" + SkinSiteAnnouncementsModule.PROXY)
+                .withUrl("".concat(YConfigs.SignalR.Url, "/").concat(SkinSiteAnnouncementsModule.PROXY))
                 .configureLogging(signalR.LogLevel.Information)
                 .build();
             connection.on("Message", function (content, title) {

@@ -48,13 +48,13 @@ var YetaWF_Feed;
         }
         FeedModule.prototype.changeEntry = function () {
             var entry = this.Entries[this.NextEntry];
-            var newsEntry = "<a class='t_title' href='" + entry.href + "' target='_blank' rel='noopener noreferrer'>" + entry.innerText + "</a>";
+            var newsEntry = "<a class='t_title' href='".concat(entry.href, "' target='_blank' rel='noopener noreferrer'>").concat(entry.innerText, "</a>");
             var text = $YetaWF.getAttributeCond(entry, "data-text") || "";
-            newsEntry += "<div class='t_text'>" + text + "</div>";
+            newsEntry += "<div class='t_text'>".concat(text, "</div>");
             var author = $YetaWF.getAttributeCond(entry, "data-author") || "";
-            newsEntry += "<div class='t_author'>" + author + "</div>";
+            newsEntry += "<div class='t_author'>".concat(author, "</div>");
             var formattedDate = $YetaWF.getAttributeCond(entry, "data-publishedDate") || "";
-            newsEntry += "<div class='t_date'>" + formattedDate + "</div>";
+            newsEntry += "<div class='t_date'>".concat(formattedDate, "</div>");
             this.DivHeader.innerHTML = newsEntry;
             ++this.NextEntry;
             if (this.NextEntry >= this.Entries.length)

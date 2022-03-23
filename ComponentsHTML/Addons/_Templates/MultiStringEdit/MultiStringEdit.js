@@ -42,7 +42,7 @@ var YetaWF_ComponentsHTML;
             if (_this.SelectLang) {
                 _this.SelectLang.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, function (evt) {
                     var sel = _this.SelectLang.selectedIndex;
-                    var hid = $YetaWF.getElement1BySelector("input[name$='[" + sel + "].value']", [_this.Control]);
+                    var hid = $YetaWF.getElement1BySelector("input[name$='[".concat(sel, "].value']"), [_this.Control]);
                     var newText = hid.value;
                     if (newText.length === 0 && sel > 0) {
                         var hid0 = $YetaWF.getElement1BySelector("input[name$='[0].value']", [_this.Control]);
@@ -57,7 +57,7 @@ var YetaWF_ComponentsHTML;
                 var _a;
                 var newText = _this.InputText.value;
                 var sel = ((_a = _this.SelectLang) === null || _a === void 0 ? void 0 : _a.selectedIndex) || 0;
-                var hid = $YetaWF.getElement1BySelector("input[name$='[" + sel + "].value']", [_this.Control]);
+                var hid = $YetaWF.getElement1BySelector("input[name$='[".concat(sel, "].value']"), [_this.Control]);
                 hid.value = newText;
                 if (sel === 0)
                     _this.Hidden.value = newText;
@@ -75,7 +75,7 @@ var YetaWF_ComponentsHTML;
                         // the default text was cleared, clear all languages
                         var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
                         for (var index = 0; index < count; ++index) {
-                            var hid = $YetaWF.getElement1BySelector("input[name$='[" + index + "].value']", [_this.Control]);
+                            var hid = $YetaWF.getElement1BySelector("input[name$='[".concat(index, "].value']"), [_this.Control]);
                             hid.value = "";
                         }
                         _this.Hidden.value = "";
@@ -129,11 +129,11 @@ var YetaWF_ComponentsHTML;
                 var data = {};
                 var newText = this.InputText.value;
                 var sel = ((_a = this.SelectLang) === null || _a === void 0 ? void 0 : _a.selectedIndex) || 0;
-                var hid = $YetaWF.getElement1BySelector("input[name$='[" + sel + "].value']", [this.Control]);
+                var hid = $YetaWF.getElement1BySelector("input[name$='[".concat(sel, "].value']"), [this.Control]);
                 hid.value = newText;
                 var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
                 for (var index = 0; index < count; ++index) {
-                    hid = $YetaWF.getElement1BySelector("input[name$='[" + index + "].value']", [this.Control]);
+                    hid = $YetaWF.getElement1BySelector("input[name$='[".concat(index, "].value']"), [this.Control]);
                     var langText = hid.value;
                     if (langText === "")
                         langText = newText;
@@ -154,7 +154,7 @@ var YetaWF_ComponentsHTML;
                         s = text;
                     else if (textDefault)
                         s = textDefault; // use default for languages w/o data
-                    var hid = $YetaWF.getElement1BySelector("input[name$='[" + index + "].value']", [this.Control]);
+                    var hid = $YetaWF.getElement1BySelector("input[name$='[".concat(index, "].value']"), [this.Control]);
                     hid.value = s;
                     if (index === 0) {
                         this.Hidden.value = s;
@@ -171,7 +171,7 @@ var YetaWF_ComponentsHTML;
             var textDefault = this.findLanguageText(data, YLocs.YetaWF_ComponentsHTML.Languages[0]);
             var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
             for (var index = 0; index < count; ++index) {
-                var hid = $YetaWF.getElement1BySelector("input[name$='[" + index + "].value']", [this.Control]);
+                var hid = $YetaWF.getElement1BySelector("input[name$='[".concat(index, "].value']"), [this.Control]);
                 var langText = hid.value;
                 if (langText === "")
                     langText = textDefault || "";

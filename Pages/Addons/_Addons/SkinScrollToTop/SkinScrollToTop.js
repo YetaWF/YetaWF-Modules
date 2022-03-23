@@ -7,7 +7,7 @@ var YetaWF_Pages;
         }
         ScrollUp.init = function () {
             var scrollText = ""; //RFFU
-            var topDiv = $YetaWF.getElement1BySelectorCond("#" + ScrollUp.SCROLLTOPID);
+            var topDiv = $YetaWF.getElement1BySelectorCond("#".concat(ScrollUp.SCROLLTOPID));
             if (!topDiv) {
                 topDiv = $YetaWF.createElement("a", { href: "#top", id: ScrollUp.SCROLLTOPID, title: scrollText });
                 document.body.appendChild(topDiv);
@@ -19,13 +19,13 @@ var YetaWF_Pages;
             ScrollUp.evalScrollTop();
         };
         ScrollUp.destroy = function () {
-            var topDiv = $YetaWF.getElement1BySelectorCond("#" + ScrollUp.SCROLLTOPID);
+            var topDiv = $YetaWF.getElement1BySelectorCond("#".concat(ScrollUp.SCROLLTOPID));
             topDiv === null || topDiv === void 0 ? void 0 : topDiv.remove();
         };
         ScrollUp.evalScrollTop = function () {
             if (!ScrollUp.On)
                 return;
-            var topDiv = $YetaWF.getElement1BySelectorCond("#" + ScrollUp.SCROLLTOPID);
+            var topDiv = $YetaWF.getElement1BySelectorCond("#".concat(ScrollUp.SCROLLTOPID));
             if (!topDiv)
                 return;
             var rect = document.body.getBoundingClientRect();
@@ -35,7 +35,7 @@ var YetaWF_Pages;
                 topDiv.style.display = "none";
         };
         ScrollUp.scrollToTop = function () {
-            var topDiv = $YetaWF.getElement1BySelectorCond("#" + ScrollUp.SCROLLTOPID);
+            var topDiv = $YetaWF.getElement1BySelectorCond("#".concat(ScrollUp.SCROLLTOPID));
             if (!topDiv)
                 return;
             var rect = document.body.getBoundingClientRect();

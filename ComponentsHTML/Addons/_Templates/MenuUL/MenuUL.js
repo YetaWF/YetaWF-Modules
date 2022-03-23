@@ -101,11 +101,11 @@ var YetaWF_ComponentsHTML;
             // position the sublevel
             switch (level) {
                 case 0: // really t_lvl1
-                    subUL.style.left = owningRect.width - 3 + "px"; // slight overlap
+                    subUL.style.left = "".concat(owningRect.width - 3, "px"); // slight overlap
                     subUL.style.top = "-3px";
                     break;
                 case 1: // really t_lvl2
-                    subUL.style.left = owningRect.width - 3 + "px"; // slight overlap
+                    subUL.style.left = "".concat(owningRect.width - 3, "px"); // slight overlap
                     subUL.style.top = "-3px";
                     break;
                 default:
