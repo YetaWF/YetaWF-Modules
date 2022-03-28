@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -45,6 +46,14 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
 
         public const int KEY = 1000;
         public const string JSFile = "ExchangeRates.js";
+
+        private static readonly HttpClientHandler Handler = new HttpClientHandler {
+            AllowAutoRedirect = true,
+            UseCookies = false,
+        };
+        private static readonly HttpClient Client = new HttpClient(Handler, true) {
+            Timeout = new TimeSpan(0, 0, 20),
+        };
 
         public ExchangeRateDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
 
@@ -141,24 +150,21 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
                 throw new InternalError("An error occurred retrieving exchange rates from openexchangerates.org - {0}: {1}", jsonObject["message"], jsonObject["description"]);
         }
         private async Task<string> GetJSONResponseAsync(string url) {
-            var http = (HttpWebRequest)WebRequest.Create(new Uri(url));
-            http.Accept = "application/json";
-            http.ContentType = "application/json";
-            http.Method = "POST";
-            System.Net.WebResponse resp;
+            HttpResponseMessage? resp = null;
             try {
-                if (YetaWFManager.IsSync())
-                    resp = http.GetResponse();
-                else
-                    resp = await http.GetResponseAsync();
+                using (var request = new HttpRequestMessage(HttpMethod.Post, url)) {
+                    if (YetaWFManager.IsSync()) {
+                        using (resp = Client.SendAsync(request).Result) {
+                            return resp.Content.ReadAsStringAsync().Result;
+                        }
+                    } else {
+                        using (resp = await Client.SendAsync(request)) {
+                            return await resp.Content.ReadAsStringAsync();
+                        }
+                    }
+                }
             } catch (Exception exc) {
                 throw new InternalError("An error occurred retrieving exchange rates from openexchangerates.org - {0}", ErrorHandling.FormatExceptionMessage(exc));
-            }
-            using (System.IO.StreamReader sr = new System.IO.StreamReader(resp.GetResponseStream())) {
-                if (YetaWFManager.IsSync())
-                    return sr.ReadToEnd().Trim();
-                else
-                    return (await sr.ReadToEndAsync()).Trim();
             }
         }
 
