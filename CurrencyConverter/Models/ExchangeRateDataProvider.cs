@@ -155,10 +155,14 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
                 using (var request = new HttpRequestMessage(HttpMethod.Post, url)) {
                     if (YetaWFManager.IsSync()) {
                         using (resp = Client.SendAsync(request).Result) {
+                            if (!resp.IsSuccessStatusCode)
+                                throw new InternalError($"Unable to retrieve currency information {resp.StatusCode}");
                             return resp.Content.ReadAsStringAsync().Result;
                         }
                     } else {
                         using (resp = await Client.SendAsync(request)) {
+                            if (!resp.IsSuccessStatusCode)
+                                throw new InternalError($"Unable to retrieve currency information {resp.StatusCode}");
                             return await resp.Content.ReadAsStringAsync();
                         }
                     }
