@@ -1,17 +1,16 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-using System.Drawing;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 using YetaWF.Core.Addons;
+using YetaWF.Core.Components;
+using YetaWF.Core.Controllers;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Image;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Support;
 using YetaWF.Core.Upload;
-using System.Threading.Tasks;
-using YetaWF.Core.Controllers;
-using YetaWF.Core.Components;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 
 namespace YetaWF.Modules.ComponentsHTML.Controllers {
 
@@ -35,14 +34,14 @@ namespace YetaWF.Modules.ComponentsHTML.Controllers {
             if (!string.IsNullOrWhiteSpace(__lastInternalName)) // delete the previous file we had open
                 await upload.RemoveTempFileAsync(__lastInternalName);
 
-            Size size = await ImageSupport.GetImageSizeAsync(tempName);
+            (int width, int height) = await ImageSupport.GetImageSizeAsync(tempName);
 
             UploadResponse resp = new UploadResponse {
                 Result = $"$YetaWF.confirm('{Utility.JserEncode(this.__ResStr("saveImageOK", "Image \"{0}\" successfully uploaded", __filename.FileName))}');",
                 FileName = tempName,
                 FileNamePlain = tempName,
                 RealFileName = __filename.FileName,
-                Attributes = this.__ResStr("imgAttr", "{0} x {1} (w x h)", size.Width, size.Height),
+                Attributes = this.__ResStr("imgAttr", "{0} x {1} (w x h)", width,height),
             };
 
             return new YJsonResult { Data = resp };
