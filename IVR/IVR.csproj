@@ -21,7 +21,6 @@
         <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj" />
         <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj" />
         <ProjectReference Include="..\..\YetaWF\ComponentsHTML\ComponentsHTML.csproj" />
-        <ProjectReference Include="..\TwilioProcessorDataProvider\TwilioProcessorDataProvider.csproj" />
         <ProjectReference Include="..\TwilioProcessor\TwilioProcessor.csproj" />
     </ItemGroup>
 

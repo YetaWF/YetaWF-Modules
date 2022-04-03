@@ -1,7 +1,7 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TwilioProcessor#License */
 
 using Softelvdm.Modules.TwilioProcessor.Controllers;
-using Softelvdm.Modules.TwilioProcessorDataProvider.DataProvider;
+using Softelvdm.Modules.TwilioProcessor.DataProvider;
 using System;
 using System.Threading.Tasks;
 using Twilio;
