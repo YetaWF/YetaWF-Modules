@@ -202,6 +202,10 @@
 .yt_grid .tg_table table tbody td .yt_moduleactionsplain {
   line-height: 20px;
 }
+.yt_grid .tg_table table tbody td .yt_moduleactions a.y_act_img,
+.yt_grid .tg_table table tbody td .yt_moduleactionsplain a.y_act_img {
+  white-space: normal;
+}
 .yt_grid .tg_table table th, .yt_grid .tg_table table td {
   font: var(--body-font);
   overflow: hidden;

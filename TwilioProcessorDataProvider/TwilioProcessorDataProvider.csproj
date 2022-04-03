@@ -15,6 +15,7 @@
     <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
     <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
     <RootNamespace>Softelvdm.Modules.TwilioProcessorDataProvider</RootNamespace>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -37,7 +38,6 @@
   </Choose>
 
   <ItemGroup>
-    <PackageReference Include="libphonenumber-csharp" Version="8.12.45" />
     <PackageReference Include="Twilio.AspNet.Core" Version="5.71.0" />
   </ItemGroup>
 
@@ -46,6 +46,10 @@
     <Content Remove="node_modules\**" />
     <None Remove="node_modules\**" />
     <EmbeddedResource Remove="node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Attributes\" />
   </ItemGroup>
 
 </Project>

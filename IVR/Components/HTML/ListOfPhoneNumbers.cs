@@ -2,7 +2,6 @@
 
 using Softelvdm.Modules.IVR.Controllers;
 using Softelvdm.Modules.IVR.DataProvider;
-using Softelvdm.Modules.TwilioProcessorDataProvider.Models.Attributes;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -47,7 +46,7 @@ namespace Softelvdm.Modules.IVR.Components {
         public class Entry {
 
             [Caption("Phone Number"), Description("Shows all defined phone numbers")]
-            [UIHint("Softelvdm_IVR_PhoneNumber"), ReadOnly]
+            [UIHint("PhoneNumber"), ReadOnly]
             public string? PhoneNumber { get; set; }
 
             [Caption("SMS"), Description("Shows whether a text message is sent to the phone number when a voice mail is received")]
@@ -130,7 +129,7 @@ namespace Softelvdm.Modules.IVR.Components {
         public class NewModel {
 
             [Caption("Phone Number"), Description("Please enter a new phone number and click Add")]
-            [UIHint("Text20"), StringLength(Globals.MaxPhoneNumber), PhoneNumberNational]
+            [UIHint("Text20"), StringLength(Globals.MaxPhoneNumber), PhoneNumberNationalValidation]
             public string? NewPhoneNumber { get; set; }
 
             [Caption("SMS"), Description("Shows whether a text message is sent to the phone number when a voice mail is received")]
@@ -145,7 +144,7 @@ namespace Softelvdm.Modules.IVR.Components {
             public int Delete { get; set; }
 
             [Caption("Phone Number"), Description("Shows all defined phone numbers")]
-            [UIHint("Softelvdm_IVR_PhoneNumber"), ReadOnly]
+            [UIHint("PhoneNumber"), ReadOnly]
             public string PhoneNumberDisplay { get; set; }
 
             [Caption("SMS"), Description("Shows whether a text message is sent to the phone number when a voice mail is received")]
