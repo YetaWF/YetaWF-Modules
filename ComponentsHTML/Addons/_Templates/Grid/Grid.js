@@ -447,8 +447,7 @@ var YetaWF_ComponentsHTML;
             if (_this.Setup.StaticData && _this.Setup.NoSubmitContents) {
                 _this.SubmitCheckCol = _this.getSubmitCheckCol();
                 if (_this.SubmitCheckCol >= 0) {
-                    _this.setInitialSubmitStatus();
-                    // update static data with new checkbox value
+                    // update static data with new checkbox value when clicked
                     $YetaWF.registerEventHandler(_this.TBody, "change", "tr td:nth-child(".concat(_this.SubmitCheckCol + 1, ") input[type='checkbox']"), function (ev) {
                         if (!_this.Setup.StaticData)
                             return true;
@@ -456,7 +455,6 @@ var YetaWF_ComponentsHTML;
                         var recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
                         var val = ev.__YetaWFElem.checked;
                         _this.Setup.StaticData[recNum][_this.Setup.Columns[_this.SubmitCheckCol].Name] = val;
-                        //$YetaWF.elementToggleClass(tr, YConfigs.Forms.CssFormNoSubmitContents, !val);
                         return false;
                     });
                 }
@@ -579,16 +577,6 @@ var YetaWF_ComponentsHTML;
             this.sendEventDragDropDone();
         };
         // OnlySubmitWhenChecked
-        Grid.prototype.setInitialSubmitStatus = function () {
-            if (!this.Setup.StaticData || !this.Setup.NoSubmitContents)
-                return;
-            //let trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
-            //for (let tr of trs) {
-            //    let recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
-            //    let val = this.Setup.StaticData[recNum][this.Setup.Columns[this.SubmitCheckCol].Name];
-            //    $YetaWF.elementToggleClass(tr, YConfigs.Forms.CssFormNoSubmitContents, !val);
-            //}
-        };
         Grid.prototype.getSubmitCheckCol = function () {
             var colIndex = -1;
             var cols = this.Setup.Columns.filter(function (col, index, cols) {
@@ -881,11 +869,9 @@ var YetaWF_ComponentsHTML;
                             _this.Setup.PageSize = partial.PageSize;
                             if (_this.InputPage)
                                 _this.InputPage.value = _this.Setup.Page + 1;
-                            if (_this.Setup.NoSubmitContents) {
+                            _this.SubmitCheckCol = -1;
+                            if (_this.Setup.NoSubmitContents)
                                 _this.SubmitCheckCol = _this.getSubmitCheckCol();
-                                if (_this.SubmitCheckCol >= 0)
-                                    _this.setInitialSubmitStatus();
-                            }
                             _this.setReloading(false);
                             _this.updateStatus();
                             if (done)
