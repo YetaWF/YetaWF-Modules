@@ -1,10 +1,10 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TwilioProcessorDataProvider#License */
+/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TwilioProcessor#License */
 
 using System.Collections.Generic;
 using YetaWF.Core.DataProvider;
 using YetaWF.DataProvider.SQL;
 
-namespace Softelvdm.Modules.TwilioProcessorDataProvider.DataProvider.SQL {
+namespace Softelvdm.Modules.TwilioProcessor.DataProvider.SQL {
 
     public class SQLDataProvider : IExternalDataProvider {
 

@@ -1,7 +1,7 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
 
+using Microsoft.AspNetCore.Mvc;
 using Softelvdm.Modules.IVR.Components;
-using Softelvdm.Modules.TwilioProcessorDataProvider.Models.Attributes;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,11 +9,6 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace Softelvdm.Modules.IVR.Controllers {
 
@@ -34,7 +29,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
         [ExcludeDemoMode]
         public async Task<ActionResult> AddPhoneNumber(string data, string fieldPrefix, string newPhoneNumber, bool sms) {
             List<ListOfPhoneNumbersEditComponent.Entry> list = Utility.JsonDeserialize<List<ListOfPhoneNumbersEditComponent.Entry>>(data);
-            string phoneNumber = PhoneNumberNationalAttribute.GetE164(newPhoneNumber);
+            string? phoneNumber = PhoneNumberNationalValidationAttribute.GetE164(newPhoneNumber);
             if (string.IsNullOrWhiteSpace(phoneNumber))
                 throw new Error(this.__ResStr("invPhone", "Phone number {0} is not a valid phone number", newPhoneNumber));
             if ((from l in list where l.PhoneNumber == phoneNumber select l).FirstOrDefault() != null)

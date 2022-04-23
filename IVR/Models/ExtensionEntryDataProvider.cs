@@ -1,6 +1,5 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
 
-using Softelvdm.Modules.TwilioProcessorDataProvider.Models.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -79,8 +78,9 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         }
         public async Task<bool> AddItemAsync(ExtensionEntry data) {
             data.Created = DateTime.UtcNow;
-            foreach (ExtensionPhoneNumber ext in data.PhoneNumbers)
-                ext.PhoneNumber = PhoneNumberNationalAttribute.GetE164(ext.PhoneNumber);// standardize
+            foreach (ExtensionPhoneNumber ext in data.PhoneNumbers) {
+                ext.PhoneNumber = PhoneNumberNationalValidationAttribute.GetE164(ext.PhoneNumber) ?? throw new InternalError($"Phone number {ext.PhoneNumber} is invalid");// standardize                
+            }
             if (!await DataProvider.AddAsync(data))
                 return false;
             await Auditing.AddAuditAsync($"{nameof(ExtensionEntryDataProvider)}.{nameof(AddItemAsync)}", Dataset, Guid.Empty,
@@ -95,8 +95,9 @@ namespace Softelvdm.Modules.IVR.DataProvider {
             ExtensionEntry? origData = Auditing.Active ? await GetItemByIdentityAsync(data.Id) : null;
 
             data.Updated = DateTime.UtcNow;
-            foreach (ExtensionPhoneNumber ext in data.PhoneNumbers)
-                ext.PhoneNumber = PhoneNumberNationalAttribute.GetE164(ext.PhoneNumber);// standardize
+            foreach (ExtensionPhoneNumber ext in data.PhoneNumbers) {
+                ext.PhoneNumber = PhoneNumberNationalValidationAttribute.GetE164(ext.PhoneNumber) ?? throw new InternalError($"Phone number {ext.PhoneNumber} is invalid");// standardize                
+            }
             UpdateStatusEnum status = await DataProvider.UpdateByIdentityAsync(data.Id, data);
             if (status != UpdateStatusEnum.OK)
                 return status;

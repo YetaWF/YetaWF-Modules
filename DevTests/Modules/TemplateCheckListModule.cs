@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
+/* Copyright ï¿½ 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 
 using System;
 using YetaWF.Core.IO;

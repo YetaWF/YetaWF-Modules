@@ -3,7 +3,7 @@
 using Microsoft.AspNetCore.Http;
 using Softelvdm.Modules.IVR.DataProvider;
 using Softelvdm.Modules.IVR.Modules;
-using Softelvdm.Modules.TwilioProcessorDataProvider.DataProvider;
+using Softelvdm.Modules.TwilioProcessor.DataProvider;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +49,9 @@ namespace Softelvdm.Modules.IVR.Controllers {
             TwilioData twilioConfig = await TwilioConfigDataProvider.GetConfigCondAsync();
             if (twilioConfig == null || !twilioConfig.IsConfigured())
                 return RejectResult("Twilio is not configured");
-            string authToken = twilioConfig.TestMode ? twilioConfig.TestAuthToken : twilioConfig.LiveAuthToken;
+            string? authToken = twilioConfig.TestMode ? twilioConfig.TestAuthToken : twilioConfig.LiveAuthToken;
+            if (authToken == null)
+                return RejectResult("Twilio is not configured - no token");
             IVRConfig ivrConfig = await IVRConfigDataProvider.GetConfigCondAsync();
             if (ivrConfig == null || string.IsNullOrWhiteSpace(ivrConfig.PublicKey) || string.IsNullOrWhiteSpace(ivrConfig.PrivateKey))
                 return RejectResult("Config settings not available");

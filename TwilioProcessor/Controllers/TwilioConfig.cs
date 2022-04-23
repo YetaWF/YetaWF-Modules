@@ -1,6 +1,7 @@
 /* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TwilioProcessor#License */
 
-using Softelvdm.Modules.TwilioProcessorDataProvider.DataProvider;
+using Microsoft.AspNetCore.Mvc;
+using Softelvdm.Modules.TwilioProcessor.DataProvider;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Controllers;
@@ -8,12 +9,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
-using Softelvdm.Modules.TwilioProcessorDataProvider.Models.Attributes;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace Softelvdm.Modules.TwilioProcessor.Controllers {
 
@@ -37,31 +32,31 @@ namespace Softelvdm.Modules.TwilioProcessor.Controllers {
             [UIHint("String"), ReadOnly]
             [HelpLink("https://www.twilio.com/")]
             [ExcludeDemoMode]
-            public string LiveAccountSid { get; set; }
+            public string? LiveAccountSid { get; set; }
             [Category("Accounts"), Caption("Live Auth Token"), Description("The Live Auth Token is obtained from your Twilio account, defined in appsettings.json (applies to all sites in this YetaWF instance) and is used when Test Mode is disabled")]
             [UIHint("String"), ReadOnly]
             [ExcludeDemoMode]
-            public string LiveAuthToken { get; set; }
+            public string? LiveAuthToken { get; set; }
 
             [Category("Accounts"), Caption("Test Account Sid"), Description("The Test Account Sid is obtained from your Twilio account, defined in appsettings.json (applies to all sites in this YetaWF instance) and is used when Test Mode is enabled")]
             [UIHint("String"), ReadOnly]
             [HelpLink("https://www.twilio.com/")]
             [ExcludeDemoMode]
-            public string TestAccountSid { get; set; }
+            public string? TestAccountSid { get; set; }
             [Category("Accounts"), Caption("Test Auth Token"), Description("The Test Auth Token is obtained from your Twilio account, defined in appsettings.json (applies to all sites in this YetaWF instance) and is used when Test Mode is enabled")]
             [UIHint("String"), ReadOnly]
             [ExcludeDemoMode]
-            public string TestAuthToken { get; set; }
+            public string? TestAuthToken { get; set; }
 
             [Category("SMS"), Caption("Live SMS Number"), Description("The default live phone number for SMS associated with your Twilio account - Only purchased Twilio provided phone numbers can be used (see Twilio for details)")]
-            [UIHint("Text20"), StringLength(Globals.MaxPhoneNumber), PhoneNumberNational, Trim]
+            [UIHint("Text20"), StringLength(Globals.MaxPhoneNumber), PhoneNumberNationalValidation, Trim]
             [ExcludeDemoMode]
-            public string LiveSMSNumber { get; set; }
+            public string? LiveSMSNumber { get; set; }
 
             [Category("SMS"), Caption("Test SMS Number"), Description("The default test phone number for SMS associated with your Twilio account - Only Twilio provided test phone numbers can be used (see Twilio for details)")]
-            [UIHint("Text20"), StringLength(Globals.MaxPhoneNumber), PhoneNumberNational, Trim]
+            [UIHint("Text20"), StringLength(Globals.MaxPhoneNumber), PhoneNumberNationalValidation, Trim]
             [ExcludeDemoMode]
-            public string TestSMSNumber { get; set; }
+            public string? TestSMSNumber { get; set; }
 
             [Category("SMS"), Caption("Max. SMS Per Second"), Description("Defines the maximum number of SMS that are supported by the phone number - Set to 0 to disable pacing - Twilio phone numbers have restrictions as to how many SMS can be sent per second")]
             [UIHint("IntValue4")]

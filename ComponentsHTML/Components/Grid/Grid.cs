@@ -1258,10 +1258,10 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 get { return false; }
             }
 
-            public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
+            public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer) {
                 throw new NotImplementedException();
             }
-            public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
+            public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer) {
                 string array = JsonConvert.SerializeObject(value, new JsonSerializerSettings { ContractResolver = new Utility.PropertyGetSetUIHintContractResolver() });
                 writer.WriteRawValue(array);
             }
