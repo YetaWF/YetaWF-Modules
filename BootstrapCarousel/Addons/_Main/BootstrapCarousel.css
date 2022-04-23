@@ -19,10 +19,8 @@
   bottom: 0;
   left: 0;
   z-index: 15;
-  display: -webkit-box;
   display: flex;
-  -webkit-box-pack: center;
-          justify-content: center;
+  justify-content: center;
   padding-left: 0;
   margin-right: 15%;
   margin-left: 15%;
@@ -67,17 +65,13 @@
   top: 0;
   bottom: 0;
   z-index: 1;
-  display: -webkit-box;
   display: flex;
-  -webkit-box-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-          justify-content: center;
+  align-items: center;
+  justify-content: center;
   width: 15%;
   color: #fff;
   text-align: center;
   opacity: 0.5;
-  -webkit-transition: opacity 0.15s ease;
   transition: opacity 0.15s ease;
 }
 .yt_bootstrapcarousel_slideshow.t_display .t_next:hover, .yt_bootstrapcarousel_slideshow.t_display .t_prev:hover {
@@ -97,8 +91,7 @@
 }
 .yt_bootstrapcarousel_slideshow.t_display .t_indicators li {
   box-sizing: content-box;
-  -webkit-box-flex: 0;
-          flex: 0 1 auto;
+  flex: 0 1 auto;
   width: 30px;
   height: 3px;
   margin-right: 3px;
@@ -110,7 +103,6 @@
   border-top: 10px solid transparent;
   border-bottom: 10px solid transparent;
   opacity: 0.5;
-  -webkit-transition: opacity 0.6s ease;
   transition: opacity 0.6s ease;
 }
 .yt_bootstrapcarousel_slideshow.t_display .t_indicators li:hover, .yt_bootstrapcarousel_slideshow.t_display .t_indicators li.t_active {

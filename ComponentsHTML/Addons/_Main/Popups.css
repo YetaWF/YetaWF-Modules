@@ -12,22 +12,15 @@
   border: var(--dialog-border);
   border-radius: var(--dialog-border-radius);
   padding: 0.2em;
-  display: -webkit-box;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-          flex-direction: column;
+  flex-direction: column;
   overflow: hidden;
 }
 #ypopup .t_titlebar {
-  display: -webkit-box;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-          flex-direction: row;
+  flex-direction: row;
   flex-wrap: nowrap;
-  -webkit-box-align: center;
-          align-items: center;
+  align-items: center;
   background: var(--dialog-title-bg);
   color: var(--dialog-title-clr);
   cursor: move;
@@ -38,8 +31,7 @@
   font: var(--dialog-title-font);
 }
 #ypopup .t_titlebar #ypopupTitle {
-  -webkit-box-flex: 1;
-          flex: 1 1;
+  flex: 1 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
