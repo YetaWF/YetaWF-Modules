@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Sites.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return SuperuserLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_Add(string url) {
+        public ModuleAction GetAction_Add(string? url) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Add",

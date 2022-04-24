@@ -20,19 +20,19 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.NLogProvider {
 
     public class NLogDataProvider : IExternalDataProvider {
 
-        public static NLog.Logger Logger;
+        public static NLog.Logger? Logger;
 
         public const string NLogSettingsFile = "NLog.config";
         private const string NLogMessageFormat = "NLogMessageFormat";
         private const string NLogMessageEvent = "NLogMessageEvent";
 
-        public static string MessageFormat { get; private set; }
+        public static string? MessageFormat { get; private set; }
         public static bool MessageEvent { get; private set; }
 
         public void Register() {
 
             // Get config file
-            string configFile = Startup.GetEnvironmentFile(Path.Combine(YetaWFManager.RootFolderWebProject, Globals.DataFolder), "NLog", "config", Optional: true);
+            string? configFile = Startup.GetEnvironmentFile(Path.Combine(YetaWFManager.RootFolderWebProject, Globals.DataFolder), "NLog", "config", Optional: true);
             if (configFile == null)
                 return;
 
@@ -63,7 +63,7 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.NLogProvider {
         public YetaWFDBTarget() { }
 
         protected override void Write(LogEventInfo logEvent) {
-            object o;
+            object? o;
             if (!logEvent.Properties.TryGetValue("record", out o))
                 throw new InternalError("When using the YetaWFDB target for NLog, the NLogMessageEvent property (appsettings.json) must be set to true");
             LogRecord data = (LogRecord)o;
@@ -76,7 +76,7 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.NLogProvider {
                 return (IDataProvider<int, LogRecord>)_dataProvider;
             }
         }
-        private SQLSimpleObject<int, LogRecord> _dataProvider;
+        private SQLSimpleObject<int, LogRecord>? _dataProvider;
 
         private SQLSimpleObject<int, LogRecord> CreateDataProvider() {
             // can't use CurrentPackage as RegisterAllAreas has not yet been called
@@ -115,7 +115,7 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.NLogProvider {
                 return (IDataProvider<int, LogRecord>) _dataProvider;
             }
         }
-        private SQLSimpleObject<int, LogRecord> _dataProvider;
+        private SQLSimpleObject<int, LogRecord>? _dataProvider;
 
         private SQLSimpleObject<int, LogRecord> CreateDataProvider() {
             // can't use CurrentPackage as RegisterAllAreas has not yet been called
@@ -178,7 +178,7 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.NLogProvider {
         private object Enc(string s) {
             return s.Replace(";", ";;");
         }
-        public override Task<LogRecord> GetItemAsync(int key) {
+        public override Task<LogRecord?> GetItemAsync(int key) {
             return DataProvider.GetAsync(key);
         }
         public override Task<bool> RemoveItemAsync(int key) {
@@ -187,10 +187,10 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.NLogProvider {
         public override async Task<DataProviderGetRecords<LogRecord>> GetItemsAsync(List<DataProviderFilterInfo> filters) {
             return await DataProvider.GetRecordsAsync(0, 0, null, filters);
         }
-        public override async Task<DataProviderGetRecords<LogRecord>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        public override async Task<DataProviderGetRecords<LogRecord>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
             return await DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
-        public override async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
+        public override async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo>? filters) {
             return await DataProvider.RemoveRecordsAsync(filters);
         }
         public Task LocalizeModelAsync(string language, Func<string, bool> isHtml, Func<List<string>, Task<List<string>>> translateStringsAsync, Func<string, Task<string>> translateComplexStringAsync) {

@@ -31,7 +31,7 @@ namespace YetaWF.Modules.Logging.Controllers {
 
             [Caption("Session Id"), Description("The session id used to identify the visitor")]
             [UIHint("String"), ReadOnly]
-            public string SessionId { get; set; }
+            public string SessionId { get; set; } = null!;
 
             [Caption("Level"), Description("The error level of this log record")]
             [UIHint("Enum"), ReadOnly]
@@ -39,7 +39,7 @@ namespace YetaWF.Modules.Logging.Controllers {
 
             [Caption("Info"), Description("The information logged in this record")]
             [UIHint("String"), ReadOnly]
-            public string Info { get; set; }
+            public string Info { get; set; } = null!;
 
             [Caption("Site Id"), Description("The site which logged this record")]
             [UIHint("IntValue"), ReadOnly]
@@ -47,13 +47,13 @@ namespace YetaWF.Modules.Logging.Controllers {
 
             [Caption("IP Address"), Description("The IP address associated with this log entry")]
             [UIHint("IPAddress"), ReadOnly]
-            public string IPAddress { get; set; }
+            public string IPAddress { get; set; } = null!;
             [Caption("Url"), Description("The requested Url")]
             [UIHint("Url"), ReadOnly]
-            public string RequestedUrl { get; set; }
+            public string RequestedUrl { get; set; } = null!;
             [UIHint("Url"), ReadOnly]
             [Caption("Referrer"), Description("The referring Url associated with this log entry")]
-            public string ReferrerUrl { get; set; }
+            public string ReferrerUrl { get; set; } = null!;
 
             [Caption("User"), Description("The user's name/email address (if available)")]
             [UIHint("YetaWF_Identity_UserId"), ReadOnly]
@@ -61,16 +61,16 @@ namespace YetaWF.Modules.Logging.Controllers {
 
             [Caption("Module Name"), Description("The module logging this record")]
             [UIHint("String"), ReadOnly]
-            public string ModuleName { get; set; }
+            public string ModuleName { get; set; } = null!;
             [Caption("Class"), Description("The class logging this record")]
             [UIHint("String"), ReadOnly]
-            public string Class { get; set; }
+            public string Class { get; set; } = null!;
             [Caption("Method"), Description("The method logging this record")]
             [UIHint("String"), ReadOnly]
-            public string Method { get; set; }
+            public string Method { get; set; } = null!;
             [Caption("Namespace"), Description("The namespace logging this record")]
             [UIHint("String"), ReadOnly]
-            public string Namespace { get; set; }
+            public string Namespace { get; set; } = null!;
 
             public void SetData(LogRecord data) {
                 ObjectSupport.CopyData(data, this);
@@ -80,7 +80,7 @@ namespace YetaWF.Modules.Logging.Controllers {
         [AllowGet]
         public async Task<ActionResult> DisplayLog(int key) {
             using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
-                LogRecord data = await dataProvider.GetItemAsync(key);
+                LogRecord? data = await dataProvider.GetItemAsync(key);
                 if (data == null)
                     throw new Error(this.__ResStr("notFound", "Record \"{0}\" not found."), key);
                 DisplayModel model = new DisplayModel();

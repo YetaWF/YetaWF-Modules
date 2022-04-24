@@ -20,17 +20,18 @@ namespace YetaWF.Modules.SiteProperties.Controllers {
 
         public class SitePropertiesModel {
             [UIHint("PropertyList")]
-            public SiteDefinition Site { get; set; }
+            public SiteDefinition Site { get; set; } = null!;
             [UIHint("Hidden")]
-            public string SiteHost { get; set; }
+            public string SiteHost { get; set; } = null!;
         }
 
         [AllowGet]
         public async Task<ActionResult> SiteProperties(string domain) {
-            SiteDefinition site;
-            if (domain == null)
+            SiteDefinition? site;
+            if (domain == null) {
                 site = Manager.CurrentSite;
-            else
+                domain = site.SiteDomain;
+            } else
                 site = await SiteDefinition.LoadSiteDefinitionAsync(domain);
             if (site == null)
                 throw new Error(this.__ResStr("errNoSite", "Site \"{0}\" not found", domain));
@@ -45,11 +46,11 @@ namespace YetaWF.Modules.SiteProperties.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> SiteProperties_Partial(SitePropertiesModel model) {
-            SiteDefinition origSite;
+            SiteDefinition? origSite;
             if (model.SiteHost == null)
                 origSite = Manager.CurrentSite;
             else
-                origSite = await SiteDefinition.LoadSiteDefinitionAsync(model.SiteHost);
+                origSite = await SiteDefinition.LoadSiteDefinitionAsync(model.SiteHost) ?? throw new InternalError($"Host {model.SiteHost} not found");
             if (!ModelState.IsValid)
                 return PartialView(model);
             ObjectSupport.CopyDataFromOriginal(origSite, model.Site);

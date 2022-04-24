@@ -46,7 +46,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
 
         public const string LOCKEDURL = "/Maintenance/Offline For Maintenance.html";
 
-        private static AsyncLock lockObject = new AsyncLock();
+        private static readonly AsyncLock lockObject = new AsyncLock();
 
         static SiteDefinitionDataProvider() {
             SiteCache = new Dictionary<string, SiteDefinition>();
@@ -57,7 +57,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
 
         private IDataProvider<string, SiteDefinition> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<string, SiteDefinition> CreateDataProvider() {
+        private IDataProvider<string, SiteDefinition>? CreateDataProvider() {
             Package package = YetaWF.Modules.SiteProperties.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName, Cacheable: true, Parms: new { IdentitySeed = SiteDefinition.SiteIdentitySeed, NoLanguages = true });
         }
@@ -67,7 +67,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
         // API
 
         static private Dictionary<string, SiteDefinition> SiteCache { get; set; }
-        static private Dictionary<string, SiteDefinition> StaticSiteCache { get; set; }
+        static private Dictionary<string, SiteDefinition> StaticSiteCache { get; set; } = null!;
         static private Dictionary<string, SiteDefinition> TestSiteCache { get; set; }
 
         private async Task LoadSitesCacheAsync() {
@@ -88,9 +88,9 @@ namespace YetaWF.Modules.SiteProperties.Models {
         /// Load the site definition for the current site
         /// </summary>
         /// <returns></returns>
-        public async Task<SiteDefinition> LoadSiteDefinitionAsync(string siteDomain) {
+        public async Task<SiteDefinition?> LoadSiteDefinitionAsync(string? siteDomain) {
             if (await DataProvider.IsInstalledAsync()) {
-                SiteDefinition site;
+                SiteDefinition? site;
                 if (siteDomain == null || string.Compare(siteDomain, "Localhost", true) == 0)
                     siteDomain = YetaWFManager.DefaultSiteName;
                 if (!SiteCache.TryGetValue(siteDomain.ToLower(), out site))
@@ -99,18 +99,18 @@ namespace YetaWF.Modules.SiteProperties.Models {
             }
             return null;
         }
-        public SiteDefinition _defaultSite = null;
+        public SiteDefinition? _defaultSite = null;
 
         /// <summary>
         /// Load a site definition for a static site domain.
         /// </summary>
         /// <param name="staticDomain">The domain name.</param>
         /// <returns></returns>
-        public Task<SiteDefinition> LoadStaticSiteDefinitionAsync(string staticDomain) {
-            SiteDefinition site;
+        public Task<SiteDefinition?> LoadStaticSiteDefinitionAsync(string staticDomain) {
+            SiteDefinition? site;
             if (StaticSiteCache.TryGetValue(staticDomain.ToLower(), out site))
-                return Task.FromResult(site);
-            return Task.FromResult<SiteDefinition>(null);
+                return Task.FromResult<SiteDefinition?>(site);
+            return Task.FromResult<SiteDefinition?>(null);
         }
 
         /// <summary>
@@ -118,11 +118,11 @@ namespace YetaWF.Modules.SiteProperties.Models {
         /// </summary>
         /// <param name="testDomain">The domain name.</param>
         /// <returns></returns>
-        public Task<SiteDefinition> LoadTestSiteDefinitionAsync(string testDomain) {
-            SiteDefinition site;
+        public Task<SiteDefinition?> LoadTestSiteDefinitionAsync(string testDomain) {
+            SiteDefinition? site;
             if (TestSiteCache.TryGetValue(testDomain.ToLower(), out site))
-                return Task.FromResult(site);
-            return Task.FromResult<SiteDefinition>(null);
+                return Task.FromResult<SiteDefinition?>(site);
+            return Task.FromResult<SiteDefinition?>(null);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
         /// </summary>
         internal async Task SaveSiteDefinitionAsync(SiteDefinition site) {
 
-            SiteDefinition origSite = YetaWF.Core.Audit.Auditing.Active ? await LoadSiteDefinitionAsync(site.OriginalSiteDomain) : null;
+            SiteDefinition? origSite = YetaWF.Core.Audit.Auditing.Active ? await LoadSiteDefinitionAsync(site.OriginalSiteDomain) : null;
 
             using (await lockObject.LockAsync()) { // protect SiteCache locally
 
@@ -183,7 +183,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
         }
 
         private void AddLockedStatus(SiteDefinition siteDef) {
-            string lockedForIP = WebConfigHelper.GetValue<string>("YetaWF_Core", "LOCKED-FOR-IP");
+            string? lockedForIP = WebConfigHelper.GetValue<string>("YetaWF_Core", "LOCKED-FOR-IP");
             if (!string.IsNullOrWhiteSpace(lockedForIP)) {
                 // web config
                 siteDef.LockedExternal = true;// locked by web config
@@ -239,7 +239,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
         /// <summary>
         /// Retrieve sites
         /// </summary>
-        internal async Task<DataProviderGetRecords<SiteDefinition>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        internal async Task<DataProviderGetRecords<SiteDefinition>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
             return await DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
 
@@ -278,7 +278,7 @@ namespace YetaWF.Modules.SiteProperties.Models {
                 using (SiteDefinitionDataProvider sitesDP = new SiteDefinitionDataProvider()) {
                     DataProviderGetRecords<SiteDefinition> list = await sitesDP.GetItemsAsync(0, 0, null, null);
                     foreach (SiteDefinition s in list.Data) {
-                        SiteDefinition site = await LoadSiteDefinitionAsync(s.SiteDomain);
+                        SiteDefinition site = await LoadSiteDefinitionAsync(s.SiteDomain) ?? throw new InternalError($"Domain {s.SiteDomain} unknown");
                         ModuleDefinition.ReferencedModule.AddReferencedModule(site.ReferencedModules, new Guid("{466C0CCA-3E63-43f3-8754-F4267767EED1}")); // Control Panel (Skin)
                         ModuleDefinition.ReferencedModule.AddReferencedModule(site.ReferencedModules, new Guid("{267f00cc-c619-4854-baed-9e4b812d7e95}")); // Page Edit Mode Selector (Skin)
                         await sitesDP.SaveSiteDefinitionAsync(site);

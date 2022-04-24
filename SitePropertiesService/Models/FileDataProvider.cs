@@ -17,7 +17,7 @@ namespace YetaWF.Modules.SitePropertiesService.DataProvider.File {
         class SiteDefinitionDataProvider : FileDataProvider<string, SiteDefinition> {
             public SiteDefinitionDataProvider(Dictionary<string, object> options) : base(options) { }
             public override string GetBaseFolder() {
-                string dataPath = WebConfigHelper.GetValue(AreaRegistration.CurrentPackage.AreaName, "DataPath", YetaWFManager.DataFolder);
+                string dataPath = WebConfigHelper.GetValue(AreaRegistration.CurrentPackage.AreaName, "DataPath", YetaWFManager.DataFolder)!;
                 return Path.Combine(dataPath, Dataset);
             }
         }

@@ -38,7 +38,7 @@ namespace YetaWF.Modules.Logging.Modules {
 
         [Category("General"), Caption("Display URL"), Description("The URL to display a log record - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string DisplayUrl { get; set; }
+        public string? DisplayUrl { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
         public override List<RoleDefinition> ExtraRoles {
@@ -66,7 +66,7 @@ namespace YetaWF.Modules.Logging.Modules {
             return menuList;
         }
 
-        public ModuleAction GetAction_Logging(string url) {
+        public ModuleAction? GetAction_Logging(string url) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Browse",
@@ -80,7 +80,7 @@ namespace YetaWF.Modules.Logging.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
             };
         }
-        public async Task<ModuleAction> GetAction_RemoveAllAsync() {
+        public async Task<ModuleAction?> GetAction_RemoveAllAsync() {
             if (!IsAuthorized("RemoveLog")) return null;
             using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                 if (!await dataProvider.IsInstalledAsync()) return null;
@@ -101,7 +101,7 @@ namespace YetaWF.Modules.Logging.Modules {
                 ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to remove ALL log records?"),
             };
         }
-        public async Task<ModuleAction> GetAction_DownloadLogAsync() {
+        public async Task<ModuleAction?> GetAction_DownloadLogAsync() {
             if (!IsAuthorized("Downloads")) return null;
             using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                 if (!await dataProvider.IsInstalledAsync()) return null;
@@ -122,7 +122,7 @@ namespace YetaWF.Modules.Logging.Modules {
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
             };
         }
-        public async Task<ModuleAction> GetAction_DownloadZippedLogAsync() {
+        public async Task<ModuleAction?> GetAction_DownloadZippedLogAsync() {
             if (!IsAuthorized("Downloads")) return null;
             using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                 if (!await dataProvider.IsInstalledAsync()) return null;

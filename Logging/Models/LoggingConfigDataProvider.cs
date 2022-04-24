@@ -36,7 +36,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
 
         private IDataProvider<int, LoggingConfigData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, LoggingConfigData> CreateDataProvider() {
+        private IDataProvider<int, LoggingConfigData>? CreateDataProvider() {
             Package package = YetaWF.Modules.Logging.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -51,7 +51,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
             }
         }
         public async Task<LoggingConfigData> GetItemAsync() {
-            LoggingConfigData config = await DataProvider.GetAsync(KEY);
+            LoggingConfigData? config = await DataProvider.GetAsync(KEY);
             if (config == null) {
                 config = new LoggingConfigData();
                 await AddConfigAsync(config);
@@ -70,7 +70,7 @@ namespace YetaWF.Modules.Logging.DataProvider {
             );
         }
         public async Task UpdateConfigAsync(LoggingConfigData data) {
-            LoggingConfigData origConfig = Auditing.Active ? await GetItemAsync() : null;
+            LoggingConfigData? origConfig = Auditing.Active ? await GetItemAsync() : null;
             data.Id = KEY;
             UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)

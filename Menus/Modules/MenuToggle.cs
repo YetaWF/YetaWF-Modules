@@ -33,6 +33,6 @@ namespace YetaWF.Modules.Menus.Modules {
 
         [Category("General"), Caption("Target Element"), Description("Defines the element containing the menu controlled by this toggle button using CSS selectors.")]
         [UIHint("Text80"), StringLength(80), Required]
-        public string Target { get; set; }
+        public string Target { get; set; } = null!;
     }
 }

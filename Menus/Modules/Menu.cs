@@ -44,7 +44,7 @@ namespace YetaWF.Modules.Menus.Modules {
 
         [Data_Binary, CopyAttribute]
         [Obsolete("Do not use directly - use GetMenu()/SaveMenu() instead - preserved for data conversion (pre 1.1.1)")]
-        public MenuList Menu { get; set; }
+        public MenuList? Menu { get; set; }
 
         [Data_NewValue]
         public long MenuVersion { get; set; }
@@ -54,12 +54,12 @@ namespace YetaWF.Modules.Menus.Modules {
         public async Task<MenuList> GetMenuAsync() {
             using (MenuInfoDataProvider menuInfoDP = new MenuInfoDataProvider()) {
 #pragma warning disable 0618 // Type or member is obsolete
-                MenuList menu = Menu;
+                MenuList? menu = Menu;
 #pragma warning restore 0618 // Type or member is obsolete
                 if (menu != null) {
                     await SaveMenuAsync(menu); // Legacy: the menu was saved as part of module definition, move it to MenuInfoDataProvider
                 } else {
-                    MenuInfo menuInfo = await menuInfoDP.GetItemAsync(ModuleGuid);
+                    MenuInfo? menuInfo = await menuInfoDP.GetItemAsync(ModuleGuid);
                     if (menuInfo != null)
                         menu = menuInfo.Menu;
                     else
@@ -71,14 +71,14 @@ namespace YetaWF.Modules.Menus.Modules {
         public async Task SaveMenuAsync(MenuList newMenu) {
             using (MenuInfoDataProvider menuInfoDP = new MenuInfoDataProvider()) {
 #pragma warning disable 0618 // Type or member is obsolete
-                MenuList menu = Menu;
+                MenuList? menu = Menu;
 #pragma warning restore 0618 // Type or member is obsolete
                 await menuInfoDP.ReplaceItemAsync(new MenuInfo {
                     ModuleGuid = ModuleGuid,
                     Menu = newMenu,
                 });
                 // get a fresh copy of the module definitions
-                MenuModule menuMod = (MenuModule) await ModuleDefinition.LoadAsync(ModuleGuid);
+                MenuModule? menuMod = (MenuModule?) await ModuleDefinition.LoadAsync(ModuleGuid);
                 if (menuMod == null)
                     throw new InternalError("Menu module {0} was deleted", ModuleGuid);
                 menuMod.NewMenuVersion();
@@ -93,7 +93,7 @@ namespace YetaWF.Modules.Menus.Modules {
 
         [Category("General"), Caption("Edit Url"), Description("The Url used to edit this menu - If omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string EditUrl { get; set; }
+        public string? EditUrl { get; set; }
 
         [Category("General"), Caption("Small Screen Maximum Size"), Description("Defines the largest screen size where the small menu is used - If the screen is wider, the large menu is shown.")]
         [UIHint("IntValue4"), Range(0, 999999), Required]
@@ -102,7 +102,7 @@ namespace YetaWF.Modules.Menus.Modules {
 
         [Category("General"), Caption("<LI> Css Class"), Description("The optional Css class added to every <LI> tag in the menu")]
         [UIHint("Text40"), StringLength(MaxLICssClass)]
-        public string LICssClass { get; set; }
+        public string? LICssClass { get; set; }
 
         [Category("General"), Caption("Hover Delay"), Description("Specifies the delay (in milliseconds) before the menu is closed - Used to avoid accidental closure on leaving")]
         [UIHint("IntValue4"), Required, Range(0, 10000)]

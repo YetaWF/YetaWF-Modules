@@ -19,10 +19,10 @@ namespace YetaWF.Modules.Menus.Views {
         public override string GetViewName() { return ViewName; }
 
         public class Setup {
-            public string TreeId { get; set; }
-            public string DetailsId { get; set; }
-            public string AjaxUrl { get; set; }
-            public MenuEditModuleController.MenuEntry NewEntry { get; set; }
+            public string TreeId { get; set; } = null!;
+            public string DetailsId { get; set; } = null!;
+            public string AjaxUrl { get; set; } = null!;
+            public MenuEditModuleController.MenuEntry NewEntry { get; set; } = null!;
         }
 
         public async Task<string> RenderViewAsync(MenuEditModule module, MenuEditModuleController.MenuEditModel model) {

@@ -21,10 +21,10 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.MSLog {
         // IMPLEMENTATION
         // IMPLEMENTATION
 
-        private ILogger Logger = null;
+        private ILogger? Logger = null;
 
         public LogRecordDataProvider() : base() {
-            Logger = (ILogger)YetaWFManager.ServiceProvider.GetService(typeof(ILogger<LogRecordDataProvider>));
+            Logger = (ILogger?)YetaWFManager.ServiceProvider.GetService(typeof(ILogger<LogRecordDataProvider>));
             //$$$YetaWFLoggerProvider.IgnoredCategory = typeof(LogRecordDataProvider).FullName;
         }
 

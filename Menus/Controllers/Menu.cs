@@ -35,7 +35,7 @@ namespace YetaWF.Modules.Menus.Controllers {
 
         public class MenuModel {
             [UIHint("Menu")]
-            public MenuComponentBase.MenuData Menu { get; set; }
+            public MenuComponentBase.MenuData Menu { get; set; } = null!;
         }
 
         [AllowGet]
@@ -69,7 +69,7 @@ namespace YetaWF.Modules.Menus.Controllers {
         /// The full menu is only evaluated when switching between edit/view mode, when the user logs on/off or when the menu contents have changed.
         /// </remarks>
         protected async Task<MenuList> GetMenu(MenuModule module, bool External = false) {
-            MenuList.SavedCacheInfo info = MenuList.GetCache(module.ModuleGuid);
+            MenuList.SavedCacheInfo? info = MenuList.GetCache(module.ModuleGuid);
             if (info == null || info.EditMode != Manager.EditMode || info.UserId != Manager.UserId || info.MenuVersion != Module.MenuVersion) {
                 info = new MenuList.SavedCacheInfo {
                     EditMode = Manager.EditMode,
@@ -89,7 +89,7 @@ namespace YetaWF.Modules.Menus.Controllers {
         private async Task AddExternalLinksAsync(List<ModuleAction> origList) {
             if (ExternalList == null) {
                 List<ModuleAction> list = new List<ModuleAction>();
-                string listFile = WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "ExternalList");
+                string? listFile = WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "ExternalList");
                 if (!string.IsNullOrWhiteSpace(listFile)) {
                     List<string> lines = await FileSystem.FileSystemProvider.ReadAllLinesAsync(listFile);
                     foreach (string line in lines) {
@@ -113,6 +113,6 @@ namespace YetaWF.Modules.Menus.Controllers {
             }
             origList.AddRange(ExternalList);
         }
-        private static List<ModuleAction> ExternalList { get; set; }
+        private static List<ModuleAction>? ExternalList { get; set; }
     }
 }

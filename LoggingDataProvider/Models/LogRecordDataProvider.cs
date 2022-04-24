@@ -38,31 +38,31 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider {
         [Data_Index]
         public DateTime TimeStamp { get; set; }
         [StringLength(MaxCategory)]
-        public string Category { get; set; }
+        public string Category { get; set; } = null!;
         [StringLength(MaxSessionId)]
-        public string SessionId { get; set; }
+        public string SessionId { get; set; } = null!;
         public Core.Log.Logging.LevelEnum Level { get; set; }
         [StringLength(ModuleDefinition.MaxName)]
-        public string ModuleName { get; set; }
+        public string ModuleName { get; set; } = null!;
         [StringLength(ModuleDefinition.MaxCssClass)]
-        public string Class { get; set; }
+        public string Class { get; set; } = null!;
         [StringLength(MaxMethod)]
-        public string Method { get; set; }
+        public string Method { get; set; } = null!;
         [StringLength(MaxNamespace)]
-        public string Namespace { get; set; }
+        public string Namespace { get; set; } = null!;
         [StringLength(Globals.MaxIP)]
-        public string IPAddress { get; set; }
+        public string IPAddress { get; set; } = null!;
         [StringLength(Globals.MaxUser)]
-        public string UserName { get; set; }
+        public string UserName { get; set; } = null!;
         public int UserId { get; set; }
         [StringLength(Globals.MaxUrl)]
-        public string RequestedUrl { get; set; }
+        public string RequestedUrl { get; set; } = null!;
         [StringLength(Globals.MaxUrl)]
-        public string ReferrerUrl { get; set; }
+        public string ReferrerUrl { get; set; } = null!;
 
         public int SiteIdentity { get; set; }
         [StringLength(0)]
-        public string Info { get; set; }
+        public string Info { get; set; } = null!;
 
         public LogRecord() { }
     }
@@ -94,7 +94,7 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider {
 
         public static LogRecordDataProvider GetLogRecordDataProvider() {
             if (YetaWF.Core.Log.Logging.DefaultLoggerType == null) throw new Error(__ResStr("noLog", "Logging is not available - See https://yetawf.com/Documentation/YetaWF/Logging"));
-            LogRecordDataProvider dp = (LogRecordDataProvider)Activator.CreateInstance(YetaWF.Core.Log.Logging.DefaultLoggerType);
+            LogRecordDataProvider dp = (LogRecordDataProvider)Activator.CreateInstance(YetaWF.Core.Log.Logging.DefaultLoggerType)!;
             return dp;
         }
 
@@ -121,40 +121,40 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider {
             int siteIdentity = 0;
 
             int userId = 0;
-            string userName = "";
-            string ipAddress = "";
-            string referrer = "";
-            string requestedUrl = "";
-            string sessionId = "";
+            string userName = string.Empty;
+            string ipAddress = string.Empty;
+            string referrer = string.Empty;
+            string requestedUrl = string.Empty;
+            string sessionId = string.Empty;
             category = category.Truncate(LogRecord.MaxCategory);
             if (YetaWFManager.HaveManager) {
                 if (Manager.HaveCurrentSite)
                     siteIdentity = Manager.CurrentSite.Identity;
                 userId = Manager.UserId;
-                userName = Manager.UserName ?? "";
+                userName = Manager.UserName ?? string.Empty;
                 userName = userName.Truncate(Globals.MaxUser);
-                sessionId = category == YetaWF.Core.Log.Logging.YetaWFEvent ? Manager.CurrentSessionId : "";
+                sessionId = category == YetaWF.Core.Log.Logging.YetaWFEvent ? Manager.CurrentSessionId ?? string.Empty : string.Empty;
             }
-            HttpContext httpContext = YetaWFManager.HttpContextAccessor.HttpContext;
+            HttpContext? httpContext = YetaWFManager.HttpContextAccessor.HttpContext;
             if (httpContext != null) {
                 // We don't have a Manager for certain log records (particularly during startup)
                 HttpRequest req = httpContext.Request;
                 if (req != null) {
                     requestedUrl = req.GetDisplayUrl();
-                    IHttpConnectionFeature connectionFeature = httpContext.Features.Get<IHttpConnectionFeature>();
+                    IHttpConnectionFeature? connectionFeature = httpContext.Features.Get<IHttpConnectionFeature>();
                     if (connectionFeature != null)
-                        ipAddress = connectionFeature.RemoteIpAddress.ToString();
+                        ipAddress = connectionFeature.RemoteIpAddress?.ToString() ?? string.Empty;
                     referrer = req.Headers["Referer"].ToString();
-                    requestedUrl = requestedUrl ?? "";
+                    requestedUrl = requestedUrl ?? string.Empty;
                     requestedUrl = requestedUrl.Truncate(Globals.MaxUrl);
-                    referrer = referrer ?? "";
+                    referrer = referrer ?? string.Empty;
                     referrer = referrer.Truncate(Globals.MaxUrl);
-                    ipAddress = ipAddress ?? "";
+                    ipAddress = ipAddress ?? string.Empty;
                     ipAddress = ipAddress.Truncate(Globals.MaxIP);
                 }
             }
-            MethodBase methBase = null;
-            moduleName = null;
+            MethodBase? methBase = null;
+            moduleName = string.Empty;
 #if DEBUG
             GetCallInfo(relStack + 3, out moduleName);// this is really slow
 #endif
@@ -166,9 +166,9 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider {
                 TimeStamp = DateTime.UtcNow,
                 SessionId = sessionId,
                 ModuleName = moduleName,
-                Class = methBase == null ? "" : (methBase.DeclaringType != null) ? methBase.DeclaringType.Name : "",
-                Method = methBase == null ? "" : methBase.Name,
-                Namespace = methBase == null ? "" : (methBase.DeclaringType != null) ? methBase.DeclaringType.Namespace : "",
+                Class = methBase == null ? string.Empty : (methBase.DeclaringType != null) ? methBase.DeclaringType.Name : string.Empty,
+                Method = methBase == null ? string.Empty : methBase.Name,
+                Namespace = methBase == null ? string.Empty : (methBase.DeclaringType != null) ? methBase.DeclaringType.Namespace! : string.Empty,
                 SiteIdentity = siteIdentity,
                 UserId = userId,
                 UserName = userName,
@@ -182,7 +182,7 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider {
         /// </summary>
         protected bool IsProcessing { get; set; }
 
-        public virtual Task<LogRecord> GetItemAsync(int key) {
+        public virtual Task<LogRecord?> GetItemAsync(int key) {
             throw new NotImplementedException();
         }
         public virtual Task<bool> RemoveItemAsync(int key) {
@@ -191,10 +191,10 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider {
         public virtual Task<DataProviderGetRecords<LogRecord>> GetItemsAsync(List<DataProviderFilterInfo> filters) {
             throw new NotImplementedException();
         }
-        public virtual Task<DataProviderGetRecords<LogRecord>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        public virtual Task<DataProviderGetRecords<LogRecord>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
             throw new NotImplementedException();
         }
-        public virtual Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
+        public virtual Task<int> RemoveItemsAsync(List<DataProviderFilterInfo>? filters) {
             throw new NotImplementedException();
         }
 
@@ -203,18 +203,18 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider {
         public abstract bool CanImportOrExport { get; }
         public abstract bool CanRemove { get; }
         public abstract bool CanDownload { get; }
-        public virtual string GetLogFileName() { return null; }
+        public virtual string GetLogFileName() { throw new InternalError("No log file name available"); }
 
         static MethodBase GetCallInfo(int level, out string moduleName) {
             StackTrace stackTrace = new StackTrace();
-            StackFrame stackFrame = stackTrace.GetFrame(level + 2);
-            MethodBase methodBase = stackFrame.GetMethod();
+            StackFrame stackFrame = stackTrace.GetFrame(level + 2)!;
+            MethodBase methodBase = stackFrame.GetMethod()!;
             moduleName = "(core)";
             for (int lvl = level + 1; lvl < stackTrace.FrameCount; ++lvl) {
-                stackFrame = stackTrace.GetFrame(lvl);
-                MethodBase mb = stackFrame.GetMethod();
+                stackFrame = stackTrace.GetFrame(lvl)!;
+                MethodBase mb = stackFrame.GetMethod()!;
                 if (mb.DeclaringType != null) {
-                    string name = mb.DeclaringType.FullName;
+                    string name = mb.DeclaringType.FullName!;
                     string[] s = name.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries);
                     if (s.Length >= 4) {
                         if (string.Compare(s[1], "Modules", true) == 0) {
@@ -233,8 +233,8 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider {
             StringBuilder sb = new StringBuilder();
             StackTrace stackTrace = new StackTrace();
             for (int lvl = level + 2; lvl < stackTrace.FrameCount; ++lvl) {
-                StackFrame stackFrame = stackTrace.GetFrame(lvl);
-                MethodBase methBase = stackFrame.GetMethod();
+                StackFrame stackFrame = stackTrace.GetFrame(lvl)!;
+                MethodBase methBase = stackFrame.GetMethod()!;
                 if (methBase.DeclaringType != null) {
                     sb.AppendFormat(" - {0} {1}", methBase.DeclaringType.Namespace, methBase.DeclaringType.Name);
                 } else {

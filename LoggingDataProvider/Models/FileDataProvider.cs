@@ -26,7 +26,7 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.File {
         string LogFile;
 
         private const int MAXRECORDS = 1000;// cache # of records
-        List<string> LogCache { get; set; }
+        List<string> LogCache { get; set; } = new List<string>();
 
         // IMPLEMENTATION
         // IMPLEMENTATION
@@ -50,7 +50,7 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.File {
                 try {
                     await FileSystem.FileSystemProvider.DeleteFileAsync(LogFile);
                 } catch (Exception) { }
-                await FileSystem.FileSystemProvider.CreateDirectoryAsync(Path.GetDirectoryName(LogFile));
+                await FileSystem.FileSystemProvider.CreateDirectoryAsync(Path.GetDirectoryName(LogFile)!);
                 LogCache = new List<string>();
                 await lockObject.UnlockAsync();
             }
@@ -63,7 +63,7 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.File {
             }
         }
         private async Task FlushAsyncNoLock() {
-            if (LogCache != null)
+            if (LogCache.Count != 0)
                 await FileSystem.FileSystemProvider.AppendAllLinesAsync(LogFile, LogCache);
             LogCache = new List<string>();
         }
@@ -93,7 +93,7 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.File {
         /// </summary>
         bool ILogging.IsProcessing { get { return base.IsProcessing; } set { base.IsProcessing = value; } }
 
-        public override Task<LogRecord> GetItemAsync(int key) {
+        public override Task<LogRecord?> GetItemAsync(int key) {
             throw new NotImplementedException();
         }
         public override Task<bool> RemoveItemAsync(int key) {
@@ -102,10 +102,10 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.File {
         public override Task<DataProviderGetRecords<LogRecord>> GetItemsAsync(List<DataProviderFilterInfo> filters) {
             throw new NotImplementedException();
         }
-        public override Task<DataProviderGetRecords<LogRecord>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        public override Task<DataProviderGetRecords<LogRecord>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
             throw new NotImplementedException();
         }
-        public override async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo> filters) {
+        public override async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo>? filters) {
             try {
                 await FileSystem.FileSystemProvider.DeleteFileAsync(LogFile);
             } catch (Exception) { }
@@ -131,7 +131,7 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.File {
             if (YetaWF.Core.Log.Logging.DefinedLoggerType != typeof(LogRecordDataProvider)) return true;
             if (YetaWF.Core.Support.Startup.MultiInstance) throw new InternalError("Installing new models is not possible when distributed caching is enabled");
             if (_isInstalled == null)
-                _isInstalled = await FileSystem.FileSystemProvider.DirectoryExistsAsync(Path.GetDirectoryName(LogFile));
+                _isInstalled = await FileSystem.FileSystemProvider.DirectoryExistsAsync(Path.GetDirectoryName(LogFile)!);
             await YetaWF.Core.Log.Logging.SetupLoggingAsync();
             _isInstalled = true;
             return true;

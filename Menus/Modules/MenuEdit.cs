@@ -28,7 +28,7 @@ namespace YetaWF.Modules.Menus.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_Edit(string url, Guid menuGuid) {
+        public ModuleAction? GetAction_Edit(string? url, Guid menuGuid) {
             if (!IsAuthorized(RoleDefinition.Edit)) return null;
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,

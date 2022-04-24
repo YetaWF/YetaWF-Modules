@@ -26,10 +26,10 @@ namespace YetaWF.Modules.Sites.Controllers {
 
             [Caption("Site"), Description("The domain name of the site to remove")]
             [UIHint("String"), ReadOnly]
-            public string SiteDomainDisplay { get; set; }
+            public string SiteDomainDisplay { get; set; } = null!;
 
             [UIHint("Hidden")]
-            public string SiteDomain { get; set; }
+            public string SiteDomain { get; set; } = null!;
 
             public EditModel() { }
         }
@@ -50,9 +50,9 @@ namespace YetaWF.Modules.Sites.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
 
-            SiteDefinition site = await SiteDefinition.LoadSiteDefinitionAsync(model.SiteDomain);
+            SiteDefinition? site = await SiteDefinition.LoadSiteDefinitionAsync(model.SiteDomain);
             if (site == null)
-                throw new InternalError($"Site {site.SiteDomain} not found");
+                throw new InternalError($"Site {model.SiteDomain} not found");
 
             SiteDefinition currentSite = Manager.CurrentSite;
             Manager.CurrentSite = site;

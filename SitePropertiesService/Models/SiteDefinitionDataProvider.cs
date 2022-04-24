@@ -37,7 +37,7 @@ namespace YetaWF.Modules.SitePropertiesService.Models {
 
         private IDataProvider<string, SiteDefinition> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<string, SiteDefinition> CreateDataProvider() {
+        private IDataProvider<string, SiteDefinition>? CreateDataProvider() {
             Package package = YetaWF.Modules.SitePropertiesService.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, "YetaWF_SiteProperties", Cacheable: false, Parms: new { NoLanguages = true });
         }
@@ -60,20 +60,20 @@ namespace YetaWF.Modules.SitePropertiesService.Models {
         /// Load the site definition for the current site
         /// </summary>
         /// <returns></returns>
-        public Task<SiteDefinition> LoadSiteDefinitionAsync(string siteDomain) {
-            SiteDefinition site;
+        public Task<SiteDefinition?> LoadSiteDefinitionAsync(string? siteDomain) {
+            SiteDefinition? site;
             if (siteDomain == null)
                 siteDomain = YetaWFManager.DefaultSiteName;
             if (!SiteCache.TryGetValue(siteDomain.ToLower(), out site))
-                return Task.FromResult<SiteDefinition>(null);
-            return Task.FromResult(site);
+                return Task.FromResult<SiteDefinition?>(null);
+            return Task.FromResult<SiteDefinition?>(site);
         }
-        public SiteDefinition _defaultSite = null;
+        public SiteDefinition? _defaultSite = null;
 
         /// <summary>
         /// Retrieve sites
         /// </summary>
-        internal async Task<DataProviderGetRecords<SiteDefinition>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) {
+        internal async Task<DataProviderGetRecords<SiteDefinition>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
             return await DataProvider.GetRecordsAsync(skip, take, sort, filters);
         }
     }

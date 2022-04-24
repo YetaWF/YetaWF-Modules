@@ -32,7 +32,7 @@ namespace YetaWF.Modules.Sites.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_Remove(string url, SiteDefinition site) {
+        public ModuleAction? GetAction_Remove(string? url, SiteDefinition site) {
             if (site.IsDefaultSite) return null;
             string siteName = site.SiteDomain;
             return new ModuleAction(this) {
