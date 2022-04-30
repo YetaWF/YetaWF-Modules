@@ -11,11 +11,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Modules.Languages.Modules;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Languages.Controllers {
 

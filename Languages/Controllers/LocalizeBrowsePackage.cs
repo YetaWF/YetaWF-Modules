@@ -22,11 +22,7 @@ using YetaWF.Modules.Languages.DataProvider;
 using YetaWF.Modules.Languages.Modules;
 using YetaWF.Core.Components;
 using YetaWF.Core.IO;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Languages.Controllers {
 
@@ -241,10 +237,10 @@ namespace YetaWF.Modules.Languages.Controllers {
                 if (!string.IsNullOrWhiteSpace(config.GoogleTranslateAPIKey) && !string.IsNullOrWhiteSpace(config.GoogleTranslateAppName))
                     return await TranslateStringsUsingGoogleAsync(language, config.GoogleTranslateAPIKey, config.GoogleTranslateAppName, strings);
             } else if (config.TranslationService == LocalizeConfigData.TranslationServiceEnum.MicrosoftTranslator) {
-                if (!string.IsNullOrWhiteSpace(config.MSClientKey))
-                    return await TranslateStringsUsingMicrosoftAsync(language, config.MSClientKey, strings);
+                if (!string.IsNullOrWhiteSpace(config.MSTextTranslationUrl) && !string.IsNullOrWhiteSpace(config.MSClientKey))
+                    return await TranslateStringsUsingMicrosoftAsync(language, config, strings);
             }
-            throw new InternalError("No translation API available - Define a translation API using Localization Settings");
+            throw new Error("No translation API available - Define a translation API using Localization Settings.");
         }
         private async Task<List<string>> TranslateStringsUsingGoogleAsync(string language, string apiKey, string appName, List<string> strings) {
             string from = MultiString.GetPrimaryLanguage(MultiString.DefaultLanguage);
@@ -266,11 +262,11 @@ namespace YetaWF.Modules.Languages.Controllers {
             }
             return newStrings;
         }
-        private async Task<List<string>> TranslateStringsUsingMicrosoftAsync(string language, string clientId, List<string> strings) {
+        private async Task<List<string>> TranslateStringsUsingMicrosoftAsync(string language, LocalizeConfigData config, List<string> strings) {
             string from = MultiString.GetPrimaryLanguage(MultiString.DefaultLanguage);
             string to = MultiString.GetPrimaryLanguage(language);
 
-            MSTranslate msTrans = new MSTranslate(clientId);
+            MSTranslate msTrans = new MSTranslate(config.MSTextTranslationUrl, config.MSTextTranslationRegion, config.MSClientKey!, config.MSRequestLimit);
 
             int total = strings.Count();
             int skip = 0;

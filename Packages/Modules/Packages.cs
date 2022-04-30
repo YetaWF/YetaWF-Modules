@@ -265,7 +265,10 @@ namespace YetaWF.Modules.Packages.Modules {
             ModuleDefinition? modLocalize = await ModuleDefinition.LoadAsync(Manager.CurrentSite.PackageLocalizationServices, AllowNone: true);
             if (modLocalize == null)
                 throw new InternalError("No localization services available - no module has been defined");
-            return await modLocalize.GetModuleActionAsync("CreateAllInstalledLocalizations");
+            ModuleAction? action = await modLocalize.GetModuleActionAsync("CreateAllInstalledLocalizations");
+            if (action == null) return null;
+            action.Location = ModuleAction.ActionLocationEnum.ModuleLinks;
+            return action;
         }
     }
 }
