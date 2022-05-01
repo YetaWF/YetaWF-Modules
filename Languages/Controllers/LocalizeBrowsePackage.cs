@@ -1,8 +1,5 @@
 /* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Languages#License */
 
-using Google.Apis.Services;
-using Google.Apis.Translate.v2;
-using Google.Apis.Translate.v2.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -235,30 +232,27 @@ namespace YetaWF.Modules.Languages.Controllers {
             LocalizeConfigData config = await LocalizeConfigDataProvider.GetConfigAsync();
             if (config.TranslationService == LocalizeConfigData.TranslationServiceEnum.GoogleTranslate) {
                 if (!string.IsNullOrWhiteSpace(config.GoogleTranslateAPIKey) && !string.IsNullOrWhiteSpace(config.GoogleTranslateAppName))
-                    return await TranslateStringsUsingGoogleAsync(language, config.GoogleTranslateAPIKey, config.GoogleTranslateAppName, strings);
+                    return await TranslateStringsUsingGoogleAsync(language, config, strings);
             } else if (config.TranslationService == LocalizeConfigData.TranslationServiceEnum.MicrosoftTranslator) {
                 if (!string.IsNullOrWhiteSpace(config.MSTextTranslationUrl) && !string.IsNullOrWhiteSpace(config.MSClientKey))
                     return await TranslateStringsUsingMicrosoftAsync(language, config, strings);
             }
             throw new Error("No translation API available - Define a translation API using Localization Settings.");
         }
-        private async Task<List<string>> TranslateStringsUsingGoogleAsync(string language, string apiKey, string appName, List<string> strings) {
+        private async Task<List<string>> TranslateStringsUsingGoogleAsync(string language, LocalizeConfigData config, List<string> strings) {
             string from = MultiString.GetPrimaryLanguage(MultiString.DefaultLanguage);
             string to = MultiString.GetPrimaryLanguage(language);
-            List<string> newStrings = new List<string>();
+
+            GoogleTranslate googleTrans = new GoogleTranslate(config.GoogleTranslateAppName!, config.GoogleTranslateAPIKey!);
+
             int total = strings.Count();
             int skip = 0;
+            List<string> newStrings = new List<string>();
             while (total > 0) {
-                TranslateService service = new TranslateService(new BaseClientService.Initializer() {
-                    ApiKey = apiKey,
-                    ApplicationName = appName,
-                });
-                TranslationsListResponse resp = await service.Translations.List(strings.Skip(skip).Take(40).ToList(), to).ExecuteAsync();
-                List<string> returnedStrings = (from r in resp.Translations select r.TranslatedText).ToList();
-                returnedStrings = (from r in returnedStrings select Utility.HtmlDecode(r)).ToList();
+                List<string> returnedStrings = await googleTrans.TranslateAsync(from, to, strings.Skip(skip).Take(40).ToList());
                 newStrings.AddRange(returnedStrings);
-                skip += returnedStrings.Count();
-                total -= returnedStrings.Count();
+                skip += returnedStrings.Count;
+                total -= returnedStrings.Count;
             }
             return newStrings;
         }
@@ -274,8 +268,8 @@ namespace YetaWF.Modules.Languages.Controllers {
             while (total > 0) {
                 List<string> returnedStrings = await msTrans.TranslateAsync(from, to, strings.Skip(skip).Take(40).ToList());
                 newStrings.AddRange(returnedStrings);
-                skip += returnedStrings.Count();
-                total -= returnedStrings.Count();
+                skip += returnedStrings.Count;
+                total -= returnedStrings.Count;
             }
             return newStrings;
         }
@@ -343,7 +337,7 @@ namespace YetaWF.Modules.Languages.Controllers {
                 ++index;
             }
 
-            if (items.Count == 0) return "?";
+            if (items.Count == 0) return text;
 
             List<string> strings = (from i in items select i.Text).ToList();
             strings = await translateStringsAsync(strings);

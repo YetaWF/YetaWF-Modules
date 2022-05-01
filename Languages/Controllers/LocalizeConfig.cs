@@ -66,7 +66,7 @@ namespace YetaWF.Modules.Languages.Controllers {
 
             [ExcludeDemoMode]
             [Caption("Translate API Key"), Description("Defines the Google Cloud Platform / Google Translate API key, which is used when translating localization resources into other languages - You can obtain an API key from the Google Cloud Platform service - This is not a free service")]
-            [HelpLink("https://cloud.google.com/translate/docs/")]
+            [HelpLink("https://cloud.google.com/translate/docs/setup")]
             [UIHint("Text80"), StringLength(LocalizeConfigData.MaxGoogleTranslateAPIKey)]
             [RequiredIf(nameof(TranslationService), LocalizeConfigData.TranslationServiceEnum.GoogleTranslate), Trim]
             [ProcessIf(nameof(TranslationService), LocalizeConfigData.TranslationServiceEnum.GoogleTranslate)]
@@ -74,7 +74,7 @@ namespace YetaWF.Modules.Languages.Controllers {
 
             [ExcludeDemoMode]
             [Caption("Translate App Name"), Description("Defines the name of your application performing translations - This is not a free service")]
-            [HelpLink("https://cloud.google.com/translate/docs/")]
+            [HelpLink("https://cloud.google.com/translate/docs/setup")]
             [UIHint("Text80"), StringLength(LocalizeConfigData.MaxGoogleTranslateAppName)]
             [RequiredIf(nameof(TranslationService), LocalizeConfigData.TranslationServiceEnum.GoogleTranslate), Trim]
             [ProcessIf(nameof(TranslationService), LocalizeConfigData.TranslationServiceEnum.GoogleTranslate)]

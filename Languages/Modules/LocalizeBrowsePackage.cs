@@ -132,6 +132,7 @@ namespace YetaWF.Modules.Languages.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
                 ConfirmationText = this.__ResStr("creAllConfirm", "Are you sure you want to create ALL installed localization resources using language {0} - Installed localization resources are saved in folders ./Addons/...?", MultiString.ActiveLanguage),
                 NeedsModuleContext = true,
+                PleaseWaitText = this.__ResStr("creAllPlsWait", "Creating installed localization resources using language {0}...", MultiString.ActiveLanguage),
             };
         }
         public async Task<ModuleAction?> GetAction_LocalizePackageDataAsync() {
@@ -179,6 +180,7 @@ namespace YetaWF.Modules.Languages.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
                 ConfirmationText = this.__ResStr("locAllDataConfirm", "Are you sure you want to localize all data for all packages using language {0}? Properties for which localized data has already been defined are not updated.", MultiString.ActiveLanguage),
                 NeedsModuleContext = true,
+                PleaseWaitText = this.__ResStr("locAllPlsWait", "Localizing all data for all packages using language {0}...", MultiString.ActiveLanguage),
             };
         }
     }

@@ -54,11 +54,14 @@ namespace YetaWF.Modules.Languages.Controllers.Support {
                     request.Headers.Add("Ocp-Apim-Subscription-Region", TextTranslationRegion);
 
                 HttpResponseMessage response = await Client.SendAsync(request);
+                if (!response.IsSuccessStatusCode) 
+                    throw new InternalError($"{nameof(TranslateAsync)} failed - {response.StatusCode}");
                 string result = await response.Content.ReadAsStringAsync();
                 List<AllTranslations> trans = Utility.JsonDeserialize<List<AllTranslations>>(result);
                 List<string> newStrings = (from t in trans select (from te in t.Translations select te.Text).First()).ToList();
 
-                int requestLength = (from s in strings select s.Length).Sum();
+                //int requestLength = (from s in strings select s.Length).Sum();
+                int requestLength = builder.Length;
                 await RequestLimitDelay(requestLength, DateTime.UtcNow.Subtract(start));
                     
                 return newStrings;
@@ -74,11 +77,14 @@ namespace YetaWF.Modules.Languages.Controllers.Support {
             double maxCharsPerHour = requestLimit * 1000000;// million of characters allowed per hour.
             double maxCharsPerMillisecond = maxCharsPerHour / 60 / 60 / 1000;
             double allowedCharsForRequest = elapsedTime.TotalMilliseconds * maxCharsPerMillisecond;
-            if (allowedCharsForRequest > requestLength) return;// took longer than our request limit permits, so we're not over the request limit
+            if (allowedCharsForRequest >= requestLength) return;// took longer than our request limit permits, so we're not over the request limit
             
             double tooManyChars = requestLength - allowedCharsForRequest;
             double exceededMilliseconds = tooManyChars * maxCharsPerMillisecond;
-            await Task.Delay((int)exceededMilliseconds);
+            double exceededSeconds = (exceededMilliseconds + 999) / 1000;
+            // There seems to be an additional undocumented request limit (probably related to many consecutive sub-second requests)
+            // which causes a 429 TooManyRequests error. So we round the wait time up to the next second. This seems to work (for now).
+            await Task.Delay(((int)exceededSeconds+1)*1000);
         }
 
         public class AllTranslations {
