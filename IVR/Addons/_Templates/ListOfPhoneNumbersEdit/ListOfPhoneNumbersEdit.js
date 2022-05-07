@@ -44,8 +44,11 @@ var Softelvdm_IVR;
                 if (_this.Grid.ExtraData)
                     uri.addSearchSimpleObject(_this.Grid.ExtraData);
                 $YetaWF.post(_this.Setup.AddUrl, uri.toFormData(), function (success, partial) {
-                    if (success)
+                    if (success) {
                         _this.Grid.AddRecord(partial.TR, partial.StaticData);
+                        _this.inputPhoneNumber.value = "";
+                        _this.toggleButton();
+                    }
                 });
                 return false;
             });

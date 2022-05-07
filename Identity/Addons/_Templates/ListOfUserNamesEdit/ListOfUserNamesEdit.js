@@ -26,7 +26,6 @@ var YetaWF_Identity;
                 GetValue: null,
                 Enable: null,
             }) || this;
-            _this.ReloadInProgress = false;
             _this.AddCounter = 0;
             _this.Setup = setup;
             _this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
@@ -34,9 +33,8 @@ var YetaWF_Identity;
             _this.buttonAdd = $YetaWF.getElement1BySelector("input[name='btnAdd']", [_this.Control]);
             _this.InputUserName = $YetaWF.getElement1BySelector("input[name$='.NewValue']", [_this.Control]);
             $YetaWF.registerEventHandler(_this.buttonAdd, "click", null, function (ev) {
-                if (_this.ReloadInProgress)
+                if ($YetaWF.isLoading)
                     return true;
-                _this.ReloadInProgress = true;
                 var uri = $YetaWF.parseUrl(_this.Setup.AddUrl);
                 uri.addFormInfo(_this.Control);
                 var uniqueIdCounters = { UniqueIdPrefix: "".concat(_this.ControlId, "ls"), UniqueIdPrefixCounter: 0, UniqueIdCounter: ++_this.AddCounter };
@@ -47,9 +45,11 @@ var YetaWF_Identity;
                 if (_this.Grid.ExtraData)
                     uri.addSearchSimpleObject(_this.Grid.ExtraData);
                 $YetaWF.post(_this.Setup.AddUrl, uri.toFormData(), function (success, partial) {
-                    _this.ReloadInProgress = false;
-                    if (success)
+                    if (success) {
                         _this.Grid.AddRecord(partial.TR, partial.StaticData);
+                        _this.InputUserName.value = "";
+                        _this.toggleButton();
+                    }
                 });
                 return false;
             });
