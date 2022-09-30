@@ -108,7 +108,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
                     DateTime sharedCacheCreated = new DateTime((long)val);
                     if (sharedCacheCreated != localInfo.RequiredData.Created) {
                         // shared cached version is different, retrieve and save locally
-                        byte[] sharedCacheData;
+                        byte[]? sharedCacheData;
                         if (YetaWFManager.IsSync()) {
                             sharedCacheData = db.StringGet(GetDataKey(key));
                         } else {

@@ -25,6 +25,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Twilio.AspNet.Core" Version="5.73.0" />
+      <PackageReference Include="Twilio.AspNet.Core" Version="6.0.0" />
     </ItemGroup>
 </Project>
