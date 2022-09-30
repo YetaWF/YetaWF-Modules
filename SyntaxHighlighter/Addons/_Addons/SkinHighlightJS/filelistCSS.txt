@@ -1,2 +1,2 @@
-﻿//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/{0}.min.css,CDN
+﻿//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/styles/{0}.min.css,CDN
 /node_modules/@highlightjs/cdn-assets/styles/{0}.min.css,bundle,nominify,noCDN
