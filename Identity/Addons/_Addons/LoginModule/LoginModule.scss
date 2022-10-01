@@ -17,12 +17,20 @@
             width:25ch;
         }
     }
-    .t_external .t_extentry {
-        display:inline-block;
-        padding-bottom:0.3em;
-        padding-right:3ch;
-        img {
-            margin-right: .5ch;
+    .t_external {
+        h2 {
+            font: var(--mpnl-title-font);
+            padding: 1rem 0 0 0;
+            margin: 0;
+            vertical-align: middle;
+        }
+        .t_extentry {
+            display:inline-block;
+            padding-bottom:0.3em;
+            padding-right:3ch;
+            img {
+                margin-right: .5ch;
+            }
         }
     }
 }
