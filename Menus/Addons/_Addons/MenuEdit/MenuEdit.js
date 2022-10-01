@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
 var YetaWF_Menus;
 (function (YetaWF_Menus) {
     var MenuEntryType;
@@ -13,7 +13,7 @@ var YetaWF_Menus;
             var _this = this;
             this.ActiveNew = false;
             this.Setup = setup;
-            var treeTag = $YetaWF.getElement1BySelector("#" + this.Setup.TreeId + " " + YetaWF_ComponentsHTML.TreeComponent.SELECTOR);
+            var treeTag = $YetaWF.getElement1BySelector("#".concat(this.Setup.TreeId, " ").concat(YetaWF_ComponentsHTML.TreeComponent.SELECTOR));
             this.Tree = YetaWF.ComponentBaseDataImpl.getControlFromTag(treeTag, YetaWF_ComponentsHTML.TreeComponent.SELECTOR);
             this.Details = $YetaWF.getElementById(this.Setup.DetailsId);
             this.getFormControls();

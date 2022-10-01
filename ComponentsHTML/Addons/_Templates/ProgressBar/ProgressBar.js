@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -63,7 +63,7 @@ var YetaWF_ComponentsHTML;
                         }
                     }
                     _this.ShownValue = newValue;
-                    _this.ValueDiv.style.width = newValue + "%";
+                    _this.ValueDiv.style.width = "".concat(newValue, "%");
                 }, ProgressBarComponent.INCRTIME);
             }
         };
@@ -89,7 +89,7 @@ var YetaWF_ComponentsHTML;
             }
             value = value || this.Min;
             this.Value = this.NewValue = this.ShownValue = value;
-            this.ValueDiv.style.width = value + "%";
+            this.ValueDiv.style.width = "".concat(value, "%");
         };
         ProgressBarComponent.prototype.show = function () {
             this.Control.style.display = "";

@@ -1,5 +1,5 @@
 @charset "UTF-8";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 .yt_propertylist {
   /* These items should actually be in template-specific css files but because they're often-used core templates we'll put them here for convenience */
 }
@@ -144,10 +144,8 @@
 }
 
 .yt_propertylist.t_boxedhdr .t_proptable .t_boxlabel {
-  display: -webkit-box;
   display: flex;
-  -webkit-box-align: center;
-          align-items: center;
+  align-items: center;
   background: var(--prop-cat-bg);
   color: var(--prop-cat-clr);
   border-bottom: var(--prop-cat-border);

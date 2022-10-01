@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     var ControlTypeEnum;
@@ -38,10 +38,10 @@ var YetaWF_ComponentsHTML;
         };
         Controls.prototype.getControlValue = function (item) {
             if (!item.GetValue)
-                throw "Control template " + item.TemplateName + " has no GetValue function";
+                throw "Control template ".concat(item.TemplateName, " has no GetValue function");
             switch (item.ControlType) {
                 default:
-                    throw "Invalid control type " + item.ControlType + " in getControlValue";
+                    throw "Invalid control type ".concat(item.ControlType, " in getControlValue");
                 case ControlTypeEnum.Input:
                 case ControlTypeEnum.Select:
                 case ControlTypeEnum.TextArea:
@@ -56,10 +56,10 @@ var YetaWF_ComponentsHTML;
         };
         Controls.prototype.enableToggle = function (item, enable, clearOnDisable) {
             if (!item.Enable)
-                throw "Control template " + item.TemplateName + " has no Enable function";
+                throw "Control template ".concat(item.TemplateName, " has no Enable function");
             switch (item.ControlType) {
                 default:
-                    throw "Invalid control type " + item.ControlType + " in enableToggle";
+                    throw "Invalid control type ".concat(item.ControlType, " in enableToggle");
                 case ControlTypeEnum.Input:
                 case ControlTypeEnum.Select:
                 case ControlTypeEnum.TextArea:

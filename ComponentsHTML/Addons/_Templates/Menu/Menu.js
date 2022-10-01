@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -138,14 +138,14 @@ var YetaWF_ComponentsHTML;
                 switch (level) {
                     case 0:
                         subUL.style.left = "0";
-                        subUL.style.top = owningRect.height + "px";
+                        subUL.style.top = "".concat(owningRect.height, "px");
                         break;
                     case 1:
-                        subUL.style.left = owningRect.width - 3 + "px"; // slight overlap
+                        subUL.style.left = "".concat(owningRect.width - 3, "px"); // slight overlap
                         subUL.style.top = "-3px";
                         break;
                     case 2:
-                        subUL.style.left = owningRect.width - 3 + "px"; // slight overlap
+                        subUL.style.left = "".concat(owningRect.width - 3, "px"); // slight overlap
                         subUL.style.top = "-3px";
                         break;
                     default:

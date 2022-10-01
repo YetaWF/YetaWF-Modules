@@ -1,5 +1,5 @@
 @charset "UTF-8";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/CurrencyConverter#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/CurrencyConverter#License */
 .YetaWF_CurrencyConverter_CurrencyConverter .t_button {
   padding: 1em 0 1em 0;
 }
@@ -10,8 +10,7 @@
   font-weight: bold;
 }
 .YetaWF_CurrencyConverter_CurrencyConverter .t_result_is {
-  visibility: hidden;
-  /* in order to reserve the space */
+  visibility: hidden; /* in order to reserve the space */
   padding: 0 1ch 0 1ch;
 }
 .YetaWF_CurrencyConverter_CurrencyConverter .t_disclaimer {

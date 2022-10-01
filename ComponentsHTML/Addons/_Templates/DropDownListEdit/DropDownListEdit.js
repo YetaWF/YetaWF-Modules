@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -249,7 +249,7 @@ var YetaWF_ComponentsHTML;
         DropDownListEditComponent.prototype.optionsUpdated = function () {
             this.DropDownWidth = this.calcMaxStringLength();
             if (this.Setup.AdjustWidth) {
-                this.Control.style.width = this.DropDownWidth + "px";
+                this.Control.style.width = "".concat(this.DropDownWidth, "px");
                 //} else {
                 //    this.Control.style.minWidth = `${this.DropDownWidth}px`;
             }
@@ -275,10 +275,10 @@ var YetaWF_ComponentsHTML;
                 var o = opts[i];
                 var tt = o.getAttribute(YConfigs.Basics.CssTooltip);
                 if (tt)
-                    tt = " " + YConfigs.Basics.CssTooltip + "=\"" + tt + "\"";
+                    tt = " ".concat(YConfigs.Basics.CssTooltip, "=\"").concat(tt, "\"");
                 else
                     tt = "";
-                html += "<li tabindex=\"-1\" role=\"option\" unselectable=\"on\" class=\"t_item\" data-index=\"" + i + "\"" + tt + ">" + o.innerHTML + "</li>";
+                html += "<li tabindex=\"-1\" role=\"option\" unselectable=\"on\" class=\"t_item\" data-index=\"".concat(i, "\"").concat(tt, ">").concat(o.innerHTML, "</li>");
             }
             ul.innerHTML = html;
             var style = window.getComputedStyle(this.Control);
@@ -390,19 +390,19 @@ var YetaWF_ComponentsHTML;
             }
             // set left, top, width on #yDDPopup
             if (useTop) {
-                popup.style.top = top + window.pageYOffset + "px";
+                popup.style.top = "".concat(top + window.pageYOffset, "px");
             }
             else {
-                popup.style.bottom = bottom - window.pageYOffset + "px";
+                popup.style.bottom = "".concat(bottom - window.pageYOffset, "px");
             }
             if (useLeft) {
-                popup.style.left = left + window.pageXOffset + "px";
+                popup.style.left = "".concat(left + window.pageXOffset, "px");
             }
             else {
-                popup.style.right = right - window.pageXOffset + "px";
+                popup.style.right = "".concat(right - window.pageXOffset, "px");
             }
-            popup.style.width = desiredWidth + "px";
-            scroller.style.maxHeight = desiredHeight + "px";
+            popup.style.width = "".concat(desiredWidth, "px");
+            scroller.style.maxHeight = "".concat(desiredHeight, "px");
         };
         DropDownListEditComponent.prototype.selectPopupItem = function () {
             var index = this.Select.selectedIndex;
@@ -498,15 +498,15 @@ var YetaWF_ComponentsHTML;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.DropDownListEditComponent = DropDownListEditComponent;
     // handle submit/apply
-    $YetaWF.registerCustomEventHandlerDocument(DropDownListEditComponent.EVENTCHANGE, ".ysubmitonchange " + DropDownListEditComponent.SELECTOR, function (ev) {
+    $YetaWF.registerCustomEventHandlerDocument(DropDownListEditComponent.EVENTCHANGE, ".ysubmitonchange ".concat(DropDownListEditComponent.SELECTOR), function (ev) {
         $YetaWF.Forms.submitOnChange(ev.target);
         return false;
     });
-    $YetaWF.registerCustomEventHandlerDocument(DropDownListEditComponent.EVENTCHANGE, ".yapplyonchange " + DropDownListEditComponent.SELECTOR, function (ev) {
+    $YetaWF.registerCustomEventHandlerDocument(DropDownListEditComponent.EVENTCHANGE, ".yapplyonchange ".concat(DropDownListEditComponent.SELECTOR), function (ev) {
         $YetaWF.Forms.applyOnChange(ev.target);
         return false;
     });
-    $YetaWF.registerCustomEventHandlerDocument(DropDownListEditComponent.EVENTCHANGE, ".yreloadonchange " + DropDownListEditComponent.SELECTOR, function (ev) {
+    $YetaWF.registerCustomEventHandlerDocument(DropDownListEditComponent.EVENTCHANGE, ".yreloadonchange ".concat(DropDownListEditComponent.SELECTOR), function (ev) {
         $YetaWF.Forms.reloadOnChange(ev.target);
         return false;
     });

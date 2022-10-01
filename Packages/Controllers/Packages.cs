@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Packages#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Packages#License */
 
 using System.Collections.Generic;
 using System.Linq;
@@ -45,10 +45,12 @@ namespace YetaWF.Modules.Packages.Controllers {
                 actions.New(await Module.GetAction_InstallPackageModelsAsync(Package), ModuleAction.ActionLocationEnum.GridLinks);
                 actions.New(await Module.GetAction_UninstallPackageModelsAsync(Package), ModuleAction.ActionLocationEnum.GridLinks);
                 actions.New(await Module.GetAction_LocalizePackageAsync(Package), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(await ModLocalize.GetModuleActionAsync("CreateInstalledLocalizationWithPackage", Package), ModuleAction.ActionLocationEnum.GridLinks);
+                
                 actions.New(Module.GetAction_RemovePackage(Package), ModuleAction.ActionLocationEnum.GridLinks);
 
                 actions.New(await ModLocalize.GetModuleActionAsync("Browse", null, Package), ModuleAction.ActionLocationEnum.GridLinks);
-                actions.New(await ModLocalize.GetModuleActionAsync("LocalizePackageData", Package), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(await ModLocalize.GetModuleActionAsync("LocalizePackageDataWithPackage", Package), ModuleAction.ActionLocationEnum.GridLinks);
                 return actions;
             }
 

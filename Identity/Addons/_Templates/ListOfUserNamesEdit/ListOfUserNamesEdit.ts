@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
 namespace YetaWF_Identity {
 
@@ -22,7 +22,6 @@ namespace YetaWF_Identity {
         private GridAll: YetaWF_ComponentsHTML.Grid;
         private buttonAdd: HTMLInputElement;
         private InputUserName: HTMLInputElement;
-        private ReloadInProgress: boolean = false;
         private AddCounter: number = 0;
 
         constructor(controlId: string, setup: ListOfUserNamesSetup) {
@@ -41,8 +40,7 @@ namespace YetaWF_Identity {
 
             $YetaWF.registerEventHandler(this.buttonAdd, "click", null, (ev: MouseEvent): boolean => {
 
-                if (this.ReloadInProgress) return true;
-                this.ReloadInProgress = true;
+                if ($YetaWF.isLoading) return true;
 
                 var uri = $YetaWF.parseUrl(this.Setup.AddUrl);
                 uri.addFormInfo(this.Control);
@@ -54,9 +52,11 @@ namespace YetaWF_Identity {
                 if (this.Grid.ExtraData) uri.addSearchSimpleObject(this.Grid.ExtraData);
 
                 $YetaWF.post(this.Setup.AddUrl, uri.toFormData(), (success: boolean, partial: GridRecordResult): void => {
-                    this.ReloadInProgress = false;
-                    if (success)
+                    if (success) {
                         this.Grid.AddRecord(partial.TR, partial.StaticData);
+                        this.InputUserName.value = "";
+                        this.toggleButton();
+                    }
                 });
                 return false;
             });

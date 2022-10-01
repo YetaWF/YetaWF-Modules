@@ -1,7 +1,6 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +31,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(GridComponentBase), name, defaultValue, parms); }
 
-        internal const string TemplateName = "Grid";
+        /// <summary>
+        /// Defines the component's name.
+        /// </summary>
+        public const string TemplateName = "Grid";
 
         /// <summary>
         /// Returns the package implementing the component.
@@ -1256,10 +1258,10 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 get { return false; }
             }
 
-            public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
+            public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer) {
                 throw new NotImplementedException();
             }
-            public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
+            public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer) {
                 string array = JsonConvert.SerializeObject(value, new JsonSerializerSettings { ContractResolver = new Utility.PropertyGetSetUIHintContractResolver() });
                 writer.WriteRawValue(array);
             }

@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     // Loading indicator
@@ -62,8 +62,8 @@ var YetaWF_ComponentsHTML;
                 y = 0;
             var left = x + window.pageXOffset;
             var top = y + window.pageYOffset;
-            this.LoadingDiv.style.top = top + "px";
-            this.LoadingDiv.style.left = left + "px";
+            this.LoadingDiv.style.top = "".concat(top, "px");
+            this.LoadingDiv.style.left = "".concat(left, "px");
         };
         LoadingClass.OFFSETTOP = 13;
         LoadingClass.OFFSETLEFT = 0;

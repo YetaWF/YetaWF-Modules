@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 @use "sass:math";
 
@@ -217,6 +217,9 @@ $smbuttonhorzmargin: .2em;
                     .yt_moduleactions,
                     .yt_moduleactionsplain {
                         line-height:20px;// a little extra height in case of wrapping
+                        a.y_act_img {
+                            white-space:normal; // allow wrapping in grid
+                        }
                     }
                 }
             }

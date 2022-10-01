@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Sites#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Sites#License */
 
 using System;
 using System.Threading.Tasks;
@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Sites.Modules {
 
         [Category("General"), Caption("Add URL"), Description("The URL to add a new web site - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
-        public string AddUrl { get; set; }
+        public string? AddUrl { get; set; }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return SuperuserLevel_DefaultAllowedRoles; } }
 

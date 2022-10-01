@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -40,15 +40,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <inheritdoc/>
         public async Task<string> RenderAsync(List<ModuleAction>? model) {
 
-            ModuleAction.RenderModeEnum renderMode;
-            Grid.GridActionsEnum actionStyle = PropData.GetAdditionalAttributeValue<Grid.GridActionsEnum>("GridActionsEnum", UserSettings.GetProperty<Grid.GridActionsEnum>("GridActions"));
-
             if (model == null || model.Count == 0)
                 return string.Empty;
+
+            Grid.GridActionsEnum actionStyle = PropData.GetAdditionalAttributeValue<Grid.GridActionsEnum>("GridActionsEnum", UserSettings.GetProperty<Grid.GridActionsEnum>("GridActions"));
 
             if (model.Count == 1 && actionStyle == Grid.GridActionsEnum.DropdownMenu)
                 actionStyle = Grid.GridActionsEnum.Icons;
 
+            ModuleAction.RenderModeEnum renderMode;
             switch (actionStyle) {
                 default:
                 case Grid.GridActionsEnum.Icons:

@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
 
 namespace Softelvdm_IVR {
 
@@ -49,8 +49,11 @@ namespace Softelvdm_IVR {
                 if (this.Grid.ExtraData) uri.addSearchSimpleObject(this.Grid.ExtraData);
 
                 $YetaWF.post(this.Setup.AddUrl, uri.toFormData(), (success: boolean, partial: GridRecordResult): void => {
-                    if (success)
+                    if (success) {
                         this.Grid.AddRecord(partial.TR, partial.StaticData);
+                        this.inputPhoneNumber.value = "";
+                        this.toggleButton();
+                    }
                 });
                 return false;
             });

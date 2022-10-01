@@ -1,7 +1,8 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Languages#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Languages#License */
 
 using System;
 using System.Threading.Tasks;
+using YetaWF.Core;
 using YetaWF.Core.Audit;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -19,13 +20,14 @@ namespace YetaWF.Modules.Languages.DataProvider {
             None = 0,
             [EnumDescription("Google Translate")]
             GoogleTranslate = 1,
-            [EnumDescription("Microsoft Translator")]
+            [EnumDescription("Microsoft Translator - Azure")]
             MicrosoftTranslator = 2,
         }
 
         public const int MaxGoogleTranslateAPIKey = 100;
         public const int MaxGoogleTranslateAppName = 100;
         public const int MaxMSClientKey = 100;
+        public const int MaxMSRegion = 100;
 
         [Data_PrimaryKey]
         public int Id { get; set; }
@@ -37,10 +39,20 @@ namespace YetaWF.Modules.Languages.DataProvider {
         [StringLength(MaxGoogleTranslateAppName)]
         public string? GoogleTranslateAppName { get; set; }
 
+        [StringLength(Globals.MaxUrl)]
+        [Data_NewValue]
+        public string? MSTextTranslationUrl { get; set; }
+        [StringLength(MaxMSRegion)]
+        [Data_NewValue]
+        public string? MSTextTranslationRegion { get; set; }
         [StringLength(MaxMSClientKey)]
         public string? MSClientKey { get; set; }
+        [Data_NewValue]
+        public int MSRequestLimit { get; set; }
 
-        public LocalizeConfigData() { }
+        public LocalizeConfigData() {
+            MSRequestLimit = 2;
+        }
     }
 
     public class LocalizeConfigDataProvider : DataProviderImpl, IInstallableModel {

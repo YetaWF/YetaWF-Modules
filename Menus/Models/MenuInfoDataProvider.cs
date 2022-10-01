@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
 
 using System;
 using System.Collections.Generic;
@@ -22,7 +22,7 @@ namespace YetaWF.Modules.Menus.DataProvider {
         public Guid ModuleGuid { get; set; }
 
         [Data_Binary, CopyAttribute]
-        public MenuList Menu { get; set; }
+        public MenuList Menu { get; set; } = null!;
 
         public MenuInfo() { }
     }
@@ -38,7 +38,7 @@ namespace YetaWF.Modules.Menus.DataProvider {
 
         private IDataProvider<Guid, MenuInfo> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<Guid, MenuInfo> CreateDataProvider() {
+        private IDataProvider<Guid, MenuInfo>? CreateDataProvider() {
             Package package = YetaWF.Modules.Menus.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, package.AreaName + "_MenuInfo", SiteIdentity: SiteIdentity, Cacheable: true);
         }
@@ -47,11 +47,11 @@ namespace YetaWF.Modules.Menus.DataProvider {
         // API
         // API
 
-        public async Task<MenuInfo> GetItemAsync(Guid moduleGuid) {
+        public async Task<MenuInfo?> GetItemAsync(Guid moduleGuid) {
             return await DataProvider.GetAsync(moduleGuid);
         }
         public async Task ReplaceItemAsync(MenuInfo data) {
-            MenuInfo origMenu = Auditing.Active ? await GetItemAsync(data.ModuleGuid) : null;
+            MenuInfo? origMenu = Auditing.Active ? await GetItemAsync(data.ModuleGuid) : null;
             using (ILockObject lockObject = await YetaWF.Core.IO.Module.LockModuleAsync(data.ModuleGuid)) {
                 await RemoveItemAsync(data.ModuleGuid);
                 await AddItemAsync(data);
@@ -76,7 +76,7 @@ namespace YetaWF.Modules.Menus.DataProvider {
             return result;
         }
         protected async Task<UpdateStatusEnum> UpdateItemAsync(MenuInfo data) {
-            MenuInfo origMenu = Auditing.Active ? await GetItemAsync(data.ModuleGuid) : null;
+            MenuInfo? origMenu = Auditing.Active ? await GetItemAsync(data.ModuleGuid) : null;
             UpdateStatusEnum result = await DataProvider.UpdateAsync(data.ModuleGuid, data.ModuleGuid, data);
             await Auditing.AddAuditAsync($"{nameof(MenuInfoDataProvider)}.{nameof(UpdateItemAsync)}", "Menu", data.ModuleGuid,
                 "Update Menu",
@@ -87,7 +87,7 @@ namespace YetaWF.Modules.Menus.DataProvider {
             return result;
         }
         public async Task<bool> RemoveItemAsync(Guid moduleGuid) {
-            MenuInfo origMenu = Auditing.Active ? await GetItemAsync(moduleGuid) : null;
+            MenuInfo? origMenu = Auditing.Active ? await GetItemAsync(moduleGuid) : null;
             bool result = await DataProvider.RemoveAsync(moduleGuid);
             await Auditing.AddAuditAsync($"{nameof(MenuInfoDataProvider)}.{nameof(RemoveItemAsync)}", "Menu", moduleGuid,
                 "Remove Menu",

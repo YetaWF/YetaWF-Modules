@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/LoggingDataProvider#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/LoggingDataProvider#License */
 
 #if MVC6
 
@@ -21,10 +21,10 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.MSLog {
         // IMPLEMENTATION
         // IMPLEMENTATION
 
-        private ILogger Logger = null;
+        private ILogger? Logger = null;
 
         public LogRecordDataProvider() : base() {
-            Logger = (ILogger)YetaWFManager.ServiceProvider.GetService(typeof(ILogger<LogRecordDataProvider>));
+            Logger = (ILogger?)YetaWFManager.ServiceProvider.GetService(typeof(ILogger<LogRecordDataProvider>));
             //$$$YetaWFLoggerProvider.IgnoredCategory = typeof(LogRecordDataProvider).FullName;
         }
 

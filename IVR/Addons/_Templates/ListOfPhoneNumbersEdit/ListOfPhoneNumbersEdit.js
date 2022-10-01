@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -36,7 +36,7 @@ var Softelvdm_IVR;
                     return true;
                 var uri = $YetaWF.parseUrl(_this.Setup.AddUrl);
                 uri.addFormInfo(_this.Control);
-                var uniqueIdCounters = { UniqueIdPrefix: _this.ControlId + "ls", UniqueIdPrefixCounter: 0, UniqueIdCounter: ++_this.AddCounter };
+                var uniqueIdCounters = { UniqueIdPrefix: "".concat(_this.ControlId, "ls"), UniqueIdPrefixCounter: 0, UniqueIdCounter: ++_this.AddCounter };
                 uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
                 uri.addSearch("newPhoneNumber", _this.inputPhoneNumber.value);
                 uri.addSearch("fieldPrefix", _this.Grid.FieldName);
@@ -44,8 +44,11 @@ var Softelvdm_IVR;
                 if (_this.Grid.ExtraData)
                     uri.addSearchSimpleObject(_this.Grid.ExtraData);
                 $YetaWF.post(_this.Setup.AddUrl, uri.toFormData(), function (success, partial) {
-                    if (success)
+                    if (success) {
                         _this.Grid.AddRecord(partial.TR, partial.StaticData);
+                        _this.inputPhoneNumber.value = "";
+                        _this.toggleButton();
+                    }
                 });
                 return false;
             });

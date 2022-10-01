@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Sites#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Sites#License */
 
 using System;
 using YetaWF.Core.IO;
@@ -32,7 +32,7 @@ namespace YetaWF.Modules.Sites.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_Remove(string url, SiteDefinition site) {
+        public ModuleAction? GetAction_Remove(string? url, SiteDefinition site) {
             if (site.IsDefaultSite) return null;
             string siteName = site.SiteDomain;
             return new ModuleAction(this) {

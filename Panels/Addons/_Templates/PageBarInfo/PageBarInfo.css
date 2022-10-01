@@ -1,8 +1,7 @@
 @charset "UTF-8";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
 .yt_panels_pagebarinfo .yt_panels_pagebarinfo_list {
-  -webkit-box-flex: 0;
-          flex: none;
+  flex: none;
   overflow-x: auto;
   overflow-y: hidden;
   white-space: nowrap;
@@ -67,12 +66,10 @@
 
 @media (min-width: 1000px) {
   .yt_panels_pagebarinfo.t_stylesvert {
-    display: -webkit-box;
     display: flex;
   }
   .yt_panels_pagebarinfo.t_stylesvert .yt_panels_pagebarinfo_list {
-    -webkit-box-flex: 0;
-            flex: 0 0 120px;
+    flex: 0 0 120px;
     overflow-x: hidden;
     overflow-y: auto;
     text-align: center;
@@ -89,8 +86,7 @@
     padding-bottom: 10px;
   }
   .yt_panels_pagebarinfo.t_stylesvert .t_area {
-    -webkit-box-flex: 1;
-            flex: 1;
+    flex: 1;
     padding: 0.7em 1.3em 0.7em 1.3em;
     overflow: hidden;
     overflow-y: auto;
@@ -98,8 +94,7 @@
 }
 @media (min-width: 1500px) {
   .yt_panels_pagebarinfo.t_stylesvert.t_expanded .yt_panels_pagebarinfo_list {
-    -webkit-box-flex: 0;
-            flex: 0 0 250px;
+    flex: 0 0 250px;
     overflow-x: hidden;
     overflow-y: auto;
     text-align: left;
@@ -127,7 +122,6 @@
     white-space: nowrap;
     padding-bottom: 0;
   }
-
   .yt_panels_pagebarinfo.t_stylesvert .yt_panels_pagebarinfo_list {
     position: relative;
   }
@@ -139,7 +133,6 @@
     height: 24px;
     background-image: url(images/Expand.png);
   }
-
   .yt_panels_pagebarinfo.t_stylesvert.t_expanded .t_expcoll {
     background-image: url(images/Collapse.png);
   }

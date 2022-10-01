@@ -1,6 +1,5 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
 
-using Softelvdm.Modules.TwilioProcessorDataProvider.Models.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -56,8 +55,9 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         // LOAD/SAVE
 
         public Task<BlockedNumberEntry?> GetItemAsync(string number) {
-            number = PhoneNumberAttribute.GetE164(number);
-            return DataProvider.GetAsync(number, null);
+            string? n = PhoneNumberValidationAttribute.GetE164(number);
+            if (n == null) return Task.FromResult<BlockedNumberEntry?>(null);
+            return DataProvider.GetAsync(n, null);
         }
         public Task<BlockedNumberEntry?> GetItemByIdentityAsync(int id) {
             return DataProvider.GetByIdentityAsync(id);
@@ -65,7 +65,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
         public async Task<bool> AddItemAsync(BlockedNumberEntry data) {
 
             data.Created = DateTime.UtcNow;
-            data.Number = PhoneNumberAttribute.GetE164(data.Number);
+            data.Number = PhoneNumberValidationAttribute.GetE164(data.Number) ?? throw new InternalError($"Phone number {data.Number} is invalid");
 
             if (!await DataProvider.AddAsync(data))
                 return false;
@@ -81,7 +81,7 @@ namespace Softelvdm.Modules.IVR.DataProvider {
             BlockedNumberEntry? origData = Auditing.Active ? await GetItemByIdentityAsync(data.Id) : null;
 
             data.Updated = DateTime.UtcNow;
-            data.Number = PhoneNumberAttribute.GetE164(data.Number);
+            data.Number = PhoneNumberValidationAttribute.GetE164(data.Number) ?? throw new InternalError($"Phone number {data.Number} is invalid");
             UpdateStatusEnum status = await DataProvider.UpdateByIdentityAsync(data.Id, data);
             if (status != UpdateStatusEnum.OK)
                 return status;

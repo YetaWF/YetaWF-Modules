@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -241,7 +241,7 @@ var YetaWF_ComponentsHTML;
                         pos = "after";
                         break;
                 }
-                this.DDLastTargetAnchor.insertAdjacentHTML("afterbegin", "<div class=\"t_ddpos t_" + pos + "\"></div>");
+                this.DDLastTargetAnchor.insertAdjacentHTML("afterbegin", "<div class=\"t_ddpos t_".concat(pos, "\"></div>"));
             }
         };
         TreeComponent.prototype.drop = function (ev) {
@@ -330,7 +330,7 @@ var YetaWF_ComponentsHTML;
         // expand/collapse
         TreeComponent.prototype.expandItem = function (liElem) {
             if (!this.Setup.AjaxUrl)
-                throw "Tree control doesn't have an AJAX URL - " + this.Control.outerHTML;
+                throw "Tree control doesn't have an AJAX URL - ".concat(this.Control.outerHTML);
             if (!$YetaWF.isLoading) {
                 // fetch data from servers
                 var uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
@@ -338,7 +338,7 @@ var YetaWF_ComponentsHTML;
                 if (recData)
                     uri.addSearch("Data", recData);
                 uri.addFormInfo(this.Control);
-                var uniqueIdCounters = { UniqueIdPrefix: this.ControlId + "ls", UniqueIdPrefixCounter: ++this.AddCounter, UniqueIdCounter: 0 };
+                var uniqueIdCounters = { UniqueIdPrefix: "".concat(this.ControlId, "ls"), UniqueIdPrefixCounter: ++this.AddCounter, UniqueIdCounter: 0 };
                 uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
                 $YetaWF.post(this.Setup.AjaxUrl, uri.toFormData(), function (success, partial) {
                     if (success) {
@@ -452,7 +452,7 @@ var YetaWF_ComponentsHTML;
         TreeComponent.prototype.getElementData = function (liElem) {
             var data = this.getElementDataCond(liElem);
             if (!data)
-                throw "No record data for " + liElem.outerHTML;
+                throw "No record data for ".concat(liElem.outerHTML);
             return data;
         };
         TreeComponent.prototype.setElementData = function (liElem, data) {
@@ -462,7 +462,7 @@ var YetaWF_ComponentsHTML;
             return $YetaWF.elementClosest(tag, "li");
         };
         TreeComponent.prototype.getSelect = function () {
-            var entry = $YetaWF.getElement1BySelectorCond(".t_entry." + this.Setup.SelectedCss, [this.Control]);
+            var entry = $YetaWF.getElement1BySelectorCond(".t_entry.".concat(this.Setup.SelectedCss), [this.Control]);
             if (!entry)
                 return null;
             var liElem = $YetaWF.elementClosest(entry, "li");
@@ -488,11 +488,11 @@ var YetaWF_ComponentsHTML;
             this.setElementData(liElem, data);
         };
         TreeComponent.prototype.getSelectText = function () {
-            var entry = $YetaWF.getElement1BySelector(".t_entry." + this.Setup.SelectedCss, [this.Control]);
+            var entry = $YetaWF.getElement1BySelector(".t_entry.".concat(this.Setup.SelectedCss), [this.Control]);
             return entry.innerText;
         };
         TreeComponent.prototype.setSelectText = function (text) {
-            var entry = $YetaWF.getElement1BySelector(".t_entry." + this.Setup.SelectedCss, [this.Control]);
+            var entry = $YetaWF.getElement1BySelector(".t_entry.".concat(this.Setup.SelectedCss), [this.Control]);
             entry.innerText = text;
         };
         TreeComponent.prototype.clearSelect = function () {
@@ -501,7 +501,7 @@ var YetaWF_ComponentsHTML;
                 var entry = entries_1[_i];
                 $YetaWF.elementRemoveClass(entry, "t_select");
             }
-            entries = $YetaWF.getElementsBySelector(".t_entry." + this.Setup.SelectedCss, [this.Control]);
+            entries = $YetaWF.getElementsBySelector(".t_entry.".concat(this.Setup.SelectedCss), [this.Control]);
             for (var _a = 0, entries_2 = entries; _a < entries_2.length; _a++) {
                 var entry = entries_2[_a];
                 $YetaWF.elementRemoveClass(entry, this.Setup.SelectedCss);
@@ -657,7 +657,7 @@ var YetaWF_ComponentsHTML;
             var dd = "";
             if (this.Setup.DragDrop)
                 dd = " draggable='true' ondrop='YetaWF_ComponentsHTML.TreeComponent.onDrop(event)' ondragend='YetaWF_ComponentsHTML.TreeComponent.onDragEnd(event)' ondragover='YetaWF_ComponentsHTML.TreeComponent.onDragOver(event)' ondragstart='YetaWF_ComponentsHTML.TreeComponent.onDragStart(event)'";
-            var entry = "<li><i class=\"t_icempty\">&nbsp;</i><i class=\"t_icfile\">&nbsp;</i><a class=\"t_entry\" data-nohref='true' href=\"#\"" + dd + ">" + text + "</a></li>";
+            var entry = "<li><i class=\"t_icempty\">&nbsp;</i><i class=\"t_icfile\">&nbsp;</i><a class=\"t_entry\" data-nohref='true' href=\"#\"".concat(dd, ">").concat(text, "</a></li>");
             return entry;
         };
         /** Scroll the selected item into the viewable area */

@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -79,10 +79,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (Manager.CurrentSite.FormErrorsImmed)
                 css = CssManager.CombineCss(css, "yValidateImmediately");
 
-            string formAction;
             System.IServiceProvider services = HtmlHelper.ActionContext.HttpContext.RequestServices;
             IUrlHelper urlHelper = services.GetRequiredService<IUrlHelperFactory>().GetUrlHelper(HtmlHelper.ActionContext);
-            formAction = urlHelper.Action(action: ActionName, controller: ControllerName, new { area = HtmlHelper.RouteData.Values["area"] });
+            string? formAction = urlHelper.Action(action: ActionName, controller: ControllerName, new { area = HtmlHelper.RouteData.Values["area"] });
 
             HtmlBuilder hb = new HtmlBuilder();
             string id = HtmlBuilder.GetId(attrs);

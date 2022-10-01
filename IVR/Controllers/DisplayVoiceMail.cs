@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
 
 using Softelvdm.Modules.IVR.DataProvider;
 using System;
@@ -36,7 +36,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
             public bool Heard { get; set; }
 
             [Caption("From"), Description("The caller's phone number")]
-            [UIHint("Softelvdm_IVR_PhoneNumber"), ReadOnly]
+            [UIHint("PhoneNumber"), ReadOnly]
             [ExcludeDemoMode]
             public string Caller { get; set; } = null!;
 
@@ -58,7 +58,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
             public string? CallerCountry { get; set; }
 
             [Caption("Phone Number"), Description("The phone number for which the voice mail message is saved")]
-            [UIHint("Softelvdm_IVR_PhoneNumber"), ReadOnly]
+            [UIHint("PhoneNumber"), ReadOnly]
             public string? To { get; set; }
             [Caption("Extension"), Description("The extension for which the voice mail message is saved")]
             [UIHint("String"), ReadOnly]

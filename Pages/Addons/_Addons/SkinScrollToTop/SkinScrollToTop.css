@@ -1,13 +1,11 @@
 @charset "UTF-8";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Pages#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Pages#License */
 #YetaWF_Pages_ScrollTop {
   background-image: url("img/top.png");
   bottom: 20px;
   right: 30px;
-  width: 38px;
-  /* Width of image */
-  height: 38px;
-  /* Height of image */
+  width: 38px; /* Width of image */
+  height: 38px; /* Height of image */
   position: fixed;
   z-Index: 9000;
 }

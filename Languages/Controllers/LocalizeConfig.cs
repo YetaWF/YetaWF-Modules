@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Languages#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Languages#License */
 
 using System.Threading.Tasks;
 using YetaWF.Core.Controllers;
@@ -9,11 +9,8 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.Languages.DataProvider;
 using YetaWF.Core.Audit;
 using System;
-#if MVC6
+using YetaWF.Core;
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Languages.Controllers {
 
@@ -39,25 +36,48 @@ namespace YetaWF.Modules.Languages.Controllers {
             [UIHint("Enum")]
             public LocalizeConfigData.TranslationServiceEnum TranslationService { get; set; }
 
+            [Caption("Endpoint"), Description("Defines the endpoint used for Text Translation - Provided by Microsoft when registering your application - This is not a free service, although there are limited free accounts")]
+            [HelpLink("https://docs.microsoft.com/en-us/azure/cognitive-services/translator/text-translation-overview")]
+            [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Remote), StringLength(Globals.MaxUrl), Trim]
+            [RequiredIf(nameof(TranslationService), LocalizeConfigData.TranslationServiceEnum.MicrosoftTranslator)]
+            [ProcessIf(nameof(TranslationService), LocalizeConfigData.TranslationServiceEnum.MicrosoftTranslator)]
+            public string? MSTextTranslationUrl { get; set; }
+
+            [Caption("Location/Region"), Description("Defines the location (or region) of your resource. You may need to use this field when making calls to this API. - Provided by Microsoft when registering your application - This is not a free service, although there are limited free accounts")]
+            [UIHint("Text80"), StringLength(LocalizeConfigData.MaxMSRegion)]
+            [RequiredIf(nameof(TranslationService), LocalizeConfigData.TranslationServiceEnum.MicrosoftTranslator), Trim]
+            [ProcessIf(nameof(TranslationService), LocalizeConfigData.TranslationServiceEnum.MicrosoftTranslator)]
+            public string? MSTextTranslationRegion { get; set; }
+
             [ExcludeDemoMode]
-            [Caption("Client Key"), Description("Defines the Client API Key of your application performing translations - Provided by Microsoft when registering your application - This is not a free service, although there are limited free accounts")]
-            [HelpLink("https://www.microsoft.com/en-us/translator/getstarted.aspx")]
-            [UIHint("Text80"), StringLength(LocalizeConfigData.MaxMSClientKey), RequiredIf(nameof(TranslationService), LocalizeConfigData.TranslationServiceEnum.MicrosoftTranslator), Trim]
-            [ProcessIf("TranslationService", LocalizeConfigData.TranslationServiceEnum.MicrosoftTranslator)]
+            [Caption("Key"), Description("Defines the API Key of your application performing translations - Provided by Microsoft when registering your application - This is not a free service, although there are limited free accounts")]
+            [UIHint("Text80"), StringLength(LocalizeConfigData.MaxMSClientKey)]
+            [RequiredIf(nameof(TranslationService), LocalizeConfigData.TranslationServiceEnum.MicrosoftTranslator), Trim]
+            [ProcessIf(nameof(TranslationService), LocalizeConfigData.TranslationServiceEnum.MicrosoftTranslator)]
             public string? MSClientKey { get; set; }
+
+            [Caption("Request Limit"), Description("Defines the hourly quota that can be consumed evenly throughout the hour, expressed in Millions of characters per hour - Provided by Microsoft when registering your application - This is not a free service, although there are limited free accounts")]
+            [HelpLink("https://docs.microsoft.com/en-us/azure/cognitive-services/translator/request-limits")]
+            [TextBelow("Millions of Characters Per Hour")]
+            [UIHint("IntValue4"), Range(0, 999)]
+            [RequiredIf(nameof(TranslationService), LocalizeConfigData.TranslationServiceEnum.MicrosoftTranslator), Trim]
+            [ProcessIf(nameof(TranslationService), LocalizeConfigData.TranslationServiceEnum.MicrosoftTranslator)]
+            public int? MSRequestLimit { get; set; }
 
             [ExcludeDemoMode]
             [Caption("Translate API Key"), Description("Defines the Google Cloud Platform / Google Translate API key, which is used when translating localization resources into other languages - You can obtain an API key from the Google Cloud Platform service - This is not a free service")]
-            [HelpLink("https://cloud.google.com/translate/docs/")]
-            [UIHint("Text80"), StringLength(LocalizeConfigData.MaxGoogleTranslateAPIKey), RequiredIf(nameof(TranslationService), LocalizeConfigData.TranslationServiceEnum.GoogleTranslate), Trim]
-            [ProcessIf("TranslationService", LocalizeConfigData.TranslationServiceEnum.GoogleTranslate)]
+            [HelpLink("https://cloud.google.com/translate/docs/setup")]
+            [UIHint("Text80"), StringLength(LocalizeConfigData.MaxGoogleTranslateAPIKey)]
+            [RequiredIf(nameof(TranslationService), LocalizeConfigData.TranslationServiceEnum.GoogleTranslate), Trim]
+            [ProcessIf(nameof(TranslationService), LocalizeConfigData.TranslationServiceEnum.GoogleTranslate)]
             public string? GoogleTranslateAPIKey { get; set; }
 
             [ExcludeDemoMode]
             [Caption("Translate App Name"), Description("Defines the name of your application performing translations - This is not a free service")]
-            [HelpLink("https://cloud.google.com/translate/docs/")]
-            [UIHint("Text80"), StringLength(LocalizeConfigData.MaxGoogleTranslateAppName), RequiredIf(nameof(TranslationService), LocalizeConfigData.TranslationServiceEnum.GoogleTranslate), Trim]
-            [ProcessIf("TranslationService", LocalizeConfigData.TranslationServiceEnum.GoogleTranslate)]
+            [HelpLink("https://cloud.google.com/translate/docs/setup")]
+            [UIHint("Text80"), StringLength(LocalizeConfigData.MaxGoogleTranslateAppName)]
+            [RequiredIf(nameof(TranslationService), LocalizeConfigData.TranslationServiceEnum.GoogleTranslate), Trim]
+            [ProcessIf(nameof(TranslationService), LocalizeConfigData.TranslationServiceEnum.GoogleTranslate)]
             public string? GoogleTranslateAppName { get; set; }
 
             public LocalizeConfigData GetData(LocalizeConfigData data) {

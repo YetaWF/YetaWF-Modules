@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
@@ -55,9 +55,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
         internal static async Task<string> RenderImageAttributesAsync(string? model) {
             if (model == null) return "";
-            System.Drawing.Size size = await ImageSupport.GetImageSizeAsync(model);
-            if (size.IsEmpty) return "";
-            return __ResStr("imgAttr", "{0} x {1} (w x h)", size.Width, size.Height);
+            (int width, int height) = await ImageSupport.GetImageSizeAsync(model);
+            if (width == 0 || height == 0) return string.Empty;
+            return __ResStr("imgAttr", "{0} x {1} (w x h)", width, height);
         }
     }
 

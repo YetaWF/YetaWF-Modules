@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
 
 using System;
 using YetaWF.Core.Controllers;
@@ -54,7 +54,7 @@ namespace YetaWF.Modules.Menus.Controllers {
             [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
             [RequiredIf(nameof(EntryType), (int)ModuleAction.MenuEntryType.Entry)]
             [StringLength(Globals.MaxUrl), Trim]
-            public string Url { get; set; } // The Url to cause this action
+            public string? Url { get; set; } // The Url to cause this action
 
             [Caption("SubModule"),
                 Description("The submodule is displayed as a complete submenu - " +
@@ -74,7 +74,7 @@ namespace YetaWF.Modules.Menus.Controllers {
 
             [Caption("Image URL"), Description("The URL of the image shown for this entry")]
             [UIHint("Text80"), StringLength(Globals.MaxUrl)]
-            public string ImageUrlFinal { get; set; }
+            public string? ImageUrlFinal { get; set; }
 
             [Caption("Tooltip"), Description("The tooltip for this entry")]
             [UIHint("MultiString40"), StringLength(ModuleAction.MaxTooltip)]
@@ -90,7 +90,7 @@ namespace YetaWF.Modules.Menus.Controllers {
 
             [Caption("Css Class"), Description("The optional CSS class added to the action")]
             [UIHint("Text40"), StringLength(ModuleAction.MaxCssClass), Trim]
-            public string CssClass { get; set; }
+            public string? CssClass { get; set; }
 
             [Caption("Style"), Description("Defines how this action affects the current window")]
             [UIHint("Enum"), RequiredIfAttribute("EntryType", (int)ModuleAction.MenuEntryType.Entry)]
@@ -153,10 +153,10 @@ namespace YetaWF.Modules.Menus.Controllers {
 
         public class MenuEditModel {
 
-            public MenuEntry NewEntry { get; set; } // one new menu entry (used client-side)
+            public MenuEntry NewEntry { get; set; } = null!; // one new menu entry (used client-side)
 
             [UIHint("Tree")]
-            public List<MenuEntry> Menu { get; set; }
+            public List<MenuEntry> Menu { get; set; } = null!;
             public TreeDefinition Menu_TreeDefinition { get; set; }
 
             [UIHint("Hidden")]
@@ -180,7 +180,7 @@ namespace YetaWF.Modules.Menus.Controllers {
 
         [AllowGet]
         public async Task<ActionResult> MenuEdit(Guid menuGuid) {
-            MenuModule modMenu = (MenuModule) await ModuleDefinition.LoadAsync(menuGuid);
+            MenuModule? modMenu = (MenuModule?) await ModuleDefinition.LoadAsync(menuGuid);
             if (modMenu == null)
                 throw new InternalError("Can't find menu module {0}", menuGuid);
 
@@ -220,7 +220,7 @@ namespace YetaWF.Modules.Menus.Controllers {
         [ExcludeDemoMode]
         public async Task<ActionResult> MenuEdit_Partial(MenuEditModel model, bool ValidateCurrent) {
 
-            MenuModule modMenu = (MenuModule) await ModuleDefinition.LoadAsync(model.MenuGuid);
+            MenuModule? modMenu = (MenuModule?) await ModuleDefinition.LoadAsync(model.MenuGuid);
             if (modMenu == null)
                 throw new InternalError("Can't find menu module {0}", model.MenuGuid);
 
@@ -242,7 +242,7 @@ namespace YetaWF.Modules.Menus.Controllers {
         [AllowPost]
         [ExcludeDemoMode]
         public async Task<ActionResult> EntireMenu(string entireMenu, Guid menuGuid, long menuVersion) {
-            MenuModule modMenu = (MenuModule)await ModuleDefinition.LoadAsync(menuGuid);
+            MenuModule? modMenu = (MenuModule?)await ModuleDefinition.LoadAsync(menuGuid);
             if (modMenu == null)
                 throw new InternalError("Can't find menu module {0}", menuGuid);
             if (menuVersion != modMenu.MenuVersion)

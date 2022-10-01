@@ -1,5 +1,5 @@
 @charset "UTF-8";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 textarea.yt_textareasourceonly {
   padding-left: 0.5ch;
   padding-right: 0.5ch;
@@ -20,17 +20,10 @@ textarea.yt_textareasourceonly:focus {
 textarea.yt_textareasourceonly:disabled {
   opacity: var(--body-dis-opacity);
 }
-textarea.yt_textareasourceonly:-moz-read-only {
-  opacity: var(--body-dis-opacity);
-}
 textarea.yt_textareasourceonly:read-only {
   opacity: var(--body-dis-opacity);
 }
 textarea.yt_textareasourceonly::-webkit-input-placeholder {
-  color: var(--inp-ph-clr);
-  opacity: var(--inp-ph-opacity);
-}
-textarea.yt_textareasourceonly::-moz-placeholder {
   color: var(--inp-ph-clr);
   opacity: var(--inp-ph-opacity);
 }

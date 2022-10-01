@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -125,7 +125,7 @@ var YetaWF_ComponentsHTML;
                         //case ...
                         // TODO: add other options
                         default:
-                            throw "Invalid mask character " + m;
+                            throw "Invalid mask character ".concat(m);
                     }
                 }
                 caret++;
@@ -151,7 +151,7 @@ var YetaWF_ComponentsHTML;
                             case "-":
                                 break;
                             default:
-                                throw "Invalid mask character " + m;
+                                throw "Invalid mask character ".concat(m);
                         }
                         if (found)
                             break;
@@ -169,7 +169,7 @@ var YetaWF_ComponentsHTML;
                             case "-":
                                 break;
                             default:
-                                throw "Invalid mask character " + m;
+                                throw "Invalid mask character ".concat(m);
                         }
                         if (found)
                             break;
@@ -221,7 +221,7 @@ var YetaWF_ComponentsHTML;
                         //case ...
                         // TODO: add other options
                         default:
-                            throw "Invalid mask character " + m;
+                            throw "Invalid mask character ".concat(m);
                     }
                 }
                 if (!mask)
@@ -262,7 +262,7 @@ var YetaWF_ComponentsHTML;
                         //case ...
                         // TODO: add other options
                         default: // assume some other separator
-                            throw "Invalid mask character " + m;
+                            throw "Invalid mask character ".concat(m);
                     }
                 }
                 if (!mask)

@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
 
 using Softelvdm.Modules.IVR.DataProvider;
 using Softelvdm.Modules.IVR.Modules;
@@ -48,7 +48,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
             public DateTime Created { get; set; }
 
             [Caption("From"), Description("The caller's phone number")]
-            [UIHint("Softelvdm_IVR_PhoneNumber"), ReadOnly]
+            [UIHint("PhoneNumber"), ReadOnly]
             [ExcludeDemoMode]
             public string Caller { get; set; } = null!;
             [Caption("From City"), Description("The caller's city (if available)")]
@@ -65,7 +65,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
             public string? CallerCountry { get; set; }
 
             [Caption("Phone Number"), Description("The phone number called")]
-            [UIHint("Softelvdm_IVR_PhoneNumber"), ReadOnly]
+            [UIHint("PhoneNumber"), ReadOnly]
             public string? To { get; set; }
 
             private BrowseCallLogModule Module { get; set; }

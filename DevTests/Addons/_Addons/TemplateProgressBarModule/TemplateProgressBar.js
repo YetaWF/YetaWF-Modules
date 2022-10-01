@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -21,7 +21,7 @@ var YetaWF_DevTests;
         __extends(TemplateProgressBarModule, _super);
         function TemplateProgressBarModule(id) {
             var _this = _super.call(this, id, TemplateProgressBarModule.SELECTOR, null) || this;
-            _this.ProgressBar = YetaWF.ComponentBaseDataImpl.getControlFromSelector(".t_row.t_bar " + YetaWF_ComponentsHTML.ProgressBarComponent.SELECTOR, YetaWF_ComponentsHTML.ProgressBarComponent.SELECTOR, [_this.Module]);
+            _this.ProgressBar = YetaWF.ComponentBaseDataImpl.getControlFromSelector(".t_row.t_bar ".concat(YetaWF_ComponentsHTML.ProgressBarComponent.SELECTOR), YetaWF_ComponentsHTML.ProgressBarComponent.SELECTOR, [_this.Module]);
             _this.Value = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='Value']", YetaWF_ComponentsHTML.IntValueEditComponent.SELECTOR, [_this.Module]);
             $YetaWF.registerCustomEventHandler(_this.Value.Control, YetaWF_ComponentsHTML.IntValueEditComponent.EVENT, null, function (ev) {
                 _this.ProgressBar.value = _this.Value.value;

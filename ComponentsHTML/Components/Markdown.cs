@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using Newtonsoft.Json;
 using System;
@@ -36,8 +36,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Implicit conversion to string.
         /// </summary>
         /// <param name="md">The MarkdownStringBase object to convert.</param>
-        public static implicit operator string?(MarkdownStringBase md) {
-            return md.Text;
+        public static implicit operator string?(MarkdownStringBase? md) {
+            return md?.Text;
         }
     }
     /// <summary>
@@ -50,7 +50,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="context">An System.ComponentModel.ITypeDescriptorContext that provides a format context.</param>
         /// <param name="destinationType">A System.Type that represents the type you want to convert to.</param>
         /// <returns></returns>
-        public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType) {
+        public override bool CanConvertTo(ITypeDescriptorContext? context, Type? destinationType) {
             if (destinationType == typeof(string))
                 return true;
             //else if (destinationType == typeof(EditorDefinition))
@@ -65,9 +65,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="value">The System.Object to convert.</param>
         /// <param name="destinationType">The System.Type to convert the value parameter to.</param>
         /// <returns> An System.Object that represents the converted value.</returns>
-        public override Object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, Object value, Type destinationType) {
+        public override object? ConvertTo(ITypeDescriptorContext? context, CultureInfo? culture, object? value, Type destinationType) {
             if (destinationType == typeof(string))
-                return ((string?)(MarkdownStringBase)value) ?? string.Empty;
+                return ((string?)(MarkdownStringBase?)value) ?? string.Empty;
             return base.ConvertTo(context, culture, value, destinationType);
         }
     }

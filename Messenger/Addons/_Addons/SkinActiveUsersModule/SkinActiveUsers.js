@@ -1,11 +1,11 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
 var YetaWF_Messenger;
 (function (YetaWF_Messenger) {
     var SkinActiveUsersModule = /** @class */ (function () {
         function SkinActiveUsersModule() {
             var connection = new signalR.HubConnectionBuilder()
-                .withUrl(YConfigs.SignalR.Url + "/" + SkinActiveUsersModule.PROXY)
+                .withUrl("".concat(YConfigs.SignalR.Url, "/").concat(SkinActiveUsersModule.PROXY))
                 .configureLogging(signalR.LogLevel.Information)
                 .build();
             connection.start().then(function () { });

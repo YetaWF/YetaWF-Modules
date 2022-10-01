@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Caching#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Caching#License */
 
 using StackExchange.Redis;
 using System;
@@ -125,7 +125,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
                 DateTime sharedCacheCreated = new DateTime((long)val);
                 if (sharedCacheCreated != cachedObj.Created) {
                     // shared cached version is different, retrieve and save locally
-                    byte[] sharedCacheData;
+                    byte[]? sharedCacheData;
                     if (YetaWFManager.IsSync()) {
                         sharedCacheData = db.StringGet(GetDataKey(key));
                     } else {

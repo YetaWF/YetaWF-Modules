@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SitePropertiesService#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SitePropertiesService#License */
 
 using System.Collections.Generic;
 using System.IO;
@@ -17,7 +17,7 @@ namespace YetaWF.Modules.SitePropertiesService.DataProvider.File {
         class SiteDefinitionDataProvider : FileDataProvider<string, SiteDefinition> {
             public SiteDefinitionDataProvider(Dictionary<string, object> options) : base(options) { }
             public override string GetBaseFolder() {
-                string dataPath = WebConfigHelper.GetValue(AreaRegistration.CurrentPackage.AreaName, "DataPath", YetaWFManager.DataFolder);
+                string dataPath = WebConfigHelper.GetValue(AreaRegistration.CurrentPackage.AreaName, "DataPath", YetaWFManager.DataFolder)!;
                 return Path.Combine(dataPath, Dataset);
             }
         }

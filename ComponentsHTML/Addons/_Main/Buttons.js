@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 /* initialize buttons (bootstrap and/or jquery-ui) */
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {

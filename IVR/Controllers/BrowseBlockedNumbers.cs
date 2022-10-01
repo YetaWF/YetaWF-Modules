@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
 
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +42,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
             }
 
             [Caption("Blocked Number"), Description("Shows the blocked phone number")]
-            [UIHint("Softelvdm_IVR_PhoneNumber"), StringLength(Globals.MaxPhoneNumber), ReadOnly]
+            [UIHint("PhoneNumber"), StringLength(Globals.MaxPhoneNumber), ReadOnly]
             public string Number { get; set; } = null!;
 
             [Caption("Description"), Description("The description of the blocked number")]

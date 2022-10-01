@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     var Severity;
@@ -326,19 +326,19 @@ var YetaWF_ComponentsHTML;
             $YetaWF.setAttribute(entryDiv, "aria-atomic", "true");
             var html = "";
             if (title)
-                html += "<div class='t_title'>" + $YetaWF.htmlEscape(title) + "</div>";
+                html += "<div class='t_title'>".concat($YetaWF.htmlEscape(title), "</div>");
             if (options.canClose)
                 //close button image
-                html += "<div class='t_close' aria-label='Close'>" + YConfigs.YetaWF_ComponentsHTML.SVG_fas_multiply + "</div>";
+                html += "<div class='t_close' aria-label='Close'>".concat(YConfigs.YetaWF_ComponentsHTML.SVG_fas_multiply, "</div>");
             if (message) {
                 if (!options.encoded) {
                     // change \n to <br/>
                     var s = $YetaWF.htmlEscape(message);
                     s = s.replace(/\(\+nl\)/g, "<br/>");
-                    html += "<div class='t_message'>" + s + "</div>";
+                    html += "<div class='t_message'>".concat(s, "</div>");
                 }
                 else {
-                    html += "<div class='t_message'>" + message + "</div>";
+                    html += "<div class='t_message'>".concat(message, "</div>");
                 }
             }
             entryDiv.innerHTML = html;

@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -85,19 +85,19 @@ var YetaWF_ComponentsHTML;
         };
         TimeSpanEditComponent.prototype.updateValue = function () {
             if (this.InputDays && this.InputHours && this.InputMins && this.InputSecs) {
-                this.Hidden.value = this.InputDays.value + "." + this.InputHours.value + ":" + this.InputMins.value + ":" + this.InputSecs.value;
+                this.Hidden.value = "".concat(this.InputDays.value, ".").concat(this.InputHours.value, ":").concat(this.InputMins.value, ":").concat(this.InputSecs.value);
             }
             else if (this.InputDays && this.InputHours && this.InputMins) {
-                this.Hidden.value = this.InputDays.value + "." + this.InputHours.value + ":" + this.InputMins.value;
+                this.Hidden.value = "".concat(this.InputDays.value, ".").concat(this.InputHours.value, ":").concat(this.InputMins.value);
             }
             else if (this.InputDays && this.InputHours) {
-                this.Hidden.value = this.InputDays.value + "." + this.InputHours.value + ":0";
+                this.Hidden.value = "".concat(this.InputDays.value, ".").concat(this.InputHours.value, ":0");
             }
             else if (this.InputHours && this.InputMins && this.InputSecs) {
-                this.Hidden.value = this.InputHours.value + ":" + this.InputMins.value + ":" + this.InputSecs.value;
+                this.Hidden.value = "".concat(this.InputHours.value, ":").concat(this.InputMins.value, ":").concat(this.InputSecs.value);
             }
             else if (this.InputHours && this.InputMins) {
-                this.Hidden.value = this.InputHours.value + ":" + this.InputMins.value;
+                this.Hidden.value = "".concat(this.InputHours.value, ":").concat(this.InputMins.value);
             }
             this.sendUpdateEvent();
         };

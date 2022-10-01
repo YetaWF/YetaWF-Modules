@@ -1,124 +1,103 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Languages#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Languages#License */
 
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net;
+using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.Languages.Controllers.Support {
 
     internal class MSTranslate {
 
-        internal class MSAuthentication {
-
-            public static readonly string DataMarketAccessUri = "https://api.cognitive.microsoft.com/sts/v1.0/issueToken";
-
-            private string _clientKey;
-            private string? _token;
-
-            public MSAuthentication(string clientKey) {
-                _clientKey = clientKey;
-            }
-            public async Task<string> GetAccessTokenAsync() {
-                if (_token == null) {
-                    string request = string.Format("Subscription-Key={0}", Utility.UrlEncodeArgs(_clientKey));
-                    _token = await HttpPostAsync(DataMarketAccessUri, request);
-                }
-                return _token;
-            }
-            private async Task<string> HttpPostAsync(string dataMarketAccessUri, string requestDetails) {
-                WebRequest webRequest = WebRequest.Create(dataMarketAccessUri + "?" + requestDetails);
-                webRequest.Method = "POST";
-                byte[] bytes = Encoding.ASCII.GetBytes(requestDetails);
-                webRequest.ContentLength = bytes.Length;
-                using (Stream outputStream = await webRequest.GetRequestStreamAsync()) {
-                    await outputStream.WriteAsync(bytes, 0, bytes.Length);
-                }
-                using (WebResponse webResponse = await webRequest.GetResponseAsync()) {
-                    using (StreamReader sr = new StreamReader(webResponse.GetResponseStream())) {
-                        return await sr.ReadToEndAsync();
-                    }
-                }
-            }
+        public MSTranslate(string? textTranslationUrl, string? region, string clientKey, int reqestLimit) {
+            TextTranslationUrl = string.IsNullOrWhiteSpace(textTranslationUrl) ? TextTranslationUrlDefault : textTranslationUrl;
+            TextTranslationRegion = region;
+            ClientKey = clientKey;
+            RequestLimit = reqestLimit;
         }
 
-        public MSTranslate(string clientId) {
-            _clientId = clientId;
-        }
+        private const string TextTranslationUrlDefault = "https://api.cognitive.microsofttranslator.com";
 
-        private string _clientId;
-        private string? _token;
+        private string TextTranslationUrl { get; }
+        private string? TextTranslationRegion { get; }
+        private string ClientKey { get; }
+        
+        private int RequestLimit { get; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times", Justification = "Don't care")]
+        private static HttpClient Client = new HttpClient();
+
         public async Task<List<string>> TranslateAsync(string from, string to, List<string> strings) {
 
             if (strings.Count == 0) return new List<string>();
 
-            if (_token == null) {
-                MSAuthentication auth = new MSAuthentication(_clientId);
-                _token = await auth.GetAccessTokenAsync();
-            }
+            DateTime start = DateTime.UtcNow;
 
-            string headerValue = "Bearer " + _token;
-            string uri = "http://api.microsofttranslator.com/v2/Http.svc/TranslateArray";
-            HtmlBuilder hb = new HtmlBuilder();
-            hb.Append("<TranslateArrayRequest>" +
-                             "<AppId />" +
-                             "<From>{0}</From>" +
-                             "<Options>" +
-                                 "<Category xmlns=\"http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2\" />" +
-                                 "<ContentType xmlns=\"http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2\">text/plain</ContentType>" +
-                                 "<ReservedFlags xmlns=\"http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2\" />" +
-                                 "<State xmlns=\"http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2\" />" +
-                                 "<Uri xmlns=\"http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2\" />" +
-                                 "<User xmlns=\"http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2\" />" +
-                             "</Options>" +
-                             "<Texts>", from);
+            ScriptBuilder builder = new ScriptBuilder();
+            builder.Append("[");
             foreach (string s in strings) {
-                string encoded;
-#if MVC6
-                encoded = System.Net.WebUtility.HtmlEncode(s);
-#else
-                encoded = AntiXssEncoder.XmlEncode(s);
-#endif
-                hb.Append("<string xmlns=\"http://schemas.microsoft.com/2003/10/Serialization/Arrays\">{0}</string>", encoded);
+                builder.Append($@"{{ ""Text"": ""{Utility.JserEncode(s)}"" }},");
             }
-            hb.Append("</Texts>" +
-                    "<To>{0}</To>" +
-                    "</TranslateArrayRequest>", to);
+            builder.Length = builder.Length - 1;// remove last comma
+            builder.Append("]");
 
-            // create the request
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-            request.Headers.Add("Authorization", headerValue);
-            request.ContentType = "text/xml";
-            request.Method = "POST";
+            using (HttpRequestMessage request = new HttpRequestMessage()) {
+                request.Method = HttpMethod.Post;
+                string route = $"/translate?api-version=3.0&from={from}&to={to}";
+                request.RequestUri = new Uri(TextTranslationUrl + route);
+                request.Content = new StringContent(builder.ToString(), Encoding.UTF8, "application/json");
+                request.Headers.Add("Ocp-Apim-Subscription-Key", ClientKey);
+                if (!string.IsNullOrWhiteSpace(TextTranslationRegion))
+                    request.Headers.Add("Ocp-Apim-Subscription-Region", TextTranslationRegion);
 
-            using (System.IO.Stream stream = await request.GetRequestStreamAsync()) {
-                byte[] arrBytes = System.Text.Encoding.UTF8.GetBytes(hb.ToString());
-                await stream.WriteAsync(arrBytes, 0, arrBytes.Length);
+                HttpResponseMessage response = await Client.SendAsync(request);
+                if (!response.IsSuccessStatusCode) 
+                    throw new InternalError($"{nameof(TranslateAsync)} failed - {response.StatusCode}");
+                string result = await response.Content.ReadAsStringAsync();
+                List<AllTranslations> trans = Utility.JsonDeserialize<List<AllTranslations>>(result);
+                List<string> newStrings = (from t in trans select (from te in t.Translations select te.Text).First()).ToList();
+
+                //int requestLength = (from s in strings select s.Length).Sum();
+                int requestLength = builder.Length;
+                await RequestLimitDelay(requestLength, DateTime.UtcNow.Subtract(start));
+                    
+                return newStrings;
             }
+        }
 
-            // Get the response
-            List<string> newStrings = new List<string>();
-            WebResponse? response = null;
+        private async Task RequestLimitDelay(int requestLength, TimeSpan elapsedTime) {
+            if (RequestLimit <= 0) return;
+            // This is a naive implementation so the request limit is not exceeded.
+            // Given the just processed request, we calculate how long it took versus how much it should have taken given the request limit. 
+            // If the request was processed "too fast", we wait for a bit so we can never exceed the request limit.
+            double requestLimit = RequestLimit * 0.9; // -10%, just in case
+            double maxCharsPerHour = requestLimit * 1000000;// million of characters allowed per hour.
+            double maxCharsPerMillisecond = maxCharsPerHour / 60 / 60 / 1000;
+            double allowedCharsForRequest = elapsedTime.TotalMilliseconds * maxCharsPerMillisecond;
+            if (allowedCharsForRequest >= requestLength) return;// took longer than our request limit permits, so we're not over the request limit
+            
+            double tooManyChars = requestLength - allowedCharsForRequest;
+            double exceededMilliseconds = tooManyChars * maxCharsPerMillisecond;
+            double exceededSeconds = (exceededMilliseconds + 999) / 1000;
+            // There seems to be an additional undocumented request limit (probably related to many consecutive sub-second requests)
+            // which causes a 429 TooManyRequests error. So we round the wait time up to the next second. This seems to work (for now).
+            await Task.Delay(((int)exceededSeconds+1)*1000);
+        }
 
-            using (response = await request.GetResponseAsync()) {
-                using (Stream stream = response.GetResponseStream()) {
-                    using (StreamReader rdr = new StreamReader(stream, System.Text.Encoding.UTF8)) {
-                        string strResponse = await rdr.ReadToEndAsync();
-                        XDocument doc = XDocument.Parse(strResponse);
-                        XNamespace ns = "http://schemas.datacontract.org/2004/07/Microsoft.MT.Web.Service.V2";
-                        foreach (XElement xe in doc.Descendants(ns + "TranslateArrayResponse")) {
-                            foreach (var node in xe.Elements(ns + "TranslatedText"))
-                                newStrings.Add(node.Value);
-                        }
-                    }
-                }
+        public class AllTranslations {
+            [JsonProperty("translations")]
+            public List<TranslationEntry> Translations { get; set; }
+            public AllTranslations() {
+                Translations = new List<TranslationEntry>();
             }
-            return newStrings;
+        }
+        public class TranslationEntry {
+            [JsonProperty("text")]
+            public string Text { get; set; } = null!;
         }
     }
 }
+

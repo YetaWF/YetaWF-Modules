@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TwilioProcessor#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TwilioProcessor#License */
 
 using YetaWF.Core.Packages;
 
@@ -23,6 +23,6 @@ namespace Softelvdm.Modules.TwilioProcessor {
         /// Defines the current package, used by applications that need access to the YetaWF.Core.Packages.Package instance.
         /// </summary>
         public static Package CurrentPackage { get { return _CachedCurrentPackage ??= (_CachedCurrentPackage = Package.GetPackageFromAssembly(typeof(AreaRegistration).Assembly)); } }
-        private static Package _CachedCurrentPackage;
+        private static Package? _CachedCurrentPackage;
     }
 }

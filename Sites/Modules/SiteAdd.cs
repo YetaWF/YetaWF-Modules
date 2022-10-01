@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Sites#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Sites#License */
 
 using System;
 using YetaWF.Core.IO;
@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Sites.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return SuperuserLevel_DefaultAllowedRoles; } }
 
-        public ModuleAction GetAction_Add(string url) {
+        public ModuleAction GetAction_Add(string? url) {
             return new ModuleAction(this) {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Add",

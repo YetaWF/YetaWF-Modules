@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
 
 using System;
 using YetaWF.Core.IO;
@@ -33,6 +33,6 @@ namespace YetaWF.Modules.Menus.Modules {
 
         [Category("General"), Caption("Target Element"), Description("Defines the element containing the menu controlled by this toggle button using CSS selectors.")]
         [UIHint("Text80"), StringLength(80), Required]
-        public string Target { get; set; }
+        public string Target { get; set; } = null!;
     }
 }

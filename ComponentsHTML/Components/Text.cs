@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
@@ -239,7 +239,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// <summary>
     /// Base class for the Text display component implementation.
     /// </summary>
-    public abstract class TextDisplayComponentBase : TextComponentBase, IYetaWFComponent<string> {
+    public abstract class TextDisplayComponentBase : TextComponentBase, IYetaWFComponent<string?> {
 
         /// <summary>
         /// Returns the component type (edit/display).
@@ -262,7 +262,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<string> RenderAsync(string model) {
+        public async Task<string> RenderAsync(string? model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -300,7 +300,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// <summary>
     /// Base class for the Text edit component implementation.
     /// </summary>
-    public abstract class TextEditComponentBase : TextComponentBase, IYetaWFComponent<string> {
+    public abstract class TextEditComponentBase : TextComponentBase, IYetaWFComponent<string?> {
 
         /// <summary>
         /// Returns the component type (edit/display).
@@ -329,7 +329,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public async Task<string> RenderAsync(string model) {
+        public async Task<string> RenderAsync(string? model) {
             return await RenderTextAsync(this, model, TemplateClass);
         }
         /// <summary>
@@ -339,7 +339,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="model">The model.</param>
         /// <param name="templateCssClass">The CSS class to add to the template (starting with yt_).</param>
         /// <returns>The component rendered as HTML.</returns>
-        public static async Task<string> RenderTextAsync(YetaWFComponent component, string model, string? templateCssClass) {
+        public static async Task<string> RenderTextAsync(YetaWFComponent component, string? model, string? templateCssClass) {
 
             await IncludeExplicitAsync();
 
@@ -376,7 +376,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 #endif
 
             HtmlBuilder hb = new HtmlBuilder();
-            hb.Append($@"<input{component.FieldSetup(component.Validation ? FieldType.Validated : FieldType.Normal)} id='{component.ControlId}' type='text' value='{HAE(model??string.Empty)}' class='yt_text_base t_edit {css}' autocomplete='{autoComplete}'{placeHolder}>");
+            hb.Append($@"<input{component.FieldSetup(component.Validation ? FieldType.Validated : FieldType.Normal)} id='{component.ControlId}' type='text' value='{HAE(model)}' class='yt_text_base t_edit {css}' autocomplete='{autoComplete}'{placeHolder}>");
 
             bool copy = component.PropData.GetAdditionalAttributeValue<bool>("Copy", false);
             if (copy) {

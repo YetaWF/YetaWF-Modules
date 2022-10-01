@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -66,8 +66,8 @@ var YetaWF_Panels;
                         var ctrlHeight = winHeight - ctrlRect.top;
                         if (ctrlHeight < 0)
                             ctrlHeight = 0;
-                        this.Control.style.height = ctrlHeight + "px";
-                        this.Left.style.flexBasis = this.Setup.Width + "%";
+                        this.Control.style.height = "".concat(ctrlHeight, "px");
+                        this.Left.style.flexBasis = "".concat(this.Setup.Width, "%");
                     }
                     else {
                         this.Control.style.height = "100%";
@@ -103,7 +103,7 @@ var YetaWF_Panels;
             var newActualWidth = ev.clientX - rect.left;
             if (newActualWidth < ctrl.Setup.MinWidth)
                 newActualWidth = ctrl.Setup.MinWidth;
-            ctrl.Left.style.flexBasis = newActualWidth + "px";
+            ctrl.Left.style.flexBasis = "".concat(newActualWidth, "px");
             return false;
         };
         SplitterInfoComponent.resizeWidthDone = function (ev) {

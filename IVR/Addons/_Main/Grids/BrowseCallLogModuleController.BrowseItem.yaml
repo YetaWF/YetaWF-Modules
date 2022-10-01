@@ -1,0 +1,63 @@
+# Generated from flat grid definition file on 4/23/2022 11:14:42 AM
+
+SizeStyle: SizeToFit
+Panel: {}
+Columns:
+- Name: Commands
+  Icons: 2
+  FilterOptions: []
+  Align: Center
+  Truncate: true
+- Name: Id
+  Sort: true
+  Filter: true
+  FilterOptions: []
+  Width: 10
+  Align: Unspecified
+  Truncate: true
+- Name: Created
+  DefaultSort: Descending
+  Sort: true
+  Filter: true
+  FilterOptions: []
+  Width: <Globals.ChDateTime>
+  Align: Unspecified
+  Truncate: true
+- Name: Caller
+  Sort: true
+  Filter: true
+  FilterOptions: []
+  Width: <Globals.ChPhoneNumber>
+  Align: Unspecified
+  Truncate: true
+- Name: CallerCity
+  Sort: true
+  Filter: true
+  FilterOptions: []
+  Width: 20
+  Truncate: true
+- Name: CallerState
+  Sort: true
+  Filter: true
+  FilterOptions: []
+  Width: 10
+  Truncate: true
+- Name: CallerZip
+  Sort: true
+  Filter: true
+  FilterOptions: []
+  Width: 10
+  Truncate: true
+- Name: CallerCountry
+  Sort: true
+  Filter: true
+  FilterOptions: []
+  Width: 20
+  Truncate: true
+- Name: To
+  Sort: true
+  Filter: true
+  FilterOptions: []
+  Width: <Globals.ChPhoneNumber>
+  Align: Unspecified
+  Truncate: true

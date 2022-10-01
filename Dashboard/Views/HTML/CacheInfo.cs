@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Dashboard#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Dashboard#License */
 
 using System.Threading.Tasks;
 using YetaWF.Core;
@@ -37,7 +37,7 @@ namespace YetaWF.Modules.Dashboard.Views {
 
                 hb.Append($@"
     <div class='{Globals.CssDivWarning}'>
-        {Utility.HE(this.__ResStr("notAvail", "Information not available on .NET 5.0"))}
+        {Utility.HE(this.__ResStr("notAvail", "Information not available on .NET 6.0"))}
     </div>");
             }
             return hb.ToString();

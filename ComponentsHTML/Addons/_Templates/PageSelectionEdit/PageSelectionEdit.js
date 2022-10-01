@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -54,7 +54,7 @@ var YetaWF_ComponentsHTML;
                 this.DivLink.style.display = "inline";
                 //$desc.show();
             }
-            this.APage.href = "/!Page/" + pageGuid; // Globals.PageUrl
+            this.APage.href = "/!Page/".concat(pageGuid); // Globals.PageUrl
             //$desc.text(desc);
         };
         PageSelectionEditComponent.TEMPLATE = "yt_pageselection";

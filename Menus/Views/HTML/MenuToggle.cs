@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Menus#License */
 
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
@@ -19,7 +19,7 @@ namespace YetaWF.Modules.Menus.Views {
         public override string GetViewName() { return ViewName; }
 
         public class Setup {
-            public string ButtonId { get; set; }
+            public string ButtonId { get; set; } = null!;
             public string Target { get; set; } = null!;
         }
 

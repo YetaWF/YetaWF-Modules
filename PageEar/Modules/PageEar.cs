@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEar#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEar#License */
 
 using System;
 using System.Threading.Tasks;
@@ -35,10 +35,9 @@ namespace YetaWF.Modules.PageEar.Modules {
         }
 
         public override IModuleDefinitionIO GetDataProvider() { return new PageEarModuleDataProvider(); }
-        public override Task ModuleSavingAsync() {
-            System.Drawing.Size size = ImageSupport.GetImageSize(AdImage_Data);
-            LargeSize = size.Height;
-            return Task.CompletedTask;
+        public override async Task ModuleSavingAsync() {
+            (int width, int height) = await ImageSupport.GetImageSizeAsync(AdImage_Data);
+            LargeSize = height;
         }
 
         [Category("General"), Caption("Ad Image"), Description("The image used for the page ear (the advertisement) - this should be the same size as the CoverImage image")]

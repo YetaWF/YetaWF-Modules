@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Logging#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Logging#License */
 
 using System;
 using System.Collections.Generic;
@@ -52,11 +52,11 @@ namespace YetaWF.Modules.Logging.Controllers {
 
             [Caption("Category"), Description("The log category")]
             [UIHint("String"), ReadOnly]
-            public string Category { get; set; }
+            public string Category { get; set; } = null!;
 
             [Caption("Session Id"), Description("The session id used to identify the visitor")]
             [UIHint("String"), ReadOnly]
-            public string SessionId { get; set; }
+            public string SessionId { get; set; } = null!;
 
             [Caption("Level"), Description("The error level of this log record")]
             [UIHint("Enum"), ReadOnly]
@@ -64,7 +64,7 @@ namespace YetaWF.Modules.Logging.Controllers {
 
             [Caption("Info"), Description("The information logged in this record")]
             [UIHint("String"), ReadOnly]
-            public string Info { get; set; }
+            public string Info { get; set; } = null!;
 
             [Caption("Site Id"), Description("The site which logged this record")]
             [UIHint("IntValue"), ReadOnly]
@@ -72,13 +72,13 @@ namespace YetaWF.Modules.Logging.Controllers {
 
             [Caption("IP Address"), Description("The IP address associated with this log entry")]
             [UIHint("IPAddress"), ReadOnly]
-            public string IPAddress { get; set; }
+            public string IPAddress { get; set; } = null!;
             [Caption("Url"), Description("The requested Url")]
             [UIHint("Url"), ReadOnly]
-            public string RequestedUrl { get; set; }
+            public string RequestedUrl { get; set; } = null!;
             [UIHint("Url"), ReadOnly]
             [Caption("Referrer"), Description("The referring Url associated with this log entry")]
-            public string ReferrerUrl { get; set; }
+            public string ReferrerUrl { get; set; } = null!;
 
             [Caption("User"), Description("The user's name/email address (if available)")]
             [UIHint("YetaWF_Identity_UserId"), ReadOnly]
@@ -86,16 +86,16 @@ namespace YetaWF.Modules.Logging.Controllers {
 
             [Caption("Module Name"), Description("The module logging this record")]
             [UIHint("String"), ReadOnly]
-            public string ModuleName { get; set; }
+            public string ModuleName { get; set; } = null!;
             [Caption("Class"), Description("The class logging this record")]
             [UIHint("String"), ReadOnly]
-            public string Class { get; set; }
+            public string Class { get; set; } = null!;
             [Caption("Method"), Description("The method logging this record")]
             [UIHint("String"), ReadOnly]
-            public string Method { get; set; }
+            public string Method { get; set; } = null!;
             [Caption("Namespace"), Description("The namespace logging this record")]
             [UIHint("String"), ReadOnly]
-            public string Namespace { get; set; }
+            public string Namespace { get; set; } = null!;
 
             private BrowseLogModule Module { get; set; }
 
@@ -107,10 +107,10 @@ namespace YetaWF.Modules.Logging.Controllers {
 
         public class BrowseModel {
             [UIHint("Grid"), ReadOnly]
-            public GridDefinition GridDef { get; set; }
+            public GridDefinition GridDef { get; set; } = null!;
             public bool LogAvailable { get; set; }
             public bool BrowsingSupported { get; set; }
-            public string LoggerName { get; set; }
+            public string LoggerName { get; set; } = null!;
         }
         private GridDefinition GetGridModel() {
             return new GridDefinition {
@@ -120,7 +120,7 @@ namespace YetaWF.Modules.Logging.Controllers {
                 InitialPageSize = 20,
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = GetActionUrl(nameof(BrowseLog_GridData)),
-                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
+                DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     FlushLog();
                     using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                         DataProviderGetRecords<LogRecord> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);

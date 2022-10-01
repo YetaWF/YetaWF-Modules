@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -78,12 +78,12 @@ var YetaWF_Panels;
             var steps = PanelInfoComponent.MAXTIME / PanelInfoComponent.INCRTIME;
             var incr = window.innerHeight / steps;
             var height = incr;
-            tag.style.maxHeight = height + "px";
+            tag.style.maxHeight = "".concat(height, "px");
             tag.style.display = "block";
             var timer = setInterval(function () {
                 var rect = tag.getBoundingClientRect();
                 height += incr;
-                tag.style.maxHeight = height + "px";
+                tag.style.maxHeight = "".concat(height, "px");
                 var newRect = tag.getBoundingClientRect();
                 if (rect.height >= newRect.height) {
                     clearInterval(timer);
@@ -98,14 +98,14 @@ var YetaWF_Panels;
             var height = rect.height - incr;
             if (height <= 0)
                 height = 0;
-            tag.style.maxHeight = height + "px";
+            tag.style.maxHeight = "".concat(height, "px");
             if (height > 0) {
                 var timer_1 = setInterval(function () {
                     var rect = tag.getBoundingClientRect();
                     height -= incr;
                     if (height <= 0)
                         height = 0;
-                    tag.style.maxHeight = height + "px";
+                    tag.style.maxHeight = "".concat(height, "px");
                     var newRect = tag.getBoundingClientRect();
                     if (rect.height <= newRect.height || rect.height <= 0) {
                         clearInterval(timer_1);

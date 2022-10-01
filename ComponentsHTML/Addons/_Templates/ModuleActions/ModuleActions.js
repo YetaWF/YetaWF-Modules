@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -37,7 +37,7 @@ var YetaWF_ComponentsHTML;
         }
         ModuleActionsComponent.prototype.openMenu = function () {
             var menuDiv = this.MenuControl.cloneNode(true);
-            menuDiv.id = this.MenuControl.id + "_live";
+            menuDiv.id = "".concat(this.MenuControl.id, "_live");
             document.body.appendChild(menuDiv);
             new YetaWF_ComponentsHTML.MenuULComponent(menuDiv.id, { "Owner": this.MenuControl, "AutoOpen": true, "AutoRemove": true, "AttachTo": this.ButtonControl.Control, Dynamic: true });
         };

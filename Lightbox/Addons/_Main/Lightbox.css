@@ -1,5 +1,5 @@
 @charset "UTF-8";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Lightbox#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Lightbox#License */
 .lightboxOverlay {
   position: fixed;
   top: 0;
@@ -67,7 +67,6 @@
   background: url(img/prev.png) left 48% no-repeat;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
-  -webkit-transition: opacity 0.6s;
   transition: opacity 0.6s;
 }
 .lightbox .t_nav a.t_prev:hover {
@@ -81,7 +80,6 @@
   background: url(img/next.png) right 48% no-repeat;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
   opacity: 0;
-  -webkit-transition: opacity 0.6s;
   transition: opacity 0.6s;
 }
 .lightbox .t_nav a.t_next:hover {
@@ -121,7 +119,6 @@
   outline: none;
   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=70);
   opacity: 0.7;
-  -webkit-transition: opacity 0.2s;
   transition: opacity 0.2s;
 }
 .lightbox .t_data .t_close:hover {

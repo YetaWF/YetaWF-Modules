@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 namespace YetaWF_ComponentsHTML {
 
@@ -128,7 +128,7 @@ namespace YetaWF_ComponentsHTML {
         private InputPanelSearch: YetaWF_ComponentsHTML.SearchEditComponent | null = null;
         private ColumnSelection: YetaWF_ComponentsHTML.CheckListMenuEditComponent | null = null;
         private ColumnResizeBar: HTMLElement | null = null;
-        private ColumnResizeHeader: HTMLTableHeaderCellElement | null = null;
+        private ColumnResizeHeader: HTMLTableCellElement | null = null;
         private TBody: HTMLElement;
         private LoadingDiv: HTMLDivElement | null = null;
         private static CurrentControl: Grid | null = null;// current control during grid resize
@@ -327,7 +327,7 @@ namespace YetaWF_ComponentsHTML {
                 if (!this.reloadInProgress) {
                     Grid.CurrentControl = this;
                     this.ColumnResizeBar = ev.__YetaWFElem;
-                    this.ColumnResizeHeader = $YetaWF.elementClosest(this.ColumnResizeBar, "th") as HTMLTableHeaderCellElement;
+                    this.ColumnResizeHeader = $YetaWF.elementClosest(this.ColumnResizeBar, "th") as HTMLTableCellElement;
                     document.body.style.cursor = "col-resize";
                     window.addEventListener("mousemove", Grid.resizeColumn, false);
                     window.addEventListener("mouseup", Grid.resizeColumnDone, false);
@@ -514,15 +514,13 @@ namespace YetaWF_ComponentsHTML {
             if (this.Setup.StaticData && this.Setup.NoSubmitContents) {
                 this.SubmitCheckCol = this.getSubmitCheckCol();
                 if (this.SubmitCheckCol >= 0) {
-                    this.setInitialSubmitStatus();
-                    // update static data with new checkbox value
+                    // update static data with new checkbox value when clicked
                     $YetaWF.registerEventHandler(this.TBody, "change", `tr td:nth-child(${this.SubmitCheckCol + 1}) input[type='checkbox']`, (ev: Event): boolean => {
                         if (!this.Setup.StaticData) return true;
                         let tr = $YetaWF.elementClosest(ev.__YetaWFElem, "tr");
                         let recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
                         let val = (ev.__YetaWFElem as HTMLInputElement).checked;
                         this.Setup.StaticData[recNum][this.Setup.Columns[this.SubmitCheckCol].Name] = val;
-                        //$YetaWF.elementToggleClass(tr, YConfigs.Forms.CssFormNoSubmitContents, !val);
                         return false;
                     });
                 }
@@ -648,15 +646,6 @@ namespace YetaWF_ComponentsHTML {
             this.sendEventDragDropDone();
         }
         // OnlySubmitWhenChecked
-        private setInitialSubmitStatus(): void {
-            if (!this.Setup.StaticData || !this.Setup.NoSubmitContents) return;
-            //let trs = $YetaWF.getElementsBySelector("tr:not(.tg_emptytr)", [this.TBody]);
-            //for (let tr of trs) {
-            //    let recNum = Number($YetaWF.getAttribute(tr, "data-origin"));
-            //    let val = this.Setup.StaticData[recNum][this.Setup.Columns[this.SubmitCheckCol].Name];
-            //    $YetaWF.elementToggleClass(tr, YConfigs.Forms.CssFormNoSubmitContents, !val);
-            //}
-        }
         private getSubmitCheckCol(): number {
             let colIndex: number = -1;
             let cols = this.Setup.Columns.filter((col: GridColumnDefinition, index: number, cols: GridColumnDefinition[]): boolean => {
@@ -946,11 +935,9 @@ namespace YetaWF_ComponentsHTML {
                             this.Setup.PageSize = partial.PageSize;
                             if (this.InputPage)
                                 this.InputPage.value = this.Setup.Page + 1;
-                            if (this.Setup.NoSubmitContents) {
+                            this.SubmitCheckCol = -1;
+                            if (this.Setup.NoSubmitContents)
                                 this.SubmitCheckCol = this.getSubmitCheckCol();
-                                if (this.SubmitCheckCol >= 0)
-                                    this.setInitialSubmitStatus();
-                            }
                             this.setReloading(false);
                             this.updateStatus();
                             if (done)

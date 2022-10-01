@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -283,8 +283,8 @@ var YetaWF_ComponentsHTML;
             var controlRect = control.Control.getBoundingClientRect();
             var desiredHeight = control.Setup.DropDownHeightFactor * DropDownSearchEditComponent.DEFAULTHEIGHT;
             var desiredWidth = control.Setup.DropDownWidthFactor * controlRect.width;
-            scroller.style.maxHeight = desiredHeight + "px";
-            popup.style.width = desiredWidth + "px";
+            scroller.style.maxHeight = "".concat(desiredHeight, "px");
+            popup.style.width = "".concat(desiredWidth, "px");
             $YetaWF.positionLeftAlignedBelow(this.Control, popup);
         };
         DropDownSearchEditComponent.prototype.selectPopupItem = function (index) {

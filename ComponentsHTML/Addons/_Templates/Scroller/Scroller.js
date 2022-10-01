@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -76,7 +76,7 @@ var YetaWF_ComponentsHTML;
             this.updateButtons();
             var offs = this.Panel * itemwidth;
             this.DivItems.style.transition = "all 250ms";
-            this.DivItems.style.left = -offs + "px";
+            this.DivItems.style.left = "".concat(-offs, "px");
         };
         ScrollerComponent.TEMPLATE = "yt_scroller";
         ScrollerComponent.SELECTOR = ".yt_scroller.t_display";

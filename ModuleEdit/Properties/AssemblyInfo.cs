@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ModuleEdit#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ModuleEdit#License */
 
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -10,12 +10,12 @@ using YetaWF.PackageAttributes;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Softel vdm, Inc.")]
 [assembly: AssemblyProduct("ModuleEdit")]
-[assembly: AssemblyCopyright("Copyright © 2021 - Softel vdm, Inc.")]
+[assembly: AssemblyCopyright("Copyright © 2022 - Softel vdm, Inc.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 
-[assembly: AssemblyVersion("5.4.0.0")]
+[assembly: AssemblyVersion("5.5.0.0")]
 
 [assembly: Package(PackageTypeEnum.Module, "YetaWF")]
 [assembly: PackageInfo("https://YetaWF.com/UpdateServer",

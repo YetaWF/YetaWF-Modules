@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Sites#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Sites#License */
 
 using System;
 using System.Threading.Tasks;
@@ -24,11 +24,11 @@ namespace YetaWF.Modules.Sites.Controllers {
 
             [Caption("Site Domain"), Description("The domain name of the site")]
             [UIHint("Text80"), StringLength(SiteDefinition.MaxSiteDomain), SiteDomainValidation, Required, Trim]
-            public string SiteDomain { get; set; }
+            public string SiteDomain { get; set; } = null!;
 
             [Caption("Site Name"), Description("The name associated with your site, usually your company name or your name")]
             [UIHint("Text80"), StringLength(SiteDefinition.MaxSiteName), Required, Trim]
-            public string SiteName { get; set; }
+            public string SiteName { get; set; } = null!;
 
             public AddModel() { }
 

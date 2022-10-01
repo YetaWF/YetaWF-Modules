@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 /* eslint-disable no-underscore-dangle */
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
@@ -76,7 +76,7 @@ var YetaWF_ComponentsHTML;
                         return false;
                     return !ValidatorHelper.EqualStrings(leftVal, rightVal);
                 default:
-                    throw "Invalid Cond " + expr.Cond + " in isExprValid";
+                    throw "Invalid Cond ".concat(expr.Cond, " in isExprValid");
             }
         };
         ValidatorHelper.EqualStrings = function (s1, s2) {

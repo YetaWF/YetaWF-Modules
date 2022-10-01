@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SyntaxHighlighter#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SyntaxHighlighter#License */
 var YetaWF_SyntaxHighlighter;
 (function (YetaWF_SyntaxHighlighter) {
     var HighlightJSModule = /** @class */ (function () {

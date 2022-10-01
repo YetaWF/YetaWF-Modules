@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     var Validation = /** @class */ (function () {
@@ -42,7 +42,7 @@ var YetaWF_ComponentsHTML;
         Validation.prototype.validateForm = function (form, setMessage) {
             var valid = true;
             this.clearValidation(form);
-            var ctrls = $YetaWF.getElementsBySelector("[" + Validation.DATAATTR + "]", [form]);
+            var ctrls = $YetaWF.getElementsBySelector("[".concat(Validation.DATAATTR, "]"), [form]);
             for (var _i = 0, ctrls_1 = ctrls; _i < ctrls_1.length; _i++) {
                 var ctrl = ctrls_1[_i];
                 if (!this.validateFieldFully(form, ctrl, setMessage)) {
@@ -83,7 +83,7 @@ var YetaWF_ComponentsHTML;
             if ($YetaWF.getAttributeCond(elem, "disabled") || // don't validate disabled fields
                 $YetaWF.getAttributeCond(elem, "readonly") || // don't validate readonly fields
                 $YetaWF.elementHasClass(elem, "yform-novalidate") || // don't validate novalidate fields
-                $YetaWF.elementClosestCond(elem, "." + YConfigs.Forms.CssFormNoSubmitContents)) { // don't validate input fields in containers (usually grids)
+                $YetaWF.elementClosestCond(elem, ".".concat(YConfigs.Forms.CssFormNoSubmitContents))) { // don't validate input fields in containers (usually grids)
                 return true;
             }
             var data = $YetaWF.getAttributeCond(elem, Validation.DATAATTR);
@@ -96,14 +96,14 @@ var YetaWF_ComponentsHTML;
                 valid = this.evaluate(form, elem, val);
                 if (setMessage) {
                     var name_1 = $YetaWF.getAttribute(elem, "name");
-                    var msgElem = $YetaWF.getElement1BySelectorCond("span[data-v-for=\"" + name_1 + "\"]", [form]);
+                    var msgElem = $YetaWF.getElement1BySelectorCond("span[data-v-for=\"".concat(name_1, "\"]"), [form]);
                     $YetaWF.elementRemoveClasses(elem, ["v-valerror"]);
                     if (!valid)
                         $YetaWF.elementAddClass(elem, "v-valerror");
                     if (msgElem) {
                         $YetaWF.elementRemoveClasses(msgElem, ["v-error", "v-valid"]);
                         if (!valid) {
-                            msgElem.innerHTML = "<img src=\"" + $YetaWF.htmlAttrEscape(YConfigs.Forms.CssWarningIconUrl) + "\" name=" + name_1 + " class=\"" + YConfigs.Forms.CssWarningIcon + "\" " + YConfigs.Basics.CssTooltip + "=\"" + $YetaWF.htmlAttrEscape(val.M) + "\"/>";
+                            msgElem.innerHTML = "<img src=\"".concat($YetaWF.htmlAttrEscape(YConfigs.Forms.CssWarningIconUrl), "\" name=").concat(name_1, " class=\"").concat(YConfigs.Forms.CssWarningIcon, "\" ").concat(YConfigs.Basics.CssTooltip, "=\"").concat($YetaWF.htmlAttrEscape(val.M), "\"/>");
                             $YetaWF.elementAddClass(msgElem, "v-error");
                         }
                         else {
@@ -126,9 +126,9 @@ var YetaWF_ComponentsHTML;
         Validation.prototype.evaluate = function (form, elem, val) {
             var validators = this.Validators.filter(function (entry) { return entry.Name === val.Method; });
             if (validators.length === 0)
-                throw "No validator found for " + val.Method;
+                throw "No validator found for ".concat(val.Method);
             else if (validators.length > 1)
-                throw "Too many validators found for " + val.Method;
+                throw "Too many validators found for ".concat(val.Method);
             return validators[0].Func(form, elem, val);
         };
         Validation.prototype.getFieldValue = function (elem) {
@@ -143,7 +143,7 @@ var YetaWF_ComponentsHTML;
             else if (elem.tagName === "SELECT") {
                 return elem.value;
             }
-            throw "Add support for " + elem.tagName;
+            throw "Add support for ".concat(elem.tagName);
         };
         Validation.prototype.getFieldValueSimple = function (elem) {
             if (elem.tagName === "INPUT") {
@@ -160,13 +160,13 @@ var YetaWF_ComponentsHTML;
                     return "";
                 return value;
             }
-            throw "Add support for " + elem.tagName;
+            throw "Add support for ".concat(elem.tagName);
         };
         /**
          * Clear any validation errors within the div
          */
         Validation.prototype.clearValidation = function (div) {
-            var elems = $YetaWF.getElementsBySelector("[" + Validation.DATAATTR + "]", [div]);
+            var elems = $YetaWF.getElementsBySelector("[".concat(Validation.DATAATTR, "]"), [div]);
             for (var _i = 0, elems_1 = elems; _i < elems_1.length; _i++) {
                 var elem = elems_1[_i];
                 this.clearValidation1(elem, div);
@@ -178,7 +178,7 @@ var YetaWF_ComponentsHTML;
         Validation.prototype.clearValidation1 = function (elem, div) {
             var name = $YetaWF.getAttribute(elem, "name");
             $YetaWF.elementRemoveClasses(elem, ["v-valerror"]);
-            var msgElem = $YetaWF.getElement1BySelectorCond("span[data-v-for=\"" + name + "\"]", [div]);
+            var msgElem = $YetaWF.getElement1BySelectorCond("span[data-v-for=\"".concat(name, "\"]"), [div]);
             if (msgElem) {
                 $YetaWF.elementRemoveClasses(msgElem, ["v-error", "v-valid"]);
                 $YetaWF.elementAddClass(msgElem, "v-valid");
@@ -247,7 +247,7 @@ var YetaWF_ComponentsHTML;
                     return true;
                 }
                 default:
-                    throw "Invalid Op " + val.Op + " in evaluateExpressionList";
+                    throw "Invalid Op ".concat(val.Op, " in evaluateExpressionList");
             }
         };
         Validation.prototype.sameAsValidator = function (form, elem, val) {
@@ -275,7 +275,7 @@ var YetaWF_ComponentsHTML;
         Validation.prototype.stringLengthValidator = function (form, elem, val) {
             var value = this.getFieldValue(elem);
             if (typeof value === "boolean")
-                throw "StringLength attribute used with boolean type - " + elem.outerHTML;
+                throw "StringLength attribute used with boolean type - ".concat(elem.outerHTML);
             if (!value)
                 return true;
             var len = value.length;
@@ -284,7 +284,7 @@ var YetaWF_ComponentsHTML;
         Validation.prototype.regexValidationBaseValidator = function (form, elem, val) {
             var value = this.getFieldValue(elem);
             if (typeof value === "boolean")
-                throw "Regex attribute used with boolean type - " + elem.outerHTML;
+                throw "Regex attribute used with boolean type - ".concat(elem.outerHTML);
             if (!value)
                 return true;
             var re = new RegExp(val.Pattern);
@@ -293,7 +293,7 @@ var YetaWF_ComponentsHTML;
         Validation.prototype.rangeValidator = function (form, elem, val) {
             var value = this.getFieldValue(elem);
             if (typeof value === "boolean")
-                throw "Range attribute used with boolean type - " + elem.outerHTML;
+                throw "Range attribute used with boolean type - ".concat(elem.outerHTML);
             if (!value)
                 return true;
             return value >= val.Min && value <= val.Max;

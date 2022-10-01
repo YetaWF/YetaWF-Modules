@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -50,7 +50,7 @@ var YetaWF_ComponentsHTML;
             _this.Setup = setup;
             var config = {
                 customConfig: setup.CDNUrl,
-                height: setup.EmHeight + "em",
+                height: "".concat(setup.EmHeight, "em"),
                 allowedContent: setup.RestrictedHtml ? false : true,
                 filebrowserWindowFeatures: setup.FilebrowserWindowFeatures
             };
@@ -93,7 +93,7 @@ var YetaWF_ComponentsHTML;
             var cked = ckeds_2[_i];
             var ck = CKEDITOR.instances[cked.Control.id];
             try {
-                ck.resize("100%", cked.Setup.EmHeight + "em", true);
+                ck.resize("100%", "".concat(cked.Setup.EmHeight, "em"), true);
             }
             catch (e) { }
         }

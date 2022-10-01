@@ -1,12 +1,12 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TwilioProcessorDataProvider#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TwilioProcessor#License */
 
 using System.Collections.Generic;
 using YetaWF.Core.DataProvider;
-using YetaWF.DataProvider.PostgreSQL;
+using YetaWF.DataProvider.SQL;
 
-namespace Softelvdm.Modules.TwilioProcessorDataProvider.DataProvider.PostgreSQL {
+namespace Softelvdm.Modules.TwilioProcessor.DataProvider.SQL {
 
-    public class PostgreSQLDataProvider : IExternalDataProvider {
+    public class SQLDataProvider : IExternalDataProvider {
 
         public void Register() {
             DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.TwilioConfigDataProvider), typeof(TwilioConfigDataProvider));

@@ -1,4 +1,4 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ImageRepository#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ImageRepository#License */
 
 using System;
 using YetaWF.Core.Addons;
@@ -12,13 +12,8 @@ using YetaWF.Core.Upload;
 using System.Threading.Tasks;
 using YetaWF.Modules.ImageRepository.Components;
 using YetaWF.Core.Components;
-#if MVC6
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web;
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.ImageRepository.Controllers {
 
@@ -26,18 +21,14 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
 
         [AllowPost]
         [ResourceAuthorize(CoreInfo.Resource_UploadImages)]
-#if MVC6
         public async Task<ActionResult> SaveImage(IFormFile __filename, string folderGuid, string subFolder, string fileType)
-#else
-        public async Task<ActionResult> SaveImage(HttpPostedFileBase __filename, string folderGuid, string subFolder, string fileType)
-#endif
         {
             FileUpload upload = new FileUpload();
             string storagePath = ImageSelectionInfo.StoragePath(new Guid(folderGuid), subFolder, fileType);
             string namePlain = await upload.StoreFileAsync(__filename, storagePath, MimeSection.ImageUse);
             string name = namePlain;
 
-            System.Drawing.Size size = ImageSupport.GetImageSize(namePlain, storagePath);
+            (int width, int height) = await ImageSupport.GetImageSizeAsync(namePlain, storagePath);
 
             HtmlBuilder hb = new HtmlBuilder();
             foreach (var f in await ImageSelectionInfo.ReadFilesAsync(new Guid(folderGuid), subFolder, fileType)) {
@@ -56,7 +47,7 @@ namespace YetaWF.Modules.ImageRepository.Controllers {
                 FileName = name,
                 FileNamePlain = namePlain,
                 RealFileName = __filename.FileName,
-                Attributes = this.__ResStr("imgAttr", "{0} x {1} (w x h)", size.Width, size.Height),
+                Attributes = this.__ResStr("imgAttr", "{0} x {1} (w x h)", width, height),
                 List = hb.ToString(),
             };
 

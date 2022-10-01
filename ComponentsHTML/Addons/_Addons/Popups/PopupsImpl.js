@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     var PopupsImpl = /** @class */ (function () {
@@ -130,8 +130,8 @@ var YetaWF_ComponentsHTML;
             var width;
             if (win.innerWidth <= popupWidth || win.innerHeight <= popupHeight) {
                 width = win.innerWidth;
-                popup.style.width = win.innerWidth + "px";
-                popup.style.height = win.innerHeight + "px";
+                popup.style.width = "".concat(win.innerWidth, "px");
+                popup.style.height = "".concat(win.innerHeight, "px");
                 if (content)
                     content.style.maxHeight = "none";
                 popup.style.left = "0px";
@@ -140,14 +140,14 @@ var YetaWF_ComponentsHTML;
             }
             else {
                 width = popupWidth;
-                popup.style.width = popupWidth + "px";
+                popup.style.width = "".concat(popupWidth, "px");
                 if (!win.document.YPopupWindowStatic) {
                     popup.style.height = "auto";
                     if (content)
-                        content.style.maxHeight = win.innerHeight * 3 / 4 + "px";
+                        content.style.maxHeight = "".concat(win.innerHeight * 3 / 4, "px");
                 }
                 else {
-                    popup.style.height = popupHeight + "px";
+                    popup.style.height = "".concat(popupHeight, "px");
                     if (content)
                         content.style.maxHeight = "none";
                 }
@@ -156,8 +156,8 @@ var YetaWF_ComponentsHTML;
                 var drect = popup.getBoundingClientRect();
                 var left = (win.innerWidth - drect.width) / 2;
                 var top_1 = (win.innerHeight - drect.height) / 2;
-                popup.style.left = left + "px"; // or + win.pageXOffset if position:absolute
-                popup.style.top = top_1 + "px"; //  + win.pageYOffset
+                popup.style.left = "".concat(left, "px"); // or + win.pageXOffset if position:absolute
+                popup.style.top = "".concat(top_1, "px"); //  + win.pageYOffset
             }
             if (!win.document.YPopupWindowStatic)
                 $YetaWF.setCondense(popup, width);
@@ -257,11 +257,11 @@ var YetaWF_ComponentsHTML;
                 var drect = popup.getBoundingClientRect();
                 if ($YetaWF.elementHas(document.body, popup)) {
                     // outer window
-                    console.log("handleMouseMove x " + clientX + " y " + clientY + " " + drect.left + "," + drect.top + drect.width + "," + drect.height);
+                    console.log("handleMouseMove x ".concat(clientX, " y ").concat(clientY, " ").concat(drect.left, ",").concat(drect.top).concat(drect.width, ",").concat(drect.height));
                 }
                 else {
                     // inner iframe window
-                    console.log("adjust handleMouseMove x " + clientX + " y " + clientY + " " + drect.left + "," + drect.top + drect.width + "," + drect.height);
+                    console.log("adjust handleMouseMove x ".concat(clientX, " y ").concat(clientY, " ").concat(drect.left, ",").concat(drect.top).concat(drect.width, ",").concat(drect.height));
                     // we're handling a mousemove for a static popup
                     // adjust the mouse coordinates
                     clientX += drect.left;
@@ -280,8 +280,8 @@ var YetaWF_ComponentsHTML;
                     top_2 = win.innerHeight - drect.height;
                 if (top_2 < 0)
                     top_2 = 0;
-                popup.style.left = left + "px";
-                popup.style.top = top_2 + "px";
+                popup.style.left = "".concat(left, "px");
+                popup.style.top = "".concat(top_2, "px");
                 return false;
             }
             return true;

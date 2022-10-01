@@ -1,11 +1,10 @@
 @charset "UTF-8";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TinyLanguage#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TinyLanguage#License */
 .yModule.YetaWF_TinyLanguage .t_labels {
   width: auto;
   padding-top: 0.1em;
   padding-right: 1ch;
 }
-.yModule.YetaWF_TinyLanguage .yt_propertylist .t_row {
-  /* no padding on last (and olny row) */
+.yModule.YetaWF_TinyLanguage .yt_propertylist .t_row { /* no padding on last (and olny row) */
   padding-bottom: 0;
 }

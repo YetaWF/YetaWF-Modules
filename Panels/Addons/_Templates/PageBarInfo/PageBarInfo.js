@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -107,7 +107,7 @@ var YetaWF_Panels;
             var list = $YetaWF.getElement1BySelector(".yt_panels_pagebarinfo_list", [this.Control]);
             var listRect = list.getBoundingClientRect();
             var top = list.offsetTop + (listRect.height - expRect.height) / 2;
-            expColl.style.top = top + list.scrollTop + "px";
+            expColl.style.top = "".concat(top + list.scrollTop, "px");
         };
         Object.defineProperty(PageBarInfoComponent.prototype, "count", {
             get: function () {
@@ -135,7 +135,7 @@ var YetaWF_Panels;
             set: function (index) {
                 var entries = this.entries;
                 if (index < 0 || index >= entries.length)
-                    throw "Panel index " + index + " is invalid";
+                    throw "Panel index ".concat(index, " is invalid");
                 var entry = entries[index];
                 // and make panel active
                 entry.focus();
@@ -164,7 +164,7 @@ var YetaWF_Panels;
             var docRect = document.body.getBoundingClientRect();
             var h = docRect.height - winHeight;
             var ctrlRect = this.Control.getBoundingClientRect();
-            this.Control.style.height = ctrlRect.height - h + "px";
+            this.Control.style.height = "".concat(ctrlRect.height - h, "px");
             this.repositionExpColl();
         };
         PageBarInfoComponent.TEMPLATE = "yt_panels_pagebarinfo";

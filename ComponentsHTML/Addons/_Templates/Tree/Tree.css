@@ -1,5 +1,5 @@
 @charset "UTF-8";
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 .yt_tree {
   position: relative;
   background: var(--tbl-bg);
@@ -18,9 +18,7 @@
   font-size: 11px;
   padding: 2px 4px 2px 4px;
   -webkit-user-select: none;
-     -moz-user-select: none;
-          user-select: none;
-  /* Standard syntax */
+          user-select: none; /* Standard syntax */
 }
 .yt_tree .tg_header span {
   cursor: default;

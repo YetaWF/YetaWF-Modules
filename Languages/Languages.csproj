@@ -1,10 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>5.4.0.0</Version>
-    <TargetFramework>net5.0</TargetFramework>
-
-    <DefineConstants>$(DefineConstants);MVC6;NETCOREAPP</DefineConstants>
+    <Version>5.5.0.0</Version>
+    <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>YetaWF.Languages</AssemblyName>
     <PackageId>Languages</PackageId>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
@@ -25,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Google.Apis.Translate.v2" Version="1.54.0.875" />
+    <PackageReference Include="Google.Cloud.Translation.V2" Version="3.1.0" />
     <PackageReference Include="System.Runtime.Serialization.Json" Version="4.3.0" />
     <PackageReference Include="System.Private.DataContractSerialization" Version="4.3.0" />
   </ItemGroup>

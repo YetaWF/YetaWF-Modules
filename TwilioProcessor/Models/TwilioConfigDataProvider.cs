@@ -1,6 +1,5 @@
-/* Copyright © 2021 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TwilioProcessorDataProvider#License */
+/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TwilioProcessor#License */
 
-using Softelvdm.Modules.TwilioProcessorDataProvider.Models.Attributes;
 using System;
 using System.Threading.Tasks;
 using YetaWF.Core;
@@ -12,7 +11,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 
-namespace Softelvdm.Modules.TwilioProcessorDataProvider.DataProvider {
+namespace Softelvdm.Modules.TwilioProcessor.DataProvider {
 
     public class TwilioData {
 
@@ -24,19 +23,19 @@ namespace Softelvdm.Modules.TwilioProcessorDataProvider.DataProvider {
 
         public bool TestMode { get { return !LiveMode; } }
 
-        public bool LiveMode { get { return WebConfigHelper.GetValue<bool>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "Live"); } }
-        public string LiveAccountSid { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "LiveAccountSid"); } }
-        public string LiveAuthToken { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "LiveAuthToken"); } }
-        public string TestAccountSid { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "TestAccountSid"); } }
-        public string TestAuthToken { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage.AreaName, "TestAuthToken"); } }
+        public bool LiveMode { get { return WebConfigHelper.GetValue<bool>(Softelvdm.Modules.TwilioProcessor.AreaRegistration.CurrentPackage.AreaName, "Live"); } }
+        public string? LiveAccountSid { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessor.AreaRegistration.CurrentPackage.AreaName, "LiveAccountSid"); } }
+        public string? LiveAuthToken { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessor.AreaRegistration.CurrentPackage.AreaName, "LiveAuthToken"); } }
+        public string? TestAccountSid { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessor.AreaRegistration.CurrentPackage.AreaName, "TestAccountSid"); } }
+        public string? TestAuthToken { get { return WebConfigHelper.GetValue<string>(Softelvdm.Modules.TwilioProcessor.AreaRegistration.CurrentPackage.AreaName, "TestAuthToken"); } }
 
         public bool SMSEnabled { get; set; }
 
         [StringLength(Globals.MaxPhoneNumber)]
-        public string LiveSMSNumber { get; set; }
+        public string? LiveSMSNumber { get; set; }
 
         [StringLength(Globals.MaxPhoneNumber)]
-        public string TestSMSNumber { get; set; }
+        public string? TestSMSNumber { get; set; }
 
         public bool DeliveryReceipts { get; set; }
         public bool UseHttps { get; set; }
@@ -52,12 +51,12 @@ namespace Softelvdm.Modules.TwilioProcessorDataProvider.DataProvider {
                 (TestMode ? !string.IsNullOrWhiteSpace(TestAuthToken) : !string.IsNullOrWhiteSpace(LiveAuthToken));
         }
 
-        public string SMSNumberE164 {
+        public string? SMSNumberE164 {
             get {
-                return PhoneNumberNationalAttribute.GetE164(SMSNumber);
+                return PhoneNumberNationalValidationAttribute.GetE164(SMSNumber);
             }
         }
-        public string SMSNumber {
+        public string? SMSNumber {
             get {
                 return TestMode ? TestSMSNumber : LiveSMSNumber;
             }
@@ -81,8 +80,8 @@ namespace Softelvdm.Modules.TwilioProcessorDataProvider.DataProvider {
 
         private IDataProvider<int, TwilioData> DataProvider { get { return GetDataProvider(); } }
 
-        private IDataProvider<int, TwilioData> CreateDataProvider() {
-            Package package = Softelvdm.Modules.TwilioProcessorDataProvider.AreaRegistration.CurrentPackage;
+        private IDataProvider<int, TwilioData>? CreateDataProvider() {
+            Package package = Softelvdm.Modules.TwilioProcessor.AreaRegistration.CurrentPackage;
             return MakeDataProvider(package, "Softelvdm_TwilioProcessor_Config", SiteIdentity: SiteIdentity, Cacheable: true);
         }
 
@@ -104,7 +103,7 @@ namespace Softelvdm.Modules.TwilioProcessorDataProvider.DataProvider {
             }
         }
         public async Task<TwilioData> GetItemAsync() {
-            TwilioData config = await DataProvider.GetAsync(KEY);
+            TwilioData? config = await DataProvider.GetAsync(KEY);
             if (config == null) {
                 config = new TwilioData();
                 await AddConfigAsync(config);
@@ -123,7 +122,7 @@ namespace Softelvdm.Modules.TwilioProcessorDataProvider.DataProvider {
             );
         }
         public async Task UpdateConfigAsync(TwilioData data) {
-            TwilioData origConfig = Auditing.Active ? await GetItemAsync() : null;
+            TwilioData? origConfig = Auditing.Active ? await GetItemAsync() : null;
             data.Id = KEY;
             UpdateStatusEnum status = await DataProvider.UpdateAsync(data.Id, data.Id, data);
             if (status != UpdateStatusEnum.OK)
