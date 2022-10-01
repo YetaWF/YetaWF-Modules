@@ -8,8 +8,7 @@ div.yt_moduleselection.t_edit .t_select label {
   width: 12ch;
 }
 div.yt_moduleselection.t_edit .t_packages .yt_dropdownlist_base,
-div.yt_moduleselection.t_edit .t_select .yt_dropdownlist_base {
-  /* set min-width because we replace via ajax, so no autosize */
+div.yt_moduleselection.t_edit .t_select .yt_dropdownlist_base { /* set min-width because we replace via ajax, so no autosize */
   min-width: 30ch;
 }
 div.yt_moduleselection.t_edit .t_select,

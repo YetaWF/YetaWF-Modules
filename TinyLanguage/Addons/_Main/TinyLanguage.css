@@ -5,7 +5,6 @@
   padding-top: 0.1em;
   padding-right: 1ch;
 }
-.yModule.YetaWF_TinyLanguage .yt_propertylist .t_row {
-  /* no padding on last (and olny row) */
+.yModule.YetaWF_TinyLanguage .yt_propertylist .t_row { /* no padding on last (and olny row) */
   padding-bottom: 0;
 }

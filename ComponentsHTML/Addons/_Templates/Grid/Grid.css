@@ -82,8 +82,7 @@
   padding: 0.25em 0.25em 0.25em 0.25em;
   text-overflow: ellipsis;
   -webkit-user-select: none;
-          user-select: none;
-  /* Standard syntax */
+          user-select: none; /* Standard syntax */
 }
 .yt_grid .tg_table table .tg_header th span {
   cursor: default;
@@ -214,8 +213,7 @@
 }
 .yt_grid .tg_pager {
   -webkit-user-select: none;
-          user-select: none;
-  /* Standard syntax */
+          user-select: none; /* Standard syntax */
 }
 .yt_grid .tg_pager .tg_pgbtns, .yt_grid .tg_pager .tg_pgctl, .yt_grid .tg_pager .tg_pgnum, .yt_grid .tg_pager .tg_pgsel, .yt_grid .tg_pager .tg_totals {
   display: inline-block;
@@ -280,8 +278,7 @@ ul.yt_grid_menu .t_fmenutext {
   display: inline-block;
 }
 
-.yt_grid.tg_skin {
-  /* Use skin theme */
+.yt_grid.tg_skin { /* Use skin theme */
   background: var(--tbl-header-bg);
   color: var(--tbl-header-clr);
   border: var(--tbl-border);
@@ -330,9 +327,7 @@ ul.yt_grid_menu .t_fmenutext {
   font: var(--tbl-font);
 }
 
-.yt_grid.tg_noskin {
-  /* Skin theme not used */
-}
+.yt_grid.tg_noskin { /* Skin theme not used */ }
 .yt_grid.tg_noskin .tg_table table {
   font: var(--body-font);
 }
@@ -353,8 +348,7 @@ ul.yt_grid_menu .t_fmenutext {
 }
 
 /* action menu in grids (added to body) */
-ul.yGridActionMenu {
-  /* ul needed for specificity */
+ul.yGridActionMenu { /* ul needed for specificity */
   z-index: 50000;
   font: var(--pm-1-font);
   position: absolute;

@@ -4,10 +4,8 @@
   background-image: url("img/top.png");
   bottom: 20px;
   right: 30px;
-  width: 38px;
-  /* Width of image */
-  height: 38px;
-  /* Height of image */
+  width: 38px; /* Width of image */
+  height: 38px; /* Height of image */
   position: fixed;
   z-Index: 9000;
 }

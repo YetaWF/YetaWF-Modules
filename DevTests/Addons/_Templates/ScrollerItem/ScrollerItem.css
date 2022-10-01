@@ -1,8 +1,7 @@
 @charset "UTF-8";
 /* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 .yt_yetawf_devtests_scrolleritem {
-  width: 200px;
-  /* All items must be the exact same width so offset calculations are correct */
+  width: 200px; /* All items must be the exact same width so offset calculations are correct */
   height: 320px;
   text-align: left;
   padding-left: 20px;

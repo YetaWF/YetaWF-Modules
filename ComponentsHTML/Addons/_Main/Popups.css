@@ -89,8 +89,7 @@ body.yPopup .yPane .yModule,
 }
 
 @media print {
-  #ypopup {
-    /* Don't show popups for print/print preview */
+  #ypopup { /* Don't show popups for print/print preview */
     display: none;
   }
 }
