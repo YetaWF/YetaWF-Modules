@@ -41,8 +41,6 @@ namespace YetaWF_ComponentsHTML {
             if (editIcon) {
 
                 $YetaWF.registerEventHandler(modDiv, "mouseenter", null, (ev: MouseEvent): boolean => {
-                    //console.log("Entering module");
-
                     if (MenuHandler.ClearInterval)
                         clearInterval(MenuHandler.ClearInterval);
                     MenuHandler.ClearInterval = 0;
@@ -66,8 +64,6 @@ namespace YetaWF_ComponentsHTML {
                     return true;
                 });
                 $YetaWF.registerEventHandler(modDiv, "mouseleave", null, (ev: MouseEvent): boolean => {
-                    //console.log("Exiting module");
-
                     if (MenuHandler.ClearInterval)
                         clearInterval(MenuHandler.ClearInterval);
                     MenuHandler.ClearInterval = setInterval((): void => { MenuHandler.clearMenus(false); }, MenuHandler.ClearTime);
@@ -77,8 +73,6 @@ namespace YetaWF_ComponentsHTML {
                 });
 
                 $YetaWF.registerEventHandler(editIcon, "mouseenter", null, (ev: MouseEvent): boolean => {
-                    //console.log("Entering edit icon");
-
                     // find the module's menu
                     var menuDiv = $YetaWF.getElement1BySelector(".yModuleMenu", [modDiv]);
                     let menu = YetaWF_ComponentsHTML.MenuULComponent.getControlFromTagCond<YetaWF_ComponentsHTML.MenuULComponent>(menuDiv, YetaWF_ComponentsHTML.MenuULComponent.SELECTOR);

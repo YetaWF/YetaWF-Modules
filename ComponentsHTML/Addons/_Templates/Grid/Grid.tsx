@@ -477,9 +477,6 @@ namespace YetaWF_ComponentsHTML {
             // Drag & drop
             $YetaWF.registerEventHandlerBody("mousemove", null, (ev: MouseEvent): boolean => {
                 if (this.reorderingInProgress) {
-
-                    //console.log("Reordering...")
-
                     let rect = this.TBody.getBoundingClientRect();
                     if (ev.clientX < rect.left || ev.clientX > rect.left + rect.width ||
                         ev.clientY < rect.top || ev.clientY > rect.top + rect.height) {
@@ -494,7 +491,6 @@ namespace YetaWF_ComponentsHTML {
                     }
 
                     let insert = this.HitTestInsert(ev.clientX, ev.clientY);
-                    //console.log(`insert = ${insert}  sel = ${sel}`);
                     if (insert === sel || insert === sel + 1)
                         return true;// nothing to move
 
@@ -599,7 +595,6 @@ namespace YetaWF_ComponentsHTML {
                         // reordering
                         this.reorderingRowElement = clickedElem as HTMLTableRowElement;
                         this.reorderingInProgress = true;
-                        //console.log("Reordering starting");
                         $YetaWF.elementToggleClass(this.reorderingRowElement, this.Setup.RowHighlightCss, false);
                         $YetaWF.elementToggleClass(this.reorderingRowElement, this.Setup.RowDragDropHighlightCss, true);
                         return false;
@@ -630,8 +625,6 @@ namespace YetaWF_ComponentsHTML {
                 this.reorderingRowElement = null;
             }
             this.reorderingInProgress = false;
-            //console.log("Reordering canceled - left boundary")
-
             this.sendEventDragDropCancel();
         }
         private doneDragDrop(): void {
@@ -641,8 +634,6 @@ namespace YetaWF_ComponentsHTML {
                 this.reorderingRowElement = null;
             }
             this.reorderingInProgress = false;
-            //console.log("Reordering ended")
-
             this.sendEventDragDropDone();
         }
         // OnlySubmitWhenChecked
