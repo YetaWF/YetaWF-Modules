@@ -257,11 +257,11 @@ var YetaWF_ComponentsHTML;
                 var drect = popup.getBoundingClientRect();
                 if ($YetaWF.elementHas(document.body, popup)) {
                     // outer window
-                    console.log("handleMouseMove x ".concat(clientX, " y ").concat(clientY, " ").concat(drect.left, ",").concat(drect.top).concat(drect.width, ",").concat(drect.height));
+                    console.debug("handleMouseMove x ".concat(clientX, " y ").concat(clientY, " ").concat(drect.left, ",").concat(drect.top).concat(drect.width, ",").concat(drect.height));
                 }
                 else {
                     // inner iframe window
-                    console.log("adjust handleMouseMove x ".concat(clientX, " y ").concat(clientY, " ").concat(drect.left, ",").concat(drect.top).concat(drect.width, ",").concat(drect.height));
+                    console.debug("adjust handleMouseMove x ".concat(clientX, " y ").concat(clientY, " ").concat(drect.left, ",").concat(drect.top).concat(drect.width, ",").concat(drect.height));
                     // we're handling a mousemove for a static popup
                     // adjust the mouse coordinates
                     clientX += drect.left;

@@ -417,7 +417,6 @@ var YetaWF_ComponentsHTML;
             // Drag & drop
             $YetaWF.registerEventHandlerBody("mousemove", null, function (ev) {
                 if (_this.reorderingInProgress) {
-                    //console.log("Reordering...")
                     var rect = _this.TBody.getBoundingClientRect();
                     if (ev.clientX < rect.left || ev.clientX > rect.left + rect.width ||
                         ev.clientY < rect.top || ev.clientY > rect.top + rect.height) {
@@ -430,7 +429,6 @@ var YetaWF_ComponentsHTML;
                         return true;
                     }
                     var insert = _this.HitTestInsert(ev.clientX, ev.clientY);
-                    //console.log(`insert = ${insert}  sel = ${sel}`);
                     if (insert === sel || insert === sel + 1)
                         return true; // nothing to move
                     _this.moveRawRecord(sel, insert);
@@ -531,7 +529,6 @@ var YetaWF_ComponentsHTML;
                         // reordering
                         this.reorderingRowElement = clickedElem;
                         this.reorderingInProgress = true;
-                        //console.log("Reordering starting");
                         $YetaWF.elementToggleClass(this.reorderingRowElement, this.Setup.RowHighlightCss, false);
                         $YetaWF.elementToggleClass(this.reorderingRowElement, this.Setup.RowDragDropHighlightCss, true);
                         return false;
@@ -563,7 +560,6 @@ var YetaWF_ComponentsHTML;
                 this.reorderingRowElement = null;
             }
             this.reorderingInProgress = false;
-            //console.log("Reordering canceled - left boundary")
             this.sendEventDragDropCancel();
         };
         Grid.prototype.doneDragDrop = function () {
@@ -573,7 +569,6 @@ var YetaWF_ComponentsHTML;
                 this.reorderingRowElement = null;
             }
             this.reorderingInProgress = false;
-            //console.log("Reordering ended")
             this.sendEventDragDropDone();
         };
         // OnlySubmitWhenChecked
