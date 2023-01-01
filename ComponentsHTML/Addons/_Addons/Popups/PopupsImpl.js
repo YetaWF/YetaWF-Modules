@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 var YetaWF_ComponentsHTML;
 (function (YetaWF_ComponentsHTML) {
     var PopupsImpl = /** @class */ (function () {
@@ -257,11 +257,11 @@ var YetaWF_ComponentsHTML;
                 var drect = popup.getBoundingClientRect();
                 if ($YetaWF.elementHas(document.body, popup)) {
                     // outer window
-                    console.debug("handleMouseMove x ".concat(clientX, " y ").concat(clientY, " ").concat(drect.left, ",").concat(drect.top).concat(drect.width, ",").concat(drect.height));
+                    // console.debug(`handleMouseMove x ${clientX} y ${clientY} ${drect.left},${drect.top}${drect.width},${drect.height}`);
                 }
                 else {
                     // inner iframe window
-                    console.debug("adjust handleMouseMove x ".concat(clientX, " y ").concat(clientY, " ").concat(drect.left, ",").concat(drect.top).concat(drect.width, ",").concat(drect.height));
+                    // console.debug(`adjust handleMouseMove x ${clientX} y ${clientY} ${drect.left},${drect.top}${drect.width},${drect.height}`);
                     // we're handling a mousemove for a static popup
                     // adjust the mouse coordinates
                     clientX += drect.left;

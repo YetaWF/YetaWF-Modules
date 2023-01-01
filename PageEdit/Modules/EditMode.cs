@@ -1,4 +1,4 @@
-/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
+/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
 
 using System;
 using YetaWF.Core.IO;

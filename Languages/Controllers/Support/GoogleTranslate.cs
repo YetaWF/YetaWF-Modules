@@ -1,4 +1,4 @@
-/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Languages#License */
+/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Languages#License */
 
 using Google.Cloud.Translation.V2;
 using System.Collections.Generic;

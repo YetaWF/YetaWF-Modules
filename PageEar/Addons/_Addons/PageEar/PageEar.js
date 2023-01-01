@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEar#License */
+/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEar#License */
 /* eslint-disable @typescript-eslint/indent */
 /*!
  * jQuery Peelback ported to TypeScript - Original by Rob Flaherty

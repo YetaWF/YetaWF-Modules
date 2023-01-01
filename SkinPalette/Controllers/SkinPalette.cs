@@ -1,4 +1,4 @@
-/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SkinPalette#License */
+/* Copyright Â© 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SkinPalette#License */
 
 using Microsoft.AspNetCore.Mvc;
 using System.IO;

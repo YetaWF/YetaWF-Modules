@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Text#License */
+/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Text#License */
 var YetaWF_Text;
 (function (YetaWF_Text) {
     $YetaWF.registerEventHandlerBody("click", ".YetaWF_Text .FAQ_Q", function (ev) {

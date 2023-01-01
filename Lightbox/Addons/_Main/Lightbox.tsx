@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/indent */
-/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Lightbox#License */
+/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Lightbox#License */
 /*!
  * jQuery Lightbox ported to TypeScript - Original by Lokesh Dhakar - http://lokeshdhakar.com/projects/lightbox2/
  */

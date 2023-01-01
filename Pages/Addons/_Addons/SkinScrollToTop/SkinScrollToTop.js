@@ -1,5 +1,5 @@
 "use strict";
-/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Pages#License */
+/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Pages#License */
 var YetaWF_Pages;
 (function (YetaWF_Pages) {
     var ScrollUp = /** @class */ (function () {

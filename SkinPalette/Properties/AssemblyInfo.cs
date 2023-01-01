@@ -1,4 +1,4 @@
-/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SkinPalette#License */
+/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/SkinPalette#License */
 
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -10,7 +10,7 @@ using YetaWF.PackageAttributes;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Softelvdm")]
 [assembly: AssemblyProduct("SkinPalette")]
-[assembly: AssemblyCopyright("Copyright © 2022 - Softelvdm")]
+[assembly: AssemblyCopyright("Copyright © 2023 - Softelvdm")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]

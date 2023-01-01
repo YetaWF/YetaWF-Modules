@@ -1,4 +1,4 @@
-/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
+/* Copyright Â© 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;

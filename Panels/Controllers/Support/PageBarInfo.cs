@@ -1,4 +1,4 @@
-/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
+/* Copyright Â© 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Panels#License */
 
 using Microsoft.AspNetCore.Mvc;
 using YetaWF.Core.Controllers;

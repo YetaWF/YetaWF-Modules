@@ -1,4 +1,4 @@
-/* Copyright � 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
+/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;

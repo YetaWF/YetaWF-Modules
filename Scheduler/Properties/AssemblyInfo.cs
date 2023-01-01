@@ -1,4 +1,4 @@
-/* Copyright © 2022 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Scheduler#License */
+/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Scheduler#License */
 
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -10,7 +10,7 @@ using YetaWF.PackageAttributes;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Softel vdm, Inc.")]
 [assembly: AssemblyProduct("Scheduler")]
-[assembly: AssemblyCopyright("Copyright © 2022 - Softel vdm, Inc.")]
+[assembly: AssemblyCopyright("Copyright © 2023 - Softel vdm, Inc.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
