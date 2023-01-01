@@ -321,10 +321,10 @@ namespace YetaWF_ComponentsHTML {
 
                 if ($YetaWF.elementHas(document.body, popup)) {
                     // outer window
-                    console.debug(`handleMouseMove x ${clientX} y ${clientY} ${drect.left},${drect.top}${drect.width},${drect.height}`);
+                    // console.debug(`handleMouseMove x ${clientX} y ${clientY} ${drect.left},${drect.top}${drect.width},${drect.height}`);
                 } else {
                     // inner iframe window
-                    console.debug(`adjust handleMouseMove x ${clientX} y ${clientY} ${drect.left},${drect.top}${drect.width},${drect.height}`);
+                    // console.debug(`adjust handleMouseMove x ${clientX} y ${clientY} ${drect.left},${drect.top}${drect.width},${drect.height}`);
                     // we're handling a mousemove for a static popup
                     // adjust the mouse coordinates
                     clientX += drect.left;
