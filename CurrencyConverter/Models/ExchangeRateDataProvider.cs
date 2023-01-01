@@ -73,7 +73,7 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
             ConfigData config = await ConfigDataProvider.GetConfigAsync();
 
             string jsFileName = GetJSFileName();
-            using (ILockObject lockObject = await FileSystem.FileSystemProvider.LockResourceAsync(jsFileName)) {
+            await using (ILockObject lockObject = await FileSystem.FileSystemProvider.LockResourceAsync(jsFileName)) {
                 ExchangeRateData? data = await DataProvider.GetAsync(KEY);
                 if (data != null && data.SaveTime.Add(config.RefreshInterval) < DateTime.UtcNow)
                     data = null;
@@ -81,7 +81,6 @@ namespace YetaWF.Modules.CurrencyConverter.DataProvider {
                     data = null;
                 if (data == null)
                     data = await GetExchangeRatesAsync();
-                await lockObject.UnlockAsync();
                 return data;
             }
         }

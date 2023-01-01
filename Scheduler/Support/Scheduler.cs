@@ -75,7 +75,7 @@ namespace YetaWF.Modules.Scheduler.Support {
 
             using (SchedulerDataProvider schedDP = new SchedulerDataProvider()) {
 
-                using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_RunItem_{name}")) {
+                await using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_RunItem_{name}")) {
 
                     SchedulerItemData? evnt = await schedDP.GetItemAsync(name);
                     if (evnt == null)
@@ -106,7 +106,7 @@ namespace YetaWF.Modules.Scheduler.Support {
 
             using (SchedulerDataProvider schedDP = new SchedulerDataProvider()) {
 
-                using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_RunItem_{name}")) {
+                await using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_RunItem_{name}")) {
 
                     SchedulerItemData? evnt = await schedDP.GetItemAsync(name);
                     if (evnt == null)

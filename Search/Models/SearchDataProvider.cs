@@ -118,7 +118,7 @@ namespace YetaWF.Modules.Search.DataProvider {
         public async Task<bool> AddItemsAsync(List<SearchData> list, string pageUrl, PageDefinition.PageSecurityType pageSecurity, string pageDescription, string pageSummary, DateTime pageCreated, DateTime? pageUpdated, DateTime searchStarted, string? customData) {
             if (!IsUsable) return false;
             bool status = false;
-            using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_{nameof(SearchDataProvider)}")) {
+            await using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_{nameof(SearchDataProvider)}")) {
                 if (pageUpdated != null && (DateTime)pageUpdated < pageCreated)
                     pageCreated = (DateTime)pageUpdated;
                 using (SearchDataUrlDataProvider searchUrlDP = new SearchDataUrlDataProvider()) {
@@ -153,7 +153,6 @@ namespace YetaWF.Modules.Search.DataProvider {
                     }
                 }
                 status = true;
-                await lockObject.UnlockAsync();
             }
             return status;
         }
@@ -191,12 +190,11 @@ namespace YetaWF.Modules.Search.DataProvider {
 
         public async Task RemoveOldItemsAsync(DateTime searchStarted) {
             if (!IsUsable) return;
-            using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_{nameof(SearchDataProvider)}")) {
+            await using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_{nameof(SearchDataProvider)}")) {
                 List<DataProviderFilterInfo>? filters = null;
                 filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Field = nameof(SearchData.DateAdded), Operator = "<", Value = searchStarted });
                 await RemoveItemsAsync(filters);
                 await RemoveUnusedUrlsAsync();
-                await lockObject.UnlockAsync();
             }
         }
         private async Task RemoveUnusedUrlsAsync() {
@@ -227,9 +225,8 @@ namespace YetaWF.Modules.Search.DataProvider {
             return false;
         }
         private async Task MarkUpdatedAsync(int searchDataUrlId) {
-            using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_{nameof(SearchDataProvider)}")) {
+            await using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_{nameof(SearchDataProvider)}")) {
                 await DataProviderIOMode.MarkUpdatedAsync(searchDataUrlId);
-                await lockObject.UnlockAsync();
             }
         }
 

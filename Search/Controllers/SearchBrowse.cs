@@ -149,9 +149,8 @@ namespace YetaWF.Modules.Search.Controllers {
         [ExcludeDemoMode]
         public async Task<ActionResult> RemoveAll() {
             using (SearchDataProvider searchDP = new SearchDataProvider()) {
-                using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_{nameof(SearchDataProvider)}")) {
+                await using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_{nameof(SearchDataProvider)}")) {
                     await searchDP.RemoveItemsAsync(null);/* ALL */
-                    await lockObject.UnlockAsync();
                 }
                 return Reload(null, Reload: ReloadEnum.ModuleParts);
             }

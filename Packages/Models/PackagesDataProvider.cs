@@ -117,11 +117,10 @@ namespace YetaWF.Modules.Packages.DataProvider {
                 LogFile = logFile;
             }
             public async Task InitAsync() {
-                using (ILockObject lockObject = await FileSystem.FileSystemProvider.LockResourceAsync(LogFile)) {
+                await using (ILockObject lockObject = await FileSystem.FileSystemProvider.LockResourceAsync(LogFile)) {
                     if (await FileSystem.FileSystemProvider.FileExistsAsync(LogFile))
                         await FileSystem.FileSystemProvider.DeleteFileAsync(LogFile);
                     await FileSystem.FileSystemProvider.CreateDirectoryAsync(Path.GetDirectoryName(LogFile)!);
-                    await lockObject.UnlockAsync();
                 }
             }
             public Logging.LevelEnum GetLevel() { return Logging.LevelEnum.Info; }
@@ -130,9 +129,8 @@ namespace YetaWF.Modules.Packages.DataProvider {
             public Task<bool> IsInstalledAsync() { return Task.FromResult(true); }
             public void WriteToLogFile(string category, Logging.LevelEnum level, int relStack, string text) {
                 YetaWFManager.Syncify(async () => { // Logging is sync by definition (this is only used for startup logging)
-                    using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync(LogFile)) {
+                    await using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync(LogFile)) {
                         await FileSystem.FileSystemProvider.AppendAllTextAsync(LogFile, text + "\r\n");
-                        await lockObject.UnlockAsync();
                     }
                 });
             }
@@ -160,12 +158,11 @@ namespace YetaWF.Modules.Packages.DataProvider {
                     // and the Package package itself is replaced while we're logging, so we just use a file to hold all data.
                     // unfortunately even the lockObject is lost when the Package package is replaced. Since this is only used
                     // during an initial install, it's not critical enough to make it perfect...
-                    using (ILockObject lockObject = await FileSystem.FileSystemProvider.LockResourceAsync(LogFile)) {
+                    await using (ILockObject lockObject = await FileSystem.FileSystemProvider.LockResourceAsync(LogFile)) {
                         if (await FileSystem.FileSystemProvider.FileExistsAsync(LogFile)) {
                             info.Lines = await FileSystem.FileSystemProvider.ReadAllLinesAsync(LogFile);
                             success = true;
                         }
-                        await lockObject.UnlockAsync();
                     }
                 } catch (Exception) {
                     if (YetaWFManager.IsSync())

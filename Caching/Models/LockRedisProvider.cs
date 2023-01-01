@@ -141,6 +141,14 @@ namespace YetaWF.Modules.Caching.DataProvider {
                     );
                 }
             }
+            public async ValueTask DisposeAsync() {
+                await DisposeAsyncCore().ConfigureAwait(false);
+                Dispose(false);
+            }
+            protected virtual async ValueTask DisposeAsyncCore() {
+                DisposableTracker.RemoveObject(this);
+                await UnlockAsync();
+            }
         }
 
         /// <summary>

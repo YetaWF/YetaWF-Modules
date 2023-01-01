@@ -134,7 +134,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             UserDefinition origSuperuser;// need to get current superuser because user may have changed the name through Appsettings.json
 
             Package package = YetaWF.Modules.Identity.AreaRegistration.CurrentPackage;
-            using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{package.AreaName}.{nameof(SuperuserDefinitionDataProvider)}_{originalName}")) {
+            await using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{package.AreaName}.{nameof(SuperuserDefinitionDataProvider)}_{originalName}")) {
                 List<DataProviderFilterInfo> filters = DataProviderFilterInfo.Join(null, new DataProviderFilterInfo { Field = nameof(UserDefinition.UserId), Operator = "==", Value = SuperuserDefinitionDataProvider.SuperUserId });
                 origSuperuser = await DataProvider.GetOneRecordAsync(filters);
                 data.RolesList = new SerializableList<Role> { new Role { RoleId = Resource.ResourceAccess.GetSuperuserRoleId() } };

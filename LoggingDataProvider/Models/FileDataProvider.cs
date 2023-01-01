@@ -46,20 +46,18 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.File {
 
         public override async Task ClearAsync() {
             Package package = Package.GetPackageFromAssembly(GetType().Assembly);
-            using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync(LogFile)) {
+            await using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync(LogFile)) {
                 try {
                     await FileSystem.FileSystemProvider.DeleteFileAsync(LogFile);
                 } catch (Exception) { }
                 await FileSystem.FileSystemProvider.CreateDirectoryAsync(Path.GetDirectoryName(LogFile)!);
                 LogCache = new List<string>();
-                await lockObject.UnlockAsync();
             }
         }
 
         public override async Task FlushAsync() {
-            using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync(LogFile)) {
+            await using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync(LogFile)) {
                 await FlushAsyncNoLock();
-                await lockObject.UnlockAsync();
             }
         }
         private async Task FlushAsyncNoLock() {
@@ -80,11 +78,10 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.File {
             text = text.Replace("\n", "\r\n");
 
             YetaWFManager.Syncify(async () => { // logging is sync by default
-                using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync(LogFile)) {
+                await using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync(LogFile)) {
                     LogCache.Add(text);
                     if (LogCache.Count >= MAXRECORDS)
                         await FlushAsyncNoLock();
-                    await lockObject.UnlockAsync();
                 }
             });
         }

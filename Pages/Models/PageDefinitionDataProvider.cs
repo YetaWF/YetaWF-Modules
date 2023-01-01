@@ -35,9 +35,8 @@ namespace YetaWF.Modules.Pages.DataProvider {
 
         private async Task<List<PageDefinition.DesignedPage>> GetDesignedPagesAsync() {
             using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
-                using (ILockObject lockObject = await pageDP.LockDesignedPagesAsync()) {
+                await using (ILockObject lockObject = await pageDP.LockDesignedPagesAsync()) {
                     List<PageDefinition.DesignedPage> pages = (from p in await pageDP.GetDesignedPagesWithoutLockAsync() select new PageDefinition.DesignedPage { Url = p.Value.Url, PageGuid = p.Value.PageGuid }).ToList();
-                    await lockObject.UnlockAsync();
                     return pages;
                 }
             }
@@ -45,18 +44,16 @@ namespace YetaWF.Modules.Pages.DataProvider {
 
         private async Task<List<string>> GetDesignedUrlsAsync() {
             using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
-                using (ILockObject lockObject = await pageDP.LockDesignedPagesAsync()) {
+                await using (ILockObject lockObject = await pageDP.LockDesignedPagesAsync()) {
                     List<string> pages = (from p in await pageDP.GetDesignedPagesWithoutLockAsync() select p.Value.Url).ToList();
-                    await lockObject.UnlockAsync();
                     return pages;
                 }
             }
         }
         private async Task<List<Guid>> GetDesignedGuidsAsync() {
             using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
-                using (ILockObject lockObject = await pageDP.LockDesignedPagesAsync()) {
+                await using (ILockObject lockObject = await pageDP.LockDesignedPagesAsync()) {
                     List<Guid> pages = (from p in await pageDP.GetDesignedPagesWithoutLockAsync() select p.Value.PageGuid).ToList();
-                    await lockObject.UnlockAsync();
                     return pages;
                 }
             }
@@ -179,7 +176,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
             return await CreatePageDefinitionAsync(page);
         }
         private async Task<PageDefinition> CreatePageDefinitionAsync(PageDefinition page) {
-            using (ILockObject lockObject = await LockDesignedPagesAsync()) {
+            await using (ILockObject lockObject = await LockDesignedPagesAsync()) {
                 PageDefinition.DesignedPage desPage = new PageDefinition.DesignedPage() { PageGuid = page.PageGuid, Url = page.Url, };
                 DesignedPagesDictionaryByUrl designedPagesByUrl = await GetDesignedPagesWithoutLockAsync();
                 if (designedPagesByUrl.ContainsKey(desPage.Url.ToLower()))
@@ -188,7 +185,6 @@ namespace YetaWF.Modules.Pages.DataProvider {
                     throw new Error(this.__ResStr("pageGuidErr", "A page with Guid {0} already exists.", desPage.PageGuid));
                 await SetCachedPageAsync(page);
                 await AddDesignedPageAsync(designedPagesByUrl, page.Url.ToLower(), desPage);
-                await lockObject.UnlockAsync();
             }
             await Auditing.AddAuditAsync($"{nameof(PageDefinitionDataProvider)}.{nameof(CreatePageDefinitionAsync)}", page.Url, page.PageGuid,
                 "Create Page",
@@ -240,7 +236,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
 
             PageDefinition? oldPage = null;
 
-            using (ILockObject lockObject = await LockDesignedPagesAsync()) {
+            await using (ILockObject lockObject = await LockDesignedPagesAsync()) {
 
                 page.Updated = DateTime.UtcNow;
                 CleanupUsersAndRoles(page);
@@ -273,7 +269,6 @@ namespace YetaWF.Modules.Pages.DataProvider {
                     PageDefinition.DesignedPage desPage = new PageDefinition.DesignedPage() { PageGuid = page.PageGuid, Url = page.Url, };
                     await AddDesignedPageAsync(designedPagesByUrl, page.Url.ToLower(), desPage);
                 }
-                await lockObject.UnlockAsync();
             }
             await Auditing.AddAuditAsync($"{nameof(PageDefinitionDataProvider)}.{nameof(SavePageDefinitionAsync)}", oldPage.Url, oldPage.PageGuid,
                 "Save Page",
@@ -294,7 +289,7 @@ namespace YetaWF.Modules.Pages.DataProvider {
         }
         public async Task<bool> RemovePageDefinitionAsync(Guid pageGuid) {
             PageDefinition? page;
-            using (ILockObject lockObject = await LockDesignedPagesAsync()) {
+            await using (ILockObject lockObject = await LockDesignedPagesAsync()) {
                 page = await LoadPageDefinitionAsync(pageGuid);
                 if (page == null)
                     return false;
@@ -303,7 +298,6 @@ namespace YetaWF.Modules.Pages.DataProvider {
                 await RemoveCachedPageAsync(pageGuid);
                 DesignedPagesDictionaryByUrl designedPagesUrl = await GetDesignedPagesWithoutLockAsync();
                 await RemoveDesignedPageAsync(designedPagesUrl, page.Url);
-                await lockObject.UnlockAsync();
             }
             await Auditing.AddAuditAsync($"{nameof(PageDefinitionDataProvider)}.{nameof(RemovePageDefinitionAsync)}", page.Url, page.PageGuid,
                 "Remove Page",
