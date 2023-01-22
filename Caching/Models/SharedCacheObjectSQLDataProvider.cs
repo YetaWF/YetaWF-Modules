@@ -104,14 +104,14 @@ namespace YetaWF.Modules.Caching.DataProvider {
                 Key = sharedCacheObj.Key,
                 Value = sharedCacheObj.Value,
             };
-            using (ICacheDataProvider localCacheDP = YetaWF.Core.IO.Caching.GetLocalCacheProvider()) {
+            await using (ICacheDataProvider localCacheDP = YetaWF.Core.IO.Caching.GetLocalCacheProvider()) {
                 await localCacheDP.AddAsync(key, localCacheObj); // save locally cached version
             }
         }
         public async Task<GetObjectInfo<TYPE>> GetAsync<TYPE>(string key) {
             // get locally cached version
             GetObjectInfo<LocalSharedCacheObject> localInfo;
-            using (ICacheDataProvider localCacheDP = YetaWF.Core.IO.Caching.GetLocalCacheProvider()) {
+            await using (ICacheDataProvider localCacheDP = YetaWF.Core.IO.Caching.GetLocalCacheProvider()) {
                 localInfo = await localCacheDP.GetAsync<LocalSharedCacheObject>(key);
                 if (!localInfo.Success) {
                     // no locally cached data

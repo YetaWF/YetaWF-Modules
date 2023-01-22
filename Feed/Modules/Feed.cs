@@ -78,7 +78,7 @@ namespace YetaWF.Modules.Feed.Modules {
             return RemoveCachedInfoAsync();// whenever the module is removed, we remove the cached information
         }
         private async Task RemoveCachedInfoAsync() {
-            using (ICacheDataProvider localCacheDP = YetaWF.Core.IO.Caching.GetLocalCacheProvider()) {
+            await using (ICacheDataProvider localCacheDP = YetaWF.Core.IO.Caching.GetLocalCacheProvider()) {
                 await localCacheDP.RemoveAsync<Controllers.FeedModuleController.DisplayModel>(CacheKey);
             }
         }

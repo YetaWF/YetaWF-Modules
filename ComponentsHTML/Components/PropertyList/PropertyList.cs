@@ -146,7 +146,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         private static async Task<PropertyListSetup> ReadPropertyListSetupAsync(Package package, Type model, string file) {
 
-            using (ICacheDataProvider cacheDP = YetaWF.Core.IO.Caching.GetStaticSmallObjectCacheProvider()) {
+            await using (ICacheDataProvider cacheDP = YetaWF.Core.IO.Caching.GetStaticSmallObjectCacheProvider()) {
 
                 // Check cache first
                 GetObjectInfo<PropertyListSetup> info = await cacheDP.GetAsync<PropertyListSetup>(file);

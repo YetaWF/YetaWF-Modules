@@ -52,7 +52,7 @@ namespace YetaWF.Modules.Feed.Controllers {
         public async Task<ActionResult> Feed() {
             DisplayModel model;
             GetObjectInfo<DisplayModel> cacheInfo;
-            using (ICacheDataProvider localCacheDP = YetaWF.Core.IO.Caching.GetLocalCacheProvider()) {
+            await using (ICacheDataProvider localCacheDP = YetaWF.Core.IO.Caching.GetLocalCacheProvider()) {
                 cacheInfo = await localCacheDP.GetAsync<DisplayModel>(Module.CacheKey);
                 if (!cacheInfo.Success || cacheInfo.RequiredData.CacheExpires < DateTime.UtcNow) {
                     model = new DisplayModel();

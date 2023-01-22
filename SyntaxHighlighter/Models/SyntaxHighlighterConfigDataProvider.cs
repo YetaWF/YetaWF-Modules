@@ -50,7 +50,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.DataProvider {
         // API
 
         public static async Task<ConfigData> GetConfigAsync() {
-            using (ConfigDataProvider configDP = new ConfigDataProvider()) {
+            await using (ConfigDataProvider configDP = new ConfigDataProvider()) {
                 return await configDP.GetItemAsync();
             }
         }

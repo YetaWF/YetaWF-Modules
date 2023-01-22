@@ -17,7 +17,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// it is known that a new object is available the data is retrieved.
     /// This is equivalent to StaticObjectSingleDataProvider on a single-instance site.
     /// </summary>
-    internal class StaticObjectMultiRedisDataProvider : ICacheDataProvider, IDisposable {
+    internal class StaticObjectMultiRedisDataProvider : ICacheDataProvider, IDisposable, IAsyncDisposable {
 
         public static ICacheDataProvider GetProvider() {
             return new StaticObjectMultiRedisDataProvider();
@@ -36,6 +36,14 @@ namespace YetaWF.Modules.Caching.DataProvider {
             if (disposing) {
                 DisposableTracker.RemoveObject(this);
             }
+        }
+        public async ValueTask DisposeAsync() {
+            await DisposeAsyncCore().ConfigureAwait(false);
+            Dispose(false);
+        }
+        protected virtual ValueTask DisposeAsyncCore() {
+            DisposableTracker.RemoveObject(this);
+            return ValueTask.CompletedTask;
         }
 
         public static Task InitAsync(string configString, string keyPrefix) {

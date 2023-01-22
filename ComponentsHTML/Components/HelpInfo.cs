@@ -121,7 +121,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         private async Task<HelpFileInfo> TryHelpFileAsync(string url, bool useCache) {
 
             string file = Utility.UrlToPhysical(url);
-            using (ICacheDataProvider cacheDP = YetaWF.Core.IO.Caching.GetStaticSmallObjectCacheProvider()) {
+            await using (ICacheDataProvider cacheDP = YetaWF.Core.IO.Caching.GetStaticSmallObjectCacheProvider()) {
 
                 // Check cache first
                 GetObjectInfo<HelpFileInfo> cache = await cacheDP.GetAsync<HelpFileInfo>(file);

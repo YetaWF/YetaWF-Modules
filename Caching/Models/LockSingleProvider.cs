@@ -17,6 +17,14 @@ namespace YetaWF.Modules.Caching.DataProvider {
                 DisposableTracker.RemoveObject(this);
             }
         }
+        public async ValueTask DisposeAsync() {
+            await DisposeAsyncCore().ConfigureAwait(false);
+            Dispose(false);
+        }
+        protected virtual ValueTask DisposeAsyncCore() {
+            DisposableTracker.RemoveObject(this);
+            return ValueTask.CompletedTask;
+        }
 
         // Implementation
 

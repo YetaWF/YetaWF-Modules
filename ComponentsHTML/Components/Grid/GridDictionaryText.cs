@@ -29,7 +29,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         private static async Task<ReadGridDictionaryInfo> ReadGridDictionaryTextAsync(Package package, Type recordType, string file) {
 
-            using (ICacheDataProvider cacheDP = YetaWF.Core.IO.Caching.GetStaticSmallObjectCacheProvider()) {
+            await using (ICacheDataProvider cacheDP = YetaWF.Core.IO.Caching.GetStaticSmallObjectCacheProvider()) {
 
                 // Check cache first
                 GetObjectInfo<ReadGridDictionaryInfo> info = await cacheDP.GetAsync<ReadGridDictionaryInfo>(file);

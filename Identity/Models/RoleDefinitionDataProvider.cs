@@ -211,7 +211,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
         /// </summary>
         public async Task<List<RoleDefinition>> GetAllUserRolesAsync(bool force = false) {
 
-            using (ICacheDataProvider cacheDP = YetaWF.Core.IO.Caching.GetStaticSmallObjectCacheProvider()) {
+            await using (ICacheDataProvider cacheDP = YetaWF.Core.IO.Caching.GetStaticSmallObjectCacheProvider()) {
 
                 string ROLESKEY = $"__RoleDefinitions_{YetaWFManager.Manager.CurrentSite.Identity}";
 

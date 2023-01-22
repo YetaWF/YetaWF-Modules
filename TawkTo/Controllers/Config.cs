@@ -62,7 +62,7 @@ namespace YetaWF.Modules.TawkTo.Controllers {
 
         [AllowGet]
         public async Task<ActionResult> Config() {
-            using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
+            await using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
                 Model model = new Model { };
                 ConfigData data = await dataProvider.GetItemAsync();
                 if (data == null)
@@ -75,7 +75,7 @@ namespace YetaWF.Modules.TawkTo.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         public async Task<ActionResult> Config_Partial(Model model) {
-            using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
+            await using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
                 ConfigData data = await dataProvider.GetItemAsync();// get the original item
                 if (!ModelState.IsValid)
                     return PartialView(model);

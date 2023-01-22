@@ -14,7 +14,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
     /// Shared cache will only be retrieved to check if there is a newer cached object available. Once
     /// it is known that a new object is available, the data is retrieved.
     /// </summary>
-    internal class SharedCacheObjectRedisDataProvider : ICacheDataProvider, IDisposable {
+    internal class SharedCacheObjectRedisDataProvider : ICacheDataProvider, IDisposable, IAsyncDisposable {
 
         public static ICacheDataProvider GetProvider() {
             return new SharedCacheObjectRedisDataProvider();
@@ -33,6 +33,14 @@ namespace YetaWF.Modules.Caching.DataProvider {
             if (disposing) {
                 DisposableTracker.RemoveObject(this);
             }
+        }
+        public async ValueTask DisposeAsync() {
+            await DisposeAsyncCore().ConfigureAwait(false);
+            Dispose(false);
+        }
+        protected virtual ValueTask DisposeAsyncCore() {
+            DisposableTracker.RemoveObject(this);
+            return ValueTask.CompletedTask;
         }
 
         public static Task InitAsync(string configString, string keyPrefix) {
@@ -74,7 +82,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
                 Key = key,
                 Value = cacheData,
             };
-            using (ICacheDataProvider localCacheDP = YetaWF.Core.IO.Caching.GetLocalCacheProvider()) {
+            await using (ICacheDataProvider localCacheDP = YetaWF.Core.IO.Caching.GetLocalCacheProvider()) {
                 await localCacheDP.AddAsync(key, localCacheObj); // save locally cached version
             }
         }
@@ -83,7 +91,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
             key = KeyPrefix + key;
             // get locally cached version
             GetObjectInfo<LocalSharedCacheObject> localInfo;
-            using (ICacheDataProvider localCacheDP = YetaWF.Core.IO.Caching.GetLocalCacheProvider()) {
+            await using (ICacheDataProvider localCacheDP = YetaWF.Core.IO.Caching.GetLocalCacheProvider()) {
                 localInfo = await localCacheDP.GetAsync<LocalSharedCacheObject>(key);
                 if (!localInfo.Success) {
                     // no locally cached data

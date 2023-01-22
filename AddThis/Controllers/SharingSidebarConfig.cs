@@ -38,7 +38,7 @@ namespace YetaWF.Modules.AddThis.Controllers {
 
         [AllowGet]
         public async Task<ActionResult> SharingSidebarConfig() {
-            using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
+            await using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
                 Model model = new Model { };
                 ConfigData data = await dataProvider.GetItemAsync();
                 if (data == null)
@@ -52,7 +52,7 @@ namespace YetaWF.Modules.AddThis.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> SharingSidebarConfig_Partial(Model model) {
-            using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
+            await using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
                 ConfigData data = await dataProvider.GetItemAsync();// get the original item
                 if (!ModelState.IsValid)
                     return PartialView(model);

@@ -344,7 +344,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
         // FileStream
 
-        internal class FileStream : IDisposable, IFileStream {
+        internal class FileStream : IFileStream, IDisposable, IAsyncDisposable {
 
             private string FilePath;
             private FileMode Mode;
@@ -375,7 +375,7 @@ namespace YetaWF.Modules.Caching.DataProvider {
                     Stream.Write(btes, offset, length);
                     return Task.CompletedTask;
                 } else
-                    return Stream.ReadAsync(btes, offset, length);
+                    return Stream.WriteAsync(btes, offset, length);
             }
             public Task FlushAsync() {
                 if (YetaWFManager.IsSync()) {
@@ -413,6 +413,13 @@ namespace YetaWF.Modules.Caching.DataProvider {
                 if (disposing) {
                     Close();
                 }
+            }
+            public async ValueTask DisposeAsync() {
+                await DisposeAsyncCore().ConfigureAwait(false);
+                Dispose(false);
+            }
+            protected virtual async ValueTask DisposeAsyncCore() {
+                await CloseAsync();
             }
         }
 

@@ -560,7 +560,7 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             if (!Manager.HasSuperUserRole)
                 return NotAuthorized();
             await FileBundles.ResetCacheAsync();
-            using (ICacheDataProvider cacheDP = YetaWF.Core.IO.Caching.GetStaticSmallObjectCacheProvider()) {
+            await using (ICacheDataProvider cacheDP = YetaWF.Core.IO.Caching.GetStaticSmallObjectCacheProvider()) {
                 ICacheClearable? clearableDP = cacheDP as ICacheClearable;
                 if (clearableDP != null)
                     await clearableDP.ClearAllAsync();

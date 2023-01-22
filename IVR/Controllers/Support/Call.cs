@@ -309,7 +309,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
             YetaWFManager manager = YetaWFManager.Manager;
             HttpRequest req = manager.CurrentRequest;
             if (req.Form.ContainsKey(name)) {
-                value = req.Form[name];
+                value = (string?)req.Form[name] ?? string.Empty;
                 return true;
             }
             value = string.Empty;

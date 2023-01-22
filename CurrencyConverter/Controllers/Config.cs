@@ -51,7 +51,7 @@ namespace YetaWF.Modules.CurrencyConverter.Controllers {
 
         [AllowGet]
         public async Task<ActionResult> Config() {
-            using (ConfigDataProvider configDP = new ConfigDataProvider()) {
+            await using (ConfigDataProvider configDP = new ConfigDataProvider()) {
                 Model model = new Model { };
                 ConfigData data = await configDP.GetItemAsync();
                 if (data == null)
@@ -65,7 +65,7 @@ namespace YetaWF.Modules.CurrencyConverter.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> Config_Partial(Model model) {
-            using (ConfigDataProvider configDP = new ConfigDataProvider()) {
+            await using (ConfigDataProvider configDP = new ConfigDataProvider()) {
                 ConfigData data = await configDP.GetItemAsync();// get the original item
                 if (data == null)
                     throw new Error(this.__ResStr("alreadyDeleted", "The currency converter configuration has been removed and can no longer be updated."));

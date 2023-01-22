@@ -32,6 +32,20 @@ namespace YetaWF.Modules.Caching.DataProvider {
                 DisposableTracker.RemoveObject(this);
             }
         }
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public async ValueTask DisposeAsync() {
+            await DisposeAsyncCore().ConfigureAwait(false);
+            Dispose(false);
+        }
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        protected virtual ValueTask DisposeAsyncCore() {
+            DisposableTracker.RemoveObject(this);
+            return ValueTask.CompletedTask;
+        }
 
         // Implementation
 

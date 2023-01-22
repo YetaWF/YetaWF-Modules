@@ -50,7 +50,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.Controllers {
 
         [AllowGet]
         public async Task<ActionResult> SyntaxHighlighterConfig() {
-            using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
+            await using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
                 Model model = new Model { };
                 ConfigData data = await dataProvider.GetItemAsync();
                 if (data == null)
@@ -64,7 +64,7 @@ namespace YetaWF.Modules.SyntaxHighlighter.Controllers {
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> SyntaxHighlighterConfig_Partial(Model model) {
-            using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
+            await using (ConfigDataProvider dataProvider = new ConfigDataProvider()) {
                 ConfigData data = await dataProvider.GetItemAsync();// get the original item
                 if (!ModelState.IsValid)
                     return PartialView(model);

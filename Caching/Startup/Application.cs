@@ -131,6 +131,8 @@ namespace YetaWF.Modules.Caching.Startup {
 
         private class DefaultPubSubProvider : IPubSubProvider {
             public void Dispose() { }
+            public ValueTask DisposeAsync() { return ValueTask.CompletedTask; }
+
             public Task PublishAsync(string channel, object message) {
                 throw new InternalError("No PubSubProvider available");
             }
