@@ -163,6 +163,12 @@ namespace YetaWF_ComponentsHTML {
                 } else if (sel === UrlTypeEnum.Remote && this.inputUrl) {
                     this.inputUrl.value = url;
                 }
+            } else {
+                if (this.Setup.Type === UrlTypeEnum.Local && this.selectPage) {
+                    this.selectPage.value = url;
+                } else if (this.Setup.Type === UrlTypeEnum.Remote && this.inputUrl) {
+                    this.inputUrl.value = url;
+                }
             }
             this.inputHidden.value = url;
 

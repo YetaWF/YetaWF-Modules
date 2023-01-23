@@ -11,6 +11,7 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Pages.Controllers;
+using YetaWF.Modules.Pages.Endpoints;
 using YetaWF.Modules.Pages.Scheduler;
 
 namespace YetaWF.Modules.Pages.Modules {
@@ -80,7 +81,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public ModuleAction? GetAction_RemoveLink(string pageName) {
             if (!IsAuthorized("RemovePages")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.Remove)),
+                Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), PagesBrowseModuleEndpoints.Remove),
                 QueryArgs = new { PageName = pageName },
                 NeedsModuleContext = true,
                 Image = "#Remove",
@@ -99,7 +100,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public ModuleAction? GetAction_UpdateAdminAndEditorAuthorization() {
             if (!IsAuthorized("SetAuthorization")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.UpdateAdminAndEditorAuthorization)),
+                Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.UpdateAdminAndEditorAuthorization)),
                 NeedsModuleContext = true,
                 QueryArgs = new { },
                 Image = "",
@@ -119,7 +120,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public async Task<ModuleAction?> GetAction_SetSuperuserAsync(Guid guid) {
             if (!IsAuthorized("SetAuthorization")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.SetSuperuser)),
+                Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.SetSuperuser)),
                 NeedsModuleContext = true,
                 QueryArgs = new { Guid = guid },
                 Image = await CustomIconAsync("go.png"),
@@ -136,7 +137,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public async Task<ModuleAction?> GetAction_SetAdminAsync(Guid guid) {
             if (!IsAuthorized("SetAuthorization")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.SetAdmin)),
+                Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.SetAdmin)),
                 NeedsModuleContext = true,
                 QueryArgs = new { Guid = guid },
                 Image = await CustomIconAsync("go.png"),
@@ -153,7 +154,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public async Task<ModuleAction?> GetAction_SetUserAsync(Guid guid) {
             if (!IsAuthorized("SetAuthorization")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.SetUser)),
+                Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.SetUser)),
                 NeedsModuleContext = true,
                 QueryArgs = new { Guid = guid },
                 Image = await CustomIconAsync("go.png"),
@@ -170,7 +171,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public async Task<ModuleAction?> GetAction_SetAnonymousAsync(Guid guid) {
             if (!IsAuthorized("SetAuthorization")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.SetAnonymous)),
+                Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.SetAnonymous)),
                 NeedsModuleContext = true,
                 QueryArgs = new { Guid = guid },
                 Image = await CustomIconAsync("go.png"),
@@ -188,7 +189,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public ModuleAction? GetAction_CreateSiteMap() {
             if (!IsAuthorized("SiteMaps")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.CreateSiteMap)),
+                Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.CreateSiteMap)),
                 NeedsModuleContext = true,
                 QueryArgs = new { },
                 Image = "#Add",
@@ -207,7 +208,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public ModuleAction? GetAction_RemoveSiteMap() {
             if (!IsAuthorized("SiteMaps")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.RemoveSiteMap)),
+                Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.RemoveSiteMap)),
                 NeedsModuleContext = true,
                 QueryArgs = new { },
                 Image = "#Remove",
@@ -229,7 +230,7 @@ namespace YetaWF.Modules.Pages.Modules {
             if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
                 return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.DownloadSiteMap)),
+                Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.DownloadSiteMap)),
                 NeedsModuleContext = true,
                 CookieAsDoneSignal = true,
                 Image = await CustomIconAsync("Download.png"),
@@ -246,7 +247,7 @@ namespace YetaWF.Modules.Pages.Modules {
         public async Task<ModuleAction?> GetAction_CreatePageList() {
             if (!IsAuthorized("SiteMaps")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(PagesBrowseModuleController), nameof(PagesBrowseModuleController.CreatePageList)),
+                Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.CreatePageList)),
                 NeedsModuleContext = true,
                 CookieAsDoneSignal = true,
                 Image = await CustomIconAsync("Download.png"),

@@ -49,7 +49,7 @@ namespace YetaWF_Identity {
                 });
                 return false;
             });
-            this.GridAll.Control.addEventListener("grid_selectionchange", (evt: Event): void => {
+            this.GridAll.Control.addEventListener(YetaWF_ComponentsHTML.Grid.EVENTSELECT, (evt: Event): void => {
                 var index = this.GridAll.SelectedIndex();
                 if (index < 0) return;
                 var tr = this.GridAll.GetTR(index);

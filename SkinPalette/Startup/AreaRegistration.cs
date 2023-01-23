@@ -4,10 +4,14 @@ using YetaWF.Core.Packages;
 
 namespace YetaWF.Modules.SkinPalette {
 
-    /// <inheritdoc/>
-    public class AreaRegistration : YetaWF.Core.Controllers.AreaRegistrationBase {
-        /// <inheritdoc/>
-        public static Package CurrentPackage { get { return _CachedCurrentPackage ??= (_CachedCurrentPackage = Package.GetPackageFromAssembly(typeof(AreaRegistration).Assembly)); } }
-        private static Package? _CachedCurrentPackage;
+    /// <summary>
+    /// Holds information about the current package.
+    /// </summary>
+    public static class AreaRegistration {
+        /// <summary>
+        /// Defines the current package, used by applications that need access to the YetaWF.Core.Packages.Package instance.
+        /// </summary>
+        public static Package CurrentPackage { get; set; } = null!;
     }
+
 }

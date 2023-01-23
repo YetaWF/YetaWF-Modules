@@ -64,7 +64,7 @@ namespace YetaWF_ModuleEdit {
             $YetaWF.handleInputReturnKeyForButton(this.inputUserName, this.buttonAdd);
             $YetaWF.registerMultipleEventHandlers([this.inputUserName], ["input", "change", "click", "keyup", "paste"], null, (ev: Event): boolean => { this.toggleButton(); return true; });
 
-            this.GridAll.Control.addEventListener("grid_selectionchange", (evt: Event): void => {
+            this.GridAll.Control.addEventListener(YetaWF_ComponentsHTML.Grid.EVENTSELECT, (evt: Event): void => {
                 var index = this.GridAll.SelectedIndex();
                 if (index < 0) return;
                 var td = $YetaWF.getElement1BySelector("td", [this.GridAll.GetTR(index)]);

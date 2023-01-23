@@ -59,7 +59,7 @@ var YetaWF_Pages;
             _this.SelectUrl.Control.addEventListener(YetaWF_ComponentsHTML.UrlEditComponent.EVENTCHANGE, function (evt) {
                 _this.toggleButton();
             });
-            _this.GridAll.Control.addEventListener("grid_selectionchange", function (evt) {
+            _this.GridAll.Control.addEventListener(YetaWF_ComponentsHTML.Grid.EVENTSELECT, function (evt) {
                 var index = _this.GridAll.SelectedIndex();
                 if (index < 0)
                     return;

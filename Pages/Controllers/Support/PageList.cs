@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 
-namespace YetaWF.Modules.Pages.Scheduler {
+namespace YetaWF.Modules.Pages.Support {
 
     public class PageList {
 
