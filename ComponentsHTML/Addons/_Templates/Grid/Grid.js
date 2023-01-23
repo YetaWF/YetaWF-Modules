@@ -786,72 +786,80 @@ var YetaWF_ComponentsHTML;
                     this.setExpandCollapseStatus(true);
                 }
                 else {
+                    var formInfo = $YetaWF.Forms.getFormInfo(this.Control);
                     // fetch data from servers
-                    var uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
-                    uri.addSearch("fieldPrefix", this.Setup.FieldName);
-                    uri.addSearch("skip", page * this.Setup.PageSize);
-                    uri.addSearch("take", newPageSize || this.Setup.PageSize);
-                    if (this.Setup.ExtraData)
-                        uri.addSearchSimpleObject(this.Setup.ExtraData);
-                    // sort order
                     var col = this.getSortColumn();
+                    var data = {
+                        __UniqueIdInfo: YVolatile.Basics.UniqueIdCounters,
+                        __ModuleGuid: formInfo.ModuleGuid,
+                        __RequestVerificationToken: formInfo.RequestVerificationToken,
+                        Data: "",
+                        FieldPrefix: this.Setup.FieldName,
+                        Skip: page * this.Setup.PageSize,
+                        Take: newPageSize || this.Setup.PageSize,
+                        Search: false,
+                        Sorts: [],
+                        Filters: [],
+                    };
+                    // sort order
                     if (col) {
-                        uri.addSearch("sort[0].field", col.Name);
-                        uri.addSearch("sort[0].order", (col.Sort === SortByEnum.Descending ? 1 : 0));
-                        // also add as "sorts" for controllers that prefer this name
-                        uri.addSearch("sorts[0].field", col.Name);
-                        uri.addSearch("sorts[0].order", (col.Sort === SortByEnum.Descending ? 1 : 0));
+                        data.Sorts.push({
+                            Field: col.Name,
+                            Order: col.Sort === SortByEnum.Descending ? YetaWF.SortDirection.Descending : YetaWF.SortDirection.Asending,
+                        });
                     }
                     // filters
                     if (searchCols) {
-                        var fcount = 0;
                         for (var _a = 0, searchCols_1 = searchCols; _a < searchCols_1.length; _a++) {
                             var searchCol = searchCols_1[_a];
                             if (searchText) {
-                                uri.addSearch("filters[".concat(fcount, "].field"), searchCol);
-                                uri.addSearch("filters[".concat(fcount, "].operator"), "Contains");
-                                uri.addSearch("filters[".concat(fcount, "].valueAsString"), searchText);
-                                ++fcount;
+                                data.Filters.push({
+                                    Field: searchCol,
+                                    Operator: "Contains",
+                                    ValueAsString: searchText,
+                                });
                             }
                         }
-                        if (fcount > 0)
-                            uri.addSearch("Search", "True");
+                        if (data.Filters.length > 0)
+                            data.Search = true;
                     }
                     else {
                         var colIndex = 0;
-                        var fcount = 0;
                         for (var _b = 0, _c = this.Setup.Columns; _b < _c.length; _b++) {
                             var col_2 = _c[_b];
                             var val = this.getColSortValue(colIndex);
                             if (val) {
                                 if (col_2.FilterType === "complex") {
-                                    uri.addSearch("filters[".concat(fcount, "].field"), col_2.Name);
-                                    uri.addSearch("filters[".concat(fcount, "].operator"), "Complex");
-                                    uri.addSearch("filters[".concat(fcount, "].valueAsString"), val);
-                                    ++fcount;
+                                    data.Filters.push({
+                                        Field: col_2.Name,
+                                        Operator: "Complex",
+                                        ValueAsString: val,
+                                    });
                                 }
                                 else {
                                     var oper = col_2.FilterOp;
                                     if (overrideColFilter && overrideColFilter.ColIndex === colIndex)
                                         oper = overrideColFilter.FilterOp;
                                     if (oper != null) {
-                                        uri.addSearch("filters[".concat(fcount, "].field"), col_2.Name);
-                                        uri.addSearch("filters[".concat(fcount, "].operator"), this.GetFilterOpString(oper));
-                                        uri.addSearch("filters[".concat(fcount, "].valueAsString"), val);
-                                        ++fcount;
+                                        data.Filters.push({
+                                            Field: col_2.Name,
+                                            Operator: this.GetFilterOpString(oper),
+                                            ValueAsString: val,
+                                        });
                                     }
                                 }
                             }
                             ++colIndex;
                         }
                     }
-                    uri.addFormInfo(this.Control);
-                    var uniqueIdCounters = { UniqueIdPrefix: "".concat(this.ControlId, "gr"), UniqueIdPrefixCounter: 0, UniqueIdCounter: 0 };
-                    uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
+                    var uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
+                    //$$$$ this is for what?
+                    // if (this.Setup.ExtraData)
+                    //     uri.addSearchSimpleObject(this.Setup.ExtraData);
                     if (this.Setup.StaticData)
-                        uri.addSearch("data", JSON.stringify(this.Setup.StaticData));
+                        data.Data = JSON.stringify(this.Setup.StaticData);
                     this.setReloading(true);
-                    $YetaWF.post(this.Setup.AjaxUrl, uri.toFormData(), function (success, partial) {
+                    $YetaWF.postJSON(uri.toUrl(), data, function (success, partial) {
                         if (success) {
                             $YetaWF.processClearDiv(_this.TBody);
                             _this.TBody.innerHTML = "";

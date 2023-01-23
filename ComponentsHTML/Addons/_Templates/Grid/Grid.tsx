@@ -103,6 +103,16 @@ namespace YetaWF_ComponentsHTML {
         No = 2
     }
 
+    interface GridPartialViewData extends YetaWF.PartialViewData {
+        Data: string;
+        FieldPrefix: string;
+        Skip: number;
+        Take: number;
+        Search: boolean;
+        Sorts: YetaWF.DataProviderSortInfo[];
+        Filters: YetaWF.DataProviderFilterInfo[];
+    }
+
     export class Grid extends YetaWF.ComponentBaseDataImpl {
 
         public static readonly TEMPLATE: string = "yt_grid";
@@ -850,70 +860,80 @@ namespace YetaWF_ComponentsHTML {
                     this.setReloading(false);
                     this.setExpandCollapseStatus(true);
                 } else {
+                    const formInfo = $YetaWF.Forms.getFormInfo(this.Control);
                     // fetch data from servers
-                    let uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
-                    uri.addSearch("fieldPrefix", this.Setup.FieldName);
-                    uri.addSearch("skip", page * this.Setup.PageSize);
-                    uri.addSearch("take", newPageSize || this.Setup.PageSize);
-                    if (this.Setup.ExtraData)
-                        uri.addSearchSimpleObject(this.Setup.ExtraData);
+                    const col = this.getSortColumn();
+                    let data: GridPartialViewData = {
+                        __UniqueIdInfo: YVolatile.Basics.UniqueIdCounters,
+                        __ModuleGuid: formInfo.ModuleGuid,
+                        __RequestVerificationToken: formInfo.RequestVerificationToken,
+                        Data: "",
+                        FieldPrefix: this.Setup.FieldName,
+                        Skip: page * this.Setup.PageSize,
+                        Take: newPageSize || this.Setup.PageSize,
+                        Search: false,
+                        Sorts: [],
+                        Filters: [],
+                    };
                     // sort order
-                    let col = this.getSortColumn();
                     if (col) {
-                        uri.addSearch("sort[0].field", col.Name);
-                        uri.addSearch("sort[0].order", (col.Sort === SortByEnum.Descending ? 1 : 0));
-                        // also add as "sorts" for controllers that prefer this name
-                        uri.addSearch("sorts[0].field", col.Name);
-                        uri.addSearch("sorts[0].order", (col.Sort === SortByEnum.Descending ? 1 : 0));
+                        data.Sorts.push({ 
+                            Field: col.Name, 
+                            Order: col.Sort === SortByEnum.Descending ? YetaWF.SortDirection.Descending : YetaWF.SortDirection.Asending,
+                        });
                     }
                     // filters
                     if (searchCols) {
-                        let fcount = 0;
                         for (let searchCol of searchCols) {
                             if (searchText) {
-                                uri.addSearch(`filters[${fcount}].field`, searchCol);
-                                uri.addSearch(`filters[${fcount}].operator`, "Contains");
-                                uri.addSearch(`filters[${fcount}].valueAsString`, searchText);
-                                ++fcount;
+                                data.Filters.push({
+                                    Field: searchCol,
+                                    Operator: "Contains",
+                                    ValueAsString: searchText,
+                                });
                             }
                         }
-                        if (fcount > 0)
-                            uri.addSearch("Search", "True");
+                        if (data.Filters.length > 0)
+                            data.Search = true;
                     } else {
                         let colIndex = 0;
-                        let fcount = 0;
                         for (let col of this.Setup.Columns) {
                             let val = this.getColSortValue(colIndex);
                             if (val) {
                                 if (col.FilterType === "complex") {
-                                    uri.addSearch(`filters[${fcount}].field`, col.Name);
-                                    uri.addSearch(`filters[${fcount}].operator`, "Complex");
-                                    uri.addSearch(`filters[${fcount}].valueAsString`, val);
-                                    ++fcount;
+                                    data.Filters.push({
+                                        Field: col.Name,
+                                        Operator: "Complex",
+                                        ValueAsString: val,
+                                    });
                                 } else {
                                     let oper = col.FilterOp;
                                     if (overrideColFilter && overrideColFilter.ColIndex === colIndex)
                                         oper = overrideColFilter.FilterOp;
                                     if (oper != null) {
-                                        uri.addSearch(`filters[${fcount}].field`, col.Name);
-                                        uri.addSearch(`filters[${fcount}].operator`, this.GetFilterOpString(oper));
-                                        uri.addSearch(`filters[${fcount}].valueAsString`, val);
-                                        ++fcount;
+                                        data.Filters.push({
+                                            Field: col.Name,
+                                            Operator: this.GetFilterOpString(oper),
+                                            ValueAsString: val,
+                                        });
                                     }
                                 }
                             }
                             ++colIndex;
                         }
                     }
-                    uri.addFormInfo(this.Control);
-                    let uniqueIdCounters: YetaWF.UniqueIdInfo = { UniqueIdPrefix: `${this.ControlId}gr`, UniqueIdPrefixCounter: 0, UniqueIdCounter: 0 };
-                    uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
+    
+                    let uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
+
+                    //$$$$ this is for what?
+                    // if (this.Setup.ExtraData)
+                    //     uri.addSearchSimpleObject(this.Setup.ExtraData);
 
                     if (this.Setup.StaticData)
-                        uri.addSearch("data", JSON.stringify(this.Setup.StaticData));
+                        data.Data = JSON.stringify(this.Setup.StaticData)
 
                     this.setReloading(true);
-                    $YetaWF.post(this.Setup.AjaxUrl, uri.toFormData(), (success: boolean, partial: GridPartialResult): void => {
+                    $YetaWF.postJSON(uri.toUrl(), data, (success: boolean, partial: GridPartialResult): void => {
                         if (success) {
                             $YetaWF.processClearDiv(this.TBody);
                             this.TBody.innerHTML = "";

@@ -14,12 +14,8 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Modules.Pages.Controllers;
 using YetaWF.Modules.Pages.DataProvider;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
+using YetaWF.Modules.Pages.Endpoints;
 
 namespace YetaWF.Modules.Pages.Components {
 
@@ -56,7 +52,7 @@ namespace YetaWF.Modules.Pages.Components {
                 RecordType = typeof(Entry),
                 InitialPageSize = 20,
                 ShowHeader = header,
-                AjaxUrl = Utility.UrlFor(typeof(ListOfLocalPagesController), nameof(ListOfLocalPagesController.ListOfLocalPagesDisplay_SortFilter)),
+                AjaxUrl = Utility.UrlFor(typeof(ListOfLocalPagesEndpoints), ListOfLocalPagesEndpoints.DisplaySortFilter),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
@@ -155,7 +151,7 @@ namespace YetaWF.Modules.Pages.Components {
                 RecordType = typeof(Entry),
                 InitialPageSize = 0,
                 ShowHeader = header,
-                AjaxUrl = Utility.UrlFor(typeof(ListOfLocalPagesController), nameof(ListOfLocalPagesController.ListOfLocalPagesEdit_SortFilter)),
+                AjaxUrl = Utility.UrlFor(typeof(ListOfLocalPagesEndpoints), ListOfLocalPagesEndpoints.EditSortFilter),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
@@ -172,7 +168,7 @@ namespace YetaWF.Modules.Pages.Components {
             return new GridDefinition() {
                 RecordType = typeof(AllEntry),
                 InitialPageSize = 10,
-                AjaxUrl = Utility.UrlFor(typeof(Endpoints.ListOfLocalPagesEndpoint), nameof(Endpoints.ListOfLocalPagesEndpoint.BrowseGridData)),
+                AjaxUrl = Utility.UrlFor(typeof(Endpoints.ListOfLocalPagesEndpoints), ListOfLocalPagesEndpoints.BrowseGridData),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (PageDefinitionDataProvider pagesDP = new PageDefinitionDataProvider()) {
                         DataProviderGetRecords<PageDefinition> browseItems = await pagesDP.GetItemsAsync(skip, take, sort, filters);

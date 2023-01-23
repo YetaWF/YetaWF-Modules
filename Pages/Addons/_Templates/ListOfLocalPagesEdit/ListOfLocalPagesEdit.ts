@@ -44,16 +44,20 @@ namespace YetaWF_Pages {
                 if (this.ReloadInProgress) return true;
                 this.ReloadInProgress = true;
 
+                const formInfo = $YetaWF.Forms.getFormInfo(this.Control);
+                let data: YetaWF.PartialViewData = {
+                    __UniqueIdInfo: { UniqueIdPrefix: `${this.ControlId}ls`, UniqueIdPrefixCounter: 0, UniqueIdCounter: ++this.AddCounter },
+                    __ModuleGuid: formInfo.ModuleGuid,
+                    __RequestVerificationToken: formInfo.RequestVerificationToken,
+                };
+
                 var uri = $YetaWF.parseUrl(this.Setup.AddUrl);
-                uri.addFormInfo(this.Control);
-                let uniqueIdCounters: YetaWF.UniqueIdInfo = { UniqueIdPrefix: `${this.ControlId}ls`, UniqueIdPrefixCounter: 0, UniqueIdCounter: ++this.AddCounter };
-                uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
                 uri.addSearch("newUrl", this.SelectUrl.value.trim());
                 uri.addSearch("fieldPrefix", this.Grid.FieldName);
                 uri.addSearch("data", JSON.stringify(this.Grid.StaticData));
-                if (this.Grid.ExtraData) uri.addSearchSimpleObject(this.Grid.ExtraData);
+                if (this.Grid.ExtraData) uri.addSearchSimpleObject(this.Grid.ExtraData);//$$$$$
 
-                $YetaWF.post(this.Setup.AddUrl, uri.toFormData(), (success: boolean, partial: GridRecordResult): void => {
+                $YetaWF.postJSON(uri.toUrl(), data, (success: boolean, partial: GridRecordResult): void => {
                     this.ReloadInProgress = false;
                     if (success)
                         this.Grid.AddRecord(partial.TR, partial.StaticData);
