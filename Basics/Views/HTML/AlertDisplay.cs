@@ -7,6 +7,7 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Basics.Controllers;
+using YetaWF.Modules.Basics.Endpoints;
 using YetaWF.Modules.Basics.Modules;
 using YetaWF.Modules.ComponentsHTML.Components;
 
@@ -23,12 +24,9 @@ namespace YetaWF.Modules.Basics.Views {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            string rootUrl = Package.GetAddOnPackageUrl(Package.AreaName);
-            string closeUrl = Manager.GetCDNUrl(System.IO.Path.Combine(rootUrl, "Icons", "Close.png"));
-
             if (model.MessageHandling == DataProvider.AlertConfig.MessageHandlingEnum.DisplayUntilOff) {
 
-                string ajaxUrl = Utility.UrlFor(typeof(AlertDisplayModuleController), nameof(AlertDisplayModuleController.Off), new { __ModuleGuid = module.ModuleGuid });
+                string ajaxUrl = Utility.UrlFor(typeof(AlertDisplayModuleEndpoints), nameof(AlertDisplayModuleEndpoints.Off));
 
                 hb.Append($@"
     <div class='t_close' data-ajaxurl='{Utility.HAE(ajaxUrl)}'>

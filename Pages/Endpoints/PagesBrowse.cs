@@ -60,7 +60,7 @@ namespace YetaWF.Modules.Pages.Endpoints {
                 if (page == null)
                     throw new Error(__ResStr("noPage", "Page \"{0}\" not found", pageName));
                 await PageDefinition.RemovePageDefinitionAsync(page.PageGuid);
-                return Reload(Reload: ReloadEnum.ModuleParts);
+                return Reload(ReloadEnum.ModuleParts);
             })
                 .RequireAuthorization()
                 .ExcludeDemoMode()
@@ -71,7 +71,7 @@ namespace YetaWF.Modules.Pages.Endpoints {
                 if (!module.IsAuthorized("SiteMaps")) return Results.Unauthorized();
                 SiteMaps sm = new SiteMaps();
                 await sm.CreateAsync();
-                return Reload(Reload: ReloadEnum.ModuleParts, PopupText: __ResStr("screDone", "The site map has been successfully created"));
+                return Reload(ReloadEnum.ModuleParts, PopupText: __ResStr("screDone", "The site map has been successfully created"));
             })
                 .RequireAuthorization()
                 .ExcludeDemoMode()
@@ -82,7 +82,7 @@ namespace YetaWF.Modules.Pages.Endpoints {
                 if (!module.IsAuthorized("SiteMaps")) return Results.Unauthorized();
                 SiteMaps sm = new SiteMaps();
                 await sm.RemoveAsync();
-                return Reload(Reload: ReloadEnum.ModuleParts, PopupText: __ResStr("sremDone", "The site map has been removed"));
+                return Reload(ReloadEnum.ModuleParts, PopupText: __ResStr("sremDone", "The site map has been removed"));
             })
                 .RequireAuthorization()
                 .ExcludeDemoMode()
@@ -140,7 +140,7 @@ namespace YetaWF.Modules.Pages.Endpoints {
                         }
                     }
                 }
-                return Reload(Reload: ReloadEnum.ModuleParts);
+                return Reload(ReloadEnum.ModuleParts);
             })
                 .RequireAuthorization()
                 .ExcludeDemoMode()
@@ -166,7 +166,7 @@ namespace YetaWF.Modules.Pages.Endpoints {
                     }
                     await page.SaveAsync();
                 }
-                return Reload(Reload: ReloadEnum.ModuleParts);
+                return Reload(ReloadEnum.ModuleParts);
             })
                 .RequireAuthorization()
                 .ExcludeDemoMode()
@@ -194,7 +194,7 @@ namespace YetaWF.Modules.Pages.Endpoints {
                     }
                     await page.SaveAsync();
                 }
-                return Reload(Reload: ReloadEnum.ModuleParts);
+                return Reload(ReloadEnum.ModuleParts);
             })
                 .RequireAuthorization()
                 .ExcludeDemoMode()
@@ -223,7 +223,7 @@ namespace YetaWF.Modules.Pages.Endpoints {
                     }
                     await page.SaveAsync();
                 }
-                return Reload(Reload: ReloadEnum.ModuleParts);
+                return Reload(ReloadEnum.ModuleParts);
             })
                 .RequireAuthorization()
                 .ExcludeDemoMode()
@@ -255,7 +255,7 @@ namespace YetaWF.Modules.Pages.Endpoints {
                     }
                     await page.SaveAsync();
                 }
-                return Reload(Reload: ReloadEnum.ModuleParts);
+                return Reload(ReloadEnum.ModuleParts);
             })
                 .RequireAuthorization()
                 .ExcludeDemoMode()

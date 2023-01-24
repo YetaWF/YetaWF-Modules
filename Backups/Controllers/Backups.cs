@@ -1,24 +1,21 @@
 ﻿/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Backups#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using YetaWF.Core.Addons;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.Localize;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
-using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Backups.DataProvider;
+using YetaWF.Modules.Backups.Endpoints;
 using YetaWF.Modules.Backups.Modules;
-using YetaWF.Core.IO;
-using YetaWF.Core.Components;
-using Microsoft.AspNetCore.Mvc;
 
 namespace YetaWF.Modules.Backups.Controllers {
 
@@ -67,17 +64,17 @@ namespace YetaWF.Modules.Backups.Controllers {
             public GridDefinition GridDef { get; set; } = null!;
         }
 
-        private GridDefinition GetGridModel() {
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 RecordType = typeof(BackupModel),
-                AjaxUrl = GetActionUrl(nameof(Backups_GridData)),
+                AjaxUrl = Utility.UrlFor(typeof(BackupsModuleEndpoints), nameof(GridSupport.BrowseGridData)),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (BackupsDataProvider dataProvider = new BackupsDataProvider()) {
                         DataProviderGetRecords<BackupEntry> backups = await dataProvider.GetBackupsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
-                            Data = (from b in backups.Data select new BackupModel(Module, b)).ToList<object>(),
+                            Data = (from b in backups.Data select new BackupModel((BackupsModule)module, b)).ToList<object>(),
                             Total = backups.Total
                         };
                     }
@@ -88,77 +85,9 @@ namespace YetaWF.Modules.Backups.Controllers {
         [AllowGet]
         public ActionResult Backups() {
             BackupsModel model = new BackupsModel {
-                GridDef = GetGridModel()
+                GridDef = GetGridModel(Module)
             };
             return View(model);
-        }
-
-        [AllowPost]
-        public async Task<ActionResult> Backups_GridData(GridPartialViewData gridPVData) {
-            return await GridPartialViewAsync(GetGridModel(), gridPVData);
-        }
-
-        [AllowPost]
-        [Permission("Backups")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> PerformSiteBackup() {
-            List<string> errorList = new List<string>();
-            SiteBackup siteBackup = new SiteBackup();
-            if (!await siteBackup.CreateAsync(errorList, ForDistribution: true)) {
-                ScriptBuilder sb = new ScriptBuilder();
-                sb.Append(this.__ResStr("cantBackup", "Can't create a site backup for site {0}:(+nl)"), Manager.CurrentSite.SiteDomain);
-                sb.Append(errorList, LeadingNL: true);
-                throw new Error(sb.ToString());
-            }
-            return Reload(null, PopupText: this.__ResStr("backupCreated", "The site backup has been successfully created"), Reload: ReloadEnum.ModuleParts);
-        }
-
-        [AllowPost]
-        [Permission("Backups")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> MakeSiteTemplateData() {
-            if (YetaWFManager.Deployed)
-                throw new InternalError("Can't make site template data on a deployed site");
-            SiteTemplateData siteTemplateData = new SiteTemplateData();
-            await siteTemplateData.MakeSiteTemplateDataAsync();
-            return Reload(null, PopupText: this.__ResStr("templatesCreated", "The templates for the current site have been successfully created in the \\SiteTemplates\\Data folder"), Reload: ReloadEnum.ModuleParts);
-        }
-
-        [Permission("Downloads")]
-        public async Task<ActionResult> Download(string filename, long cookieToReturn) {
-            if (string.IsNullOrWhiteSpace(filename))
-                throw new Error("No backup specified");
-            filename = Path.ChangeExtension(filename, "zip");
-            string path = Path.Combine(Manager.SiteFolder, SiteBackup.BackupFolder, filename);
-            if (!await FileSystem.FileSystemProvider.FileExistsAsync(path))
-                throw new Error(this.__ResStr("backupNotFound", "The backup '{0}' cannot be located.", filename));
-#if MVC6
-            Response.Headers.Remove("Cookie");
-            Response.Cookies.Append(Basics.CookieDone, cookieToReturn.ToString(), new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = false, Path = "/" });
-#else
-            HttpCookie cookie = new HttpCookie(Basics.CookieDone, cookieToReturn.ToString());
-            Response.Cookies.Remove(Basics.CookieDone);
-            Response.SetCookie(cookie);
-#endif
-            string contentType = "application/octet-stream";
-#if MVC6
-            return new PhysicalFileResult(path, contentType) { FileDownloadName = filename };
-#else
-            FilePathResult result = new FilePathResult(path, contentType);
-            result.FileDownloadName = filename;
-            return result;
-#endif
-        }
-
-        [AllowPost]
-        [Permission("Backups")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> Remove(string filename) {
-            if (string.IsNullOrWhiteSpace(filename))
-                throw new Error("No backup specified");
-            SiteBackup siteBackup = new SiteBackup();
-            await siteBackup.RemoveAsync(filename);
-            return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
     }
 }

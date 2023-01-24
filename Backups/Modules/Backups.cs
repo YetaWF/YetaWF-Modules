@@ -10,7 +10,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-using YetaWF.Modules.Backups.Controllers;
+using YetaWF.Modules.Backups.Endpoints;
 
 namespace YetaWF.Modules.Backups.Modules {
 
@@ -60,7 +60,7 @@ namespace YetaWF.Modules.Backups.Modules {
         public async Task<ModuleAction?> GetAction_PerformSiteBackupAsync() {
             if (!IsAuthorized("Backups")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(BackupsModuleController), nameof(BackupsModuleController.PerformSiteBackup)),
+                Url = Utility.UrlFor(typeof(BackupsModuleEndpoints), nameof(BackupsModuleEndpoints.PerformSiteBackup)),
                 NeedsModuleContext = true,
                 Image = await CustomIconAsync("SiteBackup.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,
@@ -81,7 +81,7 @@ namespace YetaWF.Modules.Backups.Modules {
             if (YetaWFManager.Deployed) return null; //Can't make site template data on a deployed site
             if (!IsAuthorized("Backups")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(BackupsModuleController), nameof(BackupsModuleController.MakeSiteTemplateData)),
+                Url = Utility.UrlFor(typeof(BackupsModuleEndpoints), nameof(BackupsModuleEndpoints.MakeSiteTemplateData)),
                 NeedsModuleContext = true,
                 Image = await CustomIconAsync("SiteBackup.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,
@@ -99,7 +99,7 @@ namespace YetaWF.Modules.Backups.Modules {
         public async Task<ModuleAction?> GetAction_DownloadLinkAsync(string filename) {
             if (!IsAuthorized("Downloads")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(BackupsModuleController), nameof(BackupsModuleController.Download)),
+                Url = Utility.UrlFor(typeof(BackupsModuleEndpoints), nameof(BackupsModuleEndpoints.Download)),
                 QueryArgs = new { FileName = filename },
                 Image = await CustomIconAsync("Download.png"),
                 NeedsModuleContext = true,
@@ -117,7 +117,7 @@ namespace YetaWF.Modules.Backups.Modules {
         public ModuleAction? GetAction_RemoveLink(string filename) {
             if (!IsAuthorized("Backups")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(BackupsModuleController), "Remove"),
+                Url = Utility.UrlFor(typeof(BackupsModuleEndpoints), BackupsModuleEndpoints.Remove),
                 QueryArgs = new { FileName = filename },
                 NeedsModuleContext = true,
                 Image = "#Remove",

@@ -3,11 +3,7 @@
 using YetaWF.Core.Controllers;
 using YetaWF.Modules.Basics.DataProvider;
 using System.Threading.Tasks;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Basics.Controllers {
 
@@ -45,12 +41,6 @@ namespace YetaWF.Modules.Basics.Controllers {
                 };
                 return View(model);
             }
-        }
-        [AllowPost]
-        public ActionResult Off() {
-            Manager.SessionSettings.SiteSettings.SetValue<bool>("YetaWF_Basics_AlertDone", true);
-            Manager.SessionSettings.SiteSettings.Save();
-            return new EmptyResult();
         }
     }
 }
