@@ -16,26 +16,22 @@ namespace YetaWF.Modules.Pages.Endpoints {
 
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            endpoints.MapPost(GetEndpoint(package, typeof(ListOfLocalPagesEndpoints), nameof(GridSupport.BrowseGridData)), async (HttpContext context, [FromBody] GridSupport.GridPartialViewData gridPVData) => {
+            RouteGroupBuilder group = endpoints.MapGroup(GetPackageRoute(package, typeof(ListOfLocalPagesEndpoints)))
+                .RequireAuthorization()
+                .AntiForgeryToken()
+                .ResourceAuthorize(Info.Resource_AllowListOfLocalPagesAjax);
+
+            group.MapPost(GetEndpoint(package, typeof(ListOfLocalPagesEndpoints), nameof(GridSupport.BrowseGridData)), async (HttpContext context, [FromBody] GridSupport.GridPartialViewData gridPVData) => {
                 return await GridSupport.GetGridPartialAsync(context, null, ListOfLocalPagesEditComponent.GetGridAllUsersModel(), gridPVData);
-            })
-                .RequireAuthorization()
-                .AntiForgeryToken()
-                .ResourceAuthorize(Info.Resource_AllowListOfLocalPagesAjax);
+            });
 
-            endpoints.MapPost(GetEndpoint(package, typeof(ListOfLocalPagesEndpoints), nameof(GridSupport.DisplaySortFilter)), async (HttpContext context, [FromBody] GridSupport.GridPartialViewData gridPVData) => {
+            group.MapPost(GetEndpoint(package, typeof(ListOfLocalPagesEndpoints), nameof(GridSupport.DisplaySortFilter)), async (HttpContext context, [FromBody] GridSupport.GridPartialViewData gridPVData) => {
                 return await GridSupport.GetGridPartialAsync<ListOfLocalPagesDisplayComponent.Entry>(context, null, ListOfLocalPagesDisplayComponent.GetGridModel(false), gridPVData);
-            })
-                .RequireAuthorization()
-                .AntiForgeryToken()
-                .ResourceAuthorize(Info.Resource_AllowListOfLocalPagesAjax);
+            });
 
-            endpoints.MapPost(GetEndpoint(package, typeof(ListOfLocalPagesEndpoints), nameof(GridSupport.EditSortFilter)), async (HttpContext context, [FromBody] GridSupport.GridPartialViewData gridPVData) => {
+            group.MapPost(GetEndpoint(package, typeof(ListOfLocalPagesEndpoints), nameof(GridSupport.EditSortFilter)), async (HttpContext context, [FromBody] GridSupport.GridPartialViewData gridPVData) => {
                 return await GridSupport.GetGridPartialAsync<ListOfLocalPagesEditComponent.Entry>(context, null, ListOfLocalPagesEditComponent.GetGridModel(false), gridPVData);
-            })
-                .RequireAuthorization()
-                .AntiForgeryToken()
-                .ResourceAuthorize(Info.Resource_AllowListOfLocalPagesAjax);
+            });
         }
     }
 }

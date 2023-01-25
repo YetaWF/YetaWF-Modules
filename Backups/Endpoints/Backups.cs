@@ -30,15 +30,17 @@ namespace YetaWF.Modules.Backups.Endpoints {
 
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            endpoints.MapPost(GetEndpoint(package, typeof(BackupsModuleEndpoints), nameof(GridSupport.BrowseGridData)), async (HttpContext context, [FromBody] GridSupport.GridPartialViewData gridPvData) => {
+            RouteGroupBuilder group = endpoints.MapGroup(GetPackageRoute(package, typeof(BackupsModuleEndpoints)))
+                .RequireAuthorization();
+            
+            group.MapPost(GridSupport.BrowseGridData, async (HttpContext context, [FromBody] GridSupport.GridPartialViewData gridPvData) => {
                 ModuleDefinition module = await GetModuleAsync(gridPvData.__ModuleGuid);
                 if (!module.IsAuthorized("Backups")) return Results.Unauthorized();
                 return await GridSupport.GetGridPartialAsync(context, module, BackupsModuleController.GetGridModel(module), gridPvData);
             })
-                .RequireAuthorization()
                 .AntiForgeryToken();
 
-            endpoints.MapPost(GetEndpoint(package, typeof(BackupsModuleEndpoints), BackupsModuleEndpoints.PerformSiteBackup), async (HttpContext context, [FromQuery] Guid __ModuleGuid) => {
+            group.MapPost(PerformSiteBackup, async (HttpContext context, [FromQuery] Guid __ModuleGuid) => {
                 ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
                 if (!module.IsAuthorized("Backups")) return Results.Unauthorized();
                 List<string> errorList = new List<string>();
@@ -51,10 +53,9 @@ namespace YetaWF.Modules.Backups.Endpoints {
                 }
                 return Reload(ReloadEnum.ModuleParts, PopupText: __ResStr("backupCreated", "The site backup has been successfully created"));
             })
-                .RequireAuthorization()
                 .ExcludeDemoMode();
 
-            endpoints.MapPost(GetEndpoint(package, typeof(BackupsModuleEndpoints), BackupsModuleEndpoints.MakeSiteTemplateData), async (HttpContext context, [FromQuery] Guid __ModuleGuid) => {
+            group.MapPost(MakeSiteTemplateData, async (HttpContext context, [FromQuery] Guid __ModuleGuid) => {
                 ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
                 if (!module.IsAuthorized("Backups")) return Results.Unauthorized();
                 List<string> errorList = new List<string>();
@@ -64,10 +65,9 @@ namespace YetaWF.Modules.Backups.Endpoints {
                 await siteTemplateData.MakeSiteTemplateDataAsync();
                 return Reload(ReloadEnum.ModuleParts, PopupText: __ResStr("templatesCreated", "The templates for the current site have been successfully created in the \\SiteTemplates\\Data folder"));
             })
-                .RequireAuthorization()
                 .ExcludeDemoMode();
 
-            endpoints.MapPost(GetEndpoint(package, typeof(BackupsModuleEndpoints), BackupsModuleEndpoints.Remove), async (HttpContext context, [FromQuery] Guid __ModuleGuid, [FromQuery] string filename) => {
+            group.MapPost(Remove, async (HttpContext context, [FromQuery] Guid __ModuleGuid, [FromQuery] string filename) => {
                 ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
                 if (!module.IsAuthorized("Backups")) return Results.Unauthorized();
                 if (string.IsNullOrWhiteSpace(filename))
@@ -76,10 +76,9 @@ namespace YetaWF.Modules.Backups.Endpoints {
                 await siteBackup.RemoveAsync(filename);
                 return Reload(ReloadEnum.ModuleParts);
             })
-                .RequireAuthorization()
                 .ExcludeDemoMode();
 
-            endpoints.MapGet(GetEndpoint(package, typeof(BackupsModuleEndpoints), Download), async (HttpContext context, [FromQuery] Guid __ModuleGuid, string filename, long cookieToReturn) => {
+            group.MapGet(Download, async (HttpContext context, [FromQuery] Guid __ModuleGuid, string filename, long cookieToReturn) => {
                 ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
                 if (!module.IsAuthorized("Downloads")) return Results.Unauthorized();
                 if (string.IsNullOrWhiteSpace(filename))
@@ -93,7 +92,6 @@ namespace YetaWF.Modules.Backups.Endpoints {
                 context.Response.Cookies.Append(Basics.CookieDone, cookieToReturn.ToString(), new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = false, Path = "/" });
                 return Results.File(path, null, filename);
             })
-                .RequireAuthorization()
                 .ExcludeDemoMode();
         }
     }

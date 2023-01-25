@@ -44,16 +44,18 @@ namespace YetaWF.Modules.Pages.Endpoints {
 
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            endpoints.MapPost(GetEndpoint(package, typeof(PagesBrowseModuleEndpoints), nameof(GridSupport.BrowseGridData)), async (HttpContext context, [FromBody] GridSupport.GridPartialViewData gridPvData) => {
+            RouteGroupBuilder group = endpoints.MapGroup(GetPackageRoute(package, typeof(PagesBrowseModuleEndpoints)))
+                .RequireAuthorization()
+                .ResourceAuthorize(Info.Resource_AllowListOfLocalPagesAjax);
+
+            group.MapPost(GridSupport.BrowseGridData, async (HttpContext context, [FromBody] GridSupport.GridPartialViewData gridPvData) => {
                 ModuleDefinition module = await GetModuleAsync(gridPvData.__ModuleGuid);
                 if (!module.IsAuthorized()) return Results.Unauthorized();
                 return await GridSupport.GetGridPartialAsync(context, module, PagesBrowseModuleController.GetGridModel(module), gridPvData);
             })
-                .RequireAuthorization()
-                .AntiForgeryToken()
-                .ResourceAuthorize(Info.Resource_AllowListOfLocalPagesAjax);
+                .AntiForgeryToken();
 
-            endpoints.MapPost(GetEndpoint(package, typeof(PagesBrowseModuleEndpoints), PagesBrowseModuleEndpoints.Remove), async (HttpContext context, [FromQuery] Guid __ModuleGuid, [FromQuery] string pageName) => {
+            group.MapPost(Remove, async (HttpContext context, [FromQuery] Guid __ModuleGuid, [FromQuery] string pageName) => {
                 ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
                 if (!module.IsAuthorized("RemovePages")) return Results.Unauthorized();
                 PageDefinition? page = await PageDefinition.LoadFromUrlAsync(pageName);
@@ -62,33 +64,27 @@ namespace YetaWF.Modules.Pages.Endpoints {
                 await PageDefinition.RemovePageDefinitionAsync(page.PageGuid);
                 return Reload(ReloadEnum.ModuleParts);
             })
-                .RequireAuthorization()
-                .ExcludeDemoMode()
-                .ResourceAuthorize(Info.Resource_AllowListOfLocalPagesAjax);
+                .ExcludeDemoMode();
 
-            endpoints.MapPost(GetEndpoint(package, typeof(PagesBrowseModuleEndpoints), CreateSiteMap), async (HttpContext context, [FromQuery] Guid __ModuleGuid) => {
+            group.MapPost(CreateSiteMap, async (HttpContext context, [FromQuery] Guid __ModuleGuid) => {
                 ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
                 if (!module.IsAuthorized("SiteMaps")) return Results.Unauthorized();
                 SiteMaps sm = new SiteMaps();
                 await sm.CreateAsync();
                 return Reload(ReloadEnum.ModuleParts, PopupText: __ResStr("screDone", "The site map has been successfully created"));
             })
-                .RequireAuthorization()
-                .ExcludeDemoMode()
-                .ResourceAuthorize(Info.Resource_AllowListOfLocalPagesAjax);
+                .ExcludeDemoMode();
 
-            endpoints.MapPost(GetEndpoint(package, typeof(PagesBrowseModuleEndpoints), RemoveSiteMap), async (HttpContext context, [FromQuery] Guid __ModuleGuid) => {
+            group.MapPost(RemoveSiteMap, async (HttpContext context, [FromQuery] Guid __ModuleGuid) => {
                 ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
                 if (!module.IsAuthorized("SiteMaps")) return Results.Unauthorized();
                 SiteMaps sm = new SiteMaps();
                 await sm.RemoveAsync();
                 return Reload(ReloadEnum.ModuleParts, PopupText: __ResStr("sremDone", "The site map has been removed"));
             })
-                .RequireAuthorization()
-                .ExcludeDemoMode()
-                .ResourceAuthorize(Info.Resource_AllowListOfLocalPagesAjax);
+                .ExcludeDemoMode();
 
-            endpoints.MapGet(GetEndpoint(package, typeof(PagesBrowseModuleEndpoints), DownloadSiteMap), async (HttpContext context, [FromQuery] Guid __ModuleGuid, long cookieToReturn) => {
+            group.MapGet(DownloadSiteMap, async (HttpContext context, [FromQuery] Guid __ModuleGuid, long cookieToReturn) => {
                 ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
                 if (!module.IsAuthorized("SiteMaps")) return Results.Unauthorized();
                 SiteMaps sm = new SiteMaps();
@@ -100,11 +96,9 @@ namespace YetaWF.Modules.Pages.Endpoints {
                 context.Response.Cookies.Append(Basics.CookieDone, cookieToReturn.ToString(), new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = false, Path = "/" });
                 return Results.File(filename, null, Path.GetFileName(filename));
             })
-                .RequireAuthorization()
-                .ExcludeDemoMode()
-                .ResourceAuthorize(Info.Resource_AllowListOfLocalPagesAjax);
+                .ExcludeDemoMode();
 
-            endpoints.MapGet(GetEndpoint(package, typeof(PagesBrowseModuleEndpoints), CreatePageList), async (HttpContext context, [FromQuery] Guid __ModuleGuid, long cookieToReturn) => {
+            group.MapGet(CreatePageList, async (HttpContext context, [FromQuery] Guid __ModuleGuid, long cookieToReturn) => {
                 ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
                 if (!module.IsAuthorized("SiteMaps")) return Results.Unauthorized();
                 PageList sm = new PageList();
@@ -115,11 +109,9 @@ namespace YetaWF.Modules.Pages.Endpoints {
                 byte[] btes = Encoding.UTF8.GetBytes(list);
                 return Results.File(btes, null, "FileList.txt");
             })
-                .RequireAuthorization()
-                .ExcludeDemoMode()
-                .ResourceAuthorize(Info.Resource_AllowListOfLocalPagesAjax);
+                .ExcludeDemoMode();
 
-            endpoints.MapPost(GetEndpoint(package, typeof(PagesBrowseModuleEndpoints), UpdateAdminAndEditorAuthorization), async (HttpContext context, [FromQuery] Guid __ModuleGuid) => {
+            group.MapPost(UpdateAdminAndEditorAuthorization, async (HttpContext context, [FromQuery] Guid __ModuleGuid) => {
                 ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
                 if (!module.IsAuthorized("SetAuthorization")) return Results.Unauthorized();
                 using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
@@ -142,12 +134,10 @@ namespace YetaWF.Modules.Pages.Endpoints {
                 }
                 return Reload(ReloadEnum.ModuleParts);
             })
-                .RequireAuthorization()
-                .ExcludeDemoMode()
-                .ResourceAuthorize(Info.Resource_AllowListOfLocalPagesAjax);
+                .ExcludeDemoMode();
 
 #if DEBUG
-            endpoints.MapPost(GetEndpoint(package, typeof(PagesBrowseModuleEndpoints), SetSuperuser), async (HttpContext context, [FromQuery] Guid __ModuleGuid, Guid guid) => {
+            group.MapPost(SetSuperuser, async (HttpContext context, [FromQuery] Guid __ModuleGuid, Guid guid) => {
                 ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
                 if (!module.IsAuthorized("SetAuthorization")) return Results.Unauthorized();
                 using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
@@ -168,11 +158,9 @@ namespace YetaWF.Modules.Pages.Endpoints {
                 }
                 return Reload(ReloadEnum.ModuleParts);
             })
-                .RequireAuthorization()
-                .ExcludeDemoMode()
-                .ResourceAuthorize(Info.Resource_AllowListOfLocalPagesAjax);
+                .ExcludeDemoMode();
 
-            endpoints.MapPost(GetEndpoint(package, typeof(PagesBrowseModuleEndpoints), SetAdmin), async (HttpContext context, [FromQuery] Guid __ModuleGuid, Guid guid) => {
+            group.MapPost(SetAdmin, async (HttpContext context, [FromQuery] Guid __ModuleGuid, Guid guid) => {
                 ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
                 if (!module.IsAuthorized("SetAuthorization")) return Results.Unauthorized();
                 using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
@@ -196,11 +184,9 @@ namespace YetaWF.Modules.Pages.Endpoints {
                 }
                 return Reload(ReloadEnum.ModuleParts);
             })
-                .RequireAuthorization()
-                .ExcludeDemoMode()
-                .ResourceAuthorize(Info.Resource_AllowListOfLocalPagesAjax);
+                .ExcludeDemoMode();
 
-            endpoints.MapPost(GetEndpoint(package, typeof(PagesBrowseModuleEndpoints), SetUser), async (HttpContext context, [FromQuery] Guid __ModuleGuid, Guid guid) => {
+            group.MapPost(SetUser, async (HttpContext context, [FromQuery] Guid __ModuleGuid, Guid guid) => {
                 ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
                 if (!module.IsAuthorized("SetAuthorization")) return Results.Unauthorized();
                 using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
@@ -225,11 +211,9 @@ namespace YetaWF.Modules.Pages.Endpoints {
                 }
                 return Reload(ReloadEnum.ModuleParts);
             })
-                .RequireAuthorization()
-                .ExcludeDemoMode()
-                .ResourceAuthorize(Info.Resource_AllowListOfLocalPagesAjax);
+                .ExcludeDemoMode();
 
-            endpoints.MapPost(GetEndpoint(package, typeof(PagesBrowseModuleEndpoints), SetAnonymous), async (HttpContext context, [FromQuery] Guid __ModuleGuid, Guid guid) => {
+            group.MapPost(SetAnonymous, async (HttpContext context, [FromQuery] Guid __ModuleGuid, Guid guid) => {
                 ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
                 if (!module.IsAuthorized("SetAuthorization")) return Results.Unauthorized();
                 using (PageDefinitionDataProvider pageDP = new PageDefinitionDataProvider()) {
@@ -257,9 +241,7 @@ namespace YetaWF.Modules.Pages.Endpoints {
                 }
                 return Reload(ReloadEnum.ModuleParts);
             })
-                .RequireAuthorization()
-                .ExcludeDemoMode()
-                .ResourceAuthorize(Info.Resource_AllowListOfLocalPagesAjax);
+                .ExcludeDemoMode();
 #endif
         }
     }
