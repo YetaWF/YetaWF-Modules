@@ -24,6 +24,7 @@ namespace YetaWF_ComponentsHTML {
         Columns: GridColumnDefinition[];
         SaveSettingsColumnWidthsUrl: string;
         SaveSettingsColumnSelectionUrl: string;
+        SaveExpandCollapseUrl: string;
         ExtraData: any;
         HighlightCss: string;
         DisabledCss: string;
@@ -305,7 +306,7 @@ namespace YetaWF_ComponentsHTML {
                         colIndex++;
                     }
 
-                    $YetaWF.post(this.Setup.SaveSettingsColumnSelectionUrl, uri.toFormData(), (success: boolean, data:any): void => {
+                    $YetaWF.postJSON(this.Setup.SaveSettingsColumnSelectionUrl, null, (success: boolean, data:any): void => {
                         if (success) {
                             if (!this.Setup.StaticData) {
                                 this.reload(0);
@@ -545,15 +546,15 @@ namespace YetaWF_ComponentsHTML {
 
         private saveExpandCollapseStatus(expanded: boolean) : void {
             // send save request, we don't care about the response
-            let uri = $YetaWF.parseUrl("/YetaWF_ComponentsHTML/GridPanelSaveSettings/SaveExpandCollapse");
+            let uri = $YetaWF.parseUrl(this.Setup.SaveExpandCollapseUrl);
             uri.addSearch("SettingsModuleGuid", this.Setup.SettingsModuleGuid);
             uri.addSearch("Expanded", expanded.toString());
 
             let request: XMLHttpRequest = new XMLHttpRequest();
             request.open("POST", uri.toUrl(), true);
-            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            request.setRequestHeader("Content-Type", "application/json");
             request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            request.send(/*uri.toFormData()*/);
+            request.send();
         }
         private setExpandCollapseStatus(expand: boolean) : void {
             if (!expand && $YetaWF.elementHasClass(this.Control, "t_expanded")) {
@@ -797,9 +798,8 @@ namespace YetaWF_ComponentsHTML {
 
                     let request: XMLHttpRequest = new XMLHttpRequest();
                     request.open("POST", currentControl.Setup.SaveSettingsColumnWidthsUrl, true);
-                    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                    request.setRequestHeader("Content-Type", "application/json");
                     request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                    //request.overrideMimeType("application/text");// would help firefox understand this isn't xml, but it's not standard, oh well
                     request.send(uri.toFormData());
                 }
             }
@@ -925,9 +925,8 @@ namespace YetaWF_ComponentsHTML {
     
                     let uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
 
-                    //$$$$ this is for what?
-                    // if (this.Setup.ExtraData)
-                    //     uri.addSearchSimpleObject(this.Setup.ExtraData);
+                    if (this.Setup.ExtraData)
+                        uri.addSearchSimpleObject(this.Setup.ExtraData);
 
                     if (this.Setup.StaticData)
                         data.Data = JSON.stringify(this.Setup.StaticData)

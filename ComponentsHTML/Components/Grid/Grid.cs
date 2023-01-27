@@ -16,7 +16,7 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
-using YetaWF.Modules.ComponentsHTML.Controllers;
+using YetaWF.Modules.ComponentsHTML.Endpoints;
 using YetaWF.Modules.ComponentsHTML.Views;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
@@ -70,6 +70,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public int MinColumnWidth { get; set; }
         public string? SaveSettingsColumnWidthsUrl { get; set; }
         public string? SaveSettingsColumnSelectionUrl { get; set; }
+        public string? SaveExpandCollapseUrl { get; set; }
         public object? ExtraData { get; set; }
         public string HighlightCss { get; set; } = null!;
         public string DisabledCss { get; set; } = null!;
@@ -195,8 +196,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 RowDragDropHighlightCss = "tg_dragdrophighlight",
                 SortActiveCss = "tg_active",
                 SettingsModuleGuid = model.SettingsModuleGuid,
-                SaveSettingsColumnWidthsUrl = dictInfo.SaveColumnWidths != false ? Utility.UrlFor(typeof(GridSaveSettingsController), nameof(GridSaveSettingsController.GridSaveColumnWidths)) : null,
-                SaveSettingsColumnSelectionUrl = model.PanelHeaderColumnSelection ? Utility.UrlFor(typeof(GridSaveSettingsController), nameof(GridSaveSettingsController.GridSaveHiddenColumns)) : null,
+                SaveSettingsColumnWidthsUrl = dictInfo.SaveColumnWidths != false ? Utility.UrlFor(typeof(GridSaveSettingsEndpoints), GridSaveSettingsEndpoints.GridSaveColumnWidths) : null,
+                SaveSettingsColumnSelectionUrl = model.PanelHeaderColumnSelection ? Utility.UrlFor(typeof(GridSaveSettingsEndpoints), GridSaveSettingsEndpoints.GridSaveHiddenColumns) : null,
+                SaveExpandCollapseUrl = model.PanelHeader && model.PanelCanMinimize ? Utility.UrlFor(typeof(GridSaveSettingsEndpoints), GridPanelSaveSettingsEndpoints.SaveExpandCollapse) : null,
                 DeletedMessage = model.DeletedMessage,
                 DeleteConfirmationMessage = model.DeleteConfirmationMessage != null && UserSettings.GetProperty<bool>("ConfirmDelete") ? model.DeleteConfirmationMessage : null,
                 DeletedColumnDisplay = model.DeletedColumnDisplay,

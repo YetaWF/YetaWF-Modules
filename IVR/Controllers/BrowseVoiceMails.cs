@@ -143,9 +143,9 @@ namespace Softelvdm.Modules.IVR.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> BrowseVoiceMails_GridData(GridPartialViewData gridPVData) {
+        public async Task<ActionResult> BrowseVoiceMails_GridData(GridPartialViewData gridPvData) {
             Manager.NeedUser();
-            return await GridPartialViewAsync(GetGridModel(), gridPVData);
+            return await GridPartialViewAsync(GetGridModel(), gridPvData);
         }
 
         [AllowPost]

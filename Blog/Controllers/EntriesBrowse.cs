@@ -8,10 +8,13 @@ using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.DataProvider;
+using YetaWF.Modules.Blog.Endpoints;
 using YetaWF.Modules.Blog.Modules;
 
 namespace YetaWF.Modules.Blog.Controllers {
@@ -97,12 +100,12 @@ namespace YetaWF.Modules.Blog.Controllers {
             public GridDefinition GridDef { get; set; } = null!;
         }
 
-        private GridDefinition GetGridModel(int blogCategory) {
+        internal static GridDefinition GetGridModel(ModuleDefinition module, int blogCategory) {
             return new GridDefinition {
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(EntriesBrowse_GridData)),
+                AjaxUrl = Utility.UrlFor<EntriesBrowseModuleEndpoints>(GridSupport.BrowseGridData),
                 ExtraData = new BrowseItem.ExtraData { BlogCategory = blogCategory },
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     // filter by category
@@ -113,7 +116,7 @@ namespace YetaWF.Modules.Blog.Controllers {
                         using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
                             DataProviderGetRecords<BlogEntry> browseItems = await entryDP.GetItemsAsync(skip, take, sort, filters);
                             return new DataSourceResult {
-                                Data = (from s in browseItems.Data select new BrowseItem(Module, categoryDP, s)).ToList<object>(),
+                                Data = (from s in browseItems.Data select new BrowseItem((EntriesBrowseModule)module, categoryDP, s)).ToList<object>(),
                                 Total = browseItems.Total
                             };
                         }
@@ -125,25 +128,9 @@ namespace YetaWF.Modules.Blog.Controllers {
         [AllowGet]
         public ActionResult EntriesBrowse(int blogCategory = 0) {
             BrowseModel model = new BrowseModel {
-                GridDef = GetGridModel(blogCategory)
+                GridDef = GetGridModel(Module, blogCategory)
             };
             return View(model);
-        }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> EntriesBrowse_GridData(GridPartialViewData gridPVData, int blogCategory) {
-            return await GridPartialViewAsync(GetGridModel(blogCategory), gridPVData);
-        }
-
-        [AllowPost]
-        [Permission("RemoveItems")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> Remove(int blogEntry) {
-            using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {
-                await dataProvider.RemoveItemAsync(blogEntry);
-                return Reload(null, Reload: ReloadEnum.ModuleParts);
-            }
         }
     }
 }

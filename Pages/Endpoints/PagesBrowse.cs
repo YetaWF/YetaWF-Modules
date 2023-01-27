@@ -29,16 +29,16 @@ namespace YetaWF.Modules.Pages.Endpoints {
 
     public class PagesBrowseModuleEndpoints : YetaWFEndpoints {
 
-        public const string Remove = "Remove";
-        public const string CreateSiteMap = "CreateSiteMap";
-        public const string RemoveSiteMap = "RemoveSiteMap";
-        public const string DownloadSiteMap = "DownloadSiteMap";
-        public const string CreatePageList = "CreatePageList";
-        public const string UpdateAdminAndEditorAuthorization = "UpdateAdminAndEditorAuthorization";
-        public const string SetSuperuser = "SetSuperuser";
-        public const string SetAdmin = "SetAdmin";
-        public const string SetUser = "SetUser";
-        public const string SetAnonymous = "SetAnonymous";
+        internal const string Remove = "Remove";
+        internal const string CreateSiteMap = "CreateSiteMap";
+        internal const string RemoveSiteMap = "RemoveSiteMap";
+        internal const string DownloadSiteMap = "DownloadSiteMap";
+        internal const string CreatePageList = "CreatePageList";
+        internal const string UpdateAdminAndEditorAuthorization = "UpdateAdminAndEditorAuthorization";
+        internal const string SetSuperuser = "SetSuperuser";
+        internal const string SetAdmin = "SetAdmin";
+        internal const string SetUser = "SetUser";
+        internal const string SetAnonymous = "SetAnonymous";
 
         private static string __ResStr(string name, string defaultValue, params object?[] parms) { return ResourceAccess.GetResourceString(typeof(PagesBrowseModuleEndpoints), name, defaultValue, parms); }
 

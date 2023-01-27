@@ -19,20 +19,20 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> ListOfUserNamesDisplay_SortFilter(GridPartialViewData gridPVData) {
-            return await GridPartialViewAsync<ListOfUserNamesDisplayComponent.Entry>(ListOfUserNamesDisplayComponent.GetGridModel(false, false, false), gridPVData);
+        public async Task<ActionResult> ListOfUserNamesDisplay_SortFilter(GridPartialViewData gridPvData) {
+            return await GridPartialViewAsync<ListOfUserNamesDisplayComponent.Entry>(ListOfUserNamesDisplayComponent.GetGridModel(false, false, false), gridPvData);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> ListOfUserNamesEdit_SortFilter(GridPartialViewData gridPVData) {
-            return await GridPartialViewAsync<ListOfUserNamesEditComponent.Entry>(ListOfUserNamesEditComponent.GetGridModel(false), gridPVData);
+        public async Task<ActionResult> ListOfUserNamesEdit_SortFilter(GridPartialViewData gridPvData) {
+            return await GridPartialViewAsync<ListOfUserNamesEditComponent.Entry>(ListOfUserNamesEditComponent.GetGridModel(false), gridPvData);
         }
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ResourceAuthorize(Info.Resource_AllowListOfUserNamesAjax)]
-        public async Task<ActionResult> ListOfUserNamesBrowse_GridData(GridPartialViewData gridPVData) {
-            return await GridPartialViewAsync(ListOfUserNamesEditComponent.GetGridAllUsersModel(), gridPVData);
+        public async Task<ActionResult> ListOfUserNamesBrowse_GridData(GridPartialViewData gridPvData) {
+            return await GridPartialViewAsync(ListOfUserNamesEditComponent.GetGridAllUsersModel(), gridPvData);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]

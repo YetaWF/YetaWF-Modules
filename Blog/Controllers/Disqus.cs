@@ -6,14 +6,15 @@ using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.Components;
-using YetaWF.Modules.Blog.Controllers.Support;
 using YetaWF.Modules.Blog.DataProvider;
+using YetaWF.Modules.Blog.Support;
 
 // Documentation:
 // https://disqus.com/api/docs/
 // https://help.disqus.com/customer/en/portal/articles/236206-integrating-single-sign-on
 
-namespace YetaWF.Modules.Blog.Controllers {
+namespace YetaWF.Modules.Blog.Controllers
+{
 
     public class DisqusModuleController : ControllerImpl<YetaWF.Modules.Blog.Modules.DisqusModule> {
 

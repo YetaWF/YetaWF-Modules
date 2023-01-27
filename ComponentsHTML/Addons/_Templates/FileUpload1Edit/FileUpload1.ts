@@ -92,23 +92,26 @@ namespace YetaWF_ComponentsHTML {
             if (this.ProgressBar)
                 this.ProgressBar.show();
 
-            const request: XMLHttpRequest = new XMLHttpRequest();
-            request.open("POST", this.Setup.SaveUrl, true);
-            //request.setRequestHeader // doesn't work
+            let uri = $YetaWF.parseUrl(this.Setup.SaveUrl);
 
             fd.append("__filename", this.InputFileName.files![0]);
 
             if (this.GetFileNameCallback) {
                 const filename = this.GetFileNameCallback();
-                fd.append("__lastInternalName", filename);// the previous real filename of the file to remove
+                uri.addSearch("__lastInternalName", filename);// the previous real filename of the file to remove
             }
+
             if (this.Setup.SerializeForm) {
                 var form = $YetaWF.Forms.getForm(this.Control);
                 var formData = $YetaWF.Forms.serializeFormArray(form);
                 for (let f of formData) {
-                    fd.append(f.name, f.value);
+                    uri.addSearch(f.name, f.value);
                 }
             }
+
+            const request: XMLHttpRequest = new XMLHttpRequest();
+            request.open("POST", uri.toUrl(), true);
+            //request.setRequestHeader // doesn't work
 
             request.upload.onprogress = (ev: ProgressEvent<EventTarget>): any => {
                 let percent = 0;
@@ -143,7 +146,7 @@ namespace YetaWF_ComponentsHTML {
 
         // API
         public RemoveFile(name: string): void {
-            $YetaWF.post(this.Setup.RemoveUrl, null, (success: boolean, data: FileUploadRemoveResponse): void => {
+            $YetaWF.postJSON(this.Setup.RemoveUrl, null, (success: boolean, data: FileUploadRemoveResponse): void => {
                 if (success && data.Result)
                     $YetaWF.message(data.Result);
             });

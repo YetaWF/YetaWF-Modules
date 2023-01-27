@@ -477,7 +477,7 @@ var YetaWF_ComponentsHTML;
             this.closePopup(SendSelectEnum.No);
             var uri = $YetaWF.parseUrl(ajaxUrl);
             uri.addSearchSimpleObject(data);
-            $YetaWF.post(ajaxUrl, uri.toFormData(), function (success, data) {
+            $YetaWF.postJSON(uri.toUrl(), null, function (success, data) {
                 if (success) {
                     _this.setOptionsHTML(data.OptionsHTML);
                     if (onSuccess)

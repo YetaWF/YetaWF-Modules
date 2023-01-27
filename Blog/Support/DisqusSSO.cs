@@ -8,7 +8,8 @@ using YetaWF.Core.Support;
 // Original sample located at
 // https://raw.githubusercontent.com/disqus/DISQUS-API-Recipes/master/sso/cs/DisqusSSO.cs
 
-namespace YetaWF.Modules.Blog.Controllers.Support {
+namespace YetaWF.Modules.Blog.Support
+{
 
     /// <summary>
     /// This class generates the payload we need to authenticate users remotely through Disqus
@@ -35,9 +36,11 @@ namespace YetaWF.Modules.Blog.Controllers.Support {
     /// This will only work if that key is associated with your SSO remote domain
     /// It is highly recommended that you DO NOT hard-code your API secret key here, and instead read it from a secure configuration store
 
-    public class SSO {
+    public class SSO
+    {
 
-        public SSO(string APISecret) {
+        public SSO(string APISecret)
+        {
             _apiSecret = APISecret;
         }
 
@@ -52,8 +55,10 @@ namespace YetaWF.Modules.Blog.Controllers.Support {
         /// <param name="avatar_url">URL of the avatar image</param>
         /// <param name="website_url">Website, blog or custom profile URL for the user, defined by RFC 3986</param>
         /// <returns>A string containing the signed payload</returns>
-        public string GetPayload(string user_id, string user_name, string user_email, string avatar_url = "", string website_url = "") {
-            var userdata = new {
+        public string GetPayload(string user_id, string user_name, string user_email, string avatar_url = "", string website_url = "")
+        {
+            var userdata = new
+            {
                 id = user_id,
                 username = user_name,
                 email = user_email,
@@ -69,20 +74,22 @@ namespace YetaWF.Modules.Blog.Controllers.Support {
         /// Method to log out a user from SSO
         /// </summary>
         /// <returns>A signed, empty payload string</returns>
-        public string LogoutUser() {
+        public string LogoutUser()
+        {
             var userdata = new { };
             string serializedUserData = Utility.JsonSerialize(userdata);
             return GeneratePayload(serializedUserData);
         }
 
-        private string GeneratePayload(string serializedUserData) {
+        private string GeneratePayload(string serializedUserData)
+        {
             byte[] userDataAsBytes = Encoding.ASCII.GetBytes(serializedUserData);
 
             // Base64 Encode the message
-            string Message = System.Convert.ToBase64String(userDataAsBytes);
+            string Message = Convert.ToBase64String(userDataAsBytes);
 
             // Get the proper timestamp
-            TimeSpan ts = (DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0));//$$$local/utc
+            TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0);//$$$local/utc
             string Timestamp = Convert.ToInt32(ts.TotalSeconds).ToString();
 
             // Convert the message + timestamp to bytes
@@ -90,7 +97,8 @@ namespace YetaWF.Modules.Blog.Controllers.Support {
 
             // Convert Disqus API key to HMAC-SHA1 signature
             byte[] apiBytes = Encoding.ASCII.GetBytes(_apiSecret);
-            using (HMACSHA1 hmac = new HMACSHA1(apiBytes)) {
+            using (HMACSHA1 hmac = new HMACSHA1(apiBytes))
+            {
                 byte[] hashedMessage = hmac.ComputeHash(messageAndTimestampBytes);
 
                 // Put it all together into the final payload
@@ -98,13 +106,15 @@ namespace YetaWF.Modules.Blog.Controllers.Support {
             }
         }
 
-        private string ByteToString(byte[] buff) {
+        private string ByteToString(byte[] buff)
+        {
             string sbinary = "";
 
-            for (int i = 0 ; i < buff.Length ; i++) {
+            for (int i = 0; i < buff.Length; i++)
+            {
                 sbinary += buff[i].ToString("X2"); // hex format
             }
-            return (sbinary);
+            return sbinary;
         }
     }
 }

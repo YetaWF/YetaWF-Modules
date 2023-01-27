@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core;
-using YetaWF.Core.Components;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -12,7 +11,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-using YetaWF.Modules.Blog.Controllers;
+using YetaWF.Modules.Blog.Endpoints;
 using YetaWF.Modules.Blog.Scheduler;
 
 namespace YetaWF.Modules.Blog.Modules {
@@ -84,7 +83,7 @@ namespace YetaWF.Modules.Blog.Modules {
         public ModuleAction? GetAction_Remove(int blogCategory) {
             if (!IsAuthorized("RemoveItems")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(CategoriesBrowseModuleController), "Remove"),
+                Url = Utility.UrlFor(typeof(CategoriesBrowseModuleEndpoints), CategoriesBrowseModuleEndpoints.Remove),
                 NeedsModuleContext = true,
                 QueryArgs = new { BlogCategory = blogCategory },
                 Image = "#Remove",
@@ -102,7 +101,7 @@ namespace YetaWF.Modules.Blog.Modules {
         public ModuleAction? GetAction_CreateNewsSiteMap() {
             if (!IsAuthorized("NewsSiteMap")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(CategoriesBrowseModuleController), "CreateNewsSiteMap"),
+                Url = Utility.UrlFor(typeof(CategoriesBrowseModuleEndpoints), CategoriesBrowseModuleEndpoints.CreateNewsSiteMap),
                 NeedsModuleContext = true,
                 QueryArgs = new { },
                 Image = "#Add",
@@ -121,7 +120,7 @@ namespace YetaWF.Modules.Blog.Modules {
         public ModuleAction? GetAction_RemoveNewsSiteMap() {
             if (!IsAuthorized("NewsSiteMap")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(CategoriesBrowseModuleController), "RemoveNewsSiteMap"),
+                Url = Utility.UrlFor(typeof(CategoriesBrowseModuleEndpoints), CategoriesBrowseModuleEndpoints.RemoveNewsSiteMap),
                 NeedsModuleContext = true,
                 QueryArgs = new { },
                 Image = "#Remove",
@@ -143,7 +142,7 @@ namespace YetaWF.Modules.Blog.Modules {
             if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
                 return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(CategoriesBrowseModuleController), nameof(CategoriesBrowseModuleController.DownloadNewsSiteMap)),
+                Url = Utility.UrlFor(typeof(CategoriesBrowseModuleEndpoints), nameof(CategoriesBrowseModuleEndpoints.DownloadNewsSiteMap)),
                 NeedsModuleContext = true,
                 CookieAsDoneSignal = true,
                 Image = await CustomIconAsync("Download.png"),

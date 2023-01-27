@@ -9,7 +9,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
-using YetaWF.Modules.ComponentsHTML.Controllers;
+using YetaWF.Modules.ComponentsHTML.Endpoints;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -162,8 +162,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // the upload control
             Core.Components.FileUpload1 setupUpload = new Core.Components.FileUpload1() {
-                SaveURL = Utility.UrlFor(typeof(FileUpload1Controller), nameof(FileUpload1Controller.SaveImage), new { __ModuleGuid = Manager.CurrentModule!.ModuleGuid }),
-                RemoveURL = Utility.UrlFor(typeof(FileUpload1Controller), nameof(FileUpload1Controller.RemoveImage), new { __ModuleGuid = Manager.CurrentModule.ModuleGuid }),
+                SaveURL = Utility.UrlFor(typeof(FileUpload1Endpoints), FileUpload1Endpoints.SaveImage, new { __ModuleGuid = Manager.CurrentModule!.ModuleGuid }),
+                RemoveURL = Utility.UrlFor(typeof(FileUpload1Endpoints), FileUpload1Endpoints.RemoveImage, new { __ModuleGuid = Manager.CurrentModule.ModuleGuid }),
             };
 
             string uploadId = ControlId + "_ul1";

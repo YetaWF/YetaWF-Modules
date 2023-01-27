@@ -12,13 +12,13 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> RolesSelectorDisplay_SortFilter(GridPartialViewData gridPVData) {
-            return await GridPartialViewAsync<RolesSelectorDisplayComponent.Entry>(RolesSelectorDisplayComponent.GetGridModel(false, false), gridPVData);
+        public async Task<ActionResult> RolesSelectorDisplay_SortFilter(GridPartialViewData gridPvData) {
+            return await GridPartialViewAsync<RolesSelectorDisplayComponent.Entry>(RolesSelectorDisplayComponent.GetGridModel(false, false), gridPvData);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> RolesSelectorEdit_SortFilter(GridPartialViewData gridPVData) {
-            return await GridPartialViewAsync<RolesSelectorEditComponent.Entry>(RolesSelectorEditComponent.GetGridModel(false, false), gridPVData);
+        public async Task<ActionResult> RolesSelectorEdit_SortFilter(GridPartialViewData gridPvData) {
+            return await GridPartialViewAsync<RolesSelectorEditComponent.Entry>(RolesSelectorEditComponent.GetGridModel(false, false), gridPvData);
         }
     }
 }

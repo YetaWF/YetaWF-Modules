@@ -3,22 +3,18 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.IO;
-using YetaWF.Core.Localize;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.DataProvider;
+using YetaWF.Modules.Blog.Endpoints;
 using YetaWF.Modules.Blog.Modules;
-using YetaWF.Modules.Blog.Scheduler;
 
 namespace YetaWF.Modules.Blog.Controllers {
 
@@ -92,17 +88,17 @@ namespace YetaWF.Modules.Blog.Controllers {
             public GridDefinition GridDef { get; set; } = null!;
         }
 
-        private GridDefinition GetGridModel() {
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(CategoriesBrowse_GridData)),
+                AjaxUrl = Utility.UrlFor<CategoriesBrowseModuleEndpoints>(GridSupport.BrowseGridData),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
                         DataProviderGetRecords<BlogCategory> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
-                            Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                            Data = (from s in browseItems.Data select new BrowseItem((CategoriesBrowseModule)module, s)).ToList<object>(),
                             Total = browseItems.Total
                         };
                     }
@@ -113,55 +109,9 @@ namespace YetaWF.Modules.Blog.Controllers {
         [AllowGet]
         public ActionResult CategoriesBrowse() {
             BrowseModel model = new BrowseModel {
-                GridDef = GetGridModel()
+                GridDef = GetGridModel(Module)
             };
             return View(model);
-        }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> CategoriesBrowse_GridData(GridPartialViewData gridPVData) {
-            return await GridPartialViewAsync(GetGridModel(), gridPVData);
-        }
-
-        [AllowPost]
-        [Permission("RemoveItems")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> Remove(int blogCategory) {
-            using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
-                await dataProvider.RemoveItemAsync(blogCategory);
-                return Reload(null, Reload: ReloadEnum.ModuleParts);
-            }
-        }
-        [AllowPost]
-        [Permission("NewsSiteMap")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> CreateNewsSiteMap() {
-            NewsSiteMap sm = new NewsSiteMap();
-            await sm.CreateAsync();
-            return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("screDone", "The news site map has been successfully created"));
-        }
-
-        [AllowPost]
-        [Permission("NewsSiteMap")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> RemoveNewsSiteMap() {
-            NewsSiteMap sm = new NewsSiteMap();
-            await sm.RemoveAsync();
-            return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("sremDone", "The news site map has been removed"));
-        }
-
-        [Permission("NewsSiteMap")]
-        public async Task<ActionResult> DownloadNewsSiteMap(long cookieToReturn) {
-            NewsSiteMap sm = new NewsSiteMap();
-            string filename = sm.GetNewsSiteMapFileName();
-            if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
-                throw new Error(this.__ResStr("sitemapNotFound", "News site map not found - File '{0}' cannot be located", filename));
-            Response.Headers.Remove("Cookie");
-            Response.Cookies.Append(Basics.CookieDone, cookieToReturn.ToString(), new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = false, Path = "/" });
-
-            string contentType = "application/octet-stream";
-            return new PhysicalFileResult(filename, contentType) { FileDownloadName = Path.GetFileName(filename) };
         }
     }
 }

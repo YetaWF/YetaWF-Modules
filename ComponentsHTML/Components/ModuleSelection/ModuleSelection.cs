@@ -9,8 +9,8 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
+using YetaWF.Modules.ComponentsHTML.Endpoints;
 using YetaWF.Modules.ComponentsHTML.Addons;
-using YetaWF.Modules.ComponentsHTML.Controllers;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -180,8 +180,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 };
             }
             Setup setup = new Setup {
-                AjaxUrl = Utility.UrlFor(typeof(ModuleSelectionController), newMods ? nameof(ModuleSelectionController.GetPackageModulesNew) : nameof(ModuleSelectionController.GetPackageModulesDesigned)),
-                AjaxUrlComplete = Utility.UrlFor(typeof(ModuleSelectionController), nameof(ModuleSelectionController.GetPackageModulesDesignedFromGuid)),
+                AjaxUrl = Utility.UrlFor(typeof(ModuleSelectionEndpoints), newMods ? ModuleSelectionEndpoints.GetPackageModulesNew : nameof(ModuleSelectionEndpoints.GetPackageModulesDesigned)),
+                AjaxUrlComplete = Utility.UrlFor(typeof(ModuleSelectionEndpoints), nameof(ModuleSelectionEndpoints.GetPackageModulesDesignedFromGuid)),
             };
 
             hb.Append($@"

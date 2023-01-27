@@ -15,13 +15,13 @@ namespace YetaWF.Modules.Panels.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ResourceAuthorize(Info.Resource_AllowListOfLocalPagesAjax)]
-        public async Task<ActionResult> ListOfLocalPagesBrowse_GridData(GridPartialViewData gridPVData /* settingsModuleGuid - not available in templates */) {
-            return await GridPartialViewAsync(ListOfLocalPagesEditComponent.GetGridAllUsersModel(), gridPVData);
+        public async Task<ActionResult> ListOfLocalPagesBrowse_GridData(GridPartialViewData gridPvData /* settingsModuleGuid - not available in templates */) {
+            return await GridPartialViewAsync(ListOfLocalPagesEditComponent.GetGridAllUsersModel(), gridPvData);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> ListOfLocalPagesEdit_SortFilter(GridPartialViewData gridPVData) {
-            return await GridPartialViewAsync<ListOfLocalPagesEditComponent.Entry>(ListOfLocalPagesEditComponent.GetGridModel(false), gridPVData);
+        public async Task<ActionResult> ListOfLocalPagesEdit_SortFilter(GridPartialViewData gridPvData) {
+            return await GridPartialViewAsync<ListOfLocalPagesEditComponent.Entry>(ListOfLocalPagesEditComponent.GetGridModel(false), gridPvData);
         }
     }
 }

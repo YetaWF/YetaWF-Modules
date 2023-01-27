@@ -15,8 +15,8 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ResourceAuthorize(Info.Resource_AllowUserIdAjax)]
-        public async Task<ActionResult> UsersBrowse_GridData(GridPartialViewData gridPVData) {
-            return await GridPartialViewAsync(UserIdEditComponent.GetGridAllUsersModel(false), gridPVData);
+        public async Task<ActionResult> UsersBrowse_GridData(GridPartialViewData gridPvData) {
+            return await GridPartialViewAsync(UserIdEditComponent.GetGridAllUsersModel(false), gridPvData);
         }
     }
 }

@@ -11,11 +11,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Dashboard.Controllers {
 
@@ -87,8 +83,8 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> SessionInfo_GridData(GridPartialViewData gridPVData) {
-            return await GridPartialViewAsync<BrowseItem>(GetGridModel(), gridPVData);
+        public async Task<ActionResult> SessionInfo_GridData(GridPartialViewData gridPvData) {
+            return await GridPartialViewAsync<BrowseItem>(GetGridModel(), gridPvData);
         }
 
         private List<BrowseItem> GetAllItems() {

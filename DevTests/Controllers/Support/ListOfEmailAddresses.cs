@@ -16,13 +16,13 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> ListOfEmailAddressesDisplay_SortFilter(GridPartialViewData gridPVData) {
-            return await GridPartialViewAsync<ListOfEmailAddressesDisplayComponent.Entry>(ListOfEmailAddressesDisplayComponent.GetGridModel(false), gridPVData);
+        public async Task<ActionResult> ListOfEmailAddressesDisplay_SortFilter(GridPartialViewData gridPvData) {
+            return await GridPartialViewAsync<ListOfEmailAddressesDisplayComponent.Entry>(ListOfEmailAddressesDisplayComponent.GetGridModel(false), gridPvData);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> ListOfEmailAddressesEdit_SortFilter(GridPartialViewData gridPVData) {
-            return await GridPartialViewAsync<ListOfEmailAddressesEditComponent.Entry>(ListOfEmailAddressesEditComponent.GetGridModel(false), gridPVData);
+        public async Task<ActionResult> ListOfEmailAddressesEdit_SortFilter(GridPartialViewData gridPvData) {
+            return await GridPartialViewAsync<ListOfEmailAddressesEditComponent.Entry>(ListOfEmailAddressesEditComponent.GetGridModel(false), gridPvData);
         }
     }
 }

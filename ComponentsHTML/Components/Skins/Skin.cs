@@ -7,7 +7,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
-using YetaWF.Modules.ComponentsHTML.Controllers;
+using YetaWF.Modules.ComponentsHTML.Endpoints;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -161,7 +161,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             };
 
             Setup setup = new Setup {
-                AjaxUrl = Utility.UrlFor(typeof(SkinController), nameof(SkinController.GetSkins)),
+                AjaxUrl = Utility.UrlFor(typeof(SkinEndpoints), SkinEndpoints.GetSkins),
             };
 
             // add dummy input field so we can find the property name in this template

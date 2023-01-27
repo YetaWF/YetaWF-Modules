@@ -27,7 +27,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// <remarks>
     /// The uploaded file is a temporary file, which will be removed automatically within a specified time frame, defined by the YetaWF.ImageRepository package.
     ///
-    /// The uploaded file is processed by the controller defined by SaveURL(YetaWF.Core.Views.Shared.FileUpload1).
+    /// The uploaded file is processed by the endpoint defined by SaveURL(YetaWF.Core.Views.Shared.FileUpload1).
     /// </remarks>
     /// <example>
     /// [Caption("ZIP File"), Description("The ZIP file containing the module to be imported (creates a new module) ")]

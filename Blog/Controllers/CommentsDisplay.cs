@@ -134,33 +134,5 @@ namespace YetaWF.Modules.Blog.Controllers {
                 return View(model);
             }
         }
-        [AllowPost]
-        [ResourceAuthorize(Info.Resource_AllowManageComments)]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> Approve(int blogEntry, int comment) {
-            using (BlogCommentDataProvider dataProvider = new BlogCommentDataProvider(blogEntry)) {
-                BlogComment? cmt = await dataProvider.GetItemAsync(comment);
-                if (cmt == null)
-                    throw new InternalError("Can't find comment entry {0}", comment);
-                cmt.Approved = true;
-                UpdateStatusEnum status = await dataProvider.UpdateItemAsync(cmt);
-                if (status != UpdateStatusEnum.OK)
-                    throw new InternalError("Can't update comment entry - {0}", status);
-                return Reload(null, Reload: ReloadEnum.Page);
-            }
-        }
-        [AllowPost]
-        [ResourceAuthorize(Info.Resource_AllowManageComments)]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> Remove(int blogEntry, int comment) {
-            using (BlogCommentDataProvider dataProvider = new BlogCommentDataProvider(blogEntry)) {
-                BlogComment? cmt = await dataProvider.GetItemAsync(comment);
-                if (cmt == null)
-                    throw new InternalError("Can't find comment entry {0}", comment);
-                if (!await dataProvider.RemoveItemAsync(comment))
-                    throw new InternalError("Can't remove comment entry");
-                return Reload(null, Reload: ReloadEnum.Page);
-            }
-        }
     }
 }

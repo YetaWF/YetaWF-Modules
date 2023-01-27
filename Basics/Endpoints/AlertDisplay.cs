@@ -10,7 +10,7 @@ namespace YetaWF.Modules.Basics.Endpoints {
 
     public class AlertDisplayModuleEndpoints : YetaWFEndpoints {
 
-        public const string Off = "Off";
+        internal const string Off = "Off";
 
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 

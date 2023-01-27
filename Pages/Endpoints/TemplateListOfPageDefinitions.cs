@@ -21,7 +21,7 @@ namespace YetaWF.Modules.Pages.Endpoints {
 
         private static string __ResStr(string name, string defaultValue, params object?[] parms) { return ResourceAccess.GetResourceString(typeof(TemplateListOfLocalPagesEndpoints), name, defaultValue, parms); }
 
-        public const string AddPage = "AddPage";
+        internal const string AddPage = "AddPage";
 
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 

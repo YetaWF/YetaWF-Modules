@@ -97,9 +97,9 @@ namespace YetaWF.Modules.Languages.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> LocalizeBrowsePackage_GridData(GridPartialViewData gridPVData, string packageName) {
+        public async Task<ActionResult> LocalizeBrowsePackage_GridData(GridPartialViewData gridPvData, string packageName) {
             Package package = Package.GetPackageFromPackageName(packageName);
-            return await GridPartialViewAsync(GetGridModel(package), gridPVData);
+            return await GridPartialViewAsync(GetGridModel(package), gridPvData);
         }
 
         [AllowPost]

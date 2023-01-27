@@ -16,13 +16,13 @@ namespace Softelvdm.Modules.IVR.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> ListOfPhoneNumbersDisplay_SortFilter(GridPartialViewData gridPVData) {
-            return await GridPartialViewAsync<ListOfPhoneNumbersDisplayComponent.Entry>(ListOfPhoneNumbersDisplayComponent.GetGridModel(false, false, false), gridPVData);
+        public async Task<ActionResult> ListOfPhoneNumbersDisplay_SortFilter(GridPartialViewData gridPvData) {
+            return await GridPartialViewAsync<ListOfPhoneNumbersDisplayComponent.Entry>(ListOfPhoneNumbersDisplayComponent.GetGridModel(false, false, false), gridPvData);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> ListOfPhoneNumbersEdit_SortFilter(GridPartialViewData gridPVData) {
-            return await GridPartialViewAsync<ListOfPhoneNumbersEditComponent.Entry>(ListOfPhoneNumbersEditComponent.GetGridModel(false), gridPVData);
+        public async Task<ActionResult> ListOfPhoneNumbersEdit_SortFilter(GridPartialViewData gridPvData) {
+            return await GridPartialViewAsync<ListOfPhoneNumbersEditComponent.Entry>(ListOfPhoneNumbersEditComponent.GetGridModel(false), gridPvData);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]

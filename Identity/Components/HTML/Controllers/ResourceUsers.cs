@@ -20,13 +20,13 @@ namespace YetaWF.Modules.Identity.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> ResourceUsersDisplay_SortFilter(GridPartialViewData gridPVData) {
-            return await GridPartialViewAsync<ResourceUsersDisplayComponent.Entry>(ResourceUsersDisplayComponent.GetGridModel(false), gridPVData);
+        public async Task<ActionResult> ResourceUsersDisplay_SortFilter(GridPartialViewData gridPvData) {
+            return await GridPartialViewAsync<ResourceUsersDisplayComponent.Entry>(ResourceUsersDisplayComponent.GetGridModel(false), gridPvData);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> ResourceUsersEdit_SortFilter(GridPartialViewData gridPVData) {
-            return await GridPartialViewAsync<ResourceUsersEditComponent.Entry>(ResourceUsersEditComponent.GetGridModel(false), gridPVData);
+        public async Task<ActionResult> ResourceUsersEdit_SortFilter(GridPartialViewData gridPvData) {
+            return await GridPartialViewAsync<ResourceUsersEditComponent.Entry>(ResourceUsersEditComponent.GetGridModel(false), gridPvData);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
@@ -51,8 +51,8 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ResourceAuthorize(Info.Resource_AllowListOfUserNamesAjax)]
-        public async Task<ActionResult> ResourceUsersBrowse_GridData(GridPartialViewData gridPVData) {
-            return await GridPartialViewAsync(ResourceUsersEditComponent.GetGridAllUsersModel(), gridPVData);
+        public async Task<ActionResult> ResourceUsersBrowse_GridData(GridPartialViewData gridPvData) {
+            return await GridPartialViewAsync(ResourceUsersEditComponent.GetGridAllUsersModel(), gridPvData);
         }
     }
 }

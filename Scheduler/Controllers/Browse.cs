@@ -141,8 +141,8 @@ namespace YetaWF.Modules.Scheduler.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> SchedulerBrowse_GridData(GridPartialViewData gridPVData) {
-            return await GridPartialViewAsync(GetGridModel(), gridPVData);
+        public async Task<ActionResult> SchedulerBrowse_GridData(GridPartialViewData gridPvData) {
+            return await GridPartialViewAsync(GetGridModel(), gridPvData);
         }
 
         [AllowPost]

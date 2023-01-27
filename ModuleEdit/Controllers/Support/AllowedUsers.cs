@@ -54,16 +54,16 @@ namespace YetaWF.Modules.ModuleEdit.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ResourceAuthorize(YetaWF.Modules.Identity.Addons.Info.Resource_AllowListOfUserNamesAjax)]
-        public async Task<ActionResult> AllowedUsersBrowse_GridData(GridPartialViewData gridPVData) {
-            return await GridPartialViewAsync(AllowedUsersEditComponent.GetGridAllUsersModel(), gridPVData);
+        public async Task<ActionResult> AllowedUsersBrowse_GridData(GridPartialViewData gridPvData) {
+            return await GridPartialViewAsync(AllowedUsersEditComponent.GetGridAllUsersModel(), gridPvData);
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> AllowedUsersEdit_SortFilter(GridPartialViewData gridPVData, Guid editGuid) {
+        public async Task<ActionResult> AllowedUsersEdit_SortFilter(GridPartialViewData gridPvData, Guid editGuid) {
             GridDefinition gridModel = AllowedUsersEditComponent.GetGridModel(false);
             ModuleDefinition? module = await ModuleDefinition.LoadAsync(editGuid);
             gridModel.ResourceRedirect = module;
-            return await GridPartialViewAsync<ModuleDefinition.GridAllowedUser>(gridModel, gridPVData);
+            return await GridPartialViewAsync<ModuleDefinition.GridAllowedUser>(gridModel, gridPvData);
         }
     }
 }

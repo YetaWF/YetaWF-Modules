@@ -13,6 +13,7 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Blog.Controllers;
+using YetaWF.Modules.Blog.Endpoints;
 
 namespace YetaWF.Modules.Blog.Modules {
 
@@ -75,7 +76,7 @@ namespace YetaWF.Modules.Blog.Modules {
         public ModuleAction? GetAction_Remove(int blogEntry) {
             if (!IsAuthorized("RemoveItems")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(EntriesBrowseModuleController), "Remove"),
+                Url = Utility.UrlFor(typeof(EntriesBrowseModuleEndpoints), EntriesBrowseModuleEndpoints.Remove),
                 NeedsModuleContext = true,
                 QueryArgs = new { BlogEntry = blogEntry },
                 Image = "#Remove",

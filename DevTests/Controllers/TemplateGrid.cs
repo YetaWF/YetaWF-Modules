@@ -164,8 +164,8 @@ namespace YetaWF.Modules.DevTests.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> TemplateGrid_SortFilter(GridPartialViewData gridPVData) {
-            return await GridPartialViewAsync<BrowseItem>(GetGridModel(), gridPVData);
+        public async Task<ActionResult> TemplateGrid_SortFilter(GridPartialViewData gridPvData) {
+            return await GridPartialViewAsync<BrowseItem>(GetGridModel(), gridPvData);
         }
 
         const int MaxRecords = 30;

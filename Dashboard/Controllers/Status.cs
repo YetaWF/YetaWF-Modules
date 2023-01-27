@@ -10,11 +10,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Dashboard.Controllers {
 
@@ -105,11 +101,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                 }
             }
             if (!string.IsNullOrWhiteSpace(blueGreen)) {
-#if MVC6
                 model.BlueGreenDeploy = this.__ResStr("blueGreen5", "{0} - {1}", blueGreen,  Manager.HostUsed);
-#else
-                model.BlueGreenDeploy = this.__ResStr("blueGreen4", "{0} - {1}:{2}", blueGreen, Manager.HostUsed, Manager.HostPortUsed);
-#endif
             } else {
                 model.BlueGreenDeploy = this.__ResStr("blueGreenNone", "N/A");
             }

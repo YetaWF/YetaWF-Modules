@@ -21,10 +21,10 @@ namespace YetaWF.Modules.Backups.Endpoints {
 
     public class BackupsModuleEndpoints : YetaWFEndpoints {
 
-        public const string PerformSiteBackup = "PerformSiteBackup";
-        public const string MakeSiteTemplateData = "MakeSiteTemplateData";
-        public const string Remove = "Remove";
-        public const string Download = "Download";
+        internal const string PerformSiteBackup = "PerformSiteBackup";
+        internal const string MakeSiteTemplateData = "MakeSiteTemplateData";
+        internal const string Remove = "Remove";
+        internal const string Download = "Download";
 
         private static string __ResStr(string name, string defaultValue, params object?[] parms) { return ResourceAccess.GetResourceString(typeof(BackupsModuleEndpoints), name, defaultValue, parms); }
 

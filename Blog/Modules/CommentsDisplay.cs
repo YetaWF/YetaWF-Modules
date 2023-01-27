@@ -13,6 +13,7 @@ using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Blog.Addons;
 using YetaWF.Modules.Blog.Controllers;
+using YetaWF.Modules.Blog.Endpoints;
 
 namespace YetaWF.Modules.Blog.Modules {
 
@@ -42,7 +43,7 @@ namespace YetaWF.Modules.Blog.Modules {
         public async Task<ModuleAction?> GetAction_ApproveAsync(int blogEntry, int comment) {
             if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(Info.Resource_AllowManageComments)) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(CommentsDisplayModuleController), nameof(CommentsDisplayModuleController.Approve)),
+                Url = Utility.UrlFor(typeof(CommentsDisplayModuleEndpoints), nameof(CommentsDisplayModuleEndpoints.Approve)),
                 NeedsModuleContext = true,
                 QueryArgs = new { BlogEntry = blogEntry, Comment = comment },
                 Image = await CustomIconAsync("CommentEntryApprove.png"),

@@ -15,7 +15,7 @@ var YetaWF_Basics;
                 // Save alert status server side
                 var request = new XMLHttpRequest();
                 request.open("POST", ajaxurl, true);
-                request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                request.setRequestHeader("Content-Type", "application/json");
                 request.send("");
                 // we don't care about the result of this request
                 return false;

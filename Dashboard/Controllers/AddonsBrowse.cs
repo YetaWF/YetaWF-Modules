@@ -121,8 +121,8 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         }
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> AddonsBrowse_GridData(GridPartialViewData gridPVData) {
-            return await GridPartialViewAsync<BrowseItem>(GetGridModel(), gridPVData);
+        public async Task<ActionResult> AddonsBrowse_GridData(GridPartialViewData gridPvData) {
+            return await GridPartialViewAsync<BrowseItem>(GetGridModel(), gridPvData);
         }
     }
 }

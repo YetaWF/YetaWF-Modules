@@ -90,8 +90,8 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
         [AllowPost]
         [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> BrowseActiveUsers_GridData(GridPartialViewData gridPVData) {
-            return await GridPartialViewAsync(GetGridModel(), gridPVData);
+        public async Task<ActionResult> BrowseActiveUsers_GridData(GridPartialViewData gridPvData) {
+            return await GridPartialViewAsync(GetGridModel(), gridPvData);
         }
     }
 }
