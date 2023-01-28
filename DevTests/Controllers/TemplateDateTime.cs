@@ -1,13 +1,11 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Components;
-using YetaWF.Modules.ComponentsHTML.Components;
-using Microsoft.AspNetCore.Mvc;
-using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.DevTests.Controllers {
 

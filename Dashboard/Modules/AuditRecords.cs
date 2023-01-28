@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core;
-using YetaWF.Core.Components;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -12,11 +11,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-using YetaWF.Modules.Dashboard.Controllers;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
+using YetaWF.Modules.Dashboard.Endpoints;
 
 namespace YetaWF.Modules.Dashboard.Modules {
 
@@ -73,9 +68,8 @@ namespace YetaWF.Modules.Dashboard.Modules {
         public ModuleAction? GetAction_Remove(int id) {
             if (!IsAuthorized("RemoveItems")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(AuditRecordsModuleController), "Remove"),
+                Url = $"{ Utility.UrlFor(typeof(AuditRecordsModuleEndpoints), AuditRecordsModuleEndpoints.Remove)}/{id}",
                 NeedsModuleContext = true,
-                QueryArgs = new { Id = id },
                 Image = "#Remove",
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("removeLink", "Remove Audit Record"),

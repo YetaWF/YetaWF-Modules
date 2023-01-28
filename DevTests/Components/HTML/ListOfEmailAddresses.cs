@@ -5,13 +5,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Modules.DevTests.Controllers;
+using YetaWF.Modules.DevTests.Endpoints;
 
 namespace YetaWF.Modules.DevTests.Components {
 
@@ -55,7 +56,7 @@ namespace YetaWF.Modules.DevTests.Components {
                 InitialPageSize = 5,
                 PageSizes = new List<int> { 5, 10, 20 },
                 ShowHeader = header,
-                AjaxUrl = Utility.UrlFor(typeof(ListOfEmailAddressesController), nameof(ListOfEmailAddressesController.ListOfEmailAddressesDisplay_SortFilter)),
+                AjaxUrl = Utility.UrlFor(typeof(ListOfEmailAddressesEndpoints), nameof(GridSupport.DisplaySortFilter)),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
@@ -142,7 +143,7 @@ namespace YetaWF.Modules.DevTests.Components {
                 InitialPageSize = 5,
                 PageSizes = new List<int> { 5, 10, 20 },
                 ShowHeader = header,
-                AjaxUrl = Utility.UrlFor(typeof(ListOfEmailAddressesController), nameof(ListOfEmailAddressesController.ListOfEmailAddressesEdit_SortFilter)),
+                AjaxUrl = Utility.UrlFor(typeof(ListOfEmailAddressesEndpoints), GridSupport.EditSortFilter),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
@@ -202,14 +203,6 @@ namespace YetaWF.Modules.DevTests.Components {
             Manager.ScriptManager.AddLast($@"new YetaWF_DevTests.ListOfEmailAddressesEditComponent('{DivId}', {Utility.JsonSerialize(setup)});");
 
             return hb.ToString();
-        }
-        public static Task<GridRecordData> GridRecordAsync(string fieldPrefix, object model) {
-            GridRecordData record = new GridRecordData() {
-                GridDef = GetGridModel(false),
-                Data = model,
-                FieldPrefix = fieldPrefix,
-            };
-            return Task.FromResult(record);
         }
     }
 }

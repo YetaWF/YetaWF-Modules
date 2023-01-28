@@ -1,18 +1,20 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 
-using YetaWF.Core.Controllers;
-using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Components;
-using YetaWF.Core.Models;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using YetaWF.Core.DataProvider;
-using YetaWF.Core.Modules;
-using System.Linq;
-using System;
-using YetaWF.Modules.DevTests.Modules;
-using YetaWF.Core.Localize;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using YetaWF.Core.Components;
+using YetaWF.Core.Controllers;
+using YetaWF.Core.DataProvider;
+using YetaWF.Core.Endpoints;
+using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Modules;
+using YetaWF.Core.Support;
+using YetaWF.Modules.DevTests.Endpoints;
+using YetaWF.Modules.DevTests.Modules;
 
 namespace YetaWF.Modules.DevTests.Controllers {
 
@@ -103,7 +105,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public ButtonTypeEnum SomeEnum { get; set; }
         }
 
-        private GridDefinition GetGridModel() {
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
 
             List<ModuleAction> actions = new List<ModuleAction>();
             TemplateGridAjaxModule gridAjaxMod = new TemplateGridAjaxModule();
@@ -121,10 +123,10 @@ namespace YetaWF.Modules.DevTests.Controllers {
 #endif
             return new GridDefinition {
                 InitialPageSize = 10,
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(TemplateGridAjax_GridData)),
+                AjaxUrl = Utility.UrlFor<TemplateGridAjaxModuleEndpoints>(GridSupport.BrowseGridData),
                 DirectDataAsync = (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<EntryElement> browseItems = DataProviderImpl<EntryElement>.GetRecords(GetRandomData(), skip, take, sort, filters);
                     return Task.FromResult(new DataSourceResult {
@@ -141,28 +143,22 @@ namespace YetaWF.Modules.DevTests.Controllers {
                 PanelHeaderActions = actions,
                 PanelHeaderSearch = true,
                 PanelHeaderSearchColumns = new List<string> { nameof(BrowseItem.ShortName), nameof(BrowseItem.Description) },
-                PanelHeaderSearchTT = this.__ResStr("searchTT", "Enter text to search in the ShortName and Description column"),
+                PanelHeaderSearchTT = "Enter text to search in the ShortName and Description column",
             };
         }
 
         [AllowGet]
         public ActionResult TemplateGridAjax() {
             BrowseModel model = new BrowseModel {
-                GridDef = GetGridModel()
+                GridDef = GetGridModel(Module)
             };
             return View(model);
-        }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> TemplateGridAjax_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync(GetGridModel(), gridPvData);
         }
 
         const int MaxRecords = 100;
         private static List<Guid>? Guids = null;
 
-        private List<EntryElement> GetRandomData() {
+        private static List<EntryElement> GetRandomData() {
             if (Guids == null) {
                 Guids = new List<Guid>();
                 for (int i = 0; i < MaxRecords; ++i) {

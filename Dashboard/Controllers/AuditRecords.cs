@@ -1,25 +1,22 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Dashboard#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using YetaWF.Core.Extensions;
 using System.Linq;
 using System.Threading.Tasks;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.Localize;
+using YetaWF.Core.Endpoints;
+using YetaWF.Core.Extensions;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Dashboard.DataProvider;
+using YetaWF.Modules.Dashboard.Endpoints;
 using YetaWF.Modules.Dashboard.Modules;
-using YetaWF.Core.Components;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Dashboard.Controllers {
 
@@ -34,7 +31,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                     List<ModuleAction> actions = new List<ModuleAction>();
                     AuditDisplayModule dispMod = new AuditDisplayModule();
                     actions.New(dispMod.GetAction_Display(Module.DisplayUrl, Id), ModuleAction.ActionLocationEnum.GridLinks);
-                    //actions.New(Module.GetAction_Remove(Id), ModuleAction.ActionLocationEnum.GridLinks);
+                    actions.New(Module.GetAction_Remove(Id), ModuleAction.ActionLocationEnum.GridLinks);
                     return actions;
                 }
             }
@@ -109,18 +106,18 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [SuppressIf("AuditingActive", false)]
             public GridDefinition GridDef { get; set; } = null!;
         }
-        private GridDefinition GetGridModel() {
+        internal static  GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 InitialPageSize = 20,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(AuditRecords_GridData)),
+                AjaxUrl = Utility.UrlFor<AuditRecordsModuleEndpoints>(GridSupport.BrowseGridData),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (AuditInfoDataProvider dataProvider = new AuditInfoDataProvider()) {
                         DataProviderGetRecords<AuditInfo> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
-                            Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                            Data = (from s in browseItems.Data select new BrowseItem((AuditRecordsModule)module, s)).ToList<object>(),
                             Total = browseItems.Total
                         };
                     }
@@ -134,26 +131,9 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                 BrowseModel model = new BrowseModel {
                     RestartPending = YetaWF.Core.Support.Startup.RestartPending || (YetaWF.Core.Audit.Auditing.Active ? await YetaWF.Core.Audit.Auditing.AuditProvider!.HasPendingRestartAsync() : false),
                     LastRestart = YetaWF.Core.Support.Startup.MultiInstanceStartTime,
-                    GridDef = GetGridModel()
+                    GridDef = GetGridModel(Module)
                 };
                 return View(model);
-            }
-        }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> AuditRecords_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync(GetGridModel(), gridPvData);
-        }
-
-        [AllowPost]
-        [Permission("RemoveItems")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> Remove(int id) {
-            using (AuditInfoDataProvider dataProvider = new AuditInfoDataProvider()) {
-                if (!await dataProvider.RemoveItemAsync(id))
-                    throw new Error(this.__ResStr("cantRemove", "Couldn't remove {0}", id));
-                return Reload(null, Reload: ReloadEnum.ModuleParts);
             }
         }
     }

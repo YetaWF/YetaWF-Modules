@@ -1,18 +1,15 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
-using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.SendEmail;
 using YetaWF.Core.Support;
-using YetaWF.Core.Upload;
+using YetaWF.Modules.DevTests.Endpoints;
 using YetaWF.Modules.DevTests.Modules;
 
 namespace YetaWF.Modules.DevTests.Controllers {
@@ -248,8 +245,8 @@ namespace YetaWF.Modules.DevTests.Controllers {
                 // FileUpload1
                 FileUpload1 = new FileUpload1 {
                     SelectButtonText = this.__ResStr("btnSelect", "Upload a file..."),
-                    SaveURL = Utility.UrlFor(typeof(BasicTemplatesModuleController), nameof(BasicTemplatesModuleController.UploadSomething), new { __ModuleGuid = module.ModuleGuid }),
-                    RemoveURL = Utility.UrlFor(typeof(BasicTemplatesModuleController), nameof(BasicTemplatesModuleController.RemoveSomething), new { __ModuleGuid = module.ModuleGuid }),
+                    SaveURL = Utility.UrlFor(typeof(BasicTemplatesModuleEndpoints), nameof(BasicTemplatesModuleEndpoints.UploadSomething), new { __ModuleGuid = module.ModuleGuid }),
+                    RemoveURL = Utility.UrlFor(typeof(BasicTemplatesModuleEndpoints), nameof(BasicTemplatesModuleEndpoints.RemoveSomething), new { __ModuleGuid = module.ModuleGuid }),
                 };
             }
         }
@@ -269,48 +266,5 @@ namespace YetaWF.Modules.DevTests.Controllers {
                 return PartialView(model);
             return FormProcessed(model, this.__ResStr("ok", "OK"), OnPopupClose: OnPopupCloseEnum.ReloadModule);
         }
-
-        // FileUpload1
-
-        public class UploadResponse {
-            public string Result { get; set; } = null!;
-            public string FileName { get; set; } = null!;
-            public string FileNamePlain { get; set; } = null!;
-            public string RealFileName { get; set; } = null!;
-            public string Attributes { get; set; } = null!;
-            public string List { get; set; } = null!;
-        }
-
-        [AllowPost]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> UploadSomething(IFormFile __filename) {
-            // Save the uploaded file as a temp file
-            FileUpload upload = new FileUpload();
-            string tempName = await upload.StoreTempImageFileAsync(__filename);
-            // do something with the uploaded file "tempName"
-            //...
-            // Delete the temp file just uploaded
-            await FileSystem.TempFileSystemProvider.DeleteFileAsync(tempName);
-
-            bool success = true;
-            string msg = this.__ResStr("uploadSuccess", "File {0} successfully uploaded", __filename.FileName);
-
-            if (success) {
-                UploadResponse resp = new UploadResponse {
-                    Result = $"$YetaWF.confirm('{Utility.JserEncode(msg)}', null, function() {{ /*add some javascript like  $YetaWF.reloadPage(true); */ }} );",
-                };
-                return new YJsonResult { Data = resp };
-            } else {
-                // Anything else is a failure
-                throw new Error(msg);
-            }
-        }
-        [AllowPost]
-        [ExcludeDemoMode]
-        public ActionResult RemoveSomething(string filename) {
-            // there is nothing to remove because we already deleted the file right after uploading it
-            return new EmptyResult();
-        }
-
     }
 }

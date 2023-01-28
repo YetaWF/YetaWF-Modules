@@ -1,16 +1,13 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 
-using YetaWF.Core.Controllers;
-using YetaWF.Core.Models.Attributes;
-using System.Collections.Generic;
-using YetaWF.Core.Models;
-using System.Linq;
-using System.Threading.Tasks;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
+using System.Collections.Generic;
+using System.Linq;
+using YetaWF.Core.Controllers;
+using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Support;
+using YetaWF.Modules.DevTests.Endpoints;
 
 namespace YetaWF.Modules.DevTests.Controllers {
 
@@ -40,13 +37,13 @@ namespace YetaWF.Modules.DevTests.Controllers {
             public Model() { }
         }
 
-        private TreeDefinition GetTreeModel() {
+        internal static TreeDefinition GetTreeModel() {
             return new TreeDefinition {
                 DragDrop = true,
                 RecordType = typeof(EntryElement),
                 ShowHeader = true,
                 JSONData = true,
-                AjaxUrl = GetActionUrl(nameof(TemplateTree_GetRecords)),
+                AjaxUrl = Utility.UrlFor<TemplateTreeModuleEndpoints>(TemplateTreeModuleEndpoints.GetRecords),
             };
         }
 
@@ -59,7 +56,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             return View(model);
         }
 
-        private List<EntryElement> GetGeneratedData() {
+        private static List<EntryElement> GetGeneratedData() {
             List<EntryElement> list = new List<EntryElement>();
             for (int i = 0; i < 3; ++i) {
                 list.Add(new EntryElement {
@@ -71,7 +68,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             return list;
         }
 
-        private List<EntryElement>? GetSubEntries(int level) {
+        private static List<EntryElement>? GetSubEntries(int level) {
             if (level == 0) return null;
             --level;
 
@@ -90,7 +87,7 @@ namespace YetaWF.Modules.DevTests.Controllers {
             }
             return list;
         }
-        private List<EntryElement> GetDynamicSubEntries() {
+        internal static List<EntryElement> GetDynamicSubEntries() {
             List<EntryElement> list = new List<EntryElement>();
             for (int i = 0; i < 10; ++i) {
                 list.Add(new EntryElement {
@@ -102,11 +99,6 @@ namespace YetaWF.Modules.DevTests.Controllers {
                 });
             }
             return list;
-        }
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> TemplateTree_GetRecords(EntryElement data) {
-            return await TreePartialViewAsync(GetTreeModel(), GetDynamicSubEntries());
         }
     }
 }

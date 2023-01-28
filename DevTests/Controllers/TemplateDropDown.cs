@@ -7,11 +7,8 @@ using YetaWF.Core.Components;
 using System.Collections.Generic;
 using YetaWF.Core.Support;
 using System.Linq;
-#if MVC6
+using YetaWF.Modules.DevTests.Endpoints;
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.DevTests.Controllers {
 
@@ -49,8 +46,8 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public int DropDownSearch { get; set; }
-            public string DropDownSearch_AjaxUrl { get { return Utility.UrlFor(typeof(DropDownSearchDataController), nameof(DropDownSearchDataController.DropDownSearchData_GetData)); } }
-            public string DropDownSearch_Text { get { return (from l in DropDownSearchDataController.GetSampleData() where l.Value == DropDownSearch select l.Text).FirstOrDefault(); } } 
+            public string DropDownSearch_AjaxUrl { get { return Utility.UrlFor(typeof(TemplateDropDownSearchDataEndpoints), nameof(TemplateDropDownSearchDataEndpoints.GetData)); } }
+            public string DropDownSearch_Text { get { return (from l in TemplateDropDownSearchDataEndpoints.GetSampleData() where l.Value == DropDownSearch select l.Text).FirstOrDefault(); } } 
 
             // ENUM
             public enum SampleEnum {

@@ -151,9 +151,8 @@ var YetaWF_ComponentsHTML;
                     return;
             }
             var uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
-            uri.addFormInfo(this.Control);
             uri.addSearch("Search", value);
-            $YetaWF.post(uri.toUrl(), uri.toFormData(), function (success, data) {
+            $YetaWF.postJSON(uri, $YetaWF.Forms.getJSONInfo(this.Control), null, function (success, data) {
                 if (success) {
                     _this.LastValue = value;
                     _this.openPopup(data);

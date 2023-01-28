@@ -39,6 +39,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         ///
         /// The GetTemplateName method returns the component name without area name prefix in all cases.</remarks>
         public override string GetTemplateName() { return TemplateName; }
+
+        internal static TreeSetup GetTreeSetup(TreeDefinition treeModel) {
+            TreeSetup setup = new TreeSetup() {
+                DragDrop = treeModel.DragDrop,
+                ContextMenu = treeModel.ContextMenu,
+                HighlightCss = "tg_highlight",
+                DisabledCss = "tg_disabled",
+                RowHighlightCss = "tg_highlight",
+                RowDragDropHighlightCss = "tg_dragdrophighlight",
+                SelectedCss = "t_select",
+                AjaxUrl = treeModel.AjaxUrl,
+            };
+            return setup;
+        }
     }
 
     internal class TreeSetup {
@@ -314,20 +328,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             hb.Append($@"
  </li>");
             return hb.ToString();
-        }
-
-        internal static TreeSetup GetTreeSetup(TreeDefinition treeModel) {
-            TreeSetup setup = new TreeSetup() {
-                DragDrop = treeModel.DragDrop,
-                ContextMenu = treeModel.ContextMenu,
-                HighlightCss = "tg_highlight",
-                DisabledCss = "tg_disabled",
-                RowHighlightCss = "tg_highlight",
-                RowDragDropHighlightCss = "tg_dragdrophighlight",
-                SelectedCss = "t_select",
-                AjaxUrl = treeModel.AjaxUrl,
-            };
-            return setup;
         }
     }
 }

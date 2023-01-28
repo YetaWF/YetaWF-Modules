@@ -3,15 +3,16 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Core.Support.StaticPages;
+using YetaWF.Modules.Dashboard.Endpoints;
 using YetaWF.Modules.Dashboard.Modules;
 
 namespace YetaWF.Modules.Dashboard.Controllers {
@@ -58,24 +59,24 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; } = null!;
         }
-        private GridDefinition GetGridModel() {
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
                 InitialPageSize = 20,
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(StaticPagesBrowse_GridData)),
+                AjaxUrl = Utility.UrlFor<StaticPagesBrowseModuleEndpoints>(GridSupport.BrowseGridData),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(data, skip, take, sorts, filters);
                     foreach (BrowseItem r in recs.Data)
-                        r.Module = Module;
+                        r.Module = (StaticPagesBrowseModule)module;
                     return new DataSourceResult {
                         Data = recs.Data.ToList<object>(),
                         Total = recs.Total,
                     };
                 },
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
-                    List<BrowseItem> items = (from k in await Manager.StaticPageManager.GetSiteStaticPagesAsync() select new BrowseItem(Module, k)).ToList();
+                    List<BrowseItem> items = (from k in await Manager.StaticPageManager.GetSiteStaticPagesAsync() select new BrowseItem((StaticPagesBrowseModule)module, k)).ToList();
                     int total = items.Count;
                     DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(items, skip, take, sort, filters);
                     DataSourceResult data = new DataSourceResult {
@@ -90,28 +91,9 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         [AllowGet]
         public ActionResult StaticPagesBrowse() {
             BrowseModel model = new BrowseModel {
-                GridDef = GetGridModel()
+                GridDef = GetGridModel(Module)
             };
             return View(model);
-        }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> StaticPagesBrowse_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync<BrowseItem>(GetGridModel(), gridPvData);
-        }
-
-        [AllowPost]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> Remove(string localUrl) {
-            await Manager.StaticPageManager.RemovePageAsync(localUrl);
-            return Reload(null, Reload: ReloadEnum.ModuleParts);
-        }
-        [AllowPost]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> RemoveAll() {
-            await Manager.StaticPageManager.RemoveAllPagesAsync();
-            return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
     }
 }

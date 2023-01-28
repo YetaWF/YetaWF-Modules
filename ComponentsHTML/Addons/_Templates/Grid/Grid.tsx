@@ -103,6 +103,19 @@ namespace YetaWF_ComponentsHTML {
         Yes = 1,
         No = 2
     }
+    interface GridColumns {
+        SettingsModuleGuid: string|null;
+        Columns: GridColumnEntry[];
+    }
+    interface GridColumnEntry {
+        Name: string;
+        Width: number;
+    }
+    interface GridHiddenColumns {
+        SettingsModuleGuid: string;
+        ColumnsOn: string[];
+        ColumnsOff: string[];
+    }
 
     interface GridPartialViewData extends YetaWF.PartialViewData {
         Data: string;
@@ -287,26 +300,25 @@ namespace YetaWF_ComponentsHTML {
 
                 this.ColumnSelection.Control.addEventListener(CheckListMenuEditComponent.EVENTCHANGE, (evt: Event): void => {
 
-                    let uri = $YetaWF.parseUrl(this.Setup.SaveSettingsColumnSelectionUrl);
-                    uri.addSearch("SettingsModuleGuid", this.Setup.SettingsModuleGuid);
-
-                    // build query args
+                    const gridHiddenColumns: GridHiddenColumns = {
+                        SettingsModuleGuid: this.Setup.SettingsModuleGuid,
+                        ColumnsOn: [],
+                        ColumnsOff: [],
+                    }
+                    // build list of columns
                     let entries = this.ColumnSelection!.getValueEntries();
-                    let colOffIndex = 0;
-                    let colOnIndex = 0;
                     let colIndex = 0;
                     for (let entry of entries) {
                         if (entry.Checked) {
                             if (!this.Setup.Columns[colIndex].Visible)
-                                uri.addSearch(`ColumnsOn[${colOnIndex++}]`, entry.Name);
+                                gridHiddenColumns.ColumnsOn.push(entry.Name);
                         } else {
                             if (this.Setup.Columns[colIndex].Visible)
-                                uri.addSearch(`ColumnsOff[${colOffIndex++}]`, entry.Name);
+                            gridHiddenColumns.ColumnsOff.push(entry.Name);
                         }
-                        colIndex++;
                     }
 
-                    $YetaWF.postJSON(this.Setup.SaveSettingsColumnSelectionUrl, null, (success: boolean, data:any): void => {
+                    $YetaWF.postJSON($YetaWF.parseUrl(this.Setup.SaveSettingsColumnSelectionUrl), null, gridHiddenColumns, (success: boolean, data:any): void => {
                         if (success) {
                             if (!this.Setup.StaticData) {
                                 this.reload(0);
@@ -550,11 +562,7 @@ namespace YetaWF_ComponentsHTML {
             uri.addSearch("SettingsModuleGuid", this.Setup.SettingsModuleGuid);
             uri.addSearch("Expanded", expanded.toString());
 
-            let request: XMLHttpRequest = new XMLHttpRequest();
-            request.open("POST", uri.toUrl(), true);
-            request.setRequestHeader("Content-Type", "application/json");
-            request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            request.send();
+            $YetaWF.postJSONIgnore(uri, null, null);
         }
         private setExpandCollapseStatus(expand: boolean) : void {
             if (!expand && $YetaWF.elementHasClass(this.Control, "t_expanded")) {
@@ -790,17 +798,12 @@ namespace YetaWF_ComponentsHTML {
                 // save column widths after user resizes
                 if (currentControl.Setup.SettingsModuleGuid) {
                     // send save request, we don't care about the response
-                    let uri = $YetaWF.parseUrl(currentControl.Setup.SaveSettingsColumnWidthsUrl);
-                    uri.addSearch("SettingsModuleGuid", currentControl.Setup.SettingsModuleGuid);
                     let colIndex = Array.prototype.indexOf.call((currentControl.ColumnResizeHeader.parentElement as HTMLElement).children, currentControl.ColumnResizeHeader);
-                    uri.addSearch("Columns[0].Key", currentControl.Setup.Columns[colIndex].Name);
-                    uri.addSearch("Columns[0].Value", parseInt(currentControl.ColumnResizeHeader.style.width, 10));
-
-                    let request: XMLHttpRequest = new XMLHttpRequest();
-                    request.open("POST", currentControl.Setup.SaveSettingsColumnWidthsUrl, true);
-                    request.setRequestHeader("Content-Type", "application/json");
-                    request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                    request.send(uri.toFormData());
+                    const gridColumns: GridColumns = {
+                        SettingsModuleGuid: currentControl.Setup.SettingsModuleGuid,
+                        Columns: [{ Name: currentControl.Setup.Columns[colIndex].Name, Width: parseInt(currentControl.ColumnResizeHeader.style.width, 10) }],
+                    }
+                    $YetaWF.postJSONIgnore($YetaWF.parseUrl(currentControl.Setup.SaveSettingsColumnWidthsUrl), null, gridColumns);
                 }
             }
             if (Grid.CurrentControl) {
@@ -864,7 +867,7 @@ namespace YetaWF_ComponentsHTML {
                     // fetch data from servers
                     const col = this.getSortColumn();
                     let data: GridPartialViewData = {
-                        __UniqueIdInfo: YVolatile.Basics.UniqueIdCounters,
+                        __UniqueIdCounters: YVolatile.Basics.UniqueIdCounters,
                         __ModuleGuid: formInfo.ModuleGuid,
                         __RequestVerificationToken: formInfo.RequestVerificationToken,
                         Data: "",
@@ -932,7 +935,7 @@ namespace YetaWF_ComponentsHTML {
                         data.Data = JSON.stringify(this.Setup.StaticData)
 
                     this.setReloading(true);
-                    $YetaWF.postJSON(uri.toUrl(), data, (success: boolean, partial: GridPartialResult): void => {
+                    $YetaWF.postJSON(uri, null,  data, (success: boolean, partial: GridPartialResult): void => {
                         if (success) {
                             $YetaWF.processClearDiv(this.TBody);
                             this.TBody.innerHTML = "";

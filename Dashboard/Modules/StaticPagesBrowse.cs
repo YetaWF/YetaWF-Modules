@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using YetaWF.Core.Components;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -11,7 +10,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-using YetaWF.Modules.Dashboard.Controllers;
+using YetaWF.Modules.Dashboard.Endpoints;
 
 namespace YetaWF.Modules.Dashboard.Modules {
 
@@ -52,7 +51,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
         }
         public ModuleAction GetAction_Remove(string localUrl) {
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(StaticPagesBrowseModuleController), "Remove"),
+                Url = Utility.UrlFor(typeof(StaticPagesBrowseModuleEndpoints), StaticPagesBrowseModuleEndpoints.Remove),
                 NeedsModuleContext = true,
                 QueryArgs = new { LocalUrl = localUrl },
                 Image = "#Remove",
@@ -69,7 +68,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
         }
         public ModuleAction GetAction_RemoveAll() {
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(StaticPagesBrowseModuleController), "RemoveAll"),
+                Url = Utility.UrlFor(typeof(StaticPagesBrowseModuleEndpoints), StaticPagesBrowseModuleEndpoints.RemoveAll),
                 NeedsModuleContext = true,
                 Image = "#Remove",
                 Style = ModuleAction.ActionStyleEnum.Post,

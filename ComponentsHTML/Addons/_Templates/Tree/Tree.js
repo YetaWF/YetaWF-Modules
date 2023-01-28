@@ -40,7 +40,6 @@ var YetaWF_ComponentsHTML;
             _this.DDLastTarget = null;
             _this.DDLastTargetAnchor = null;
             _this.DDTargetPosition = TargetPositionEnum.on;
-            _this.AddCounter = 0;
             _this.Setup = setup;
             $YetaWF.registerEventHandler(_this.Control, "click", "a.t_entry", function (ev) {
                 var liElem = $YetaWF.elementClosest(ev.__YetaWFElem, "li"); // get row we're on
@@ -333,14 +332,15 @@ var YetaWF_ComponentsHTML;
                 throw "Tree control doesn't have an AJAX URL - ".concat(this.Control.outerHTML);
             if (!$YetaWF.isLoading) {
                 // fetch data from servers
+                var formInfo = $YetaWF.Forms.getFormInfo(this.Control);
+                var data = {
+                    __UniqueIdCounters: YVolatile.Basics.UniqueIdCounters,
+                    __ModuleGuid: formInfo.ModuleGuid,
+                    __RequestVerificationToken: formInfo.RequestVerificationToken,
+                    Entry: this.getElementDataCond(liElem),
+                };
                 var uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
-                var recData = $YetaWF.getAttribute(liElem, "data-record");
-                if (recData)
-                    uri.addSearch("Data", recData);
-                uri.addFormInfo(this.Control);
-                var uniqueIdCounters = { UniqueIdPrefix: "".concat(this.ControlId, "ls"), UniqueIdPrefixCounter: ++this.AddCounter, UniqueIdCounter: 0 };
-                uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
-                $YetaWF.post(this.Setup.AjaxUrl, uri.toFormData(), function (success, partial) {
+                $YetaWF.postJSON(uri, null, data, function (success, partial) {
                     if (success) {
                         var iElem = $YetaWF.getElement1BySelector("i.t_icright", [liElem]);
                         $YetaWF.elementRemoveClasses(iElem, ["t_icright", "t_icdown", "t_icempty"]);

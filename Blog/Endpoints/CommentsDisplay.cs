@@ -27,6 +27,7 @@ namespace YetaWF.Modules.Blog.Endpoints {
 
             RouteGroupBuilder group = endpoints.MapGroup(GetPackageRoute(package, typeof(CommentsDisplayModuleEndpoints)))
                 .RequireAuthorization()
+                .AntiForgeryToken()
                 .ExcludeDemoMode()
                 .ResourceAuthorize(Info.Resource_AllowManageComments);
 

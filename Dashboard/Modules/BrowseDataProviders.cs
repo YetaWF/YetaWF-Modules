@@ -6,9 +6,6 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.DataProvider;
-#if MVC6
-#else
-#endif
 
 namespace YetaWF.Modules.Dashboard.Modules {
 

@@ -241,13 +241,5 @@ new YetaWF_Pages.ListOfLocalPagesEditComponent('{DivId}', {Utility.JsonSerialize
 
             return hb.ToString();
         }
-        public static Task<GridRecordData> GridRecordAsync(string fieldPrefix, object model) {
-            GridRecordData record = new GridRecordData() {
-                GridDef = GetGridModel(false),
-                Data = model,
-                FieldPrefix = fieldPrefix,
-            };
-            return Task.FromResult(record);
-        }
     }
 }

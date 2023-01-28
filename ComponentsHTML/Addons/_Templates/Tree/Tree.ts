@@ -7,7 +7,6 @@ namespace YetaWF_ComponentsHTML {
     //}
 
     interface TreeSetup {
-
         DragDrop: boolean;
         ContextMenu: boolean;
 
@@ -22,6 +21,9 @@ namespace YetaWF_ComponentsHTML {
     interface TreePartialResult {
         Records: number;
         HTML: string;
+    }
+    interface TreePartialViewData extends YetaWF.PartialViewData {
+        Entry: any;// one record
     }
 
     export interface TreeEntry {
@@ -55,7 +57,6 @@ namespace YetaWF_ComponentsHTML {
         private DDLastTarget: HTMLLIElement | null = null;
         private DDLastTargetAnchor: HTMLAnchorElement | null = null;
         private DDTargetPosition: TargetPositionEnum = TargetPositionEnum.on;
-        private AddCounter: number = 0;
 
         constructor(controlId: string, setup: TreeSetup) {
             super(controlId, TreeComponent.TEMPLATE, TreeComponent.SELECTOR, {
@@ -348,15 +349,17 @@ namespace YetaWF_ComponentsHTML {
             if (!$YetaWF.isLoading) {
 
                 // fetch data from servers
-                var uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
-                let recData = $YetaWF.getAttribute(liElem, "data-record");
-                if (recData)
-                    uri.addSearch("Data", recData);
-                uri.addFormInfo(this.Control);
-                let uniqueIdCounters: YetaWF.UniqueIdInfo = { UniqueIdPrefix: `${this.ControlId}ls`, UniqueIdPrefixCounter: ++this.AddCounter, UniqueIdCounter: 0 };
-                uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
+                const formInfo = $YetaWF.Forms.getFormInfo(this.Control);
+                let data: TreePartialViewData = {
+                    __UniqueIdCounters: YVolatile.Basics.UniqueIdCounters,
+                    __ModuleGuid: formInfo.ModuleGuid,
+                    __RequestVerificationToken: formInfo.RequestVerificationToken,
+                    Entry: this.getElementDataCond(liElem),
+                }
 
-                $YetaWF.post(this.Setup.AjaxUrl, uri.toFormData(), (success: boolean, partial: TreePartialResult): void =>{
+                var uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
+
+                $YetaWF.postJSON(uri, null, data, (success: boolean, partial: TreePartialResult): void =>{
                     if (success) {
                         let iElem = $YetaWF.getElement1BySelector("i.t_icright", [liElem]);
                         $YetaWF.elementRemoveClasses(iElem, ["t_icright", "t_icdown", "t_icempty"]);

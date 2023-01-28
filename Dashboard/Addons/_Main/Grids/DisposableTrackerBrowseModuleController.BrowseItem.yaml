@@ -11,11 +11,13 @@ Columns:
   Align: Unspecified
 - Name: DisposableObject
   FilterOptions: []
+  Sort: true
   Width: 60
   Align: Unspecified
   Truncate: true
 - Name: CallStack
   FilterOptions: []
+  Sort: true
   Width: 500
   Align: Unspecified
   Truncate: true

@@ -21,14 +21,14 @@ namespace YetaWF.Modules.Blog.Endpoints {
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
             RouteGroupBuilder group = endpoints.MapGroup(GetPackageRoute(package, typeof(EntriesBrowseModuleEndpoints)))
-                .RequireAuthorization();
+                .RequireAuthorization()
+                .AntiForgeryToken();
 
             group.MapPost(GridSupport.BrowseGridData, async (HttpContext context, [FromBody] GridSupport.GridPartialViewData gridPvData, int blogCategory) => {
                 ModuleDefinition module = await GetModuleAsync(gridPvData.__ModuleGuid);
                 if (!module.IsAuthorized()) return Results.Unauthorized();
                 return await GridSupport.GetGridPartialAsync(context, module, EntriesBrowseModuleController.GetGridModel(module, blogCategory), gridPvData);
-            })
-                .AntiForgeryToken();
+            });
 
             group.MapPost(Remove, async (HttpContext context, [FromQuery] Guid __ModuleGuid, [FromQuery] int blogEntry) => {
                 ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
@@ -37,8 +37,7 @@ namespace YetaWF.Modules.Blog.Endpoints {
                     await dataProvider.RemoveItemAsync(blogEntry);
                     return Reload(ReloadEnum.ModuleParts);
                 }
-            })
-                .ExcludeDemoMode();
+            });
         }
     }
 }

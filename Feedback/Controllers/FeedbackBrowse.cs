@@ -13,11 +13,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Modules.Feedback.DataProvider;
 using YetaWF.Modules.Feedback.Modules;
 using YetaWF.Core.Components;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Feedback.Controllers {
 

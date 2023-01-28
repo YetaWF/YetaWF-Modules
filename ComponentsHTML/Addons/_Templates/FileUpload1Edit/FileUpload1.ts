@@ -111,7 +111,10 @@ namespace YetaWF_ComponentsHTML {
 
             const request: XMLHttpRequest = new XMLHttpRequest();
             request.open("POST", uri.toUrl(), true);
-            //request.setRequestHeader // doesn't work
+
+            const info = $YetaWF.Forms.getJSONInfo(this.Control);
+            const token = info[YConfigs.Forms.RequestVerificationToken];
+            if (token) request.setRequestHeader("RequestVerificationToken", token);
 
             request.upload.onprogress = (ev: ProgressEvent<EventTarget>): any => {
                 let percent = 0;
@@ -146,7 +149,7 @@ namespace YetaWF_ComponentsHTML {
 
         // API
         public RemoveFile(name: string): void {
-            $YetaWF.postJSON(this.Setup.RemoveUrl, null, (success: boolean, data: FileUploadRemoveResponse): void => {
+            $YetaWF.postJSON($YetaWF.parseUrl(this.Setup.RemoveUrl), null, null, (success: boolean, data: FileUploadRemoveResponse): void => {
                 if (success && data.Result)
                     $YetaWF.message(data.Result);
             });

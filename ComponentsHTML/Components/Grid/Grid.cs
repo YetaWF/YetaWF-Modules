@@ -198,7 +198,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 SettingsModuleGuid = model.SettingsModuleGuid,
                 SaveSettingsColumnWidthsUrl = dictInfo.SaveColumnWidths != false ? Utility.UrlFor(typeof(GridSaveSettingsEndpoints), GridSaveSettingsEndpoints.GridSaveColumnWidths) : null,
                 SaveSettingsColumnSelectionUrl = model.PanelHeaderColumnSelection ? Utility.UrlFor(typeof(GridSaveSettingsEndpoints), GridSaveSettingsEndpoints.GridSaveHiddenColumns) : null,
-                SaveExpandCollapseUrl = model.PanelHeader && model.PanelCanMinimize ? Utility.UrlFor(typeof(GridSaveSettingsEndpoints), GridPanelSaveSettingsEndpoints.SaveExpandCollapse) : null,
+                SaveExpandCollapseUrl = model.PanelHeader && model.PanelCanMinimize ? Utility.UrlFor(typeof(GridPanelSaveSettingsEndpoints), GridPanelSaveSettingsEndpoints.SaveExpandCollapse) : null,
                 DeletedMessage = model.DeletedMessage,
                 DeleteConfirmationMessage = model.DeleteConfirmationMessage != null && UserSettings.GetProperty<bool>("ConfirmDelete") ? model.DeleteConfirmationMessage : null,
                 DeletedColumnDisplay = model.DeletedColumnDisplay,

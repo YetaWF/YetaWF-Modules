@@ -206,26 +206,26 @@ var YetaWF_ComponentsHTML;
             // column selection
             if (_this.Setup.SettingsModuleGuid && _this.ColumnSelection) {
                 _this.ColumnSelection.Control.addEventListener(YetaWF_ComponentsHTML.CheckListMenuEditComponent.EVENTCHANGE, function (evt) {
-                    var uri = $YetaWF.parseUrl(_this.Setup.SaveSettingsColumnSelectionUrl);
-                    uri.addSearch("SettingsModuleGuid", _this.Setup.SettingsModuleGuid);
-                    // build query args
+                    var gridHiddenColumns = {
+                        SettingsModuleGuid: _this.Setup.SettingsModuleGuid,
+                        ColumnsOn: [],
+                        ColumnsOff: [],
+                    };
+                    // build list of columns
                     var entries = _this.ColumnSelection.getValueEntries();
-                    var colOffIndex = 0;
-                    var colOnIndex = 0;
                     var colIndex = 0;
                     for (var _i = 0, entries_1 = entries; _i < entries_1.length; _i++) {
                         var entry = entries_1[_i];
                         if (entry.Checked) {
                             if (!_this.Setup.Columns[colIndex].Visible)
-                                uri.addSearch("ColumnsOn[".concat(colOnIndex++, "]"), entry.Name);
+                                gridHiddenColumns.ColumnsOn.push(entry.Name);
                         }
                         else {
                             if (_this.Setup.Columns[colIndex].Visible)
-                                uri.addSearch("ColumnsOff[".concat(colOffIndex++, "]"), entry.Name);
+                                gridHiddenColumns.ColumnsOff.push(entry.Name);
                         }
-                        colIndex++;
                     }
-                    $YetaWF.postJSON(_this.Setup.SaveSettingsColumnSelectionUrl, null, function (success, data) {
+                    $YetaWF.postJSON($YetaWF.parseUrl(_this.Setup.SaveSettingsColumnSelectionUrl), null, gridHiddenColumns, function (success, data) {
                         if (success) {
                             if (!_this.Setup.StaticData) {
                                 _this.reload(0);
@@ -475,11 +475,7 @@ var YetaWF_ComponentsHTML;
             var uri = $YetaWF.parseUrl(this.Setup.SaveExpandCollapseUrl);
             uri.addSearch("SettingsModuleGuid", this.Setup.SettingsModuleGuid);
             uri.addSearch("Expanded", expanded.toString());
-            var request = new XMLHttpRequest();
-            request.open("POST", uri.toUrl(), true);
-            request.setRequestHeader("Content-Type", "application/json");
-            request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-            request.send();
+            $YetaWF.postJSONIgnore(uri, null, null);
         };
         Grid.prototype.setExpandCollapseStatus = function (expand) {
             if (!expand && $YetaWF.elementHasClass(this.Control, "t_expanded")) {
@@ -718,16 +714,12 @@ var YetaWF_ComponentsHTML;
                 // save column widths after user resizes
                 if (currentControl.Setup.SettingsModuleGuid) {
                     // send save request, we don't care about the response
-                    var uri = $YetaWF.parseUrl(currentControl.Setup.SaveSettingsColumnWidthsUrl);
-                    uri.addSearch("SettingsModuleGuid", currentControl.Setup.SettingsModuleGuid);
                     var colIndex = Array.prototype.indexOf.call(currentControl.ColumnResizeHeader.parentElement.children, currentControl.ColumnResizeHeader);
-                    uri.addSearch("Columns[0].Key", currentControl.Setup.Columns[colIndex].Name);
-                    uri.addSearch("Columns[0].Value", parseInt(currentControl.ColumnResizeHeader.style.width, 10));
-                    var request = new XMLHttpRequest();
-                    request.open("POST", currentControl.Setup.SaveSettingsColumnWidthsUrl, true);
-                    request.setRequestHeader("Content-Type", "application/json");
-                    request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-                    request.send(uri.toFormData());
+                    var gridColumns = {
+                        SettingsModuleGuid: currentControl.Setup.SettingsModuleGuid,
+                        Columns: [{ Name: currentControl.Setup.Columns[colIndex].Name, Width: parseInt(currentControl.ColumnResizeHeader.style.width, 10) }],
+                    };
+                    $YetaWF.postJSONIgnore($YetaWF.parseUrl(currentControl.Setup.SaveSettingsColumnWidthsUrl), null, gridColumns);
                 }
             }
             if (Grid.CurrentControl) {
@@ -789,7 +781,7 @@ var YetaWF_ComponentsHTML;
                     // fetch data from servers
                     var col = this.getSortColumn();
                     var data = {
-                        __UniqueIdInfo: YVolatile.Basics.UniqueIdCounters,
+                        __UniqueIdCounters: YVolatile.Basics.UniqueIdCounters,
                         __ModuleGuid: formInfo.ModuleGuid,
                         __RequestVerificationToken: formInfo.RequestVerificationToken,
                         Data: "",
@@ -857,7 +849,7 @@ var YetaWF_ComponentsHTML;
                     if (this.Setup.StaticData)
                         data.Data = JSON.stringify(this.Setup.StaticData);
                     this.setReloading(true);
-                    $YetaWF.postJSON(uri.toUrl(), data, function (success, partial) {
+                    $YetaWF.postJSON(uri, null, data, function (success, partial) {
                         if (success) {
                             $YetaWF.processClearDiv(_this.TBody);
                             _this.TBody.innerHTML = "";

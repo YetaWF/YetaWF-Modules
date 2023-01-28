@@ -1,19 +1,16 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using YetaWF.Core;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
-using YetaWF.Core;
-using System.Threading.Tasks;
 using YetaWF.Modules.DevTests.Components;
-using System.Linq;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
+using YetaWF.Modules.DevTests.Endpoints;
 
 namespace YetaWF.Modules.DevTests.Controllers {
 
@@ -27,12 +24,12 @@ namespace YetaWF.Modules.DevTests.Controllers {
             [Caption("Email Addresses (Required)"), Description("List of email addresses (Required)")]
             [UIHint("YetaWF_DevTests_ListOfEmailAddresses"), ListNoDuplicates, EmailValidation, StringLength(Globals.MaxEmail), Required, Trim]
             public List<string> Prop1Req { get; set; }
-            public string Prop1Req_AjaxUrl { get { return Utility.UrlFor(typeof(TemplateListOfEmailAddressesModuleController), nameof(AddEmailAddressHTML)); } }
+            public string Prop1Req_AjaxUrl { get { return Utility.UrlFor(typeof(TemplateListOfEmailAddressesEndpoints), TemplateListOfEmailAddressesEndpoints.AddEmailAddress); } }
 
             [Caption("Email Addresses"), Description("List of email addresses")]
             [UIHint("YetaWF_DevTests_ListOfEmailAddresses"), ListNoDuplicates, EmailValidation, StringLength(Globals.MaxEmail), Trim]
             public List<string> Prop1 { get; set; }
-            public string Prop1_AjaxUrl { get { return Utility.UrlFor(typeof(TemplateListOfEmailAddressesModuleController), nameof(AddEmailAddressHTML)); } }
+            public string Prop1_AjaxUrl { get { return Utility.UrlFor(typeof(TemplateListOfEmailAddressesEndpoints), TemplateListOfEmailAddressesEndpoints.AddEmailAddress); } }
 
             [Caption("Email Addresses (Read/Only)"), Description("List of email addresses (read/only)")]
             [UIHint("YetaWF_DevTests_ListOfEmailAddresses"), ReadOnly]
@@ -61,24 +58,6 @@ namespace YetaWF.Modules.DevTests.Controllers {
             if (!ModelState.IsValid)
                 return PartialView(model);
             return FormProcessed(model, this.__ResStr("ok", "OK"));
-        }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> AddEmailAddressHTML(string data, string fieldPrefix, string newEmailAddress) {
-            // Validation
-            EmailValidationAttribute attr = new EmailValidationAttribute();
-            if (!attr.IsValid(newEmailAddress))
-                throw new Error(attr.ErrorMessage ?? "???");
-            List<ListOfEmailAddressesEditComponent.Entry> list = Utility.JsonDeserialize<List<ListOfEmailAddressesEditComponent.Entry>>(data);
-            if ((from l in list where l.EmailAddress.ToLower() == newEmailAddress.ToLower() select l).FirstOrDefault() != null)
-                throw new Error(this.__ResStr("dupEmail", "Email address {0} has already been added", newEmailAddress));
-            // add new grid record
-            ListOfEmailAddressesEditComponent.Entry entry = new ListOfEmailAddressesEditComponent.Entry {
-                EmailAddress = newEmailAddress,
-            };
-            return await GridRecordViewAsync(await ListOfEmailAddressesEditComponent.GridRecordAsync(fieldPrefix, entry));
         }
     }
 }

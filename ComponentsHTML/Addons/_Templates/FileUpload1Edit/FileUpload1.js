@@ -82,7 +82,10 @@ var YetaWF_ComponentsHTML;
             }
             var request = new XMLHttpRequest();
             request.open("POST", uri.toUrl(), true);
-            //request.setRequestHeader // doesn't work
+            var info = $YetaWF.Forms.getJSONInfo(this.Control);
+            var token = info[YConfigs.Forms.RequestVerificationToken];
+            if (token)
+                request.setRequestHeader("RequestVerificationToken", token);
             request.upload.onprogress = function (ev) {
                 var percent = 0;
                 var position = ev.loaded;
@@ -113,7 +116,7 @@ var YetaWF_ComponentsHTML;
         };
         // API
         FileUpload1Component.prototype.RemoveFile = function (name) {
-            $YetaWF.postJSON(this.Setup.RemoveUrl, null, function (success, data) {
+            $YetaWF.postJSON($YetaWF.parseUrl(this.Setup.RemoveUrl), null, null, function (success, data) {
                 if (success && data.Result)
                     $YetaWF.message(data.Result);
             });

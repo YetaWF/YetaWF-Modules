@@ -1,19 +1,21 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Dashboard#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using YetaWF.Core.Addons;
+using System.Threading.Tasks;
+using YetaWF.Core;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
+using YetaWF.Core.DataProvider;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
-using YetaWF.Modules.Dashboard.Modules;
-using YetaWF.Core;
-using YetaWF.Core.Components;
-using YetaWF.Core.DataProvider;
-using System.Threading.Tasks;
 using YetaWF.Core.Packages;
-using Microsoft.AspNetCore.Mvc;
+using YetaWF.Core.Support;
+using YetaWF.Modules.Dashboard.Endpoints;
+using YetaWF.Modules.Dashboard.Modules;
 
 namespace YetaWF.Modules.Dashboard.Controllers {
 
@@ -82,17 +84,17 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; } = null!;
         }
-        private GridDefinition GetGridModel() {
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
                 InitialPageSize = 20,
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(AddonsBrowse_GridData)),
+                AjaxUrl = Utility.UrlFor(typeof(AddonsBrowseModuleEndpoints), GridSupport.BrowseGridData),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(data, skip, take, sorts, filters);
                     foreach (BrowseItem r in recs.Data)
-                        r.Module = Module;
+                        r.Module = (AddonsBrowseModule)module;
                     return new DataSourceResult {
                         Data = recs.Data.ToList<object>(),
                         Total = recs.Total,
@@ -101,7 +103,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                 DirectDataAsync = (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     List<Package.AddOnProduct> list = Package.GetAvailableAddOns();
                     DataSourceResult data = new DataSourceResult {
-                        Data = (from l in list select new BrowseItem(Module, l)).ToList<object>(),
+                        Data = (from l in list select new BrowseItem((AddonsBrowseModule)module, l)).ToList<object>(),
                         Total = list.Count,
                     };
                     return Task.FromResult(data);
@@ -115,14 +117,9 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                 AddOnsUrl = Package.AddOnsUrl,
                 AddOnsCustomUrl = Package.AddOnsCustomUrl,
                 NodeModulesUrl = Globals.NodeModulesUrl,
-                GridDef = GetGridModel()
+                GridDef = GetGridModel(Module)
             };
             return View(model);
-        }
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> AddonsBrowse_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync<BrowseItem>(GetGridModel(), gridPvData);
         }
     }
 }

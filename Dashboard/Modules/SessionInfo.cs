@@ -8,6 +8,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
+using YetaWF.Modules.Dashboard.Endpoints;
 
 namespace YetaWF.Modules.Dashboard.Modules {
 
@@ -45,7 +46,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
         }
         public ModuleAction GetAction_ClearAll() {
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(YetaWF.Modules.Dashboard.Controllers.SessionInfoModuleController), "ClearAll"),
+                Url = Utility.UrlFor(typeof(YetaWF.Modules.Dashboard.Controllers.SessionInfoModuleController), SessionInfoModuleEndpoints.ClearAll),
                 QueryArgs = new { __ModuleGuid = ModuleGuid },
                 Image = "#Remove",
                 LinkText = this.__ResStr("removeLink", "Remove Session Settings"),

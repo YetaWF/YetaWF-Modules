@@ -1,9 +1,20 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Dashboard#License */
 
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
+using YetaWF.Core.DataProvider;
+using YetaWF.Core.Endpoints;
+using YetaWF.Core.Extensions;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
-using Microsoft.AspNetCore.Mvc;
+using YetaWF.Core.Modules;
+using YetaWF.Core.Support;
+using YetaWF.Modules.Dashboard.Endpoints;
 
 namespace YetaWF.Modules.Dashboard.Controllers {
 
@@ -25,97 +36,121 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
         public class DisplayModel {
 
-            [Caption("Memory Limit"), Description("The percentage of physical memory available to the application")]
+            [Caption("Entries"), Description("The current number of cached items")]
             [UIHint("LongValue"), ReadOnly]
-            public long EffectivePercentagePhysicalMemoryLimit { get; set; }
+            public long CurrentEntryCount { get; set; }
 
-            [Caption("Bytes Limit"), Description("The number of bytes available for the cache")]
+            [Caption("Estimated Size"), Description("The estimated sum of all the items currently in the memory cache - Only available if MemoryCache tracks size, which requires that a SizeLimit is set on the cache")]
             [UIHint("FileFolderSize"), ReadOnly]
-            public long EffectivePrivateBytesLimit { get; set; }
+            public long? CurrentEstimatedSize { get; set; }
 
-            [Caption("Total Size"), Description("The approximate size of all cached items")]
-            [UIHint("FileFolderSize"), ReadOnly]
-            public long TotalSize { get; set; }
+            [Caption("Total Misses"), Description("The total number of cache misses")]
+            [UIHint("LongValue"), ReadOnly]
+            public long TotalMisses { get; set; }
+
+            [Caption("Total Hits"), Description("The total number of cache hits")]
+            [UIHint("LongValue"), ReadOnly]
+            public long TotalHits { get; set; }
 
             [Caption("Cached Items"), Description("The cache keys and the values (either the data type or the first 100 bytes of data are shown)")]
             [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; } = null!;
-#if MVC6
-#else
-            public void SetData(System.Web.Caching.Cache data) {
-                ObjectSupport.CopyData(data, this);
+
+            public void SetData(MemoryCacheStatistics? stats) {
+                if (stats is not null)
+                    ObjectSupport.CopyData(stats, this);
             }
-#endif
         }
-#if MVC6
-#else
-        private GridDefinition GetGridModel() {
+
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(CacheInfo_GridData)),
-                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
+                AjaxUrl = Utility.UrlFor<CacheInfoModuleEndpoints>(GridSupport.BrowseGridData),
+                SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
                         Data = recs.Data.ToList<object>(),
                         Total = recs.Total,
                     };
                 },
-                DirectDataAsync = (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
-                    DataProviderGetRecords<BrowseItem> items = DataProviderImpl<BrowseItem>.GetRecords(GetAllItems(), skip, take, sort, filters);
-                    foreach (BrowseItem item in items.Data)
-                        item.Value = item.Value.TruncateWithEllipse(100);
+                DirectDataAsync = (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
+                    DataProviderGetRecords<BrowseItem> browseItems = DataProviderImpl<BrowseItem>.GetRecords(GetAllItems(), skip, take, sort, filters);
                     DataSourceResult data = new DataSourceResult {
-                        Data = items.Data.ToList<object>(),
-                        Total = items.Total,
+                        Data = browseItems.Data.ToList<object>(),
+                        Total = browseItems.Total,
                     };
                     return Task.FromResult(data);
                 },
             };
         }
-#endif
 
         [AllowGet]
         public ActionResult CacheInfo() {
             DisplayModel model = new DisplayModel();
-#if MVC6
-#else
-            model.SetData(System.Web.HttpRuntime.Cache);
-            model.GridDef = GetGridModel();
 
-            List<BrowseItem> items = GetAllItems();
-            model.TotalSize = items.Sum(m => m.Size);
-#endif
+            MemoryCacheStatistics? stats = YetaWFManager.MemoryCache.GetCurrentStatistics();
+            model.SetData(stats);
+
+            model.GridDef = GetGridModel(Module);
+
+            //List<ICacheEntry> items = GetAllItems();
+            //model.TotalSize = items.Sum(m => m.Size);
+
             return View(model);
         }
 
-#if MVC6
-#else
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> CacheInfo_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync<BrowseItem>(GetGridModel(), gridPvData);
-        }
+        private static List<BrowseItem> GetAllItems() {
 
-        private List<BrowseItem> GetAllItems() {
-            System.Web.Caching.Cache cache = System.Web.HttpRuntime.Cache;
-            List<BrowseItem> items = (from DictionaryEntry item in cache select new BrowseItem { Key = item.Key.ToString(), Value = (item.Value ?? "").ToString(), Size = -1 }).ToList();
-            foreach (BrowseItem item in items) {
-                object o = null;
-                try {
-                    o = cache[item.Key];
-                } catch (Exception) { }
+            // https://stackoverflow.com/questions/45597057/how-to-retrieve-a-list-of-memory-cache-keys-in-asp-net-core
+
+            // Define the collection object for scoping.  It is created as a dynamic object since the collection
+            // method returns as an object array which cannot be used in a foreach loop to generate the list.
+            dynamic cacheEntriesCollection = null!;
+
+            // This action creates an empty definitions container as defined by the class type.  
+            // Pull the _coherentState field for .Net version 7 or higher.  Pull the EntriesCollection 
+            // property for .Net version 6 or lower.    Both of these objects are defined as private, 
+            // so we need to use Reflection to gain access to the non-public entities.  
+            var cacheEntriesFieldCollectionDefinition = typeof(MemoryCache).GetField("_coherentState", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var cacheEntriesPropertyCollectionDefinition = typeof(MemoryCache).GetProperty("EntriesCollection", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+
+            // .Net 7 or higher.
+            // Starting with .Net 7.0, the EntriesCollection object was moved to being a child object of
+            // the _coherentState field under the MemoryCache type.  Same process as before with an extra step.
+            // Populate the coherentState field variable with the definition from above using the data in
+            // our MemoryCache instance.  Then use Reflection to gain access to the private property EntriesCollection.
+            if (cacheEntriesFieldCollectionDefinition != null) {
+                var coherentStateValueCollection = cacheEntriesFieldCollectionDefinition.GetValue(YetaWFManager.MemoryCache);
+                var entriesCollectionValueCollection = coherentStateValueCollection.GetType().GetProperty("EntriesCollection", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!;
+                cacheEntriesCollection = entriesCollectionValueCollection.GetValue(coherentStateValueCollection)!;
+            }
+
+            // Define a new list we'll be adding the cache entries to
+            List<BrowseItem> browseItems = new List<BrowseItem>();
+
+            foreach (var cacheItem in cacheEntriesCollection) {
+                // Get the "Value" from the key/value pair which contains the cache entry   
+                ICacheEntry cacheItemValue = cacheItem.GetType().GetProperty("Value").GetValue(cacheItem, null);
+
+                object? o = cacheItemValue.Value;
+                string objectString = string.Empty;
                 if (o != null) {
-                    if (o as byte[] != null)
-                        item.Size = ((byte[])o).Length;
-                    else if (o as string != null)
-                        item.Size = item.Value.Length;
+                    objectString = o.ToString() ?? string.Empty;
+                    if (o is byte[] btes) {
+                        objectString = System.Text.Encoding.UTF8.GetString(btes, 0, btes.Length);
+                    }
                     // add more types as needed
                 }
+                BrowseItem browseItem = new BrowseItem {
+                    Key = cacheItemValue.Key.ToString() ?? string.Empty,
+                    Value = objectString.TruncateWithEllipse(100) ?? string.Empty,
+                    Size = cacheItemValue.Size ?? 0,
+                };
+                browseItems.Add(browseItem);
             }
-            return items;
+            return browseItems;
         }
-#endif
     }
 }

@@ -8,6 +8,7 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using System.Linq;
 using System.Collections.Generic;
+using YetaWF.Core.Controllers;
 //using YetaWF.Core.Controllers;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
@@ -123,20 +124,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.DropDownSearchEditComponent('{component.DivId}', {Utility.JsonSerialize(setup)});");
 
             return tags;
-        }
-    }
-
-    /// <summary>
-    /// Returns a selection list suitable for client-side rendering.
-    /// </summary>
-    /// <typeparam name="TYPE"></typeparam>
-    public class DropDownSearchResult<TYPE> : YJsonResult {
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="list">The list of available selections.</param>
-        public DropDownSearchResult(List<SelectionItem<TYPE>> list) {
-            Data = (from l in list select new { Text = l.Text?.ToString(), Tooltip = l.Tooltip?.ToString(), Value = l.Value }).ToList();
         }
     }
 }

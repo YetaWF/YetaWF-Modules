@@ -27,17 +27,17 @@ namespace YetaWF.Modules.Caching.DataProvider {
 
         public Task AddAsync<TYPE>(string key, TYPE? data) {
             if (data == null) {
-                YetaWFManager.MemoryCache.Set<object>(key, EmptyCachedObject);
+                YetaWFManager.MemoryCache.Set<object>(key, EmptyCachedObject, new MemoryCacheEntryOptions { Size = 0 });
             } else {
                 // we can't save the entire object, just the data that we actually marked as savable (Properties)
                 // the main reason the object is not savable is because it may be derived from other classes with
                 // volatile data which is expected to be cleared for every invocation.
                 byte[] cacheData;
                 if (typeof(TYPE) == typeof(byte[]))
-                    cacheData = (byte[])(object) data;
+                    cacheData = (byte[])(object)data;
                 else
                     cacheData = new GeneralFormatter().Serialize(data);
-                YetaWFManager.MemoryCache.Set<byte[]>(key, cacheData);
+                YetaWFManager.MemoryCache.Set<byte[]>(key, cacheData, new MemoryCacheEntryOptions { Size = cacheData.Length });
             }
             return Task.CompletedTask;
         }

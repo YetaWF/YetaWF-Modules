@@ -40,7 +40,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [UIHint("FileFolderSize"), ReadOnly]
     /// public long Size { get; set; }
     /// </example>
-    public class FileFolderSizeDisplayComponent : FileFolderSizeComponentBase, IYetaWFComponent<long> {
+    public class FileFolderSizeDisplayComponent : FileFolderSizeComponentBase, IYetaWFComponent<long?> {
 
         /// <summary>
         /// Returns the component type (edit/display).
@@ -53,9 +53,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="model">The model being rendered by the component.</param>
         /// <returns>The component rendered as HTML.</returns>
-        public Task<string> RenderAsync(long model) {
+        public Task<string> RenderAsync(long? model) {
             HtmlBuilder hb = new HtmlBuilder();
-
+            if (model is null) return Task.FromResult(string.Empty);
             hb.Append($@"
 <div class='yt_filefoldersize t_display' {Basics.CssTooltip}='{Formatting.LongKBDisplay(model, detailed:true)}'>
     {HE(Formatting.FormatFileFolderSize(model))}

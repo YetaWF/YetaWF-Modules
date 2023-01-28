@@ -31,14 +31,14 @@ namespace YetaWF.Modules.Backups.Endpoints {
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
             RouteGroupBuilder group = endpoints.MapGroup(GetPackageRoute(package, typeof(BackupsModuleEndpoints)))
-                .RequireAuthorization();
-            
+                .RequireAuthorization()
+                .AntiForgeryToken();
+
             group.MapPost(GridSupport.BrowseGridData, async (HttpContext context, [FromBody] GridSupport.GridPartialViewData gridPvData) => {
                 ModuleDefinition module = await GetModuleAsync(gridPvData.__ModuleGuid);
                 if (!module.IsAuthorized("Backups")) return Results.Unauthorized();
                 return await GridSupport.GetGridPartialAsync(context, module, BackupsModuleController.GetGridModel(module), gridPvData);
-            })
-                .AntiForgeryToken();
+            });
 
             group.MapPost(PerformSiteBackup, async (HttpContext context, [FromQuery] Guid __ModuleGuid) => {
                 ModuleDefinition module = await GetModuleAsync(__ModuleGuid);

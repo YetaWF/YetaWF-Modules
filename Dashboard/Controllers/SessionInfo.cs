@@ -1,17 +1,19 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Dashboard#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using YetaWF.Core.Controllers;
-using YetaWF.Core.DataProvider;
-using YetaWF.Core.Localize;
-using YetaWF.Core.Models;
-using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Support;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
-using Microsoft.AspNetCore.Mvc;
+using YetaWF.Core.Controllers;
+using YetaWF.Core.DataProvider;
+using YetaWF.Core.Endpoints;
+using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Modules;
+using YetaWF.Core.Support;
+using YetaWF.Modules.Dashboard.Endpoints;
 
 namespace YetaWF.Modules.Dashboard.Controllers {
 
@@ -43,12 +45,12 @@ namespace YetaWF.Modules.Dashboard.Controllers {
 
             public void SetData(SessionState session) { }
         }
-        private GridDefinition GetGridModel() {
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(SessionInfo_GridData)),
+                AjaxUrl = Utility.UrlFor<SessionInfoModuleEndpoints>(GridSupport.BrowseGridData),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
@@ -74,20 +76,14 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         public ActionResult SessionInfo() {
             DisplayModel model = new DisplayModel();
             model.SetData(Manager.CurrentSession);
-            model.GridDef = GetGridModel();
+            model.GridDef = GetGridModel(Module);
 
             List<BrowseItem> items = GetAllItems();
             model.TotalSize = items.Sum(m => m.Size);
             return View(model);
         }
 
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> SessionInfo_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync<BrowseItem>(GetGridModel(), gridPvData);
-        }
-
-        private List<BrowseItem> GetAllItems() {
+        private static List<BrowseItem> GetAllItems() {
             SessionState session = Manager.CurrentSession;
             List<BrowseItem> items = (from string item in session.Keys select new BrowseItem { Key = item, Value = (session[item] ?? string.Empty).ToString()!, Size = -1 }).ToList();
             foreach (BrowseItem item in items) {
@@ -104,12 +100,6 @@ namespace YetaWF.Modules.Dashboard.Controllers {
                 }
             }
             return items;
-        }
-
-        [AllowPost]
-        public ActionResult ClearAll() {
-            Manager.SessionSettings.ClearAll(true);
-            return Reload(null, PopupText: this.__ResStr("clearDone", "Sessions settings have been cleared"));
         }
     }
 }

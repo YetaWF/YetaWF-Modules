@@ -30,7 +30,8 @@ namespace YetaWF.Modules.ComponentsHTML.Endpoints {
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
             RouteGroupBuilder group = endpoints.MapGroup(GetPackageRoute(package, typeof(FileUpload1Endpoints)))
-                .RequireAuthorization();
+                .RequireAuthorization()
+                .AntiForgeryToken();
 
             // Saves an uploaded image file. Works in conjunction with the FileUpload1 template and YetaWF.Core.Upload.FileUpload.
             group.MapPost(SaveImage, async (HttpContext context, Guid __ModuleGuid, IFormFile __filename, string? __lastInternalName) => {

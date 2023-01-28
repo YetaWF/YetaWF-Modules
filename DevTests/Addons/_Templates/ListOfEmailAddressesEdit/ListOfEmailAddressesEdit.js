@@ -37,15 +37,14 @@ var YetaWF_DevTests;
                     return true;
                 _this.ReloadInProgress = true;
                 var uri = $YetaWF.parseUrl(_this.Setup.AddUrl);
-                uri.addFormInfo(_this.Control);
-                var uniqueIdCounters = { UniqueIdPrefix: "".concat(_this.ControlId, "ls"), UniqueIdPrefixCounter: 0, UniqueIdCounter: ++_this.AddCounter };
-                uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
-                uri.addSearch("newEmailAddress", _this.inputEmail.value.trim());
-                uri.addSearch("fieldPrefix", _this.Grid.FieldName);
-                uri.addSearch("data", JSON.stringify(_this.Grid.StaticData));
-                if (_this.Grid.ExtraData)
-                    uri.addSearchSimpleObject(_this.Grid.ExtraData);
-                $YetaWF.post(_this.Setup.AddUrl, uri.toFormData(), function (success, partial) {
+                var query = {
+                    NewEmailAddress: _this.inputEmail.value.trim(),
+                    FieldPrefix: _this.Grid.FieldName,
+                };
+                var data = $YetaWF.Forms.getJSONInfo(_this.Control);
+                data.GridData = _this.Grid.StaticData;
+                data[YConfigs.Forms.UniqueIdCounters] = { UniqueIdPrefix: "".concat(_this.ControlId, "ls"), UniqueIdPrefixCounter: 0, UniqueIdCounter: ++_this.AddCounter };
+                $YetaWF.postJSON(uri, query, data, function (success, partial) {
                     _this.ReloadInProgress = false;
                     if (success) {
                         _this.Grid.AddRecord(partial.TR, partial.StaticData);

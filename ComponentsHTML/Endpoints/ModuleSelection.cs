@@ -26,6 +26,7 @@ namespace YetaWF.Modules.ComponentsHTML.Endpoints {
 
             RouteGroupBuilder group = endpoints.MapGroup(GetPackageRoute(package, typeof(ModuleSelectionEndpoints)))
                 .RequireAuthorization()
+                .AntiForgeryToken()
                 .ResourceAuthorize(CoreInfo.Resource_ModuleLists);
 
             // Returns data to replace a dropdownlist's data with new modules given a package name.

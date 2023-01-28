@@ -1,19 +1,19 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Dashboard#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using YetaWF.Core.Controllers;
-using YetaWF.Core.DataProvider;
-using YetaWF.Core.Models;
-using YetaWF.Core.Models.Attributes;
-using YetaWF.Modules.Dashboard.DataProvider;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
+using YetaWF.Core.Controllers;
+using YetaWF.Core.DataProvider;
+using YetaWF.Core.Endpoints;
+using YetaWF.Core.Models;
+using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Modules;
+using YetaWF.Core.Support;
+using YetaWF.Modules.Dashboard.DataProvider;
+using YetaWF.Modules.Dashboard.Endpoints;
 
 namespace YetaWF.Modules.Dashboard.Controllers {
 
@@ -41,12 +41,12 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; } = null!;
         }
-        private GridDefinition GetGridModel() {
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(BrowseDataProviders_GridData)),
+                AjaxUrl = Utility.UrlFor<BrowseDataProvidersModuleEndpoints>(GridSupport.BrowseGridData),
                 DirectDataAsync = (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (DataProviderInfoDataProvider dataProvider = new DataProviderInfoDataProvider()) {
                         DataProviderGetRecords<DataProviderInfo> browseItems = dataProvider.GetItems(skip, take, sort, filters);
@@ -63,15 +63,9 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         [AllowGet]
         public ActionResult BrowseDataProviders() {
             BrowseModel model = new BrowseModel {
-                GridDef = GetGridModel()
+                GridDef = GetGridModel(Module)
             };
             return View(model);
-        }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> BrowseDataProviders_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync(GetGridModel(), gridPvData);
         }
     }
 }

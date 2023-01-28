@@ -43,15 +43,16 @@ namespace YetaWF_DevTests {
                 this.ReloadInProgress = true;
 
                 var uri = $YetaWF.parseUrl(this.Setup.AddUrl);
-                uri.addFormInfo(this.Control);
-                let uniqueIdCounters: YetaWF.UniqueIdInfo = { UniqueIdPrefix: `${this.ControlId}ls`, UniqueIdPrefixCounter: 0, UniqueIdCounter: ++this.AddCounter };
-                uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
-                uri.addSearch("newEmailAddress", this.inputEmail.value.trim());
-                uri.addSearch("fieldPrefix", this.Grid.FieldName);
-                uri.addSearch("data", JSON.stringify(this.Grid.StaticData));
-                if (this.Grid.ExtraData) uri.addSearchSimpleObject(this.Grid.ExtraData);
+                const query = {
+                    NewEmailAddress: this.inputEmail.value.trim(),
+                    FieldPrefix: this.Grid.FieldName,
+                };
 
-                $YetaWF.post(this.Setup.AddUrl, uri.toFormData(), (success: boolean, partial: GridRecordResult): void => {
+                let data = $YetaWF.Forms.getJSONInfo(this.Control);
+                data.GridData = this.Grid.StaticData;
+                data[YConfigs.Forms.UniqueIdCounters] = { UniqueIdPrefix: `${this.ControlId}ls`, UniqueIdPrefixCounter: 0, UniqueIdCounter: ++this.AddCounter };
+
+                $YetaWF.postJSON(uri, query, data, (success: boolean, partial: GridRecordResult): void => {
                     this.ReloadInProgress = false;
                     if (success) {
                         this.Grid.AddRecord(partial.TR, partial.StaticData);

@@ -1,22 +1,20 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Dashboard#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
+using YetaWF.Modules.Dashboard.Endpoints;
 using YetaWF.Modules.Dashboard.Modules;
-using System.Threading.Tasks;
-using YetaWF.Core.Components;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Dashboard.Controllers {
 
@@ -55,24 +53,24 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; } = null!;
         }
-        private GridDefinition GetGridModel() {
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
                 InitialPageSize = 20,
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(DisposableTrackerBrowse_GridData)),
+                AjaxUrl = Utility.UrlFor<DisposableTrackerBrowseModuleEndpoints>(GridSupport.BrowseGridData),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(data, skip, take, sorts, filters);
                     foreach (BrowseItem r in recs.Data)
-                        r.Module = Module;
+                        r.Module = (DisposableTrackerBrowseModule)module;
                     return new DataSourceResult {
                         Data = recs.Data.ToList<object>(),
                         Total = recs.Total,
                     };
                 },
                 DirectDataAsync = (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
-                    List<BrowseItem> items = (from k in DisposableTracker.GetDisposableObjects() select new BrowseItem(Module, k)).ToList();
+                    List<BrowseItem> items = (from k in DisposableTracker.GetDisposableObjects() select new BrowseItem((DisposableTrackerBrowseModule)module, k)).ToList();
                     DataProviderGetRecords<BrowseItem> recs = DataProviderImpl<BrowseItem>.GetRecords(items, skip, take, sort, filters);
                     DataSourceResult data = new DataSourceResult {
                         Data = recs.Data.ToList<object>(),
@@ -86,14 +84,9 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         [AllowGet]
         public ActionResult DisposableTrackerBrowse() {
             BrowseModel model = new BrowseModel {
-                GridDef = GetGridModel()
+                GridDef = GetGridModel(Module)
             };
             return View(model);
-        }
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> DisposableTrackerBrowse_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync<BrowseItem>(GetGridModel(), gridPvData);
         }
     }
 }
