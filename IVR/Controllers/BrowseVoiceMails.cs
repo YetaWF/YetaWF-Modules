@@ -1,6 +1,8 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
 
+using Microsoft.AspNetCore.Mvc;
 using Softelvdm.Modules.IVR.DataProvider;
+using Softelvdm.Modules.IVR.Endpoints;
 using Softelvdm.Modules.IVR.Modules;
 using System;
 using System.Collections.Generic;
@@ -9,20 +11,18 @@ using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace Softelvdm.Modules.IVR.Controllers {
 
     public class BrowseVoiceMailsModuleController : ControllerImpl<Softelvdm.Modules.IVR.Modules.BrowseVoiceMailsModule> {
+
+        private static string __ResStr(string name, string defaultValue, params object?[] parms) { return ResourceAccess.GetResourceString(typeof(BrowseVoiceMailsModuleController), name, defaultValue, parms); }
 
         public class BrowseItem {
 
@@ -92,13 +92,13 @@ namespace Softelvdm.Modules.IVR.Controllers {
                 ObjectSupport.CopyData(data, this);
             }
         }
-        private GridDefinition GetGridModel() {
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
                 SizeStyle = GridDefinition.SizeStyleEnum.SizeToFit,
-                ModuleGuid = Module.ModuleGuid,
-                //SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                //SettingsModuleGuid = module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(BrowseVoiceMails_GridData)),
+                AjaxUrl = Utility.UrlFor<BrowseVoiceMailsModuleEndpoints>(GridSupport.BrowseGridData),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     List<string> extensions = new List<string>();
                     if (!Manager.HasSuperUserRole) {
@@ -106,7 +106,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
                             extensions = await extDP.GetExtensionsForUserAsync(Manager.UserId);
                         }
                         if (extensions.Count == 0)
-                            throw new Error(this.__ResStr("noInbox", "No extension defined for the current user"));
+                            throw new Error(__ResStr("noInbox", "No extension defined for the current user"));
                     }
                     DisplayVoiceMailModule dispMod = (DisplayVoiceMailModule?)await ModuleDefinition.LoadAsync(ModuleDefinition.GetPermanentGuid(typeof(DisplayVoiceMailModule))) ?? throw new InternalError("Display Module not available");
                     using (VoiceMailDataProvider dataProvider = new VoiceMailDataProvider()) {
@@ -118,7 +118,7 @@ namespace Softelvdm.Modules.IVR.Controllers {
                             filters = DataProviderFilterInfo.Join(filters, new DataProviderFilterInfo { Filters = extFilters, Logic = "||" });
                         DataProviderGetRecords<VoiceMailData> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
-                            Data = (from s in browseItems.Data select new BrowseItem(Module, dispMod, s)).ToList<object>(),
+                            Data = (from s in browseItems.Data select new BrowseItem((BrowseVoiceMailsModule)module, dispMod, s)).ToList<object>(),
                             Total = browseItems.Total
                         };
                     }
@@ -136,27 +136,9 @@ namespace Softelvdm.Modules.IVR.Controllers {
         public ActionResult BrowseVoiceMails() {
             Manager.NeedUser();
             BrowseModel model = new BrowseModel {
-                GridDef = GetGridModel()
+                GridDef = GetGridModel(Module)
             };
             return View(model);
-        }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> BrowseVoiceMails_GridData(GridPartialViewData gridPvData) {
-            Manager.NeedUser();
-            return await GridPartialViewAsync(GetGridModel(), gridPvData);
-        }
-
-        [AllowPost]
-        [Permission("RemoveItems")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> Remove(int id) {
-            using (VoiceMailDataProvider dataProvider = new VoiceMailDataProvider()) {
-                if (!await dataProvider.RemoveItemByIdentityAsync(id))
-                    throw new Error(this.__ResStr("cantRemove", "Couldn't remove voice mail message with id {0}", id));
-                return Reload(null, Reload: ReloadEnum.ModuleParts);
-            }
         }
     }
 }

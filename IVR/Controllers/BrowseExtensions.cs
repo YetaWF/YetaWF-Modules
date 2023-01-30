@@ -1,26 +1,22 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
 
+using Microsoft.AspNetCore.Mvc;
 using Softelvdm.Modules.IVR.DataProvider;
+using Softelvdm.Modules.IVR.Endpoints;
 using Softelvdm.Modules.IVR.Modules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Identity;
-using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace Softelvdm.Modules.IVR.Controllers {
 
@@ -74,18 +70,18 @@ namespace Softelvdm.Modules.IVR.Controllers {
                 ObjectSupport.CopyData(data, this);
             }
         }
-        private GridDefinition GetGridModel() {
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
                 SizeStyle = GridDefinition.SizeStyleEnum.SizeToFit,
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(BrowseExtensions_GridData)),
+                AjaxUrl = Utility.UrlFor<BrowseExtensionsModuleEndpoints>(GridSupport.BrowseGridData),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (ExtensionEntryDataProvider dataProvider = new ExtensionEntryDataProvider()) {
                         DataProviderGetRecords<ExtensionEntry> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
-                            Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                            Data = (from s in browseItems.Data select new BrowseItem((BrowseExtensionsModule)module, s)).ToList<object>(),
                             Total = browseItems.Total
                         };
                     }
@@ -102,26 +98,9 @@ namespace Softelvdm.Modules.IVR.Controllers {
         [AllowGet]
         public ActionResult BrowseExtensions() {
             BrowseModel model = new BrowseModel {
-                GridDef = GetGridModel()
+                GridDef = GetGridModel(Module)
             };
             return View(model);
-        }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> BrowseExtensions_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync(GetGridModel(), gridPvData);
-        }
-
-        [AllowPost]
-        [Permission("RemoveItems")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> Remove(int id) {
-            using (ExtensionEntryDataProvider dataProvider = new ExtensionEntryDataProvider()) {
-                if (!await dataProvider.RemoveItemByIdentityAsync(id))
-                    throw new Error(this.__ResStr("cantRemove", "Couldn't remove extension with id {0}", id));
-                return Reload(null, Reload: ReloadEnum.ModuleParts);
-            }
         }
     }
 }

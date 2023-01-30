@@ -42,7 +42,9 @@ namespace Softelvdm.Modules.IVR.Controllers {
         [AllowGet]
         public ActionResult AddHoliday() {
             AddModel model = new AddModel {};
-            ObjectSupport.CopyData(new HolidayEntry(), model);
+            ObjectSupport.CopyData(new HolidayEntry() {
+                HolidayDate = DateTime.UtcNow
+            }, model);
             return View(model);
         }
 

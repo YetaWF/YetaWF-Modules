@@ -1,26 +1,22 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
 
+using Microsoft.AspNetCore.Mvc;
+using Softelvdm.Modules.IVR.DataProvider;
+using Softelvdm.Modules.IVR.Endpoints;
+using Softelvdm.Modules.IVR.Modules;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using YetaWF.Core;
 using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.Localize;
+using YetaWF.Core.Endpoints;
+using YetaWF.Core.Extensions;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
-using Softelvdm.Modules.IVR.DataProvider;
-using Softelvdm.Modules.IVR.Modules;
-using YetaWF.Core;
-using YetaWF.Core.Extensions;
-using System;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace Softelvdm.Modules.IVR.Controllers {
 
@@ -66,17 +62,17 @@ namespace Softelvdm.Modules.IVR.Controllers {
                 data.Description = data.Description?.Truncate(200);
             }
         }
-        private GridDefinition GetGridModel() {
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(BrowseBlockedNumbers_GridData)),
+                AjaxUrl = Utility.UrlFor<BrowseBlockedNumbersModuleEndpoints>(GridSupport.BrowseGridData),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (BlockedNumberDataProvider dataProvider = new BlockedNumberDataProvider()) {
                         DataProviderGetRecords<BlockedNumberEntry> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
-                            Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                            Data = (from s in browseItems.Data select new BrowseItem((BrowseBlockedNumbersModule)module, s)).ToList<object>(),
                             Total = browseItems.Total
                         };
                     }
@@ -93,26 +89,9 @@ namespace Softelvdm.Modules.IVR.Controllers {
         [AllowGet]
         public ActionResult BrowseBlockedNumbers() {
             BrowseModel model = new BrowseModel {
-                GridDef = GetGridModel()
+                GridDef = GetGridModel(Module)
             };
             return View(model);
-        }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> BrowseBlockedNumbers_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync(GetGridModel(), gridPvData);
-        }
-
-        [AllowPost]
-        [Permission("RemoveItems")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> Remove(int id) {
-            using (BlockedNumberDataProvider dataProvider = new BlockedNumberDataProvider()) {
-                if (!await dataProvider.RemoveItemByIdentityAsync(id))
-                    throw new Error(this.__ResStr("cantRemove", "Couldn't remove entry with id {0}", id));
-                return Reload(null, Reload: ReloadEnum.ModuleParts);
-            }
         }
     }
 }

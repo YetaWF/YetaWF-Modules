@@ -1,11 +1,10 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
 
-using Softelvdm.Modules.IVR.Controllers;
+using Softelvdm.Modules.IVR.Endpoints;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core;
-using YetaWF.Core.Components;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -13,10 +12,6 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
 
 namespace Softelvdm.Modules.IVR.Modules {
 
@@ -73,9 +68,8 @@ namespace Softelvdm.Modules.IVR.Modules {
         public ModuleAction? GetAction_Remove(int id) {
             if (!IsAuthorized("RemoveItems")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(BrowseCallLogModuleController), nameof(BrowseCallLogModuleController.Remove)),
+                Url = $"{Utility.UrlFor(typeof(BrowseCallLogModuleEndpoints), BrowseCallLogModuleEndpoints.Remove)}/{id}",
                 NeedsModuleContext = true,
-                QueryArgs = new { Id = id },
                 Image = "#Remove",
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("removeLink", "Remove"),

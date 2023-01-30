@@ -1,24 +1,20 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
 
+using Microsoft.AspNetCore.Mvc;
 using Softelvdm.Modules.IVR.DataProvider;
+using Softelvdm.Modules.IVR.Endpoints;
 using Softelvdm.Modules.IVR.Modules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.Localize;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace Softelvdm.Modules.IVR.Controllers {
 
@@ -53,18 +49,18 @@ namespace Softelvdm.Modules.IVR.Controllers {
                 ObjectSupport.CopyData(data, this);
             }
         }
-        private GridDefinition GetGridModel() {
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
                 SizeStyle = GridDefinition.SizeStyleEnum.SizeToFit,
-                ModuleGuid = Module.ModuleGuid,
+                ModuleGuid = module.ModuleGuid,
                 //SettingsModuleGuid = Module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(BrowseHolidays_GridData)),
+                AjaxUrl = Utility.UrlFor<BrowseHolidaysModuleEndpoints>(GridSupport.BrowseGridData),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (HolidayEntryDataProvider dataProvider = new HolidayEntryDataProvider()) {
                         DataProviderGetRecords<HolidayEntry> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
-                            Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                            Data = (from s in browseItems.Data select new BrowseItem((BrowseHolidaysModule)module, s)).ToList<object>(),
                             Total = browseItems.Total
                         };
                     }
@@ -81,26 +77,9 @@ namespace Softelvdm.Modules.IVR.Controllers {
         [AllowGet]
         public ActionResult BrowseHolidays() {
             BrowseModel model = new BrowseModel {
-                GridDef = GetGridModel()
+                GridDef = GetGridModel(Module)
             };
             return View(model);
-        }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> BrowseHolidays_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync(GetGridModel(), gridPvData);
-        }
-
-        [AllowPost]
-        [Permission("RemoveItems")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> Remove(int id) {
-            using (HolidayEntryDataProvider dataProvider = new HolidayEntryDataProvider()) {
-                if (!await dataProvider.RemoveItemByIdentityAsync(id))
-                    throw new Error(this.__ResStr("cantRemove", "Couldn't remove holiday with id {0}"));
-                return Reload(null, Reload: ReloadEnum.ModuleParts);
-            }
         }
     }
 }
