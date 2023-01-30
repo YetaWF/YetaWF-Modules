@@ -9,11 +9,7 @@ using System.Linq;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Identity;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
 

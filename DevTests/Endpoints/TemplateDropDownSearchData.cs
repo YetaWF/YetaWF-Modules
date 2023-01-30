@@ -21,7 +21,7 @@ namespace YetaWF.Modules.DevTests.Endpoints {
 
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            RouteGroupBuilder group = endpoints.MapGroup(GetPackageRoute(package, typeof(TemplateDropDownSearchDataEndpoints)))
+            RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(TemplateDropDownSearchDataEndpoints)))
                 .RequireAuthorization()
                 .AntiForgeryToken();
 

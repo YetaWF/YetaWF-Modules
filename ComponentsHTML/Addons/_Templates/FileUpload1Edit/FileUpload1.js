@@ -116,7 +116,8 @@ var YetaWF_ComponentsHTML;
         };
         // API
         FileUpload1Component.prototype.RemoveFile = function (name) {
-            $YetaWF.postJSON($YetaWF.parseUrl(this.Setup.RemoveUrl), null, null, function (success, data) {
+            var info = $YetaWF.Forms.getJSONInfo(this.Control);
+            $YetaWF.postJSON($YetaWF.parseUrl(this.Setup.RemoveUrl), info, null, function (success, data) {
                 if (success && data.Result)
                     $YetaWF.message(data.Result);
             });

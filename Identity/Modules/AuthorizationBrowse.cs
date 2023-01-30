@@ -10,11 +10,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-using YetaWF.Modules.Identity.Controllers;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
+using YetaWF.Modules.Identity.Endpoints;
 
 namespace YetaWF.Modules.Identity.Modules {
 
@@ -33,14 +29,14 @@ namespace YetaWF.Modules.Identity.Modules {
 
         public override IModuleDefinitionIO GetDataProvider() { return new AuthorizationBrowseModuleDataProvider(); }
 
-        [Category("General"), Caption("Add URL"), Description("The URL to add a new resource - if omitted, a default page is generated")]
+        [Category("General"), Caption("Add Url"), Description("The Url to add a new resource - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string AddUrl { get; set; }
 
-        [Category("General"), Caption("Display URL"), Description("The URL to display resource information - if omitted, a default page is generated")]
+        [Category("General"), Caption("Display Url"), Description("The Url to display resource information - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string DisplayUrl { get; set; }
-        [Category("General"), Caption("Edit URL"), Description("The URL to edit a resource - if omitted, a default page is generated")]
+        [Category("General"), Caption("Edit Url"), Description("The Url to edit a resource - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string EditUrl { get; set; }
 
@@ -72,7 +68,7 @@ namespace YetaWF.Modules.Identity.Modules {
         public ModuleAction GetAction_Remove(string resourceName) {
             if (!IsAuthorized("RemoveResources")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(AuthorizationBrowseModuleController), "Remove"),
+                Url = Utility.UrlFor(typeof(AuthorizationBrowseModuleEndpoints), AuthorizationBrowseModuleEndpoints.Remove),
                 QueryArgs = new { ResourceName = resourceName },
                 Image = "#Remove",
                 NeedsModuleContext = true,

@@ -14,7 +14,7 @@ namespace YetaWF.Modules.Basics.Endpoints {
 
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            endpoints.MapPost(GetEndpoint(package, typeof(AlertDisplayModuleEndpoints), Off), (HttpContext context) => {
+            endpoints.MapPost(GetPackageApiEndpoint(package, typeof(AlertDisplayModuleEndpoints), Off), (HttpContext context) => {
                 Manager.SessionSettings.SiteSettings.SetValue<bool>("YetaWF_Basics_AlertDone", true);
                 Manager.SessionSettings.SiteSettings.Save();
                 return Results.Ok();

@@ -18,7 +18,7 @@ namespace YetaWF.Modules.ComponentsHTML.Endpoints {
 
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            RouteGroupBuilder group = endpoints.MapGroup(GetPackageRoute(package, typeof(CheckListPanelEndpoints)))
+            RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(CheckListPanelEndpoints)))
                 .AntiForgeryToken();
 
             group.MapPost(GridSupport.DisplaySortFilter, async (HttpContext context, [FromBody] GridSupport.GridPartialViewData gridPvData) => {

@@ -16,7 +16,7 @@ namespace YetaWF.Modules.DevTests.Endpoints {
 
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            RouteGroupBuilder group = endpoints.MapGroup(GetPackageRoute(package, typeof(TemplateGridModuleEndpoints)))
+            RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(TemplateGridModuleEndpoints)))
                 .RequireAuthorization()
                 .AntiForgeryToken();
 

@@ -58,7 +58,8 @@ namespace YetaWF_ImageRepository {
                 uri.removeSearch("Name");
                 uri.addSearch("Name", this.Hidden.value);
 
-                $YetaWF.post(uri.toUrl(), null, (success: boolean, resp: YetaWF_ComponentsHTML.FileUploadRemoveResponse): void => {
+                const info = $YetaWF.Forms.getJSONInfo(this.Control);
+                $YetaWF.postJSON(uri, info, null, (success: boolean, resp: YetaWF_ComponentsHTML.FileUploadRemoveResponse): void => {
                     if (success) {
                         // eslint-disable-next-line no-eval
                         eval(resp.Result);

@@ -24,7 +24,7 @@ namespace YetaWF.Modules.ComponentsHTML.Endpoints {
 
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            RouteGroupBuilder group = endpoints.MapGroup(GetPackageRoute(package, typeof(ModuleSelectionEndpoints)))
+            RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(ModuleSelectionEndpoints)))
                 .RequireAuthorization()
                 .AntiForgeryToken()
                 .ResourceAuthorize(CoreInfo.Resource_ModuleLists);

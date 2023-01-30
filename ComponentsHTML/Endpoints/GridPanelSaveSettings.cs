@@ -20,7 +20,7 @@ namespace YetaWF.Modules.ComponentsHTML.Endpoints {
 
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            RouteGroupBuilder group = endpoints.MapGroup(GetPackageRoute(package, typeof(GridPanelSaveSettingsEndpoints)));
+            RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(GridPanelSaveSettingsEndpoints)));
 
             // Saves a grid's expand/collapse status (panel header only).
             group.MapPost(SaveExpandCollapse, (HttpContext context, [FromQuery] Guid? settingsModuleGuid, [FromQuery] bool expanded) => {

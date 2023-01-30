@@ -16,7 +16,7 @@ namespace YetaWF.Modules.Pages.Endpoints {
 
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            RouteGroupBuilder group = endpoints.MapGroup(GetPackageRoute(package, typeof(ListOfLocalPagesEndpoints)))
+            RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(ListOfLocalPagesEndpoints)))
                 .RequireAuthorization()
                 .AntiForgeryToken()
                 .ResourceAuthorize(Info.Resource_AllowListOfLocalPagesAjax);

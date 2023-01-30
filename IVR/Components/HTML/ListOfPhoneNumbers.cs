@@ -1,13 +1,14 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/IVR#License */
 
-using Softelvdm.Modules.IVR.Controllers;
 using Softelvdm.Modules.IVR.DataProvider;
+using Softelvdm.Modules.IVR.Endpoints;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
@@ -64,7 +65,7 @@ namespace Softelvdm.Modules.IVR.Components {
                 ShowHeader = header,
                 ShowPager = pager,
                 UseSkinFormatting = useSkin,
-                AjaxUrl = Utility.UrlFor(typeof(ListOfPhoneNumbersController), nameof(ListOfPhoneNumbersController.ListOfPhoneNumbersDisplay_SortFilter)),
+                AjaxUrl = Utility.UrlFor(typeof(ListOfPhoneNumbersEndpoints), GridSupport.DisplaySortFilter),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
@@ -145,19 +146,20 @@ namespace Softelvdm.Modules.IVR.Components {
 
             [Caption("Phone Number"), Description("Shows all defined phone numbers")]
             [UIHint("PhoneNumber"), ReadOnly]
-            public string PhoneNumberDisplay { get; set; }
+            public string PhoneNumberDisplay { get; set; } = null!;
 
             [Caption("SMS"), Description("Shows whether a text message is sent to the phone number when a voice mail is received")]
             [UIHint("Boolean")]
             public bool SendSMS { get; set; }
 
             [UIHint("Hidden"), ReadOnly]
-            public string PhoneNumber { get; set; }
+            public string PhoneNumber { get; set; } = null!;
 
             public Entry(string phoneNumber, bool sms) {
                 PhoneNumberDisplay = PhoneNumber = phoneNumber;
                 SendSMS = sms;
             }
+            public Entry() { }
         }
 
         internal static GridDefinition GetGridModel(bool header) {
@@ -166,7 +168,7 @@ namespace Softelvdm.Modules.IVR.Components {
                 RecordType = typeof(Entry),
                 InitialPageSize = 10,
                 ShowHeader = header,
-                AjaxUrl = Utility.UrlFor(typeof(ListOfPhoneNumbersController), nameof(ListOfPhoneNumbersController.ListOfPhoneNumbersEdit_SortFilter)),
+                AjaxUrl = Utility.UrlFor(typeof(ListOfPhoneNumbersEndpoints), GridSupport.EditSortFilter),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
@@ -220,7 +222,7 @@ namespace Softelvdm.Modules.IVR.Components {
             }
 
             ListOfPhoneNumbersSetup setup = new ListOfPhoneNumbersSetup {
-                AddUrl = Utility.UrlFor(typeof(ListOfPhoneNumbersController), nameof(ListOfPhoneNumbersController.AddPhoneNumber)),
+                AddUrl = Utility.UrlFor(typeof(ListOfPhoneNumbersEndpoints), nameof(ListOfPhoneNumbersEndpoints.AddPhoneNumber)),
                 GridId = grid.GridDef.Id,
             };
 
@@ -230,14 +232,6 @@ namespace Softelvdm.Modules.IVR.Components {
             Manager.ScriptManager.AddLast($@"new Softelvdm_IVR.ListOfPhoneNumbersEditComponent('{DivId}', {Utility.JsonSerialize(setup)});");
 
             return hb.ToString();
-        }
-        public static Task<GridRecordData> GridRecordAsync(string fieldPrefix, object model) {
-            GridRecordData record = new GridRecordData() {
-                GridDef = GetGridModel(false),
-                Data = model,
-                FieldPrefix = fieldPrefix,
-            };
-            return Task.FromResult(record);
         }
     }
 }

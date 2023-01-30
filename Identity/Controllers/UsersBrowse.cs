@@ -1,27 +1,23 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.Localize;
+using YetaWF.Core.Endpoints;
+using YetaWF.Core.Identity;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.DataProvider;
+using YetaWF.Modules.Identity.Endpoints;
 using YetaWF.Modules.Identity.Modules;
-using YetaWF.Modules.Identity.Support;
-using YetaWF.Core.Components;
-using YetaWF.Core.Identity;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
 
@@ -122,17 +118,17 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; }
         }
-        private GridDefinition GetGridModel() {
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(UsersBrowse_GridData)),
+                AjaxUrl = Utility.UrlFor<UsersBrowseModuleEndpoints>(GridSupport.BrowseGridData),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
                     using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                         DataProviderGetRecords<UserDefinition> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters, IncludeSuperuser: false);
                         return new DataSourceResult {
-                            Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                            Data = (from s in browseItems.Data select new BrowseItem((UsersBrowseModule)module, s)).ToList<object>(),
                             Total = browseItems.Total
                         };
                     }
@@ -143,92 +139,9 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowGet]
         public ActionResult UsersBrowse() {
             BrowseModel model = new BrowseModel {
-                GridDef = GetGridModel()
+                GridDef = GetGridModel(Module)
             };
             return View(model);
-        }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> UsersBrowse_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync(GetGridModel(), gridPvData);
-        }
-
-        [AllowPost]
-        [Permission("RemoveUsers")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> Remove(string userName) {
-            using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                UserDefinition user = await GetUserAsync(userName, dataProvider);
-                await dataProvider.RemoveItemAsync(userName);
-                return Reload(null, Reload: ReloadEnum.ModuleParts);
-            }
-        }
-
-        [AllowPost]
-        [Permission("SendEmails")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> SendVerificationEmail(string userName) {
-            using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                UserDefinition user = await GetUserAsync(userName, dataProvider);
-                Emails emails = new Emails();
-                await emails.SendVerificationAsync(user);
-                return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("verificationSent", "Verification email sent to user {0}.", user.Email));
-            }
-        }
-
-        [AllowPost]
-        [Permission("SendEmails")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> SendApprovedEmail(string userName) {
-            using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                UserDefinition user = await GetUserAsync(userName, dataProvider);
-                Emails emails = new Emails();
-                await emails.SendApprovalAsync(user);
-                return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("approvalSent", "Approval email sent to user {0}.", user.Email));
-            }
-        }
-
-        [AllowPost]
-        [Permission("SendEmails")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> SendRejectedEmail(string userName) {
-            using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                UserDefinition user = await GetUserAsync(userName, dataProvider);
-                Emails emails = new Emails();
-                await emails.SendRejectedAsync(user);
-                return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("rejectionSent", "Rejection email sent to user {0}.", user.Email));
-            }
-        }
-
-        [AllowPost]
-        [Permission("SendEmails")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> SendSuspendedEmail(string userName) {
-            using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
-                UserDefinition user = await GetUserAsync(userName, dataProvider);
-                Emails emails = new Emails();
-                await emails.SendSuspendedAsync(user);
-                return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("suspendedSent", "Suspension email sent to user {0}.", user.Email));
-            }
-        }
-
-        [AllowPost]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> RehashAllPasswords() {
-            using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
-                await userDP.RehashAllPasswordsAsync();
-                return Reload(null, Reload: ReloadEnum.ModuleParts, PopupText: this.__ResStr("rehashDone", "All user passwords have been rehashed"));
-            }
-        }
-
-        private async Task<UserDefinition> GetUserAsync(string userName, UserDefinitionDataProvider dataProvider) {
-            if (string.IsNullOrWhiteSpace(userName))
-                throw new Error(this.__ResStr("noItem", "No user name specified"));
-            UserDefinition user = await dataProvider.GetItemAsync(userName);
-            if (user == null)
-                throw new Error(this.__ResStr("notFoundUser", "User {0} not found.", userName));
-            return user;
         }
     }
 }

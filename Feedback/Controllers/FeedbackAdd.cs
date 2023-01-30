@@ -10,11 +10,7 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.Feedback.DataProvider;
 using YetaWF.Modules.Feedback.Support;
 using YetaWF.Core.Components;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Feedback.Controllers {
     public class FeedbackAddModuleController : ControllerImpl<YetaWF.Modules.Feedback.Modules.FeedbackAddModule> {

@@ -68,7 +68,7 @@ namespace YetaWF.Modules.Dashboard.Modules {
         public ModuleAction? GetAction_Remove(int id) {
             if (!IsAuthorized("RemoveItems")) return null;
             return new ModuleAction(this) {
-                Url = $"{ Utility.UrlFor(typeof(AuditRecordsModuleEndpoints), AuditRecordsModuleEndpoints.Remove)}/{id}",
+                Url = $"{Utility.UrlFor(typeof(AuditRecordsModuleEndpoints), AuditRecordsModuleEndpoints.Remove)}/{id}",
                 NeedsModuleContext = true,
                 Image = "#Remove",
                 Style = ModuleAction.ActionStyleEnum.Post,

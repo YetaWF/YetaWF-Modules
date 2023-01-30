@@ -19,11 +19,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Security;
 using YetaWF.Core.Support;
 using YetaWF.Core.Support.SendSMS;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 #if !DEBUG
 using Softelvdm.Modules.TwilioProcessor.Controllers.Support;
 #endif

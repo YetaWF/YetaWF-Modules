@@ -30,7 +30,7 @@ namespace YetaWF.Modules.Backups.Endpoints {
 
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            RouteGroupBuilder group = endpoints.MapGroup(GetPackageRoute(package, typeof(BackupsModuleEndpoints)))
+            RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(BackupsModuleEndpoints)))
                 .RequireAuthorization()
                 .AntiForgeryToken();
 

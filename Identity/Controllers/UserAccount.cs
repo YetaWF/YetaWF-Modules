@@ -15,13 +15,8 @@ using YetaWF.Modules.Identity.Models;
 using YetaWF.Modules.Identity.Modules;
 using YetaWF.Modules.Identity.Support;
 using System.Linq;
-#if MVC6
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-#else
-using Microsoft.AspNet.Identity;
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
 
@@ -87,22 +82,14 @@ namespace YetaWF.Modules.Identity.Controllers {
                 };
 
                 // make sure this user exists
-#if MVC6
                 if (!Manager.CurrentContext.User.Identity.IsAuthenticated)
-#else
-                if (!Manager.CurrentRequest.IsAuthenticated)
-#endif
                 {
                     throw new Error(this.__ResStr("noUser", "There is no logged on user."));
                 }
                 string userName = User.Identity.Name;
                 UserManager<UserDefinition> userManager = Managers.GetUserManager();
                 UserDefinition user;
-#if MVC6
                 user = await userManager.FindByNameAsync(userName);
-#else
-                user = userManager.FindByName(userName);
-#endif
                 if (user == null)
                     throw new Error(this.__ResStr("notFound", "User \"{0}\" not found."), userName);
                 model.SetData(user);
@@ -120,11 +107,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             // make sure this user exists
             UserManager<UserDefinition> userManager = Managers.GetUserManager();
             UserDefinition user;
-#if MVC6
             user = await userManager.FindByNameAsync(model.OriginalUserName);
-#else
-            user = userManager.FindByName(model.OriginalUserName);
-#endif
             if (user == null)
                 throw new Error(this.__ResStr("alreadyDeleted", "The user named \"{0}\" has been removed and can no longer be updated.", model.OriginalUserName));
             if (!ModelState.IsValid)

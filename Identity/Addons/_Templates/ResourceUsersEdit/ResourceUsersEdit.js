@@ -36,18 +36,18 @@ var YetaWF_Identity;
                 if ($YetaWF.isLoading)
                     return true;
                 var uri = $YetaWF.parseUrl(_this.Setup.AddUrl);
-                uri.addFormInfo(_this.Control);
-                var uniqueIdCounters = { UniqueIdPrefix: "".concat(_this.ControlId, "ls"), UniqueIdPrefixCounter: 0, UniqueIdCounter: ++_this.AddCounter };
-                uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
-                uri.addSearch("newUser", _this.InputUserName.value);
-                uri.addSearch("fieldPrefix", _this.Grid.FieldName);
-                uri.addSearch("data", JSON.stringify(_this.Grid.StaticData));
+                var query = {
+                    NewUser: _this.InputUserName.value,
+                    FieldPrefix: _this.Grid.FieldName,
+                };
                 if (_this.Grid.ExtraData)
                     uri.addSearchSimpleObject(_this.Grid.ExtraData);
-                $YetaWF.post(_this.Setup.AddUrl, uri.toFormData(), function (success, partial) {
-                    if (success) {
+                var data = $YetaWF.Forms.getJSONInfo(_this.Control);
+                data.GridData = _this.Grid.StaticData;
+                data[YConfigs.Forms.UniqueIdCounters] = { UniqueIdPrefix: "".concat(_this.ControlId, "ls"), UniqueIdPrefixCounter: 0, UniqueIdCounter: ++_this.AddCounter };
+                $YetaWF.postJSON(uri, query, data, function (success, partial) {
+                    if (success)
                         _this.Grid.AddRecord(partial.TR, partial.StaticData);
-                    }
                 });
                 return false;
             });

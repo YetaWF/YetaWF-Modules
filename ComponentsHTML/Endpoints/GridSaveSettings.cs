@@ -38,7 +38,7 @@ namespace YetaWF.Modules.ComponentsHTML.Endpoints {
 
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            RouteGroupBuilder group = endpoints.MapGroup(GetPackageRoute(package, typeof(GridSaveSettingsEndpoints)))
+            RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(GridSaveSettingsEndpoints)))
                 .AntiForgeryToken();
 
             group.MapPost(GridSaveColumnWidths, (HttpContext context, [FromBody] GridColumns gridColumns) => {

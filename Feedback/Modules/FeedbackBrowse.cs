@@ -10,11 +10,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-using YetaWF.Modules.Feedback.Controllers;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
+using YetaWF.Modules.Feedback.Endpoints;
 
 namespace YetaWF.Modules.Feedback.Modules {
 
@@ -65,12 +61,11 @@ namespace YetaWF.Modules.Feedback.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
             };
         }
-        public ModuleAction? GetAction_RemoveFeedback(int key) {
+        public ModuleAction? GetAction_RemoveFeedback(int id) {
             if (!IsAuthorized("RemoveFeedback")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(FeedbackBrowseModuleController), "RemoveFeedback"),
+                Url = $"{Utility.UrlFor<FeedbackBrowseModuleEndpoints>(FeedbackBrowseModuleEndpoints.Remove)}/{id}",
                 NeedsModuleContext = true,
-                QueryArgs = new { Key = key},
                 Image = "#Remove",
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("removeLink", "Remove Feedback"),

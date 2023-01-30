@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -14,8 +15,8 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.DataProvider;
+using YetaWF.Modules.Identity.Endpoints;
 using YetaWF.Modules.Identity.Modules;
 
 namespace YetaWF.Modules.Identity.Components {
@@ -185,7 +186,7 @@ namespace YetaWF.Modules.Identity.Components {
                 RecordType = typeof(AllEntry),
                 InitialPageSize = 10,
                 ShowHeader = header,
-                AjaxUrl = Utility.UrlFor(typeof(UserIdController), nameof(UserIdController.UsersBrowse_GridData)),
+                AjaxUrl = Utility.UrlFor(typeof(UserIdEndpoints), GridSupport.BrowseGridData),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
                     using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
                         DataProviderGetRecords<UserDefinition> browseItems = await dataProvider.GetItemsAsync(skip, take, sorts, filters);

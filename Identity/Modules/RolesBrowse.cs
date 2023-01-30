@@ -14,10 +14,7 @@ using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.DataProvider;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
+using YetaWF.Modules.Identity.Endpoints;
 
 namespace YetaWF.Modules.Identity.Modules {
 
@@ -82,7 +79,7 @@ namespace YetaWF.Modules.Identity.Modules {
         public ModuleAction GetAction_RemoveLink(string name) {
             if (!IsAuthorized("RemoveRoles")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(RolesBrowseModuleController), "Remove"),
+                Url = Utility.UrlFor(typeof(RolesBrowseModuleEndpoints), RolesBrowseModuleEndpoints.Remove),
                 QueryArgs = new { Name = name },
                 Image = "#Remove",
                 NeedsModuleContext = true,

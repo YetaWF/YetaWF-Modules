@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
@@ -12,7 +13,7 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Modules.Identity.Controllers;
+using YetaWF.Modules.Identity.Endpoints;
 
 namespace YetaWF.Modules.Identity.Components {
 
@@ -61,7 +62,7 @@ namespace YetaWF.Modules.Identity.Components {
                 InitialPageSize = 10,
                 ShowHeader = header,
                 ShowFilter = filter,
-                AjaxUrl = Utility.UrlFor(typeof(RolesSelectorController), nameof(RolesSelectorController.RolesSelectorDisplay_SortFilter)),
+                AjaxUrl = Utility.UrlFor(typeof(RolesSelectorEndpoints), GridSupport.DisplaySortFilter),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
@@ -153,7 +154,7 @@ namespace YetaWF.Modules.Identity.Components {
                 InitialPageSize = 10,
                 ShowHeader = header,
                 ShowFilter = filter,
-                AjaxUrl = Utility.UrlFor(typeof(RolesSelectorController), nameof(RolesSelectorController.RolesSelectorEdit_SortFilter)),
+                AjaxUrl = Utility.UrlFor(typeof(RolesSelectorEndpoints), GridSupport.EditSortFilter),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo> sorts, List<DataProviderFilterInfo> filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {

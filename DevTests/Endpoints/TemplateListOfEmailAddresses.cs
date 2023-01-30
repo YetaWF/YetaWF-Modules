@@ -24,7 +24,7 @@ namespace YetaWF.Modules.DevTests.Endpoints {
 
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            endpoints.MapPost(GetEndpoint(package, typeof(TemplateListOfEmailAddressesEndpoints), AddEmailAddress), async (HttpContext context, [FromBody] GridSupport.GridAdditionPartialViewData<ListOfEmailAddressesEditComponent.Entry> pvData, string fieldPrefix, string newEmailAddress) => {
+            endpoints.MapPost(GetPackageApiEndpoint(package, typeof(TemplateListOfEmailAddressesEndpoints), AddEmailAddress), async (HttpContext context, [FromBody] GridSupport.GridAdditionPartialViewData<ListOfEmailAddressesEditComponent.Entry> pvData, string fieldPrefix, string newEmailAddress) => {
                 // Validation
                 EmailValidationAttribute attr = new EmailValidationAttribute();
                 if (!attr.IsValid(newEmailAddress))

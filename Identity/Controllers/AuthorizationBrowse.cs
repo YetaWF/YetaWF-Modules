@@ -1,23 +1,18 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.Localize;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Identity.DataProvider;
 using YetaWF.Modules.Identity.Modules;
-using YetaWF.Core.Components;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Identity.Controllers {
 
@@ -62,17 +57,17 @@ namespace YetaWF.Modules.Identity.Controllers {
             [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; }
         }
-        private GridDefinition GetGridModel() {
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(AuthorizationBrowse_GridData)),
+                AjaxUrl =  Utility.UrlFor<Endpoints.AuthorizationBrowseModuleEndpoints>(GridSupport.BrowseGridData),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo> sort, List<DataProviderFilterInfo> filters) => {
                     using (AuthorizationDataProvider dataProvider = new AuthorizationDataProvider()) {
                         DataProviderGetRecords<Authorization> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
-                            Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                            Data = (from s in browseItems.Data select new BrowseItem((AuthorizationBrowseModule)module, s)).ToList<object>(),
                             Total = browseItems.Total
                         };
                     }
@@ -83,28 +78,9 @@ namespace YetaWF.Modules.Identity.Controllers {
         [AllowGet]
         public ActionResult AuthorizationBrowse() {
             BrowseModel model = new BrowseModel {
-                GridDef = GetGridModel()
+                GridDef = GetGridModel(Module)
             };
             return View(model);
         }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> AuthorizationBrowse_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync(GetGridModel(), gridPvData);
-        }
-
-        [AllowPost]
-        [Permission("RemoveResources")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> Remove(string resourceName) {
-            using (AuthorizationDataProvider authDP = new AuthorizationDataProvider()) {
-                if (await authDP.GetItemAsync(resourceName) == null)
-                    throw new Error(this.__ResStr("cantDel", "Resource {0} not found", resourceName));
-                await authDP.RemoveItemAsync(resourceName);
-                return Reload(null, Reload: ReloadEnum.ModuleParts);
-            }
-        }
-
     }
 }

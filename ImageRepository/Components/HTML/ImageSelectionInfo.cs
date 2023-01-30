@@ -13,7 +13,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
-using YetaWF.Modules.ImageRepository.Controllers;
+using YetaWF.Modules.ImageRepository.Endpoints;
 using YetaWF.Modules.ImageRepository.Support;
 
 namespace YetaWF.Modules.ImageRepository.Components {
@@ -33,7 +33,8 @@ namespace YetaWF.Modules.ImageRepository.Components {
 
             // the upload control
             FileUpload1 = new FileUpload1() {
-                SaveURL = Utility.UrlFor(typeof(ImageSelectionController), nameof(ImageSelectionController.SaveImage),
+                SerializeForm = true,
+                SaveURL = Utility.UrlFor(typeof(ImageSelectionEndpoints), nameof(ImageSelectionEndpoints.SaveImage),
                     new { FolderGuid = FolderGuid, SubFolder = SubFolder, FileType = FileType }),
             };
         }
@@ -51,7 +52,7 @@ namespace YetaWF.Modules.ImageRepository.Components {
                 Name = "Clear"
             };
             RemoveImageButton = new ModuleAction(OwningModule) {
-                Url = Utility.UrlFor(typeof(ImageSelectionController), nameof(ImageSelectionController.RemoveSelectedImage)),
+                Url = Utility.UrlFor(typeof(ImageSelectionEndpoints), nameof(ImageSelectionEndpoints.RemoveSelectedImage)),
                 QueryArgs = new { FolderGuid = FolderGuid, SubFolder = SubFolder, FileType = FileType, Name = "" },
                 Image = "#Remove",
                 LinkText = __ResStr("removeImage", "Remove"),

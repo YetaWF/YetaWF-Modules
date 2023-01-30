@@ -31,7 +31,7 @@ namespace YetaWF.Modules.Blog.Endpoints {
 
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            RouteGroupBuilder group = endpoints.MapGroup(GetPackageRoute(package, typeof(CategoriesBrowseModuleEndpoints)))
+            RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(CategoriesBrowseModuleEndpoints)))
                 .RequireAuthorization()
                 .AntiForgeryToken();
 

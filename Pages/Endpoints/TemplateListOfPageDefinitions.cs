@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Pages.Endpoints {
 
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            endpoints.MapPost(GetEndpoint(package, typeof(TemplateListOfLocalPagesEndpoints), AddPage), async (HttpContext context, [FromBody] GridSupport.GridAdditionPartialViewData<ListOfLocalPagesEditComponent.Entry> pvData, string fieldPrefix, string newUrl) => {
+            endpoints.MapPost(GetPackageApiEndpoint(package, typeof(TemplateListOfLocalPagesEndpoints), AddPage), async (HttpContext context, [FromBody] GridSupport.GridAdditionPartialViewData<ListOfLocalPagesEditComponent.Entry> pvData, string fieldPrefix, string newUrl) => {
                 // Validation
                 UrlValidationAttribute attr = new UrlValidationAttribute(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local);
                 if (!attr.IsValid(newUrl))

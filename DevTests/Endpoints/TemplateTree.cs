@@ -17,7 +17,7 @@ namespace YetaWF.Modules.DevTests.Endpoints {
 
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            RouteGroupBuilder group = endpoints.MapGroup(GetPackageRoute(package, typeof(TemplateTreeModuleEndpoints)))
+            RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(TemplateTreeModuleEndpoints)))
                 .AntiForgeryToken();
 
             group.MapPost(TreeSupport.GetRecords, async (HttpContext context, [FromBody] TreeSupport.TreeAdditionPartialViewData<TemplateTreeModuleController.EntryElement> tvData) => {

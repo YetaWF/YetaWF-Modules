@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Endpoints {
 
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            RouteGroupBuilder group = endpoints.MapGroup(GetPackageRoute(package, typeof(TemplateGridAjaxModuleEndpoints)))
+            RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(TemplateGridAjaxModuleEndpoints)))
                 .RequireAuthorization()
                 .AntiForgeryToken();
 

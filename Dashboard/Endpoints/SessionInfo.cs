@@ -22,7 +22,7 @@ namespace YetaWF.Modules.Dashboard.Endpoints {
 
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            RouteGroupBuilder group = endpoints.MapGroup(GetPackageRoute(package, typeof(SessionInfoModuleEndpoints)))
+            RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(SessionInfoModuleEndpoints)))
                 .RequireAuthorization()
                 .AntiForgeryToken();
 

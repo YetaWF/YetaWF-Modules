@@ -1,5 +1,6 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,16 +13,9 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.DataProvider;
+using YetaWF.Modules.Identity.Endpoints;
 using YetaWF.Modules.Identity.Models;
-using YetaWF.Core.Components;
-#if MVC6
-using Microsoft.AspNetCore.Identity;
-#else
-using Microsoft.AspNet.Identity;
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Identity.Modules {
 
@@ -42,13 +36,13 @@ namespace YetaWF.Modules.Identity.Modules {
 
         public override IModuleDefinitionIO GetDataProvider() { return new UsersBrowseModuleDataProvider(); }
 
-        [Category("General"), Caption("Add URL"), Description("The URL to add a new user - if omitted, a default page is generated")]
+        [Category("General"), Caption("Add Url"), Description("The Url to add a new user - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string AddUrl { get; set; }
-        [Category("General"), Caption("Display URL"), Description("The URL to display a user - if omitted, a default page is generated")]
+        [Category("General"), Caption("Display Url"), Description("The Url to display a user - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string DisplayUrl { get; set; }
-        [Category("General"), Caption("Edit URL"), Description("The URL to edit a user - if omitted, a default page is generated")]
+        [Category("General"), Caption("Edit Url"), Description("The Url to edit a user - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string EditUrl { get; set; }
 
@@ -91,7 +85,7 @@ namespace YetaWF.Modules.Identity.Modules {
         public ModuleAction GetAction_RemoveLink(string userName) {
             if (!IsAuthorized("RemoveUsers")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(UsersBrowseModuleController), "Remove"),
+                Url = Utility.UrlFor(typeof(UsersBrowseModuleEndpoints), UsersBrowseModuleEndpoints.Remove),
                 QueryArgs = new { UserName = userName },
                 Image = "#Remove",
                 NeedsModuleContext = true,
@@ -110,7 +104,7 @@ namespace YetaWF.Modules.Identity.Modules {
         public async Task<ModuleAction> GetAction_SendVerificationEmailAsync(string userName) {
             if (!IsAuthorized("SendEmails")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(UsersBrowseModuleController), nameof(UsersBrowseModuleController.SendVerificationEmail)),
+                Url = Utility.UrlFor(typeof(UsersBrowseModuleEndpoints), nameof(UsersBrowseModuleEndpoints.SendVerificationEmail)),
                 NeedsModuleContext = true,
                 QueryArgs = new { UserName = userName },
                 Image = await CustomIconAsync("VerificationEmail.png"),
@@ -129,7 +123,7 @@ namespace YetaWF.Modules.Identity.Modules {
         public async Task<ModuleAction> GetAction_SendApprovedEmailAsync(string userName) {
             if (!IsAuthorized("SendEmails")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(UsersBrowseModuleController), nameof(UsersBrowseModuleController.SendApprovedEmail)),
+                Url = Utility.UrlFor(typeof(UsersBrowseModuleEndpoints), nameof(UsersBrowseModuleEndpoints.SendApprovedEmail)),
                 NeedsModuleContext = true,
                 QueryArgs = new { UserName = userName },
                 Image = await CustomIconAsync("ApprovedEmail.png"),
@@ -147,7 +141,7 @@ namespace YetaWF.Modules.Identity.Modules {
         public async Task<ModuleAction> GetAction_SendRejectedEmailAsync(string userName) {
             if (!IsAuthorized("SendEmails")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(UsersBrowseModuleController), nameof(UsersBrowseModuleController.SendRejectedEmail)),
+                Url = Utility.UrlFor(typeof(UsersBrowseModuleEndpoints), nameof(UsersBrowseModuleEndpoints.SendRejectedEmail)),
                 NeedsModuleContext = true,
                 QueryArgs = new { UserName = userName },
                 Image = await CustomIconAsync("RejectedEmail.png"),
@@ -165,7 +159,7 @@ namespace YetaWF.Modules.Identity.Modules {
         public async Task<ModuleAction> GetAction_SendSuspendedEmailAsync(string userName) {
             if (!IsAuthorized("SendEmails")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(UsersBrowseModuleController), nameof(UsersBrowseModuleController.SendSuspendedEmail)),
+                Url = Utility.UrlFor(typeof(UsersBrowseModuleEndpoints), nameof(UsersBrowseModuleEndpoints.SendSuspendedEmail)),
                 NeedsModuleContext = true,
                 QueryArgs = new { UserName = userName },
                 Image = await CustomIconAsync("SuspendedEmail.png"),
@@ -183,7 +177,7 @@ namespace YetaWF.Modules.Identity.Modules {
         public ModuleAction GetAction_RehashAllPasswords() {
             if (!Manager.HasSuperUserRole) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(UsersBrowseModuleController), nameof(UsersBrowseModuleController.RehashAllPasswords)),
+                Url = Utility.UrlFor(typeof(UsersBrowseModuleEndpoints), nameof(UsersBrowseModuleEndpoints.RehashAllPasswords)),
                 NeedsModuleContext = true,
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("rehashLink", "Rehash All Passwords"),
@@ -248,13 +242,8 @@ namespace YetaWF.Modules.Identity.Modules {
                     throw new Error(this.__ResStr("notFound", "User {0} not found", userName));
 
                 UserManager<UserDefinition> userManager = Managers.GetUserManager();
-                string hashedNewPassword;
-#if MVC6
                 IPasswordHasher<UserDefinition> passwordHasher = (IPasswordHasher<UserDefinition>) YetaWFManager.ServiceProvider.GetService(typeof(IPasswordHasher<UserDefinition>));
-                hashedNewPassword = passwordHasher.HashPassword(user, newPassword);
-#else
-                hashedNewPassword = userManager.PasswordHasher.HashPassword(newPassword);
-#endif
+                string hashedNewPassword = passwordHasher.HashPassword(user, newPassword);
                 //ModuleDefinition.GetPermanentGuid(typeof(RegisterModule))
                 LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
                 user.PasswordPlainText = config.SavePlainTextPassword ? newPassword : null;

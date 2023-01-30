@@ -40,15 +40,18 @@ namespace Softelvdm_IVR {
                 if ($YetaWF.isLoading) return true;
 
                 var uri = $YetaWF.parseUrl(this.Setup.AddUrl);
-                uri.addFormInfo(this.Control);
-                let uniqueIdCounters: YetaWF.UniqueIdInfo = { UniqueIdPrefix: `${this.ControlId}ls`, UniqueIdPrefixCounter: 0, UniqueIdCounter: ++this.AddCounter };
-                uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
-                uri.addSearch("newPhoneNumber", this.inputPhoneNumber.value);
-                uri.addSearch("fieldPrefix", this.Grid.FieldName);
-                uri.addSearch("data", JSON.stringify(this.Grid.StaticData));
+                const query = {
+                    NewPhoneNumber: this.inputPhoneNumber.value,
+                    SMS: false,
+                    FieldPrefix: this.Grid.FieldName,
+                };
                 if (this.Grid.ExtraData) uri.addSearchSimpleObject(this.Grid.ExtraData);
 
-                $YetaWF.post(this.Setup.AddUrl, uri.toFormData(), (success: boolean, partial: GridRecordResult): void => {
+                let data = $YetaWF.Forms.getJSONInfo(this.Control);
+                data.GridData = this.Grid.StaticData;
+                data[YConfigs.Forms.UniqueIdCounters] = { UniqueIdPrefix: `${this.ControlId}ls`, UniqueIdPrefixCounter: 0, UniqueIdCounter: ++this.AddCounter };
+
+                $YetaWF.postJSON(uri, query, data, (success: boolean, partial: GridRecordResult): void => {
                     if (success) {
                         this.Grid.AddRecord(partial.TR, partial.StaticData);
                         this.inputPhoneNumber.value = "";

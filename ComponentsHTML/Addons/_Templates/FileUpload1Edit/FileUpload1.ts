@@ -149,7 +149,8 @@ namespace YetaWF_ComponentsHTML {
 
         // API
         public RemoveFile(name: string): void {
-            $YetaWF.postJSON($YetaWF.parseUrl(this.Setup.RemoveUrl), null, null, (success: boolean, data: FileUploadRemoveResponse): void => {
+            const info = $YetaWF.Forms.getJSONInfo(this.Control);
+            $YetaWF.postJSON($YetaWF.parseUrl(this.Setup.RemoveUrl), info, null, (success: boolean, data: FileUploadRemoveResponse): void => {
                 if (success && data.Result)
                     $YetaWF.message(data.Result);
             });
