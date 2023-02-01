@@ -7,11 +7,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Site;
 using YetaWF.Core.Support;
 using System;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Sites.Controllers {
 

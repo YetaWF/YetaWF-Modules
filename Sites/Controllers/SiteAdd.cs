@@ -8,11 +8,7 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Site;
 using YetaWF.Modules.Packages.DataProvider;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Sites.Controllers {
     public class SiteAddModuleController : ControllerImpl<YetaWF.Modules.Sites.Modules.SiteAddModule> {

@@ -160,36 +160,37 @@ namespace YetaWF_Search {
 
     $YetaWF.registerEventHandlerBody("click", ".YetaWF_Search_SearchControl a[data-name='On']", (ev: MouseEvent): boolean => {
 
-        let onButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='On']");
-        let offButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='Off']");
+        let onButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='On']") as HTMLAnchorElement;
+        let offButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='Off']") as HTMLAnchorElement;
         onButton.style.display = "none";
         offButton.style.display = "";
-        Search.highlightSearch();
 
         YVolatile.YetaWF_Search.HighLight = true;
+        Search.highlightSearch();
 
-        let request: XMLHttpRequest = new XMLHttpRequest();
-        request.open("POST", "/YetaWF_Search/SearchControlModule/Switch", true);
-        request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-        request.send(`Value=true&${YConfigs.Basics.ModuleGuid}=${encodeURIComponent($YetaWF.getModuleGuidFromTag(onButton))}`);
+        let query = {
+            Value: true,
+        }
+        const uri = $YetaWF.parseUrl(onButton.href);
+        $YetaWF.postJSONIgnore(uri, query, null);
         return false;
     });
     $YetaWF.registerEventHandlerBody("click", ".YetaWF_Search_SearchControl a[data-name='Off']", (ev: MouseEvent): boolean => {
 
-        let onButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='On']");
-        let offButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='Off']");
-        offButton.style.display = "none";
+        let onButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='On']") as HTMLAnchorElement;
+        let offButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='Off']") as HTMLAnchorElement;
         onButton.style.display = "";
+        offButton.style.display = "none";
 
+        YVolatile.YetaWF_Search.HighLight = false;
         let mods = $YetaWF.getElementsBySelector(".yModule");
         Search.removeHighlight(mods);
 
-        YVolatile.YetaWF_Search.HighLight = false;
-
-        let request: XMLHttpRequest = new XMLHttpRequest();
-        request.open("POST", "/YetaWF_Search/SearchControlModule/Switch", true);
-        request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-        request.send(`Value=false&${YConfigs.Basics.ModuleGuid}=${encodeURIComponent($YetaWF.getModuleGuidFromTag(offButton))}`);
+        let query = {
+            Value: false,
+        }
+        const uri = $YetaWF.parseUrl(offButton.href);
+        $YetaWF.postJSONIgnore(uri, query, null);
         return false;
     });
 }

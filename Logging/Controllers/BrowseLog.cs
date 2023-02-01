@@ -1,29 +1,21 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Logging#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YetaWF.Core.Addons;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.Extensions;
-using YetaWF.Core.Localize;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
+using YetaWF.Modules.Logging.Endpoints;
 using YetaWF.Modules.Logging.Modules;
-using YetaWF.Core.IO;
-using YetaWF.Core.Support.Zip;
-using YetaWF.Core.Components;
 using YetaWF.Modules.LoggingDataProvider.DataProvider;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web;
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Logging.Controllers {
 
@@ -112,20 +104,20 @@ namespace YetaWF.Modules.Logging.Controllers {
             public bool BrowsingSupported { get; set; }
             public string LoggerName { get; set; } = null!;
         }
-        private GridDefinition GetGridModel() {
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 PageSizes = new List<int>() { 5, 10, 20, 50 },
                 InitialPageSize = 20,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(BrowseLog_GridData)),
+                AjaxUrl = Utility.UrlFor<BrowseLogModuleEndpoints>(GridSupport.BrowseGridData),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     FlushLog();
                     using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
                         DataProviderGetRecords<LogRecord> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
-                            Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                            Data = (from s in browseItems.Data select new BrowseItem((BrowseLogModule)module, s)).ToList<object>(),
                             Total = browseItems.Total
                         };
                     }
@@ -144,79 +136,13 @@ namespace YetaWF.Modules.Logging.Controllers {
                     LoggerName = dataProvider.LoggerName,
                 };
                 if (dataProvider.CanBrowse)
-                    model.GridDef = GetGridModel();
+                    model.GridDef = GetGridModel(Module);
                 return View(model);
             }
         }
 
-        private static void FlushLog() {
+        internal static void FlushLog() {
             YetaWF.Core.Log.Logging.ForceFlush();
-        }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> BrowseLog_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync(GetGridModel(), gridPvData);
-        }
-
-        [AllowPost]
-        [Permission("RemoveLog")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> RemoveAll() {
-            FlushLog();
-            using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
-                await dataProvider.RemoveItemsAsync(null);// that means all records
-                return Reload(null, PopupText: this.__ResStr("allRemoved", "All log records have been removed"), Reload: ReloadEnum.ModuleParts);
-            }
-        }
-
-        [Permission("Downloads")]
-        public async Task<ActionResult> DownloadLog(long cookieToReturn) {
-            FlushLog();
-            using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
-                string filename = dataProvider.GetLogFileName();
-                if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
-                    throw new Error(this.__ResStr("logNotFound", "The log file '{0}' cannot be located", filename));
-#if MVC6
-                Response.Headers.Remove("Cookie");
-                Response.Cookies.Append(Basics.CookieDone, cookieToReturn.ToString(), new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = false, Path = "/" });
-#else
-                HttpCookie cookie = new HttpCookie(Basics.CookieDone, cookieToReturn.ToString());
-                Response.Cookies.Remove(Basics.CookieDone);
-                Response.SetCookie(cookie);
-#endif
-
-                string contentType = "application/octet-stream";
-#if MVC6
-                return new PhysicalFileResult(filename, contentType) { FileDownloadName = "Logfile.txt" };
-#else
-                FilePathResult result = new FilePathResult(filename, contentType);
-                result.FileDownloadName = "Logfile.txt";
-                return result;
-#endif
-            }
-        }
-
-        [Permission("Downloads")]
-        public async Task<ActionResult> DownloadZippedLog(long cookieToReturn) {
-            FlushLog();
-            using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
-                string filename = dataProvider.GetLogFileName();
-                if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
-                    throw new Error(this.__ResStr("logNotFound", "The log file '{0}' cannot be located", filename));
-#if MVC6
-#else
-                HttpCookie cookie = new HttpCookie(Basics.CookieDone, cookieToReturn.ToString());
-                Response.Cookies.Remove(Basics.CookieDone);
-                Response.SetCookie(cookie);
-#endif
-                string zipName = "Logfile.zip";
-                YetaWFZipFile zipFile = new YetaWFZipFile {
-                    FileName = zipName,
-                };
-                zipFile.AddFile(filename, "Logfile.txt");
-                return new ZippedFileResult(zipFile, cookieToReturn);
-            }
         }
     }
 }

@@ -1,17 +1,20 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Languages#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Language;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Support;
+using YetaWF.Modules.Languages.Endpoints;
 using YetaWF.Modules.Languages.Modules;
-using System.Threading.Tasks;
-using YetaWF.Core.Components;
-using Microsoft.AspNetCore.Mvc;
 
 namespace YetaWF.Modules.Languages.Controllers {
 
@@ -58,16 +61,16 @@ namespace YetaWF.Modules.Languages.Controllers {
             [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; } = null!;
         }
-        private GridDefinition GetGridModel() {
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(LanguagesBrowse_GridData)),
+                AjaxUrl = Utility.UrlFor<LanguagesBrowseModuleEndpoints>(GridSupport.BrowseGridData),
                 DirectDataAsync = (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<LanguageEntryElement> browseItems = DataProviderImpl<LanguageEntryElement>.GetRecords(LanguageSection.Languages, skip, take, sort, filters);
                     return Task.FromResult(new DataSourceResult {
-                        Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                        Data = (from s in browseItems.Data select new BrowseItem((LanguagesBrowseModule)module, s)).ToList<object>(),
                         Total = browseItems.Total
                     });
                 },
@@ -77,15 +80,9 @@ namespace YetaWF.Modules.Languages.Controllers {
         [AllowGet]
         public ActionResult LanguagesBrowse() {
             BrowseModel model = new BrowseModel {
-                GridDef = GetGridModel()
+                GridDef = GetGridModel(Module)
             };
             return View(model);
-        }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> LanguagesBrowse_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync(GetGridModel(), gridPvData);
         }
     }
 }

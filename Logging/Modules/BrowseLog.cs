@@ -12,12 +12,8 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-using YetaWF.Modules.Logging.Controllers;
+using YetaWF.Modules.Logging.Endpoints;
 using YetaWF.Modules.LoggingDataProvider.DataProvider;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Logging.Modules {
 
@@ -36,7 +32,7 @@ namespace YetaWF.Modules.Logging.Modules {
 
         public override IModuleDefinitionIO GetDataProvider() { return new BrowseLogModuleDataProvider(); }
 
-        [Category("General"), Caption("Display URL"), Description("The URL to display a log record - if omitted, a default page is generated")]
+        [Category("General"), Caption("Display Url"), Description("The Url to display a log record - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string? DisplayUrl { get; set; }
 
@@ -87,7 +83,7 @@ namespace YetaWF.Modules.Logging.Modules {
                 if (!dataProvider.CanRemove) return null;
             };
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(BrowseLogModuleController), nameof(BrowseLogModuleController.RemoveAll)),
+                Url = Utility.UrlFor(typeof(BrowseLogModuleEndpoints), BrowseLogModuleEndpoints.RemoveAll),
                 NeedsModuleContext = true,
                 Image = await CustomIconAsync("RemoveAll.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,
@@ -108,7 +104,7 @@ namespace YetaWF.Modules.Logging.Modules {
                 if (!dataProvider.CanDownload) return null;
             };
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(BrowseLogModuleController), nameof(BrowseLogModuleController.DownloadLog)),
+                Url = Utility.UrlFor(typeof(BrowseLogModuleEndpoints), BrowseLogModuleEndpoints.DownloadLog),
                 NeedsModuleContext = true,
                 CookieAsDoneSignal = true,
                 Image = await CustomIconAsync("Download.png"),
@@ -129,7 +125,7 @@ namespace YetaWF.Modules.Logging.Modules {
                 if (!dataProvider.CanDownload) return null;
             };
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(BrowseLogModuleController), nameof(BrowseLogModuleController.DownloadZippedLog)),
+                Url = Utility.UrlFor(typeof(BrowseLogModuleEndpoints), BrowseLogModuleEndpoints.DownloadZippedLog),
                 NeedsModuleContext = true,
                 CookieAsDoneSignal = true,
                 Image = await CustomIconAsync("Download.png"),

@@ -1,24 +1,20 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Search#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.Localize;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Support;
 using YetaWF.Modules.Search.DataProvider;
+using YetaWF.Modules.Search.Endpoints;
 using YetaWF.Modules.Search.Modules;
-using YetaWF.Core.IO;
-using YetaWF.Core.Components;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Search.Controllers {
 
@@ -99,18 +95,18 @@ namespace YetaWF.Modules.Search.Controllers {
             [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; } = null!;
         }
-        private GridDefinition GetGridModel() {
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 InitialPageSize = 20,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(SearchBrowse_GridData)),
+                AjaxUrl = Utility.UrlFor<SearchBrowseModuleEndpoints>(GridSupport.BrowseGridData),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (SearchDataProvider searchDP = new SearchDataProvider()) {
                         DataProviderGetRecords<SearchData> browseItems = await searchDP.GetItemsWithUrlAsync(skip, take, sort, filters);
                         return new DataSourceResult {
-                            Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                            Data = (from s in browseItems.Data select new BrowseItem((SearchBrowseModule)module, s)).ToList<object>(),
                             Total = browseItems.Total
                         };
                     }
@@ -123,46 +119,9 @@ namespace YetaWF.Modules.Search.Controllers {
             if (!SearchDataProvider.IsUsable)
                 return View("SearchUnavailable_Browse");
             BrowseModel model = new BrowseModel {
-                GridDef = GetGridModel()
+                GridDef = GetGridModel(Module)
             };
             return View(model);
-        }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> SearchBrowse_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync(GetGridModel(), gridPvData);
-        }
-
-        [AllowPost]
-        [Permission("RemoveItems")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> Remove(int searchDataId) {
-            using (SearchDataProvider searchDP = new SearchDataProvider()) {
-                await searchDP.RemoveItemAsync(searchDataId);
-                return Reload(null, Reload: ReloadEnum.ModuleParts);
-            }
-        }
-
-        [AllowPost]
-        [Permission("RemoveItems")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> RemoveAll() {
-            using (SearchDataProvider searchDP = new SearchDataProvider()) {
-                await using (ILockObject lockObject = await YetaWF.Core.IO.Caching.LockProvider.LockResourceAsync($"{AreaRegistration.CurrentPackage.AreaName}_{nameof(SearchDataProvider)}")) {
-                    await searchDP.RemoveItemsAsync(null);/* ALL */
-                }
-                return Reload(null, Reload: ReloadEnum.ModuleParts);
-            }
-        }
-
-        [AllowPost]
-        [Permission("CollectKeywords")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> CollectKeywords() {
-            Scheduler.Search search = new Scheduler.Search();
-            await search.SearchSiteAsync(false);
-            return Reload(PopupText: this.__ResStr("done", "Site search keywords updated"), Reload: ReloadEnum.ModuleParts);
         }
     }
 }

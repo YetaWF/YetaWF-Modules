@@ -4,15 +4,17 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
+using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Messenger.DataProvider;
+using YetaWF.Modules.Messenger.Endpoints;
 
 namespace YetaWF.Modules.Messenger.Controllers {
 
@@ -57,13 +59,13 @@ namespace YetaWF.Modules.Messenger.Controllers {
             [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; } = null!;
         }
-        private GridDefinition GetGridModel() {
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 InitialPageSize = 20,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(BrowseActiveUsers_GridData)),
+                AjaxUrl = Utility.UrlFor<BrowseActiveUsersModuleEndpoints>(GridSupport.BrowseGridData),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (ActiveUsersDataProvider userDP = new ActiveUsersDataProvider()) {
                         DataProviderGetRecords<ActiveUser> browseItems = await userDP.GetItemsAsync(skip, take, sort, filters);
@@ -83,15 +85,9 @@ namespace YetaWF.Modules.Messenger.Controllers {
                     throw new Error(this.__ResStr("notEnabled", "Active users are not tracked - not enabled"));
             }
             BrowseModel model = new BrowseModel {
-                GridDef = GetGridModel()
+                GridDef = GetGridModel(Module)
             };
             return View(model);
-        }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> BrowseActiveUsers_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync(GetGridModel(), gridPvData);
         }
     }
 }

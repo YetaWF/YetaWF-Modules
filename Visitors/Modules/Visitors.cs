@@ -10,12 +10,8 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-using YetaWF.Modules.Visitors.Controllers;
 using YetaWF.Modules.Visitors.DataProvider;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
+using YetaWF.Modules.Visitors.Endpoints;
 
 namespace YetaWF.Modules.Visitors.Modules {
 
@@ -69,7 +65,7 @@ namespace YetaWF.Modules.Visitors.Modules {
                 if (!visitorDP.Usable) return null;
             }
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(VisitorsModuleController), nameof(VisitorsModuleController.UpdateGeoLocation)),
+                Url = Utility.UrlFor(typeof(VisitorsModuleEndpoints), VisitorsModuleEndpoints.UpdateGeoLocation),
                 NeedsModuleContext = true,
                 QueryArgs = new { },
                 Image = "#Add",

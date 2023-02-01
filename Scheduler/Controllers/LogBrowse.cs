@@ -17,12 +17,7 @@ using YetaWF.Modules.Scheduler.Modules;
 using YetaWF.Core.IO;
 using YetaWF.Core.Support.Zip;
 using YetaWF.Core.Components;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web;
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Scheduler.Controllers {
 
@@ -137,23 +132,11 @@ namespace YetaWF.Modules.Scheduler.Controllers {
                 string? filename = logDP.GetLogFileName();
                 if (filename == null || !await FileSystem.FileSystemProvider.FileExistsAsync(filename))
                     throw new Error(this.__ResStr("logNotFound", "The scheduler log file '{0}' cannot be located", filename));
-#if MVC6
                 Response.Headers.Remove("Cookie");
                 Response.Cookies.Append(Basics.CookieDone, cookieToReturn.ToString(), new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = false, Path = "/" });
-#else
-                HttpCookie cookie = new HttpCookie(Basics.CookieDone, cookieToReturn.ToString());
-                Response.Cookies.Remove(Basics.CookieDone);
-                Response.SetCookie(cookie);
-#endif
 
                 string contentType = "application/octet-stream";
-#if MVC6
                 return new PhysicalFileResult(filename, contentType) { FileDownloadName = "Logfile.txt" };
-#else
-                FilePathResult result = new FilePathResult(filename, contentType);
-                result.FileDownloadName = "SchedulerLog.txt";
-                return result;
-#endif
             }
         }
 
@@ -163,12 +146,6 @@ namespace YetaWF.Modules.Scheduler.Controllers {
                 string? filename = dataProvider.GetLogFileName();
                 if (filename == null || !await FileSystem.FileSystemProvider.FileExistsAsync(filename))
                     throw new Error(this.__ResStr("logNotFound", "The scheduler log file '{0}' cannot be located", filename));
-#if MVC6
-#else
-                HttpCookie cookie = new HttpCookie(Basics.CookieDone, cookieToReturn.ToString());
-                Response.Cookies.Remove(Basics.CookieDone);
-                Response.SetCookie(cookie);
-#endif
                 string zipName = "Logfile.zip";
                 YetaWFZipFile zipFile = new YetaWFZipFile {
                     FileName = zipName,

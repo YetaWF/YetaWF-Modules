@@ -146,26 +146,28 @@ var YetaWF_Search;
         var offButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='Off']");
         onButton.style.display = "none";
         offButton.style.display = "";
-        Search.highlightSearch();
         YVolatile.YetaWF_Search.HighLight = true;
-        var request = new XMLHttpRequest();
-        request.open("POST", "/YetaWF_Search/SearchControlModule/Switch", true);
-        request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-        request.send("Value=true&".concat(YConfigs.Basics.ModuleGuid, "=").concat(encodeURIComponent($YetaWF.getModuleGuidFromTag(onButton))));
+        Search.highlightSearch();
+        var query = {
+            Value: true,
+        };
+        var uri = $YetaWF.parseUrl(onButton.href);
+        $YetaWF.postJSONIgnore(uri, query, null);
         return false;
     });
     $YetaWF.registerEventHandlerBody("click", ".YetaWF_Search_SearchControl a[data-name='Off']", function (ev) {
         var onButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='On']");
         var offButton = $YetaWF.getElement1BySelector(".YetaWF_Search_SearchControl a[data-name='Off']");
-        offButton.style.display = "none";
         onButton.style.display = "";
+        offButton.style.display = "none";
+        YVolatile.YetaWF_Search.HighLight = false;
         var mods = $YetaWF.getElementsBySelector(".yModule");
         Search.removeHighlight(mods);
-        YVolatile.YetaWF_Search.HighLight = false;
-        var request = new XMLHttpRequest();
-        request.open("POST", "/YetaWF_Search/SearchControlModule/Switch", true);
-        request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-        request.send("Value=false&".concat(YConfigs.Basics.ModuleGuid, "=").concat(encodeURIComponent($YetaWF.getModuleGuidFromTag(offButton))));
+        var query = {
+            Value: false,
+        };
+        var uri = $YetaWF.parseUrl(offButton.href);
+        $YetaWF.postJSONIgnore(uri, query, null);
         return false;
     });
 })(YetaWF_Search || (YetaWF_Search = {}));

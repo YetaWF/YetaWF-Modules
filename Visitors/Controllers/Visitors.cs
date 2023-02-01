@@ -1,25 +1,21 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Visitors#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Endpoints;
+using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
-using YetaWF.Modules.Visitors.DataProvider;
-using YetaWF.Modules.Visitors.Modules;
-using YetaWF.Modules.Visitors.Scheduler;
-using YetaWF.Core.Components;
 using YetaWF.Core.Support;
-using YetaWF.Core.Localize;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
+using YetaWF.Modules.Visitors.DataProvider;
+using YetaWF.Modules.Visitors.Endpoints;
+using YetaWF.Modules.Visitors.Modules;
 
 namespace YetaWF.Modules.Visitors.Controllers {
 
@@ -97,18 +93,18 @@ namespace YetaWF.Modules.Visitors.Controllers {
             [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; } = null!;
         }
-        private GridDefinition GetGridModel() {
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 InitialPageSize = 20,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(Visitors_GridData)),
+                AjaxUrl = Utility.UrlFor<VisitorsModuleEndpoints>(GridSupport.BrowseGridData),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (VisitorEntryDataProvider dataProvider = new VisitorEntryDataProvider()) {
                         DataProviderGetRecords<VisitorEntry> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
-                            Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                            Data = (from s in browseItems.Data select new BrowseItem((VisitorsModule)module, s)).ToList<object>(),
                             Total = browseItems.Total
                         };
                     }
@@ -123,25 +119,9 @@ namespace YetaWF.Modules.Visitors.Controllers {
                     throw new Error(this.__ResStr("noInfo", "Visitor information is not available - See https://yetawf.com/Documentation/YetaWF/Visitors"));
             }
             BrowseModel model = new BrowseModel {
-                GridDef = GetGridModel()
+                GridDef = GetGridModel(Module)
             };
             return View(model);
-        }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> Visitors_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync(GetGridModel(), gridPvData);
-        }
-
-        [AllowPost]
-        [Permission("UpdateGeoLocation")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> UpdateGeoLocation() {
-            AddVisitorGeoLocation geo = new AddVisitorGeoLocation();
-            List<string> errorList = new List<string>();
-            await geo.AddGeoLocationAsync(errorList);
-            return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
     }
 }

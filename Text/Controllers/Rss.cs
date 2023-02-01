@@ -11,11 +11,7 @@ using YetaWF.Core.Support;
 using YetaWF.Core.Support.Rss;
 using YetaWF.Modules.Text.Modules;
 using YetaWF.Core.Components;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Text.Controllers {
 

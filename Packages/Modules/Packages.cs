@@ -12,7 +12,7 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-using YetaWF.Modules.Packages.Controllers;
+using YetaWF.Modules.Packages.Endpoints;
 
 namespace YetaWF.Modules.Packages.Modules {
 
@@ -118,7 +118,7 @@ namespace YetaWF.Modules.Packages.Modules {
             if (!await package.GetHasSourceAsync()) return null;
             if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsDataProviderPackage && !package.IsModulePackage && !package.IsSkinPackage) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(PackagesModuleController), nameof(PackagesModuleController.ExportPackage)),
+                Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.ExportPackage),
                 QueryArgs = new { PackageName = package.Name },
                 NeedsModuleContext = true,
                 Image = await CustomIconAsync("ExportPackage.png"),
@@ -139,7 +139,7 @@ namespace YetaWF.Modules.Packages.Modules {
             if (!await package.GetHasSourceAsync()) return null;
             if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsDataProviderPackage && !package.IsModulePackage && !package.IsSkinPackage /*&& !package.IsTemplatePackage && !package.IsUtilityPackage*/) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(PackagesModuleController), nameof(PackagesModuleController.ExportPackageWithSource)),
+                Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.ExportPackageWithSource),
                 QueryArgs = new { PackageName = package.Name },
                 NeedsModuleContext = true,
                 Image = await CustomIconAsync("ExportPackageWithSource.png"),
@@ -156,7 +156,7 @@ namespace YetaWF.Modules.Packages.Modules {
             if (!package.IsModulePackage) return null;
             if (!IsAuthorized("Imports")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(PackagesModuleController), nameof(PackagesModuleController.ExportPackageData)),
+                Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.ExportPackageData),
                 QueryArgs = new { PackageName = package.Name },
                 NeedsModuleContext = true,
                 Image = await CustomIconAsync("ExportPackageData.png"),
@@ -173,7 +173,7 @@ namespace YetaWF.Modules.Packages.Modules {
             if (!IsAuthorized("Installs")) return null;
             return new ModuleAction(this) {
                 Style = ModuleAction.ActionStyleEnum.Post,
-                Url = Utility.UrlFor(typeof(PackagesModuleController), nameof(PackagesModuleController.InstallPackageModels)),
+                Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.InstallPackageModels),
                 QueryArgs = new { PackageName = package.Name },
                 NeedsModuleContext = true,
                 Image = await CustomIconAsync("InstallPackageModels.png"),
@@ -189,7 +189,7 @@ namespace YetaWF.Modules.Packages.Modules {
             if (!IsAuthorized("Installs")) return null;
             return new ModuleAction(this) {
                 Style = ModuleAction.ActionStyleEnum.Post,
-                Url = Utility.UrlFor(typeof(PackagesModuleController), nameof(PackagesModuleController.UninstallPackageModels)),
+                Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.UninstallPackageModels),
                 QueryArgs = new { PackageName = package.Name },
                 NeedsModuleContext = true,
                 Image = await CustomIconAsync("UninstallPackageModels.png"),
@@ -206,7 +206,7 @@ namespace YetaWF.Modules.Packages.Modules {
             if (!IsAuthorized("Localize")) return null;
             return new ModuleAction(this) {
                 Style = ModuleAction.ActionStyleEnum.Post,
-                Url = Utility.UrlFor(typeof(PackagesModuleController), nameof(PackagesModuleController.LocalizePackage)),
+                Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.LocalizePackage),
                 QueryArgs = new { PackageName = package.Name },
                 NeedsModuleContext = true,
                 Image = await CustomIconAsync("LocalizePackage.png"),
@@ -222,7 +222,7 @@ namespace YetaWF.Modules.Packages.Modules {
             if (!IsAuthorized("Localize")) return null;
             return new ModuleAction(this) {
                 Style = ModuleAction.ActionStyleEnum.Post,
-                Url = Utility.UrlFor(typeof(PackagesModuleController), nameof(PackagesModuleController.LocalizeAllPackages)),
+                Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.LocalizeAllPackages),
                 NeedsModuleContext = true,
                 Image = await CustomIconAsync("LocalizeAllPackages.png"),
                 LinkText = this.__ResStr("localizeAllLink", "Localize All Packages ({0})", MultiString.DefaultLanguage),
@@ -248,7 +248,7 @@ namespace YetaWF.Modules.Packages.Modules {
             if (!IsAuthorized("Installs")) return null;
             return new ModuleAction(this) {
                 Style = ModuleAction.ActionStyleEnum.Post,
-                Url = Utility.UrlFor(typeof(PackagesModuleController), "RemovePackage"),
+                Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.RemovePackage),
                 QueryArgs = new { PackageName = package.Name },
                 NeedsModuleContext = true,
                 Image = "#Remove",

@@ -15,11 +15,7 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.Scheduler.DataProvider;
 using YetaWF.Modules.Scheduler.Modules;
 using YetaWF.Core.Components;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Scheduler.Controllers {
 

@@ -5,11 +5,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Modules.Search.DataProvider;
 using System.Threading.Tasks;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Search.Controllers {
 
@@ -45,13 +41,6 @@ namespace YetaWF.Modules.Search.Controllers {
                 Off = await Module.GetAction_OffAsync(),
             };
             return View(model);
-        }
-
-        [AllowPost]
-        public ActionResult Switch(bool value) {
-            Manager.SessionSettings.SiteSettings.SetValue<bool>("YetaWF_SearchControl_Highlight", value);
-            Manager.SessionSettings.SiteSettings.Save();
-            return FormProcessed(null, OnClose: OnCloseEnum.Nothing, OnPopupClose: OnPopupCloseEnum.Nothing);
         }
     }
 }

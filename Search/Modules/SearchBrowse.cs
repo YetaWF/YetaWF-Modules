@@ -11,12 +11,8 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-using YetaWF.Modules.Search.Controllers;
 using YetaWF.Modules.Search.DataProvider;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
+using YetaWF.Modules.Search.Endpoints;
 
 namespace YetaWF.Modules.Search.Modules {
 
@@ -35,13 +31,13 @@ namespace YetaWF.Modules.Search.Modules {
 
         public override IModuleDefinitionIO GetDataProvider() { return new SearchBrowseModuleDataProvider(); }
 
-        [Category("General"), Caption("Add URL"), Description("The URL to add a new search keyword - if omitted, a default page is generated")]
+        [Category("General"), Caption("Add Url"), Description("The Url to add a new search keyword - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string? AddUrl { get; set; }
-        [Category("General"), Caption("Display URL"), Description("The URL to display a search keyword - if omitted, a default page is generated")]
+        [Category("General"), Caption("Display Url"), Description("The Url to display a search keyword - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string? DisplayUrl { get; set; }
-        [Category("General"), Caption("Edit URL"), Description("The URL to edit a search keyword - if omitted, a default page is generated")]
+        [Category("General"), Caption("Edit Url"), Description("The Url to edit a search keyword - if omitted, a default page is generated")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
         public string? EditUrl { get; set; }
 
@@ -76,9 +72,8 @@ namespace YetaWF.Modules.Search.Modules {
         public ModuleAction? GetAction_Remove(int searchDataId) {
             if (!IsAuthorized("RemoveItems")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(SearchBrowseModuleController), "Remove"),
+                Url = $"{Utility.UrlFor(typeof(SearchBrowseModuleEndpoints), SearchBrowseModuleEndpoints.Remove)}/{searchDataId}",
                 NeedsModuleContext = true,
-                QueryArgs = new { SearchDataId = searchDataId },
                 Image = "#Remove",
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("removeLink", "Remove search keyword"),
@@ -95,7 +90,7 @@ namespace YetaWF.Modules.Search.Modules {
             if (!IsAuthorized("RemoveItems")) return null;
             if (!SearchDataProvider.IsUsable) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(SearchBrowseModuleController), "RemoveAll"),
+                Url = Utility.UrlFor(typeof(SearchBrowseModuleEndpoints), SearchBrowseModuleEndpoints.RemoveAll),
                 NeedsModuleContext = true,
                 Image = "#Remove",
                 Style = ModuleAction.ActionStyleEnum.Post,
@@ -114,7 +109,7 @@ namespace YetaWF.Modules.Search.Modules {
             if (!IsAuthorized("CollectKeywords")) return null;
             if (!SearchDataProvider.IsUsable) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(SearchBrowseModuleController), nameof(SearchBrowseModuleController.CollectKeywords)),
+                Url = Utility.UrlFor(typeof(SearchBrowseModuleEndpoints), SearchBrowseModuleEndpoints.CollectKeywords),
                 NeedsModuleContext = true,
                 Image = await CustomIconAsync("CollectKeywords.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,

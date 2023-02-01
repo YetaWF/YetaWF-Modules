@@ -7,8 +7,8 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
-using YetaWF.DataProvider;
 using YetaWF.Core.Support;
+using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Languages.Modules {
 

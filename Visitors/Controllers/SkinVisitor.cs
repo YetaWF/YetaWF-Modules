@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Visitors.DataProvider;
+using YetaWF.Modules.Visitors.Endpoints;
 
 namespace YetaWF.Modules.Visitors.Controllers {
 
@@ -20,16 +21,9 @@ namespace YetaWF.Modules.Visitors.Controllers {
             Module.ShowTitle = Manager.EditMode;// always show title in edit mode and never show in display mode
             // We render a form so we get antiforgery fields used for TrackClick
             DisplayModel model = new DisplayModel {
-                TrackClickUrl = Utility.UrlFor(GetType(), nameof(TrackClick))
+                TrackClickUrl = Utility.UrlFor<SkinVisitorModuleEndpoints>(SkinVisitorModuleEndpoints.TrackClick)
             };
             return View(model);
-        }
-
-        [AllowPost]
-        [ValidateAntiForgeryToken] // always force antiforgery to avoid cross-site attacks exploiting flooding click tracking
-        public ActionResult TrackClick(string url) {
-            VisitorEntryDataProvider.AddVisitEntryUrlAsync(url, true); // no await, as in fire and forget
-            return new EmptyResult();
         }
     }
 }

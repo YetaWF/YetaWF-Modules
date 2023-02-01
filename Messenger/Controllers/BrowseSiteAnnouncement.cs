@@ -1,19 +1,21 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Messenger#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Support;
 using YetaWF.Modules.Messenger.DataProvider;
+using YetaWF.Modules.Messenger.Endpoints;
 using YetaWF.Modules.Messenger.Modules;
-using YetaWF.Core.Components;
 using YetaWF.Modules.Messenger.Views;
-using Microsoft.AspNetCore.Mvc;
 
 namespace YetaWF.Modules.Messenger.Controllers {
 
@@ -57,17 +59,17 @@ namespace YetaWF.Modules.Messenger.Controllers {
             [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; } = null!;
         }
-        private GridDefinition GetGridModel() {
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(BrowseSiteAnnouncement_GridData)),
+                AjaxUrl = Utility.UrlFor<BrowseSiteAnnouncementModuleEndpoints>(GridSupport.BrowseGridData),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (SiteAnnouncementDataProvider dataProvider = new SiteAnnouncementDataProvider()) {
                         DataProviderGetRecords<SiteAnnouncement> browseItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
-                            Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                            Data = (from s in browseItems.Data select new BrowseItem((BrowseSiteAnnouncementModule)module, s)).ToList<object>(),
                             Total = browseItems.Total
                         };
                     }
@@ -82,15 +84,9 @@ namespace YetaWF.Modules.Messenger.Controllers {
                     return View(SiteAnnouncementsUnavailableView.ViewName);
             }
             BrowseModel model = new BrowseModel {
-                GridDef = GetGridModel()
+                GridDef = GetGridModel(Module)
             };
             return View(model);
-        }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> BrowseSiteAnnouncement_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync(GetGridModel(), gridPvData);
         }
     }
 }

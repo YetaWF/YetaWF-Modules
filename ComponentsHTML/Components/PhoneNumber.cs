@@ -33,7 +33,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
     }
     /// <summary>
-    /// Displays a phone number. The model represents a phone number in E164 ISO format. If the model is null, nothing is rendered.
+    /// Displays a phone number. The model represents a phone number in64 . If the model is null, nothing is rendered.
     /// The phone number is rendered in a format typically used by callers, taking into account the site's country (see Admin > Settings > Site Settings, Site tab, Country field).
     /// Phone numbers are automatically formatted as international or domestic phone numbers.
     /// </summary>

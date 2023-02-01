@@ -7,7 +7,9 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Support;
 using YetaWF.DataProvider;
+using YetaWF.Modules.Search.Endpoints;
 
 namespace YetaWF.Modules.Search.Modules {
 
@@ -39,6 +41,7 @@ namespace YetaWF.Modules.Search.Modules {
 
         public async Task<ModuleAction> GetAction_OnAsync() {
             return new ModuleAction(this) {
+                Url = Utility.UrlFor<SearchControlModuleEndpoints>(SearchControlModuleEndpoints.Switch),
                 Image = await CustomIconAsync("On.png"),
                 LinkText = this.__ResStr("onLink", "On"),
                 MenuText = this.__ResStr("onText", "On"),
@@ -55,6 +58,7 @@ namespace YetaWF.Modules.Search.Modules {
         }
         public async Task<ModuleAction> GetAction_OffAsync() {
             return new ModuleAction(this) {
+                Url = Utility.UrlFor<SearchControlModuleEndpoints>(SearchControlModuleEndpoints.Switch),
                 Image = await CustomIconAsync("Off.png"),
                 LinkText = this.__ResStr("offLink", "Off"),
                 MenuText = this.__ResStr("offText", "Off"),

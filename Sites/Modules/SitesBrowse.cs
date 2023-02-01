@@ -1,6 +1,7 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Sites#License */
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.IO;
@@ -9,14 +10,8 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Site;
-using YetaWF.DataProvider;
-using YetaWF.Core.Components;
-using System.Collections.Generic;
-#if MVC6
 using YetaWF.Core.Support;
-#else
-using System.Web.Mvc;
-#endif
+using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.Sites.Modules {
 

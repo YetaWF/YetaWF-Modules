@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Site;
 using YetaWF.Core.Support;
+using YetaWF.Modules.Sites.Endpoints;
 using YetaWF.Modules.Sites.Modules;
 
 namespace YetaWF.Modules.Sites.Controllers {
@@ -69,19 +71,19 @@ namespace YetaWF.Modules.Sites.Controllers {
             [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; } = null!;
         }
-        private GridDefinition GetGridModel() {
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(SitesBrowse_GridData)),
+                AjaxUrl = Utility.UrlFor<SitesBrowseModuleEndpoints>(GridSupport.BrowseGridData),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     ModuleDefinition siteEditModule = await ModuleDefinition.LoadAsync(new Guid("522296A0-B03B-49b7-B849-AB4149466E0D")) ?? throw new InternalError("Site Edit module not available");
                     ConfirmRemovalModule confirmModule = new ConfirmRemovalModule();
 
                     DataProviderGetRecords<SiteDefinition> info = await SiteDefinition.GetSitesAsync(skip, take, sort, filters);
                     return new DataSourceResult {
-                        Data = (from s in info.Data select new BrowseItem(Module, siteEditModule, confirmModule, s)).ToList<object>(),
+                        Data = (from s in info.Data select new BrowseItem((SitesBrowseModule)module, siteEditModule, confirmModule, s)).ToList<object>(),
                         Total = info.Total
                     };
                 },
@@ -90,15 +92,9 @@ namespace YetaWF.Modules.Sites.Controllers {
         [AllowGet]
         public ActionResult SitesBrowse() {
             BrowseModel model = new BrowseModel {
-                GridDef = GetGridModel()
+                GridDef = GetGridModel(Module)
             };
             return View(model);
-        }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> SitesBrowse_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync(GetGridModel(), gridPvData);
         }
     }
 }

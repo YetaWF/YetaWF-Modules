@@ -1,25 +1,21 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Packages#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.Localize;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
+using YetaWF.Modules.Packages.Endpoints;
 using YetaWF.Modules.Packages.Modules;
 using YetaWF.PackageAttributes;
-using YetaWF.Core.Support.Zip;
-using YetaWF.Core.Components;
-#if MVC6
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Packages.Controllers {
 
@@ -96,19 +92,19 @@ namespace YetaWF.Modules.Packages.Controllers {
             [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; } = null!;
         }
-        private GridDefinition GetGridModel() {
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 RecordType = typeof(PackageModel),
-                AjaxUrl = GetActionUrl(nameof(Packages_GridData)),
+                AjaxUrl = Utility.UrlFor<PackagesModuleEndpoints>(GridSupport.BrowseGridData),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     ModuleDefinition? modLocalize = await ModuleDefinition.LoadAsync(Manager.CurrentSite.PackageLocalizationServices, AllowNone: true);
                     if (modLocalize == null)
                         throw new InternalError("No localization services available - no module has been defined");
                     DataProviderGetRecords<Package> packages = Package.GetAvailablePackages(skip, take, sort, filters);
                     return new DataSourceResult {
-                        Data = (from p in packages.Data select new PackageModel(Module, modLocalize, p)).ToList<object>(),
+                        Data = (from p in packages.Data select new PackageModel((PackagesModule)module, modLocalize, p)).ToList<object>(),
                         Total = packages.Total
                     };
                 },
@@ -118,119 +114,9 @@ namespace YetaWF.Modules.Packages.Controllers {
         [AllowGet]
         public ActionResult Packages() {
             PackagesModel model = new PackagesModel {
-                GridDef = GetGridModel()
+                GridDef = GetGridModel(Module)
             };
             return View(model);
-        }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> Packages_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync(GetGridModel(), gridPvData);
-        }
-
-        [Permission("Imports")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> ExportPackage(string packageName, long cookieToReturn) {
-            Package package = Package.GetPackageFromPackageName(packageName);
-            YetaWFZipFile zipFile = await package.ExportPackageAsync();
-            return new ZippedFileResult(zipFile, cookieToReturn);
-        }
-
-        [Permission("Imports")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> ExportPackageWithSource(string packageName, long cookieToReturn) {
-            Package package = Package.GetPackageFromPackageName(packageName/*, Utilities: true*/);
-            YetaWFZipFile zipFile = await package.ExportPackageAsync(SourceCode: true);
-            return new ZippedFileResult(zipFile, cookieToReturn);
-        }
-
-        [Permission("Imports")]
-        public async Task<ActionResult> ExportPackageData(string packageName, long cookieToReturn) {
-            Package package = Package.GetPackageFromPackageName(packageName);
-            YetaWFZipFile zipFile = await package.ExportDataAsync();
-            return new ZippedFileResult(zipFile, cookieToReturn);
-        }
-
-        [Permission("Installs")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> InstallPackageModels(string packageName) {
-            Package package = Package.GetPackageFromPackageName(packageName);
-            List<string> errorList = new List<string>();
-            if (!await package.InstallModelsAsync(errorList)) {
-                ScriptBuilder sb = new ScriptBuilder();
-                sb.Append(this.__ResStr("cantInstallModels", "Can't install models for package {0}:(+nl)"), packageName.Split(new char[] { ',' }).First());
-                sb.Append(errorList, LeadingNL: true);
-                throw new Error(sb.ToString());
-            }
-            return FormProcessed(null, popupText: this.__ResStr("installed", "Package models successfully installed"), OnClose: OnCloseEnum.Nothing, ForcePopup: true);
-        }
-
-        [Permission("Installs")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> UninstallPackageModels(string packageName) {
-            Package package = Package.GetPackageFromPackageName(packageName);
-            List<string> errorList = new List<string>();
-            if (!await package.UninstallModelsAsync(errorList)) {
-                ScriptBuilder sb = new ScriptBuilder();
-                sb.Append(this.__ResStr("cantUninstallModels", "Can't uninstall models for package {0}:(+nl)"), packageName.Split(new char[] { ',' }).First());
-                sb.Append(errorList, LeadingNL: true);
-                throw new Error(sb.ToString());
-            }
-            return FormProcessed(null, popupText: this.__ResStr("removed", "Package models successfully removed"), OnClose: OnCloseEnum.Nothing);
-        }
-
-        [Permission("Localize")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> LocalizePackage(string packageName) {
-            if (YetaWFManager.Deployed)
-                throw new InternalError("Can't localize packages on a deployed site");
-            Package package = Package.GetPackageFromPackageName(packageName);
-            List<string> errorList = new List<string>();
-            if (!await package.LocalizeAsync(errorList)) {
-                ScriptBuilder sb = new ScriptBuilder();
-                sb.Append(this.__ResStr("cantLocalize", "Can't localize package {0}:(+nl)"), packageName.Split(new char[] { ',' }).First());
-                sb.Append(errorList, LeadingNL: true);
-                throw new Error(sb.ToString());
-            }
-            return FormProcessed(null, popupText: this.__ResStr("generated", "Package localization resources successfully generated"), OnClose: OnCloseEnum.Nothing, ForcePopup: true);
-        }
-        [Permission("Localize")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> LocalizeAllPackages() {
-            if (YetaWFManager.Deployed)
-                throw new InternalError("Can't localize packages on a deployed site");
-            List<string> errorList = new List<string>();
-            foreach (Package package in Package.GetAvailablePackages()) {
-                if (package.IsCorePackage || package.IsModulePackage || package.IsSkinPackage) {
-                    if (!await package.LocalizeAsync(errorList)) {
-                        ScriptBuilder sb = new ScriptBuilder();
-                        sb.Append(this.__ResStr("cantLocalize", "Can't localize package {0}:(+nl)"), package.Name);
-                        sb.Append(errorList, LeadingNL: true);
-                        throw new Error(sb.ToString());
-                    }
-                }
-            }
-            return FormProcessed(null, popupText: this.__ResStr("generatedAll", "Localization resources for all packages have been successfully generated"), OnClose: OnCloseEnum.Nothing, ForcePopup: true);
-        }
-
-        [Permission("Installs")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> RemovePackage(string packageName) {
-            Package package = Package.GetPackageFromPackageName(packageName);
-            List<string> errorList = new List<string>();
-            if (!await package.RemoveAsync(packageName, errorList)) {
-                ScriptBuilder sb = new ScriptBuilder();
-                sb.Append(this.__ResStr("cantRemove", "Can't remove package {0}:(+nl)"), packageName.Split(new char[] { ',' }).First());
-                sb.Append(errorList, LeadingNL: true);
-                throw new Error(sb.ToString());
-            }
-            string msg;
-            if (await package.GetHasSourceAsync())
-                msg = this.__ResStr("okRemovedSrc", "Package successfully removed - These settings won't take effect until the site is restarted(+nl)(+nl)This package includes source code. The source code, project and project references have to be removed manually in the Visual Studio solution for this YetaWF site.");
-            else
-                msg = this.__ResStr("okRemoved", "Package successfully removed - These settings won't take effect until the site is restarted");
-            return Reload(PopupText: msg);
         }
     }
 }
