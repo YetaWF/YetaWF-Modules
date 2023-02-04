@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
@@ -17,7 +18,7 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Identity.DataProvider;
-using YetaWF.Modules.PageEdit.Controllers;
+using YetaWF.Modules.PageEdit.Endpoints;
 
 namespace YetaWF.Modules.PageEdit.Components {
 
@@ -105,7 +106,7 @@ namespace YetaWF.Modules.PageEdit.Components {
                 RecordType = typeof(GridAllowedUser),
                 PageSizes = new List<int>() { 5, 10, 20 },
                 ShowHeader = header,
-                AjaxUrl = Utility.UrlFor(typeof(AllowedUsersController), nameof(AllowedUsersController.AllowedUsersEdit_SortFilter)),
+                AjaxUrl = Utility.UrlFor(typeof(AllowedUsersEndpoints), GridSupport.EditSortFilter),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<GridAllowedUser> recs = DataProviderImpl<GridAllowedUser>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
@@ -122,7 +123,7 @@ namespace YetaWF.Modules.PageEdit.Components {
             return new GridDefinition() {
                 RecordType = typeof(AllEntry),
                 InitialPageSize = 10,
-                AjaxUrl = Utility.UrlFor(typeof(AllowedUsersController), nameof(AllowedUsersController.AllowedUsersBrowse_GridData)),
+                AjaxUrl = Utility.UrlFor(typeof(AllowedUsersEndpoints), GridSupport.BrowseGridData),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
                         DataProviderGetRecords<UserDefinition> browseItems = await userDP.GetItemsAsync(skip, take, sort, filters);
@@ -181,7 +182,7 @@ namespace YetaWF.Modules.PageEdit.Components {
                 GridDef = GetGridAllUsersModel()
             };
             AllowedUsersSetup setup = new AllowedUsersSetup {
-                AddUrl = Utility.UrlFor(typeof(AllowedUsersController), nameof(AllowedUsersController.AddUserToPage)),
+                AddUrl = Utility.UrlFor(typeof(AllowedUsersEndpoints), AllowedUsersEndpoints.AddUserToPage),
                 GridId = grid.GridDef.Id,
                 GridAllId = gridAll.GridDef.Id
             };

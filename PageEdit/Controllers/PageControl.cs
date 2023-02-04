@@ -1,6 +1,5 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/PageEdit#License */
 
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,6 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Identity;
-using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
@@ -21,9 +19,8 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Site;
 using YetaWF.Core.Support;
-using YetaWF.Core.Support.Zip;
-using YetaWF.Core.Upload;
 using YetaWF.Modules.PageEdit.DataProvider;
+using YetaWF.Modules.PageEdit.Endpoints;
 using YetaWF.Modules.PageEdit.Modules;
 
 namespace YetaWF.Modules.PageEdit.Controllers {
@@ -122,8 +119,8 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public void AddData(PageDefinition page, PageControlModule mod) {
                 UploadFile = new FileUpload1 {
                     SelectButtonText = this.__ResStr("btnImportPage", "Import Page Data..."),
-                    SaveURL = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.ImportPage), new { __ModuleGuid = mod.ModuleGuid }),
-                    RemoveURL = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.RemovePage), new { __ModuleGuid = mod.ModuleGuid }),
+                    SaveURL = Utility.UrlFor(typeof(PageControlModuleEndpoints), PageControlModuleEndpoints.ImportPage),
+                    RemoveURL = Utility.UrlFor(typeof(PageControlModuleEndpoints), PageControlModuleEndpoints.RemovePage),
                     SerializeForm = true,
                 };
             }
@@ -155,8 +152,8 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             public void AddData(PageDefinition page, PageControlModule mod) {
                 UploadFile = new FileUpload1 {
                     SelectButtonText = this.__ResStr("btnImport", "Import Module Data..."),
-                    SaveURL = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.ImportModule), new { __ModuleGuid = mod.ModuleGuid }),
-                    RemoveURL = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.RemoveModule), new { __ModuleGuid = mod.ModuleGuid }),
+                    SaveURL = Utility.UrlFor(typeof(PageControlModuleEndpoints), PageControlModuleEndpoints.ImportModule),
+                    RemoveURL = Utility.UrlFor(typeof(PageControlModuleEndpoints), PageControlModuleEndpoints.RemoveModule),
                     SerializeForm = true,
                 };
                 if (page != null) {
@@ -422,87 +419,6 @@ namespace YetaWF.Modules.PageEdit.Controllers {
         }
 
         [AllowPost]
-        [ExcludeDemoMode]
-        [ResourceAuthorize(CoreInfo.Resource_ModuleImport)]
-#if MVC6
-        public async Task<ActionResult> ImportModule(IFormFile __filename, ImportModuleModel model)
-#else
-        public async Task<ActionResult> ImportModule(HttpPostedFileBase __filename, ImportModuleModel model)
-#endif
-        {
-            FileUpload upload = new FileUpload();
-            string tempName = await upload.StoreTempPackageFileAsync(__filename);
-
-            List<string> errorList = new List<string>();
-            bool success = await ModuleDefinition.ImportAsync(tempName, model.CurrentPageGuid, true, model.ModulePane!, model.ModuleLocation == Location.Top, errorList);
-            await FileSystem.TempFileSystemProvider.DeleteFileAsync(tempName);
-
-            string errs = "";
-            if (errorList.Count > 0) {
-                ScriptBuilder sbErr = new ScriptBuilder();
-                sbErr.Append(errorList, LeadingNL: true);
-                errs = sbErr.ToString();
-            }
-            if (success) {
-                string msg = this.__ResStr("imported", "\"{0}\" successfully imported(+nl)", __filename.FileName) + errs;
-                UploadResponse resp = new UploadResponse {
-                    Result = $"$YetaWF.confirm('{Utility.JserEncode(msg)}', null, function() {{ $YetaWF.reloadPage(true); }} );",
-                };
-                return new YJsonResult { Data = resp };
-            } else {
-                // Anything else is a failure
-                throw new Error(this.__ResStr("cantImport", "Can't import {0}:(+nl)", __filename.FileName) + errs);
-            }
-        }
-        [AllowPost]
-        [ExcludeDemoMode]
-        public ActionResult RemoveModule(string filename) {
-            // there is nothing to remove because we already imported the file
-            UploadRemoveResponse resp = new UploadRemoveResponse();
-            return new YJsonResult { Data = resp };
-        }
-        [AllowPost]
-        [ExcludeDemoMode]
-        [ResourceAuthorize(CoreInfo.Resource_PageImport)]
-#if MVC6
-        public async Task<ActionResult> ImportPage(IFormFile __filename, ImportPageModel model)
-#else
-        public async Task<ActionResult> ImportPage(HttpPostedFileBase __filename, ImportPageModel model)
-#endif
-        {
-            FileUpload upload = new FileUpload();
-            string tempName = await upload.StoreTempPackageFileAsync(__filename);
-
-            List<string> errorList = new List<string>();
-            PageDefinition.ImportInfo info = await PageDefinition.ImportAsync(tempName, errorList);
-            await FileSystem.TempFileSystemProvider.DeleteFileAsync(tempName);
-
-            string errs = "";
-            if (errorList.Count > 0) {
-                ScriptBuilder sbErr = new ScriptBuilder();
-                sbErr.Append(errorList, LeadingNL: true);
-                errs = sbErr.ToString();
-            }
-            if (info.Success) {
-                string msg = this.__ResStr("imported", "\"{0}\" successfully imported(+nl)", __filename.FileName) + errs;
-                UploadResponse resp = new UploadResponse {
-                    Result = $"$YetaWF.confirm('{Utility.JserEncode(msg)}', null, function() {{ window.location.assign('{Utility.JserEncode(info.Url)}'); }} );",
-                };
-                return new YJsonResult { Data = resp };
-            } else {
-                // Anything else is a failure
-                throw new Error(this.__ResStr("cantImport", "Can't import {0}:(+nl)", __filename.FileName) + errs);
-            }
-        }
-        [AllowPost]
-        [ExcludeDemoMode]
-        public ActionResult RemovePage(string filename) {
-            // there is nothing to remove because we already imported the file
-            UploadRemoveResponse resp = new UploadRemoveResponse();
-            return new YJsonResult { Data = resp };
-        }
-
-        [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
         public async Task<ActionResult> LoginSiteSelection_Partial(LoginSiteSelectionModel model) {
@@ -534,38 +450,6 @@ namespace YetaWF.Modules.PageEdit.Controllers {
             }
             Manager.PageControlShown = false;
             return Redirect(nextPage, ForceRedirect: true);
-        }
-        [ResourceAuthorize(CoreInfo.Resource_PageExport)]
-        public async Task<ActionResult> ExportPage(Guid pageGuid, long cookieToReturn) {
-            PageDefinition page = await PageDefinition.LoadAsync(pageGuid) ?? throw new InternalError($"Page {pageGuid} not found");
-            YetaWFZipFile zipFile = await page.ExportAsync();
-            return new ZippedFileResult(zipFile, cookieToReturn);
-        }
-
-        // if you have permission to view the pagecontrol module, you can switch modes
-        public ActionResult SwitchToEdit() {
-            Manager.PageControlShown = false;
-            Manager.EditMode = true;
-            return Redirect(Manager.ReturnToUrl, SetCurrentEditMode: true);
-        }
-
-        public ActionResult SwitchToView() {
-            Manager.PageControlShown = false;
-            Manager.EditMode = false;
-            return Redirect(Manager.ReturnToUrl, SetCurrentEditMode: true);
-        }
-
-        [ExcludeDemoMode]
-        public async Task<ActionResult> ClearJsCss() {
-            if (!Manager.HasSuperUserRole)
-                return NotAuthorized();
-            await FileBundles.ResetCacheAsync();
-            await using (ICacheDataProvider cacheDP = YetaWF.Core.IO.Caching.GetStaticSmallObjectCacheProvider()) {
-                ICacheClearable? clearableDP = cacheDP as ICacheClearable;
-                if (clearableDP != null)
-                    await clearableDP.ClearAllAsync();
-            }
-            return FormProcessed(null, popupText: this.__ResStr("clearJsCssAll", "JavaScript/CSS bundles and cached static small objects have been cleared"), OnClose: OnCloseEnum.Nothing);
         }
     }
 }

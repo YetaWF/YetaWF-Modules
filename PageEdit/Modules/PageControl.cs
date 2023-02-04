@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
-using YetaWF.Core.Components;
 using YetaWF.Core.Identity;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -16,8 +15,8 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-using YetaWF.Modules.PageEdit.Controllers;
 using YetaWF.Modules.PageEdit.DataProvider;
+using YetaWF.Modules.PageEdit.Endpoints;
 
 namespace YetaWF.Modules.PageEdit.Modules {
 
@@ -84,7 +83,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
         public ModuleAction? GetAction_SwitchToEdit() {
             if (!Manager.CurrentPage.IsAuthorized_Edit()) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.SwitchToEdit)),
+                Url = Utility.UrlFor(typeof(PageControlModuleEndpoints), PageControlModuleEndpoints.SwitchToEdit),
                 QueryArgs = new { },
                 NeedsModuleContext = true,
                 Image = "#Edit",
@@ -103,7 +102,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
         }
         public ModuleAction? GetAction_SwitchToView() {
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.SwitchToView)),
+                Url = Utility.UrlFor(typeof(PageControlModuleEndpoints), PageControlModuleEndpoints.SwitchToView),
                 QueryArgs = new { },
                 NeedsModuleContext = true,
                 Image = "#Display",
@@ -133,7 +132,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
             if (page == null) return null;
             if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_PageExport)) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.ExportPage)),
+                Url = Utility.UrlFor(typeof(PageControlModuleEndpoints), PageControlModuleEndpoints.ExportPage),
                 QueryArgs = new { PageGuid = guid },
                 QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
@@ -196,7 +195,7 @@ namespace YetaWF.Modules.PageEdit.Modules {
             return new ModuleAction(this) {
                 Style = ModuleAction.ActionStyleEnum.Post,
                 NeedsModuleContext = true,
-                Url = Utility.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.ClearJsCss)),
+                Url = Utility.UrlFor(typeof(PageControlModuleEndpoints), PageControlModuleEndpoints.ClearJsCss),
                 Image = "#Remove",
                 LinkText = this.__ResStr("clrCacheLink", "Clear JS/CSS/Statics Cache"),
                 MenuText = this.__ResStr("clrCacheText", "Clear JS/CSS/Statics Cache"),

@@ -22,7 +22,6 @@ namespace YetaWF_ModuleEdit {
         private GridAll: YetaWF_ComponentsHTML.Grid;
         private buttonAdd: HTMLInputElement;
         private inputUserName: HTMLInputElement;
-        private ReloadInProgress: boolean = false;
         private AddCounter: number = 0;
 
         constructor(controlId: string, setup: AllowedUsersSetup) {
@@ -42,22 +41,25 @@ namespace YetaWF_ModuleEdit {
 
             $YetaWF.registerEventHandler(this.buttonAdd, "click", null, (ev: MouseEvent): boolean => {
 
-                if (this.ReloadInProgress) return true;
-                this.ReloadInProgress = true;
+                if ($YetaWF.isLoading) return true;
 
                 var uri = $YetaWF.parseUrl(this.Setup.AddUrl);
-                uri.addFormInfo(this.Control);
-                let uniqueIdCounters: YetaWF.UniqueIdInfo = { UniqueIdPrefix: `${this.ControlId}ls`, UniqueIdPrefixCounter: 0, UniqueIdCounter: ++this.AddCounter };
-                uri.addSearch(YConfigs.Forms.UniqueIdCounters, JSON.stringify(uniqueIdCounters));
-                uri.addSearch("newUser", this.inputUserName.value);
-                uri.addSearch("fieldPrefix", this.Grid.FieldName);
-                uri.addSearch("data", JSON.stringify(this.Grid.StaticData));
+                const query = {
+                    NewUser: this.inputUserName.value,
+                    FieldPrefix: this.Grid.FieldName,
+                };
                 if (this.Grid.ExtraData) uri.addSearchSimpleObject(this.Grid.ExtraData);
 
-                $YetaWF.post(this.Setup.AddUrl, uri.toFormData(), (success: boolean, partial: GridRecordResult): void => {
-                    this.ReloadInProgress = false;
-                    if (success)
+                let data = $YetaWF.Forms.getJSONInfo(this.Control);
+                data.GridData = this.Grid.StaticData;
+                data[YConfigs.Forms.UniqueIdCounters] = { UniqueIdPrefix: `${this.ControlId}ls`, UniqueIdPrefixCounter: 0, UniqueIdCounter: ++this.AddCounter };
+
+                $YetaWF.postJSON(uri, query, data, (success: boolean, partial: GridRecordResult): void => {
+                    if (success) {
                         this.Grid.AddRecord(partial.TR, partial.StaticData);
+                        this.inputUserName.value = "";
+                        this.toggleButton();
+                    }
                 });
                 return false;
             });

@@ -14,10 +14,7 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-using YetaWF.Modules.ModuleEdit.Controllers;
-#if MVC6
-#else
-#endif
+using YetaWF.Modules.ModuleEdit.Endpoints;
 
 namespace YetaWF.Modules.ModuleEdit.Modules {
 
@@ -49,7 +46,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             if (!mod.ModuleHasSettings) return null;
             if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_ModuleExport)) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(ModuleControlModuleController), nameof(ModuleControlModuleController.ExportModuleData)),
+                Url = Utility.UrlFor(typeof(ModuleControlModuleEndpoints), ModuleControlModuleEndpoints.ExportModuleData),
                 QueryArgs = new { ModuleGuid = mod.ModuleGuid },
                 QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
@@ -93,7 +90,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             if (newPane == null) return null;
             if (!page.IsAuthorized_Edit()) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(ModuleControlModuleController), nameof(ModuleControlModuleController.MoveToPane)),
+                Url = Utility.UrlFor(typeof(ModuleControlModuleEndpoints), ModuleControlModuleEndpoints.MoveToPane),
                 QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, OldPane = oldPane, NewPane = newPane },
                 QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
@@ -117,7 +114,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             PageDefinition.ModuleList modList = page.ModuleDefinitions.GetModulesForPane(pane);
             int modIndex = modList.IndexInPane(mod, pane);
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(ModuleControlModuleController), nameof(ModuleControlModuleController.MoveUp)),
+                Url = Utility.UrlFor(typeof(ModuleControlModuleEndpoints), ModuleControlModuleEndpoints.MoveUp),
                 QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, Pane = pane, ModuleIndex = modIndex },
                 QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
@@ -141,7 +138,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             PageDefinition.ModuleList modList = page.ModuleDefinitions.GetModulesForPane(pane);
             int modIndex = modList.IndexInPane(mod, pane);
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(ModuleControlModuleController), nameof(ModuleControlModuleController.MoveDown)),
+                Url = Utility.UrlFor(typeof(ModuleControlModuleEndpoints), ModuleControlModuleEndpoints.MoveDown),
                 QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, Pane = pane, ModuleIndex = modIndex },
                 QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
@@ -166,7 +163,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             PageDefinition.ModuleList modList = page.ModuleDefinitions.GetModulesForPane(pane);
             int modIndex = modList.IndexInPane(mod, pane);
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(ModuleControlModuleController), nameof(ModuleControlModuleController.MoveTop)),
+                Url = Utility.UrlFor(typeof(ModuleControlModuleEndpoints), ModuleControlModuleEndpoints.MoveTop),
                 QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, Pane = pane, ModuleIndex = modIndex },
                 QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
@@ -191,11 +188,8 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             PageDefinition.ModuleList modList = page.ModuleDefinitions.GetModulesForPane(pane);
             int modIndex = modList.IndexInPane(mod, pane);
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(ModuleControlModuleController), nameof(ModuleControlModuleController.MoveBottom)),
+                Url = Utility.UrlFor(typeof(ModuleControlModuleEndpoints), ModuleControlModuleEndpoints.MoveBottom),
                 QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, Pane = pane, ModuleIndex = modIndex },
-                QueryArgsDict = new QueryHelper(new QueryDictionary {
-                    { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
-                }),
                 Image = await CustomIconAsync("MoveBottom.png"),
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("modMoveBottomLink", "Move To Bottom"),
@@ -220,11 +214,8 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             PageDefinition.ModuleList modList = page.ModuleDefinitions.GetModulesForPane(pane);
             int modIndex = modList.IndexInPane(moduleGuid, pane);
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(ModuleControlModuleController), nameof(ModuleControlModuleController.Remove)),
+                Url = Utility.UrlFor(typeof(ModuleControlModuleEndpoints), ModuleControlModuleEndpoints.Remove),
                 QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = moduleGuid, Pane = pane, ModuleIndex = modIndex },
-                QueryArgsDict = new QueryHelper(new QueryDictionary {
-                    { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
-                }),
                 Image = "#Remove",
                 Style = ModuleAction.ActionStyleEnum.Post,
                 LinkText = this.__ResStr("modRemoveLink", "Remove"),
@@ -248,7 +239,7 @@ namespace YetaWF.Modules.ModuleEdit.Modules {
             PageDefinition.ModuleList modList = page.ModuleDefinitions.GetModulesForPane(pane);
             int modIndex = modList.IndexInPane(moduleGuid, pane);
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(ModuleControlModuleController), nameof(ModuleControlModuleController.RemovePermanent)),
+                Url = Utility.UrlFor(typeof(ModuleControlModuleEndpoints), ModuleControlModuleEndpoints.RemovePermanent),
                 QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = moduleGuid, Pane = pane, ModuleIndex = modIndex },
                 QueryArgsDict = new QueryHelper(new QueryDictionary {
                     { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this

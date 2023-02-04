@@ -12,11 +12,7 @@ using System.Collections.Generic;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Addons;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.ModuleEdit.Controllers {
 
