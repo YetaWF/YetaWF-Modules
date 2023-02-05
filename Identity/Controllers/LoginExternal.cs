@@ -40,7 +40,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 if (provider == null)
                     throw new InternalError("No external login provider found");
 
-                SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
+                SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)Manager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
                 var redirectUrl = Manager.CurrentSite.MakeFullUrl(Utility.UrlFor(typeof(LoginExternalController), nameof(ExternalLoginCallback), new { ReturnUrl = returnUrl }));
                 var properties = _signinManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
                 return Challenge(properties, provider);
@@ -55,7 +55,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             if (remoteError != null)
                 throw new Error(this.__ResStr("extErr", "The external login provider reported this error: {0}", remoteError));
 
-            SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
+            SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)Manager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
             ExternalLoginInfo loginInfo = await _signinManager.GetExternalLoginInfoAsync();
             if (loginInfo == null) {
                 Logging.AddErrorLog("AuthenticationManager.GetExternalLoginInfoAsync() returned null");

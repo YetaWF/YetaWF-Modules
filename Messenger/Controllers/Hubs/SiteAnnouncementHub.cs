@@ -13,6 +13,8 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
     public class YetaWF_Messenger_SiteAnnouncementsHub : Hub, ISignalRHub {
 
+        protected static YetaWFManager Manager { get { return YetaWFManager.Manager; } }
+
         public void MapHub(IEndpointRouteBuilder bldr) {
             string url = SignalR.MakeUrl(nameof(YetaWF_Messenger_SiteAnnouncementsHub));
             Logging.AddLog($"{nameof(YetaWF_Messenger_SiteAnnouncementsHub)} adding route {url}");
@@ -20,7 +22,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
         }
 
         public static Task SendMessageAsync(string text, string title) {
-            IHubContext<YetaWF_Messenger_SiteAnnouncementsHub> context = YetaWFManager.ServiceProvider.GetRequiredService<IHubContext<YetaWF_Messenger_SiteAnnouncementsHub>>();
+            IHubContext<YetaWF_Messenger_SiteAnnouncementsHub> context = Manager.ServiceProvider.GetRequiredService<IHubContext<YetaWF_Messenger_SiteAnnouncementsHub>>();
             return context.Clients.All.SendAsync("Message", text, title);
         }
     }

@@ -13,6 +13,8 @@ namespace YetaWF.Modules.Messenger.Controllers {
 
     public class YetaWF_Messenger_BrowserNotificationsHub : Hub, ISignalRHub {
 
+        protected static YetaWFManager Manager { get { return YetaWFManager.Manager; } }
+
         public void MapHub(IEndpointRouteBuilder bldr) {
             string url = SignalR.MakeUrl(nameof(YetaWF_Messenger_BrowserNotificationsHub));
             Logging.AddLog($"{nameof(YetaWF_Messenger_BrowserNotificationsHub)} adding route {url}");
@@ -23,7 +25,7 @@ namespace YetaWF.Modules.Messenger.Controllers {
         }
 
         public static Task SendMessageAsync(string title, string text, string icon, int timeout, string url) {
-            IHubContext<YetaWF_Messenger_BrowserNotificationsHub> context = YetaWFManager.ServiceProvider.GetRequiredService<IHubContext<YetaWF_Messenger_BrowserNotificationsHub>>();
+            IHubContext<YetaWF_Messenger_BrowserNotificationsHub> context = Manager.ServiceProvider.GetRequiredService<IHubContext<YetaWF_Messenger_BrowserNotificationsHub>>();
             return context.Clients.User(YetaWFManager.Manager.UserId.ToString()).SendAsync("Message", title, text, icon, timeout, url);
         }
     }

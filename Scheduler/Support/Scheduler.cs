@@ -371,7 +371,7 @@ namespace YetaWF.Modules.Scheduler.Support {
 
                         if (schedEvt != null) {
 
-                            YetaWFManager.MakeThreadInstance(site, null, true);// set up a manager for the site
+                            YetaWFManager.MakeThreadInstance(site, null, null, true);// set up a manager for the site
 
                             SchedulerLog.LimitTo(YetaWFManager.Manager);
                             SchedulerLog.SetCurrent(logId, site.Identity, item.Name);
@@ -395,7 +395,7 @@ namespace YetaWF.Modules.Scheduler.Support {
 
                             YetaWFManager.RemoveThreadInstance();
 
-                            YetaWFManager.MakeThreadInstance(null, null, true);// restore scheduler's manager
+                            YetaWFManager.MakeThreadInstance(null, null, null, true);// restore scheduler's manager
                             SchedulerLog.LimitTo(YetaWFManager.Manager);
                             SchedulerLog.SetCurrent();
                         }

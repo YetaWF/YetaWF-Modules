@@ -428,7 +428,7 @@ namespace YetaWF.Modules.Identity.Controllers {
         internal static async Task UserLogoffAsync() {
             Manager.EditMode = false;
 
-            SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
+            SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)Manager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
             await _signinManager.SignOutAsync();
 
             Manager.SessionSettings.ClearAll();
@@ -447,7 +447,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 isPersistent = (bool) rememberme;
             }
 
-            SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
+            SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)Manager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
             await _signinManager.SignInAsync(user, isPersistent);
 
             // superuser

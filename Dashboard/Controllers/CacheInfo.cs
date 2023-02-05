@@ -90,7 +90,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
         public ActionResult CacheInfo() {
             DisplayModel model = new DisplayModel();
 
-            MemoryCacheStatistics? stats = YetaWFManager.MemoryCache.GetCurrentStatistics();
+            MemoryCacheStatistics? stats = Manager.MemoryCache.GetCurrentStatistics();
             model.SetData(stats);
 
             model.GridDef = GetGridModel(Module);
@@ -122,7 +122,7 @@ namespace YetaWF.Modules.Dashboard.Controllers {
             // Populate the coherentState field variable with the definition from above using the data in
             // our MemoryCache instance.  Then use Reflection to gain access to the private property EntriesCollection.
             if (cacheEntriesFieldCollectionDefinition != null) {
-                var coherentStateValueCollection = cacheEntriesFieldCollectionDefinition.GetValue(YetaWFManager.MemoryCache);
+                var coherentStateValueCollection = cacheEntriesFieldCollectionDefinition.GetValue(Manager.MemoryCache);
                 var entriesCollectionValueCollection = coherentStateValueCollection.GetType().GetProperty("EntriesCollection", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!;
                 cacheEntriesCollection = entriesCollectionValueCollection.GetValue(coherentStateValueCollection)!;
             }

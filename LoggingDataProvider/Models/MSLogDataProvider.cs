@@ -1,7 +1,5 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/LoggingDataProvider#License */
 
-#if MVC6
-
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -23,8 +21,8 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.MSLog {
 
         private ILogger? Logger = null;
 
-        public LogRecordDataProvider() : base() {
-            Logger = (ILogger?)YetaWFManager.ServiceProvider.GetService(typeof(ILogger<LogRecordDataProvider>));
+        public LogRecordDataProvider(ILogger<LogRecordDataProvider> logger) : base() {
+            Logger = logger?? throw new ArgumentNullException(nameof(logger));
             //$$$YetaWFLoggerProvider.IgnoredCategory = typeof(LogRecordDataProvider).FullName;
         }
 
@@ -104,5 +102,3 @@ namespace YetaWF.Modules.LoggingDataProvider.DataProvider.MSLog {
         }
     }
 }
-
-#endif

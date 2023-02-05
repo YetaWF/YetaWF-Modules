@@ -257,7 +257,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
             LoginConfigData configData = await GetConfigAsync();
             List<LoginProviderDescription> list = new List<LoginProviderDescription>();
 #if MVC6
-            SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
+            SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)Manager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
 
             List<AuthenticationScheme> loginProviders = (await _signinManager.GetExternalAuthenticationSchemesAsync()).ToList();
             foreach (AuthenticationScheme provider in loginProviders) {

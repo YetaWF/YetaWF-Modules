@@ -202,7 +202,7 @@ namespace YetaWF.Modules.Identity.Controllers {
 
             ExtUserInfo info = new ExtUserInfo();
 
-            SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
+            SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)Manager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
             ExternalLoginInfo loginInfo = await _signinManager.GetExternalLoginInfoAsync();
             if (loginInfo == null) {
                 Logging.AddErrorLog("AuthenticationManager.GetExternalLoginInfoAsync() returned null");

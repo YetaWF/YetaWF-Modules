@@ -242,7 +242,7 @@ namespace YetaWF.Modules.Identity.Modules {
                     throw new Error(this.__ResStr("notFound", "User {0} not found", userName));
 
                 UserManager<UserDefinition> userManager = Managers.GetUserManager();
-                IPasswordHasher<UserDefinition> passwordHasher = (IPasswordHasher<UserDefinition>) YetaWFManager.ServiceProvider.GetService(typeof(IPasswordHasher<UserDefinition>));
+                IPasswordHasher<UserDefinition> passwordHasher = (IPasswordHasher<UserDefinition>)Manager.ServiceProvider.GetService(typeof(IPasswordHasher<UserDefinition>));
                 string hashedNewPassword = passwordHasher.HashPassword(user, newPassword);
                 //ModuleDefinition.GetPermanentGuid(typeof(RegisterModule))
                 LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();

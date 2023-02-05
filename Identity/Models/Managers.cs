@@ -17,7 +17,7 @@ namespace YetaWF.Modules.Identity.Models {
 
         // Gets the site specific UserManager instance (permanent)
         public static UserManager<UserDefinition> GetUserManager() {
-            return (UserManager<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(UserManager<UserDefinition>));
+            return (UserManager<UserDefinition>)Manager.ServiceProvider.GetService(typeof(UserManager<UserDefinition>));
         }
     }
 }

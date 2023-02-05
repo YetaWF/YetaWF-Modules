@@ -113,14 +113,8 @@ namespace YetaWF.Modules.Identity.Controllers {
 
                 UserDefinition user = model.GetData();
 
-                string hashedNewPassword;
-#if MVC6
-                IPasswordHasher<UserDefinition> passwordHasher = (IPasswordHasher<UserDefinition>) YetaWFManager.ServiceProvider.GetService(typeof(IPasswordHasher<UserDefinition>));
-                hashedNewPassword = passwordHasher.HashPassword(user, model.Password);
-#else
-                UserManager<UserDefinition> userManager = Managers.GetUserManager();
-                hashedNewPassword = userManager.PasswordHasher.HashPassword(model.Password);
-#endif
+                IPasswordHasher<UserDefinition> passwordHasher = (IPasswordHasher<UserDefinition>) Manager.ServiceProvider.GetService(typeof(IPasswordHasher<UserDefinition>));
+                string hashedNewPassword = passwordHasher.HashPassword(user, model.Password);
                 user.PasswordPlainText = config.SavePlainTextPassword ? model.Password : null;
                 user.PasswordHash = hashedNewPassword;
 

@@ -128,7 +128,7 @@ namespace YetaWF.Modules.Identity.Controllers {
             // change the password
             IdentityResult result;
 #if MVC6
-            IPasswordValidator<UserDefinition> passVal = (IPasswordValidator<UserDefinition>)YetaWFManager.ServiceProvider.GetService(typeof(IPasswordValidator<UserDefinition>));
+            IPasswordValidator<UserDefinition> passVal = (IPasswordValidator<UserDefinition>)Manager.ServiceProvider.GetService(typeof(IPasswordValidator<UserDefinition>));
             result = await passVal.ValidateAsync(userManager, user, model.NewPassword);
 #else
             result = await userManager.PasswordValidator.ValidateAsync(model.NewPassword);
@@ -157,7 +157,7 @@ namespace YetaWF.Modules.Identity.Controllers {
                 return PartialView(model);
             }
 #if MVC6
-            IPasswordHasher<UserDefinition> passwordHasher = (IPasswordHasher<UserDefinition>) YetaWFManager.ServiceProvider.GetService(typeof(IPasswordHasher<UserDefinition>));
+            IPasswordHasher<UserDefinition> passwordHasher = (IPasswordHasher<UserDefinition>)Manager.ServiceProvider.GetService(typeof(IPasswordHasher<UserDefinition>));
             user.PasswordHash = passwordHasher.HashPassword(user, model.NewPassword);
 #else
             user.PasswordHash = userManager.PasswordHasher.HashPassword(model.NewPassword);

@@ -332,7 +332,7 @@ namespace YetaWF.Modules.Identity.DataProvider {
                 foreach (UserDefinition user in list.Data) {
                     if (!string.IsNullOrWhiteSpace(user.PasswordPlainText)) {
 #if MVC6
-                        IPasswordHasher<UserDefinition> passwordHasher = (IPasswordHasher<UserDefinition>) YetaWFManager.ServiceProvider.GetService(typeof(IPasswordHasher<UserDefinition>));
+                        IPasswordHasher<UserDefinition> passwordHasher = (IPasswordHasher<UserDefinition>) Manager.ServiceProvider.GetService(typeof(IPasswordHasher<UserDefinition>));
                         user.PasswordHash = passwordHasher.HashPassword(user, user.PasswordPlainText);
 #else
                         user.PasswordHash = userManager.PasswordHasher.HashPassword(user.PasswordPlainText);
