@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core;
-using YetaWF.Core.Components;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -12,12 +11,8 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-using YetaWF.Modules.Scheduler.Controllers;
 using YetaWF.Modules.Scheduler.DataProvider;
-#if MVC6
-#else
-using System.Web.Mvc;
-#endif
+using YetaWF.Modules.Scheduler.Endpoints;
 
 namespace YetaWF.Modules.Scheduler.Modules {
 
@@ -88,7 +83,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
         }
         public ModuleAction? GetAction_RemoveItem(string? name) {
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(SchedulerBrowseModuleController), "RemoveItem"),
+                Url = Utility.UrlFor(typeof(SchedulerBrowseModuleEndpoints), SchedulerBrowseModuleEndpoints.RemoveItem),
                 QueryArgs = new { Name = name },
                 NeedsModuleContext = true,
                 Image = "#Remove",
@@ -105,7 +100,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
         }
         public async Task<ModuleAction?> GetAction_RunItemAsync(string? name) {
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(SchedulerBrowseModuleController), nameof(SchedulerBrowseModuleController.RunItem)),
+                Url = Utility.UrlFor(typeof(SchedulerBrowseModuleEndpoints), SchedulerBrowseModuleEndpoints.RunItem),
                 QueryArgs = new { Name = name },
                 NeedsModuleContext = true,
                 Image = await CustomIconAsync("RunItem.png"),
@@ -126,7 +121,7 @@ namespace YetaWF.Modules.Scheduler.Modules {
                 running = dataProvider.GetRunning();
             }
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(SchedulerBrowseModuleController), nameof(SchedulerBrowseModuleController.SchedulerToggle)),
+                Url = Utility.UrlFor(typeof(SchedulerBrowseModuleEndpoints), SchedulerBrowseModuleEndpoints.SchedulerToggle),
                 QueryArgs = new { Start = !running },
                 NeedsModuleContext = true,
                 Image = await CustomIconAsync("SchedulerToggle.png"),

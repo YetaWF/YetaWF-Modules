@@ -170,7 +170,7 @@ namespace YetaWF_Search {
 
         let query = {
             Value: true,
-        }
+        };
         const uri = $YetaWF.parseUrl(onButton.href);
         $YetaWF.postJSONIgnore(uri, query, null);
         return false;

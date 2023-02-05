@@ -10,8 +10,8 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Modules.Panels.Controllers;
 using YetaWF.Modules.Panels.DataProvider;
+using YetaWF.Modules.Panels.Endpoints;
 using YetaWF.Modules.Panels.Models;
 using YetaWF.Modules.Panels.Modules;
 
@@ -120,7 +120,7 @@ namespace YetaWF.Modules.Panels.Components {
             Setup setup = new Setup {
                 Resize = model.Style == PageBarModule.PanelStyleEnum.Vertical,
                 ActiveCss = activeCss,
-                ExpandCollapseUrl = Utility.UrlFor(typeof(PageBarInfoController), nameof(PageBarInfoController.SaveExpandCollapse)),
+                ExpandCollapseUrl = Utility.UrlFor(typeof(PageBarModuleEndpoints), PageBarModuleEndpoints.SaveExpandCollapse),
             };
 
             Manager.ScriptManager.AddLast($@"new YetaWF_Panels.PageBarInfoComponent('{ControlId}', {Utility.JsonSerialize(setup)});");

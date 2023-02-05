@@ -16,6 +16,8 @@ using YetaWF.Modules.Scheduler.DataProvider;
 using YetaWF.Modules.Scheduler.Modules;
 using YetaWF.Core.Components;
 using Microsoft.AspNetCore.Mvc;
+using YetaWF.Core.Endpoints;
+using YetaWF.Modules.Scheduler.Endpoints;
 
 namespace YetaWF.Modules.Scheduler.Controllers {
 
@@ -108,18 +110,19 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; } = null!;
         }
-        private GridDefinition GetGridModel() {
+
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
                 SizeStyle = GridDefinition.SizeStyleEnum.SizeToFit,
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 RecordType = typeof(SchedulerItem),
-                AjaxUrl = GetActionUrl(nameof(SchedulerBrowse_GridData)),
+                AjaxUrl = Utility.UrlFor<SchedulerBrowseModuleEndpoints>(GridSupport.BrowseGridData),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
                         DataProviderGetRecords<SchedulerItemData> schedulerItems = await dataProvider.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
-                            Data = (from s in schedulerItems.Data select new SchedulerItem(Module, s)).ToList<object>(),
+                            Data = (from s in schedulerItems.Data select new SchedulerItem((SchedulerBrowseModule)module, s)).ToList<object>(),
                             Total = schedulerItems.Total
                         };
                     }
@@ -130,50 +133,9 @@ namespace YetaWF.Modules.Scheduler.Controllers {
         [AllowGet]
         public ActionResult SchedulerBrowse() {
             SchedulerBrowseModel model = new SchedulerBrowseModel {
-                GridDef = GetGridModel()
+                GridDef = GetGridModel(Module)
             };
             return View(model);
-        }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> SchedulerBrowse_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync(GetGridModel(), gridPvData);
-        }
-
-        [AllowPost]
-        [Permission("RemoveItems")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> RemoveItem(string name) {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new Error(this.__ResStr("noEvent", "No scheduler item name specified"));
-            using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
-                await dataProvider.RemoveItemAsync(name);
-                return Reload(null, Reload: ReloadEnum.ModuleParts);
-            }
-        }
-
-        [AllowPost]
-        [Permission("RunItems")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> RunItem(string name) {
-            if (string.IsNullOrWhiteSpace(name))
-                throw new Error(this.__ResStr("noEvent", "No scheduler item name specified"));
-            await SchedulerSupport.RunItemAsync(name);
-            return Reload(null, Reload: ReloadEnum.ModuleParts);
-        }
-
-        [AllowPost]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> SchedulerToggle(bool start) {
-            using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
-                await dataProvider.SetRunningAsync(start);
-            }
-            return FormProcessed(null,
-                start ?
-                this.__ResStr("okStarting", "The scheduler will be started when the site is restarted") :
-                    this.__ResStr("okStopping", "The scheduler will be stopped when the site is restarted"),
-                OnClose: OnCloseEnum.GotoNewPage, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: null);
         }
     }
 }

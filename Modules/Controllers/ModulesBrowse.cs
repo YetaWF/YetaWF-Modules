@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.Identity;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.IO;
-using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
+using YetaWF.Modules.Modules.Endpoints;
 using YetaWF.Modules.Modules.Modules;
 
 namespace YetaWF.Modules.Modules.Controllers {
@@ -40,12 +40,12 @@ namespace YetaWF.Modules.Modules.Controllers {
                         actions.New(await ModSettings.GetModuleActionAsync("Settings", guid), ModuleAction.ActionLocationEnum.GridLinks);
                     } catch (Exception) { }
                 }
-//#if DEBUG
-//                actions.New(await Module.GetAction_SetSuperuserAsync(guid), ModuleAction.ActionLocationEnum.GridLinks);
-//                actions.New(await Module.GetAction_SetAdminAsync(guid), ModuleAction.ActionLocationEnum.GridLinks);
-//                actions.New(await Module.GetAction_SetUserAsync(guid), ModuleAction.ActionLocationEnum.GridLinks);
-//                actions.New(await Module.GetAction_SetAnonymousAsync(guid), ModuleAction.ActionLocationEnum.GridLinks);
-//#endif
+#if DEBUG
+                actions.New(await Module.GetAction_SetSuperuserAsync(guid), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(await Module.GetAction_SetAdminAsync(guid), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(await Module.GetAction_SetUserAsync(guid), ModuleAction.ActionLocationEnum.GridLinks);
+                actions.New(await Module.GetAction_SetAnonymousAsync(guid), ModuleAction.ActionLocationEnum.GridLinks);
+#endif
                 try {
                     actions.New(Module.GetAction_Remove(guid), ModuleAction.ActionLocationEnum.GridLinks);
                 } catch (Exception) { }
@@ -131,13 +131,14 @@ namespace YetaWF.Modules.Modules.Controllers {
             [UIHint("Grid"), ReadOnly]
             public GridDefinition GridDef { get; set; } = null!;
         }
-        private GridDefinition GetGridModel() {
+
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 InitialPageSize = 20,
                 RecordType = typeof(BrowseItem),
-                AjaxUrl = GetActionUrl(nameof(ModulesBrowse_GridData)),
+                AjaxUrl = Utility.UrlFor<ModulesBrowseModuleEndpoints>(GridSupport.BrowseGridData),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     // module settings services
                     ModuleDefinition? modSettings = await ModuleDefinition.LoadAsync(Manager.CurrentSite.ModuleEditingServices, AllowNone: true);
@@ -156,7 +157,7 @@ namespace YetaWF.Modules.Modules.Controllers {
                     if (info.Modules != null) {
                         foreach (ModuleDefinition s in info.Modules) {
                             int useCount = (await s.__GetPagesAsync()).Count;
-                            list.Add(new BrowseItem(Module, modSettings, designedList, s, useCount));
+                            list.Add(new BrowseItem((ModulesBrowseModule)module, modSettings, designedList, s, useCount));
                         }
                     }
                     return new DataSourceResult {
@@ -170,124 +171,9 @@ namespace YetaWF.Modules.Modules.Controllers {
         [AllowGet]
         public ActionResult ModulesBrowse() {
             BrowseModel model = new BrowseModel {
-                GridDef = GetGridModel()
+                GridDef = GetGridModel(Module)
             };
             return View(model);
-        }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> ModulesBrowse_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync(GetGridModel(), gridPvData);
-        }
-
-        [AllowPost]
-        [Permission("RemoveItems")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> Remove(Guid moduleGuid) {
-            if (!await YetaWF.Core.IO.Module.RemoveModuleDefinitionAsync(moduleGuid))
-                throw new Error(this.__ResStr("errRemove", "The module could not be removed - It may already have been deleted"));
-            return Reload(null, Reload: ReloadEnum.ModuleParts);
-        }
-#if DEBUG
-        [AllowPost]
-        [Permission("SetAuthorization")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> SetSuperuser(Guid guid) {
-            ModuleDefinition? module = await ModuleDefinition.LoadAsync(guid, AllowNone: true);
-            if (module == null)
-                throw new InternalError($"Couldn't load module {guid}");
-            int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
-            int userRole = Resource.ResourceAccess.GetUserRoleId();
-            int anonRole = Resource.ResourceAccess.GetAnonymousRoleId();
-            module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
-            await module.SaveAsync();
-            return Reload(null, Reload: ReloadEnum.ModuleParts);
-        }
-        [AllowPost]
-        [Permission("SetAuthorization")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> SetAdmin(Guid guid) {
-            ModuleDefinition? module = await ModuleDefinition.LoadAsync(guid, AllowNone: true);
-            if (module == null)
-                throw new InternalError($"Couldn't load module {guid}");
-            int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
-            int userRole = Resource.ResourceAccess.GetUserRoleId();
-            int anonRole = Resource.ResourceAccess.GetAnonymousRoleId();
-            module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
-            module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = adminRole, View = ModuleDefinition.AllowedEnum.Yes });
-            await module.SaveAsync();
-            return Reload(null, Reload: ReloadEnum.ModuleParts);
-        }
-        [AllowPost]
-        [Permission("SetAuthorization")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> SetUser(Guid guid) {
-            ModuleDefinition? module = await ModuleDefinition.LoadAsync(guid, AllowNone: true);
-            if (module == null)
-                throw new InternalError($"Couldn't load module {guid}");
-            int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
-            int userRole = Resource.ResourceAccess.GetUserRoleId();
-            int anonRole = Resource.ResourceAccess.GetAnonymousRoleId();
-            module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
-            module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = userRole, View = ModuleDefinition.AllowedEnum.Yes });
-            await module.SaveAsync();
-            return Reload(null, Reload: ReloadEnum.ModuleParts);
-        }
-        [AllowPost]
-        [Permission("SetAuthorization")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> SetAnonymous(Guid guid) {
-            ModuleDefinition? module = await ModuleDefinition.LoadAsync(guid, AllowNone: true);
-            if (module == null)
-                throw new InternalError($"Couldn't load module {guid}");
-            int adminRole = Resource.ResourceAccess.GetAdministratorRoleId();
-            int userRole = Resource.ResourceAccess.GetUserRoleId();
-            int anonRole = Resource.ResourceAccess.GetAnonymousRoleId();
-            module.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>();
-            module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = userRole, View = ModuleDefinition.AllowedEnum.Yes });
-            module.AllowedRoles.Add(new ModuleDefinition.AllowedRole { RoleId = anonRole, View = ModuleDefinition.AllowedEnum.Yes });
-            await module.SaveAsync();
-            return Reload(null, Reload: ReloadEnum.ModuleParts);
-        }
-#endif
-        [AllowPost]
-        [Permission("RestoreAuthorization")]
-        [ExcludeDemoMode]
-        public async Task<ActionResult> RestoreAuthorization() {
-            YetaWF.Core.IO.Module.ModuleBrowseInfo info = new YetaWF.Core.IO.Module.ModuleBrowseInfo();
-            await YetaWF.Core.IO.Module.GetModulesAsync(info);
-            if (info.Modules != null) {
-                foreach (ModuleDefinition genericMod in info.Modules) {
-                    ModuleDefinition? mod = await ModuleDefinition.LoadAsync(genericMod.ModuleGuid, AllowNone: true);
-                    if (mod != null) {
-#if MERGE // enable this to preserve anon and user settings
-                    int anonRoleId = Resource.ResourceAccess.GetAnonymousRoleId();
-                    int userRoleId = Resource.ResourceAccess.GetUserRoleId();
-                    ModuleDefinition.AllowedRole anonRole = ModuleDefinition.AllowedRole.Find(mod.DefaultAllowedRoles, anonRoleId);
-                    ModuleDefinition.AllowedRole userRole = ModuleDefinition.AllowedRole.Find(mod.DefaultAllowedRoles, userRoleId);
-                    if (anonRole == null && userRole == null) {
-                        // merge default roles into allowed roles to preserve current anon & user settings
-                        anonRole = ModuleDefinition.AllowedRole.Find(mod.AllowedRoles, anonRoleId);
-                        userRole = ModuleDefinition.AllowedRole.Find(mod.AllowedRoles, userRoleId);
-                        mod.AllowedRoles = new SerializableList<ModuleDefinition.AllowedRole>(mod.DefaultAllowedRoles);
-                        if (anonRole != null)
-                            mod.AllowedRoles.Add(anonRole);
-                        if (userRole != null)
-                            mod.AllowedRoles.Add(userRole);
-                    } else {
-                        mod.AllowedRoles = mod.DefaultAllowedRoles;
-                    }
-#else
-                        mod.AllowedRoles = mod.DefaultAllowedRoles;
-#endif
-                        //mod.AllowedUsers = // we're not touching this
-
-                        await mod.SaveAsync();
-                    }
-                }
-            }
-            return Reload(null, Reload: ReloadEnum.ModuleParts);
         }
     }
 }

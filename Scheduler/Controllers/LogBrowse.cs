@@ -1,23 +1,21 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Scheduler#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YetaWF.Core.Addons;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
-using YetaWF.Core.Localize;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Scheduler.DataProvider;
+using YetaWF.Modules.Scheduler.Endpoints;
 using YetaWF.Modules.Scheduler.Modules;
-using YetaWF.Core.IO;
-using YetaWF.Core.Support.Zip;
-using YetaWF.Core.Components;
-using Microsoft.AspNetCore.Mvc;
 
 namespace YetaWF.Modules.Scheduler.Controllers {
 
@@ -78,19 +76,20 @@ namespace YetaWF.Modules.Scheduler.Controllers {
             public bool LogAvailable { get; set; }
             public bool BrowsingSupported { get; set; }
         }
-        private GridDefinition GetGridModel() {
+        
+        internal static GridDefinition GetGridModel(ModuleDefinition module) {
             return new GridDefinition {
                 SizeStyle = GridDefinition.SizeStyleEnum.SizeToFit,
-                ModuleGuid = Module.ModuleGuid,
-                SettingsModuleGuid = Module.PermanentGuid,
+                ModuleGuid = module.ModuleGuid,
+                SettingsModuleGuid = module.PermanentGuid,
                 RecordType = typeof(BrowseItem),
                 InitialPageSize = 20,
-                AjaxUrl = GetActionUrl(nameof(LogBrowse_GridData)),
+                AjaxUrl = Utility.UrlFor<LogBrowseModuleEndpoints>(GridSupport.BrowseGridData),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (LogDataProvider logDP = new LogDataProvider()) {
                         DataProviderGetRecords<LogData> browseItems = await logDP.GetItemsAsync(skip, take, sort, filters);
                         return new DataSourceResult {
-                            Data = (from s in browseItems.Data select new BrowseItem(Module, s)).ToList<object>(),
+                            Data = (from s in browseItems.Data select new BrowseItem((LogBrowseModule)module, s)).ToList<object>(),
                             Total = browseItems.Total
                         };
                     }
@@ -106,52 +105,8 @@ namespace YetaWF.Modules.Scheduler.Controllers {
                     BrowsingSupported = logDP.CanBrowse,
                 };
                 if (logDP.CanBrowse)
-                    model.GridDef = GetGridModel();
+                    model.GridDef = GetGridModel(Module);
                 return View(model);
-            }
-        }
-
-        [AllowPost]
-        [ConditionalAntiForgeryToken]
-        public async Task<ActionResult> LogBrowse_GridData(GridPartialViewData gridPvData) {
-            return await GridPartialViewAsync(GetGridModel(), gridPvData);
-        }
-
-        [AllowPost]
-        [Permission("RemoveLog")]
-        public async Task<ActionResult> RemoveAll() {
-            using (LogDataProvider logDP = new LogDataProvider()) {
-                await logDP.RemoveItemsAsync(null);
-                return Reload(null, Reload: ReloadEnum.ModuleParts);
-            }
-        }
-
-        [Permission("Downloads")]
-        public async Task<ActionResult> DownloadLog(long cookieToReturn) {
-            using (LogDataProvider logDP = new LogDataProvider()) {
-                string? filename = logDP.GetLogFileName();
-                if (filename == null || !await FileSystem.FileSystemProvider.FileExistsAsync(filename))
-                    throw new Error(this.__ResStr("logNotFound", "The scheduler log file '{0}' cannot be located", filename));
-                Response.Headers.Remove("Cookie");
-                Response.Cookies.Append(Basics.CookieDone, cookieToReturn.ToString(), new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = false, Path = "/" });
-
-                string contentType = "application/octet-stream";
-                return new PhysicalFileResult(filename, contentType) { FileDownloadName = "Logfile.txt" };
-            }
-        }
-
-        [Permission("Downloads")]
-        public async Task<ActionResult> DownloadZippedLog(long cookieToReturn) {
-            using (LogDataProvider dataProvider = new LogDataProvider()) {
-                string? filename = dataProvider.GetLogFileName();
-                if (filename == null || !await FileSystem.FileSystemProvider.FileExistsAsync(filename))
-                    throw new Error(this.__ResStr("logNotFound", "The scheduler log file '{0}' cannot be located", filename));
-                string zipName = "Logfile.zip";
-                YetaWFZipFile zipFile = new YetaWFZipFile {
-                    FileName = zipName,
-                };
-                zipFile.AddFile(filename, "SchedulerLog.txt");
-                return new ZippedFileResult(zipFile, cookieToReturn);
             }
         }
     }

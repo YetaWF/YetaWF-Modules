@@ -1,24 +1,19 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Packages#License */
 
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core;
+using YetaWF.Core.Components;
 using YetaWF.Core.Controllers;
+using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Core.Upload;
+using YetaWF.Modules.Packages.Endpoints;
 using YetaWF.Modules.Packages.Modules;
-using System.Threading.Tasks;
-using YetaWF.Core.IO;
-using YetaWF.Core.Components;
-#if MVC6
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web;
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Packages.Controllers {
 
@@ -38,11 +33,11 @@ namespace YetaWF.Modules.Packages.Controllers {
             [UIHint("FileUpload1")]
             public FileUpload1? UploadFile { get; set; }
 
-            public void Update(ImportModule mod, ImportModuleController ctrl) {
+            public void Update(ImportModule mod) {
                 UploadFile = new FileUpload1 {
                     SelectButtonText = this.__ResStr("btnImport", "Import Binary or Source Code Package..."),
-                    SaveURL = ctrl.GetActionUrl("ImportPackage", new { __ModuleGuid = mod.ModuleGuid }),
-                    RemoveURL = ctrl.GetActionUrl("RemovePackage", new { __ModuleGuid = mod.ModuleGuid }),
+                    SaveURL = Utility.UrlFor<ImportModuleEndpoints>(ImportModuleEndpoints.ImportPackage, new { __ModuleGuid = mod.ModuleGuid }),
+                    RemoveURL = Utility.UrlFor<ImportModuleEndpoints>(ImportModuleEndpoints.RemovePackage, new { __ModuleGuid = mod.ModuleGuid }),
                 };
                 RemoteGo = new FormButton() {
                     Text = "Download and Install",
@@ -55,7 +50,7 @@ namespace YetaWF.Modules.Packages.Controllers {
         [Permission("Imports")]
         public ActionResult Import() {
             ImportModel model = new ImportModel  { };
-            model.Update(Module, this);
+            model.Update(Module);
             return View(model);
         }
 
@@ -63,7 +58,7 @@ namespace YetaWF.Modules.Packages.Controllers {
         [Permission("Imports")]
         [ExcludeDemoMode]
         public async Task<ActionResult> Import_Partial(ImportModel model) {
-            model.Update(Module, this);
+            model.Update(Module);
             if (!ModelState.IsValid)
                 return PartialView(model);
 
@@ -78,7 +73,7 @@ namespace YetaWF.Modules.Packages.Controllers {
             // delete the temp file just uploaded
             await FileSystem.TempFileSystemProvider.DeleteFileAsync(tempName);
 
-            string msg = FormatMessage(success, errorList, model.RemoteFile!);
+            string msg = ImportModuleEndpoints.FormatMessage(success, errorList, model.RemoteFile!);
             if (success) {
                 model.RemoteFile = null;
                 return FormProcessed(model, msg);
@@ -86,62 +81,6 @@ namespace YetaWF.Modules.Packages.Controllers {
                 // Anything else is a failure
                 return FormProcessed(model, msg);
             }
-        }
-        private string FormatMessage(bool success, List<string> errorList, string fileName) {
-            string errs = "";
-            if (errorList.Count > 0) {
-                ScriptBuilder sbErr = new ScriptBuilder();
-                sbErr.Append(errorList, LeadingNL: false);
-                sbErr.Append("(+nl)(+nl)");
-                errs = sbErr.ToString();
-            }
-            if (success) {
-                return errs + this.__ResStr("imported", "\"{0}\" successfully imported - YOU MUST RESTART THE SITE FOR PROPER OPERATION", fileName);
-            } else {
-                // Anything else is a failure
-                return errs + this.__ResStr("cantImport", "Can't import {0}:{1}", fileName, errs);
-            }
-        }
-
-        [AllowPost]
-        [Permission("Imports")]
-        [ExcludeDemoMode]
-#if MVC6
-        public async Task<ActionResult> ImportPackage(IFormFile __filename)
-#else
-        public async Task<ActionResult> ImportPackage(HttpPostedFileBase __filename)
-#endif
-        {
-            // Save the uploaded file as a temp file
-            FileUpload upload = new FileUpload();
-            string tempName = await upload.StoreTempPackageFileAsync(__filename);
-            // Import the package
-            List<string> errorList = new List<string>();
-            bool success = await Package.ImportAsync(tempName, errorList);
-            // Delete the temp file just uploaded
-            await FileSystem.TempFileSystemProvider.DeleteFileAsync(tempName);
-
-            string msg = FormatMessage(success, errorList, __filename.FileName);
-
-            if (success) {
-                UploadResponse resp = new UploadResponse {
-                    Result = $"$YetaWF.confirm('{Utility.JserEncode(msg)}', null, function() {{ $YetaWF.reloadPage(true); }} );",
-                };
-                //System.Web.HttpRuntime.UnloadAppDomain();
-                //System.Web.HttpContext.Current.Response.Redirect("/");
-                return new YJsonResult { Data = resp };
-            } else {
-                // Anything else is a failure
-                throw new Error(msg);
-            }
-        }
-        [AllowPost]
-        [Permission("Imports")]
-        [ExcludeDemoMode]
-        public ActionResult RemovePackage(string filename) {
-            // there is nothing to remove because we already imported the file
-            UploadRemoveResponse resp = new UploadRemoveResponse();
-            return new YJsonResult { Data = resp };
         }
     }
 }

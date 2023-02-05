@@ -10,7 +10,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-using YetaWF.Modules.Modules.Controllers;
+using YetaWF.Modules.Modules.Endpoints;
 
 namespace YetaWF.Modules.Modules.Modules {
 
@@ -79,7 +79,7 @@ namespace YetaWF.Modules.Modules.Modules {
         public ModuleAction? GetAction_Remove(Guid moduleGuid) {
             if (!IsAuthorized("RemoveItems")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(ModulesBrowseModuleController), nameof(ModulesBrowseModuleController.Remove)),
+                Url = Utility.UrlFor(typeof(ModulesBrowseModuleEndpoints), ModulesBrowseModuleEndpoints.Remove),
                 NeedsModuleContext = true,
                 QueryArgs = new { ModuleGuid = moduleGuid },
                 Image = "#Remove",
@@ -97,7 +97,7 @@ namespace YetaWF.Modules.Modules.Modules {
         public ModuleAction? GetAction_RestoreAllDefaultAuthorization() {
             if (!IsAuthorized("RestoreAuthorization")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(ModulesBrowseModuleController), "RestoreAuthorization"),
+                Url = Utility.UrlFor(typeof(ModulesBrowseModuleEndpoints), ModulesBrowseModuleEndpoints.RestoreAuthorization),
                 NeedsModuleContext = true,
                 QueryArgs = new { },
                 Image = "",
@@ -117,7 +117,7 @@ namespace YetaWF.Modules.Modules.Modules {
         public async Task<ModuleAction?> GetAction_SetSuperuserAsync(Guid guid) {
             if (!IsAuthorized("SetAuthorization")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(ModulesBrowseModuleController), nameof(ModulesBrowseModuleController.SetSuperuser)),
+                Url = Utility.UrlFor(typeof(ModulesBrowseModuleEndpoints), ModulesBrowseModuleEndpoints.SetSuperuser),
                 NeedsModuleContext = true,
                 QueryArgs = new { Guid = guid },
                 Image = await CustomIconAsync("go.png"),
@@ -134,7 +134,7 @@ namespace YetaWF.Modules.Modules.Modules {
         public async Task<ModuleAction?> GetAction_SetAdminAsync(Guid guid) {
             if (!IsAuthorized("SetAuthorization")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(ModulesBrowseModuleController), nameof(ModulesBrowseModuleController.SetAdmin)),
+                Url = Utility.UrlFor(typeof(ModulesBrowseModuleEndpoints), ModulesBrowseModuleEndpoints.SetAdmin),
                 NeedsModuleContext = true,
                 QueryArgs = new { Guid = guid },
                 Image = await CustomIconAsync("go.png"),
@@ -151,7 +151,7 @@ namespace YetaWF.Modules.Modules.Modules {
         public async Task<ModuleAction?> GetAction_SetUserAsync(Guid guid) {
             if (!IsAuthorized("SetAuthorization")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(ModulesBrowseModuleController), nameof(ModulesBrowseModuleController.SetUser)),
+                Url = Utility.UrlFor(typeof(ModulesBrowseModuleEndpoints), ModulesBrowseModuleEndpoints.SetUser),
                 NeedsModuleContext = true,
                 QueryArgs = new { Guid = guid },
                 Image = await CustomIconAsync("go.png"),
@@ -168,7 +168,7 @@ namespace YetaWF.Modules.Modules.Modules {
         public async Task<ModuleAction?> GetAction_SetAnonymousAsync(Guid guid) {
             if (!IsAuthorized("SetAuthorization")) return null;
             return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(ModulesBrowseModuleController), nameof(ModulesBrowseModuleController.SetAnonymous)),
+                Url = Utility.UrlFor(typeof(ModulesBrowseModuleEndpoints), ModulesBrowseModuleEndpoints.SetAnonymous),
                 NeedsModuleContext = true,
                 QueryArgs = new { Guid = guid },
                 Image = await CustomIconAsync("go.png"),

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
@@ -15,7 +16,7 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Pages.DataProvider;
-using YetaWF.Modules.Panels.Controllers;
+using YetaWF.Modules.Panels.Endpoints;
 using YetaWF.Modules.Panels.Models;
 
 namespace YetaWF.Modules.Panels.Components {
@@ -99,7 +100,7 @@ namespace YetaWF.Modules.Panels.Components {
                 RecordType = typeof(Entry),
                 InitialPageSize = 0,
                 ShowHeader = header,
-                AjaxUrl = Utility.UrlFor(typeof(ListOfLocalPagesController), nameof(ListOfLocalPagesController.ListOfLocalPagesEdit_SortFilter)),
+                AjaxUrl = Utility.UrlFor(typeof(ListOfLocalPagesEndpoints), GridSupport.EditSortFilter),
                 SortFilterStaticData = (List<object> data, int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) => {
                     DataProviderGetRecords<Entry> recs = DataProviderImpl<Entry>.GetRecords(data, skip, take, sorts, filters);
                     return new DataSourceResult {
@@ -116,7 +117,7 @@ namespace YetaWF.Modules.Panels.Components {
             return new GridDefinition() {
                 RecordType = typeof(AllEntry),
                 InitialPageSize = 10,
-                AjaxUrl = Utility.UrlFor(typeof(ListOfLocalPagesController), nameof(ListOfLocalPagesController.ListOfLocalPagesBrowse_GridData)),
+                AjaxUrl = Utility.UrlFor(typeof(ListOfLocalPagesEndpoints), GridSupport.BrowseGridData),
                 DirectDataAsync = async (int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) => {
                     using (PageDefinitionDataProvider pagesDP = new PageDefinitionDataProvider()) {
                         DataProviderGetRecords<PageDefinition> browseItems = await pagesDP.GetItemsAsync(skip, take, sort, filters);
@@ -187,14 +188,6 @@ $YetaWF.expandCollapseHandling('{DivId}', '{DivId}_coll', '{DivId}_exp');
 new YetaWF_Panels.ListOfLocalPagesEditComponent('{DivId}', {Utility.JsonSerialize(setup)});");
 
             return hb.ToString();
-        }
-        public static Task<GridRecordData> GridRecordAsync(string fieldPrefix, object model) {
-            GridRecordData record = new GridRecordData() {
-                GridDef = GetGridModel(false),
-                Data = model,
-                FieldPrefix = fieldPrefix,
-            };
-            return Task.FromResult(record);
         }
     }
 }

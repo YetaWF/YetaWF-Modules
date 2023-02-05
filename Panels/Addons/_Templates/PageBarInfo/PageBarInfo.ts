@@ -78,17 +78,11 @@ namespace YetaWF_Panels {
             $YetaWF.elementAddClassList(entry, this.Setup.ActiveCss);
         }
         private sendExpandedCollapsed(expanded: boolean): void {
-
-            let uri = new YetaWF.Url();
-            uri.parse(this.Setup.ExpandCollapseUrl);
-            uri.addSearch("Expanded", expanded ? "true":"false");
-
-            var request: XMLHttpRequest = new XMLHttpRequest();
-            request.open("POST", uri.toUrl(), true);
-            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-
-            request.send();
-            // we don't care about the result of this request
+            let uri = $YetaWF.parseUrl(this.Setup.ExpandCollapseUrl);
+            let query = {
+                Expanded: expanded,
+            };
+            $YetaWF.postJSONIgnore(uri, query, null);
         }
         private repositionExpColl(): void {
             let expColl = $YetaWF.getElement1BySelectorCond(".t_expcoll", [this.Control]);

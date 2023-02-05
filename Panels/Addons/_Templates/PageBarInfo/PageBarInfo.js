@@ -88,14 +88,11 @@ var YetaWF_Panels;
             $YetaWF.elementAddClassList(entry, this.Setup.ActiveCss);
         };
         PageBarInfoComponent.prototype.sendExpandedCollapsed = function (expanded) {
-            var uri = new YetaWF.Url();
-            uri.parse(this.Setup.ExpandCollapseUrl);
-            uri.addSearch("Expanded", expanded ? "true" : "false");
-            var request = new XMLHttpRequest();
-            request.open("POST", uri.toUrl(), true);
-            request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-            request.send();
-            // we don't care about the result of this request
+            var uri = $YetaWF.parseUrl(this.Setup.ExpandCollapseUrl);
+            var query = {
+                Expanded: expanded,
+            };
+            $YetaWF.postJSONIgnore(uri, query, null);
         };
         PageBarInfoComponent.prototype.repositionExpColl = function () {
             var expColl = $YetaWF.getElement1BySelectorCond(".t_expcoll", [this.Control]);

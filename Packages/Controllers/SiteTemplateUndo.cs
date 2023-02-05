@@ -10,11 +10,7 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.Packages.DataProvider;
 using YetaWF.Core.IO;
 using YetaWF.Core.Components;
-#if MVC6
 using Microsoft.AspNetCore.Mvc;
-#else
-using System.Web.Mvc;
-#endif
 
 namespace YetaWF.Modules.Packages.Controllers {
 
