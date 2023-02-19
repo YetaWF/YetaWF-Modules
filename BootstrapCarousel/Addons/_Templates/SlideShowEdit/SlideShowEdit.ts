@@ -30,9 +30,10 @@ namespace YetaWF_BootstrapCarousel {
         public static readonly SELECTOR: string = ".yt_bootstrapcarousel_slideshow.t_edit";
         private static readonly TEMPLATENAME: string = "YetaWF_BootstrapCarousel_SlideShow";
 
-        private buttonUp: HTMLElement;
-        private buttonDown: HTMLElement;
-        private buttonDelete: HTMLElement;
+        private Tabs: YetaWF_ComponentsHTML.TabsComponent;
+        private ButtonUp: HTMLElement;
+        private ButtonDown: HTMLElement;
+        private ButtonDelete: HTMLElement;
 
         constructor(controlId: string) {
             super(controlId, SlideShowEdit.TEMPLATE, SlideShowEdit.SELECTOR, {
@@ -42,9 +43,10 @@ namespace YetaWF_BootstrapCarousel {
                 Enable: null,
             });
 
-            this.buttonUp = $YetaWF.getElement1BySelector("input.t_up", [this.Control]);
-            this.buttonDown = $YetaWF.getElement1BySelector("input.t_down", [this.Control]);
-            this.buttonDelete = $YetaWF.getElement1BySelector("input.t_delete", [this.Control]);
+            this.Tabs = YetaWF_ComponentsHTML.TabsComponent.getControlFromSelector(".yt_tabs", YetaWF_ComponentsHTML.TabsComponent.SELECTOR, [this.Control]);
+            this.ButtonUp = $YetaWF.getElement1BySelector("input.t_up", [this.Control]);
+            this.ButtonDown = $YetaWF.getElement1BySelector("input.t_down", [this.Control]);
+            this.ButtonDelete = $YetaWF.getElement1BySelector("input.t_delete", [this.Control]);
 
             // Apply button click
             $YetaWF.registerEventHandler(this.Control, "click", "input.t_apply", (ev: MouseEvent): boolean => {
@@ -52,17 +54,17 @@ namespace YetaWF_BootstrapCarousel {
                 return false;
             });
             // << button click
-            $YetaWF.registerEventHandler(this.buttonUp, "click", null, (ev: MouseEvent): boolean => {
+            $YetaWF.registerEventHandler(this.ButtonUp, "click", null, (ev: MouseEvent): boolean => {
                 $YetaWF.Forms.submitTemplate(this.Control, true, SlideShowEdit.TEMPLATENAME, YetaWF.PanelAction.MoveLeft, this.getPanelIndex().toString());
                 return false;
             });
             // >> button click
-            $YetaWF.registerEventHandler(this.buttonDown, "click", null, (ev: MouseEvent): boolean => {
+            $YetaWF.registerEventHandler(this.ButtonDown, "click", null, (ev: MouseEvent): boolean => {
                 $YetaWF.Forms.submitTemplate(this.Control, true, SlideShowEdit.TEMPLATENAME, YetaWF.PanelAction.MoveRight, this.getPanelIndex().toString());
                 return false;
             });
             // delete button click
-            $YetaWF.registerEventHandler(this.buttonDelete, "click", null, (ev: MouseEvent): boolean => {
+            $YetaWF.registerEventHandler(this.ButtonDelete, "click", null, (ev: MouseEvent): boolean => {
                 $YetaWF.alertYesNo(YLocs.YetaWF_BootstrapCarousel.RemoveConfirm, YLocs.YetaWF_BootstrapCarousel.RemoveTitle, (): void => {
                     $YetaWF.Forms.submitTemplate(this.Control, false, SlideShowEdit.TEMPLATENAME, YetaWF.PanelAction.Remove, this.getPanelIndex().toString());
                 });
@@ -77,6 +79,9 @@ namespace YetaWF_BootstrapCarousel {
             $YetaWF.registerEventHandler(this.Control, "click", "input.t_add", (ev: MouseEvent): boolean => {
                 $YetaWF.Forms.submitTemplate(this.Control, true, SlideShowEdit.TEMPLATENAME, YetaWF.PanelAction.Add, this.getPanelIndex().toString());
                 return false;
+            });
+            this.Tabs.Control.addEventListener(YetaWF_ComponentsHTML.TabsComponent.EVENTSWITCHED, (evt: Event): void => {
+                this.updateButtons();
             });
 
             this.updateButtons();
@@ -100,11 +105,11 @@ namespace YetaWF_BootstrapCarousel {
             var panelCount = this.getPanelCount();
 
             // disable the << button if the active tab is the first one
-            $YetaWF.elementEnableToggle(this.buttonUp, panelIndex !== 0);
+            $YetaWF.elementEnableToggle(this.ButtonUp, panelIndex !== 0);
             // disable the >> button if the last panel is active
-            $YetaWF.elementEnableToggle(this.buttonDown, panelIndex < panelCount - 1);
+            $YetaWF.elementEnableToggle(this.ButtonDown, panelIndex < panelCount - 1);
             // disable if there is only one panel
-            $YetaWF.elementEnableToggle(this.buttonDelete, panelCount > 1);
+            $YetaWF.elementEnableToggle(this.ButtonDelete, panelCount > 1);
         }
     }
 }

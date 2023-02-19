@@ -9,32 +9,32 @@ using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Modules.Blog.Modules;
 using YetaWF.Modules.ComponentsHTML.Components;
 
-namespace YetaWF.Modules.Blog.Views {
+namespace YetaWF.Modules.Blog.Views;
 
-    public class BlogView : YetaWFView, IYetaWFView<BlogModule, BlogModule.DisplayModel> {
+public class BlogView : YetaWFView, IYetaWFView<BlogModule, BlogModule.DisplayModel> {
 
-        public const string ViewName = "Blog";
+    public const string ViewName = "Blog";
 
-        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        public override string GetViewName() { return ViewName; }
+    public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+    public override string GetViewName() { return ViewName; }
 
-        public async Task<string> RenderViewAsync(BlogModule module, BlogModule.DisplayModel model) {
+    public async Task<string> RenderViewAsync(BlogModule module, BlogModule.DisplayModel model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+        HtmlBuilder hb = new HtmlBuilder();
 
-            int count = 0;
+        int count = 0;
 
-            if (model.StartDate != null) {
-                hb.Append($@"
+        if (model.StartDate != null) {
+            hb.Append($@"
 <div class='t_startdate'>
     {this.__ResStr("startDate", "Showing blog entries published on or before {0}.", Formatting.FormatDate(model.StartDate))}
 </div>");
-            }
+        }
 
-            foreach (BlogModule.Entry blogEntry in model.BlogEntries) {
-                ++count;
+        foreach (BlogModule.Entry blogEntry in model.BlogEntries) {
+            ++count;
 
-                hb.Append($@"
+            hb.Append($@"
 <h2>
     <a href='{Utility.HAE(await BlogConfigData.GetEntryCanonicalNameAsync(blogEntry.Identity))}' class='yaction-link'>
         {Utility.HE(blogEntry.Title.ToString())}
@@ -43,9 +43,8 @@ namespace YetaWF.Modules.Blog.Views {
 <div class='t_entry t_entry{count}'>
     {await HtmlHelper.ForDisplayContainerAsync(blogEntry, "PropertyList")}
 </div>");
-            }
-
-            return hb.ToString();
         }
+
+        return hb.ToString();
     }
 }

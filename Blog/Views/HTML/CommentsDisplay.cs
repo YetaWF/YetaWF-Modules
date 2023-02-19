@@ -8,86 +8,86 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.Modules;
 using YetaWF.Modules.ComponentsHTML.Components;
 
-namespace YetaWF.Modules.Blog.Views {
+namespace YetaWF.Modules.Blog.Views;
 
-    public class CommentsDisplayView : YetaWFView, IYetaWFView<CommentsDisplayModule, CommentsDisplayModule.DisplayModel> {
+public class CommentsDisplayView : YetaWFView, IYetaWFView<CommentsDisplayModule, CommentsDisplayModule.DisplayModel> {
 
-        public const string ViewName = "CommentsDisplay";
+    public const string ViewName = "CommentsDisplay";
 
-        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        public override string GetViewName() { return ViewName; }
+    public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+    public override string GetViewName() { return ViewName; }
 
-        public async Task<string> RenderViewAsync(CommentsDisplayModule module, CommentsDisplayModule.DisplayModel model) {
+    public async Task<string> RenderViewAsync(CommentsDisplayModule module, CommentsDisplayModule.DisplayModel model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+        HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($@"
+        hb.Append($@"
 {await RenderBeginFormAsync()}");
 
-            if (model.Comments.Count == 0) {
-                hb.Append($@"
+        if (model.Comments.Count == 0) {
+            hb.Append($@"
     <div class='t_nocomments'>
         {Utility.HE(this.__ResStr("nocommentsAdd", "Be the first to add a comment!"))}
     </div>");
+        }
+
+        hb.Append($@"
+    <div class='t_comments'>");
+
+        int count = 0;
+        foreach (CommentsDisplayModule.CommentData comment in model.Comments) {
+            string commentClass = "t_comment" + count.ToString();
+            if (model.CanApprove || model.CanRemove) {
+                if (comment.Deleted) {
+                    commentClass += " t_deleted";
+                } else {
+                    commentClass += " t_notdeleted";
+                    if (comment.Approved) {
+                        commentClass += " t_approved";
+                    } else {
+                        commentClass += " t_notapproved";
+                    }
+                }
             }
 
             hb.Append($@"
-    <div class='t_comments'>");
-
-            int count = 0;
-            foreach (CommentsDisplayModule.CommentData comment in model.Comments) {
-                string commentClass = "t_comment" + count.ToString();
-                if (model.CanApprove || model.CanRemove) {
-                    if (comment.Deleted) {
-                        commentClass += " t_deleted";
-                    } else {
-                        commentClass += " t_notdeleted";
-                        if (comment.Approved) {
-                            commentClass += " t_approved";
-                        } else {
-                            commentClass += " t_notapproved";
-                        }
-                    }
-                }
-
-                hb.Append($@"
         <div class='{commentClass}'>");
 
-                if (model.CanApprove || model.CanRemove) {
-                    if (comment.Deleted) {
-                        hb.Append($@"
+            if (model.CanApprove || model.CanRemove) {
+                if (comment.Deleted) {
+                    hb.Append($@"
             <div class='t_boxdeleted'>
                 {Utility.HE(this.__ResStr("deleted", "This comment has been deleted"))}
             </div>");
-                    } else if (!comment.Approved) {
-                        hb.Append($@"
+                } else if (!comment.Approved) {
+                    hb.Append($@"
             <div class='t_boxnotapproved'>
                 {Utility.HE(this.__ResStr("notApproved", "This comment has not yet been approved"))}
             </div>");
-                    }
                 }
+            }
 
-                if (model.ShowGravatars && comment.ShowGravatar) {
-                    hb.Append($@"
+            if (model.ShowGravatars && comment.ShowGravatar) {
+                hb.Append($@"
             <div class='t_gravatar'>
                 {await HtmlHelper.ForDisplayAsync(comment, nameof(comment.Email))}
             </div>");
-                }
+            }
 
-                hb.Append($@"
+            hb.Append($@"
             <div class='t_title'>{Utility.HE(comment.Title)}</div>
             <div class='t_comment'>{comment.Comment}</div>
             <div class='t_boxinfo'>
                 <div class='t_cmtby'>{Utility.HE(this.__ResStr("by", "By:"))}</div>
                 <div class='t_cmtauthor'>");
 
-                if (string.IsNullOrEmpty(comment.Website)) {
-                    hb.Append(Utility.HE(comment.Name));
-                } else {
-                    hb.Append($"<a href='{Utility.HAE(comment.Website)}' class='linkpreview-show' target='_blank' rel='nofollow noopener noreferrer'>{Utility.HE(comment.Name)}</a>");
-                }
+            if (string.IsNullOrEmpty(comment.Website)) {
+                hb.Append(Utility.HE(comment.Name));
+            } else {
+                hb.Append($"<a href='{Utility.HAE(comment.Website)}' class='linkpreview-show' target='_blank' rel='nofollow noopener noreferrer'>{Utility.HE(comment.Name)}</a>");
+            }
 
-                hb.Append($@"
+            hb.Append($@"
                 </div>
                 <div class='t_cmton'>{Utility.HE(this.__ResStr("on", "On:"))}</div>
                 <div class='t_cmtdate'>{Utility.HE(Formatting.FormatDate(comment.DateCreated))}</div>
@@ -97,16 +97,15 @@ namespace YetaWF.Modules.Blog.Views {
             </div >
             <div class='t_cmtend'></div>
         </div>");
-            }
+        }
 
-            hb.Append($@"
+        hb.Append($@"
     </div>
 {await FormButtonsAsync(new FormButton[] {
         new FormButton() { ButtonType= ButtonTypeEnum.Cancel, Text=this.__ResStr("btnCancel", "Return") },
     })}
 {await RenderEndFormAsync()}");
 
-            return hb.ToString();
-        }
+        return hb.ToString();
     }
 }

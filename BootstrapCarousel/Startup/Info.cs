@@ -6,22 +6,21 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 
-namespace YetaWF.Modules.BootstrapCarousel.Addons.Templates {
+namespace YetaWF.Modules.BootstrapCarousel.Addons.Templates;
 
-    /// <summary>
-    /// Template specific config strings.
-    /// </summary>
-    public class SlideShowEdit : IAddOnSupport {
+/// <summary>
+/// Template specific config strings.
+/// </summary>
+public class SlideShowEdit : IAddOnSupport {
 
-        public Task AddSupportAsync(YetaWFManager manager) {
+    public Task AddSupportAsync(YetaWFManager manager) {
 
-            ScriptManager scripts = manager.ScriptManager;
-            string areaName = AreaRegistration.CurrentPackage.AreaName;
+        ScriptManager scripts = manager.ScriptManager;
+        string areaName = AreaRegistration.CurrentPackage.AreaName;
 
-            scripts.AddLocalization(areaName, "RemoveConfirm", this.__ResStr("removeConfirm", "Are you sure you want to remove this image?"));
-            scripts.AddLocalization(areaName, "RemoveTitle", this.__ResStr("removeTitle", "Remove Image"));
+        scripts.AddLocalization(areaName, "RemoveConfirm", this.__ResStr("removeConfirm", "Are you sure you want to remove this image?"));
+        scripts.AddLocalization(areaName, "RemoveTitle", this.__ResStr("removeTitle", "Remove Image"));
 
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

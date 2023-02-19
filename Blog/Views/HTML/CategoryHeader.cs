@@ -8,20 +8,20 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.Modules;
 using YetaWF.Modules.ComponentsHTML.Components;
 
-namespace YetaWF.Modules.Blog.Views {
+namespace YetaWF.Modules.Blog.Views;
 
-    public class CategoryHeaderView : YetaWFView, IYetaWFView<CategoryHeaderModule, CategoryHeaderModule.DisplayModel> {
+public class CategoryHeaderView : YetaWFView, IYetaWFView<CategoryHeaderModule, CategoryHeaderModule.DisplayModel> {
 
-        public const string ViewName = "CategoryHeader";
+    public const string ViewName = "CategoryHeader";
 
-        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        public override string GetViewName() { return ViewName; }
+    public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+    public override string GetViewName() { return ViewName; }
 
-        public async Task<string> RenderViewAsync(CategoryHeaderModule module, CategoryHeaderModule.DisplayModel model) {
+    public async Task<string> RenderViewAsync(CategoryHeaderModule module, CategoryHeaderModule.DisplayModel model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+        HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($@"
+        hb.Append($@"
 {await RenderBeginFormAsync()}
     <div class='t_desc'>
         {await HtmlHelper.ForDisplayAsync(model, nameof(model.Description))}
@@ -31,7 +31,6 @@ namespace YetaWF.Modules.Blog.Views {
     })}
 {await RenderEndFormAsync()}");
 
-            return hb.ToString();
-        }
+        return hb.ToString();
     }
 }

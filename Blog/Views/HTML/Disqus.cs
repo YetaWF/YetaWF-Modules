@@ -8,37 +8,37 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.Modules;
 using YetaWF.Modules.ComponentsHTML.Components;
 
-namespace YetaWF.Modules.Blog.Views {
+namespace YetaWF.Modules.Blog.Views;
 
-    public class DisqusView : YetaWFView, IYetaWFView<DisqusModule, DisqusModule.DisplayModel> {
+public class DisqusView : YetaWFView, IYetaWFView<DisqusModule, DisqusModule.DisplayModel> {
 
-        public const string ViewName = "Disqus";
+    public const string ViewName = "Disqus";
 
-        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        public override string GetViewName() { return ViewName; }
+    public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+    public override string GetViewName() { return ViewName; }
 
-        public Task<string> RenderViewAsync(DisqusModule module, DisqusModule.DisplayModel model) {
+    public Task<string> RenderViewAsync(DisqusModule module, DisqusModule.DisplayModel model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+        HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($@"
+        hb.Append($@"
 <div id='disqus_thread'></div>");
 
-            ScriptBuilder sb = new ScriptBuilder();
-            sb.Append($@"
+        ScriptBuilder sb = new ScriptBuilder();
+        sb.Append($@"
     var disqus_config = function () {{
         this.page.url = '{Utility.JserEncode(Manager.CurrentPage.EvaluatedCanonicalUrl)}';
         this.page.identifier = '{Utility.JserEncode(Manager.CurrentPage.PageGuid.ToString())}';
         this.page.title = '{Utility.JserEncode(Manager.CurrentPage.Title)}';
         this.page.language = '{MultiString.ActiveLanguage.Substring(0, 2)}';");
 
-            if (model.UseSSO && !string.IsNullOrWhiteSpace(model.AuthPayload)) {
-                sb.Append($@"
+        if (model.UseSSO && !string.IsNullOrWhiteSpace(model.AuthPayload)) {
+            sb.Append($@"
         this.page.remote_auth_s3 = '{Utility.JserEncode(model.AuthPayload)}';
         this.page.api_key = '{Utility.JserEncode(model.PublicKey)}';");
-            }
-            if (model.UseSSO) {
-                sb.Append($@"
+        }
+        if (model.UseSSO) {
+            sb.Append($@"
         this.sso = {{
             name: '{Utility.JserEncode(Manager.CurrentSite.SiteDomain)}',
             //button: 'https://yetawf.com/images/samplenews.gif',
@@ -48,9 +48,9 @@ namespace YetaWF.Modules.Blog.Views {
             width: {model.Width},
             height: {model.Height}
         }};");
-           }
+        }
 
-            sb.Append($@"
+        sb.Append($@"
     }};
     (function () {{
         var d = document, s = d.createElement('script');
@@ -59,9 +59,8 @@ namespace YetaWF.Modules.Blog.Views {
         (d.head || d.body).appendChild(s);
     }})();");
 
-            Manager.ScriptManager.AddLast(sb.ToString());
+        Manager.ScriptManager.AddLast(sb.ToString());
 
-            return Task.FromResult(hb.ToString());
-        }
+        return Task.FromResult(hb.ToString());
     }
 }

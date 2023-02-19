@@ -7,31 +7,30 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.Modules;
 using YetaWF.Modules.ComponentsHTML.Components;
 
-namespace YetaWF.Modules.Blog.Views {
+namespace YetaWF.Modules.Blog.Views;
 
-    public class SummaryView : YetaWFView, IYetaWFView<SummaryModule, SummaryModule.DisplayModel> {
+public class SummaryView : YetaWFView, IYetaWFView<SummaryModule, SummaryModule.DisplayModel> {
 
-        public const string ViewName = "Summary";
+    public const string ViewName = "Summary";
 
-        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        public override string GetViewName() { return ViewName; }
+    public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+    public override string GetViewName() { return ViewName; }
 
-        public async Task<string> RenderViewAsync(SummaryModule module, SummaryModule.DisplayModel model) {
+    public async Task<string> RenderViewAsync(SummaryModule module, SummaryModule.DisplayModel model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+        HtmlBuilder hb = new HtmlBuilder();
 
-            int count = 0;
+        int count = 0;
 
-            foreach (SummaryModule.Entry blogEntry in model.BlogEntries) {
-                ++count;
+        foreach (SummaryModule.Entry blogEntry in model.BlogEntries) {
+            ++count;
 
-                hb.Append($@"
+            hb.Append($@"
 <div class='t_entry t_entry{count}'>
     {await blogEntry.ViewAction.RenderAsLinkAsync()}
 </div>");
 
-            }
-            return hb.ToString();
         }
+        return hb.ToString();
     }
 }

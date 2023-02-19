@@ -5,80 +5,79 @@ using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Support;
 
-namespace YetaWF.Modules.Caching.DataProvider {
+namespace YetaWF.Modules.Caching.DataProvider;
 
-    /// <summary>
-    /// A in-memory ONLY cache implementation for a single instance (really shared) without serialization/deserialization (not suitable for ModuleDefinition).
-    /// This is intended as a way to preserve "static" in-memory data. This is equivalent to the StaticObjectMultiDataProvider class on a multi-instance site.
-    /// </summary>
-    internal class StaticObjectSingleDataProvider : ICacheDataProvider {
+/// <summary>
+/// A in-memory ONLY cache implementation for a single instance (really shared) without serialization/deserialization (not suitable for ModuleDefinition).
+/// This is intended as a way to preserve "static" in-memory data. This is equivalent to the StaticObjectMultiDataProvider class on a multi-instance site.
+/// </summary>
+internal class StaticObjectSingleDataProvider : ICacheDataProvider {
 
-        public static ICacheDataProvider GetProvider() {
-            return new StaticObjectSingleDataProvider();
-        }
+    public static ICacheDataProvider GetProvider() {
+        return new StaticObjectSingleDataProvider();
+    }
 
-        public YetaWFManager Manager { get { return YetaWFManager.Manager; } }
-        public bool HaveManager { get { return YetaWFManager.HaveManager; } }
+    public YetaWFManager Manager { get { return YetaWFManager.Manager; } }
+    public bool HaveManager { get { return YetaWFManager.HaveManager; } }
 
-        private static Dictionary<string, object?> StaticObjects = new Dictionary<string, object?>();
-        private static object _lockObject = new object();
+    private static Dictionary<string, object?> StaticObjects = new Dictionary<string, object?>();
+    private static object _lockObject = new object();
 
-        public StaticObjectSingleDataProvider() {
-            DisposableTracker.AddObject(this);
-        }
-        public void Dispose() {
-            Dispose(true);
-        }
-        protected virtual void Dispose(bool disposing) {
-            if (disposing) {
-                DisposableTracker.RemoveObject(this);
-            }
-        }
-        public async ValueTask DisposeAsync() {
-            await DisposeAsyncCore().ConfigureAwait(false);
-            Dispose(false);
-        }
-        protected virtual ValueTask DisposeAsyncCore() {
+    public StaticObjectSingleDataProvider() {
+        DisposableTracker.AddObject(this);
+    }
+    public void Dispose() {
+        Dispose(true);
+    }
+    protected virtual void Dispose(bool disposing) {
+        if (disposing) {
             DisposableTracker.RemoveObject(this);
-            return ValueTask.CompletedTask;
         }
-        //~StaticObjectSingleDataProvider() { Dispose(false); }
+    }
+    public async ValueTask DisposeAsync() {
+        await DisposeAsyncCore().ConfigureAwait(false);
+        Dispose(false);
+    }
+    protected virtual ValueTask DisposeAsyncCore() {
+        DisposableTracker.RemoveObject(this);
+        return ValueTask.CompletedTask;
+    }
+    //~StaticObjectSingleDataProvider() { Dispose(false); }
 
-        // API
+    // API
 
-        private string GetKey(string key) {
-            return $"__static__{key}";
+    private string GetKey(string key) {
+        return $"__static__{key}";
+    }
+    public Task AddAsync<TYPE>(string key, TYPE? data) {
+        key = GetKey(key);
+        lock (_lockObject) { // used to protect StaticObjects - local only
+            StaticObjects.Remove(key);
+            StaticObjects.Add(key, data);
         }
-        public Task AddAsync<TYPE>(string key, TYPE? data) {
-            key = GetKey(key);
-            lock (_lockObject) { // used to protect StaticObjects - local only
-                StaticObjects.Remove(key);
-                StaticObjects.Add(key, data);
+        return Task.CompletedTask;
+    }
+    public Task<GetObjectInfo<TYPE>> GetAsync<TYPE>(string key) {
+        // get cached version
+        key = GetKey(key);
+        object? obj;
+        lock (_lockObject) { // used to protect StaticObjects - local only
+            if (StaticObjects.TryGetValue(key, out obj)) {
+                return Task.FromResult(new GetObjectInfo<TYPE> {
+                    Success = true,
+                    Data = (TYPE?)obj,
+                });
             }
-            return Task.CompletedTask;
         }
-        public Task<GetObjectInfo<TYPE>> GetAsync<TYPE>(string key) {
-            // get cached version
-            key = GetKey(key);
-            object? obj;
-            lock (_lockObject) { // used to protect StaticObjects - local only
-                if (StaticObjects.TryGetValue(key, out obj)) {
-                    return Task.FromResult(new GetObjectInfo<TYPE> {
-                        Success = true,
-                        Data = (TYPE?)obj,
-                    });
-                }
-            }
-            return Task.FromResult(new GetObjectInfo<TYPE> {
-                Success = false,
-            });
+        return Task.FromResult(new GetObjectInfo<TYPE> {
+            Success = false,
+        });
+    }
+    public Task RemoveAsync<TYPE>(string key) {
+        key = GetKey(key);
+        lock (_lockObject) { // used to protect StaticObjects - local only
+            StaticObjects.Remove(key);
         }
-        public Task RemoveAsync<TYPE>(string key) {
-            key = GetKey(key);
-            lock (_lockObject) { // used to protect StaticObjects - local only
-                StaticObjects.Remove(key);
-            }
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

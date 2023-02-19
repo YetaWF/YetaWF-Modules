@@ -8,22 +8,22 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.Blog.Modules;
 using YetaWF.Modules.ComponentsHTML.Components;
 
-namespace YetaWF.Modules.Blog.Views {
+namespace YetaWF.Modules.Blog.Views;
 
-    public class CommentAddView : YetaWFView, IYetaWFView2<CommentAddModule, CommentAddModule.AddModel> {
+public class CommentAddView : YetaWFView, IYetaWFView2<CommentAddModule, CommentAddModule.AddModel> {
 
-        public const string ViewName = "CommentAdd";
+    public const string ViewName = "CommentAdd";
 
-        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        public override string GetViewName() { return ViewName; }
+    public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+    public override string GetViewName() { return ViewName; }
 
-        public async Task<string> RenderViewAsync(CommentAddModule module, CommentAddModule.AddModel model) {
+    public async Task<string> RenderViewAsync(CommentAddModule module, CommentAddModule.AddModel model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+        HtmlBuilder hb = new HtmlBuilder();
 
-            if (model.OpenForComments) {
+        if (model.OpenForComments) {
 
-                hb.Append($@"
+            hb.Append($@"
 {await RenderBeginFormAsync()}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
     {await FormButtonsAsync(new FormButton[] {
@@ -32,20 +32,19 @@ namespace YetaWF.Modules.Blog.Views {
     })}
 {await RenderEndFormAsync()}");
 
-            } else {
+        } else {
 
-                hb.Append($@"
+            hb.Append($@"
 <div class='t_closedforcomments'>
     {Utility.HE(this.__ResStr("closed", "Closed for comments"))}
 </div>");
-            }
+        }
 
-            return hb.ToString();
-        }
-        public async Task<string> RenderPartialViewAsync(CommentAddModule module, CommentAddModule.AddModel model) {
-            HtmlBuilder hb = new HtmlBuilder();
-            hb.Append(await HtmlHelper.ForEditContainerAsync(model, "PropertyList"));
-            return hb.ToString();
-        }
+        return hb.ToString();
+    }
+    public async Task<string> RenderPartialViewAsync(CommentAddModule module, CommentAddModule.AddModel model) {
+        HtmlBuilder hb = new HtmlBuilder();
+        hb.Append(await HtmlHelper.ForEditContainerAsync(model, "PropertyList"));
+        return hb.ToString();
     }
 }
