@@ -3,13 +3,12 @@
 using YetaWF.Core.DataProvider;
 using YetaWF.DataProvider.SQL;
 
-namespace YetaWF.Modules.Feedback.DataProvider.SQL {
+namespace YetaWF.Modules.Feedback.DataProvider.SQL;
 
-    public class SQLDataProvider : IExternalDataProvider {
+public class SQLDataProvider : IExternalDataProvider {
 
-        public void Register() {
-            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.FeedbackConfigDataProvider), typeof(SQLSimpleObject<int, FeedbackConfigData>));
-            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.FeedbackDataProvider), typeof(SQLSimpleObject<int, FeedbackData>));
-        }
+    public void Register() {
+        DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.FeedbackConfigDataProvider), typeof(SQLSimpleObject<int, FeedbackConfigData>));
+        DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.FeedbackDataProvider), typeof(SQLSimpleObject<int, FeedbackData>));
     }
 }
