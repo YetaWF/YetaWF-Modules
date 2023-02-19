@@ -6,25 +6,23 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using YetaWF.Core.Endpoints;
 using YetaWF.Core.Endpoints.Filters;
-using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
-using YetaWF.Modules.Dashboard.Controllers;
+using YetaWF.Modules.Dashboard.Modules;
 
-namespace YetaWF.Modules.Dashboard.Endpoints {
+namespace YetaWF.Modules.Dashboard.Endpoints;
 
-    public class CacheInfoModuleEndpoints : YetaWFEndpoints {
+public class CacheInfoModuleEndpoints : YetaWFEndpoints {
 
-        public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
+    public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(CacheInfoModuleEndpoints)))
-                .RequireAuthorization()
-                .AntiForgeryToken();
+        RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(CacheInfoModuleEndpoints)))
+            .RequireAuthorization()
+            .AntiForgeryToken();
 
-            group.MapPost(GridSupport.BrowseGridData, async (HttpContext context, [FromBody] GridSupport.GridPartialViewData gridPvData) => {
-                ModuleDefinition module = await GetModuleAsync(gridPvData.__ModuleGuid);
-                if (!module.IsAuthorized()) return Results.Unauthorized();
-                return await GridSupport.GetGridPartialAsync(context, module, CacheInfoModuleController.GetGridModel(module), gridPvData);
-            });
-        }
+        group.MapPost(GridSupport.BrowseGridData, async (HttpContext context, [FromBody] GridSupport.GridPartialViewData gridPvData) => {
+            CacheInfoModule module = await GetModuleAsync<CacheInfoModule>(gridPvData.__ModuleGuid);
+            if (!module.IsAuthorized()) return Results.Unauthorized();
+            return await GridSupport.GetGridPartialAsync(context, module, module.GetGridModel(), gridPvData);
+        });
     }
 }

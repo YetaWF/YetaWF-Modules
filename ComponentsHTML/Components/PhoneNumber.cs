@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
+using YetaWF.Core.Endpoints.Support;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
@@ -87,7 +88,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Called before action runs.
         /// </summary>
         /// <remarks>Used to normalize all phone numbers to E164 format.</remarks>
-        public static Task<string> ControllerPreprocessActionAsync(string propName, string? model, ModelStateDictionary modelState) {
+        public static Task<string> TemplatePreprocessActionAsync(string propName, string? model, ModelState modelState) {
             if (!string.IsNullOrWhiteSpace(model)) {
                 string? number = PhoneNumberValidationAttribute.GetE164(model);
                 if (!string.IsNullOrWhiteSpace(number))

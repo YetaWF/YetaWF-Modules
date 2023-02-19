@@ -5,36 +5,35 @@ using System.Linq;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Support;
 
-namespace YetaWF.Modules.Dashboard.DataProvider {
+namespace YetaWF.Modules.Dashboard.DataProvider;
 
-    public class DataProviderInfo {
+public class DataProviderInfo {
 
-        public string IOModeName { get; set; } = null!;
-        public string TypeName { get; set; } = null!;
-        public string TypeImplName { get; set; } = null!;
+    public string IOModeName { get; set; } = null!;
+    public string TypeName { get; set; } = null!;
+    public string TypeImplName { get; set; } = null!;
 
-        public DataProviderInfo() { }
-    }
+    public DataProviderInfo() { }
+}
 
-    public class DataProviderInfoDataProvider : DataProviderImpl {
+public class DataProviderInfoDataProvider : DataProviderImpl {
 
-        // IMPLEMENTATION
-        // IMPLEMENTATION
-        // IMPLEMENTATION
+    // IMPLEMENTATION
+    // IMPLEMENTATION
+    // IMPLEMENTATION
 
-        public DataProviderInfoDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { }
+    public DataProviderInfoDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { }
 
-        // API
-        // API
-        // API
+    // API
+    // API
+    // API
 
-        public DataProviderGetRecords<DataProviderInfo> GetItems(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
-            List<DataProviderInfo> list = (from r in DataProviderImpl.RegisteredExternalDataProviders select new DataProviderInfo {
-                IOModeName = r.IOModeName,
-                TypeName = r.Type.FullName!,
-                TypeImplName = r.TypeImpl.FullName!,
-            }).ToList();
-            return DataProviderImpl<DataProviderInfo>.GetRecords(list, skip, take, sort, filters);
-        }
+    public DataProviderGetRecords<DataProviderInfo> GetItems(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
+        List<DataProviderInfo> list = (from r in DataProviderImpl.RegisteredExternalDataProviders select new DataProviderInfo {
+            IOModeName = r.IOModeName,
+            TypeName = r.Type.FullName!,
+            TypeImplName = r.TypeImpl.FullName!,
+        }).ToList();
+        return DataProviderImpl<DataProviderInfo>.GetRecords(list, skip, take, sort, filters);
     }
 }

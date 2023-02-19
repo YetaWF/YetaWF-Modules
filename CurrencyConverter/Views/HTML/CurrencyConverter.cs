@@ -6,31 +6,30 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Modules.CurrencyConverter.Controllers;
 using YetaWF.Modules.CurrencyConverter.DataProvider;
 using YetaWF.Modules.CurrencyConverter.Modules;
 
-namespace YetaWF.Modules.CurrencyConverter.Views {
+namespace YetaWF.Modules.CurrencyConverter.Views;
 
-    public class CurrencyConverterView : YetaWFView, IYetaWFView<CurrencyConverterModule, CurrencyConverterModuleController.Model> {
+public class CurrencyConverterView : YetaWFView, IYetaWFView<CurrencyConverterModule, CurrencyConverterModule.Model> {
 
-        public const string ViewName = "CurrencyConverter";
+    public const string ViewName = "CurrencyConverter";
 
-        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        public override string GetViewName() { return ViewName; }
+    public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+    public override string GetViewName() { return ViewName; }
 
-        public async Task<string> RenderViewAsync(CurrencyConverterModule module, CurrencyConverterModuleController.Model model) {
+    public async Task<string> RenderViewAsync(CurrencyConverterModule module, CurrencyConverterModule.Model model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+        HtmlBuilder hb = new HtmlBuilder();
 
-            // based on https://openexchangerates.org
+        // based on https://openexchangerates.org
 
-            await Manager.ScriptManager.AddScriptAsync(Package.AreaName, ExchangeRateDataProvider.JSFile, Bundle: false, Minify: false);
+        await Manager.ScriptManager.AddScriptAsync(Package.AreaName, ExchangeRateDataProvider.JSFile, Bundle: false, Minify: false);
 
-            string wantFocus = module.WantFocus ? " yFocusOnMe" : "";
-            FormButton button = new FormButton() { ButtonType = ButtonTypeEnum.Button, Name = "convert", Text = this.__ResStr("btnGo", "Go") };
+        string wantFocus = module.WantFocus ? " yFocusOnMe" : "";
+        FormButton button = new FormButton() { ButtonType = ButtonTypeEnum.Button, Name = "convert", Text = this.__ResStr("btnGo", "Go") };
 
-            hb.Append($@"
+        hb.Append($@"
 <div class='t_converter'>
     <div class='t_amountlabel'>
         {Utility.HE(this.__ResStr("amount", "Amount:"))}
@@ -65,7 +64,6 @@ namespace YetaWF.Modules.CurrencyConverter.Views {
     </div>
 </div>");
 
-            return hb.ToString();
-        }
+        return hb.ToString();
     }
 }

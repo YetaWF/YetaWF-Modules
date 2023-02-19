@@ -4,7 +4,7 @@ SizeStyle: SizeToFit
 Panel: {}
 Columns:
 - Name: Commands
-  Icons: 1
+  Icons: 2
   FilterOptions: []
   Align: Center
 - Name: Created

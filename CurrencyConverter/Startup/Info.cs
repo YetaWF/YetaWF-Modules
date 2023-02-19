@@ -6,18 +6,17 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 
-namespace YetaWF.Modules.CurrencyConverter.Addons {
+namespace YetaWF.Modules.CurrencyConverter.Addons;
 
-    public class Info : IAddOnSupport {
+public class Info : IAddOnSupport {
 
-        public Task AddSupportAsync(YetaWFManager manager) {
+    public Task AddSupportAsync(YetaWFManager manager) {
 
-            ScriptManager scripts = manager.ScriptManager;
-            string areaName = AreaRegistration.CurrentPackage.AreaName;
+        ScriptManager scripts = manager.ScriptManager;
+        string areaName = AreaRegistration.CurrentPackage.AreaName;
 
-            scripts.AddLocalization(areaName, "FmtResult", this.__ResStr("FmtResult", "{0} {1}"));
+        scripts.AddLocalization(areaName, "FmtResult", this.__ResStr("FmtResult", "{0} {1}"));
 
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

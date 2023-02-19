@@ -37,8 +37,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     ///
     /// UploadFile = new FileUpload1 {
     ///     SelectButtonText = this.__ResStr("btnImport", "Import Module Data..."),
-    ///     SaveURL = YetaWFManager.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.ImportPackage), new { __ModuleGuid = mod.ModuleGuid }),
-    ///     RemoveURL = YetaWFManager.UrlFor(typeof(PageControlModuleController), nameof(PageControlModuleController.RemovePackage), new { __ModuleGuid = mod.ModuleGuid }),
+    ///     SaveURL = YetaWFManager.UrlFor(typeof(PageControlModuleEndpoints), nameof(PageControlModuleEndpoints.ImportPackage), new { __ModuleGuid = mod.ModuleGuid }),
+    ///     RemoveURL = YetaWFManager.UrlFor(typeof(PageControlModuleEndpoints), nameof(PageControlModuleEndpoints.RemovePackage), new { __ModuleGuid = mod.ModuleGuid }),
     ///     SerializeForm = true,
     /// };
     /// </example>

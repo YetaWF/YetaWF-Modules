@@ -6,18 +6,17 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 
-namespace YetaWF.Modules.Feed.Addons {
+namespace YetaWF.Modules.Feed.Addons;
 
-    public class Info : IAddOnSupport {
+public class Info : IAddOnSupport {
 
-        public Task AddSupportAsync(YetaWFManager manager) {
+    public Task AddSupportAsync(YetaWFManager manager) {
 
-            ScriptManager scripts = manager.ScriptManager;
-            string areaName = AreaRegistration.CurrentPackage.AreaName;
+        ScriptManager scripts = manager.ScriptManager;
+        string areaName = AreaRegistration.CurrentPackage.AreaName;
 
-            scripts.AddVolatileOption(areaName, "DateFormat", UserSettings.GetProperty<Formatting.DateFormatEnum>("DateFormat"));
+        scripts.AddVolatileOption(areaName, "DateFormat", UserSettings.GetProperty<Formatting.DateFormatEnum>("DateFormat"));
 
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

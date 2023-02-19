@@ -39,7 +39,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [Caption(""), Description("")]
     /// [UIHint("HelpInfo"), ReadOnly]
     /// [SuppressEmpty]
-    /// public HelpInfoDefinition HelpInformation { get { return new HelpInfoDefinition { Package = AreaRegistration.CurrentPackage, Name = typeof(AddBacklinkingDocumentModuleController).FullName }; } }
+    /// public HelpInfoDefinition HelpInformation { get { return new HelpInfoDefinition { Package = AreaRegistration.CurrentPackage, Name = typeof(AddBacklinkingDocumentModuleEndpoints).FullName }; } }
     /// </example>
     /// <remarks>Help files are located in the specified package's folder ./Addons/_Main/Help and have the extension .html.
     /// If the model is null or the help file doesn't exist, nothing is rendered.
