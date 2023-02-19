@@ -6,19 +6,18 @@ using Microsoft.AspNetCore.Routing;
 using YetaWF.Core.Endpoints;
 using YetaWF.Core.Packages;
 
-namespace YetaWF.Modules.Basics.Endpoints {
+namespace YetaWF.Modules.Basics.Endpoints;
 
-    public class AlertDisplayModuleEndpoints : YetaWFEndpoints {
+public class AlertDisplayModuleEndpoints : YetaWFEndpoints {
 
-        internal const string Off = "Off";
+    internal const string Off = "Off";
 
-        public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
+    public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            endpoints.MapPost(GetPackageApiEndpoint(package, typeof(AlertDisplayModuleEndpoints), Off), (HttpContext context) => {
-                Manager.SessionSettings.SiteSettings.SetValue<bool>("YetaWF_Basics_AlertDone", true);
-                Manager.SessionSettings.SiteSettings.Save();
-                return Results.Ok();
-            });
-        }
+        endpoints.MapPost(GetPackageApiEndpoint(package, typeof(AlertDisplayModuleEndpoints), Off), (HttpContext context) => {
+            Manager.SessionSettings.SiteSettings.SetValue<bool>("YetaWF_Basics_AlertDone", true);
+            Manager.SessionSettings.SiteSettings.Save();
+            return Results.Ok();
+        });
     }
 }

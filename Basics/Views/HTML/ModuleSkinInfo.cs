@@ -5,32 +5,29 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Basics.Controllers;
 using YetaWF.Modules.Basics.Modules;
 using YetaWF.Modules.ComponentsHTML.Components;
 
-namespace YetaWF.Modules.Basics.Views {
+namespace YetaWF.Modules.Basics.Views;
 
-    public class ModuleSkinInfoView : YetaWFView, IYetaWFView<ModuleSkinInfoModule, ModuleSkinInfoModuleController.DisplayModel> {
+    public class ModuleSkinInfoView : YetaWFView, IYetaWFView<ModuleSkinInfoModule, ModuleSkinInfoModule.DisplayModel> {
 
-        public const string ViewName = "ModuleSkinInfo";
+    public const string ViewName = "ModuleSkinInfo";
 
-        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        public override string GetViewName() { return ViewName; }
+    public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+    public override string GetViewName() { return ViewName; }
 
-        public async Task<string> RenderViewAsync(ModuleSkinInfoModule module, ModuleSkinInfoModuleController.DisplayModel model) {
+    public async Task<string> RenderViewAsync(ModuleSkinInfoModule module, ModuleSkinInfoModule.DisplayModel model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+        HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($@"
+        hb.Append($@"
 {await RenderBeginFormAsync(HtmlAttributes: new { Id = DivId })}
     {await HtmlHelper.ForDisplayContainerAsync(model, "PropertyList")}
-    {await FormButtonsAsync(new FormButton[] {
-        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, Text=this.__ResStr("btnCancel", "Return") },
-    })}
+    {await FormButtonsAsync(new FormButton[] { new FormButton() { ButtonType= ButtonTypeEnum.Cancel, Text=this.__ResStr("btnCancel", "Return") } })}
 {await RenderEndFormAsync()}");
 
-            hb.Append($@"
+        hb.Append($@"
 <div>
     <h1>Testing HTML Element Display</h1>
     <p>This test page is located at http://www.cs.tut.fi/~jkorpela/www/testel.html - credit goes to the author Jukka Korpela.</p>
@@ -369,7 +366,6 @@ namespace YetaWF.Modules.Basics.Views {
 
 </div>");
 
-            return hb.ToString();
-        }
+        return hb.ToString();
     }
 }
