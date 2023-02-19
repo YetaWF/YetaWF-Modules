@@ -5,20 +5,19 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Blog.Controllers;
 using YetaWF.Modules.Blog.Modules;
 using YetaWF.Modules.ComponentsHTML.Components;
 
 namespace YetaWF.Modules.Blog.Views {
 
-    public class CategoryHeaderView : YetaWFView, IYetaWFView<CategoryHeaderModule, CategoryHeaderModuleController.DisplayModel> {
+    public class CategoryHeaderView : YetaWFView, IYetaWFView<CategoryHeaderModule, CategoryHeaderModule.DisplayModel> {
 
         public const string ViewName = "CategoryHeader";
 
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<string> RenderViewAsync(CategoryHeaderModule module, CategoryHeaderModuleController.DisplayModel model) {
+        public async Task<string> RenderViewAsync(CategoryHeaderModule module, CategoryHeaderModule.DisplayModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 

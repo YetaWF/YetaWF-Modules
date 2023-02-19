@@ -1,57 +1,86 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
 
+using Microsoft.AspNetCore.Http;
 using System;
+using System.Threading.Tasks;
+using YetaWF.Core.Endpoints.Support;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
+using YetaWF.Modules.Blog.DataProvider;
 
-namespace YetaWF.Modules.Blog.Modules {
+namespace YetaWF.Modules.Blog.Modules;
 
-    public class CategoriesListModuleDataProvider : ModuleDefinitionDataProvider<Guid, CategoriesListModule>, IInstallableModel { }
+public class CategoriesListModuleDataProvider : ModuleDefinitionDataProvider<Guid, CategoriesListModule>, IInstallableModel { }
 
-    [ModuleGuid("{9d83d810-2c2d-44eb-a177-c2c00198e9e8}")]
-    [UniqueModule(UniqueModuleStyle.NonUnique)]
-    [ModuleCategory("Navigation")]
-    public class CategoriesListModule : ModuleDefinition {
+[ModuleGuid("{9d83d810-2c2d-44eb-a177-c2c00198e9e8}")]
+[UniqueModule(UniqueModuleStyle.NonUnique)]
+[ModuleCategory("Navigation")]
+public class CategoriesListModule : ModuleDefinition2 {
 
-        public CategoriesListModule() {
-            Title = this.__ResStr("modTitle", "Blog Categories");
-            Name = this.__ResStr("modName", "Blog Categories List");
-            Description = this.__ResStr("modSummary", "Allows the site visitor to select among all available blog categories. Add this module to a page for blog navigation.");
-            Style = StyleEnum.Dropdown;
-            ListEntries = 10;
-            ShowTitle = false;
-            WantFocus = false;
-            WantSearch = false;
-            Print = false;
-            DefaultViewName = StandardViews.PropertyListEdit;
-        }
+    public CategoriesListModule() {
+        Title = this.__ResStr("modTitle", "Blog Categories");
+        Name = this.__ResStr("modName", "Blog Categories List");
+        Description = this.__ResStr("modSummary", "Allows the site visitor to select among all available blog categories. Add this module to a page for blog navigation.");
+        Style = StyleEnum.Dropdown;
+        ListEntries = 10;
+        ShowTitle = false;
+        WantFocus = false;
+        WantSearch = false;
+        Print = false;
+        DefaultViewName = StandardViews.PropertyListEdit;
+    }
 
-        public override IModuleDefinitionIO GetDataProvider() { return new CategoriesListModuleDataProvider(); }
+    public override IModuleDefinitionIO GetDataProvider() { return new CategoriesListModuleDataProvider(); }
 
-        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
+    public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-        [Category("General"), Caption("Default Category"), Description("The default category")]
-        [UIHint("YetaWF_Blog_Category"), AdditionalMetadata("ShowAll", true)]
-        public int DefaultCategory { get; set; }
+    [Category("General"), Caption("Default Category"), Description("The default category")]
+    [UIHint("YetaWF_Blog_Category"), AdditionalMetadata("ShowAll", true)]
+    public int DefaultCategory { get; set; }
 
-        [Category("General"), Caption("Style"), Description("Defines how the blog categories are displayed")]
-        [UIHint("Enum"), Required]
-        public StyleEnum Style { get; set; }
+    [Category("General"), Caption("Style"), Description("Defines how the blog categories are displayed")]
+    [UIHint("Enum"), Required]
+    public StyleEnum Style { get; set; }
 
-        public enum StyleEnum {
-            [EnumDescription("List", "Blog categories are displayed as a list")]
-            List = 0,
-            [EnumDescription("DropDown", "Blog categories are displayed in a dropdown")]
-            Dropdown = 1,
-        }
+    public enum StyleEnum {
+        [EnumDescription("List", "Blog categories are displayed as a list")]
+        List = 0,
+        [EnumDescription("DropDown", "Blog categories are displayed in a dropdown")]
+        Dropdown = 1,
+    }
 
-        [Category("General"), Caption("List Entries"), Description("The number of list entries shown before a scrollbar is added - this property is only used if the Style property is set to List")]
-        [UIHint("IntValue2"), Range(1, 99), Required, Trim]
-        public int ListEntries { get; set; }
+
+    [Category("General"), Caption("List Entries"), Description("The number of list entries shown before a scrollbar is added - this property is only used if the Style property is set to List")]
+    [UIHint("IntValue2"), Range(1, 99), Required, Trim]
+    public int ListEntries { get; set; }
+
+    public class Model {
+
+        [Caption("Blog Category"), Description("Used to select the displayed blog category")]
+        [UIHint("YetaWF_Blog_Category"), AdditionalMetadata("ShowAll", true), SubmitFormOnChange, Required]
+        public int BlogCategory { get; set; }
+
+    }
+
+    public async Task<ActionInfo> RenderModuleAsync() {
+        if (!int.TryParse(Manager.RequestQueryString["BlogCategory"], out int category)) category = 0;
+        Model model = new Model() {
+            BlogCategory = category,
+        };
+
+        Manager.CurrentPage.EvaluatedCanonicalUrl = await BlogConfigData.GetCategoryCanonicalNameAsync(category);
+        return await RenderAsync(model);
+    }
+
+    public async Task<IResult> UpdateModuleAsync(Model model) {
+        if (!ModelState.IsValid)
+            return await PartialViewAsync(model);
+        return await FormProcessedAsync(model, ForceRedirect: true, NextPage: await BlogConfigData.GetCategoryCanonicalNameAsync(model.BlogCategory) ?? Manager.CurrentSite.HomePageUrl);
     }
 }

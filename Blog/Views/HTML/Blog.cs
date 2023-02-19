@@ -5,21 +5,20 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Blog.Controllers;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Modules.Blog.Modules;
 using YetaWF.Modules.ComponentsHTML.Components;
 
 namespace YetaWF.Modules.Blog.Views {
 
-    public class BlogView : YetaWFView, IYetaWFView<BlogModule, BlogModuleController.DisplayModel> {
+    public class BlogView : YetaWFView, IYetaWFView<BlogModule, BlogModule.DisplayModel> {
 
         public const string ViewName = "Blog";
 
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<string> RenderViewAsync(BlogModule module, BlogModuleController.DisplayModel model) {
+        public async Task<string> RenderViewAsync(BlogModule module, BlogModule.DisplayModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -32,7 +31,7 @@ namespace YetaWF.Modules.Blog.Views {
 </div>");
             }
 
-            foreach (BlogModuleController.Entry blogEntry in model.BlogEntries) {
+            foreach (BlogModule.Entry blogEntry in model.BlogEntries) {
                 ++count;
 
                 hb.Append($@"

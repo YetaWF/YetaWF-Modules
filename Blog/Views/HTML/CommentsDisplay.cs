@@ -5,20 +5,19 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Blog.Controllers;
 using YetaWF.Modules.Blog.Modules;
 using YetaWF.Modules.ComponentsHTML.Components;
 
 namespace YetaWF.Modules.Blog.Views {
 
-    public class CommentsDisplayView : YetaWFView, IYetaWFView<CommentsDisplayModule, CommentsDisplayModuleController.DisplayModel> {
+    public class CommentsDisplayView : YetaWFView, IYetaWFView<CommentsDisplayModule, CommentsDisplayModule.DisplayModel> {
 
         public const string ViewName = "CommentsDisplay";
 
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<string> RenderViewAsync(CommentsDisplayModule module, CommentsDisplayModuleController.DisplayModel model) {
+        public async Task<string> RenderViewAsync(CommentsDisplayModule module, CommentsDisplayModule.DisplayModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -36,7 +35,7 @@ namespace YetaWF.Modules.Blog.Views {
     <div class='t_comments'>");
 
             int count = 0;
-            foreach (YetaWF.Modules.Blog.Controllers.CommentsDisplayModuleController.CommentData comment in model.Comments) {
+            foreach (CommentsDisplayModule.CommentData comment in model.Comments) {
                 string commentClass = "t_comment" + count.ToString();
                 if (model.CanApprove || model.CanRemove) {
                     if (comment.Deleted) {

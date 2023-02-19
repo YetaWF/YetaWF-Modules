@@ -5,20 +5,19 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Blog.Controllers;
 using YetaWF.Modules.Blog.Modules;
 using YetaWF.Modules.ComponentsHTML.Components;
 
 namespace YetaWF.Modules.Blog.Views {
 
-    public class CommentAddView : YetaWFView, IYetaWFView2<CommentAddModule, CommentAddModuleController.AddModel> {
+    public class CommentAddView : YetaWFView, IYetaWFView2<CommentAddModule, CommentAddModule.AddModel> {
 
         public const string ViewName = "CommentAdd";
 
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<string> RenderViewAsync(CommentAddModule module, CommentAddModuleController.AddModel model) {
+        public async Task<string> RenderViewAsync(CommentAddModule module, CommentAddModule.AddModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -43,7 +42,7 @@ namespace YetaWF.Modules.Blog.Views {
 
             return hb.ToString();
         }
-        public async Task<string> RenderPartialViewAsync(CommentAddModule module, CommentAddModuleController.AddModel model) {
+        public async Task<string> RenderPartialViewAsync(CommentAddModule module, CommentAddModule.AddModel model) {
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append(await HtmlHelper.ForEditContainerAsync(model, "PropertyList"));
             return hb.ToString();

@@ -5,20 +5,19 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Models;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Blog.Controllers;
 using YetaWF.Modules.Blog.Modules;
 using YetaWF.Modules.ComponentsHTML.Components;
 
 namespace YetaWF.Modules.Blog.Views {
 
-    public class DisqusView : YetaWFView, IYetaWFView<DisqusModule, DisqusModuleController.DisplayModel> {
+    public class DisqusView : YetaWFView, IYetaWFView<DisqusModule, DisqusModule.DisplayModel> {
 
         public const string ViewName = "Disqus";
 
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public Task<string> RenderViewAsync(DisqusModule module, DisqusModuleController.DisplayModel model) {
+        public Task<string> RenderViewAsync(DisqusModule module, DisqusModule.DisplayModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 

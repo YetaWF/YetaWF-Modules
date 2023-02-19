@@ -5,20 +5,19 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Blog.Controllers;
 using YetaWF.Modules.Blog.Modules;
 using YetaWF.Modules.ComponentsHTML.Components;
 
 namespace YetaWF.Modules.Blog.Views {
 
-    public class EntryEditView : YetaWFView, IYetaWFView2<EntryEditModule, EntryEditModuleController.EditModel> {
+    public class EntryEditView : YetaWFView, IYetaWFView2<EntryEditModule, EntryEditModule.EditModel> {
 
         public const string ViewName = "EntryEdit";
 
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<string> RenderViewAsync(EntryEditModule module, EntryEditModuleController.EditModel model) {
+        public async Task<string> RenderViewAsync(EntryEditModule module, EntryEditModule.EditModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -34,7 +33,7 @@ namespace YetaWF.Modules.Blog.Views {
 
             return hb.ToString();
         }
-        public async Task<string> RenderPartialViewAsync(EntryEditModule module, EntryEditModuleController.EditModel model) {
+        public async Task<string> RenderPartialViewAsync(EntryEditModule module, EntryEditModule.EditModel model) {
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append(await HtmlHelper.ForEditContainerAsync(model, "PropertyList"));
             return hb.ToString();
