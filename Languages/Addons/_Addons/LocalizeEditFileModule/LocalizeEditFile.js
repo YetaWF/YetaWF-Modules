@@ -24,7 +24,7 @@ var YetaWF_Languages;
             var form = $YetaWF.Forms.getInnerForm(_this.Module);
             $YetaWF.registerEventHandler(_this.ResetButton, "click", null, function (ev) {
                 $YetaWF.alertYesNo(YLocs.YetaWF_Languages.ConfirmResetText, undefined, function () {
-                    $YetaWF.Forms.submit(form, true, "RestoreDefaults=true");
+                    $YetaWF.Forms.submit(form, true, { RestoreDefaults: true });
                 });
                 return false;
             });

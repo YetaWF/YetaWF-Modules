@@ -174,18 +174,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                 if ((type & (UrlTypeEnum.Local|UrlTypeEnum.Remote)) == (UrlTypeEnum.Local|UrlTypeEnum.Remote)) {
                     hb.Append($@"
-    {await HtmlHelper.ForEditAsync(ui, nameof(ui.UrlType), Validation: false)}");
+    {await HtmlHelper.ForEditAsync(ui, nameof(ui.UrlType), Validation: false, HtmlAttributes: new { @class = Forms.CssFormNoSubmit })}");
                 }
 
                 if ((type & UrlTypeEnum.Local) != 0) {
                     hb.Append($@"
-    <div class='t_local'>
+    <div class='t_local {Forms.CssFormNoSubmitContents}'>
         {await HtmlHelper.ForEditAsync(ui, nameof(ui._Local), Validation: false)}
     </div>");
                 }
                 if ((type & UrlTypeEnum.Remote) != 0) {
                     hb.Append($@"
-    <div class='t_remote'>
+    <div class='t_remote {Forms.CssFormNoSubmitContents}'>
         {await HtmlHelper.ForEditAsync(ui, nameof(ui._Remote), Validation: false)}
     </div>");
                 }

@@ -32,25 +32,21 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <param name="htmlHelper">An instance of a YHtmlHelper.</param>
         /// <returns>Returns the client-side validation message for the component with the specified field name.</returns>
         public static string BuildValidationMessage(this YHtmlHelper htmlHelper, string fieldName) {
-            var modelState = htmlHelper.ModelState[fieldName];
+            var propState = htmlHelper.ModelState.GetProperty(fieldName);
             string error = string.Empty;
-            bool hasError = false;
-            if (modelState == null) {
-                // no errors
-            } else {
-                IEnumerable<string> errors = (from e in modelState.Errors select e.ErrorMessage);
-                hasError = errors.Any();
-                if (hasError)
-                    error = errors.First();
+            if (propState != null && !propState.Valid) {
+                error = propState.Message;
             }
 
             HtmlBuilder hbImg = new HtmlBuilder();
-            if (hasError) {
+            string css;
+            if (string.IsNullOrWhiteSpace(error)) {
+                css = "v-valid";
+            } else { 
                 // we're building the same client side in validation.ts, make sure to keep in sync
                 hbImg.Append($@"<img src='{Utility.HAE(Forms.CssWarningIconUrl)}' name='{Utility.HAE(fieldName)}' class='{Forms.CssWarningIcon}' {Basics.CssTooltip}='{Utility.HAE(error)}'>");
+                css = "v-error";
             }
-
-            string css = hasError ? "v-error" : "v-valid";
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append($@"<span data-v-for='{fieldName}' class='{css}'>{hbImg.ToString()}</span>");
             return hb.ToString();

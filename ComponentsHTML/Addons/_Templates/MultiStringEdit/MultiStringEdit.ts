@@ -47,10 +47,10 @@ namespace YetaWF_ComponentsHTML {
             if (this.SelectLang) {
                 this.SelectLang.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, (evt: Event): void => {
                     let sel = this.SelectLang!.selectedIndex;
-                    let hid = $YetaWF.getElement1BySelector(`input[name$='[${sel}].value']`, [this.Control]) as HTMLInputElement;
+                    let hid = $YetaWF.getElement1BySelector(`input[name*='[${sel}]']`, [this.Control]) as HTMLInputElement;
                     let newText = hid.value;
                     if (newText.length === 0 && sel > 0) {
-                        var hid0 = $YetaWF.getElement1BySelector("input[name$='[0].value']", [this.Control]) as HTMLInputElement;
+                        var hid0 = $YetaWF.getElement1BySelector("input[name*='[0]']", [this.Control]) as HTMLInputElement;
                         newText = hid0.value;
                         hid.value = newText;
                     }
@@ -62,7 +62,7 @@ namespace YetaWF_ComponentsHTML {
             $YetaWF.registerEventHandler(this.InputText, "input", null, (ev: Event): boolean => {
                 let newText = this.InputText.value;
                 let sel = this.SelectLang?.selectedIndex || 0;
-                let hid = $YetaWF.getElement1BySelector(`input[name$='[${sel}].value']`, [this.Control]) as HTMLInputElement;
+                let hid = $YetaWF.getElement1BySelector(`input[name*='[${sel}]']`, [this.Control]) as HTMLInputElement;
                 hid.value = newText;
                 if (sel === 0)
                     this.Hidden.value = newText;
@@ -73,13 +73,13 @@ namespace YetaWF_ComponentsHTML {
             $YetaWF.registerEventHandler(this.InputText, "blur", null, (ev: Event): boolean => {
                 let sel = this.SelectLang?.selectedIndex || 0;
                 if (sel === 0) {
-                    let hid0 = $YetaWF.getElement1BySelector("input[name$='[0].value']", [this.Control]) as HTMLInputElement;
+                    let hid0 = $YetaWF.getElement1BySelector("input[name*='[0]']", [this.Control]) as HTMLInputElement;
                     let text = hid0.value;
                     if (text.length === 0) {
                         // the default text was cleared, clear all languages
                         let count = YLocs.YetaWF_ComponentsHTML.Languages.length;
                         for (var index = 0; index < count; ++index) {
-                            var hid = $YetaWF.getElement1BySelector(`input[name$='[${index}].value']`, [this.Control]) as HTMLInputElement;
+                            var hid = $YetaWF.getElement1BySelector(`input[name*='[${index}]']`, [this.Control]) as HTMLInputElement;
                             hid.value = "";
                         }
                         this.Hidden.value = "";
@@ -112,7 +112,7 @@ namespace YetaWF_ComponentsHTML {
             this.updateSelectLang();
         }
         public clear(): void {
-            var hids = $YetaWF.getElementsBySelector("input[name$='.value']", [this.Control]) as HTMLInputElement[];
+            var hids = $YetaWF.getElementsBySelector("input", [this.Control]) as HTMLInputElement[];
             for (let hid of hids)
                 hid.value = "";
             this.Hidden.value = "";
@@ -128,12 +128,12 @@ namespace YetaWF_ComponentsHTML {
 
             var newText = this.InputText.value;
             var sel = this.SelectLang?.selectedIndex || 0;
-            var hid = $YetaWF.getElement1BySelector(`input[name$='[${sel}].value']`, [this.Control]) as HTMLInputElement;
+            var hid = $YetaWF.getElement1BySelector(`input[name*='[${sel}]']`, [this.Control]) as HTMLInputElement;
             hid.value = newText;
 
             var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
             for (var index = 0; index < count; ++index) {
-                hid = $YetaWF.getElement1BySelector(`input[name$='[${index}].value']`, [this.Control]) as HTMLInputElement;
+                hid = $YetaWF.getElement1BySelector(`input[name*='[${index}]']`, [this.Control]) as HTMLInputElement;
                 var langText = hid.value;
                 if (langText === "")
                     langText = newText;
@@ -153,7 +153,7 @@ namespace YetaWF_ComponentsHTML {
                     s = text;
                 else if (textDefault)
                     s = textDefault;// use default for languages w/o data
-                var hid = $YetaWF.getElement1BySelector(`input[name$='[${index}].value']`, [this.Control]) as HTMLInputElement;
+                var hid = $YetaWF.getElement1BySelector(`input[name*='[${index}]']`, [this.Control]) as HTMLInputElement;
                 hid.value = s;
                 if (index === 0) {
                     this.Hidden.value = s;
@@ -167,7 +167,7 @@ namespace YetaWF_ComponentsHTML {
             var textDefault = this.findLanguageText(data, YLocs.YetaWF_ComponentsHTML.Languages[0]);
             var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
             for (var index = 0; index < count; ++index) {
-                var hid = $YetaWF.getElement1BySelector(`input[name$='[${index}].value']`, [this.Control]) as HTMLInputElement;
+                var hid = $YetaWF.getElement1BySelector(`input[name*='[${index}]']`, [this.Control]) as HTMLInputElement;
                 var langText = hid.value;
                 if (langText === "")
                     langText = textDefault||"";

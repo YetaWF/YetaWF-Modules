@@ -14,7 +14,7 @@ namespace YetaWF.Modules.Identity.Endpoints {
 
     public class UserRolesEndpoints : YetaWFEndpoints {
 
-        private static string __ResStr(string name, string defaultValue, params object?[] parms) { return ResourceAccess.GetResourceString(typeof(UserRolesEndpoints), name, defaultValue, parms); }
+        private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(UserRolesEndpoints), name, defaultValue, parms); }
 
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 

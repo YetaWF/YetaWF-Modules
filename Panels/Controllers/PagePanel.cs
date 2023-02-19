@@ -228,7 +228,7 @@ namespace YetaWF.Modules.Panels.Controllers {
         [AllowPost]
         [ConditionalAntiForgeryToken]
         [ExcludeDemoMode]
-        public async Task<ActionResult> AddPage(string data, string fieldPrefix, string newUrl) {
+        public async Task<ActionResult> AddPage(string data, string fieldPrefix, string newUrl) {//$$$$
             // Validation
             UrlValidationAttribute attr = new UrlValidationAttribute(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local);
             if (!attr.IsValid(newUrl))

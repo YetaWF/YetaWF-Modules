@@ -69,7 +69,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     subMod.ShowTitle = false; // don't show the module title in a submenu (temp. override)
                     if (htmlHelper == null)
                         throw new InternalError("HtmlHelper required for module rendering");
-                    contents = await subMod.RenderModuleAsync(htmlHelper);
+                    contents = await subMod.RenderModuleWithContainerAsync(htmlHelper);
                 }
                 hb.Append($"<li class='t_megamenu_content {css} t_lvl{level}'>{contents}</li>\n");
 

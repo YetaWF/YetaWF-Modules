@@ -57,22 +57,22 @@ var YetaWF_ComponentsHTML;
             _this.InputSecs = YetaWF.ComponentBaseDataImpl.getControlFromSelectorCond("input[name$='Seconds']", YetaWF_ComponentsHTML.IntValueEditComponent.SELECTOR, [_this.Control]);
             // capture changes in all edit controls
             if (_this.InputDays) {
-                _this.InputDays.Control.addEventListener(YetaWF_ComponentsHTML.IntValueEditComponent.EVENTCHANGE, function (evt) {
+                _this.InputDays.Control.addEventListener(YetaWF_ComponentsHTML.IntValueEditComponent.EVENT, function (evt) {
                     _this.updateValue();
                 });
             }
             if (_this.InputHours) {
-                _this.InputHours.Control.addEventListener(YetaWF_ComponentsHTML.IntValueEditComponent.EVENTCHANGE, function (evt) {
+                _this.InputHours.Control.addEventListener(YetaWF_ComponentsHTML.IntValueEditComponent.EVENT, function (evt) {
                     _this.updateValue();
                 });
             }
             if (_this.InputMins) {
-                _this.InputMins.Control.addEventListener(YetaWF_ComponentsHTML.IntValueEditComponent.EVENTCHANGE, function (evt) {
+                _this.InputMins.Control.addEventListener(YetaWF_ComponentsHTML.IntValueEditComponent.EVENT, function (evt) {
                     _this.updateValue();
                 });
             }
             if (_this.InputSecs) {
-                _this.InputSecs.Control.addEventListener(YetaWF_ComponentsHTML.IntValueEditComponent.EVENTCHANGE, function (evt) {
+                _this.InputSecs.Control.addEventListener(YetaWF_ComponentsHTML.IntValueEditComponent.EVENT, function (evt) {
                     _this.updateValue();
                 });
             }
@@ -85,21 +85,29 @@ var YetaWF_ComponentsHTML;
         };
         TimeSpanEditComponent.prototype.updateValue = function () {
             if (this.InputDays && this.InputHours && this.InputMins && this.InputSecs) {
-                this.Hidden.value = "".concat(this.InputDays.value, ".").concat(this.InputHours.value, ":").concat(this.InputMins.value, ":").concat(this.InputSecs.value);
+                this.Hidden.value = "".concat(this.InputDays.value, ".").concat(this.zeroPad(this.InputHours.value, 2), ":").concat(this.zeroPad(this.InputMins.value, 2), ":").concat(this.zeroPad(this.InputSecs.value, 2));
             }
             else if (this.InputDays && this.InputHours && this.InputMins) {
-                this.Hidden.value = "".concat(this.InputDays.value, ".").concat(this.InputHours.value, ":").concat(this.InputMins.value);
+                this.Hidden.value = "".concat(this.InputDays.value, ".").concat(this.zeroPad(this.InputHours.value, 2), ":").concat(this.zeroPad(this.InputMins.value, 2));
             }
             else if (this.InputDays && this.InputHours) {
                 this.Hidden.value = "".concat(this.InputDays.value, ".").concat(this.InputHours.value, ":0");
             }
             else if (this.InputHours && this.InputMins && this.InputSecs) {
-                this.Hidden.value = "".concat(this.InputHours.value, ":").concat(this.InputMins.value, ":").concat(this.InputSecs.value);
+                this.Hidden.value = "".concat(this.zeroPad(this.InputHours.value, 2), ":").concat(this.zeroPad(this.InputMins.value, 2), ":").concat(this.zeroPad(this.InputSecs.value, 2));
             }
             else if (this.InputHours && this.InputMins) {
-                this.Hidden.value = "".concat(this.InputHours.value, ":").concat(this.InputMins.value);
+                this.Hidden.value = "".concat(this.zeroPad(this.InputHours.value, 2), ":").concat(this.zeroPad(this.InputMins.value, 2));
             }
             this.sendUpdateEvent();
+        };
+        TimeSpanEditComponent.prototype.zeroPad = function (val, pos) {
+            if (val < 0)
+                return val.toFixed();
+            var s = val.toFixed(0);
+            while (s.length < pos)
+                s = "0" + s;
+            return s;
         };
         TimeSpanEditComponent.TEMPLATE = "yt_timespan";
         TimeSpanEditComponent.SELECTOR = ".yt_timespan.t_edit";

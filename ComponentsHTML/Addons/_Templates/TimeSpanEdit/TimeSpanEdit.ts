@@ -48,22 +48,22 @@ namespace YetaWF_ComponentsHTML {
 
             // capture changes in all edit controls
             if (this.InputDays) {
-                this.InputDays.Control.addEventListener(IntValueEditComponent.EVENTCHANGE, (evt: Event): void => {
+                this.InputDays.Control.addEventListener(IntValueEditComponent.EVENT, (evt: Event): void => {
                     this.updateValue();
                 });
             }
             if (this.InputHours) {
-                this.InputHours.Control.addEventListener(IntValueEditComponent.EVENTCHANGE, (evt: Event): void => {
+                this.InputHours.Control.addEventListener(IntValueEditComponent.EVENT, (evt: Event): void => {
                     this.updateValue();
                 });
             }
             if (this.InputMins) {
-                this.InputMins.Control.addEventListener(IntValueEditComponent.EVENTCHANGE, (evt: Event): void => {
+                this.InputMins.Control.addEventListener(IntValueEditComponent.EVENT, (evt: Event): void => {
                     this.updateValue();
                 });
             }
             if (this.InputSecs) {
-                this.InputSecs.Control.addEventListener(IntValueEditComponent.EVENTCHANGE, (evt: Event): void => {
+                this.InputSecs.Control.addEventListener(IntValueEditComponent.EVENT, (evt: Event): void => {
                     this.updateValue();
                 });
             }
@@ -75,17 +75,24 @@ namespace YetaWF_ComponentsHTML {
         }
         private updateValue(): void {
             if (this.InputDays && this.InputHours && this.InputMins && this.InputSecs) {
-                this.Hidden.value = `${this.InputDays.value}.${this.InputHours.value}:${this.InputMins.value}:${this.InputSecs.value}`;
+                this.Hidden.value = `${this.InputDays.value}.${this.zeroPad(this.InputHours.value,2)}:${this.zeroPad(this.InputMins.value,2)}:${this.zeroPad(this.InputSecs.value,2)}`;
             } else if (this.InputDays && this.InputHours && this.InputMins) {
-                this.Hidden.value = `${this.InputDays.value}.${this.InputHours.value}:${this.InputMins.value}`;
+                this.Hidden.value = `${this.InputDays.value}.${this.zeroPad(this.InputHours.value,2)}:${this.zeroPad(this.InputMins.value,2)}`;
             } else if (this.InputDays && this.InputHours) {
                 this.Hidden.value = `${this.InputDays.value}.${this.InputHours.value}:0`;
             } else if (this.InputHours && this.InputMins && this.InputSecs) {
-                this.Hidden.value = `${this.InputHours.value}:${this.InputMins.value}:${this.InputSecs.value}`;
+                this.Hidden.value = `${this.zeroPad(this.InputHours.value,2)}:${this.zeroPad(this.InputMins.value,2)}:${this.zeroPad(this.InputSecs.value,2)}`;
             } else if (this.InputHours && this.InputMins) {
-                this.Hidden.value = `${this.InputHours.value}:${this.InputMins.value}`;
+                this.Hidden.value = `${this.zeroPad(this.InputHours.value,2)}:${this.zeroPad(this.InputMins.value,2)}`;
             }
             this.sendUpdateEvent();
+        }
+        private zeroPad(val: number, pos: number): string {
+            if (val < 0) return val.toFixed();
+            let s = val.toFixed(0);
+            while (s.length < pos)
+                s = "0" + s;
+            return s;
         }
     }
 }

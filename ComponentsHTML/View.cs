@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 
@@ -64,12 +65,22 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             Manager.NextUniqueIdPrefix();
 
-            if (string.IsNullOrWhiteSpace(ActionName))
-                ActionName = GetViewName();
-            if (!ActionName.EndsWith(YetaWFViewExtender.PartialSuffix))
-                ActionName += YetaWFViewExtender.PartialSuffix;
-            if (string.IsNullOrWhiteSpace(ControllerName))
-                ControllerName = ModuleBase.Controller;
+            string formAction;
+            string? jsonSubmit = null;
+            if (ModuleBase.JSONModule) {//$$$
+                if (Method.ToLower() != "post") throw new InternalError("Only POST method is supported");
+                formAction = $"{Utility.UrlFor<ModuleEndpoints>(ModuleEndpoints.Update)}/{ModuleBase.ModuleGuid}";
+                jsonSubmit = $"data-json-submit ";//$$
+            } else {
+                if (string.IsNullOrWhiteSpace(ActionName))
+                    ActionName = GetViewName();
+                if (!ActionName.EndsWith(YetaWFViewExtender.PartialSuffix))
+                    ActionName += YetaWFViewExtender.PartialSuffix;
+                if (string.IsNullOrWhiteSpace(ControllerName))
+                    ControllerName = ModuleBase.Controller;
+                string areaName = ModuleBase.AreaName;
+                formAction = $"/{areaName}/{ControllerName}/{ActionName}";
+            }
 
             IDictionary<string, object?> attrs = HtmlBuilder.AnonymousObjectToHtmlAttributes(HtmlAttributes);
             if (SaveReturnUrl)
@@ -79,14 +90,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (Manager.CurrentSite.FormErrorsImmed)
                 css = CssManager.CombineCss(css, "yValidateImmediately");
 
-            System.IServiceProvider services = HtmlHelper.ActionContext.HttpContext.RequestServices;
-            IUrlHelper urlHelper = services.GetRequiredService<IUrlHelperFactory>().GetUrlHelper(HtmlHelper.ActionContext);
-            string? formAction = urlHelper.Action(action: ActionName, controller: ControllerName, new { area = HtmlHelper.RouteData.Values["area"] });
-
             HtmlBuilder hb = new HtmlBuilder();
             string id = HtmlBuilder.GetId(attrs);
             hb.Append($@"
-<form id='{id}' class='{Forms.CssFormAjax}{HtmlBuilder.GetClasses(attrs, css)}' autocomplete='{(ModuleBase.FormAutoComplete ? "on" : "off")}' action='{Utility.HAE(formAction)}' method='{Method}'{HtmlBuilder.Attributes(attrs)}>");
+<form id='{id}' {jsonSubmit}class='{Forms.CssFormAjax}{HtmlBuilder.GetClasses(attrs, css)}' autocomplete='{(ModuleBase.FormAutoComplete ? "on" : "off")}' action='{Utility.HAE(formAction)}' method='{Method}'{HtmlBuilder.Attributes(attrs)}>");
 
             return hb.ToString();
         }

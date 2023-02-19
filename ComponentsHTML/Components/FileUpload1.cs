@@ -1,6 +1,7 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using System.Threading.Tasks;
+using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
@@ -94,11 +95,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             if (!IsContainerComponent) {
                 hb.Append($@"
-    <input type='hidden' name='{FieldName}' style='display:none' />");
+    <input type='hidden' name='{FieldName}' class='{Forms.CssFormNoSubmit}' style='display:none' />");
             }
 
             hb.Append($@"
-    <input type='file' name='__filename' class='t_filename t_button' style='display:none' />
+    <input type='file' name='__filename' class='t_filename t_button {Forms.CssFormNoSubmit}' style='display:none' />
 </div>");
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.FileUpload1Component('{ControlId}', {Utility.JsonSerialize(setup)});");

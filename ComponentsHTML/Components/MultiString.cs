@@ -289,8 +289,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             foreach (var lang in MultiString.Languages) {
 
                 hb.Append($@"
-    <input type='hidden' name='{FieldName}[{counter}].key' value='{lang.Id}'>
-    <input type='hidden' name='{FieldName}[{counter}].value' value='{model[lang.Id]}'>");
+    <input type='hidden' name='{FieldName}[{counter}].{lang.Id}' value='{model[lang.Id]}'>");
 
                 ++counter;
             }

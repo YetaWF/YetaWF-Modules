@@ -71,7 +71,7 @@ var YetaWF_Menus;
             });
             $YetaWF.registerEventHandler(this.SaveButton, "click", null, function (ev) {
                 var form = $YetaWF.Forms.getForm(_this.Details);
-                $YetaWF.Forms.submit(form, true, "ValidateCurrent=true");
+                $YetaWF.Forms.submit(form, true, { ValidateCurrent: true });
                 return false;
             });
             $YetaWF.registerEventHandler(this.DeleteButton, "click", null, function (ev) {

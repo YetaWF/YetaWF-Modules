@@ -24,7 +24,7 @@ namespace YetaWF_Languages {
             let form = $YetaWF.Forms.getInnerForm(this.Module);
             $YetaWF.registerEventHandler(this.ResetButton, "click", null, (ev: MouseEvent): boolean => {
                 $YetaWF.alertYesNo(YLocs.YetaWF_Languages.ConfirmResetText, undefined, (): void => {
-                    $YetaWF.Forms.submit(form, true, "RestoreDefaults=true");
+                    $YetaWF.Forms.submit(form, true, { RestoreDefaults: true });
                 });
                 return false;
             });

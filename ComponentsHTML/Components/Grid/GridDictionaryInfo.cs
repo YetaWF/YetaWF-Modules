@@ -129,9 +129,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string[] s = className.Split(new char[] { '+' });
             int len = s.Length;
             if (len != 2) throw new InternalError("Unexpected class {0} in record type {1}", className, recordType.FullName);
-            string controller = s[0];
+            string @class = s[0];
             string model = s[1];
-            string file = controller + "." + model;
+            string file = @class + "." + model;
             Package package = Package.GetPackageFromType(recordType);
             string predefUrl = Package.GetAddOnPackageUrl(package.AreaName) + "Grids/" + file;
             string customUrl = Package.GetCustomUrlFromUrl(predefUrl);

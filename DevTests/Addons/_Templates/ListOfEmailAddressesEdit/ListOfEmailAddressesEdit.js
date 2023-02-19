@@ -26,16 +26,14 @@ var YetaWF_DevTests;
                 GetValue: null,
                 Enable: null,
             }) || this;
-            _this.ReloadInProgress = false;
             _this.AddCounter = 0;
             _this.Setup = setup;
             _this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
             _this.buttonAdd = $YetaWF.getElement1BySelector("input[name='btnAdd']", [_this.Control]);
             _this.inputEmail = $YetaWF.getElement1BySelector("input[name$='.NewValue']", [_this.Control]);
             $YetaWF.registerEventHandler(_this.buttonAdd, "click", null, function (ev) {
-                if (_this.ReloadInProgress)
+                if ($YetaWF.isLoading)
                     return true;
-                _this.ReloadInProgress = true;
                 var uri = $YetaWF.parseUrl(_this.Setup.AddUrl);
                 var query = {
                     NewEmailAddress: _this.inputEmail.value.trim(),
@@ -45,7 +43,6 @@ var YetaWF_DevTests;
                 data.GridData = _this.Grid.StaticData;
                 data[YConfigs.Forms.UniqueIdCounters] = { UniqueIdPrefix: "".concat(_this.ControlId, "ls"), UniqueIdPrefixCounter: 0, UniqueIdCounter: ++_this.AddCounter };
                 $YetaWF.postJSON(uri, query, data, function (success, partial) {
-                    _this.ReloadInProgress = false;
                     if (success) {
                         _this.Grid.AddRecord(partial.TR, partial.StaticData);
                         _this.inputEmail.value = "";

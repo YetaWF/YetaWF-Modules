@@ -1389,7 +1389,7 @@ namespace YetaWF_ComponentsHTML {
             this.Setup.StaticData.push(staticData);
             this.Setup.Records++;
             this.updatePage();
-            this.reload(Math.max(0, this.Setup.Pages - 1));
+            this.reload(this.Setup.Page);
             this.updateStatus();
         }
         public AddRecords(trs: string[], staticData: any): void {
@@ -1404,7 +1404,7 @@ namespace YetaWF_ComponentsHTML {
                 this.Setup.Records++;
             }
             this.updatePage();
-            this.reload(Math.max(0, this.Setup.Pages - 1));
+            this.reload(this.Setup.Page);
             this.updateStatus();
         }
         public ReplaceRecord(index: number, tr: string, staticData: any): void {
@@ -1424,7 +1424,7 @@ namespace YetaWF_ComponentsHTML {
             // replace the static data record
             this.Setup.StaticData[index] = staticData;
             this.updatePage();
-            this.reload(Math.max(0, this.Setup.Pages - 1));
+            this.reload(this.Setup.Page);
             this.updateStatus();
         }
         public RemoveRecord(index: number): void {
@@ -1436,7 +1436,7 @@ namespace YetaWF_ComponentsHTML {
             this.Setup.Records--;
             this.resequenceDelete(index);
             this.updatePage();
-            this.reload(Math.max(0, this.Setup.Pages - 1));
+            this.reload(this.Setup.Page);
             this.updateStatus();
         }
         public Clear(): void {
@@ -1447,7 +1447,7 @@ namespace YetaWF_ComponentsHTML {
             this.Setup.StaticData = [];
             this.Setup.Records = 0;
             this.updatePage();
-            this.reload(Math.max(0, this.Setup.Pages - 1));
+            this.reload(0);
             this.updateStatus();
         }
         private moveRawRecord(sel: number, index: number): void { // tr index (not data-origin index)

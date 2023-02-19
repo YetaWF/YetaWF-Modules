@@ -7,9 +7,8 @@ using Microsoft.AspNetCore.Routing;
 using YetaWF.Core.Endpoints;
 using YetaWF.Core.Endpoints.Filters;
 using YetaWF.Core.Localize;
-using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
-using YetaWF.Modules.DevTests.Controllers;
+using YetaWF.Modules.DevTests.Modules;
 
 namespace YetaWF.Modules.DevTests.Endpoints {
 
@@ -24,9 +23,9 @@ namespace YetaWF.Modules.DevTests.Endpoints {
                 .AntiForgeryToken();
 
             group.MapPost(GridSupport.BrowseGridData, async (HttpContext context, [FromBody] GridSupport.GridPartialViewData gridPvData) => {
-                ModuleDefinition module = await GetModuleAsync(gridPvData.__ModuleGuid);
+                TemplateGridAjaxModule module = await GetModuleAsync<TemplateGridAjaxModule>(gridPvData.__ModuleGuid);
                 if (!module.IsAuthorized()) return Results.Unauthorized();
-                return await GridSupport.GetGridPartialAsync(context, module, TemplateGridAjaxModuleController.GetGridModel(module), gridPvData);
+                return await GridSupport.GetGridPartialAsync(context, module, module.GetGridModel(), gridPvData);
             });
         }
     }

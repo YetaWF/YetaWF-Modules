@@ -1,11 +1,16 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 
+using Microsoft.AspNetCore.Http.Extensions;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 
 namespace YetaWF.Modules.DevTests.Modules {
@@ -42,6 +47,41 @@ namespace YetaWF.Modules.DevTests.Modules {
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
                 SaveReturnUrl = true,
             };
+        }
+
+        public class DisplayModel {
+
+            [Caption("Headers"), Description("Request Headers")]
+            [UIHint("ListOfStrings"), AdditionalMetadata("Delimiter", "<br/>"), ReadOnly]
+            public List<string> Headers { get; set; }
+
+            [Caption("Variables"), Description("Various Variables")]
+            [UIHint("ListOfStrings"), AdditionalMetadata("Delimiter", "<br/>"), ReadOnly]
+            public List<string> Variables { get; set; }
+
+            public DisplayModel() {
+                Headers = new List<string>();
+                Variables = new List<string>();
+            }
+        }
+
+        public async Task<ActionInfo> RenderModuleAsync() {
+            DisplayModel model = new DisplayModel();
+            foreach (var hdr in Manager.CurrentRequest.Headers) {
+                model.Headers.Add(hdr.ToString());
+            }
+            model.Variables.Add($"{nameof(Manager.HostSchemeUsed)} = {Manager.HostSchemeUsed}");
+            model.Variables.Add($"{nameof(Manager.HostPortUsed)} = {Manager.HostPortUsed}");
+            model.Variables.Add($"{nameof(Manager.HostUsed)} = {Manager.HostUsed}");
+            model.Variables.Add($"{nameof(YetaWFManager.IsHTTPSite)} = {YetaWFManager.IsHTTPSite}");
+            model.Variables.Add($"{nameof(Manager.IsLocalHost)} = {Manager.IsLocalHost}");
+            model.Variables.Add($"{nameof(Manager.CurrentRequestUrl)} = {Manager.CurrentRequestUrl}");
+            model.Variables.Add($"UriHelper.GetDisplayUrl(Manager.CurrentRequest) = {UriHelper.GetDisplayUrl(Manager.CurrentRequest)}");
+
+            model.Variables.Add($"{nameof(Manager.CurrentRequest.Scheme)} = {Manager.CurrentRequest.Scheme}");
+            model.Variables.Add($"{nameof(Manager.CurrentRequest.IsHttps)} = {Manager.CurrentRequest.IsHttps}");
+            model.Variables.Add($"{nameof(Manager.CurrentRequest.Host)} = {Manager.CurrentRequest.Host}");
+            return await RenderAsync(model);
         }
     }
 }

@@ -74,8 +74,6 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
                 ObjectSupport.TryGetPropertyValue<ButtonTypeEnum>(model, "__cancelType", out cancelType, ButtonTypeEnum.Cancel);
             }
 
-            string? actionName = (string?)HtmlHelper.RouteData.Values["action"];
-
             List<FormButton> buttons = new List<FormButton>();
             if (applyShown)
                 buttons.Add(new FormButton() { ButtonType = ButtonTypeEnum.Apply, Text = apply, Title = applyTT,  });
@@ -85,7 +83,7 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
                 buttons.Add(new FormButton() { ButtonType = cancelType, Text = cancel, Title = cancelTT });
 
             hb.Append($@"
-{await RenderBeginFormAsync(ActionName: actionName)}
+{await RenderBeginFormAsync(ActionName: module.Action)}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
     {await FormButtonsAsync(buttons)}
 {await RenderEndFormAsync()}");

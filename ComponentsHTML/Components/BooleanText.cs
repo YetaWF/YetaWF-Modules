@@ -83,8 +83,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             return Task.FromResult($@"
 <input id='{ControlId}'{FieldSetup(Validation ? FieldType.Validated : FieldType.Anonymous)} class='yt_booleantext t_edit{GetClasses()}' type='checkbox' value='true'{check}{tooltip}>
-{HE(text)}
-<input{FieldSetup(FieldType.Normal)} type='hidden' value='false' class='yform-novalidate'>");
+{HE(text)}");
 
             //Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.BooleanTextEditComponent('{id}');");
         }

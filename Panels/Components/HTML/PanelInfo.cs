@@ -72,7 +72,7 @@ namespace YetaWF.Modules.Panels.Components {
                                     if (mod != null) {
                                         mod.ShowTitle = false;
                                         mod.UsePartialFormCss = false;
-                                        hbt.Append(await mod.RenderModuleAsync(HtmlHelper));
+                                        hbt.Append(await mod.RenderModuleWithContainerAsync(HtmlHelper));
                                     } else {
                                         hbt.Append($@"<div>{this.__ResStr("noModule", "(no module defined)")}</div>");
                                     }
@@ -116,7 +116,7 @@ namespace YetaWF.Modules.Panels.Components {
                         if (mod != null) {
                             mod.ShowTitle = false;
                             mod.UsePartialFormCss = false;
-                            hb.Append(await mod.RenderModuleAsync(HtmlHelper));
+                            hb.Append(await mod.RenderModuleWithContainerAsync(HtmlHelper));
                         } else {
                             hb.Append($@"<div>{this.__ResStr("noModule", "(no module defined)")}</div>");
                         }

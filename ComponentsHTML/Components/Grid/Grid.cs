@@ -365,7 +365,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 using (Manager.StartNestedComponent(FieldName)) {
 
                     hb.Append($@"
-    <div id='{model.Id}_Pager' class='tg_pager'>
+    <div id='{model.Id}_Pager' class='tg_pager {Forms.CssFormNoSubmitContents}'>
         {await RenderPagerAsync(model, data, gridSavedSettings, dictInfo, setup)}
     </div>");
                 }

@@ -20,7 +20,6 @@ namespace YetaWF_DevTests {
         private Grid: YetaWF_ComponentsHTML.Grid;
         private buttonAdd: HTMLInputElement;
         private inputEmail: HTMLInputElement;
-        private ReloadInProgress: boolean = false;
         private AddCounter: number = 0;
 
         constructor(controlId: string, setup: ListOfEmailAddressesSetup) {
@@ -39,8 +38,7 @@ namespace YetaWF_DevTests {
 
             $YetaWF.registerEventHandler(this.buttonAdd, "click", null, (ev: MouseEvent): boolean => {
 
-                if (this.ReloadInProgress) return true;
-                this.ReloadInProgress = true;
+                if ($YetaWF.isLoading) return true;
 
                 var uri = $YetaWF.parseUrl(this.Setup.AddUrl);
                 const query = {
@@ -53,7 +51,6 @@ namespace YetaWF_DevTests {
                 data[YConfigs.Forms.UniqueIdCounters] = { UniqueIdPrefix: `${this.ControlId}ls`, UniqueIdPrefixCounter: 0, UniqueIdCounter: ++this.AddCounter };
 
                 $YetaWF.postJSON(uri, query, data, (success: boolean, partial: GridRecordResult): void => {
-                    this.ReloadInProgress = false;
                     if (success) {
                         this.Grid.AddRecord(partial.TR, partial.StaticData);
                         this.inputEmail.value = "";

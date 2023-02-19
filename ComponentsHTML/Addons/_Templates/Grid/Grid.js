@@ -1333,7 +1333,7 @@ var YetaWF_ComponentsHTML;
             this.Setup.StaticData.push(staticData);
             this.Setup.Records++;
             this.updatePage();
-            this.reload(Math.max(0, this.Setup.Pages - 1));
+            this.reload(this.Setup.Page);
             this.updateStatus();
         };
         Grid.prototype.AddRecords = function (trs, staticData) {
@@ -1350,7 +1350,7 @@ var YetaWF_ComponentsHTML;
                 this.Setup.Records++;
             }
             this.updatePage();
-            this.reload(Math.max(0, this.Setup.Pages - 1));
+            this.reload(this.Setup.Page);
             this.updateStatus();
         };
         Grid.prototype.ReplaceRecord = function (index, tr, staticData) {
@@ -1372,7 +1372,7 @@ var YetaWF_ComponentsHTML;
             // replace the static data record
             this.Setup.StaticData[index] = staticData;
             this.updatePage();
-            this.reload(Math.max(0, this.Setup.Pages - 1));
+            this.reload(this.Setup.Page);
             this.updateStatus();
         };
         Grid.prototype.RemoveRecord = function (index) {
@@ -1386,7 +1386,7 @@ var YetaWF_ComponentsHTML;
             this.Setup.Records--;
             this.resequenceDelete(index);
             this.updatePage();
-            this.reload(Math.max(0, this.Setup.Pages - 1));
+            this.reload(this.Setup.Page);
             this.updateStatus();
         };
         Grid.prototype.Clear = function () {
@@ -1400,7 +1400,7 @@ var YetaWF_ComponentsHTML;
             this.Setup.StaticData = [];
             this.Setup.Records = 0;
             this.updatePage();
-            this.reload(Math.max(0, this.Setup.Pages - 1));
+            this.reload(0);
             this.updateStatus();
         };
         Grid.prototype.moveRawRecord = function (sel, index) {

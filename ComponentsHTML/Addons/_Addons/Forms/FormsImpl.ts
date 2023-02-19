@@ -93,9 +93,9 @@ namespace YetaWF_ComponentsHTML {
         public serializeFormArray(form: HTMLFormElement): YetaWF.NameValuePair[] {
             let array: YetaWF.NameValuePair[] = [];
 
-            let elems = $YetaWF.getElementsBySelector("input,select,textarea", [form]);
+            let elems = $YetaWF.getElementsBySelector("input,select,textarea", [form]) as (HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement)[];
             for (let elem of elems) {
-                let name = $YetaWF.getAttributeCond(elem, "name");
+                let name = elem.name;
                 if (!name ||
                     ($YetaWF.getAttributeCond(elem, "disabled") && !$YetaWF.elementHasClass(elem, "disabled-submit")) || // don't submit disabled fields
                     ($YetaWF.getAttributeCond(elem, "readonly") && !$YetaWF.elementHasClass(elem, "readonly-submit")) || // don't submit readonly fields
@@ -111,7 +111,82 @@ namespace YetaWF_ComponentsHTML {
             return array;
         }
 
+        /**
+         * Serializes the form and returns an object
+         */
+        public serializeFormObject(form: HTMLFormElement): any {
+            let obj = {};
 
+            let elems = $YetaWF.getElementsBySelector("input,select,textarea", [form]) as (HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement)[];
+            for (let elem of elems) {
+                let name = elem.name;
+                if (!name ||
+                    ($YetaWF.getAttributeCond(elem, "disabled") && !$YetaWF.elementHasClass(elem, "disabled-submit")) || // don't submit disabled fields
+                    ($YetaWF.getAttributeCond(elem, "readonly") && !$YetaWF.elementHasClass(elem, "readonly-submit")) || // don't submit readonly fields
+                    $YetaWF.elementHasClass(elem, YConfigs.Forms.CssFormNoSubmit) || // don't submit nosubmit fields
+                    $YetaWF.elementClosestCond(elem, `.${YConfigs.Forms.CssFormNoSubmitContents}`)) // don't submit input fields in containers (usually grids)
+                    continue;
+
+                // translate HTML type arrays/objects into javascript objects
+                // translate Prop[0].Key / Prop[0].Value into Prop: [] = [{ Key:.. Value:.. }, { Key:.. Value:.. }]
+                // TODO: This is really only needed because we used to submit forms. Eventually we'll need to change this to
+                // be easily collectable from each component in a form.
+                const fieldValue = YetaWF_ComponentsHTML_Validation.getFieldValue(elem);
+                this.parseField(obj, fieldValue, name);
+            }
+            return obj;
+        }
+
+        private parseField(obj: any, fieldValue: string|boolean, name: string): void {
+            if (!name) return;
+            const br = name.indexOf("[");
+            const dot = name.indexOf(".");
+            if (br > 0 && dot > 0) {
+                if (br < dot) {
+                    // Field[index].Value
+                    this.parseFieldArray(obj, fieldValue, name, br);
+                } else {
+                    // Field.....
+                    this.parseFieldObject(obj, fieldValue, name, dot);
+                }
+            } else if (br > 0) {
+                // Field[index]
+                this.parseFieldArray(obj, fieldValue, name, br);
+            } else if (dot > 0) {
+                // Field.....
+                this.parseFieldObject(obj, fieldValue, name, dot);
+            } else {
+                obj[name] = fieldValue;
+            }
+        }
+        private parseFieldArray(obj: any, fieldValue: string|boolean, name: string, br: number): void {
+            const left = name.substring(0, br);
+            let right = name.substring(br+1);
+            const rbr = right.indexOf("]");
+            if (rbr < 0) throw `Invalid field name ${name} - can't parse as array`;
+            const index = right.substring(0, rbr);
+            right = right.substring(rbr+1);
+            if (right.startsWith("."))
+                right = right.substring(1);
+            if (!obj.hasOwnProperty(left))
+                obj[left] = [];
+            const ix = Number(index);
+            while (obj[left].length <= ix)
+                obj[left].push({});
+            if (!right) {
+                obj[left][ix] = fieldValue;
+                return;
+            } else {
+                this.parseField(obj[left][ix], fieldValue, right);
+            }
+        }
+        private parseFieldObject(obj: any, fieldValue: string|boolean, name: string, dot: number): void {
+            const left = name.substring(0, dot);
+            const right = name.substring(dot+1);
+            if (!obj.hasOwnProperty(left))
+                obj[left] = {};
+            this.parseField(obj[left], fieldValue, right);
+        }
         /**
          * Validate all fields in the current form.
          */

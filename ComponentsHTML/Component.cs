@@ -1,6 +1,7 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -114,10 +115,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         internal string GetErrorClass() {
-            if (HtmlHelper.ModelState.TryGetValue(FieldName, out ModelStateEntry? modelState)) {
-                if (modelState.Errors.Count > 0)
-                    return "v-valerror";
-            }
+            var propState = HtmlHelper.ModelState.GetProperty(FieldName);
+            if (propState != null && !propState.Valid)
+                return "v-valerror";
             return string.Empty;
         }
 

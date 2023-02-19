@@ -1,10 +1,14 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 
+using Microsoft.AspNetCore.Http;
 using System;
+using System.Threading.Tasks;
+using YetaWF.Core.Endpoints.Support;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.DataProvider;
 
@@ -14,7 +18,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{d0071658-35f2-453d-a5ba-2a91bd01ee49}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TestEscapesModule : ModuleDefinition {
+    public class TestEscapesModule : ModuleDefinition2 {
 
         public TestEscapesModule() {
             Title = this.__ResStr("modTitle", "Test Escapes");
@@ -41,6 +45,31 @@ namespace YetaWF.Modules.DevTests.Modules {
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
                 SaveReturnUrl = true,
             };
+        }
+
+        [Trim]
+        [Header("This test page is used to test correct character encoding - header (HeaderAttribute) <A> &amp; & @ {0}")]
+        [Footer("Special characters in the footer (FooterAttribute) <A> &amp; & @ {0}")]
+        public class EditModel {
+
+            [TextAbove("Special characters in the text above the field (TextAboveAttribute) <A> &amp; & @ {0}")]
+            [TextBelow("Special characters in the text below the field (TextBelowAttribute) <A> &amp; & @ {0}")]
+            [Caption("Caption <A> &amp; & @ {0}"), Description("A description <A> &amp; & @ {0}")]
+            [UIHint("Text80"), StringLength(80), Trim]
+            public string? String1 { get; set; } = null!;
+
+            public EditModel() { }
+        }
+
+        public Task<ActionInfo> RenderModuleAsync() {
+            EditModel model = new EditModel { };
+            return RenderAsync(model);
+        }
+
+        public Task<IResult> UpdateModuleAsync(EditModel model) {
+            if (!ModelState.IsValid)
+                return PartialViewAsync(model);
+            return FormProcessedAsync(model, this.__ResStr("okSaved", "Test Done - Here are some special characters in a message: <A> &amp; & @ {0}"), OnPopupClose: OnPopupCloseEnum.ReloadModule);
         }
     }
 }

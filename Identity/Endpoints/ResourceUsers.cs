@@ -22,7 +22,7 @@ namespace YetaWF.Modules.Identity.Endpoints {
 
         internal const string AddUserToResource = "AddUserToResource";
 
-        private static string __ResStr(string name, string defaultValue, params object?[] parms) { return ResourceAccess.GetResourceString(typeof(ResourceUsersEndpoints), name, defaultValue, parms); }
+        private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(ResourceUsersEndpoints), name, defaultValue, parms); }
 
         public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 

@@ -42,10 +42,10 @@ var YetaWF_ComponentsHTML;
             if (_this.SelectLang) {
                 _this.SelectLang.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, function (evt) {
                     var sel = _this.SelectLang.selectedIndex;
-                    var hid = $YetaWF.getElement1BySelector("input[name$='[".concat(sel, "].value']"), [_this.Control]);
+                    var hid = $YetaWF.getElement1BySelector("input[name*='[".concat(sel, "]']"), [_this.Control]);
                     var newText = hid.value;
                     if (newText.length === 0 && sel > 0) {
-                        var hid0 = $YetaWF.getElement1BySelector("input[name$='[0].value']", [_this.Control]);
+                        var hid0 = $YetaWF.getElement1BySelector("input[name*='[0]']", [_this.Control]);
                         newText = hid0.value;
                         hid.value = newText;
                     }
@@ -57,7 +57,7 @@ var YetaWF_ComponentsHTML;
                 var _a;
                 var newText = _this.InputText.value;
                 var sel = ((_a = _this.SelectLang) === null || _a === void 0 ? void 0 : _a.selectedIndex) || 0;
-                var hid = $YetaWF.getElement1BySelector("input[name$='[".concat(sel, "].value']"), [_this.Control]);
+                var hid = $YetaWF.getElement1BySelector("input[name*='[".concat(sel, "]']"), [_this.Control]);
                 hid.value = newText;
                 if (sel === 0)
                     _this.Hidden.value = newText;
@@ -69,13 +69,13 @@ var YetaWF_ComponentsHTML;
                 var _a;
                 var sel = ((_a = _this.SelectLang) === null || _a === void 0 ? void 0 : _a.selectedIndex) || 0;
                 if (sel === 0) {
-                    var hid0 = $YetaWF.getElement1BySelector("input[name$='[0].value']", [_this.Control]);
+                    var hid0 = $YetaWF.getElement1BySelector("input[name*='[0]']", [_this.Control]);
                     var text = hid0.value;
                     if (text.length === 0) {
                         // the default text was cleared, clear all languages
                         var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
                         for (var index = 0; index < count; ++index) {
-                            var hid = $YetaWF.getElement1BySelector("input[name$='[".concat(index, "].value']"), [_this.Control]);
+                            var hid = $YetaWF.getElement1BySelector("input[name*='[".concat(index, "]']"), [_this.Control]);
                             hid.value = "";
                         }
                         _this.Hidden.value = "";
@@ -106,7 +106,7 @@ var YetaWF_ComponentsHTML;
         };
         MultiStringEditComponent.prototype.clear = function () {
             var _a;
-            var hids = $YetaWF.getElementsBySelector("input[name$='.value']", [this.Control]);
+            var hids = $YetaWF.getElementsBySelector("input", [this.Control]);
             for (var _i = 0, hids_1 = hids; _i < hids_1.length; _i++) {
                 var hid = hids_1[_i];
                 hid.value = "";
@@ -129,11 +129,11 @@ var YetaWF_ComponentsHTML;
                 var data = {};
                 var newText = this.InputText.value;
                 var sel = ((_a = this.SelectLang) === null || _a === void 0 ? void 0 : _a.selectedIndex) || 0;
-                var hid = $YetaWF.getElement1BySelector("input[name$='[".concat(sel, "].value']"), [this.Control]);
+                var hid = $YetaWF.getElement1BySelector("input[name*='[".concat(sel, "]']"), [this.Control]);
                 hid.value = newText;
                 var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
                 for (var index = 0; index < count; ++index) {
-                    hid = $YetaWF.getElement1BySelector("input[name$='[".concat(index, "].value']"), [this.Control]);
+                    hid = $YetaWF.getElement1BySelector("input[name*='[".concat(index, "]']"), [this.Control]);
                     var langText = hid.value;
                     if (langText === "")
                         langText = newText;
@@ -154,7 +154,7 @@ var YetaWF_ComponentsHTML;
                         s = text;
                     else if (textDefault)
                         s = textDefault; // use default for languages w/o data
-                    var hid = $YetaWF.getElement1BySelector("input[name$='[".concat(index, "].value']"), [this.Control]);
+                    var hid = $YetaWF.getElement1BySelector("input[name*='[".concat(index, "]']"), [this.Control]);
                     hid.value = s;
                     if (index === 0) {
                         this.Hidden.value = s;
@@ -171,7 +171,7 @@ var YetaWF_ComponentsHTML;
             var textDefault = this.findLanguageText(data, YLocs.YetaWF_ComponentsHTML.Languages[0]);
             var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
             for (var index = 0; index < count; ++index) {
-                var hid = $YetaWF.getElement1BySelector("input[name$='[".concat(index, "].value']"), [this.Control]);
+                var hid = $YetaWF.getElement1BySelector("input[name*='[".concat(index, "]']"), [this.Control]);
                 var langText = hid.value;
                 if (langText === "")
                     langText = textDefault || "";

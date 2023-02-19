@@ -39,9 +39,9 @@ var YetaWF_PageEdit;
         PageControlModule.prototype.updateURL = function () {
             var uri = new YetaWF.Url();
             uri.parse(window.location.href);
-            uri.removeSearch("!Pagectl");
+            uri.removeSearch(YConfigs.Basics.Link_PageControl);
             if (YVolatile.Basics.PageControlVisible)
-                uri.addSearch("!Pagectl", "y");
+                uri.addSearch(YConfigs.Basics.Link_PageControl, "y");
             $YetaWF.setUrl(uri.toUrl());
         };
         PageControlModule.prototype.toggleControlPanel = function () {

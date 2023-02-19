@@ -5,19 +5,18 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Modules.DevTests.Controllers;
 using YetaWF.Modules.DevTests.Modules;
 
 namespace YetaWF.Modules.DevTests.Views {
 
-    public class TestEscapesView : YetaWFView, IYetaWFView2<TestEscapesModule, TestEscapesModuleController.EditModel> {
+    public class TestEscapesView : YetaWFView, IYetaWFView2<TestEscapesModule, TestEscapesModule.EditModel> {
 
         public const string ViewName = "TestEscapes";
 
         public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
         public override string GetViewName() { return ViewName; }
 
-        public async Task<string> RenderViewAsync(TestEscapesModule module, TestEscapesModuleController.EditModel model) {
+        public async Task<string> RenderViewAsync(TestEscapesModule module, TestEscapesModule.EditModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
 
@@ -48,7 +47,7 @@ namespace YetaWF.Modules.DevTests.Views {
             return hb.ToString();
         }
 
-        public async Task<string> RenderPartialViewAsync(TestEscapesModule module, TestEscapesModuleController.EditModel model) {
+        public async Task<string> RenderPartialViewAsync(TestEscapesModule module, TestEscapesModule.EditModel model) {
 
             HtmlBuilder hb = new HtmlBuilder();
             hb.Append(await HtmlHelper.ForEditContainerAsync(model, "PropertyList"));

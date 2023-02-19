@@ -1,10 +1,15 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/DevTests#License */
 
+using Microsoft.AspNetCore.Http;
 using System;
+using System.Threading.Tasks;
+using YetaWF.Core.Components;
+using YetaWF.Core.Endpoints.Support;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.DataProvider;
 
@@ -14,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{b43ee2f3-dfa7-49c8-8c9e-861901bf0365}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplateRecaptchaV2Module : ModuleDefinition {
+    public class TemplateRecaptchaV2Module : ModuleDefinition2 {
 
         public TemplateRecaptchaV2Module() {
             Title = this.__ResStr("modTitle", "RecaptchaV2 Test Component");
@@ -41,6 +46,29 @@ namespace YetaWF.Modules.DevTests.Modules {
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
                 SaveReturnUrl = true,
             };
+        }
+
+        [Trim]
+        public class Model {
+
+            [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
+            [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot")]
+            public RecaptchaV2Data Prop1 { get; set; }
+
+            public Model() {
+                Prop1 = new RecaptchaV2Data();
+            }
+        }
+
+        public Task<ActionInfo> RenderModuleAsync() {
+            Model model = new Model { };
+            return RenderAsync(model);
+        }
+
+        public Task<IResult> UpdateModuleAsync(Model model) {
+            if (!ModelState.IsValid)
+                return PartialViewAsync(model);
+            return FormProcessedAsync(model, this.__ResStr("ok", "OK"));
         }
     }
 }

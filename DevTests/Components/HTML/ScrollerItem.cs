@@ -5,7 +5,7 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Modules.DevTests.Controllers;
+using YetaWF.Modules.DevTests.Modules;
 
 namespace YetaWF.Modules.DevTests.Components {
 
@@ -28,11 +28,11 @@ namespace YetaWF.Modules.DevTests.Components {
     /// [UIHint("Scroller"), ReadOnly, AdditionalMetadata("Template", "YetaWF_DevTests_ScrollerItem")]
     /// public List&lt;ScrollerItem&gt; Items { get; set; }
     /// </example>
-    public class ScrollerItemDisplayComponent : ScrollerItemComponent, IYetaWFContainer<TemplateScrollerModuleController.ScrollerItem> {
+    public class ScrollerItemDisplayComponent : ScrollerItemComponent, IYetaWFContainer<TemplateScrollerModule.ScrollerItem> {
 
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public async Task<string> RenderContainerAsync(TemplateScrollerModuleController.ScrollerItem model) {
+        public async Task<string> RenderContainerAsync(TemplateScrollerModule.ScrollerItem model) {
             HtmlBuilder hb = new HtmlBuilder();
 
             hb.Append($@"

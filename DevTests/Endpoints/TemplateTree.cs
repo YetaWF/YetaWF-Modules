@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Routing;
 using YetaWF.Core.Endpoints;
 using YetaWF.Core.Endpoints.Filters;
 using YetaWF.Core.Packages;
-using YetaWF.Modules.DevTests.Controllers;
+using YetaWF.Modules.DevTests.Modules;
 
 namespace YetaWF.Modules.DevTests.Endpoints {
 
@@ -20,8 +20,8 @@ namespace YetaWF.Modules.DevTests.Endpoints {
             RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(TemplateTreeModuleEndpoints)))
                 .AntiForgeryToken();
 
-            group.MapPost(TreeSupport.GetRecords, async (HttpContext context, [FromBody] TreeSupport.TreeAdditionPartialViewData<TemplateTreeModuleController.EntryElement> tvData) => {
-                return await TreeSupport.GetTreePartialAsync<TemplateTreeModuleController.EntryElement>(context, null, tvData, TemplateTreeModuleController.GetTreeModel(), TemplateTreeModuleController.GetDynamicSubEntries());
+            group.MapPost(TreeSupport.GetRecords, async (HttpContext context, [FromBody] TreeSupport.TreeAdditionPartialViewData<TemplateTreeModule.EntryElement> tvData) => {
+                return await TreeSupport.GetTreePartialAsync<TemplateTreeModule.EntryElement>(context, null, tvData, TemplateTreeModule.GetTreeModel(), TemplateTreeModule.GetDynamicSubEntries());
             });
         }
     }

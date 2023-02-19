@@ -61,12 +61,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (model != null && (bool)model)
                 check = " checked='checked'";
             string tag = $@"<input id='{ControlId}'{FieldSetup(Validation ? FieldType.Validated : FieldType.Anonymous)} type='checkbox'{check} value='true' class='yt_boolean t_edit{GetClasses()}'>";
-            // add a hidden field so we always get "something" for check boxes (that means we have to deal with duplicates names)
-            string tagHidden = $@"<input{FieldSetup(FieldType.Normal)} type='hidden' value='false' class='yt_boolean t_edit yform-novalidate'>";
+            //$$$ add a hidden field so we always get "something" for check boxes (that means we have to deal with duplicates names)
+            //$$$ string tagHidden = $@"<input{FieldSetup(FieldType.Normal)} type='hidden' value='false' class='yt_boolean t_edit yform-novalidate'>";
 
             //Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.BooleanEditComponent('{id}');");
 
-            return Task.FromResult(tag + tagHidden);
+            return Task.FromResult(tag);//$$$$ + tagHidden);
         }
     }
 }
