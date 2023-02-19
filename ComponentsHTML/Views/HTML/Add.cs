@@ -40,8 +40,6 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
 
         HtmlBuilder hb = new HtmlBuilder();
 
-            string? actionName = (string?)HtmlHelper.RouteData.Values["action"];
-
             string? submit = null, submitTT = null; bool submitShown; ButtonTypeEnum submitType = ButtonTypeEnum.Submit; string? submitName = null;
             if (ObjectSupport.TryGetPropertyValue<bool>(model, "__submitShown", out submitShown, true) && submitShown) {
                 ObjectSupport.TryGetPropertyValue<string>(model, "__submitTT", out submitTT);
@@ -63,7 +61,7 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
                 buttons.Add(new FormButton() { ButtonType = cancelType, Text = cancel, Title = cancelTT });
 
             hb.Append($@"
-{await RenderBeginFormAsync(ActionName: actionName)}
+{await RenderBeginFormAsync(ActionName: module.Action)}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
     {await FormButtonsAsync(buttons)}
 {await RenderEndFormAsync()}");

@@ -38,10 +38,8 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            string? actionName = (string?)HtmlHelper.RouteData.Values["action"];
-
             hb.Append($@"
-{await RenderBeginFormAsync(ActionName: actionName)}
+{await RenderBeginFormAsync(ActionName: module.Action)}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
 {await RenderEndFormAsync()}");
             return hb.ToString();

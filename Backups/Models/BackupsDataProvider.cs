@@ -7,41 +7,40 @@ using YetaWF.Core.DataProvider;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 
-namespace YetaWF.Modules.Backups.DataProvider {
+namespace YetaWF.Modules.Backups.DataProvider;
 
-    public class BackupEntry {
-        public string FileName { get; set; } = null!;
-        public string FullFileName { get; set; } = null!;
-        public long Size { get; set; }
-        public DateTime Created { get; set; }
+public class BackupEntry {
+    public string FileName { get; set; } = null!;
+    public string FullFileName { get; set; } = null!;
+    public long Size { get; set; }
+    public DateTime Created { get; set; }
+}
+
+public class BackupsDataProvider : DataProviderImpl {
+
+    // IMPLEMENTATION
+    // IMPLEMENTATION
+    // IMPLEMENTATION
+
+    public BackupsDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
+
+    private IDataProvider<string, BackupEntry> DataProvider { get { return GetDataProvider(); } }
+
+    private IDataProvider<string, BackupEntry>? CreateDataProvider() {
+        Package package = YetaWF.Modules.Backups.AreaRegistration.CurrentPackage;
+        return MakeDataProvider(package, package.AreaName);
     }
 
-    public class BackupsDataProvider : DataProviderImpl {
+    // API
+    // API
+    // API
 
-        // IMPLEMENTATION
-        // IMPLEMENTATION
-        // IMPLEMENTATION
+    public async Task<DataProviderGetRecords<BackupEntry>> GetBackupsAsync(int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) {
 
-        public BackupsDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
+        File.FileDataProvider.BackupsDataProvider? fileDP = DataProvider as File.FileDataProvider.BackupsDataProvider;
+        if (fileDP == null)
+            throw new InternalError($"{nameof(BackupsDataProvider)} only supports File I/O");
 
-        private IDataProvider<string, BackupEntry> DataProvider { get { return GetDataProvider(); } }
-
-        private IDataProvider<string, BackupEntry>? CreateDataProvider() {
-            Package package = YetaWF.Modules.Backups.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName);
-        }
-
-        // API
-        // API
-        // API
-
-        public async Task<DataProviderGetRecords<BackupEntry>> GetBackupsAsync(int skip, int take, List<DataProviderSortInfo>? sorts, List<DataProviderFilterInfo>? filters) {
-
-            File.FileDataProvider.BackupsDataProvider? fileDP = DataProvider as File.FileDataProvider.BackupsDataProvider;
-            if (fileDP == null)
-                throw new InternalError($"{nameof(BackupsDataProvider)} only supports File I/O");
-
-            return await fileDP.GetBackupsAsync(skip, take, sorts, filters);
-        }
+        return await fileDP.GetBackupsAsync(skip, take, sorts, filters);
     }
 }
