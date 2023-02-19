@@ -114,7 +114,7 @@ public class CategoryEditModule : ModuleDefinition2 {
             if (data == null)
                 throw new Error(this.__ResStr("notFound", "Blog category with id {0} not found."), category);
             model.SetData(data);
-            Title = this.__ResStr("modTitle", "Blog Category \"{0}\"", data.Category.ToString());
+            Title = this.__ResStr("title", "Blog Category \"{0}\"", data.Category.ToString());
             return await RenderAsync(model);
         }
     }
