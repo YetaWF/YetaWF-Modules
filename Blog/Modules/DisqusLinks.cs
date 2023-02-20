@@ -40,7 +40,6 @@ public class DisqusLinksModule : ModuleDefinition2 {
     }
 
     public async Task<ActionInfo> RenderModuleAsync() {
-        string discus = Manager.RequestQueryString["Disqus"] ?? throw new InternalError("Discus parameter not defined");
         using (DisqusConfigDataProvider dataProvider = new DisqusConfigDataProvider()) {
             DisqusConfigData config = await dataProvider.GetItemAsync();
             if (config == null)

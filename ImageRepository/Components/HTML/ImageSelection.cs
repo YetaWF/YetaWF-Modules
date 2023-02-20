@@ -9,7 +9,7 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 
-namespace YetaWF.Modules.ImageRepository.Components {
+namespace YetaWF.Modules.ImageRepository.Components;
 
     public abstract class ImageSelectionComponent : YetaWFComponent {
 
@@ -21,39 +21,39 @@ namespace YetaWF.Modules.ImageRepository.Components {
         public override string GetTemplateName() { return TemplateName; }
     }
 
-    /// <summary>
-    /// This component is used by the YetaWF.ImageRepository package and is not intended for use by an application.
-    /// </summary>
-    [PrivateComponent]
-    public class ImageSelectionEditComponent : ImageSelectionComponent, IYetaWFComponent<string?> {
+/// <summary>
+/// This component is used by the YetaWF.ImageRepository package and is not intended for use by an application.
+/// </summary>
+[PrivateComponent]
+public class ImageSelectionEditComponent : ImageSelectionComponent, IYetaWFComponent<string?> {
 
-        public override ComponentType GetComponentType() { return ComponentType.Edit; }
+    public override ComponentType GetComponentType() { return ComponentType.Edit; }
 
-        public async Task<string> RenderAsync(string? model) {
+    public async Task<string> RenderAsync(string? model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+        HtmlBuilder hb = new HtmlBuilder();
 
-            ImageSelectionInfo info = GetSiblingProperty<ImageSelectionInfo>($"{PropertyName}_Info");
+        ImageSelectionInfo info = GetSiblingProperty<ImageSelectionInfo>($"{PropertyName}_Info");
 
-            hb.Append($@"
+        hb.Append($@"
 <div id='{ControlId}' class='yt_imagerepository_imageselection'>
     {await HtmlHelper.ForEditComponentAsync(Container, PropertyName, model, "Hidden", HtmlAttributes: new { __NoTemplate = true }, Validation: true)}
     <div class='t_imgarea'>
         <div class='t_list'>
             <select class='t_native' name='List' size='10' style='height:{info.PreviewHeight}px'>");
 
-            string? modelPlain = model?.RemoveStartingAt(YetaWF.Core.Image.ImageSupport.ImageSeparator);
-            foreach (var f in await info.GetFilesAsync()) {
-                string fPlain = f.RemoveStartingAt(YetaWF.Core.Image.ImageSupport.ImageSeparator);
-                string sel = fPlain == modelPlain ? " selected" : "";
-                hb.Append($@"<option title='{HAE(fPlain)}' value='{HAE(f)}' {sel}>{HE(fPlain)}</option>");
-            }
+        string? modelPlain = model?.RemoveStartingAt(YetaWF.Core.Image.ImageSupport.ImageSeparator);
+        foreach (var f in await info.GetFilesAsync()) {
+            string fPlain = f.RemoveStartingAt(YetaWF.Core.Image.ImageSupport.ImageSeparator);
+            string sel = fPlain == modelPlain ? " selected" : "";
+            hb.Append($@"<option title='{HAE(fPlain)}' value='{HAE(f)}' {sel}>{HE(fPlain)}</option>");
+        }
 
-            hb.Append($@"
+        hb.Append($@"
             </select>
         </div>
         <div class='t_preview'>
-            <img src='{HAE(info.MakeImageUrl(model??string.Empty, info.PreviewWidth, info.PreviewHeight))}' alt='{__ResStr("preview", "Image Preview")}' />
+            <img src='{HAE(info.MakeImageUrl(model ?? string.Empty, info.PreviewWidth, info.PreviewHeight))}' alt='{__ResStr("preview", "Image Preview")}' />
         </div>
     </div>
     <div class='t_haveimage' {(string.IsNullOrWhiteSpace(model) ? "style='display:none'" : "")}>
@@ -65,9 +65,8 @@ namespace YetaWF.Modules.ImageRepository.Components {
     </div>
 </div>");
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_ImageRepository.ImageRepository('{ControlId}');");
+        Manager.ScriptManager.AddLast($@"new YetaWF_ImageRepository.ImageRepository('{ControlId}');");
 
-            return hb.ToString();
-        }
+        return hb.ToString();
     }
 }

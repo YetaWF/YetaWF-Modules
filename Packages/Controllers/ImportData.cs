@@ -23,8 +23,8 @@ namespace YetaWF.Modules.Packages.Controllers {
             ImportDataModel model = new ImportDataModel  { };
             model.UploadFile = new FileUpload1 {
                 SelectButtonText = this.__ResStr("btnImport", "Import Data..."),
-                SaveURL = Utility.UrlFor<ImportDataModuleEndpoints>(ImportDataModuleEndpoints.ImportPackageData, new { __ModuleGuid = Module.ModuleGuid }),
-                RemoveURL = Utility.UrlFor<ImportDataModuleEndpoints>(ImportDataModuleEndpoints.RemovePackageData, new { __ModuleGuid = Module.ModuleGuid } ),
+                SaveURL = Utility.UrlFor<ImportDataModuleEndpoints>(ImportDataModuleEndpoints.ImportPackageData),
+                RemoveURL = Utility.UrlFor<ImportDataModuleEndpoints>(ImportDataModuleEndpoints.RemovePackageData),
             };
             return View(model);
         }

@@ -6,35 +6,33 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Modules.IFrame.Controllers;
 using YetaWF.Modules.IFrame.Modules;
 
-namespace YetaWF.Modules.IFrame.Views {
+namespace YetaWF.Modules.IFrame.Views;
 
-    public class IFrameDisplayView : YetaWFView, IYetaWFView<IFrameDisplayModule, IFrameDisplayModuleController.DisplayModel> {
+public class IFrameDisplayView : YetaWFView, IYetaWFView<IFrameDisplayModule, IFrameDisplayModule.DisplayModel> {
 
-        public const string ViewName = "IFrameDisplay";
+    public const string ViewName = "IFrameDisplay";
 
-        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        public override string GetViewName() { return ViewName; }
+    public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+    public override string GetViewName() { return ViewName; }
 
-        public Task<string> RenderViewAsync(IFrameDisplayModule module, IFrameDisplayModuleController.DisplayModel model) {
+    public Task<string> RenderViewAsync(IFrameDisplayModule module, IFrameDisplayModule.DisplayModel model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+        HtmlBuilder hb = new HtmlBuilder();
 
-            if (Manager.EditMode) {
+        if (Manager.EditMode) {
 
-                hb.Append($@"
+            hb.Append($@"
 <p class='yDivWarning'>
     {HE(this.__ResStr("editMode", "Url contents({0}) not shown in Site Edit Mode", module.Url))}
 </p>");
 
-            } else {
-                hb.Append($@"
+        } else {
+            hb.Append($@"
 <iframe src='{HAE(module.Url)}' style='border:none;{HAE(model.Style)}'></iframe>");
-            }
-
-            return Task.FromResult(hb.ToString());
         }
+
+        return Task.FromResult(hb.ToString());
     }
 }

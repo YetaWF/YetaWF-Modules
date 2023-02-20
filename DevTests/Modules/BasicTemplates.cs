@@ -280,8 +280,8 @@ namespace YetaWF.Modules.DevTests.Modules {
                 // FileUpload1
                 FileUpload1 = new FileUpload1 {
                     SelectButtonText = this.__ResStr("btnSelect", "Upload a file..."),
-                    SaveURL = Utility.UrlFor(typeof(BasicTemplatesModuleEndpoints), nameof(BasicTemplatesModuleEndpoints.UploadSomething), new { __ModuleGuid = module.ModuleGuid }),
-                    RemoveURL = Utility.UrlFor(typeof(BasicTemplatesModuleEndpoints), nameof(BasicTemplatesModuleEndpoints.RemoveSomething), new { __ModuleGuid = module.ModuleGuid }),
+                    SaveURL = Utility.UrlFor(typeof(BasicTemplatesModuleEndpoints), nameof(BasicTemplatesModuleEndpoints.UploadSomething)),
+                    RemoveURL = Utility.UrlFor(typeof(BasicTemplatesModuleEndpoints), nameof(BasicTemplatesModuleEndpoints.RemoveSomething)),
                 };
             }
         }

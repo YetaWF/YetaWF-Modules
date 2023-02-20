@@ -72,20 +72,20 @@ var YetaWF_ComponentsHTML;
                 var filename = this.GetFileNameCallback();
                 uri.addSearch("__lastInternalName", filename); // the previous real filename of the file to remove
             }
-            if (this.Setup.SerializeForm) {
-                var form = $YetaWF.Forms.getForm(this.Control);
-                var formData = $YetaWF.Forms.serializeFormArray(form);
-                for (var _i = 0, formData_1 = formData; _i < formData_1.length; _i++) {
-                    var f = formData_1[_i];
-                    uri.addSearch(f.name, f.value);
-                }
-            }
+            // if (this.Setup.SerializeForm) {//$$$ REMOVE
+            //     var form = $YetaWF.Forms.getForm(this.Control);
+            //     var formData = $YetaWF.Forms.serializeFormArray(form);
+            //     for (let f of formData) {
+            //         uri.addSearch(f.name, f.value);
+            //     }
+            // }
+            var info = $YetaWF.Forms.getJSONInfo(this.Control);
+            var mod = info[YConfigs.Basics.ModuleGuid];
+            uri.addSearch(YConfigs.Basics.ModuleGuid, mod);
             var request = new XMLHttpRequest();
             request.open("POST", uri.toUrl(), true);
-            var info = $YetaWF.Forms.getJSONInfo(this.Control);
             var token = info[YConfigs.Forms.RequestVerificationToken];
-            if (token)
-                request.setRequestHeader("RequestVerificationToken", token);
+            request.setRequestHeader("RequestVerificationToken", token);
             request.upload.onprogress = function (ev) {
                 var percent = 0;
                 var position = ev.loaded;

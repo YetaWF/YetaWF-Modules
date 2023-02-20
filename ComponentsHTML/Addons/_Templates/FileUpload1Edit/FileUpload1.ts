@@ -101,20 +101,23 @@ namespace YetaWF_ComponentsHTML {
                 uri.addSearch("__lastInternalName", filename);// the previous real filename of the file to remove
             }
 
-            if (this.Setup.SerializeForm) {
-                var form = $YetaWF.Forms.getForm(this.Control);
-                var formData = $YetaWF.Forms.serializeFormArray(form);
-                for (let f of formData) {
-                    uri.addSearch(f.name, f.value);
-                }
-            }
+            // if (this.Setup.SerializeForm) {//$$$ REMOVE
+            //     var form = $YetaWF.Forms.getForm(this.Control);
+            //     var formData = $YetaWF.Forms.serializeFormArray(form);
+            //     for (let f of formData) {
+            //         uri.addSearch(f.name, f.value);
+            //     }
+            // }
+
+            const info = $YetaWF.Forms.getJSONInfo(this.Control);
+            const mod = info[YConfigs.Basics.ModuleGuid];
+            uri.addSearch(YConfigs.Basics.ModuleGuid, mod);
 
             const request: XMLHttpRequest = new XMLHttpRequest();
             request.open("POST", uri.toUrl(), true);
 
-            const info = $YetaWF.Forms.getJSONInfo(this.Control);
             const token = info[YConfigs.Forms.RequestVerificationToken];
-            if (token) request.setRequestHeader("RequestVerificationToken", token);
+            request.setRequestHeader("RequestVerificationToken", token);
 
             request.upload.onprogress = (ev: ProgressEvent<EventTarget>): any => {
                 let percent = 0;

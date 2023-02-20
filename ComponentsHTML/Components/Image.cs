@@ -162,8 +162,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // the upload control
             Core.Components.FileUpload1 setupUpload = new Core.Components.FileUpload1() {
-                SaveURL = Utility.UrlFor(typeof(FileUpload1Endpoints), FileUpload1Endpoints.SaveImage, new { __ModuleGuid = Manager.CurrentModule!.ModuleGuid }),
-                RemoveURL = Utility.UrlFor(typeof(FileUpload1Endpoints), FileUpload1Endpoints.RemoveImage, new { __ModuleGuid = Manager.CurrentModule.ModuleGuid }),
+                SaveURL = Utility.UrlFor(typeof(FileUpload1Endpoints), FileUpload1Endpoints.SaveImage),
+                RemoveURL = Utility.UrlFor(typeof(FileUpload1Endpoints), FileUpload1Endpoints.RemoveImage),
             };
 
             string uploadId = ControlId + "_ul1";

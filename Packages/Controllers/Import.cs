@@ -36,8 +36,8 @@ namespace YetaWF.Modules.Packages.Controllers {
             public void Update(ImportModule mod) {
                 UploadFile = new FileUpload1 {
                     SelectButtonText = this.__ResStr("btnImport", "Import Binary or Source Code Package..."),
-                    SaveURL = Utility.UrlFor<ImportModuleEndpoints>(ImportModuleEndpoints.ImportPackage, new { __ModuleGuid = mod.ModuleGuid }),
-                    RemoveURL = Utility.UrlFor<ImportModuleEndpoints>(ImportModuleEndpoints.RemovePackage, new { __ModuleGuid = mod.ModuleGuid }),
+                    SaveURL = Utility.UrlFor<ImportModuleEndpoints>(ImportModuleEndpoints.ImportPackage ),
+                    RemoveURL = Utility.UrlFor<ImportModuleEndpoints>(ImportModuleEndpoints.RemovePackage),
                 };
                 RemoteGo = new FormButton() {
                     Text = "Download and Install",
