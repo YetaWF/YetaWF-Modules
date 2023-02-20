@@ -11,91 +11,90 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 
-namespace Softelvdm.Modules.IVR.DataProvider {
+namespace Softelvdm.Modules.IVR.DataProvider;
 
-    public class HolidayEntry {
+public class HolidayEntry {
 
-        public const int MaxDescription = 100;
+    public const int MaxDescription = 100;
 
-        [Data_Identity]
-        public int Id { get; set; }
+    [Data_Identity]
+    public int Id { get; set; }
 
-        [Data_PrimaryKey]
-        public DateTime HolidayDate { get; set; }
+    [Data_PrimaryKey]
+    public DateTime HolidayDate { get; set; }
 
-        [StringLength(MaxDescription)]
-        public string? Description { get; set; }
+    [StringLength(MaxDescription)]
+    public string? Description { get; set; }
 
-        public HolidayEntry() { }
+    public HolidayEntry() { }
+}
+
+public class HolidayEntryDataProvider : DataProviderImpl, IInstallableModel {
+
+    // IMPLEMENTATION
+    // IMPLEMENTATION
+    // IMPLEMENTATION
+
+    public HolidayEntryDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
+    public HolidayEntryDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
+
+    private IDataProviderIdentity<DateTime, object, HolidayEntry> DataProvider { get { return GetDataProvider(); } }
+
+    private IDataProviderIdentity<DateTime, object, HolidayEntry>? CreateDataProvider() {
+        Package package = Softelvdm.Modules.IVR.AreaRegistration.CurrentPackage;
+        return MakeDataProvider(package, package.AreaName + "_Holidays", SiteIdentity: SiteIdentity, Cacheable: true);
     }
 
-    public class HolidayEntryDataProvider : DataProviderImpl, IInstallableModel {
+    // LOAD/SAVE
+    // LOAD/SAVE
+    // LOAD/SAVE
 
-        // IMPLEMENTATION
-        // IMPLEMENTATION
-        // IMPLEMENTATION
+    public Task<HolidayEntry?> GetItemAsync(DateTime holidayDate) {
+        return DataProvider.GetAsync(holidayDate, null);
+    }
+    public Task<HolidayEntry?> GetItemByIdentityAsync(int id) {
+        return DataProvider.GetByIdentityAsync(id);
+    }
+    public async Task<bool> AddItemAsync(HolidayEntry data) {
+        if (!await DataProvider.AddAsync(data))
+            return false;
+        await Auditing.AddAuditAsync($"{nameof(HolidayEntryDataProvider)}.{nameof(AddItemAsync)}", Dataset, Guid.Empty,
+            $"Add Holiday Entry {data.Id}",
+            DataBefore: null,
+            DataAfter: data
+        );
+        return true;
+    }
+    public async Task<UpdateStatusEnum> UpdateItemAsync(HolidayEntry data) {
 
-        public HolidayEntryDataProvider() : base(YetaWFManager.Manager.CurrentSite.Identity) { SetDataProvider(CreateDataProvider()); }
-        public HolidayEntryDataProvider(int siteIdentity) : base(siteIdentity) { SetDataProvider(CreateDataProvider()); }
+        HolidayEntry? origData = Auditing.Active ? await GetItemByIdentityAsync(data.Id) : null;
 
-        private IDataProviderIdentity<DateTime, object, HolidayEntry> DataProvider { get { return GetDataProvider(); } }
+        UpdateStatusEnum status = await DataProvider.UpdateByIdentityAsync(data.Id, data);
+        if (status != UpdateStatusEnum.OK)
+            return status;
 
-        private IDataProviderIdentity<DateTime, object, HolidayEntry>? CreateDataProvider() {
-            Package package = Softelvdm.Modules.IVR.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName + "_Holidays", SiteIdentity: SiteIdentity, Cacheable: true);
-        }
+        await Auditing.AddAuditAsync($"{nameof(HolidayEntryDataProvider)}.{nameof(UpdateItemAsync)}", Dataset, Guid.Empty,
+            $"Update Holiday Entry {data.Id}",
+            DataBefore: origData,
+            DataAfter: data
+        );
+        return UpdateStatusEnum.OK;
+    }
+    public async Task<bool> RemoveItemByIdentityAsync(int id) {
 
-        // LOAD/SAVE
-        // LOAD/SAVE
-        // LOAD/SAVE
+        HolidayEntry? origData = Auditing.Active ? await GetItemByIdentityAsync(id) : null;
 
-        public Task<HolidayEntry?> GetItemAsync(DateTime holidayDate) {
-            return DataProvider.GetAsync(holidayDate, null);
-        }
-        public Task<HolidayEntry?> GetItemByIdentityAsync(int id) {
-            return DataProvider.GetByIdentityAsync(id);
-        }
-        public async Task<bool> AddItemAsync(HolidayEntry data) {
-            if (!await DataProvider.AddAsync(data))
-                return false;
-            await Auditing.AddAuditAsync($"{nameof(HolidayEntryDataProvider)}.{nameof(AddItemAsync)}", Dataset, Guid.Empty,
-                $"Add Holiday Entry {data.Id}",
-                DataBefore: null,
-                DataAfter: data
-            );
-            return true;
-        }
-        public async Task<UpdateStatusEnum> UpdateItemAsync(HolidayEntry data) {
+        if (!await DataProvider.RemoveByIdentityAsync(id))
+            return false;
 
-            HolidayEntry? origData = Auditing.Active ? await GetItemByIdentityAsync(data.Id) : null;
-
-            UpdateStatusEnum status = await DataProvider.UpdateByIdentityAsync(data.Id, data);
-            if (status != UpdateStatusEnum.OK)
-                return status;
-
-            await Auditing.AddAuditAsync($"{nameof(HolidayEntryDataProvider)}.{nameof(UpdateItemAsync)}", Dataset, Guid.Empty,
-                $"Update Holiday Entry {data.Id}",
-                DataBefore: origData,
-                DataAfter: data
-            );
-            return UpdateStatusEnum.OK;
-        }
-        public async Task<bool> RemoveItemByIdentityAsync(int id) {
-
-            HolidayEntry? origData = Auditing.Active ? await GetItemByIdentityAsync(id) : null;
-
-            if (!await DataProvider.RemoveByIdentityAsync(id))
-                return false;
-
-            await Auditing.AddAuditAsync($"{nameof(HolidayEntryDataProvider)}.{nameof(RemoveItemByIdentityAsync)}", Dataset, Guid.Empty,
-                $"Remove Holiday Entry {id}",
-                DataBefore: origData,
-                DataAfter: null
-            );
-            return true;
-        }
-        public Task<DataProviderGetRecords<HolidayEntry>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
-            return DataProvider.GetRecordsAsync(skip, take, sort, filters);
-        }
+        await Auditing.AddAuditAsync($"{nameof(HolidayEntryDataProvider)}.{nameof(RemoveItemByIdentityAsync)}", Dataset, Guid.Empty,
+            $"Remove Holiday Entry {id}",
+            DataBefore: origData,
+            DataAfter: null
+        );
+        return true;
+    }
+    public Task<DataProviderGetRecords<HolidayEntry>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
+        return DataProvider.GetRecordsAsync(skip, take, sort, filters);
     }
 }

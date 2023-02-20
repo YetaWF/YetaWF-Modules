@@ -1,5 +1,0 @@
-Commands            icons 2
-Number              sort filter 40 [Globals.ChPhoneNumber] defaultSort asc
-Description         60
-Created             sort filter [Globals.ChDateTime]
-Updated             sort filter [Globals.ChDateTime]

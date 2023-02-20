@@ -5,9 +5,12 @@ using System;
 using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 
 namespace Softelvdm.Modules.IVR.Modules {
@@ -16,7 +19,7 @@ namespace Softelvdm.Modules.IVR.Modules {
 
     [ModuleGuid("{e8ec7d7d-6c13-4821-aaad-bbc162879ac5}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class DisplayVoiceMailModule : ModuleDefinition {
+    public class DisplayVoiceMailModule : ModuleDefinition2 {
 
         public DisplayVoiceMailModule() {
             Title = this.__ResStr("modTitle", "Voice Mail Entry");
@@ -62,6 +65,76 @@ namespace Softelvdm.Modules.IVR.Modules {
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
             };
+        }
+
+        public class DisplayModel {
+
+            [Caption("Listen"), Description("")]
+            [UIHint("ModuleAction"), ReadOnly]
+            public ModuleAction Listen { get; set; } = null!;
+
+            [Caption("Created"), Description("The date/time the voice mail message was created")]
+            [UIHint("DateTime"), ReadOnly]
+            public DateTime Created { get; set; }
+
+            [Caption("Heard"), Description("Defines whether the voice mail was already listened to")]
+            [UIHint("Boolean"), ReadOnly]
+            public bool Heard { get; set; }
+
+            [Caption("From"), Description("The caller's phone number")]
+            [UIHint("PhoneNumber"), ReadOnly]
+            [ExcludeDemoMode]
+            public string Caller { get; set; } = null!;
+
+            [Caption("Duration"), Description("The duration of the voice mail message (in seconds)")]
+            [UIHint("IntValue"), ReadOnly]
+            public int Duration { get; set; }
+
+            [Caption("From City"), Description("The caller's city (if available)")]
+            [UIHint("String"), ReadOnly]
+            public string? CallerCity { get; set; }
+            [Caption("From State"), Description("The caller's state (if available)")]
+            [UIHint("String"), ReadOnly]
+            public string? CallerState { get; set; }
+            [Caption("From Zip Code"), Description("The caller's ZIP code (if available)")]
+            [UIHint("String"), ReadOnly]
+            public string? CallerZip { get; set; }
+            [Caption("From Country"), Description("The caller's country (if available)")]
+            [UIHint("String"), ReadOnly]
+            public string? CallerCountry { get; set; }
+
+            [Caption("Phone Number"), Description("The phone number for which the voice mail message is saved")]
+            [UIHint("PhoneNumber"), ReadOnly]
+            public string? To { get; set; }
+            [Caption("Extension"), Description("The extension for which the voice mail message is saved")]
+            [UIHint("String"), ReadOnly]
+            public string? Extension { get; set; }
+
+            [Caption("Call Sid"), Description("The id used by Twilio to identify the call")]
+            [UIHint("String"), ReadOnly]
+            public string? CallSid { get; set; }
+
+            public string? RecordingUrl { get; set; }
+
+            public void SetData(VoiceMailData data) {
+                ObjectSupport.CopyData(data, this);
+            }
+        }
+
+        public async Task<ActionInfo> RenderModuleAsync() {
+            if (!int.TryParse(Manager.RequestQueryString["Id"], out int id)) throw new InternalError($"Argument {nameof(id)} missing");
+            using (VoiceMailDataProvider voiceMailDP = new VoiceMailDataProvider()) {
+                VoiceMailData? voiceMail = await voiceMailDP.GetItemByIdentityAsync(id);
+                if (voiceMail == null)
+                    throw new Error(this.__ResStr("notFound", "Voice mail entry with id {0} not found"), id);
+                voiceMail.Heard = true;
+                await voiceMailDP.UpdateItemAsync(voiceMail);
+                DisplayModel model = new DisplayModel() {
+                    Listen = await GetAction_ListenAsync(voiceMail.RecordingUrl)
+                };
+                model.SetData(voiceMail);
+                return await RenderAsync(model);
+            }
         }
     }
 }
