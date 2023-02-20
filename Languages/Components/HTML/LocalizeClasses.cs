@@ -11,113 +11,113 @@ using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 
-namespace YetaWF.Modules.Languages.Components {
+namespace YetaWF.Modules.Languages.Components;
 
-    public abstract class LocalizeClassesComponentBase : YetaWFComponent {
+public abstract class LocalizeClassesComponentBase : YetaWFComponent {
 
-        public const string TemplateName = "LocalizeClasses";
+    public const string TemplateName = "LocalizeClasses";
 
-        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        public override string GetTemplateName() { return TemplateName; }
+    public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+    public override string GetTemplateName() { return TemplateName; }
+}
+
+/// <summary>
+/// This component is used by the YetaWF.Languages package and is not intended for use by an application.
+/// </summary>
+[PrivateComponent]
+public class LocalizeClassesEditComponent : LocalizeClassesComponentBase, IYetaWFComponent<SerializableList<LocalizationData.ClassData>> {
+
+    public override ComponentType GetComponentType() { return ComponentType.Edit; }
+
+    public class UIClassData {
+
+        public UIClassData(LocalizationData.ClassData entry) {
+            ObjectSupport.CopyData(entry, this);
+        }
+
+        [UIHint("Hidden"), StringLength(LocalizationData.MaxString)]
+        public string Name { get; set; } = null!;
+        [UIHint("Hidden"), StringLength(LocalizationData.MaxString)]
+        public string? BaseTypeName { get; set; }
+
+        [Caption("Class Header"), Description("Text found in [HeaderAttribute(...)]")]
+        [UIHint("Text80"), StringLength(LocalizationData.MaxString)]
+        public string? Header { get; set; }
+        [Caption("Class Footer"), Description("Text found in [FooterAttribute(...)]")]
+        [UIHint("Text80"), StringLength(LocalizationData.MaxString)]
+        public string? Footer { get; set; }
+        [Caption("Class Legend"), Description("Text found in [LegendAttribute(...)]")]
+        [UIHint("Text80"), StringLength(LocalizationData.MaxString)]
+        public string? Legend { get; set; }
     }
 
-    /// <summary>
-    /// This component is used by the YetaWF.Languages package and is not intended for use by an application.
-    /// </summary>
-    [PrivateComponent]
-    public class LocalizeClassesEditComponent : LocalizeClassesComponentBase, IYetaWFComponent<SerializableList<LocalizationData.ClassData>> {
+    public class UIPropertyData {
 
-        public override ComponentType GetComponentType() { return ComponentType.Edit; }
-
-        public class UIClassData {
-
-            public UIClassData(LocalizationData.ClassData entry) {
-                ObjectSupport.CopyData(entry, this);
-            }
-
-            [UIHint("Hidden"), StringLength(LocalizationData.MaxString)]
-            public string Name { get; set; } = null!;
-            [UIHint("Hidden"), StringLength(LocalizationData.MaxString)]
-            public string? BaseTypeName { get; set; }
-
-            [Caption("Class Header"), Description("Text found in [HeaderAttribute(...)]")]
-            [UIHint("Text80"), StringLength(LocalizationData.MaxString)]
-            public string? Header { get; set; }
-            [Caption("Class Footer"), Description("Text found in [FooterAttribute(...)]")]
-            [UIHint("Text80"), StringLength(LocalizationData.MaxString)]
-            public string? Footer { get; set; }
-            [Caption("Class Legend"), Description("Text found in [LegendAttribute(...)]")]
-            [UIHint("Text80"), StringLength(LocalizationData.MaxString)]
-            public string? Legend { get; set; }
+        public UIPropertyData(LocalizationData.PropertyData entry) {
+            ObjectSupport.CopyData(entry, this);
         }
 
-        public class UIPropertyData {
+        [UIHint("Hidden"), ResourceRedirect(nameof(NameFieldCaption), nameof(NameFieldDescription)), StringLength(LocalizationData.MaxString)]
+        public string Name { get; set; } = null!;
+        [UIHint("Text40"), ResourceRedirect(nameof(NameFieldCaption)), StringLength(LocalizationData.MaxString)]
+        public string? Caption { get; set; }
+        [UIHint("Text80"), ResourceRedirect(nameof(NameFieldCaption)), StringLength(LocalizationData.MaxString)]
+        public string? Description { get; set; }
+        [UIHint("Text80"), ResourceRedirect(nameof(NameFieldCaption)), StringLength(Globals.MaxUrl)]
+        public string? HelpLink { get; set; }
+        [UIHint("Text80"), ResourceRedirect(nameof(NameFieldCaption)), StringLength(LocalizationData.MaxString)]
+        public string? TextAbove { get; set; }
+        [UIHint("Text80"), ResourceRedirect(nameof(NameFieldCaption)), StringLength(LocalizationData.MaxString)]
+        public string? TextBelow { get; set; }
 
-            public UIPropertyData(LocalizationData.PropertyData entry) {
-                ObjectSupport.CopyData(entry, this);
-            }
+        public string? NameFieldCaption { get; set; }
+        public string? NameFieldDescription { get; set; }
+    }
 
-            [UIHint("Hidden"), ResourceRedirect(nameof(NameFieldCaption), nameof(NameFieldDescription)), StringLength(LocalizationData.MaxString)]
-            public string Name { get; set; } = null!;
-            [UIHint("Text40"), ResourceRedirect(nameof(NameFieldCaption)), StringLength(LocalizationData.MaxString)]
-            public string? Caption { get; set; }
-            [UIHint("Text80"), ResourceRedirect(nameof(NameFieldCaption)), StringLength(LocalizationData.MaxString)]
-            public string? Description { get; set; }
-            [UIHint("Text80"), ResourceRedirect(nameof(NameFieldCaption)), StringLength(Globals.MaxUrl)]
-            public string? HelpLink { get; set; }
-            [UIHint("Text80"), ResourceRedirect(nameof(NameFieldCaption)), StringLength(LocalizationData.MaxString)]
-            public string? TextAbove { get; set; }
-            [UIHint("Text80"), ResourceRedirect(nameof(NameFieldCaption)), StringLength(LocalizationData.MaxString)]
-            public string? TextBelow { get; set; }
+    public async Task<string> RenderAsync(SerializableList<LocalizationData.ClassData> model) {
+        HtmlBuilder hb = new HtmlBuilder();
 
-            public string? NameFieldCaption { get; set; }
-            public string? NameFieldDescription { get; set; }
-        }
-
-        public async Task<string> RenderAsync(SerializableList<LocalizationData.ClassData> model) {
-            HtmlBuilder hb = new HtmlBuilder();
-
-            hb.Append($@"
+        hb.Append($@"
 <div class='yt_yetawf_languages_localizeclasses t_edit'>");
 
-            string linkClass = UniqueId();
-            int countClasses = model.Count;
+        string linkClass = UniqueId();
+        int countClasses = model.Count;
 
-            if (countClasses > 1) {
-                hb.Append($@"
+        if (countClasses > 1) {
+            hb.Append($@"
     <div class='t_links'>");
-                for (int i = 0; i < countClasses; ++i) {
-                    hb.Append($@"
+            for (int i = 0; i < countClasses; ++i) {
+                hb.Append($@"
         <div class='t_link_{i}'>
             <a href='#{linkClass}_{i}'>{Utility.HE(model[i].Name)}</a>
         </div>");
-                }
-                hb.Append($@"
-    </div>");
             }
+            hb.Append($@"
+    </div>");
+        }
 
-            int classIndex = 0;
+        int classIndex = 0;
 
-            foreach (LocalizationData.ClassData classData in model) {
+        foreach (LocalizationData.ClassData classData in model) {
 
-                UIClassData uiClassData = new UIClassData(classData);
+            UIClassData uiClassData = new UIClassData(classData);
 
-                hb.Append($@"
+            hb.Append($@"
     <div class='t_class'>");
 
-                using (Manager.StartNestedComponent($"{FieldName}[{classIndex}]")) {
+            using (Manager.StartNestedComponent($"{FieldName}[{classIndex}]")) {
 
-                    hb.Append(await HtmlHelper.ForDisplayAsync(uiClassData, nameof(uiClassData.Name)));
-                    hb.Append(await HtmlHelper.ForDisplayAsync(uiClassData, nameof(uiClassData.BaseTypeName)));
+                hb.Append(await HtmlHelper.ForDisplayAsync(uiClassData, nameof(uiClassData.Name)));
+                hb.Append(await HtmlHelper.ForDisplayAsync(uiClassData, nameof(uiClassData.BaseTypeName)));
 
-                    if (countClasses > 1) {
-                        hb.Append($@"
+                if (countClasses > 1) {
+                    hb.Append($@"
         <div class='t_classname'>
             <a class='t_target' id='{linkClass}_{classIndex}'>{Utility.HE(uiClassData.Name)}</a>
         </div>");
-                    }
+                }
 
-                    hb.Append($@"
+                hb.Append($@"
         <div class='t_classinfo'>
             <div class='t_labels'>
                 {await HtmlHelper.ForLabelAsync(uiClassData, nameof(uiClassData.Header))}
@@ -142,20 +142,20 @@ namespace YetaWF.Modules.Languages.Components {
             <div class='y_cleardiv'></div>
         </div>");
 
-                    int entryIndex = 0;
+                int entryIndex = 0;
 
-                    hb.Append($@"
+                hb.Append($@"
         <div class='t_propentries'>");
 
-                    foreach (LocalizationData.PropertyData prop in classData.Properties) {
-                        using (Manager.StartNestedComponent($"{Manager.NestedComponentPrefix}.Properties[{entryIndex}]")) {
+                foreach (LocalizationData.PropertyData prop in classData.Properties) {
+                    using (Manager.StartNestedComponent($"{Manager.NestedComponentPrefix}.Properties[{entryIndex}]")) {
 
-                            UIPropertyData uiProp = new UIPropertyData(prop) {
-                                NameFieldCaption = prop.Name,
-                                NameFieldDescription = this.__ResStr("strNameTT", "Text found in attributes for property {0}", prop.Name),
-                            };
+                        UIPropertyData uiProp = new UIPropertyData(prop) {
+                            NameFieldCaption = prop.Name,
+                            NameFieldDescription = this.__ResStr("strNameTT", "Text found in attributes for property {0}", prop.Name),
+                        };
 
-                            hb.Append($@"
+                        hb.Append($@"
             <div class='t_propentry'>
                 <div class='t_name'>
                     {await HtmlHelper.ForEditAsync(uiProp, nameof(uiProp.Name))}
@@ -183,25 +183,24 @@ namespace YetaWF.Modules.Languages.Components {
             </div>
             <div class='y_cleardiv'></div>");
 
-                        }
-
-                        ++entryIndex;
                     }
 
-                    hb.Append($@"
+                    ++entryIndex;
+                }
+
+                hb.Append($@"
         </div>
     </div>");
 
 
-                }
-
-                ++classIndex;
             }
 
-            hb.Append($@"
+            ++classIndex;
+        }
+
+        hb.Append($@"
 </div>");
 
-            return hb.ToString();
-        }
+        return hb.ToString();
     }
 }

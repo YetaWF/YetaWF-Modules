@@ -97,7 +97,7 @@ public class EditExtensionModule : ModuleDefinition2 {
             if (data == null)
                 throw new Error(this.__ResStr("notFound", "Extension \"{0}\" not found"), extension);
             model.SetData(data);
-            Title = this.__ResStr("modTitle", "Extension \"{0}\"", extension);
+            Title = this.__ResStr("title", "Extension \"{0}\"", extension);
             return await RenderAsync(model);
         }
     }

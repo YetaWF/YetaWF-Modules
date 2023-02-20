@@ -86,7 +86,7 @@ public class EditBlockedNumberModule : ModuleDefinition2 {
                 throw new Error(this.__ResStr("notFound", "Blocked phone number \"{0}\" not found"), number);
             EditModel model = new EditModel { };
             model.SetData(data);
-            Title = this.__ResStr("modTitle", "Blocked Phone Number \"{0}\"", number);
+            Title = this.__ResStr("title", "Blocked Phone Number \"{0}\"", number);
             return await RenderAsync(model);
         }
     }
