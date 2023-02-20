@@ -5,40 +5,38 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Modules.ModuleEdit.Controllers;
 using YetaWF.Modules.ModuleEdit.Modules;
 
-namespace YetaWF.Modules.ModuleEdit.Views {
+namespace YetaWF.Modules.ModuleEdit.Views;
 
-    public class EditView : YetaWFView, IYetaWFView2<ModuleEditModule, ModuleEditModuleController.ModuleEditModel> {
+public class EditView : YetaWFView, IYetaWFView2<ModuleEditModule, ModuleEditModule.ModuleEditModel> {
 
-        public const string ViewName = "ModuleEdit";
+    public const string ViewName = "ModuleEdit";
 
-        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        public override string GetViewName() { return ViewName; }
+    public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+    public override string GetViewName() { return ViewName; }
 
-        public async Task<string> RenderViewAsync(ModuleEditModule module, ModuleEditModuleController.ModuleEditModel model) {
+    public async Task<string> RenderViewAsync(ModuleEditModule module, ModuleEditModule.ModuleEditModel model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+        HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($@"
+        hb.Append($@"
 {await RenderBeginFormAsync()}
     {await HtmlHelper.ForDisplayAsync(model, nameof(model.ModuleGuid))}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
     {await FormButtonsAsync(new FormButton[] {
-        new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
-        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
-    })}
+    new FormButton() { ButtonType= ButtonTypeEnum.Submit, },
+    new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
+})}
 {await RenderEndFormAsync()}");
-            return hb.ToString();
-        }
+        return hb.ToString();
+    }
 
-        public async Task<string> RenderPartialViewAsync(ModuleEditModule module, ModuleEditModuleController.ModuleEditModel model) {
+    public async Task<string> RenderPartialViewAsync(ModuleEditModule module, ModuleEditModule.ModuleEditModel model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
-            hb.Append(await HtmlHelper.ForEditAsync(model, nameof(model.Module)));
-            return hb.ToString();
+        HtmlBuilder hb = new HtmlBuilder();
+        hb.Append(await HtmlHelper.ForEditAsync(model, nameof(model.Dynamic)));
+        return hb.ToString();
 
-        }
     }
 }

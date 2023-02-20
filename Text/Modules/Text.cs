@@ -16,11 +16,7 @@ using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Text.Controllers;
 using YetaWF.Core.Search;
-#if MVC6
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-#else
-using System.Web.Mvc;
-#endif
+using YetaWF.Core.Endpoints.Support;
 
 namespace YetaWF.Modules.Text.Modules {
 
@@ -176,16 +172,16 @@ namespace YetaWF.Modules.Text.Modules {
         // VALIDATION
         // VALIDATION
 
-        public override void CustomValidation(ModelStateDictionary modelState, string modelPrefix) {
+        public override void CustomValidation(ModelState modelState, string modelPrefix) {
             if (FeedMainUrl == "/")
-                modelState.AddModelError(modelPrefix+"FeedMainUrl", this.__ResStr("urlMain", "The site's home page can't be used as the feed's main URL (due to the use of human readable querystring arguments, which could be misinterpreted as the page name)"));
+                modelState.AddModelError($"{modelPrefix}{nameof(FeedMainUrl)}", this.__ResStr("urlMain", "The site's home page can't be used as the feed's main URL (due to the use of human readable querystring arguments, which could be misinterpreted as the page name)"));
             if (FeedDetailUrl == "/")
-                modelState.AddModelError(modelPrefix + "FeedDetailUrl", this.__ResStr("urlDetail", "The site's home page can't be used as the feed's detail URL (due to the use of human readable querystring arguments, which could be misinterpreted as the page name)"));
+                modelState.AddModelError($"{modelPrefix}{nameof(FeedDetailUrl)}", this.__ResStr("urlDetail", "The site's home page can't be used as the feed's detail URL (due to the use of human readable querystring arguments, which could be misinterpreted as the page name)"));
 
             if (FeedUpdateDate == null)
                 FeedUpdateDate = FeedPublishDate;
             if (FeedPublishDate != null && FeedUpdateDate != null && (DateTime)FeedUpdateDate < (DateTime)FeedPublishDate)
-                modelState.AddModelError(modelPrefix + "FeedUpdateDate", this.__ResStr("dateFeedUpdate", "The last update date can't be earlier than the date this item was published"));
+                modelState.AddModelError($"{modelPrefix}{nameof(FeedUpdateDate)}", this.__ResStr("dateFeedUpdate", "The last update date can't be earlier than the date this item was published"));
         }
     }
 }
