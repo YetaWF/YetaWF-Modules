@@ -193,7 +193,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (newMods) {
 
                     hb.Append($@"
-    <div class='t_packages'>
+    <div class='t_packages {Forms.CssFormNoSubmitContents}'>
         {await HtmlHelper.ForLabelAsync(uiNew!, nameof(uiNew.Package))}
         {await HtmlHelper.ForEditAsync(uiNew!, nameof(uiNew.Package))}
     </div>");
@@ -202,14 +202,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                     hb.Append($@"
 
-    <div class='t_packages'>
+    <div class='t_packages {Forms.CssFormNoSubmitContents}'>
         {await HtmlHelper.ForLabelAsync(uiExisting!, nameof(uiExisting.Package))}
         {await HtmlHelper.ForEditAsync(uiExisting!, nameof(uiExisting.Package))}
     </div>");
                 }
 
                 hb.Append($@"
-    <div class='t_select'>");
+    <div class='t_select {Forms.CssFormNoSubmitContents}'>");
 
                 if (newMods) {
 

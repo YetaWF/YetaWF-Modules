@@ -15,78 +15,77 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Core.Support.Zip;
-using YetaWF.Modules.Logging.Controllers;
+using YetaWF.Modules.Logging.Modules;
 using YetaWF.Modules.LoggingDataProvider.DataProvider;
 
-namespace YetaWF.Modules.Logging.Endpoints {
+namespace YetaWF.Modules.Logging.Endpoints;
 
-    public class BrowseLogModuleEndpoints : YetaWFEndpoints {
+public class BrowseLogModuleEndpoints : YetaWFEndpoints {
 
-        internal static string RemoveAll = "RemoveAll";
-        internal static string DownloadLog = "DownloadLog";
-        internal static string DownloadZippedLog = "DownloadZippedLog";
+    internal static string RemoveAll = "RemoveAll";
+    internal static string DownloadLog = "DownloadLog";
+    internal static string DownloadZippedLog = "DownloadZippedLog";
 
-        private static string __ResStr(string name, string defaultValue, params object?[] parms) { return ResourceAccess.GetResourceString(typeof(BrowseLogModuleEndpoints), name, defaultValue, parms); }
+    private static string __ResStr(string name, string defaultValue, params object?[] parms) { return ResourceAccess.GetResourceString(typeof(BrowseLogModuleEndpoints), name, defaultValue, parms); }
 
-        public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
+    public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(BrowseLogModuleEndpoints)))
-                .RequireAuthorization()
-                .AntiForgeryToken();
+        RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(BrowseLogModuleEndpoints)))
+            .RequireAuthorization()
+            .AntiForgeryToken();
 
-            group.MapPost(GridSupport.BrowseGridData, async (HttpContext context, [FromBody] GridSupport.GridPartialViewData gridPvData) => {
-                ModuleDefinition module = await GetModuleAsync(gridPvData.__ModuleGuid);
-                if (!module.IsAuthorized()) return Results.Unauthorized();
-                return await GridSupport.GetGridPartialAsync(context, module, BrowseLogModuleController.GetGridModel(module), gridPvData);
-            });
+        group.MapPost(GridSupport.BrowseGridData, async (HttpContext context, [FromBody] GridSupport.GridPartialViewData gridPvData) => {
+            BrowseLogModule module = await GetModuleAsync<BrowseLogModule>(gridPvData.__ModuleGuid);
+            if (!module.IsAuthorized()) return Results.Unauthorized();
+            return await GridSupport.GetGridPartialAsync(context, module, module.GetGridModel(), gridPvData);
+        });
 
-            group.MapPost(RemoveAll, async (HttpContext context, [FromQuery] Guid __ModuleGuid) => {
-                ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
-                if (!module.IsAuthorized("RemoveLog")) return Results.Unauthorized();
-                BrowseLogModuleController.FlushLog();
-                using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
-                    await dataProvider.RemoveItemsAsync(null);// that means all records
-                    return Reload(ReloadEnum.ModuleParts, __ResStr("allRemoved", "All log records have been removed"));
-                }
-            })
-                .ExcludeDemoMode();
+        group.MapPost(RemoveAll, async (HttpContext context, [FromQuery] Guid __ModuleGuid) => {
+            ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
+            if (!module.IsAuthorized("RemoveLog")) return Results.Unauthorized();
+            BrowseLogModule.FlushLog();
+            using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
+                await dataProvider.RemoveItemsAsync(null);// that means all records
+                return Reload(ReloadEnum.ModuleParts, __ResStr("allRemoved", "All log records have been removed"));
+            }
+        })
+            .ExcludeDemoMode();
 
 
-            RouteGroupBuilder groupDownload = endpoints.MapGroup(GetPackageApiRoute(package, typeof(BrowseLogModuleEndpoints)))
-                .RequireAuthorization();
+        RouteGroupBuilder groupDownload = endpoints.MapGroup(GetPackageApiRoute(package, typeof(BrowseLogModuleEndpoints)))
+            .RequireAuthorization();
 
-            groupDownload.MapGet(DownloadLog, async (HttpContext context, [FromQuery] Guid __ModuleGuid, long cookieToReturn) => {
-                ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
-                if (!module.IsAuthorized("Downloads")) return Results.Unauthorized();
-                BrowseLogModuleController.FlushLog();
-                using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
-                    string filename = dataProvider.GetLogFileName();
-                    if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
-                        throw new Error(__ResStr("logNotFound", "The log file '{0}' cannot be located", filename));
-                    context.Response.Headers.Remove("Cookie");
-                    context.Response.Cookies.Append(Basics.CookieDone, cookieToReturn.ToString(), new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = false, Path = "/" });
-                    return Results.File(filename, null, "Logfile.txt");
-                }
-            })
-                .ExcludeDemoMode();
+        groupDownload.MapGet(DownloadLog, async (HttpContext context, [FromQuery] Guid __ModuleGuid, long cookieToReturn) => {
+            ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
+            if (!module.IsAuthorized("Downloads")) return Results.Unauthorized();
+            BrowseLogModule.FlushLog();
+            using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
+                string filename = dataProvider.GetLogFileName();
+                if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
+                    throw new Error(__ResStr("logNotFound", "The log file '{0}' cannot be located", filename));
+                context.Response.Headers.Remove("Cookie");
+                context.Response.Cookies.Append(Basics.CookieDone, cookieToReturn.ToString(), new Microsoft.AspNetCore.Http.CookieOptions { HttpOnly = false, Path = "/" });
+                return Results.File(filename, null, "Logfile.txt");
+            }
+        })
+            .ExcludeDemoMode();
 
-            groupDownload.MapGet(DownloadZippedLog, async (HttpContext context, [FromQuery] Guid __ModuleGuid, long cookieToReturn) => {
-                ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
-                if (!module.IsAuthorized("Downloads")) return Results.Unauthorized();
-                BrowseLogModuleController.FlushLog();
-                using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
-                    string filename = dataProvider.GetLogFileName();
-                    if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
-                        throw new Error(__ResStr("logNotFound", "The log file '{0}' cannot be located", filename));
-                    string zipName = "Logfile.zip";
-                    YetaWFZipFile zipFile = new YetaWFZipFile {
-                        FileName = zipName,
-                    };
-                    zipFile.AddFile(filename, "Logfile.txt");
-                    return await ZippedFileResult.ZipFileAsync(context, zipFile, cookieToReturn);
-                }
-            })
-                .ExcludeDemoMode();
-        }
+        groupDownload.MapGet(DownloadZippedLog, async (HttpContext context, [FromQuery] Guid __ModuleGuid, long cookieToReturn) => {
+            ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
+            if (!module.IsAuthorized("Downloads")) return Results.Unauthorized();
+            BrowseLogModule.FlushLog();
+            using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
+                string filename = dataProvider.GetLogFileName();
+                if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
+                    throw new Error(__ResStr("logNotFound", "The log file '{0}' cannot be located", filename));
+                string zipName = "Logfile.zip";
+                YetaWFZipFile zipFile = new YetaWFZipFile {
+                    FileName = zipName,
+                };
+                zipFile.AddFile(filename, "Logfile.txt");
+                return await ZippedFileResult.ZipFileAsync(context, zipFile, cookieToReturn);
+            }
+        })
+            .ExcludeDemoMode();
     }
 }

@@ -545,13 +545,14 @@ namespace YetaWF_Menus {
             let menuGuid = menuGuidInput.value;
 
             let uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
-            uri.addFormInfo(form);
-            uri.addSearch("menuGuid", menuGuid);
-            uri.addSearch("menuVersion", menuVersion);
-            uri.addSearch("EntireMenu", JSON.stringify(this.buildHierarchy()));
 
-            $YetaWF.post(this.Setup.AjaxUrl, uri.toFormData(), (success: boolean, sendResult: SendResult): void => {
-                menuVersionInput.value = sendResult.NewVersion.toString();
+            const info = $YetaWF.Forms.getJSONInfo(this.SaveButton);
+            const token = info[YConfigs.Forms.RequestVerificationToken];
+            uri.addSearch(YConfigs.Forms.RequestVerificationToken, token);
+
+            $YetaWF.postJSON(uri, { menuGuid: menuGuid, menuVersion: menuVersion, }, this.buildHierarchy(), (success: boolean, sendResult: SendResult): void => {
+                if (success)
+                    menuVersionInput.value = sendResult.NewVersion.toString();
             });
         }
     }

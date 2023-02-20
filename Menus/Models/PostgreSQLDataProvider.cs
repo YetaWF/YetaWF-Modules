@@ -5,15 +5,14 @@ using System.Collections.Generic;
 using YetaWF.Core.DataProvider;
 using YetaWF.DataProvider.PostgreSQL;
 
-namespace YetaWF.Modules.Menus.DataProvider.PostgreSQL {
+namespace YetaWF.Modules.Menus.DataProvider.PostgreSQL;
 
-    public class PostgreSQLDataProvider : IExternalDataProvider {
+public class PostgreSQLDataProvider : IExternalDataProvider {
 
-        public void Register() {
-            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.MenuInfoDataProvider), typeof(MenuInfoDataProvider));
-        }
-        class MenuInfoDataProvider : SQLSimpleObject<Guid, MenuInfo> {
-            public MenuInfoDataProvider(Dictionary<string, object> options) : base(options) { }
-        }
+    public void Register() {
+        DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.MenuInfoDataProvider), typeof(MenuInfoDataProvider));
+    }
+    class MenuInfoDataProvider : SQLSimpleObject<Guid, MenuInfo> {
+        public MenuInfoDataProvider(Dictionary<string, object> options) : base(options) { }
     }
 }

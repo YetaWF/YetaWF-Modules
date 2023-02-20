@@ -458,12 +458,14 @@ var YetaWF_Menus;
             var menuGuidInput = $YetaWF.getElement1BySelector("input[name='MenuGuid']", [form]);
             var menuGuid = menuGuidInput.value;
             var uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
-            uri.addFormInfo(form);
-            uri.addSearch("menuGuid", menuGuid);
-            uri.addSearch("menuVersion", menuVersion);
-            uri.addSearch("EntireMenu", JSON.stringify(this.buildHierarchy()));
-            $YetaWF.post(this.Setup.AjaxUrl, uri.toFormData(), function (success, sendResult) {
-                menuVersionInput.value = sendResult.NewVersion.toString();
+            var info = $YetaWF.Forms.getJSONInfo(this.SaveButton);
+            var token = info[YConfigs.Forms.RequestVerificationToken];
+            uri.addSearch(YConfigs.Forms.RequestVerificationToken, token);
+            // eslint-disable
+            debugger;
+            $YetaWF.postJSON(uri, { menuGuid: menuGuid, menuVersion: menuVersion, }, this.buildHierarchy(), function (success, sendResult) {
+                if (success)
+                    menuVersionInput.value = sendResult.NewVersion.toString();
             });
         };
         return MenuEditView;
