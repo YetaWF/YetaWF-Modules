@@ -490,12 +490,15 @@ namespace YetaWF_ComponentsHTML {
             return width;
         }
 
-        public ajaxUpdate(data: any, ajaxUrl: string, onSuccess?: (data: any) => void, onFailure?: () => void): void {
+        public updateContents(data: any, url: string, onSuccess?: (data: any) => void, onFailure?: () => void): void {
 
             this.closePopup(SendSelectEnum.No);
 
-            var uri = $YetaWF.parseUrl(ajaxUrl);
+            var uri = $YetaWF.parseUrl(url);
             uri.addSearchSimpleObject(data);
+
+            var info = $YetaWF.Forms.getFormInfo(this.Control);
+            uri.addSearch(YConfigs.Forms.RequestVerificationToken, info.RequestVerificationToken);
 
             $YetaWF.postJSON(uri, null, null, (success: boolean, data: DropDownListAjaxData): void => {
                 if (success) {

@@ -12,101 +12,100 @@ using YetaWF.Core.Site;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Packages.DataProvider;
 
-namespace YetaWF.Modules.Packages.Controllers {
+namespace YetaWF.Modules.Packages.Controllers;
 
-    // Standard MVC Controller
-    // Standard MVC Controller
-    // Standard MVC Controller
+// Standard MVC Controller
+// Standard MVC Controller
+// Standard MVC Controller
 
-    public class StartupPageController : YetaWFController {
+public class StartupPageController : YetaWFController {
 
-        [AllowGet]
-        public async Task<ActionResult> Show() {
+    [AllowGet]
+    public async Task<ActionResult> Show() {
 
-            string url = Package.GetAddOnPackageUrl(AreaRegistration.CurrentPackage.AreaName);
-            string path = Utility.UrlToPhysical(url);
+        string url = Package.GetAddOnPackageUrl(AreaRegistration.CurrentPackage.AreaName);
+        string path = Utility.UrlToPhysical(url);
 
-            string file;
-            if (SiteDefinition.INITIAL_INSTALL_ENDED)
-                file = "StartupDone.html";
-            else
-                file = "StartupPage.html";
+        string file;
+        if (SiteDefinition.INITIAL_INSTALL_ENDED)
+            file = "StartupDone.html";
+        else
+            file = "StartupPage.html";
 
-            string content = await FileSystem.FileSystemProvider.ReadAllTextAsync(Path.Combine(path, "HTML", file));
-            return Content(content, "text/html");
+        string content = await FileSystem.FileSystemProvider.ReadAllTextAsync(Path.Combine(path, "HTML", file));
+        return Content(content, "text/html");
+    }
+
+    [AllowPost]
+    public async Task<ActionResult> Run() {
+
+        if (!SiteDefinition.INITIAL_INSTALL || SiteDefinition.INITIAL_INSTALL_ENDED)
+            return NotAuthorized();
+
+        List<string> wantedPackages = new List<string>();
+        FormHelper form = Manager.RequestForm;
+        foreach (string key in form.GetCollection().Keys) {
+            if (form[key] == "on")
+                wantedPackages.Add(key);
         }
+        wantedPackages.AddRange(RequiredPackages);
 
-        [AllowPost]
-        public async Task<ActionResult> Run() {
+        PackagesDataProvider packagesDP = new PackagesDataProvider();
+        QueryHelper qh = new QueryHelper();
+        qh.Add("From", "Data");
+        await packagesDP.InitAllAsync(qh, wantedPackages);
 
-            if (!SiteDefinition.INITIAL_INSTALL || SiteDefinition.INITIAL_INSTALL_ENDED)
-                return NotAuthorized();
+        return new EmptyResult();
+    }
 
-            List<string> wantedPackages = new List<string>();
-            FormHelper form = Manager.RequestForm;
-            foreach (string key in form.GetCollection().Keys) {
-                if (form[key] == "on")
-                    wantedPackages.Add(key);
-            }
-            wantedPackages.AddRange(RequiredPackages);
+    static List<string> RequiredPackages = new List<string> {
+            "YetaWF.Basics",
+            "YetaWF.Caching",
+            "YetaWF.Core",
+            "YetaWF.Core.CssHttpHandler",
+            "YetaWF.Core.ImageHttpHandler",
+            "YetaWF.Core.WebpHttpHandler",
+            "YetaWF.ComponentsHTML",
+            "YetaWF.DataProvider.File",
+            "YetaWF.DataProvider.Localization",
+            "YetaWF.DataProvider.ModuleDefinition",
+            "YetaWF.DataProvider.SQL",
+            "YetaWF.DataProvider.PostgreSQL",
+            "YetaWF.Languages",
+            "YetaWF.Logging",
+            "YetaWF.LoggingDataProvider",
+            "YetaWF.Identity",
+            "YetaWF.Menus",
+            "YetaWF.ModuleEdit",
+            "YetaWF.Modules",
+            "YetaWF.Packages",
+            "YetaWF.PageEdit",
+            "YetaWF.Pages",
+            "YetaWF.SiteProperties",
+            "YetaWF.WebStartup",
+        };
 
-            PackagesDataProvider packagesDP = new PackagesDataProvider();
-            QueryHelper qh = new QueryHelper();
-            qh.Add("From", "Data");
-            await packagesDP.InitAllAsync(qh, wantedPackages);
+    [AllowPost]
+    public ActionResult GetPackageList() {
 
-            return new EmptyResult();
-        }
+        HtmlBuilder hb = new HtmlBuilder();
 
-        static List<string> RequiredPackages = new List<string> {
-                "YetaWF.Basics",
-                "YetaWF.Caching",
-                "YetaWF.Core",
-                "YetaWF.Core.CssHttpHandler",
-                "YetaWF.Core.ImageHttpHandler",
-                "YetaWF.Core.WebpHttpHandler",
-                "YetaWF.ComponentsHTML",
-                "YetaWF.DataProvider.File",
-                "YetaWF.DataProvider.Localization",
-                "YetaWF.DataProvider.ModuleDefinition",
-                "YetaWF.DataProvider.SQL",
-                "YetaWF.DataProvider.PostgreSQL",
-                "YetaWF.Languages",
-                "YetaWF.Logging",
-                "YetaWF.LoggingDataProvider",
-                "YetaWF.Identity",
-                "YetaWF.Menus",
-                "YetaWF.ModuleEdit",
-                "YetaWF.Modules",
-                "YetaWF.Packages",
-                "YetaWF.PageEdit",
-                "YetaWF.Pages",
-                "YetaWF.SiteProperties",
-                "YetaWF.WebStartup",
-            };
+        List<Package> packages = Package.GetAvailablePackages();
+        packages = packages.OrderBy((p) => p.Name).ToList();
+        foreach (Package package in packages) {
 
-        [AllowPost]
-        public ActionResult GetPackageList() {
-
-            HtmlBuilder hb = new HtmlBuilder();
-
-            List<Package> packages = Package.GetAvailablePackages();
-            packages = packages.OrderBy((p) => p.Name).ToList();
-            foreach (Package package in packages) {
-
-                string disabled = "";
-                if (RequiredPackages.Contains(package.Name)) {
-                    //disabled = " disabled='disabled'";
-                } else {
-                    hb.Append($@"
+            string disabled = "";
+            if (RequiredPackages.Contains(package.Name)) {
+                //disabled = " disabled='disabled'";
+            } else {
+                hb.Append($@"
 <tr>
     <td><input type='checkbox' checked='checked' name='{package.Name}'{disabled}/></td>
     <td>{Utility.HE(package.Name)}</td>
     <td>{Utility.HE(package.Description)}</td>
 </tr>");
-                }
             }
-            return new YJsonResult() { Data = hb.ToString() };
         }
+        return new YJsonResult() { Data = hb.ToString() };
     }
 }

@@ -7,38 +7,36 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Modules.Packages.Controllers;
 using YetaWF.Modules.Packages.Modules;
 
-namespace YetaWF.Modules.Modules.Views {
+namespace YetaWF.Modules.Modules.Views;
 
-    public class SiteTemplateProcessView : YetaWFView, IYetaWFView2<SiteTemplateProcessModule, SiteTemplateProcessModuleController.EditModel> {
+public class SiteTemplateProcessView : YetaWFView, IYetaWFView2<SiteTemplateProcessModule, SiteTemplateProcessModule.EditModel> {
 
-        public const string ViewName = "SiteTemplateProcess";
+    public const string ViewName = "SiteTemplateProcess";
 
-        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        public override string GetViewName() { return ViewName; }
+    public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+    public override string GetViewName() { return ViewName; }
 
-        public async Task<string> RenderViewAsync(SiteTemplateProcessModule module, SiteTemplateProcessModuleController.EditModel model) {
+    public async Task<string> RenderViewAsync(SiteTemplateProcessModule module, SiteTemplateProcessModule.EditModel model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+        HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($@"
+        hb.Append($@"
 {await RenderBeginFormAsync()}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
     {await FormButtonsAsync(new FormButton[] {
-        new FormButton() { ButtonType= ButtonTypeEnum.Apply, Text=this.__ResStr("btnSave", "Process") },
-    })}
+    new FormButton() { ButtonType= ButtonTypeEnum.Apply, Text=this.__ResStr("btnSave", "Process") },
+})}
 {await RenderEndFormAsync()}");
-            return hb.ToString();
-        }
+        return hb.ToString();
+    }
 
-        public async Task<string> RenderPartialViewAsync(SiteTemplateProcessModule module, SiteTemplateProcessModuleController.EditModel model) {
+    public async Task<string> RenderPartialViewAsync(SiteTemplateProcessModule module, SiteTemplateProcessModule.EditModel model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
-            hb.Append(await HtmlHelper.ForEditContainerAsync(model, "PropertyList"));
-            return hb.ToString();
+        HtmlBuilder hb = new HtmlBuilder();
+        hb.Append(await HtmlHelper.ForEditContainerAsync(model, "PropertyList"));
+        return hb.ToString();
 
-        }
     }
 }

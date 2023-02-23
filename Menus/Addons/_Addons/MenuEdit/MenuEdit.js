@@ -461,8 +461,6 @@ var YetaWF_Menus;
             var info = $YetaWF.Forms.getJSONInfo(this.SaveButton);
             var token = info[YConfigs.Forms.RequestVerificationToken];
             uri.addSearch(YConfigs.Forms.RequestVerificationToken, token);
-            // eslint-disable
-            debugger;
             $YetaWF.postJSON(uri, { menuGuid: menuGuid, menuVersion: menuVersion, }, this.buildHierarchy(), function (success, sendResult) {
                 if (success)
                     menuVersionInput.value = sendResult.NewVersion.toString();

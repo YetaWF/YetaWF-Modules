@@ -70,6 +70,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (ModuleBase.JSONModule) {//$$$
                 if (Method.ToLower() != "post") throw new InternalError("Only POST method is supported");
                 formAction = $"{Utility.UrlFor<ModuleEndpoints>(ModuleEndpoints.Update)}/{ModuleBase.ModuleGuid}";
+                if (ActionName != null)
+                    formAction += $"?Action={ActionName}";
                 jsonSubmit = $"data-json-submit ";//$$
             } else {
                 if (string.IsNullOrWhiteSpace(ActionName))

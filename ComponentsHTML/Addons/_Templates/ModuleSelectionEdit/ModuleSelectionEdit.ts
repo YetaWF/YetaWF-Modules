@@ -49,7 +49,7 @@ namespace YetaWF_ComponentsHTML {
 
             this.SelectPackage.Control.addEventListener(DropDownListEditComponent.EVENTCHANGE, (evt: Event): void => {
                 let data = { AreaName: this.SelectPackage.value };
-                this.SelectModule.ajaxUpdate(data, this.Setup.AjaxUrl);
+                this.SelectModule.updateContents(data, this.Setup.AjaxUrl);
             });
             this.SelectModule.Control.addEventListener(DropDownListEditComponent.EVENTCHANGE, (evt: Event): void => {
                 let modGuid = this.SelectModule.value;
@@ -136,7 +136,7 @@ namespace YetaWF_ComponentsHTML {
             if (modGuid !== undefined && modGuid !== null && modGuid.length > 0 && modGuid !== "00000000-0000-0000-0000-000000000000") {
 
                 var data = { "modGuid": modGuid };
-                this.SelectModule.ajaxUpdate(data, this.Setup.AjaxUrlComplete,
+                this.SelectModule.updateContents(data, this.Setup.AjaxUrlComplete,
                     (data: YetaWF_ComponentsHTML.DropDownListAjaxData): void => {
                         this.Hidden.value = modGuid;
                         this.SelectPackage.value = data.ExtraData;

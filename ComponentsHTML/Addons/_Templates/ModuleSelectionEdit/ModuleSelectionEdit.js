@@ -43,7 +43,7 @@ var YetaWF_ComponentsHTML;
             _this.showDescription();
             _this.SelectPackage.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, function (evt) {
                 var data = { AreaName: _this.SelectPackage.value };
-                _this.SelectModule.ajaxUpdate(data, _this.Setup.AjaxUrl);
+                _this.SelectModule.updateContents(data, _this.Setup.AjaxUrl);
             });
             _this.SelectModule.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, function (evt) {
                 var modGuid = _this.SelectModule.value;
@@ -138,7 +138,7 @@ var YetaWF_ComponentsHTML;
             var _this = this;
             if (modGuid !== undefined && modGuid !== null && modGuid.length > 0 && modGuid !== "00000000-0000-0000-0000-000000000000") {
                 var data = { "modGuid": modGuid };
-                this.SelectModule.ajaxUpdate(data, this.Setup.AjaxUrlComplete, function (data) {
+                this.SelectModule.updateContents(data, this.Setup.AjaxUrlComplete, function (data) {
                     _this.Hidden.value = modGuid;
                     _this.SelectPackage.value = data.ExtraData;
                     _this.SelectModule.value = modGuid;

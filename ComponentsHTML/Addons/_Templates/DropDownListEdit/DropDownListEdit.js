@@ -472,11 +472,13 @@ var YetaWF_ComponentsHTML;
             elem.remove();
             return width;
         };
-        DropDownListEditComponent.prototype.ajaxUpdate = function (data, ajaxUrl, onSuccess, onFailure) {
+        DropDownListEditComponent.prototype.updateContents = function (data, url, onSuccess, onFailure) {
             var _this = this;
             this.closePopup(SendSelectEnum.No);
-            var uri = $YetaWF.parseUrl(ajaxUrl);
+            var uri = $YetaWF.parseUrl(url);
             uri.addSearchSimpleObject(data);
+            var info = $YetaWF.Forms.getFormInfo(this.Control);
+            uri.addSearch(YConfigs.Forms.RequestVerificationToken, info.RequestVerificationToken);
             $YetaWF.postJSON(uri, null, null, function (success, data) {
                 if (success) {
                     _this.setOptionsHTML(data.OptionsHTML);
