@@ -1,10 +1,12 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Pages#License */
 
 using System;
+using System.Threading.Tasks;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.DataProvider;
 
@@ -14,7 +16,7 @@ namespace YetaWF.Modules.Pages.Modules {
 
     [ModuleGuid("{2a4e6f13-24a0-45c1-8a42-f1072e6ac7de}")]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-    public class SkinScrollToTopModule : ModuleDefinition {
+    public class SkinScrollToTopModule : ModuleDefinition2 {
 
         public SkinScrollToTopModule() {
             Title = this.__ResStr("modTitle", "Skin ScrollToTop");
@@ -31,5 +33,12 @@ namespace YetaWF.Modules.Pages.Modules {
         public override IModuleDefinitionIO GetDataProvider() { return new SkinScrollToTopModuleDataProvider(); }
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
+
+        public class DisplayModel { }
+
+        public async Task<ActionInfo> RenderModuleAsync() {
+            DisplayModel model = new DisplayModel();
+            return await RenderAsync(model);
+        }
     }
 }

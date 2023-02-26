@@ -6,19 +6,18 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 
-namespace YetaWF.Modules.Panels.Addons.Templates {
+namespace YetaWF.Modules.Panels.Addons.Templates;
 
-    public class PanelInfoEdit : IAddOnSupport {
+public class PanelInfoEdit : IAddOnSupport {
 
-        public Task AddSupportAsync(YetaWFManager manager) {
+    public Task AddSupportAsync(YetaWFManager manager) {
 
-            ScriptManager scripts = manager.ScriptManager;
-            string areaName = AreaRegistration.CurrentPackage.AreaName;
+        ScriptManager scripts = manager.ScriptManager;
+        string areaName = AreaRegistration.CurrentPackage.AreaName;
 
-            scripts.AddLocalization(areaName, "RemovePanelConfirm", this.__ResStr("removePanelConfirm", "Are you sure you want to remove this panel?"));
-            scripts.AddLocalization(areaName, "RemovePanelTitle", this.__ResStr("removePanelTitle", "Remove Panel"));
+        scripts.AddLocalization(areaName, "RemovePanelConfirm", this.__ResStr("removePanelConfirm", "Are you sure you want to remove this panel?"));
+        scripts.AddLocalization(areaName, "RemovePanelTitle", this.__ResStr("removePanelTitle", "Remove Panel"));
 
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

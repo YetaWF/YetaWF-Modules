@@ -9,23 +9,22 @@ using YetaWF.Core.Endpoints;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 
-namespace YetaWF.Modules.Search.Endpoints {
+namespace YetaWF.Modules.Search.Endpoints;
 
-    public class SearchControlModuleEndpoints : YetaWFEndpoints {
+public class SearchControlModuleEndpoints : YetaWFEndpoints {
 
-        internal static string Switch = "Switch";
+    internal static string Switch = "Switch";
 
-        public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
+    public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(SearchControlModuleEndpoints)));
+        RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(SearchControlModuleEndpoints)));
 
-            group.MapPost(Switch, async (HttpContext context, [FromQuery] Guid __ModuleGuid, bool value) => {
-                ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
-                if (!module.IsAuthorized()) return Results.Unauthorized();
-                Manager.SessionSettings.SiteSettings.SetValue<bool>("YetaWF_SearchControl_Highlight", value);
-                Manager.SessionSettings.SiteSettings.Save();
-                return Results.Json("", null, "application/json");
-            });
-        }
+        group.MapPost(Switch, async (HttpContext context, [FromQuery] Guid __ModuleGuid, bool value) => {
+            ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
+            if (!module.IsAuthorized()) return Results.Unauthorized();
+            Manager.SessionSettings.SiteSettings.SetValue<bool>("YetaWF_SearchControl_Highlight", value);
+            Manager.SessionSettings.SiteSettings.Save();
+            return Results.Json("", null, "application/json");
+        });
     }
 }

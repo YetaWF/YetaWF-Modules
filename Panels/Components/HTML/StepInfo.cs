@@ -10,99 +10,99 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Panels.Models;
 
-namespace YetaWF.Modules.Panels.Components {
+namespace YetaWF.Modules.Panels.Components;
 
-    public abstract class StepInfoComponentBase : YetaWFComponent {
+public abstract class StepInfoComponentBase : YetaWFComponent {
 
-        public const string TemplateName = "StepInfo";
+    public const string TemplateName = "StepInfo";
 
-        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        public override string GetTemplateName() { return TemplateName; }
-    }
+    public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+    public override string GetTemplateName() { return TemplateName; }
+}
 
-    /// <summary>
-    /// This component is used by the YetaWF.Panels package and is not intended for use by an application.
-    /// </summary>
-    [PrivateComponent]
-    public class ModuleStepInfoDisplayComponent : StepInfoComponentBase, IYetaWFComponent<StepInfo> {
+/// <summary>
+/// This component is used by the YetaWF.Panels package and is not intended for use by an application.
+/// </summary>
+[PrivateComponent]
+public class ModuleStepInfoDisplayComponent : StepInfoComponentBase, IYetaWFComponent<StepInfo> {
 
-        public override ComponentType GetComponentType() { return ComponentType.Display; }
+    public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public Task<string> RenderAsync(StepInfo model) {
+    public Task<string> RenderAsync(StepInfo model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+        HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($@"
+        hb.Append($@"
 <div class='yt_panels_stepinfo t_display' id='{ControlId}'>");
 
-            int stepIndex = 0;
+        int stepIndex = 0;
 
-            foreach (StepInfo.StepEntry step in model.Steps) {
+        foreach (StepInfo.StepEntry step in model.Steps) {
 
-                string? caption = model.Steps[stepIndex].Caption;
-                if (string.IsNullOrWhiteSpace(caption)) { caption = this.__ResStr("noCaption", "(no caption)"); }
-                string? description = model.Steps[stepIndex].Description;
-                if (string.IsNullOrWhiteSpace(description)) { description = this.__ResStr("noDesc", "(no description)"); }
-                string? name = model.Steps[stepIndex].Name;
-                if (string.IsNullOrWhiteSpace(name)) { name = "unnamed"; }
+            string? caption = model.Steps[stepIndex].Caption;
+            if (string.IsNullOrWhiteSpace(caption)) { caption = this.__ResStr("noCaption", "(no caption)"); }
+            string? description = model.Steps[stepIndex].Description;
+            if (string.IsNullOrWhiteSpace(description)) { description = this.__ResStr("noDesc", "(no description)"); }
+            string? name = model.Steps[stepIndex].Name;
+            if (string.IsNullOrWhiteSpace(name)) { name = "unnamed"; }
 
-                hb.Append($@"
+            hb.Append($@"
     <a class='t_step yaction-link' data-name='{HAE(name)}'>
         <span class='t_caption'>{HE(caption)}</span>
         <span class='t_description'>{HE(description)}</span>
     </a>");
 
-                ++stepIndex;
-            }
+            ++stepIndex;
+        }
 
-            hb.Append($@"
+        hb.Append($@"
 </div>");
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_Panels.StepInfoComponent('{ControlId}');");
+        Manager.ScriptManager.AddLast($@"new YetaWF_Panels.StepInfoComponent('{ControlId}');");
 
-            return Task.FromResult(hb.ToString());
-        }
+        return Task.FromResult(hb.ToString());
+    }
+}
+
+/// <summary>
+/// This component is used by the YetaWF.Panels package and is not intended for use by an application.
+/// </summary>
+[PrivateComponent]
+public class ModuleStepInfoEditComponent : StepInfoComponentBase, IYetaWFComponent<StepInfo> {
+
+    public override ComponentType GetComponentType() { return ComponentType.Edit; }
+
+    internal class UI {
+        [UIHint("Tabs")]
+        public TabsDefinition TabsDef { get; set; } = null!;
     }
 
-    /// <summary>
-    /// This component is used by the YetaWF.Panels package and is not intended for use by an application.
-    /// </summary>
-    [PrivateComponent]
-    public class ModuleStepInfoEditComponent : StepInfoComponentBase, IYetaWFComponent<StepInfo> {
+    public async Task<string> RenderAsync(StepInfo model) {
 
-        public override ComponentType GetComponentType() { return ComponentType.Edit; }
-
-        internal class UI {
-            [UIHint("Tabs")]
-            public TabsDefinition TabsDef { get; set; } = null!;
+        UI ui = new UI {
+            TabsDef = new TabsDefinition {
+                ActiveTabIndex = model._ActiveTab,
+            }
+        };
+        for (int i = 0; i < model.Steps.Count; ++i) {
+            string caption = model.Steps[i].Caption.ToString();
+            if (string.IsNullOrWhiteSpace(caption)) { caption = this.__ResStr("noCaption", "(no caption)"); }
+            ui.TabsDef.Tabs.Add(new TabEntry {
+                Caption = caption,
+                PaneCssClasses = "t_steps",
+                RenderPaneAsync = async (int tabIndex) => {
+                    HtmlBuilder hbt = new HtmlBuilder();
+                    using (Manager.StartNestedComponent($"{FieldNamePrefix}.Steps[{tabIndex}]")) {
+                        hbt.Append(await HtmlHelper.ForEditContainerAsync(model.Steps[tabIndex], "PropertyList"));
+                    }
+                    return hbt.ToString();
+                },
+            });
         }
 
-        public async Task<string> RenderAsync(StepInfo model) {
+        HtmlBuilder hb = new HtmlBuilder();
 
-            UI ui = new UI {
-                TabsDef = new TabsDefinition {
-                    ActiveTabIndex = model._ActiveTab,
-                }
-            };
-            for (int i = 0; i < model.Steps.Count; ++i) {
-                string caption = model.Steps[i].Caption.ToString();
-                if (string.IsNullOrWhiteSpace(caption)) { caption = this.__ResStr("noCaption", "(no caption)"); }
-                ui.TabsDef.Tabs.Add(new TabEntry {
-                    Caption = caption,
-                    PaneCssClasses = "t_steps",
-                    RenderPaneAsync = async (int tabIndex) => {
-                        HtmlBuilder hbt = new HtmlBuilder();
-                        using (Manager.StartNestedComponent($"{FieldNamePrefix}.Steps[{tabIndex}]")) {
-                            hbt.Append(await HtmlHelper.ForEditContainerAsync(model.Steps[tabIndex], "PropertyList"));
-                        }
-                        return hbt.ToString();
-                    },
-                });
-            }
-
-            HtmlBuilder hb = new HtmlBuilder();
-
-            hb.Append($@"
+        hb.Append($@"
 <div id='{ControlId}' class='yt_panels_stepinfo t_edit'>
     {await HtmlHelper.ForEditContainerAsync(model, "PropertyList")}
     <div class='t_steps' id='{DivId}'>
@@ -118,10 +118,9 @@ namespace YetaWF.Modules.Panels.Components {
     </div>
 </div>");
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_Panels.StepInfoEditComponent('{ControlId}');");
+        Manager.ScriptManager.AddLast($@"new YetaWF_Panels.StepInfoEditComponent('{ControlId}');");
 
-            return hb.ToString();
-        }
+        return hb.ToString();
     }
 }
 

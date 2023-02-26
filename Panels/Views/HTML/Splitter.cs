@@ -4,20 +4,18 @@ using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
 using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Modules.Panels.Controllers;
 using YetaWF.Modules.Panels.Modules;
 
-namespace YetaWF.Modules.Panels.Views {
+namespace YetaWF.Modules.Panels.Views;
 
-    public class SplitterView : YetaWFView, IYetaWFView<SplitterModule, SplitterModuleController.Model> {
+public class SplitterView : YetaWFView, IYetaWFView<SplitterModule, SplitterModule.Model> {
 
-        public const string ViewName = "Splitter";
+    public const string ViewName = "Splitter";
 
-        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        public override string GetViewName() { return ViewName; }
+    public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+    public override string GetViewName() { return ViewName; }
 
-        public Task<string> RenderViewAsync(SplitterModule module, SplitterModuleController.Model model) {
-            return HtmlHelper.ForDisplayAsync(model, nameof(model.SplitterInfo));
-        }
+    public Task<string> RenderViewAsync(SplitterModule module, SplitterModule.Model model) {
+        return HtmlHelper.ForDisplayAsync(model, nameof(model.SplitterInfo));
     }
 }

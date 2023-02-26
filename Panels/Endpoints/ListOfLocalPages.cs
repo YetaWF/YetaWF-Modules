@@ -9,24 +9,23 @@ using YetaWF.Core.Endpoints.Filters;
 using YetaWF.Core.Packages;
 using YetaWF.Modules.Panels.Components;
 
-namespace YetaWF.Modules.Panels.Endpoints {
+namespace YetaWF.Modules.Panels.Endpoints;
 
-    public class ListOfLocalPagesEndpoints : YetaWFEndpoints {
+public class ListOfLocalPagesEndpoints : YetaWFEndpoints {
 
-        public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
+    public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(ListOfLocalPagesEndpoints)))
-                .RequireAuthorization()
-                .AntiForgeryToken()
-                .ResourceAuthorize(YetaWF.Modules.Pages.Addons.Info.Resource_AllowListOfLocalPagesAjax);
+        RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(ListOfLocalPagesEndpoints)))
+            .RequireAuthorization()
+            .AntiForgeryToken()
+            .ResourceAuthorize(YetaWF.Modules.Pages.Addons.Info.Resource_AllowListOfLocalPagesAjax);
 
-            group.MapPost(GridSupport.BrowseGridData, async (HttpContext context, [FromBody] GridSupport.GridPartialViewData gridPvData) => {
-                return await GridSupport.GetGridPartialAsync(context, null, ListOfLocalPagesEditComponent.GetGridAllUsersModel(), gridPvData);
-            });
+        group.MapPost(GridSupport.BrowseGridData, async (HttpContext context, [FromBody] GridSupport.GridPartialViewData gridPvData) => {
+            return await GridSupport.GetGridPartialAsync(context, null, ListOfLocalPagesEditComponent.GetGridAllUsersModel(), gridPvData);
+        });
 
-            group.MapPost(GridSupport.EditSortFilter, async (HttpContext context, [FromBody] GridSupport.GridPartialViewData gridPvData) => {
-                return await GridSupport.GetGridPartialAsync<ListOfLocalPagesEditComponent.Entry>(context, null, ListOfLocalPagesEditComponent.GetGridModel(false), gridPvData);
-            });
-        }
+        group.MapPost(GridSupport.EditSortFilter, async (HttpContext context, [FromBody] GridSupport.GridPartialViewData gridPvData) => {
+            return await GridSupport.GetGridPartialAsync<ListOfLocalPagesEditComponent.Entry>(context, null, ListOfLocalPagesEditComponent.GetGridModel(false), gridPvData);
+        });
     }
 }

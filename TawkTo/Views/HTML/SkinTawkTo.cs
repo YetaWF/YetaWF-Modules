@@ -5,39 +5,38 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Modules.TawkTo.Controllers;
 using YetaWF.Modules.TawkTo.DataProvider;
 using YetaWF.Modules.TawkTo.Modules;
 
-namespace YetaWF.Modules.TawkTo.Views {
+namespace YetaWF.Modules.TawkTo.Views;
 
-    public class SkinTawkToView : YetaWFView, IYetaWFView<SkinTawkToModule, SkinTawkToModuleController.DisplayModel> {
+public class SkinTawkToView : YetaWFView, IYetaWFView<SkinTawkToModule, SkinTawkToModule.DisplayModel> {
 
-        public const string ViewName = "SkinTawkTo";
+    public const string ViewName = "SkinTawkTo";
 
-        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        public override string GetViewName() { return ViewName; }
+    public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+    public override string GetViewName() { return ViewName; }
 
-        public Task<string> RenderViewAsync(SkinTawkToModule module, SkinTawkToModuleController.DisplayModel model) {
+    public Task<string> RenderViewAsync(SkinTawkToModule module, SkinTawkToModule.DisplayModel model) {
 
-            ScriptBuilder sb = new ScriptBuilder();
+        ScriptBuilder sb = new ScriptBuilder();
 
-            ConfigData config = ConfigDataProvider.GetConfigAsync().Result;
+        ConfigData config = ConfigDataProvider.GetConfigAsync().Result;
 
-            sb.Append($@"
+        sb.Append($@"
 // https://www.tawk.to/javascript-api/
 var Tawk_API = Tawk_API || {{}}, Tawk_LoadStart = new Date();");
 
-            if (Manager.HaveUser) {
-                sb.Append($@"
+        if (Manager.HaveUser) {
+            sb.Append($@"
 Tawk_API.visitor = {{
     name: '{JE(Manager.UserName)}',
     email: '{JE(Manager.UserEmail)}',
     hash: '{JE(model.Hash)}'
 }};");
-            }
+        }
 
-            sb.Append($@"
+        sb.Append($@"
 (function() {{
     var s1=document.createElement('script'),s0=document.getElementsByTagName('script')[0];
     s1.async=true;
@@ -47,9 +46,8 @@ Tawk_API.visitor = {{
     s0.parentNode.insertBefore(s1,s0);
 }})();");
 
-            Manager.ScriptManager.AddLast(sb.ToString());
+        Manager.ScriptManager.AddLast(sb.ToString());
 
-            return Task.FromResult<string>(string.Empty);
-        }
+        return Task.FromResult<string>(string.Empty);
     }
 }

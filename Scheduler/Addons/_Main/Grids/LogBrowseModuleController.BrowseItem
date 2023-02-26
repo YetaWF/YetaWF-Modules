@@ -1,7 +1,0 @@
-Commands            icons 1
-TimeStamp           sort filter 20 defaultSort desc
-RunId               sort filter 16
-Name                sort filter 20
-Level               sort filter 10
-SiteIdentity        left filter 10
-Info                filter 80 truncate

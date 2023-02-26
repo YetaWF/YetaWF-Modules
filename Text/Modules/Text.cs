@@ -1,22 +1,24 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Text#License */
 
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider.Attributes;
+using YetaWF.Core.Endpoints.Support;
 using YetaWF.Core.Extensions;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Pages;
+using YetaWF.Core.Search;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Text.Controllers;
-using YetaWF.Core.Search;
-using YetaWF.Core.Endpoints.Support;
 
 namespace YetaWF.Modules.Text.Modules {
 
@@ -24,7 +26,7 @@ namespace YetaWF.Modules.Text.Modules {
 
     [ModuleGuid("{408CA15D-14B0-443b-A66A-14CC6B9EBE38}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TextModule : ModuleDefinition {
+    public class TextModule : ModuleDefinition2 {
 
         public const int MaxContents = 1024 * 1024;
 
@@ -182,6 +184,47 @@ namespace YetaWF.Modules.Text.Modules {
                 FeedUpdateDate = FeedPublishDate;
             if (FeedPublishDate != null && FeedUpdateDate != null && (DateTime)FeedUpdateDate < (DateTime)FeedPublishDate)
                 modelState.AddModelError($"{modelPrefix}{nameof(FeedUpdateDate)}", this.__ResStr("dateFeedUpdate", "The last update date can't be earlier than the date this item was published"));
+        }
+
+        public class TextModel {
+            [UIHint("TextArea"), AdditionalMetadata("EmHeight", 25)]
+            [AdditionalMetadata("TextAreaSave", true), AdditionalMetadata("ImageBrowse", true), AdditionalMetadata("PageBrowse", true)]
+            public string? Contents { get; set; }
+        }
+        public class TextModelDisplay {
+            [UIHint("TextArea"), AdditionalMetadata("Encode", false), ReadOnly]
+            public string? Contents { get; set; }
+        }
+
+        public async Task<ActionInfo> RenderModuleAsync() {
+            if (Feed) {
+                string rssUrl = string.IsNullOrWhiteSpace(FeedMainUrl) ? Manager.CurrentSite.HomePageUrl : FeedMainUrl;
+                Manager.LinkAltManager.AddLinkAltTag(AreaRegistration.CurrentPackage.AreaName, "application/rss+xml", FeedTitle ?? string.Empty, rssUrl);
+            }
+
+            if (Manager.EditMode && EditOnPage && IsAuthorized(ModuleDefinition.RoleDefinition.Edit)) {
+                TextModel model = new TextModel {
+                    Contents = Contents,
+                };
+                return await RenderAsync(model);
+            } else {
+                TextModelDisplay model = new TextModelDisplay { Contents = Contents };
+                return await RenderAsync(model, ViewName: "TextDisplay");
+            }
+        }
+
+        [Permission("Edit")]
+        [ExcludeDemoMode]
+        public async Task<IResult> UpdateModuleAsync(TextModel model) {
+            Contents = model.Contents;
+            await SaveAsync();
+            if (IsApply) {
+                return await FormProcessedAsync(model, "Contents saved", OnClose: OnCloseEnum.Nothing, OnPopupClose: OnPopupCloseEnum.ReloadModule, OnApply: OnApplyEnum.ReloadModule);
+            } else {
+                if (Manager.IsInPopup) throw new InternalError("Save & Display not available in a popup window");
+                Manager.EditMode = false;
+                return await FormProcessedAsync(model, NextPage: Manager.ReturnToUrl, OnClose: OnCloseEnum.GotoNewPage, OnPopupClose: OnPopupCloseEnum.GotoNewPage); //$$$ SetCurrentEditMode: true);
+            }
         }
     }
 }

@@ -12,192 +12,191 @@ using YetaWF.Core.Packages;
 using YetaWF.Core.Scheduler;
 using YetaWF.Core.Support;
 
-namespace YetaWF.Modules.Scheduler.DataProvider {
+namespace YetaWF.Modules.Scheduler.DataProvider;
 
-    public class SchedulerItemData {
+public class SchedulerItemData {
 
-        public const int MaxName = 50;
-        public const int MaxDescription = 1000;
-        public const int MaxErrors = 40000;
+    public const int MaxName = 50;
+    public const int MaxDescription = 1000;
+    public const int MaxErrors = 40000;
 
-        [Data_PrimaryKey, StringLength(MaxName)]
-        public string Name { get; set; } = null!;
-        [StringLength(MaxDescription)]
-        public string Description { get; set; } = null!;
-        public bool Enabled { get; set; }
-        public bool EnableOnStartup { get; set; }
-        public bool RunOnce { get; set; }
-        public bool Startup { get; set; }
-        public bool SiteSpecific { get; set; }
-        public SchedulerFrequency Frequency { get; set; }
-        [Data_NewValue]
-        public TimeSpan TimeSpan { get; set; }
-        public SchedulerEvent Event { get; set; }
+    [Data_PrimaryKey, StringLength(MaxName)]
+    public string Name { get; set; } = null!;
+    [StringLength(MaxDescription)]
+    public string Description { get; set; } = null!;
+    public bool Enabled { get; set; }
+    public bool EnableOnStartup { get; set; }
+    public bool RunOnce { get; set; }
+    public bool Startup { get; set; }
+    public bool SiteSpecific { get; set; }
+    public SchedulerFrequency Frequency { get; set; }
+    [Data_NewValue]
+    public TimeSpan TimeSpan { get; set; }
+    public SchedulerEvent Event { get; set; }
 
-        public DateTime? Last { get; set; }
-        public DateTime? Next { get; set; }
-        public TimeSpan RunTime { get; set; }
-        [StringLength(MaxErrors)]
-        public string? Errors { get; set; }
+    public DateTime? Last { get; set; }
+    public DateTime? Next { get; set; }
+    public TimeSpan RunTime { get; set; }
+    [StringLength(MaxErrors)]
+    public string? Errors { get; set; }
 
-        public SchedulerItemData() {
-            Frequency = new SchedulerFrequency();
-            Event = new SchedulerEvent();
-            Next = null;
-        }
-
-        [DontSave]
-        public bool IsRunning {
-            get {
-                return Next == DateTime.MaxValue;
-            }
-            set {
-                if (value)
-                    Next = DateTime.MaxValue;
-                else
-                    SetNextRuntime();
-            }
-        }
-        public void SetNextRuntime() {
-            Next = null;
-            if (Enabled)
-                Next = DateTime.UtcNow.Add(Frequency.TimeSpan);
-        }
+    public SchedulerItemData() {
+        Frequency = new SchedulerFrequency();
+        Event = new SchedulerEvent();
+        Next = null;
     }
 
-    public class SchedulerDataProvider : DataProviderImpl, IInstallableModel, IInstallableModel2 {
+    [DontSave]
+    public bool IsRunning {
+        get {
+            return Next == DateTime.MaxValue;
+        }
+        set {
+            if (value)
+                Next = DateTime.MaxValue;
+            else
+                SetNextRuntime();
+        }
+    }
+    public void SetNextRuntime() {
+        Next = null;
+        if (Enabled)
+            Next = DateTime.UtcNow.Add(Frequency.TimeSpan);
+    }
+}
 
-        // IMPLEMENTATION
-        // IMPLEMENTATION
-        // IMPLEMENTATION
+public class SchedulerDataProvider : DataProviderImpl, IInstallableModel, IInstallableModel2 {
 
-        public SchedulerDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
+    // IMPLEMENTATION
+    // IMPLEMENTATION
+    // IMPLEMENTATION
 
-        private IDataProvider<string, SchedulerItemData> DataProvider { get { return GetDataProvider(); } }
+    public SchedulerDataProvider() : base(0) { SetDataProvider(CreateDataProvider()); }
 
-        private IDataProvider<string, SchedulerItemData>? CreateDataProvider() {
-            Package package = YetaWF.Modules.Scheduler.AreaRegistration.CurrentPackage;
-            return MakeDataProvider(package, package.AreaName, Cacheable: true, Parms: new { NoLanguages = true });
-        }
+    private IDataProvider<string, SchedulerItemData> DataProvider { get { return GetDataProvider(); } }
 
-        // API
-        // API
-        // API
+    private IDataProvider<string, SchedulerItemData>? CreateDataProvider() {
+        Package package = YetaWF.Modules.Scheduler.AreaRegistration.CurrentPackage;
+        return MakeDataProvider(package, package.AreaName, Cacheable: true, Parms: new { NoLanguages = true });
+    }
 
-        public async Task<SchedulerItemData?> GetItemAsync(string key) {
-            return await DataProvider.GetAsync(key);
-        }
-        public async Task<bool> AddItemAsync(SchedulerItemData evnt) {
-            evnt.TimeSpan = evnt.Frequency.TimeSpan;
-            return await DataProvider.AddAsync(evnt);
-        }
-        public async Task<UpdateStatusEnum> UpdateItemAsync(SchedulerItemData evnt) {
-            return await UpdateItemAsync(evnt.Name, evnt);
-        }
-        public async Task<UpdateStatusEnum> UpdateItemAsync(string originalName, SchedulerItemData evnt) {
-            evnt.TimeSpan = evnt.Frequency.TimeSpan;
-            return await DataProvider.UpdateAsync(originalName, evnt.Name, evnt);
-        }
-        public async Task<bool> RemoveItemAsync(string key) {
-            return await DataProvider.RemoveAsync(key);
-        }
-        public async Task<DataProviderGetRecords<SchedulerItemData>> GetItemsAsync(List<DataProviderFilterInfo>? filters) {
-            filters = FixFilters(filters);
-            return await DataProvider.GetRecordsAsync(0, 0, null, filters);
-        }
-        public async Task<DataProviderGetRecords<SchedulerItemData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
-            filters = FixFilters(filters);
-            sort = FixSort(sort);
-            return await DataProvider.GetRecordsAsync(skip, take, sort, filters);
-        }
-        public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo>? filters) {
-            filters = FixFilters(filters);
-            int result = await DataProvider.RemoveRecordsAsync(filters);
-            return result;
-        }
-        // Replace IsRunning ... with  Next == DateTime.MaxValue
-        private List<DataProviderSortInfo>? FixSort(List<DataProviderSortInfo>? sort) {
-            if (sort == null) return null;
-            List<DataProviderSortInfo> newSort = new List<DataProviderSortInfo>();
-            foreach (DataProviderSortInfo s in sort) {
-                if (s.Field == "IsRunning") {
-                    newSort.Add(new DataProviderSortInfo { Field = nameof(SchedulerItemData.Next), Order = s.Order });
-                } else if (s.Field == "Frequency") {
-                    newSort.Add(new DataProviderSortInfo { Field = nameof(SchedulerItemData.TimeSpan), Order = s.Order });
-                } else {
-                    newSort.Add(s);
-                }
-            }
-            return newSort;
-        }
+    // API
+    // API
+    // API
 
-        private List<DataProviderFilterInfo>? FixFilters(List<DataProviderFilterInfo>? filters) {
-            if (filters == null) return filters;
-            List<DataProviderFilterInfo> newFilters = new List<DataProviderFilterInfo>();
-            DataProviderFilterInfo.NormalizeFilters(typeof(SchedulerItemData), filters);
-            foreach (DataProviderFilterInfo f in filters) {
-                if (f.Field == "IsRunning") {
-                    bool val;
-                    if (f.Value?.GetType() == typeof(bool))
-                        val = (bool)f.Value;
-                    else
-                        throw new InternalError("Unexpected value type in filter for IsRunning");
-                    if (f.Operator == "==") {
-                        // nothing
-                    } else if (f.Operator == "!=")
-                        val = !val;
-                    else
-                        throw new InternalError("Unexpected operator in filter for IsRunning");
-                    newFilters.Add(new DataProviderFilterInfo { Field = nameof(SchedulerItemData.Next), Operator = val ? ">=" : "<", Value = DateTime.MaxValue });
-                } else if (f.Filters != null) {
-                    f.Filters = FixFilters(f.Filters);
-                    newFilters.Add(f);
-                } else {
-                    newFilters.Add(f);
-                }
-            }
-            return newFilters;
-        }
-
-        // APPSETTINGS.JSON
-
-        public async Task SetRunningAsync(bool running) {
-            if (running != GetRunning()) {
-                WebConfigHelper.SetValue<string>(AreaRegistration.CurrentPackage.AreaName, "Running", running ? "Yes" : "No");
-                await WebConfigHelper.SaveAsync();
-                await Auditing.AddAuditAsync($"{nameof(SchedulerDataProvider)}.{nameof(SetRunningAsync)}", "Scheduler", Guid.Empty,
-                    $"{nameof(SetRunningAsync)}({running})", RequiresRestart: true
-                );
+    public async Task<SchedulerItemData?> GetItemAsync(string key) {
+        return await DataProvider.GetAsync(key);
+    }
+    public async Task<bool> AddItemAsync(SchedulerItemData evnt) {
+        evnt.TimeSpan = evnt.Frequency.TimeSpan;
+        return await DataProvider.AddAsync(evnt);
+    }
+    public async Task<UpdateStatusEnum> UpdateItemAsync(SchedulerItemData evnt) {
+        return await UpdateItemAsync(evnt.Name, evnt);
+    }
+    public async Task<UpdateStatusEnum> UpdateItemAsync(string originalName, SchedulerItemData evnt) {
+        evnt.TimeSpan = evnt.Frequency.TimeSpan;
+        return await DataProvider.UpdateAsync(originalName, evnt.Name, evnt);
+    }
+    public async Task<bool> RemoveItemAsync(string key) {
+        return await DataProvider.RemoveAsync(key);
+    }
+    public async Task<DataProviderGetRecords<SchedulerItemData>> GetItemsAsync(List<DataProviderFilterInfo>? filters) {
+        filters = FixFilters(filters);
+        return await DataProvider.GetRecordsAsync(0, 0, null, filters);
+    }
+    public async Task<DataProviderGetRecords<SchedulerItemData>> GetItemsAsync(int skip, int take, List<DataProviderSortInfo>? sort, List<DataProviderFilterInfo>? filters) {
+        filters = FixFilters(filters);
+        sort = FixSort(sort);
+        return await DataProvider.GetRecordsAsync(skip, take, sort, filters);
+    }
+    public async Task<int> RemoveItemsAsync(List<DataProviderFilterInfo>? filters) {
+        filters = FixFilters(filters);
+        int result = await DataProvider.RemoveRecordsAsync(filters);
+        return result;
+    }
+    // Replace IsRunning ... with  Next == DateTime.MaxValue
+    private List<DataProviderSortInfo>? FixSort(List<DataProviderSortInfo>? sort) {
+        if (sort == null) return null;
+        List<DataProviderSortInfo> newSort = new List<DataProviderSortInfo>();
+        foreach (DataProviderSortInfo s in sort) {
+            if (s.Field == "IsRunning") {
+                newSort.Add(new DataProviderSortInfo { Field = nameof(SchedulerItemData.Next), Order = s.Order });
+            } else if (s.Field == "Frequency") {
+                newSort.Add(new DataProviderSortInfo { Field = nameof(SchedulerItemData.TimeSpan), Order = s.Order });
+            } else {
+                newSort.Add(s);
             }
         }
-        public bool GetRunning() {
-            return WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "Running", "No") == "Yes";
+        return newSort;
+    }
+
+    private List<DataProviderFilterInfo>? FixFilters(List<DataProviderFilterInfo>? filters) {
+        if (filters == null) return filters;
+        List<DataProviderFilterInfo> newFilters = new List<DataProviderFilterInfo>();
+        DataProviderFilterInfo.NormalizeFilters(typeof(SchedulerItemData), filters);
+        foreach (DataProviderFilterInfo f in filters) {
+            if (f.Field == "IsRunning") {
+                bool val;
+                if (f.Value?.GetType() == typeof(bool))
+                    val = (bool)f.Value;
+                else
+                    throw new InternalError("Unexpected value type in filter for IsRunning");
+                if (f.Operator == "==") {
+                    // nothing
+                } else if (f.Operator == "!=")
+                    val = !val;
+                else
+                    throw new InternalError("Unexpected operator in filter for IsRunning");
+                newFilters.Add(new DataProviderFilterInfo { Field = nameof(SchedulerItemData.Next), Operator = val ? ">=" : "<", Value = DateTime.MaxValue });
+            } else if (f.Filters != null) {
+                f.Filters = FixFilters(f.Filters);
+                newFilters.Add(f);
+            } else {
+                newFilters.Add(f);
+            }
         }
+        return newFilters;
+    }
 
-        // IINSTALLABLEMODEL2
-        // IINSTALLABLEMODEL2
-        // IINSTALLABLEMODEL2
+    // APPSETTINGS.JSON
 
-        public async Task<bool> UpgradeModelAsync(List<string> errorList, string lastSeenVersion) {
+    public async Task SetRunningAsync(bool running) {
+        if (running != GetRunning()) {
+            WebConfigHelper.SetValue<string>(AreaRegistration.CurrentPackage.AreaName, "Running", running ? "Yes" : "No");
+            await WebConfigHelper.SaveAsync();
+            await Auditing.AddAuditAsync($"{nameof(SchedulerDataProvider)}.{nameof(SetRunningAsync)}", "Scheduler", Guid.Empty,
+                $"{nameof(SetRunningAsync)}({running})", RequiresRestart: true
+            );
+        }
+    }
+    public bool GetRunning() {
+        return WebConfigHelper.GetValue<string>(AreaRegistration.CurrentPackage.AreaName, "Running", "No") == "Yes";
+    }
 
-            // Convert 2.7.0 (and older) data and add TimeSpan
-            if (Package.CompareVersion(lastSeenVersion, AreaRegistration.CurrentPackage.Version) < 0 &&
-                    Package.CompareVersion(lastSeenVersion, "2.7.0") <= 0) {
-                using (SchedulerDataProvider schedDP = new SchedulerDataProvider()) {
-                    const int chunk = 100;
-                    int skip = 0;
-                    for (; ; skip += chunk) {
-                        DataProviderGetRecords<SchedulerItemData> list = await schedDP.GetItemsAsync(skip, chunk, null, null);
-                        if (list.Data.Count <= 0)
-                            break;
-                        foreach (SchedulerItemData l in list.Data) {
-                            l.TimeSpan = l.Frequency.TimeSpan;
-                            await UpdateItemAsync(l.Name, l);
-                        }
+    // IINSTALLABLEMODEL2
+    // IINSTALLABLEMODEL2
+    // IINSTALLABLEMODEL2
+
+    public async Task<bool> UpgradeModelAsync(List<string> errorList, string lastSeenVersion) {
+
+        // Convert 2.7.0 (and older) data and add TimeSpan
+        if (Package.CompareVersion(lastSeenVersion, AreaRegistration.CurrentPackage.Version) < 0 &&
+                Package.CompareVersion(lastSeenVersion, "2.7.0") <= 0) {
+            using (SchedulerDataProvider schedDP = new SchedulerDataProvider()) {
+                const int chunk = 100;
+                int skip = 0;
+                for (; ; skip += chunk) {
+                    DataProviderGetRecords<SchedulerItemData> list = await schedDP.GetItemsAsync(skip, chunk, null, null);
+                    if (list.Data.Count <= 0)
+                        break;
+                    foreach (SchedulerItemData l in list.Data) {
+                        l.TimeSpan = l.Frequency.TimeSpan;
+                        await UpdateItemAsync(l.Name, l);
                     }
                 }
             }
-            return true;
         }
+        return true;
     }
 }

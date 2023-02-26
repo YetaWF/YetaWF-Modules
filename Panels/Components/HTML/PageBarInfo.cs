@@ -15,117 +15,116 @@ using YetaWF.Modules.Panels.Endpoints;
 using YetaWF.Modules.Panels.Models;
 using YetaWF.Modules.Panels.Modules;
 
-namespace YetaWF.Modules.Panels.Components {
+namespace YetaWF.Modules.Panels.Components;
 
-    public abstract class PageBarInfoComponentBase : YetaWFComponent {
+public abstract class PageBarInfoComponentBase : YetaWFComponent {
 
-        public const string TemplateName = "PageBarInfo";
+    public const string TemplateName = "PageBarInfo";
 
-        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        public override string GetTemplateName() { return TemplateName; }
+    public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+    public override string GetTemplateName() { return TemplateName; }
+}
+
+/// <summary>
+/// This component is used by the YetaWF.Panels package and is not intended for use by an application.
+/// </summary>
+[PrivateComponent]
+public class PageBarInfoComponent : PageBarInfoComponentBase, IYetaWFComponent<PageBarInfo> {
+
+    public override ComponentType GetComponentType() { return ComponentType.Display; }
+
+    public class Setup {
+        public bool Resize { get; set; }
+        public string ActiveCss { get; set; } = null!;
+        public string ExpandCollapseUrl { get; set; } = null!;
     }
 
-    /// <summary>
-    /// This component is used by the YetaWF.Panels package and is not intended for use by an application.
-    /// </summary>
-    [PrivateComponent]
-    public class PageBarInfoComponent : PageBarInfoComponentBase, IYetaWFComponent<PageBarInfo> {
+    public async Task<string> RenderAsync(PageBarInfo model) {
+        HtmlBuilder hb = new HtmlBuilder();
 
-        public override ComponentType GetComponentType() { return ComponentType.Display; }
+        string? pane = model.ContentPane;
 
-        public class Setup {
-            public bool Resize { get; set; }
-            public string ActiveCss { get; set; } = null!;
-            public string ExpandCollapseUrl { get; set; } = null!;
+        string styleCss;
+        string styleListCss = "";
+        string activeCss;
+        switch (model.Style) {
+            default:
+            case PageBarModule.PanelStyleEnum.Vertical:
+                styleCss = "t_stylesvert";
+                break;
+            case PageBarModule.PanelStyleEnum.Horizontal:
+                styleCss = "t_styleshorz";
+                break;
         }
+        activeCss = " t_active";
 
-        public async Task<string> RenderAsync(PageBarInfo model) {
-            HtmlBuilder hb = new HtmlBuilder();
+        string paneContents = "";
+        if (model.ContentPage != null)
+            paneContents = await model.ContentPage.RenderPaneAsync(HtmlHelper, string.IsNullOrWhiteSpace(pane) ? Globals.MainPane : pane, PaneDiv: false);
 
-            string? pane = model.ContentPane;
+        if (PageBarDataProvider.GetExpanded())
+            styleCss += " t_expanded";
 
-            string styleCss;
-            string styleListCss = "";
-            string activeCss;
-            switch (model.Style) {
-                default:
-                case PageBarModule.PanelStyleEnum.Vertical:
-                    styleCss = "t_stylesvert";
-                    break;
-                case PageBarModule.PanelStyleEnum.Horizontal:
-                    styleCss = "t_styleshorz";
-                    break;
-            }
-            activeCss = " t_active";
+        string pageUrl = Manager.CurrentPage.EvaluatedCanonicalUrl!;
+        string pageUrlOnly;
+        QueryHelper qh = QueryHelper.FromUrl(pageUrl, out pageUrlOnly);
 
-            string paneContents = "";
-            if (model.ContentPage != null)
-                paneContents = await model.ContentPage.RenderPaneAsync(HtmlHelper, string.IsNullOrWhiteSpace(pane) ? Globals.MainPane : pane, PaneDiv: false);
-
-            if (PageBarDataProvider.GetExpanded())
-                styleCss += " t_expanded";
-
-            string pageUrl = Manager.CurrentPage.EvaluatedCanonicalUrl!;
-            string pageUrlOnly;
-            QueryHelper qh = QueryHelper.FromUrl(pageUrl, out pageUrlOnly);
-
-            hb.Append($@"
+        hb.Append($@"
 <div class='yt_panels_pagebarinfo t_display {styleCss}' id='{ControlId}'>
     <div class='yt_panels_pagebarinfo_list{styleListCss}'>
         <div class='t_expcoll'></div>");
 
-            foreach (PageBarInfo.PanelEntry entry in model.Panels) {
+        foreach (PageBarInfo.PanelEntry entry in model.Panels) {
 
-                string caption = entry.Caption.ToString();
-                if (string.IsNullOrWhiteSpace(caption))
-                    caption = this.__ResStr("emptyCaption", "(no caption - Page Title)");
+            string caption = entry.Caption.ToString();
+            if (string.IsNullOrWhiteSpace(caption))
+                caption = this.__ResStr("emptyCaption", "(no caption - Page Title)");
 
-                string active = "";
-                if (model.ContentUri != null) {
-                    Uri uriLink = new Uri(entry.Url);
-                    if (uriLink.AbsolutePath.ToLower() == model.ContentUri.AbsolutePath.ToLower()) {
-                        active = activeCss;
-                    }
+            string active = "";
+            if (model.ContentUri != null) {
+                Uri uriLink = new Uri(entry.Url);
+                if (uriLink.AbsolutePath.ToLower() == model.ContentUri.AbsolutePath.ToLower()) {
+                    active = activeCss;
                 }
+            }
 
-                qh.Add("!ContentUrl", entry.Url, Replace: true);
-                string anchor = $"";
+            qh.Add("!ContentUrl", entry.Url, Replace: true);
+            string anchor = $"";
 
-                hb.Append($@"
+            hb.Append($@"
         <a class='t_entry{active} yaction-link' data-contenttarget='{DivId}' data-contentpane='{HAE(pane == "" ? "MainPane" : pane)}' {Basics.CssSaveReturnUrl}='' href='{HAE(qh.ToUrl(pageUrlOnly))}' data-tooltip='{HAE(entry.ToolTip.ToString())}'>");
 
-                if (entry.ImageSVG != null) {
-                    hb.Append($@"
-            {entry.ImageSVG}");
-                } else {
-                    hb.Append($@"
-            <img src='{HAE(entry.ImageUrl)}' alt='{HAE(caption)}' title='{HAE(entry.ToolTip.ToString())}' />");
-                }
-
+            if (entry.ImageSVG != null) {
                 hb.Append($@"
+            {entry.ImageSVG}");
+            } else {
+                hb.Append($@"
+            <img src='{HAE(entry.ImageUrl)}' alt='{HAE(caption)}' title='{HAE(entry.ToolTip.ToString())}' />");
+            }
+
+            hb.Append($@"
             <div class='t_caption'>
                 {HE(caption)}
             </div>
         </a>");
 
-            }
+        }
 
-            hb.Append($@"
+        hb.Append($@"
     </div>
     <div class='t_area' id='{DivId}'>
         {paneContents}
     </div>
 </div>");
 
-            Setup setup = new Setup {
-                Resize = model.Style == PageBarModule.PanelStyleEnum.Vertical,
-                ActiveCss = activeCss,
-                ExpandCollapseUrl = Utility.UrlFor(typeof(PageBarModuleEndpoints), PageBarModuleEndpoints.SaveExpandCollapse),
-            };
+        Setup setup = new Setup {
+            Resize = model.Style == PageBarModule.PanelStyleEnum.Vertical,
+            ActiveCss = activeCss,
+            ExpandCollapseUrl = Utility.UrlFor(typeof(PageBarModuleEndpoints), PageBarModuleEndpoints.SaveExpandCollapse),
+        };
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_Panels.PageBarInfoComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
+        Manager.ScriptManager.AddLast($@"new YetaWF_Panels.PageBarInfoComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
-            return hb.ToString();
-        }
+        return hb.ToString();
     }
 }

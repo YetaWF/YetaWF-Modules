@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using System.Linq;
-using System.Threading.Tasks;
 using YetaWF.Core.Endpoints;
 using YetaWF.Core.Endpoints.Filters;
 using YetaWF.Core.Localize;
@@ -13,24 +12,19 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Pages.Addons;
-using YetaWF.Modules.Pages.Components;
+using YetaWF.Modules.Panels.Components;
 
-namespace YetaWF.Modules.Pages.Endpoints;
+namespace YetaWF.Modules.Panels.Endpoints;
 
-public class TemplateListOfLocalPagesEndpoints : YetaWFEndpoints {
+public class PagePanelModuleEndpoints : YetaWFEndpoints {
 
-    private static string __ResStr(string name, string defaultValue, params object?[] parms) { return ResourceAccess.GetResourceString(typeof(TemplateListOfLocalPagesEndpoints), name, defaultValue, parms); }
+    private static string __ResStr(string name, string defaultValue, params object?[] parms) { return ResourceAccess.GetResourceString(typeof(PagePanelModuleEndpoints), name, defaultValue, parms); }
 
     internal const string AddPage = "AddPage";
 
     public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-        RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(PagesBrowseModuleEndpoints)))
-            .RequireAuthorization()
-            .AntiForgeryToken();
-
-        group.MapPost(AddPage, async (HttpContext context, [FromBody] GridSupport.GridAdditionPartialViewData<ListOfLocalPagesEditComponent.Entry> pvData, string fieldPrefix, string newUrl) => {
+        endpoints.MapPost(GetPackageApiEndpoint(package, typeof(PagePanelModuleEndpoints), AddPage), async (HttpContext context, [FromBody] GridSupport.GridAdditionPartialViewData<ListOfLocalPagesEditComponent.Entry> pvData, string fieldPrefix, string newUrl) => {
             // Validation
             UrlValidationAttribute attr = new UrlValidationAttribute(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local);
             if (!attr.IsValid(newUrl))
@@ -46,7 +40,8 @@ public class TemplateListOfLocalPagesEndpoints : YetaWFEndpoints {
                 FieldPrefix = fieldPrefix,
             });
         })
-            .ExcludeDemoMode()
-            .ResourceAuthorize(Info.Resource_AllowListOfLocalPagesAjax);
+            .RequireAuthorization()
+            .AntiForgeryToken()
+            .ExcludeDemoMode();
     }
 }

@@ -1,12 +1,19 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Pages#License */
 
+using Microsoft.AspNetCore.Http;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using YetaWF.Core.Endpoints.Support;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Support;
 using YetaWF.DataProvider;
+using YetaWF.Modules.Pages.Endpoints;
 
 namespace YetaWF.Modules.Pages.Modules {
 
@@ -14,7 +21,7 @@ namespace YetaWF.Modules.Pages.Modules {
 
     [ModuleGuid("{44977a1b-18bb-4585-9db6-29330c181319}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplateListOfLocalPagesModule : ModuleDefinition {
+    public class TemplateListOfLocalPagesModule : ModuleDefinition2 {
 
         public TemplateListOfLocalPagesModule() {
             Title = this.__ResStr("modTitle", "ListOfLocalPages Test Component");
@@ -41,6 +48,42 @@ namespace YetaWF.Modules.Pages.Modules {
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
                 SaveReturnUrl = true,
             };
+        }
+
+        [Trim]
+        public class Model {
+
+            [Caption("ListOfLocalPages (Required)"), Description("ListOfLocalPages (Required)")]
+            [UIHint("YetaWF_Pages_ListOfLocalPages"), Required]
+            public List<string> Prop1Req { get; set; }
+            public string Prop1Req_AjaxUrl { get { return Utility.UrlFor<TemplateListOfLocalPagesEndpoints>(TemplateListOfLocalPagesEndpoints.AddPage); } }
+
+            [Caption("ListOfLocalPages"), Description("ListOfLocalPages")]
+            [UIHint("YetaWF_Pages_ListOfLocalPages")]
+            public List<string> Prop1 { get; set; }
+            public string Prop1_AjaxUrl { get { return Utility.UrlFor<TemplateListOfLocalPagesEndpoints>(TemplateListOfLocalPagesEndpoints.AddPage); } }
+
+            [Caption("ListOfLocalPages (Read/Only)"), Description("ListOfLocalPages (read/only)")]
+            [UIHint("YetaWF_Pages_ListOfLocalPages"), ReadOnly]
+            public List<string> Prop1RO { get; set; }
+
+            public Model() {
+                Prop1Req = new List<string>();
+                Prop1 = new List<string>();
+                Prop1RO = new List<string>();
+            }
+        }
+
+        public async Task<ActionInfo> RenderModuleAsync() {
+            Model model = new Model { };
+            return await RenderAsync(model);
+        }
+
+        public async Task<IResult> UpdateModuleAsync(Model model) {
+            if (!ModelState.IsValid)
+                return await PartialViewAsync(model);
+            model.Prop1RO = model.Prop1;
+            return await FormProcessedAsync(model, this.__ResStr("ok", "OK"));
         }
     }
 }

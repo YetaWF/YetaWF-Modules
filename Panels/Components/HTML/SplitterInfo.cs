@@ -13,86 +13,86 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Panels.Models;
 
-namespace YetaWF.Modules.Panels.Components {
+namespace YetaWF.Modules.Panels.Components;
 
-    public abstract class SplitterInfoComponentBase : YetaWFComponent {
+public abstract class SplitterInfoComponentBase : YetaWFComponent {
 
-        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(SplitterInfoComponentBase), name, defaultValue, parms); }
+    protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(SplitterInfoComponentBase), name, defaultValue, parms); }
 
-        public const string TemplateName = "SplitterInfo";
+    public const string TemplateName = "SplitterInfo";
 
-        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        public override string GetTemplateName() { return TemplateName; }
+    public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+    public override string GetTemplateName() { return TemplateName; }
+}
+
+/// <summary>
+/// This component is used by the YetaWF.Panels package and is not intended for use by an application.
+/// </summary>
+[PrivateComponent]
+public class SplitterInfoDisplayComponent : SplitterInfoComponentBase, IYetaWFComponent<SplitterInfo> {
+
+    public override ComponentType GetComponentType() { return ComponentType.Display; }
+
+    public class Setup {
+        public string ContentId { get; set; } = null!;
+        public int Height { get; set; }// 0 (auto-fill), or pixels
+        public int MinWidth { get; set; }// pixels
+        public int Width { get; set; }// percentage
     }
 
-    /// <summary>
-    /// This component is used by the YetaWF.Panels package and is not intended for use by an application.
-    /// </summary>
-    [PrivateComponent]
-    public class SplitterInfoDisplayComponent : SplitterInfoComponentBase, IYetaWFComponent<SplitterInfo> {
+    public async Task<string> RenderAsync(SplitterInfo model) {
 
-        public override ComponentType GetComponentType() { return ComponentType.Display; }
+        HtmlBuilder hbLeft = new HtmlBuilder();
 
-        public class Setup {
-            public string ContentId { get; set; } = null!;
-            public int Height { get; set; }// 0 (auto-fill), or pixels
-            public int MinWidth { get; set; }// pixels
-            public int Width { get; set; }// percentage
+        string? titleText = model.TitleText;
+        string? titleTooltip = model.TitleTooltip;
+
+        if (await model.IsAuthorizedLeftAsync()) {
+            ModuleDefinition? mod = await model.GetModuleLeftAsync();
+            if (mod != null) {
+                hbLeft.Append(await mod.RenderModuleViewAsync(HtmlHelper));
+                // get title & text from module
+                try { titleText = ((dynamic)mod).TitleText; } catch (Exception) { }
+                try { titleTooltip = ((dynamic)mod).TitleTooltip; } catch (Exception) { }
+            } else {
+                hbLeft.Append($@"<div>{__ResStr("noModule", "(no module defined)")}</div>");
+            }
         }
 
-        public async Task<string> RenderAsync(SplitterInfo model) {
-
-            HtmlBuilder hbLeft = new HtmlBuilder();
-
-            string? titleText = model.TitleText;
-            string? titleTooltip = model.TitleTooltip;
-
-            if (await model.IsAuthorizedLeftAsync()) {
-                ModuleDefinition? mod = await model.GetModuleLeftAsync();
-                if (mod != null) {
-                    hbLeft.Append(await mod.RenderModuleViewAsync(HtmlHelper));
-                    // get title & text from module
-                    try { titleText = ((dynamic)mod).TitleText; } catch (Exception) { }
-                    try { titleTooltip = ((dynamic)mod).TitleTooltip; } catch (Exception) { }
-                } else {
-                    hbLeft.Append($@"<div>{__ResStr("noModule", "(no module defined)")}</div>");
-                }
+        HtmlBuilder hbRight = new HtmlBuilder();
+        if (await model.IsAuthorizedRightAsync()) {
+            ModuleDefinition? mod = await model.GetModuleRightAsync();
+            if (mod != null) {
+                hbRight.Append(await mod.RenderModuleViewAsync(HtmlHelper));
+            } else {
+                hbRight.Append($@"<div>{__ResStr("noModule", "(no module defined)")}</div>");
             }
+        }
 
-            HtmlBuilder hbRight = new HtmlBuilder();
-            if (await model.IsAuthorizedRightAsync()) {
-                ModuleDefinition? mod = await model.GetModuleRightAsync();
-                if (mod != null) {
-                    hbRight.Append(await mod.RenderModuleViewAsync(HtmlHelper));
-                } else {
-                    hbRight.Append($@"<div>{__ResStr("noModule", "(no module defined)")}</div>");
-                }
-            }
+        string? heightStyle = null;
+        if (Manager.EditMode)
+            heightStyle = $" style='height:300px'";
+        else if (model.Height > 0)
+            heightStyle = $" style='height:{model.Height}px'";
 
-            string? heightStyle = null;
-            if (Manager.EditMode)
-                heightStyle = $" style='height:300px'";
-            else if (model.Height > 0)
-                heightStyle = $" style='height:{model.Height}px'";
+        string leftStyle = $" style='flex-basis:{model.Width}%;min-width:{model.MinWidth}px'";
 
-            string leftStyle = $" style='flex-basis:{model.Width}%;min-width:{model.MinWidth}px'";
+        string contentId = Manager.UniqueId();
 
-            string contentId = Manager.UniqueId();
-
-            HtmlBuilder hb = new HtmlBuilder();
-            hb.Append($@"
+        HtmlBuilder hb = new HtmlBuilder();
+        hb.Append($@"
 <div class='yt_panels_splitterinfo t_display t_expanded' id='{ControlId}'{heightStyle}>
     <div class='yt_panels_splitterinfo_left'{leftStyle}>
         <div class='t_area'>");
 
-            if (!string.IsNullOrWhiteSpace(titleText)) {
-                hb.Append($@"
+        if (!string.IsNullOrWhiteSpace(titleText)) {
+            hb.Append($@"
             <div class='yt_panels_splitterinfo_title' {Basics.CssTooltip}='{HAE(titleTooltip)}'>
                 {HE(titleText)}
             </div>");
-            }
+        }
 
-            hb.Append($@"
+        hb.Append($@"
             <div class='yt_panels_splitterinfo_cmds'>
                 <div class='yt_panels_splitterinfo_colldesc'>
                     {HE(model.CollapseText)}
@@ -115,16 +115,15 @@ namespace YetaWF.Modules.Panels.Components {
     </div>
 </div>");
 
-            Setup setup = new Setup {
-                ContentId = contentId,
-                Height = Manager.EditMode ? 300 : model.Height,
-                MinWidth = model.MinWidth,
-                Width = model.Width,
-            };
+        Setup setup = new Setup {
+            ContentId = contentId,
+            Height = Manager.EditMode ? 300 : model.Height,
+            MinWidth = model.MinWidth,
+            Width = model.Width,
+        };
 
-            Manager.ScriptManager.AddLast($@"new YetaWF_Panels.SplitterInfoComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
+        Manager.ScriptManager.AddLast($@"new YetaWF_Panels.SplitterInfoComponent('{ControlId}', {Utility.JsonSerialize(setup)});");
 
-            return hb.ToString();
-        }
+        return hb.ToString();
     }
 }

@@ -12,31 +12,31 @@ using YetaWF.Core.Scheduler;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 
-namespace YetaWF.Modules.Scheduler.Components {
+namespace YetaWF.Modules.Scheduler.Components;
 
-    public abstract class EventComponentBase : YetaWFComponent {
+public abstract class EventComponentBase : YetaWFComponent {
 
-        protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(EventComponentBase), name, defaultValue, parms); }
+    protected static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(EventComponentBase), name, defaultValue, parms); }
 
-        public const string TemplateName = "Event";
+    public const string TemplateName = "Event";
 
-        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        public override string GetTemplateName() { return TemplateName; }
-    }
+    public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+    public override string GetTemplateName() { return TemplateName; }
+}
 
-    /// <summary>
-    /// This component is used by the YetaWF.Scheduler package and is not intended for use by an application.
-    /// </summary>
-    [PrivateComponent]
-    public class EventDisplayComponent : EventComponentBase, IYetaWFComponent<SchedulerEvent> {
+/// <summary>
+/// This component is used by the YetaWF.Scheduler package and is not intended for use by an application.
+/// </summary>
+[PrivateComponent]
+public class EventDisplayComponent : EventComponentBase, IYetaWFComponent<SchedulerEvent> {
 
-        public override ComponentType GetComponentType() { return ComponentType.Display; }
+    public override ComponentType GetComponentType() { return ComponentType.Display; }
 
-        public async Task<string> RenderAsync(SchedulerEvent model) {
+    public async Task<string> RenderAsync(SchedulerEvent model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+        HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($@"
+        hb.Append($@"
 <div class='yt_yetawf_scheduler_event t_display'>
     <div class='t_event'>
         <span class='t_eventname'>{Utility.HE(model.Name)}</span>
@@ -61,58 +61,58 @@ namespace YetaWF.Modules.Scheduler.Components {
     </div>
 </div>");
 
-            return hb.ToString();
-        }
+        return hb.ToString();
+    }
+}
+
+/// <summary>
+/// This component is used by the YetaWF.Scheduler package and is not intended for use by an application.
+/// </summary>
+[PrivateComponent]
+public class EventEditComponent : EventComponentBase, IYetaWFComponent<SchedulerEvent> {
+
+    public override ComponentType GetComponentType() { return ComponentType.Edit; }
+
+    public class EventUI {
+        [UIHint("DropDownList")]
+        public string? DropDown { get; set; }
+        public List<SelectionItem<string>> DropDown_List { get; set; } = null!;
     }
 
-    /// <summary>
-    /// This component is used by the YetaWF.Scheduler package and is not intended for use by an application.
-    /// </summary>
-    [PrivateComponent]
-    public class EventEditComponent : EventComponentBase, IYetaWFComponent<SchedulerEvent> {
+    public async Task<string> RenderAsync(SchedulerEvent model) {
 
-        public override ComponentType GetComponentType() { return ComponentType.Edit; }
+        HtmlBuilder hb = new HtmlBuilder();
 
-        public class EventUI {
-            [UIHint("DropDownList")]
-            public string? DropDown { get; set; }
-            public List<SelectionItem<string>> DropDown_List { get; set; } = null!;
+        List<Type> schedulerEvents = YetaWF.Modules.Scheduler.Support.Scheduler.Instance.SchedulerEvents;
+        List<SelectionItem<string>> list = new List<SelectionItem<string>>();
+        foreach (Type type in schedulerEvents) {
+            IScheduling isched = (IScheduling)Activator.CreateInstance(type)!;
+            SchedulerItemBase[] items = isched.GetItems();
+            foreach (SchedulerItemBase item in items) {
+                list.Add(new SelectionItem<string>() {
+                    Text = item.EventName,
+                    Tooltip = item.Description,
+                    Value = item.EventName + "," + type.FullName + "," + type.Assembly.GetName().Name
+                });
+            }
+        }
+        if (list.Count == 0) throw new Error(__ResStr("noEvents", "No events are available"));
+
+        string select;
+        if (string.IsNullOrWhiteSpace(model.Name)) {
+            select = list.First().Value;
+        } else {
+            select = model.Name + "," + model.ImplementingType + "," + model.ImplementingAssembly;
         }
 
-        public async Task<string> RenderAsync(SchedulerEvent model) {
+        EventUI eventUI = new EventUI {
+            DropDown = select,
+            DropDown_List = list,
+        };
 
-            HtmlBuilder hb = new HtmlBuilder();
+        using (Manager.StartNestedComponent(FieldName)) {
 
-            List<Type> schedulerEvents = YetaWF.Modules.Scheduler.Support.Scheduler.Instance.SchedulerEvents;
-            List<SelectionItem<string>> list = new List<SelectionItem<string>>();
-            foreach (Type type in schedulerEvents) {
-                IScheduling isched = (IScheduling)Activator.CreateInstance(type)!;
-                SchedulerItemBase[] items = isched.GetItems();
-                foreach (SchedulerItemBase item in items) {
-                    list.Add(new SelectionItem<string>() {
-                        Text = item.EventName,
-                        Tooltip = item.Description,
-                        Value = item.EventName + "," + type.FullName + "," + type.Assembly.GetName().Name
-                    });
-                }
-            }
-            if (list.Count == 0) throw new Error(__ResStr("noEvents", "No events are available"));
-
-            string select;
-            if (string.IsNullOrWhiteSpace(model.Name)) {
-                select = list.First().Value;
-            } else {
-                select = model.Name + "," + model.ImplementingType + "," + model.ImplementingAssembly;
-            }
-
-            EventUI eventUI = new EventUI {
-                DropDown = select,
-                DropDown_List = list,
-            };
-
-            using (Manager.StartNestedComponent(FieldName)) {
-
-                hb.Append($@"
+            hb.Append($@"
 <div id='{ControlId}' class='yt_yetawf_scheduler_event t_edit'>
     <div class='t_event'>
         {await HtmlHelper.ForEditAsync(eventUI, nameof(eventUI.DropDown))}
@@ -148,10 +148,9 @@ namespace YetaWF.Modules.Scheduler.Components {
     </div>
 </div>");
 
-                Manager.ScriptManager.AddLast($@"new YetaWF_Scheduler.EventEditComponent('{ControlId}');");
-            }
-
-            return hb.ToString();
+            Manager.ScriptManager.AddLast($@"new YetaWF_Scheduler.EventEditComponent('{ControlId}');");
         }
+
+        return hb.ToString();
     }
 }

@@ -5,15 +5,14 @@ using YetaWF.Core.DataProvider;
 using YetaWF.Core.Site;
 using YetaWF.DataProvider.PostgreSQL;
 
-namespace YetaWF.Modules.SiteProperties.DataProvider.PostgreSQL {
+namespace YetaWF.Modules.SiteProperties.DataProvider.PostgreSQL;
 
-    public class PostgreSQLDataProvider : IExternalDataProvider {
+public class PostgreSQLDataProvider : IExternalDataProvider {
 
-        public void Register() {
-            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(YetaWF.Modules.SiteProperties.Models.SiteDefinitionDataProvider), typeof(SiteDefinitionDataProvider));
-        }
-        class SiteDefinitionDataProvider : SQLSimpleObject<string, SiteDefinition> {
-            public SiteDefinitionDataProvider(Dictionary<string, object> options) : base(options) { }
-        }
+    public void Register() {
+        DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(YetaWF.Modules.SiteProperties.Models.SiteDefinitionDataProvider), typeof(SiteDefinitionDataProvider));
+    }
+    class SiteDefinitionDataProvider : SQLSimpleObject<string, SiteDefinition> {
+        public SiteDefinitionDataProvider(Dictionary<string, object> options) : base(options) { }
     }
 }

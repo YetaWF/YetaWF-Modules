@@ -4,12 +4,11 @@ using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Support;
 
-namespace YetaWF.Modules.SyntaxHighlighter.Addons {
+namespace YetaWF.Modules.SyntaxHighlighter.Addons;
 
-    public class Info : IAddOnSupport {
+public class Info : IAddOnSupport {
 
-        public Task AddSupportAsync(YetaWFManager manager) {
-            return Task.CompletedTask;
-        }
+    public Task AddSupportAsync(YetaWFManager manager) {
+        return Task.CompletedTask;
     }
 }

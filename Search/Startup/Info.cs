@@ -5,20 +5,19 @@ using YetaWF.Core.Addons;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 
-namespace YetaWF.Modules.Search.Addons {
+namespace YetaWF.Modules.Search.Addons;
 
-    public class Info : IAddOnSupport {
+public class Info : IAddOnSupport {
 
-        public const string UrlArg = "!YetaWF_Search_SearchControl";
+    public const string UrlArg = "!YetaWF_Search_SearchControl";
 
-        public Task AddSupportAsync(YetaWFManager manager) {
+    public Task AddSupportAsync(YetaWFManager manager) {
 
-            ScriptManager scripts = manager.ScriptManager;
-            string areaName = AreaRegistration.CurrentPackage.AreaName;
+        ScriptManager scripts = manager.ScriptManager;
+        string areaName = AreaRegistration.CurrentPackage.AreaName;
 
-            scripts.AddConfigOption(areaName, "UrlArg", UrlArg);
+        scripts.AddConfigOption(areaName, "UrlArg", UrlArg);
 
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

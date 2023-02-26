@@ -4,14 +4,13 @@ using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Support;
 
-namespace YetaWF.Modules.Panels.Addons {
+namespace YetaWF.Modules.Panels.Addons;
 
-    public class Info : IAddOnSupport {
+public class Info : IAddOnSupport {
 
-        public const string Resource_AllowListOfLocalPagesAjax = "YetaWF_Panels-AllowListOfLocalPagesAjax";
+    public const string Resource_AllowListOfLocalPagesAjax = "YetaWF_Panels-AllowListOfLocalPagesAjax";
 
-        public Task AddSupportAsync(YetaWFManager manager) {
-            return Task.CompletedTask;
-        }
+    public Task AddSupportAsync(YetaWFManager manager) {
+        return Task.CompletedTask;
     }
 }
