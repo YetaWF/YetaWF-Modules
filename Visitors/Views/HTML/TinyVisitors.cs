@@ -7,43 +7,41 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Modules.Visitors.Controllers;
 using YetaWF.Modules.Visitors.Modules;
 
-namespace YetaWF.Modules.Visitors.Views {
+namespace YetaWF.Modules.Visitors.Views;
 
-    public class TinyVisitorsView : YetaWFView, IYetaWFView<TinyVisitorsModule, TinyVisitorsModuleController.DisplayModel> {
+public class TinyVisitorsView : YetaWFView, IYetaWFView<TinyVisitorsModule, TinyVisitorsModule.DisplayModel> {
 
-        public const string ViewName = "TinyVisitors";
+    public const string ViewName = "TinyVisitors";
 
-        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        public override string GetViewName() { return ViewName; }
+    public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+    public override string GetViewName() { return ViewName; }
 
-        public Task<string> RenderViewAsync(TinyVisitorsModule module, TinyVisitorsModuleController.DisplayModel model) {
+    public Task<string> RenderViewAsync(TinyVisitorsModule module, TinyVisitorsModule.DisplayModel model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+        HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($@"
+        hb.Append($@"
 <div class='t_image'>");
 
-            if (string.IsNullOrWhiteSpace(model.VisitorsUrl)) {
+        if (string.IsNullOrWhiteSpace(model.VisitorsUrl)) {
 
-                hb.Append($@"
+            hb.Append($@"
     <img src='{HAE(Manager.GetCDNUrl(model.ImageUrl))}' data-tooltip='{HAE(model.Tooltip)}' />");
 
-            } else {
+        } else {
 
-                hb.Append($@"
+            hb.Append($@"
     <a href='{HAE(model.VisitorsUrl)}' class='{HAE(Basics.CssActionLink)}'>
         <img src='{HAE(Manager.GetCDNUrl(model.ImageUrl))}' data-tooltip='{HAE(model.Tooltip)}' alt='{HAE(this.__ResStr("visitors", "Visitors"))}' />
     </a>");
 
-            }
+        }
 
-            hb.Append($@"
+        hb.Append($@"
 </div>");
 
-            return Task.FromResult(hb.ToString());
-        }
+        return Task.FromResult(hb.ToString());
     }
 }

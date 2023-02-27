@@ -10,21 +10,20 @@ using YetaWF.Core.Endpoints.Filters;
 using YetaWF.Core.Packages;
 using YetaWF.Modules.Visitors.DataProvider;
 
-namespace YetaWF.Modules.Visitors.Endpoints {
+namespace YetaWF.Modules.Visitors.Endpoints;
 
-    public class SkinVisitorModuleEndpoints : YetaWFEndpoints {
+public class SkinVisitorModuleEndpoints : YetaWFEndpoints {
 
-        internal const string TrackClick = "TrackClick";
+    internal const string TrackClick = "TrackClick";
 
-        public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
+    public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-            RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(SkinVisitorModuleEndpoints)))
-                .AntiForgeryToken(); // always force antiforgery to avoid cross-site attacks exploiting flooding click tracking
+        RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(SkinVisitorModuleEndpoints)))
+            .AntiForgeryToken(); // always force antiforgery to avoid cross-site attacks exploiting flooding click tracking
 
-            group.MapPost(TrackClick, (HttpContext context, [FromQuery] Guid __ModuleGuid, [FromQuery] string url) => {
-                VisitorEntryDataProvider.AddVisitEntryUrlAsync(url, true); // no await, as in fire and forget
-                return Results.Json("", null, "application/json");
-            });
-        }
+        group.MapPost(TrackClick, (HttpContext context, [FromQuery] Guid __ModuleGuid, [FromQuery] string url) => {
+            VisitorEntryDataProvider.AddVisitEntryUrlAsync(url, true); // no await, as in fire and forget
+            return Results.Json("", null, "application/json");
+        });
     }
 }

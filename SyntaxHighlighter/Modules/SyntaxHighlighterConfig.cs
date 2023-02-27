@@ -61,7 +61,7 @@ public class SyntaxHighlighterConfigModule : ModuleDefinition2 {
     public class Model {
 
         [Category("Highlight.js"), Caption("Skin"), Description("The skin used for syntax highlighting")]
-        [UIHint("YetaWF_SyntaxHighlighter_HighlightJS"), StringLength(ConfigData.MaxSkinName), AdditionalMetadata("NoDefault", true), Trim]
+        [UIHint("YetaWF_SyntaxHighlighter_HighlightJS"), StringLength(DataProvider.ConfigData.MaxSkinName), AdditionalMetadata("NoDefault", true), Trim]
         public string? HighlightJSSkin { get; set; }
 
         [TextAbove("The syntax highlighter uses Highlight.js.")]

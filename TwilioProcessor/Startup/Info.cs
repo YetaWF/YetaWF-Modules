@@ -4,11 +4,10 @@ using System.Threading.Tasks;
 using YetaWF.Core.Addons;
 using YetaWF.Core.Support;
 
-namespace Softelvdm.Modules.TwilioProcessor.Addons {
+namespace Softelvdm.Modules.TwilioProcessor.Addons;
 
-    public class Info : IAddOnSupport {
-        public Task AddSupportAsync(YetaWFManager manager) {
-            return Task.CompletedTask;
-        }
+public class Info : IAddOnSupport {
+    public Task AddSupportAsync(YetaWFManager manager) {
+        return Task.CompletedTask;
     }
 }
