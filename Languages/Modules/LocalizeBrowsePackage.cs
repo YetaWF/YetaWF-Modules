@@ -90,7 +90,6 @@ public class LocalizeBrowsePackageModule : ModuleDefinition2 {
             Category = ModuleAction.ActionCategoryEnum.Read,
             Mode = ModuleAction.ActionModeEnum.Any,
             ConfirmationText = this.__ResStr("creCustConfirm", "Are you sure you want to create custom localization resources for package {0} using language {1} - Custom localization resources are saved in folder ./LocalizationCustom/{0}/...", package.Name, MultiString.ActiveLanguage),
-            NeedsModuleContext = true,
         };
     }
     public async Task<ModuleAction?> GetAction_CreateInstalledLocalizationAsync() {
@@ -117,7 +116,6 @@ public class LocalizeBrowsePackageModule : ModuleDefinition2 {
             Category = ModuleAction.ActionCategoryEnum.Read,
             Mode = ModuleAction.ActionModeEnum.Any,
             ConfirmationText = this.__ResStr("creInstConfirm", "Are you sure you want to create installed localization resources for package {0} using language {1} - Installed localization resources are saved in folder ./Addons/...?", package.Name, MultiString.ActiveLanguage),
-            NeedsModuleContext = true,
         };
     }
     public async Task<ModuleAction?> GetAction_CreateAllInstalledLocalizationsAsync() {
@@ -137,7 +135,6 @@ public class LocalizeBrowsePackageModule : ModuleDefinition2 {
             Category = ModuleAction.ActionCategoryEnum.Read,
             Mode = ModuleAction.ActionModeEnum.Any,
             ConfirmationText = this.__ResStr("creAllConfirm", "Are you sure you want to create ALL installed localization resources using language {0} - Installed localization resources are saved in folders ./Addons/...?", MultiString.ActiveLanguage),
-            NeedsModuleContext = true,
             PleaseWaitText = this.__ResStr("creAllPlsWait", "Creating installed localization resources using language {0}...", MultiString.ActiveLanguage),
         };
     }
@@ -165,7 +162,6 @@ public class LocalizeBrowsePackageModule : ModuleDefinition2 {
             Category = ModuleAction.ActionCategoryEnum.Read,
             Mode = ModuleAction.ActionModeEnum.Any,
             ConfirmationText = this.__ResStr("locDataConfirm", "Are you sure you want to localize all package data for package {0} using language {1}? Properties for which localized data has already been defined are not updated.", package.Name, MultiString.ActiveLanguage),
-            NeedsModuleContext = true,
         };
     }
     public async Task<ModuleAction?> GetAction_LocalizeAllPackagesDataAsync() {
@@ -185,7 +181,6 @@ public class LocalizeBrowsePackageModule : ModuleDefinition2 {
             Category = ModuleAction.ActionCategoryEnum.Read,
             Mode = ModuleAction.ActionModeEnum.Any,
             ConfirmationText = this.__ResStr("locAllDataConfirm", "Are you sure you want to localize all data for all packages using language {0}? Properties for which localized data has already been defined are not updated.", MultiString.ActiveLanguage),
-            NeedsModuleContext = true,
             PleaseWaitText = this.__ResStr("locAllPlsWait", "Localizing all data for all packages using language {0}...", MultiString.ActiveLanguage),
         };
     }

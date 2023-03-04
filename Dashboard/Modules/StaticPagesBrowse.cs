@@ -1,12 +1,10 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Dashboard#License */
 
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
-using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Endpoints;
 using YetaWF.Core.IO;
@@ -61,7 +59,6 @@ public class StaticPagesBrowseModule : ModuleDefinition2 {
     public ModuleAction GetAction_Remove(string localUrl) {
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(StaticPagesBrowseModuleEndpoints), StaticPagesBrowseModuleEndpoints.Remove),
-            NeedsModuleContext = true,
             QueryArgs = new { LocalUrl = localUrl },
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,
@@ -78,7 +75,6 @@ public class StaticPagesBrowseModule : ModuleDefinition2 {
     public ModuleAction GetAction_RemoveAll() {
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(StaticPagesBrowseModuleEndpoints), StaticPagesBrowseModuleEndpoints.RemoveAll),
-            NeedsModuleContext = true,
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,
             LinkText = this.__ResStr("removeAllLink", "Unload All"),

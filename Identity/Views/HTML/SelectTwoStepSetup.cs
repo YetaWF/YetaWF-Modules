@@ -6,35 +6,34 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.Modules;
 
-namespace YetaWF.Modules.Identity.Views {
+namespace YetaWF.Modules.Identity.Views;
 
-    public class SelectTwoStepSetupView : YetaWFView, IYetaWFView<SelectTwoStepSetupModule, SelectTwoStepSetupModuleController.EditModel> {
+public class SelectTwoStepSetupView : YetaWFView, IYetaWFView<SelectTwoStepSetupModule, SelectTwoStepSetupModule.EditModel> {
 
-        public const string ViewName = "SelectTwoStepSetup";
+    public const string ViewName = "SelectTwoStepSetup";
 
-        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        public override string GetViewName() { return ViewName; }
+    public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+    public override string GetViewName() { return ViewName; }
 
-        public async Task<string> RenderViewAsync(SelectTwoStepSetupModule module, SelectTwoStepSetupModuleController.EditModel model) {
+    public async Task<string> RenderViewAsync(SelectTwoStepSetupModule module, SelectTwoStepSetupModule.EditModel model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+        HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($@"
+        hb.Append($@"
 {await HtmlHelper.ForEditContainerAsync(model, "PropertyList")}");
 
-            if (model.AuthMethods.Count == 0) {
-                hb.Append($@"
+        if (model.AuthMethods.Count == 0) {
+            hb.Append($@"
 <div class='yDivWarning'>
     {HE(this.__ResStr("noAuthInstalled", "There are no two-step authentication providers installed."))}
 </div>");
 
-            } else {
-                foreach (SelectTwoStepSetupModuleController.EditModel.AuthMethod meth in model.AuthMethods) {
+        } else {
+            foreach (SelectTwoStepSetupModule.EditModel.AuthMethod meth in model.AuthMethods) {
 
-                    hb.Append($@"
+                hb.Append($@"
 <div class='t_auth_info'>
     <div class='t_auth'>
         {await meth.Action.RenderAsLinkAsync()}
@@ -47,9 +46,8 @@ namespace YetaWF.Modules.Identity.Views {
     </div>
 </div>");
 
-                }
             }
-            return hb.ToString();
         }
+        return hb.ToString();
     }
 }

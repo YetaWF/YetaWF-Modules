@@ -96,7 +96,6 @@ public class PageEditModule : ModuleDefinition2 {
             Location = ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
             Mode = ModuleAction.ActionModeEnum.Any,
             ConfirmationText = this.__ResStr("delConfirm", "Are you ABSOLUTELY sure you want to remove the currently displayed page? This action cannot be undone."),
-            NeedsModuleContext = true,
         };
     }
 

@@ -82,7 +82,8 @@ namespace YetaWF_Panels {
             let query = {
                 Expanded: expanded,
             };
-            $YetaWF.postJSONIgnore(uri, query, null);
+            const formJson = $YetaWF.Forms.getJSONInfo(this.Control);
+            $YetaWF.postJSONIgnore(uri, formJson, query, null);
         }
         private repositionExpColl(): void {
             let expColl = $YetaWF.getElement1BySelectorCond(".t_expcoll", [this.Control]);

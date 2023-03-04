@@ -349,17 +349,17 @@ namespace YetaWF_ComponentsHTML {
             if (!$YetaWF.isLoading) {
 
                 // fetch data from servers
-                const formInfo = $YetaWF.Forms.getFormInfo(this.Control);
+                const formJson = $YetaWF.Forms.getJSONInfo(this.Control);
                 let data: TreePartialViewData = {
                     __UniqueIdCounters: YVolatile.Basics.UniqueIdCounters,
-                    __ModuleGuid: formInfo.ModuleGuid,
-                    __RequestVerificationToken: formInfo.RequestVerificationToken,
+                    __ModuleGuid: formJson.ModuleGuid,
+                    __RequestVerificationToken: formJson.RequestVerificationToken,
                     Entry: this.getElementDataCond(liElem),
                 }
 
                 var uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
 
-                $YetaWF.postJSON(uri, null, data, (success: boolean, partial: TreePartialResult): void =>{
+                $YetaWF.postJSON(uri, formJson, null, data, (success: boolean, partial: TreePartialResult): void =>{
                     if (success) {
                         let iElem = $YetaWF.getElement1BySelector("i.t_icright", [liElem]);
                         $YetaWF.elementRemoveClasses(iElem, ["t_icright", "t_icdown", "t_icempty"]);

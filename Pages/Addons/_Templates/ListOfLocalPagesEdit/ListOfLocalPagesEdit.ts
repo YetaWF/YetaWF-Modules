@@ -22,7 +22,6 @@ namespace YetaWF_Pages {
         private GridAll: YetaWF_ComponentsHTML.Grid;
         private buttonAdd: HTMLInputElement;
         private SelectUrl: YetaWF_ComponentsHTML.UrlEditComponent;
-        private ReloadInProgress: boolean = false;
         private AddCounter: number = 0;
 
         constructor(controlId: string, setup: ListOfLocalPagesSetup) {
@@ -41,21 +40,18 @@ namespace YetaWF_Pages {
 
             $YetaWF.registerEventHandler(this.buttonAdd, "click", null, (ev: MouseEvent): boolean => {
 
-                if (this.ReloadInProgress) return true;
-                this.ReloadInProgress = true;
+                if ($YetaWF.isLoading) return true;
 
                 var uri = $YetaWF.parseUrl(this.Setup.AddUrl);
                 const query = {
                     NewUrl: this.SelectUrl.value.trim(),
                     FieldPrefix: this.Grid.FieldName,
                 };
-
-                let data = $YetaWF.Forms.getJSONInfo(this.Control);
-                data.GridData = this.Grid.StaticData;
-                data[YConfigs.Forms.UniqueIdCounters] = { UniqueIdPrefix: `${this.ControlId}ls`, UniqueIdPrefixCounter: 0, UniqueIdCounter: ++this.AddCounter };
-
-                $YetaWF.postJSON(uri, query, data, (success: boolean, partial: GridRecordResult): void => {
-                    this.ReloadInProgress = false;
+                const data = {
+                    GridData: this.Grid.StaticData
+                };
+                const formJson =  $YetaWF.Forms.getJSONInfo(this.Control, { UniqueIdPrefix: `${this.ControlId}ls`, UniqueIdPrefixCounter: 0, UniqueIdCounter: ++this.AddCounter });
+                $YetaWF.postJSON(uri, formJson, query, data, (success: boolean, partial: GridRecordResult): void => {
                     if (success)
                         this.Grid.AddRecord(partial.TR, partial.StaticData);
                 });

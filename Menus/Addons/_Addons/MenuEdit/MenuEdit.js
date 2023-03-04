@@ -458,10 +458,8 @@ var YetaWF_Menus;
             var menuGuidInput = $YetaWF.getElement1BySelector("input[name='MenuGuid']", [form]);
             var menuGuid = menuGuidInput.value;
             var uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
-            var info = $YetaWF.Forms.getJSONInfo(this.SaveButton);
-            var token = info[YConfigs.Forms.RequestVerificationToken];
-            uri.addSearch(YConfigs.Forms.RequestVerificationToken, token);
-            $YetaWF.postJSON(uri, { menuGuid: menuGuid, menuVersion: menuVersion, }, this.buildHierarchy(), function (success, sendResult) {
+            var formJson = $YetaWF.Forms.getJSONInfo(this.SaveButton);
+            $YetaWF.postJSON(uri, formJson, { menuGuid: menuGuid, menuVersion: menuVersion, }, this.buildHierarchy(), function (success, sendResult) {
                 if (success)
                     menuVersionInput.value = sendResult.NewVersion.toString();
             });

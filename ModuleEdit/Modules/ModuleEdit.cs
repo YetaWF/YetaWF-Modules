@@ -58,7 +58,6 @@ public class ModuleEditModule : ModuleDefinition2 {
         return new ModuleAction(this) {
             Url = ModulePermanentUrl,
             QueryArgs = new { ModuleGuid = editGuid },
-            NeedsModuleContext = true,
             Image = "#Edit",
             LinkText = this.__ResStr("editLink", "Settings"),
             MenuText = this.__ResStr("editText", "Settings"),

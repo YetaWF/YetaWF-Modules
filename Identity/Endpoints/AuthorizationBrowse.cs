@@ -11,8 +11,8 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.DataProvider;
+using YetaWF.Modules.Identity.Modules;
 
 namespace YetaWF.Modules.Identity.Endpoints {
 
@@ -29,9 +29,9 @@ namespace YetaWF.Modules.Identity.Endpoints {
                 .AntiForgeryToken();
 
             group.MapPost(GridSupport.BrowseGridData, async (HttpContext context, [FromBody] GridSupport.GridPartialViewData gridPvData) => {
-                ModuleDefinition module = await GetModuleAsync(gridPvData.__ModuleGuid);
+                AuthorizationBrowseModule module = await GetModuleAsync<AuthorizationBrowseModule>(gridPvData.__ModuleGuid);
                 if (!module.IsAuthorized()) return Results.Unauthorized();
-                return await GridSupport.GetGridPartialAsync(context, module, AuthorizationBrowseModuleController.GetGridModel(module), gridPvData);
+                return await GridSupport.GetGridPartialAsync(context, module, module.GetGridModel(), gridPvData);
             });
 
             group.MapPost(Remove, async (HttpContext context, [FromQuery] Guid __ModuleGuid, [FromQuery] string resourceName) => {

@@ -47,7 +47,6 @@ public class ImageSelectionInfo {
             Category = ModuleAction.ActionCategoryEnum.Update,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-            NeedsModuleContext = true,
             Name = "Clear"
         };
         RemoveImageButton = new ModuleAction(OwningModule) {
@@ -60,7 +59,6 @@ public class ImageSelectionInfo {
             Category = ModuleAction.ActionCategoryEnum.Delete,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-            NeedsModuleContext = true,
             Name = "Remove"
         };
     }

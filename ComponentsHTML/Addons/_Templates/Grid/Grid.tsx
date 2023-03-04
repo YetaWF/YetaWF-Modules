@@ -318,7 +318,8 @@ namespace YetaWF_ComponentsHTML {
                         }
                     }
 
-                    $YetaWF.postJSON($YetaWF.parseUrl(this.Setup.SaveSettingsColumnSelectionUrl), null, gridHiddenColumns, (success: boolean, data:any): void => {
+                    const formJson = $YetaWF.Forms.getJSONInfo(this.Control);
+                    $YetaWF.postJSON($YetaWF.parseUrl(this.Setup.SaveSettingsColumnSelectionUrl), formJson, null, gridHiddenColumns, (success: boolean, data:any): void => {
                         if (success) {
                             if (!this.Setup.StaticData) {
                                 this.reload(0);
@@ -562,7 +563,8 @@ namespace YetaWF_ComponentsHTML {
             uri.addSearch("SettingsModuleGuid", this.Setup.SettingsModuleGuid);
             uri.addSearch("Expanded", expanded.toString());
 
-            $YetaWF.postJSONIgnore(uri, null, null);
+            const formJson = $YetaWF.Forms.getJSONInfo(this.Control);
+            $YetaWF.postJSONIgnore(uri, formJson, null, null);
         }
         private setExpandCollapseStatus(expand: boolean) : void {
             if (!expand && $YetaWF.elementHasClass(this.Control, "t_expanded")) {
@@ -803,7 +805,8 @@ namespace YetaWF_ComponentsHTML {
                         SettingsModuleGuid: currentControl.Setup.SettingsModuleGuid,
                         Columns: [{ Name: currentControl.Setup.Columns[colIndex].Name, Width: parseInt(currentControl.ColumnResizeHeader.style.width, 10) }],
                     }
-                    $YetaWF.postJSONIgnore($YetaWF.parseUrl(currentControl.Setup.SaveSettingsColumnWidthsUrl), null, gridColumns);
+                    const formJson = $YetaWF.Forms.getJSONInfo(currentControl.Control);
+                    $YetaWF.postJSONIgnore($YetaWF.parseUrl(currentControl.Setup.SaveSettingsColumnWidthsUrl), formJson, null, gridColumns);
                 }
             }
             if (Grid.CurrentControl) {
@@ -863,13 +866,13 @@ namespace YetaWF_ComponentsHTML {
                     this.setReloading(false);
                     this.setExpandCollapseStatus(true);
                 } else {
-                    const formInfo = $YetaWF.Forms.getFormInfo(this.Control);
+                    const formJson = $YetaWF.Forms.getJSONInfo(this.Control);
                     // fetch data from servers
                     const col = this.getSortColumn();
                     let data: GridPartialViewData = {
                         __UniqueIdCounters: YVolatile.Basics.UniqueIdCounters,
-                        __ModuleGuid: formInfo.ModuleGuid,
-                        __RequestVerificationToken: formInfo.RequestVerificationToken,
+                        __ModuleGuid: formJson.ModuleGuid,
+                        __RequestVerificationToken: formJson.RequestVerificationToken,
                         Data: "",
                         FieldPrefix: this.Setup.FieldName,
                         Skip: page * this.Setup.PageSize,
@@ -935,7 +938,7 @@ namespace YetaWF_ComponentsHTML {
                         data.Data = JSON.stringify(this.Setup.StaticData)
 
                     this.setReloading(true);
-                    $YetaWF.postJSON(uri, null,  data, (success: boolean, partial: GridPartialResult): void => {
+                    $YetaWF.postJSON(uri, formJson, null,  data, (success: boolean, partial: GridPartialResult): void => {
                         if (success) {
                             $YetaWF.processClearDiv(this.TBody);
                             this.TBody.innerHTML = "";

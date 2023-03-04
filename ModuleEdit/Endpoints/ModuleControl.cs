@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Routing;
 using System;
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
-using YetaWF.Core.Controllers;
 using YetaWF.Core.Endpoints;
 using YetaWF.Core.Endpoints.Filters;
 using YetaWF.Core.Localize;

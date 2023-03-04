@@ -70,9 +70,9 @@ public class DisqusModule : ModuleDefinition2 {
                     model.Width = config.Width;
                     model.Height = config.Height;
                 }
-                string? logoffUrl = WebConfigHelper.GetValue<string>("MvcApplication", "LogoffUrl", null, Package: false);
+                string? logoffUrl = WebConfigHelper.GetValue<string>("Application", "LogoffUrl", null, Package: false);
                 if (string.IsNullOrWhiteSpace(logoffUrl))
-                    throw new InternalError("MvcApplication LogoffUrl not defined in web.cofig/appsettings.json - This is required to log off the current user");
+                    throw new InternalError("Application LogoffUrl not defined in web.cofig/appsettings.json - This is required to log off the current user");
                 model.LogoffUrl = Manager.CurrentSite.MakeUrl(logoffUrl + Manager.CurrentPage.EvaluatedCanonicalUrl);
             }
             return await RenderAsync(model);

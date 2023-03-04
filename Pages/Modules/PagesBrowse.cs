@@ -89,7 +89,6 @@ public class PagesBrowseModule : ModuleDefinition2 {
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), PagesBrowseModuleEndpoints.Remove),
             QueryArgs = new { PageName = pageName },
-            NeedsModuleContext = true,
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,
             LinkText = this.__ResStr("removeLink", "Remove Item"),
@@ -107,7 +106,6 @@ public class PagesBrowseModule : ModuleDefinition2 {
         if (!IsAuthorized("SetAuthorization")) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.UpdateAdminAndEditorAuthorization)),
-            NeedsModuleContext = true,
             QueryArgs = new { },
             Image = "",
             Style = ModuleAction.ActionStyleEnum.Post,
@@ -127,7 +125,6 @@ public class PagesBrowseModule : ModuleDefinition2 {
         if (!IsAuthorized("SetAuthorization")) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.SetSuperuser)),
-            NeedsModuleContext = true,
             QueryArgs = new { Guid = guid },
             Image = await CustomIconAsync("go.png"),
             Style = ModuleAction.ActionStyleEnum.Post,
@@ -144,7 +141,6 @@ public class PagesBrowseModule : ModuleDefinition2 {
         if (!IsAuthorized("SetAuthorization")) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.SetAdmin)),
-            NeedsModuleContext = true,
             QueryArgs = new { Guid = guid },
             Image = await CustomIconAsync("go.png"),
             Style = ModuleAction.ActionStyleEnum.Post,
@@ -161,7 +157,6 @@ public class PagesBrowseModule : ModuleDefinition2 {
         if (!IsAuthorized("SetAuthorization")) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.SetUser)),
-            NeedsModuleContext = true,
             QueryArgs = new { Guid = guid },
             Image = await CustomIconAsync("go.png"),
             Style = ModuleAction.ActionStyleEnum.Post,
@@ -178,7 +173,6 @@ public class PagesBrowseModule : ModuleDefinition2 {
         if (!IsAuthorized("SetAuthorization")) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.SetAnonymous)),
-            NeedsModuleContext = true,
             QueryArgs = new { Guid = guid },
             Image = await CustomIconAsync("go.png"),
             Style = ModuleAction.ActionStyleEnum.Post,
@@ -196,7 +190,6 @@ public class PagesBrowseModule : ModuleDefinition2 {
         if (!IsAuthorized("SiteMaps")) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.CreateSiteMap)),
-            NeedsModuleContext = true,
             QueryArgs = new { },
             Image = "#Add",
             Style = ModuleAction.ActionStyleEnum.Post,
@@ -215,7 +208,6 @@ public class PagesBrowseModule : ModuleDefinition2 {
         if (!IsAuthorized("SiteMaps")) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.RemoveSiteMap)),
-            NeedsModuleContext = true,
             QueryArgs = new { },
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,
@@ -237,7 +229,6 @@ public class PagesBrowseModule : ModuleDefinition2 {
             return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.DownloadSiteMap)),
-            NeedsModuleContext = true,
             CookieAsDoneSignal = true,
             Image = await CustomIconAsync("Download.png"),
             LinkText = this.__ResStr("downloadLink", "Download Site Map"),
@@ -254,7 +245,6 @@ public class PagesBrowseModule : ModuleDefinition2 {
         if (!IsAuthorized("SiteMaps")) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.CreatePageList)),
-            NeedsModuleContext = true,
             CookieAsDoneSignal = true,
             Image = await CustomIconAsync("Download.png"),
             LinkText = this.__ResStr("pagelistLink", "Download Page List"),

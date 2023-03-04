@@ -48,13 +48,14 @@ namespace YetaWF_ModuleEdit {
                     NewUser: this.inputUserName.value,
                     FieldPrefix: this.Grid.FieldName,
                 };
-                if (this.Grid.ExtraData) uri.addSearchSimpleObject(this.Grid.ExtraData);
+                const data = {
+                    GridData: this.Grid.StaticData
+                };  
+                if (this.Grid.ExtraData)
+                    uri.addSearchSimpleObject(this.Grid.ExtraData);
 
-                let data = $YetaWF.Forms.getJSONInfo(this.Control);
-                data.GridData = this.Grid.StaticData;
-                data[YConfigs.Forms.UniqueIdCounters] = { UniqueIdPrefix: `${this.ControlId}ls`, UniqueIdPrefixCounter: 0, UniqueIdCounter: ++this.AddCounter };
-
-                $YetaWF.postJSON(uri, query, data, (success: boolean, partial: GridRecordResult): void => {
+                const formJson = $YetaWF.Forms.getJSONInfo(this.Control, { UniqueIdPrefix: `${this.ControlId}ls`, UniqueIdPrefixCounter: 0, UniqueIdCounter: ++this.AddCounter });
+                $YetaWF.postJSON(uri, formJson, query, data, (success: boolean, partial: GridRecordResult): void => {
                     if (success) {
                         this.Grid.AddRecord(partial.TR, partial.StaticData);
                         this.inputUserName.value = "";

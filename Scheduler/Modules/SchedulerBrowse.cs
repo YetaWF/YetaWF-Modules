@@ -92,7 +92,6 @@ public class SchedulerBrowseModule : ModuleDefinition2 {
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(SchedulerBrowseModuleEndpoints), SchedulerBrowseModuleEndpoints.RemoveItem),
             QueryArgs = new { Name = name },
-            NeedsModuleContext = true,
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,
             LinkText = this.__ResStr("removeLink", "Remove Item"),
@@ -109,7 +108,6 @@ public class SchedulerBrowseModule : ModuleDefinition2 {
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(SchedulerBrowseModuleEndpoints), SchedulerBrowseModuleEndpoints.RunItem),
             QueryArgs = new { Name = name },
-            NeedsModuleContext = true,
             Image = await CustomIconAsync("RunItem.png"),
             Style = ModuleAction.ActionStyleEnum.Post,
             LinkText = this.__ResStr("runLink", "Run Item"),
@@ -130,7 +128,6 @@ public class SchedulerBrowseModule : ModuleDefinition2 {
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(SchedulerBrowseModuleEndpoints), SchedulerBrowseModuleEndpoints.SchedulerToggle),
             QueryArgs = new { Start = !running },
-            NeedsModuleContext = true,
             Image = await CustomIconAsync("SchedulerToggle.png"),
             Style = ModuleAction.ActionStyleEnum.Post,
             LinkText = running ? this.__ResStr("stopLink", "Stop Scheduler") : this.__ResStr("startLink", "Start Scheduler"),

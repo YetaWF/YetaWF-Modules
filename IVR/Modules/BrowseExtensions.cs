@@ -82,7 +82,6 @@ public class BrowseExtensionsModule : ModuleDefinition2 {
         if (!IsAuthorized("RemoveItems")) return null;
         return new ModuleAction(this) {
             Url = $"{Utility.UrlFor(typeof(BrowseExtensionsModuleEndpoints), BrowseExtensionsModuleEndpoints.Remove)}/{id}",
-            NeedsModuleContext = true,
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,
             LinkText = this.__ResStr("removeLink", "Remove Extension"),

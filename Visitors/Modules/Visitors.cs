@@ -73,7 +73,6 @@ public class VisitorsModule : ModuleDefinition2 {
         }
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(VisitorsModuleEndpoints), VisitorsModuleEndpoints.UpdateGeoLocation),
-            NeedsModuleContext = true,
             QueryArgs = new { },
             Image = "#Add",
             Style = ModuleAction.ActionStyleEnum.Post,

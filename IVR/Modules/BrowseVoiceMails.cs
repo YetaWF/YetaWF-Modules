@@ -76,7 +76,6 @@ public class BrowseVoiceMailsModule : ModuleDefinition2 {
         if (!IsAuthorized("RemoveItems")) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(BrowseVoiceMailsModuleEndpoints), BrowseVoiceMailsModuleEndpoints.Remove),
-            NeedsModuleContext = true,
             QueryArgs = new { Id = id },
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,

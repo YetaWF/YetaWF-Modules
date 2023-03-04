@@ -6,33 +6,31 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Modules.Identity.Controllers;
 using YetaWF.Modules.Identity.Modules;
 
-namespace YetaWF.Modules.Identity.Views {
+namespace YetaWF.Modules.Identity.Views;
 
-    public class SelectTwoStepAuthView : YetaWFView, IYetaWFView<SelectTwoStepAuthModule, SelectTwoStepAuthModuleController.EditModel> {
+public class SelectTwoStepAuthView : YetaWFView, IYetaWFView<SelectTwoStepAuthModule, SelectTwoStepAuthModule.EditModel> {
 
-        public const string ViewName = "SelectTwoStepAuth";
+    public const string ViewName = "SelectTwoStepAuth";
 
-        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        public override string GetViewName() { return ViewName; }
+    public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+    public override string GetViewName() { return ViewName; }
 
-        public async Task<string> RenderViewAsync(SelectTwoStepAuthModule module, SelectTwoStepAuthModuleController.EditModel model) {
+    public async Task<string> RenderViewAsync(SelectTwoStepAuthModule module, SelectTwoStepAuthModule.EditModel model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+        HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($@"
+        hb.Append($@"
 {await HtmlHelper.ForEditContainerAsync(model, "PropertyList")}");
 
-            foreach (ModuleAction action in model.Actions) {
-                hb.Append($@"
+        foreach (ModuleAction action in model.Actions) {
+            hb.Append($@"
 <div class='t_auth'>
     {await action.RenderAsLinkAsync()}
 </div>");
-            }
-
-            return hb.ToString();
         }
+
+        return hb.ToString();
     }
 }

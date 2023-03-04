@@ -538,6 +538,7 @@ namespace YetaWF_Menus {
         private sendEntireMenu(): void {
 
             if ($YetaWF.isLoading) return;
+            
             let form = $YetaWF.Forms.getForm(this.Details);
             let menuVersionInput = $YetaWF.getElement1BySelector("input[name='MenuVersion']", [form]) as HTMLInputElement;
             let menuVersion = menuVersionInput.value;
@@ -546,11 +547,8 @@ namespace YetaWF_Menus {
 
             let uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
 
-            const info = $YetaWF.Forms.getJSONInfo(this.SaveButton);
-            const token = info[YConfigs.Forms.RequestVerificationToken];
-            uri.addSearch(YConfigs.Forms.RequestVerificationToken, token);
-
-            $YetaWF.postJSON(uri, { menuGuid: menuGuid, menuVersion: menuVersion, }, this.buildHierarchy(), (success: boolean, sendResult: SendResult): void => {
+            const formJson = $YetaWF.Forms.getJSONInfo(this.SaveButton);
+            $YetaWF.postJSON(uri, formJson, { menuGuid: menuGuid, menuVersion: menuVersion, }, this.buildHierarchy(), (success: boolean, sendResult: SendResult): void => {
                 if (success)
                     menuVersionInput.value = sendResult.NewVersion.toString();
             });

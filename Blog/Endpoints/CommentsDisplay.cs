@@ -31,7 +31,7 @@ public class CommentsDisplayModuleEndpoints : YetaWFEndpoints {
             .ExcludeDemoMode()
             .ResourceAuthorize(Info.Resource_AllowManageComments);
 
-        group.MapPost(Remove, async (HttpContext context, [FromQuery] Guid __ModuleGuid, int blogEntry, int comment) => {
+        group.MapPost(Approve, async (HttpContext context, [FromQuery] Guid __ModuleGuid, int blogEntry, int comment) => {
             using (BlogCommentDataProvider dataProvider = new BlogCommentDataProvider(blogEntry)) {
                 BlogComment? cmt = await dataProvider.GetItemAsync(comment);
                 if (cmt == null)

@@ -73,7 +73,6 @@ public class FeedbackBrowseModule : ModuleDefinition2 {
         if (!IsAuthorized("RemoveFeedback")) return null;
         return new ModuleAction(this) {
             Url = $"{Utility.UrlFor<FeedbackBrowseModuleEndpoints>(FeedbackBrowseModuleEndpoints.Remove)}/{id}",
-            NeedsModuleContext = true,
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,
             LinkText = this.__ResStr("removeLink", "Remove Feedback"),

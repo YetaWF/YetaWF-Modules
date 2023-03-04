@@ -208,9 +208,6 @@ namespace YetaWF.Modules.ComponentsHTML {
             if (!string.IsNullOrWhiteSpace(action.ExtraData))
                 attrs.Add(Basics.CssExtraData, action.ExtraData);
 
-            if (action.NeedsModuleContext)
-                attrs.Add(Basics.CssAddModuleContext, string.Empty);
-
             if (post)
                 attrs.Add(Basics.PostAttr, string.Empty);
 

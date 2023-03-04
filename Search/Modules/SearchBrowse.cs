@@ -79,7 +79,6 @@ public class SearchBrowseModule : ModuleDefinition2 {
         if (!IsAuthorized("RemoveItems")) return null;
         return new ModuleAction(this) {
             Url = $"{Utility.UrlFor(typeof(SearchBrowseModuleEndpoints), SearchBrowseModuleEndpoints.Remove)}/{searchDataId}",
-            NeedsModuleContext = true,
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,
             LinkText = this.__ResStr("removeLink", "Remove search keyword"),
@@ -97,7 +96,6 @@ public class SearchBrowseModule : ModuleDefinition2 {
         if (!SearchDataProvider.IsUsable) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(SearchBrowseModuleEndpoints), SearchBrowseModuleEndpoints.RemoveAll),
-            NeedsModuleContext = true,
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,
             LinkText = this.__ResStr("removeAllLink", "Remove All"),
@@ -116,7 +114,6 @@ public class SearchBrowseModule : ModuleDefinition2 {
         if (!SearchDataProvider.IsUsable) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(SearchBrowseModuleEndpoints), SearchBrowseModuleEndpoints.CollectKeywords),
-            NeedsModuleContext = true,
             Image = await CustomIconAsync("CollectKeywords.png"),
             Style = ModuleAction.ActionStyleEnum.Post,
             LinkText = this.__ResStr("collectLink", "Collect Keywords"),

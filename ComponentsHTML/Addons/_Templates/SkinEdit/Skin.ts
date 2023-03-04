@@ -37,12 +37,12 @@ namespace YetaWF_ComponentsHTML {
             this.SelectPopupFile = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name$='.PopupFileName']", DropDownListEditComponent.SELECTOR, [this.Control]);
 
             this.SelectCollection.Control.addEventListener(YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, (evt: Event): void => {
-                let data = { SkinCollection: this.SelectCollection.value };
 
                 let uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
-                uri.addSearchSimpleObject(data);
+                let query = { SkinCollection: this.SelectCollection.value };
 
-                $YetaWF.post(uri.toUrl(), uri.toFormData(), (success: boolean, lists: Lists): void =>{
+                const formJson = $YetaWF.Forms.getJSONInfo(this.Control);
+                $YetaWF.postJSON(uri, formJson, query, null, (success: boolean, lists: Lists): void =>{
                     if (success) {
                         this.SelectPageFile.setOptionsHTML(lists.PagesHTML);
                         this.SelectPopupFile.setOptionsHTML(lists.PopupsHTML);

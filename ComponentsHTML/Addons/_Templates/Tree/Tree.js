@@ -332,15 +332,15 @@ var YetaWF_ComponentsHTML;
                 throw "Tree control doesn't have an AJAX URL - ".concat(this.Control.outerHTML);
             if (!$YetaWF.isLoading) {
                 // fetch data from servers
-                var formInfo = $YetaWF.Forms.getFormInfo(this.Control);
+                var formJson = $YetaWF.Forms.getJSONInfo(this.Control);
                 var data = {
                     __UniqueIdCounters: YVolatile.Basics.UniqueIdCounters,
-                    __ModuleGuid: formInfo.ModuleGuid,
-                    __RequestVerificationToken: formInfo.RequestVerificationToken,
+                    __ModuleGuid: formJson.ModuleGuid,
+                    __RequestVerificationToken: formJson.RequestVerificationToken,
                     Entry: this.getElementDataCond(liElem),
                 };
                 var uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
-                $YetaWF.postJSON(uri, null, data, function (success, partial) {
+                $YetaWF.postJSON(uri, formJson, null, data, function (success, partial) {
                     if (success) {
                         var iElem = $YetaWF.getElement1BySelector("i.t_icright", [liElem]);
                         $YetaWF.elementRemoveClasses(iElem, ["t_icright", "t_icdown", "t_icempty"]);

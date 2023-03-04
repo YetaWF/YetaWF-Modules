@@ -41,8 +41,8 @@ var YetaWF_ImageRepository;
                 var uri = $YetaWF.parseUrl(_this.RemoveButton.href);
                 uri.removeSearch("Name");
                 uri.addSearch("Name", _this.Hidden.value);
-                var info = $YetaWF.Forms.getJSONInfo(_this.Control);
-                $YetaWF.postJSON(uri, info, null, function (success, resp) {
+                var formJson = $YetaWF.Forms.getJSONInfo(_this.Control);
+                $YetaWF.postJSON(uri, formJson, null, null, function (success, resp) {
                     if (success) {
                         // eslint-disable-next-line no-eval
                         eval(resp.Result);

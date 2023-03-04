@@ -92,7 +92,8 @@ var YetaWF_Panels;
             var query = {
                 Expanded: expanded,
             };
-            $YetaWF.postJSONIgnore(uri, query, null);
+            var formJson = $YetaWF.Forms.getJSONInfo(this.Control);
+            $YetaWF.postJSONIgnore(uri, formJson, query, null);
         };
         PageBarInfoComponent.prototype.repositionExpColl = function () {
             var expColl = $YetaWF.getElement1BySelectorCond(".t_expcoll", [this.Control]);

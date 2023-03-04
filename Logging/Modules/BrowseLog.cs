@@ -89,7 +89,6 @@ public class BrowseLogModule : ModuleDefinition2 {
         };
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(BrowseLogModuleEndpoints), BrowseLogModuleEndpoints.RemoveAll),
-            NeedsModuleContext = true,
             Image = await CustomIconAsync("RemoveAll.png"),
             Style = ModuleAction.ActionStyleEnum.Post,
             LinkText = this.__ResStr("removeAllLink", "Remove All"),
@@ -110,7 +109,6 @@ public class BrowseLogModule : ModuleDefinition2 {
         };
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(BrowseLogModuleEndpoints), BrowseLogModuleEndpoints.DownloadLog),
-            NeedsModuleContext = true,
             CookieAsDoneSignal = true,
             Image = await CustomIconAsync("Download.png"),
             LinkText = this.__ResStr("downloadLink", "Download Log"),
@@ -131,7 +129,6 @@ public class BrowseLogModule : ModuleDefinition2 {
         };
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(BrowseLogModuleEndpoints), BrowseLogModuleEndpoints.DownloadZippedLog),
-            NeedsModuleContext = true,
             CookieAsDoneSignal = true,
             Image = await CustomIconAsync("Download.png"),
             LinkText = this.__ResStr("dlZipLink", "Download Log (Zipped)"),

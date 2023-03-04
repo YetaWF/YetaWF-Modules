@@ -5,24 +5,23 @@ using YetaWF.Core.Addons;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 
-namespace YetaWF.Modules.Identity.Addons {
+namespace YetaWF.Modules.Identity.Addons;
 
-    public class Info : IAddOnSupport {
+public class Info : IAddOnSupport {
 
-        public const string Resource_AllowUserLogon = "YetaWF_Identity-AllowUserLogon";
-        public const string Resource_AllowUserIdAjax = "YetaWF_Identity-AllowUserIdAjax";
-        public const string Resource_AllowListOfUserNamesAjax = "YetaWF_Identity-AllowListOfUserNamesAjax";
+    public const string Resource_AllowUserLogon = "YetaWF_Identity-AllowUserLogon";
+    public const string Resource_AllowUserIdAjax = "YetaWF_Identity-AllowUserIdAjax";
+    public const string Resource_AllowListOfUserNamesAjax = "YetaWF_Identity-AllowListOfUserNamesAjax";
 
-        public static readonly int MAX_USERS_IN_RESOURCE = 10;// maximum allowed users in a resource definition
+    public static readonly int MAX_USERS_IN_RESOURCE = 10;// maximum allowed users in a resource definition
 
-        public Task AddSupportAsync(YetaWFManager manager) {
+    public Task AddSupportAsync(YetaWFManager manager) {
 
-            ScriptManager scripts = manager.ScriptManager;
-            string areaName = AreaRegistration.CurrentPackage.AreaName;
+        ScriptManager scripts = manager.ScriptManager;
+        string areaName = AreaRegistration.CurrentPackage.AreaName;
 
-            //scripts.AddConfigOption(areaName, "MaxUsersInResource", MAX_USERS_IN_RESOURCE);
+        //scripts.AddConfigOption(areaName, "MaxUsersInResource", MAX_USERS_IN_RESOURCE);
 
-            return Task.CompletedTask;
-        }
+        return Task.CompletedTask;
     }
 }

@@ -53,7 +53,6 @@ public class SearchControlModule : ModuleDefinition2 {
             Category = ModuleAction.ActionCategoryEnum.Read,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-            NeedsModuleContext = true,
             Name = "On",
             Displayed = false,
         };
@@ -70,7 +69,6 @@ public class SearchControlModule : ModuleDefinition2 {
             Category = ModuleAction.ActionCategoryEnum.Read,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-            NeedsModuleContext = true,
             Name = "Off",
             Displayed = false,
         };

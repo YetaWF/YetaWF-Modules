@@ -40,7 +40,6 @@ public class ConfirmRemovalModule : ModuleDefinition2 {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             QueryArgs = new { SiteDomain = site.SiteDomain },
             Image = "#Remove",
-            NeedsModuleContext = true,
             Style = ModuleAction.ActionStyleEnum.Normal,
             LinkText = this.__ResStr("removeLink", "Remove Site"),
             MenuText = this.__ResStr("removeMenu", "Remove Site"),

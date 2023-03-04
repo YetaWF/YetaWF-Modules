@@ -93,7 +93,6 @@ public class PageControlModule : ModuleDefinition2 {
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(PageControlModuleEndpoints), PageControlModuleEndpoints.SwitchToEdit),
             QueryArgs = new { },
-            NeedsModuleContext = true,
             Image = "#Edit",
             LinkText = this.__ResStr("modSwitchToEditLink", "Switch To Site Edit Mode"),
             MenuText = this.__ResStr("modSwitchToEditText", "Switch To Site Edit Mode"),
@@ -112,7 +111,6 @@ public class PageControlModule : ModuleDefinition2 {
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(PageControlModuleEndpoints), PageControlModuleEndpoints.SwitchToView),
             QueryArgs = new { },
-            NeedsModuleContext = true,
             Image = "#Display",
             LinkText = this.__ResStr("modSwitchToViewLink", "Switch To Site View Mode"),
             MenuText = this.__ResStr("modSwitchToViewText", "Switch To Site View Mode"),
@@ -142,9 +140,6 @@ public class PageControlModule : ModuleDefinition2 {
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(PageControlModuleEndpoints), PageControlModuleEndpoints.ExportPage),
             QueryArgs = new { PageGuid = guid },
-            QueryArgsDict = new QueryHelper(new QueryDictionary {
-                { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
-            }),
             Image = await CustomIconAsync("ExportPage.png"),
             Name = "ExportPage",
             LinkText = this.__ResStr("modExportLink", "Export"),
@@ -202,7 +197,6 @@ public class PageControlModule : ModuleDefinition2 {
         if (!Manager.HasSuperUserRole) return null;
         return new ModuleAction(this) {
             Style = ModuleAction.ActionStyleEnum.Post,
-            NeedsModuleContext = true,
             Url = Utility.UrlFor(typeof(PageControlModuleEndpoints), PageControlModuleEndpoints.ClearJsCss),
             Image = "#Remove",
             LinkText = this.__ResStr("clrCacheLink", "Clear JS/CSS/Statics Cache"),

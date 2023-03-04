@@ -1,47 +1,247 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
+using Microsoft.AspNetCore.Http;
 using System;
+using System.Threading.Tasks;
+using YetaWF.Core.Audit;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 
-namespace YetaWF.Modules.Identity.Modules {
+namespace YetaWF.Modules.Identity.Modules;
 
-    public class OwinEditModuleDataProvider : ModuleDefinitionDataProvider<Guid, OwinEditModule>, IInstallableModel { }
+public class OwinEditModuleDataProvider : ModuleDefinitionDataProvider<Guid, OwinEditModule>, IInstallableModel { }
 
-    [ModuleGuid("{F490DEEB-FF19-4921-894B-4A81D263F97A}")]
-    [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-    [ModuleCategory("Configuration")]
-    public class OwinEditModule : ModuleDefinition {
+[ModuleGuid("{F490DEEB-FF19-4921-894B-4A81D263F97A}")]
+[UniqueModule(UniqueModuleStyle.UniqueOnly)]
+[ModuleCategory("Configuration")]
+public class OwinEditModule : ModuleDefinition2 {
 
-        public OwinEditModule() : base() {
-            Title = this.__ResStr("modTitle", "Login Provider Settings");
-            Name = this.__ResStr("modName", "Login Provider Settings");
-            Description = this.__ResStr("modSummary", "Used to edit local and external login provider settings like Google, Facebook, etc. The Login Provider Settings Module can be accessed using Admin > Identity Settings > Login Providers (standard YetaWF site).");
-            UsePartialFormCss = false;
+    public OwinEditModule() : base() {
+        Title = this.__ResStr("modTitle", "Login Provider Settings");
+        Name = this.__ResStr("modName", "Login Provider Settings");
+        Description = this.__ResStr("modSummary", "Used to edit local and external login provider settings like Google, Facebook, etc. The Login Provider Settings Module can be accessed using Admin > Identity Settings > Login Providers (standard YetaWF site).");
+        UsePartialFormCss = false;
+    }
+
+    public override IModuleDefinitionIO GetDataProvider() { return new OwinEditModuleDataProvider(); }
+
+    public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return SuperuserLevel_DefaultAllowedRoles; } }
+
+    public ModuleAction GetAction_OwinEdit(string url) {
+        return new ModuleAction(this) {
+            Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
+            Image = "#Edit",
+            LinkText = this.__ResStr("editLink", "Login Providers"),
+            MenuText = this.__ResStr("editText", "Login Providers"),
+            Tooltip = this.__ResStr("editTooltip", "Edit login provider settings"),
+            Legend = this.__ResStr("editLegend", "Edits login provider settings"),
+            Style = ModuleAction.ActionStyleEnum.Popup,
+            Category = ModuleAction.ActionCategoryEnum.Update,
+            Mode = ModuleAction.ActionModeEnum.Any,
+            Location = ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
+            SaveReturnUrl = true,
+        };
+    }
+
+    [Trim]
+    public class EditModel {
+
+        public const int MaxKey = 200;
+
+        public EditModel() {
+            MicrosoftUrl = "https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade"; // was "https://account.live.com/developers/applications/";
+            GoogleUrl = "https://console.developers.google.com/apis/credentials"; // general "https://developers.google.com/identity/sign-in/web";
+            FacebookUrl = "https://developers.facebook.com/apps";
+            TwitterUrl = "https://developer.twitter.com/apps";
         }
 
-        public override IModuleDefinitionIO GetDataProvider() { return new OwinEditModuleDataProvider(); }
+        [Category("Built-In Login"), Caption("Password Renewal"), Description("The time after which a user must change the password - Set to 0 to allow passwords to remain valid indefinitely")]
+        [UIHint("TimeSpanDH"), Required]
+        public TimeSpan PasswordRenewal { get; set; }
 
-        public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return SuperuserLevel_DefaultAllowedRoles; } }
+        [Category("Built-In Login"), Caption("Password Settings:"), Description("")]
+        [UIHint("String"), ReadOnly]
+        public string Nothing { get; set; }
 
-        public ModuleAction GetAction_OwinEdit(string url) {
-            return new ModuleAction(this) {
-                Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
-                Image = "#Edit",
-                LinkText = this.__ResStr("editLink", "Login Providers"),
-                MenuText = this.__ResStr("editText", "Login Providers"),
-                Tooltip = this.__ResStr("editTooltip", "Edit login provider settings"),
-                Legend = this.__ResStr("editLegend", "Edits login provider settings"),
-                Style = ModuleAction.ActionStyleEnum.Popup,
-                Category = ModuleAction.ActionCategoryEnum.Update,
-                Mode = ModuleAction.ActionModeEnum.Any,
-                Location = ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
-                SaveReturnUrl = true,
-            };
+        [Category("Built-In Login"), Caption("Minimum Length"), Description("Defines the minimum length of a password")]
+        [UIHint("IntValue2"), Required, Range(4, 24)]
+        public int RequiredLength { get; set; }
+
+        [Category("Built-In Login"), Caption("Requires Digit"), Description("Defines whether a password requires at least one digit")]
+        [UIHint("Boolean")]
+        public bool RequireDigit { get; set; }
+
+        [Category("Built-In Login"), Caption("Requires Non-Alphanumeric"), Description("Defines whether a password requires at least one non alphanumeric (special) character")]
+        [UIHint("Boolean")]
+        public bool RequireNonAlphanumeric { get; set; }
+
+        [Category("Built-In Login"), Caption("Requires Uppercase"), Description("Defines whether a password requires at least one uppercase character")]
+        [UIHint("Boolean")]
+        public bool RequireUppercase { get; set; }
+
+        [Category("Built-In Login"), Caption("Requires Lowercase"), Description("Defines whether a password requires at least one lowercase character")]
+        [UIHint("Boolean")]
+        public bool RequireLowercase { get; set; }
+
+        [Category("External Login"), Caption("Use Facebook"), Description("Defines whether Facebook logins are allowed")]
+        [UIHint("Boolean")]
+        public bool UseFacebook { get; set; }
+        [Category("External Login"), Caption("Facebook"), Description("Provides a link to Facebook to set up authentication for your sites")]
+        [UIHint("Url"), ReadOnly]
+        public string FacebookUrl { get; set; }
+        [Category("External Login"), Caption("Facebook App ID"), Description("The App ID for authentication using Facebook (defined in Facebook)")]
+        [UIHint("Text80"), StringLength(MaxKey), Trim]
+        [RequiredIf(nameof(UseFacebook), true)]
+        [ExcludeDemoMode]
+        public string FacebookPublic { get; set; }
+        [Category("External Login"), Caption("Facebook App Secret"), Description("The App Secret for authentication using Facebook (defined in Facebook)")]
+        [UIHint("Text80"), RequiredIfSuppliedAttribute("FacebookPublic"), StringLength(MaxKey), Trim]
+        [RequiredIf(nameof(UseFacebook), true)]
+        [ExcludeDemoMode]
+        public string FacebookPrivate { get; set; }
+
+        [Category("External Login"), Caption("Use Google"), Description("Defines whether Google logins are allowed")]
+        [UIHint("Boolean")]
+        public bool UseGoogle { get; set; }
+        [Category("External Login"), Caption("Google"), Description("Provides a link to Google to set up authentication for your sites")]
+        [UIHint("Url"), ReadOnly]
+        public string GoogleUrl { get; set; }
+        [Category("External Login"), Caption("Google Client ID"), Description("The Client ID for authentication using Google (defined using Google)")]
+        [UIHint("Text80"), StringLength(MaxKey), Trim]
+        [RequiredIf(nameof(UseGoogle), true)]
+        [ExcludeDemoMode]
+        public string GooglePublic { get; set; }
+        [Category("External Login"), Caption("Google Client Secret"), Description("The Client Secret for authentication using Google (defined using Google)")]
+        [UIHint("Text80"), RequiredIfSuppliedAttribute("GooglePublic"), StringLength(MaxKey), Trim]
+        [RequiredIf(nameof(UseGoogle), true)]
+        [ExcludeDemoMode]
+        public string GooglePrivate { get; set; }
+
+        [Category("External Login"), Caption("Use Microsoft"), Description("Defines whether Microsoft logins are allowed")]
+        [UIHint("Boolean")]
+        public bool UseMicrosoft { get; set; }
+        [Category("External Login"), Caption("Microsoft"), Description("Provides a link to Microsoft to set up authentication for your sites")]
+        [UIHint("Url"), ReadOnly]
+        public string MicrosoftUrl { get; set; }
+        [Category("External Login"), Caption("Microsoft Application ID"), Description("The Application (client) ID for authentication using Microsoft")]
+        [UIHint("Text80"), StringLength(MaxKey), Trim]
+        [RequiredIf(nameof(UseMicrosoft), true)]
+        [ExcludeDemoMode]
+        public string MicrosoftPublic { get; set; }
+        [Category("External Login"), Caption("Microsoft Client Secret"), Description("The Client Secret for authentication using Microsoft")]
+        [UIHint("Text80"), RequiredIfSuppliedAttribute("MicrosoftPublic"), StringLength(MaxKey), Trim]
+        [RequiredIf(nameof(UseMicrosoft), true)]
+        [ExcludeDemoMode]
+        public string MicrosoftPrivate { get; set; }
+
+        [Category("External Login"), Caption("Use Twitter"), Description("Defines whether Twitter logins are allowed")]
+        [UIHint("Boolean")]
+        public bool UseTwitter { get; set; }
+        [Category("External Login"), Caption("Twitter"), Description("Provides a link to Twitter to set up authentication for your sites")]
+        [UIHint("Url"), ReadOnly]
+        public string TwitterUrl { get; set; }
+        [Category("External Login"), Caption("Twitter API Key"), Description("The API Key for authentication using Twitter (defined using Twitter)")]
+        [UIHint("Text80"), StringLength(MaxKey), Trim]
+        [RequiredIf(nameof(UseTwitter), true)]
+        [ExcludeDemoMode]
+        public string TwitterPublic { get; set; }
+        [Category("External Login"), Caption("Twitter API Secret Key"), Description("The API Secret Key for authentication using Twitter (defined using Twitter)")]
+        [UIHint("Text80"), RequiredIfSuppliedAttribute("TwitterPublic"), StringLength(MaxKey), Trim]
+        [RequiredIf(nameof(UseTwitter), true)]
+        [ExcludeDemoMode]
+        public string TwitterPrivate { get; set; }
+
+        [Category("Cookies"), Caption("Sliding Expiration"), Description("Cookies are reissued with a new expiration time anytime a request is processed whose cookie is more than halfway through the expiration window")]
+        [UIHint("Boolean")]
+        public bool SlidingExpiration { get; set; }
+
+        [Category("Cookies"), Caption("Expiration"), Description("The time a cookie will remain valid from the point it is created")]
+        [UIHint("TimeSpanDHM"), Required]
+        public TimeSpan ExpireTimeSpan { get; set; }
+
+        [Category("Cookies"), Caption("Security Interval"), Description("The time after which a logged on user is re-validated (in case the password changed) to insure the authenticated user is still valid")]
+        [UIHint("TimeSpanDHM"), Required]
+        public TimeSpan SecurityStampValidationInterval { get; set; }
+    }
+
+    public async Task<ActionInfo> RenderModuleAsync() {
+        EditModel model = new EditModel { };
+
+        model.RequireDigit = OwinConfigHelper.GetValue<bool>(AreaName, "Password:RequireDigit", false);
+        model.RequiredLength = OwinConfigHelper.GetValue<int>(AreaName, "Password:RequiredLength", 6);
+        model.RequireNonAlphanumeric = OwinConfigHelper.GetValue<bool>(AreaName, "Password:RequireNonAlphanumeric", false);
+        model.RequireUppercase = OwinConfigHelper.GetValue<bool>(AreaName, "Password:RequireUppercase", false);
+        model.RequireLowercase = OwinConfigHelper.GetValue<bool>(AreaName, "Password:RequireLowercase", false);
+
+        model.SlidingExpiration = OwinConfigHelper.GetValue<bool>(AreaName, "OWin:SlidingExpiration", true);
+        long ticks = OwinConfigHelper.GetValue<long>(AreaName, "OWin:ExpireTimeSpan", new TimeSpan(10, 0, 0, 0).Ticks); // 10 days
+        model.ExpireTimeSpan = new TimeSpan(ticks);
+        ticks = OwinConfigHelper.GetValue<long>(AreaName, "OWin:SecurityStampValidationInterval", new TimeSpan(0, 30, 0).Ticks); // 30 minutes
+        model.SecurityStampValidationInterval = new TimeSpan(ticks);
+        ticks = OwinConfigHelper.GetValue<long>(AreaName, "PasswordRenewal", new TimeSpan(0, 0, 0).Ticks); // 0  = indefinitely
+        model.PasswordRenewal = new TimeSpan(ticks);
+
+        model.UseMicrosoft = OwinConfigHelper.GetValue<bool>(AreaName, "MicrosoftAccount:Enabled");
+        model.MicrosoftPublic = OwinConfigHelper.GetValue<string>(AreaName, "MicrosoftAccount:Public");
+        model.MicrosoftPrivate = OwinConfigHelper.GetValue<string>(AreaName, "MicrosoftAccount:Private");
+        model.UseGoogle = OwinConfigHelper.GetValue<bool>(AreaName, "GoogleAccount:Enabled");
+        model.GooglePublic = OwinConfigHelper.GetValue<string>(AreaName, "GoogleAccount:Public");
+        model.GooglePrivate = OwinConfigHelper.GetValue<string>(AreaName, "GoogleAccount:Private");
+        model.UseFacebook = OwinConfigHelper.GetValue<bool>(AreaName, "FacebookAccount:Enabled");
+        model.FacebookPublic = OwinConfigHelper.GetValue<string>(AreaName, "FacebookAccount:Public");
+        model.FacebookPrivate = OwinConfigHelper.GetValue<string>(AreaName, "FacebookAccount:Private");
+        model.UseTwitter = OwinConfigHelper.GetValue<bool>(AreaName, "TwitterAccount:Enabled");
+        model.TwitterPublic = OwinConfigHelper.GetValue<string>(AreaName, "TwitterAccount:Public");
+        model.TwitterPrivate = OwinConfigHelper.GetValue<string>(AreaName, "TwitterAccount:Private");
+        return await RenderAsync(model);
+    }
+
+    [ExcludeDemoMode]
+    public async Task<IResult> UpdateModuleAsync(EditModel model) {
+        if (!ModelState.IsValid)
+            return await PartialViewAsync(model);
+        if (model.ExpireTimeSpan < new TimeSpan(0, 10, 0)) {
+            ModelState.AddModelError(nameof(model.ExpireTimeSpan), this.__ResStr("timeSpan", "The minimum expiration timespan should be at least 10 minutes"));
+            return await PartialViewAsync(model);
         }
+        if (model.SecurityStampValidationInterval < new TimeSpan(0, 1, 0)) {
+            ModelState.AddModelError(nameof(model.SecurityStampValidationInterval), this.__ResStr("securityInterval", "The minimum validation interval should be at least 1 minute"));
+            return await PartialViewAsync(model);
+        }
+
+        OwinConfigHelper.SetValue<bool>(AreaName, "Password:RequireDigit", model.RequireDigit);
+        OwinConfigHelper.SetValue<int>(AreaName, "Password:RequiredLength", model.RequiredLength);
+        OwinConfigHelper.SetValue<bool>(AreaName, "Password:RequireNonAlphanumeric", model.RequireNonAlphanumeric);
+        OwinConfigHelper.SetValue<bool>(AreaName, "Password:RequireUppercase", model.RequireUppercase);
+        OwinConfigHelper.SetValue<bool>(AreaName, "Password:RequireLowercase", model.RequireLowercase);
+
+        OwinConfigHelper.SetValue<bool>(AreaName, "OWin:SlidingExpiration", model.SlidingExpiration);
+        OwinConfigHelper.SetValue<long>(AreaName, "OWin:ExpireTimeSpan", model.ExpireTimeSpan.Ticks);
+        OwinConfigHelper.SetValue<long>(AreaName, "OWin:SecurityStampValidationInterval", model.SecurityStampValidationInterval.Ticks);
+        OwinConfigHelper.SetValue<long>(AreaName, "PasswordRenewal", model.PasswordRenewal.Ticks);
+
+        OwinConfigHelper.SetValue<bool>(AreaName, "MicrosoftAccount:Enabled", model.UseMicrosoft);
+        OwinConfigHelper.SetValue<string>(AreaName, "MicrosoftAccount:Public", model.MicrosoftPublic);
+        OwinConfigHelper.SetValue<string>(AreaName, "MicrosoftAccount:Private", model.MicrosoftPrivate);
+        OwinConfigHelper.SetValue<bool>(AreaName, "GoogleAccount:Enabled", model.UseGoogle);
+        OwinConfigHelper.SetValue<string>(AreaName, "GoogleAccount:Public", model.GooglePublic);
+        OwinConfigHelper.SetValue<string>(AreaName, "GoogleAccount:Private", model.GooglePrivate);
+        OwinConfigHelper.SetValue<bool>(AreaName, "FacebookAccount:Enabled", model.UseFacebook);
+        OwinConfigHelper.SetValue<string>(AreaName, "FacebookAccount:Public", model.FacebookPublic);
+        OwinConfigHelper.SetValue<string>(AreaName, "FacebookAccount:Private", model.FacebookPrivate);
+        OwinConfigHelper.SetValue<bool>(AreaName, "TwitterAccount:Enabled", model.UseTwitter);
+        OwinConfigHelper.SetValue<string>(AreaName, "TwitterAccount:Public", model.TwitterPublic);
+        OwinConfigHelper.SetValue<string>(AreaName, "TwitterAccount:Private", model.TwitterPrivate);
+        await OwinConfigHelper.SaveAsync();
+
+        await Auditing.AddAuditAsync($"{nameof(OwinEditModule)}", "Login", Guid.Empty, $"{nameof(OwinEditModule)}", RequiresRestart: true);
+
+        return await FormProcessedAsync(model, this.__ResStr("okSaved", "Login provider settings successfully saved - These settings won't take effect until the site (including all instances) is restarted."), NextPage: Manager.CurrentSite.HomePageUrl);
     }
 }

@@ -126,7 +126,6 @@ public class PackagesModule : ModuleDefinition2 {
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.ExportPackage),
             QueryArgs = new { PackageName = package.Name },
-            NeedsModuleContext = true,
             Image = await CustomIconAsync("ExportPackage.png"),
             LinkText = this.__ResStr("pLink", "Export Package"),
             MenuText = this.__ResStr("pMenu", "Export Package"),
@@ -147,7 +146,6 @@ public class PackagesModule : ModuleDefinition2 {
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.ExportPackageWithSource),
             QueryArgs = new { PackageName = package.Name },
-            NeedsModuleContext = true,
             Image = await CustomIconAsync("ExportPackageWithSource.png"),
             LinkText = this.__ResStr("exportSrcLink", "Export (with source code)"),
             MenuText = this.__ResStr("exportSrcMenu", "Export Package (with source code)"),
@@ -164,7 +162,6 @@ public class PackagesModule : ModuleDefinition2 {
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.ExportPackageData),
             QueryArgs = new { PackageName = package.Name },
-            NeedsModuleContext = true,
             Image = await CustomIconAsync("ExportPackageData.png"),
             LinkText = this.__ResStr("exportLink", "Export Data"),
             MenuText = this.__ResStr("exportMenu", "Export Data"),
@@ -181,7 +178,6 @@ public class PackagesModule : ModuleDefinition2 {
             Style = ModuleAction.ActionStyleEnum.Post,
             Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.InstallPackageModels),
             QueryArgs = new { PackageName = package.Name },
-            NeedsModuleContext = true,
             Image = await CustomIconAsync("InstallPackageModels.png"),
             LinkText = this.__ResStr("installLink", "Install Models"),
             MenuText = this.__ResStr("installMenu", "Install Models"),
@@ -197,7 +193,6 @@ public class PackagesModule : ModuleDefinition2 {
             Style = ModuleAction.ActionStyleEnum.Post,
             Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.UninstallPackageModels),
             QueryArgs = new { PackageName = package.Name },
-            NeedsModuleContext = true,
             Image = await CustomIconAsync("UninstallPackageModels.png"),
             LinkText = this.__ResStr("uninstallLink", "Uninstall Models"),
             MenuText = this.__ResStr("uninstallMenu", "Uninstall Models"),
@@ -214,7 +209,6 @@ public class PackagesModule : ModuleDefinition2 {
             Style = ModuleAction.ActionStyleEnum.Post,
             Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.LocalizePackage),
             QueryArgs = new { PackageName = package.Name },
-            NeedsModuleContext = true,
             Image = await CustomIconAsync("LocalizePackage.png"),
             LinkText = this.__ResStr("localizeLink", "Localize Package"),
             MenuText = this.__ResStr("localizeMenu", "Localize Package"),
@@ -229,7 +223,6 @@ public class PackagesModule : ModuleDefinition2 {
         return new ModuleAction(this) {
             Style = ModuleAction.ActionStyleEnum.Post,
             Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.LocalizeAllPackages),
-            NeedsModuleContext = true,
             Image = await CustomIconAsync("LocalizeAllPackages.png"),
             LinkText = this.__ResStr("localizeAllLink", "Localize All Packages ({0})", MultiString.DefaultLanguage),
             MenuText = this.__ResStr("localizeAllMenu", "Localize All Packages ({0})", MultiString.DefaultLanguage),
@@ -256,7 +249,6 @@ public class PackagesModule : ModuleDefinition2 {
             Style = ModuleAction.ActionStyleEnum.Post,
             Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.RemovePackage),
             QueryArgs = new { PackageName = package.Name },
-            NeedsModuleContext = true,
             Image = "#Remove",
             LinkText = this.__ResStr("removeLink", "Remove Package"),
             MenuText = this.__ResStr("removeMenu", "Remove Package"),

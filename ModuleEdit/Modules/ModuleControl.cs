@@ -48,9 +48,6 @@ public class ModuleControlModule : ModuleDefinition2 {
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(ModuleControlModuleEndpoints), ModuleControlModuleEndpoints.ExportModuleData),
             QueryArgs = new { ModuleGuid = mod.ModuleGuid },
-            QueryArgsDict = new QueryHelper(new QueryDictionary {
-                { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
-            }),
             Image = await CustomIconAsync("ExportModule.png"),
             LinkText = this.__ResStr("modExportLink", "Export"),
             MenuText = this.__ResStr("modExportMenu", "Export Module"),
@@ -92,9 +89,6 @@ public class ModuleControlModule : ModuleDefinition2 {
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(ModuleControlModuleEndpoints), ModuleControlModuleEndpoints.MoveToPane),
             QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, OldPane = oldPane, NewPane = newPane },
-            QueryArgsDict = new QueryHelper(new QueryDictionary {
-                { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
-            }),
             Image = await CustomIconAsync("MoveToPane.png"),
             LinkText = this.__ResStr("modMoveToLink", "Move To {0}", newPane),
             Style = ModuleAction.ActionStyleEnum.Post,
@@ -116,9 +110,6 @@ public class ModuleControlModule : ModuleDefinition2 {
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(ModuleControlModuleEndpoints), ModuleControlModuleEndpoints.MoveUp),
             QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, Pane = pane, ModuleIndex = modIndex },
-            QueryArgsDict = new QueryHelper(new QueryDictionary {
-                { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
-            }),
             Image = await CustomIconAsync("MoveUp.png"),
             Style = ModuleAction.ActionStyleEnum.Post,
             LinkText = this.__ResStr("modMoveUpLink", "Move Up"),
@@ -140,9 +131,6 @@ public class ModuleControlModule : ModuleDefinition2 {
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(ModuleControlModuleEndpoints), ModuleControlModuleEndpoints.MoveDown),
             QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, Pane = pane, ModuleIndex = modIndex },
-            QueryArgsDict = new QueryHelper(new QueryDictionary {
-                { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
-            }),
             Image = await CustomIconAsync("MoveDown.png"),
             Style = ModuleAction.ActionStyleEnum.Post,
             LinkText = this.__ResStr("modMoveDownLink", "Move Down"),
@@ -165,9 +153,6 @@ public class ModuleControlModule : ModuleDefinition2 {
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(ModuleControlModuleEndpoints), ModuleControlModuleEndpoints.MoveTop),
             QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, Pane = pane, ModuleIndex = modIndex },
-            QueryArgsDict = new QueryHelper(new QueryDictionary {
-                { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
-            }),
             Image = await CustomIconAsync("MoveTop.png"),
             Style = ModuleAction.ActionStyleEnum.Post,
             LinkText = this.__ResStr("modMoveTopLink", "Move To Top"),
@@ -241,9 +226,6 @@ public class ModuleControlModule : ModuleDefinition2 {
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(ModuleControlModuleEndpoints), ModuleControlModuleEndpoints.RemovePermanent),
             QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = moduleGuid, Pane = pane, ModuleIndex = modIndex },
-            QueryArgsDict = new QueryHelper(new QueryDictionary {
-                { Basics.ModuleGuid, this.ModuleGuid }, // the module authorizing this
-            }),
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,
             LinkText = this.__ResStr("modRemovePermLink", "Remove PERMANENTLY"),

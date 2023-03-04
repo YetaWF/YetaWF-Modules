@@ -152,7 +152,8 @@ var YetaWF_Search;
             Value: true,
         };
         var uri = $YetaWF.parseUrl(onButton.href);
-        $YetaWF.postJSONIgnore(uri, query, null);
+        var formJson = $YetaWF.Forms.getJSONInfo(onButton);
+        $YetaWF.postJSONIgnore(uri, formJson, query, null);
         return false;
     });
     $YetaWF.registerEventHandlerBody("click", ".YetaWF_Search_SearchControl a[data-name='Off']", function (ev) {
@@ -167,7 +168,8 @@ var YetaWF_Search;
             Value: false,
         };
         var uri = $YetaWF.parseUrl(offButton.href);
-        $YetaWF.postJSONIgnore(uri, query, null);
+        var formJson = $YetaWF.Forms.getJSONInfo(onButton);
+        $YetaWF.postJSONIgnore(uri, formJson, query, null);
         return false;
     });
 })(YetaWF_Search || (YetaWF_Search = {}));

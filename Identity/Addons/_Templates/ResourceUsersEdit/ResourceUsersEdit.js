@@ -40,12 +40,13 @@ var YetaWF_Identity;
                     NewUser: _this.InputUserName.value,
                     FieldPrefix: _this.Grid.FieldName,
                 };
+                var data = {
+                    GridData: _this.Grid.StaticData
+                };
                 if (_this.Grid.ExtraData)
                     uri.addSearchSimpleObject(_this.Grid.ExtraData);
-                var data = $YetaWF.Forms.getJSONInfo(_this.Control);
-                data.GridData = _this.Grid.StaticData;
-                data[YConfigs.Forms.UniqueIdCounters] = { UniqueIdPrefix: "".concat(_this.ControlId, "ls"), UniqueIdPrefixCounter: 0, UniqueIdCounter: ++_this.AddCounter };
-                $YetaWF.postJSON(uri, query, data, function (success, partial) {
+                var formJson = $YetaWF.Forms.getJSONInfo(_this.Control, { UniqueIdPrefix: "".concat(_this.ControlId, "ls"), UniqueIdPrefixCounter: 0, UniqueIdCounter: ++_this.AddCounter });
+                $YetaWF.postJSON(uri, formJson, query, data, function (success, partial) {
                     if (success)
                         _this.Grid.AddRecord(partial.TR, partial.StaticData);
                 });

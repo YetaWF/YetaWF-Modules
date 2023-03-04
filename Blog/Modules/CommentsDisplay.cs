@@ -49,7 +49,6 @@ public class CommentsDisplayModule : ModuleDefinition2 {
         if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(Info.Resource_AllowManageComments)) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(CommentsDisplayModuleEndpoints), nameof(CommentsDisplayModuleEndpoints.Approve)),
-            NeedsModuleContext = true,
             QueryArgs = new { BlogEntry = blogEntry, Comment = comment },
             Image = await CustomIconAsync("CommentEntryApprove.png"),
             Style = ModuleAction.ActionStyleEnum.Post,
@@ -67,7 +66,6 @@ public class CommentsDisplayModule : ModuleDefinition2 {
         if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(Info.Resource_AllowManageComments)) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(CommentsDisplayModuleEndpoints), nameof(CommentsDisplayModuleEndpoints.Remove)),
-            NeedsModuleContext = true,
             QueryArgs = new { BlogEntry = blogEntry, Comment = comment },
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,

@@ -497,10 +497,8 @@ namespace YetaWF_ComponentsHTML {
             var uri = $YetaWF.parseUrl(url);
             uri.addSearchSimpleObject(data);
 
-            var info = $YetaWF.Forms.getFormInfo(this.Control);
-            uri.addSearch(YConfigs.Forms.RequestVerificationToken, info.RequestVerificationToken);
-
-            $YetaWF.postJSON(uri, null, null, (success: boolean, data: DropDownListAjaxData): void => {
+            const formJson = $YetaWF.Forms.getJSONInfo(this.Control);
+            $YetaWF.postJSON(uri, formJson, null, null, (success: boolean, data: DropDownListAjaxData): void => {
                 if (success) {
                     this.setOptionsHTML(data.OptionsHTML);
                     if (onSuccess)

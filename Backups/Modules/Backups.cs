@@ -68,7 +68,6 @@ public class BackupsModule : ModuleDefinition2 {
         if (!IsAuthorized("Backups")) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(BackupsModuleEndpoints), nameof(BackupsModuleEndpoints.PerformSiteBackup)),
-            NeedsModuleContext = true,
             Image = await CustomIconAsync("SiteBackup.png"),
             Style = ModuleAction.ActionStyleEnum.Post,
             LinkText = this.__ResStr("sbackupLink", "Site Backup"),
@@ -89,7 +88,6 @@ public class BackupsModule : ModuleDefinition2 {
         if (!IsAuthorized("Backups")) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(BackupsModuleEndpoints), nameof(BackupsModuleEndpoints.MakeSiteTemplateData)),
-            NeedsModuleContext = true,
             Image = await CustomIconAsync("SiteBackup.png"),
             Style = ModuleAction.ActionStyleEnum.Post,
             LinkText = this.__ResStr("makeTemplateLink", "Make Site Template Data"),
@@ -109,7 +107,6 @@ public class BackupsModule : ModuleDefinition2 {
             Url = Utility.UrlFor(typeof(BackupsModuleEndpoints), nameof(BackupsModuleEndpoints.Download)),
             QueryArgs = new { FileName = filename },
             Image = await CustomIconAsync("Download.png"),
-            NeedsModuleContext = true,
             CookieAsDoneSignal = true,
             LinkText = this.__ResStr("dnldLink", "Download Backup"),
             MenuText = this.__ResStr("dnldMenu", "Download Backup"),
@@ -126,7 +123,6 @@ public class BackupsModule : ModuleDefinition2 {
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(BackupsModuleEndpoints), BackupsModuleEndpoints.Remove),
             QueryArgs = new { FileName = filename },
-            NeedsModuleContext = true,
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,
             LinkText = this.__ResStr("removeLink", "Remove Backup"),

@@ -70,7 +70,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (ModuleBase.JSONModule) {//$$$
                 if (Method.ToLower() != "post") throw new InternalError("Only POST method is supported");
                 formAction = $"{Utility.UrlFor<ModuleEndpoints>(ModuleEndpoints.Update)}/{ModuleBase.ModuleGuid}";
-                if (ActionName != null)
+                if (ActionName != null && ActionName != ModuleBase.Action)
                     formAction += $"?Action={ActionName}";
                 jsonSubmit = $"data-json-submit ";//$$
             } else {
@@ -95,7 +95,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hb = new HtmlBuilder();
             string id = HtmlBuilder.GetId(attrs);
             hb.Append($@"
-<form id='{id}' {jsonSubmit}class='{Forms.CssFormAjax}{HtmlBuilder.GetClasses(attrs, css)}' autocomplete='{(ModuleBase.FormAutoComplete ? "on" : "off")}' action='{Utility.HAE(formAction)}' method='{Method}'{HtmlBuilder.Attributes(attrs)}>");
+<form id='{id}' {jsonSubmit}class='{Forms.CssForm}{HtmlBuilder.GetClasses(attrs, css)}' autocomplete='{(ModuleBase.FormAutoComplete ? "on" : "off")}' action='{Utility.HAE(formAction)}' method='{Method}'{HtmlBuilder.Attributes(attrs)}>
+    {HtmlBuilder.AntiForgeryToken()}");
 
             return hb.ToString();
         }

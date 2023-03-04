@@ -82,7 +82,6 @@ public class BrowseBlockedNumbersModule : ModuleDefinition2 {
         if (!IsAuthorized("RemoveItems")) return null;
         return new ModuleAction(this) {
             Url = $"{Utility.UrlFor(typeof(BrowseBlockedNumbersModuleEndpoints), nameof(BrowseBlockedNumbersModuleEndpoints.Remove))}/{id}",
-            NeedsModuleContext = true,
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,
             LinkText = this.__ResStr("removeLink", "Remove"),

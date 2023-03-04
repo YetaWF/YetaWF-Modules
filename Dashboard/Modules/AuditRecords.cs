@@ -77,7 +77,6 @@ public class AuditRecordsModule : ModuleDefinition2 {
         if (!IsAuthorized("RemoveItems")) return null;
         return new ModuleAction(this) {
             Url = $"{Utility.UrlFor(typeof(AuditRecordsModuleEndpoints), AuditRecordsModuleEndpoints.Remove)}/{id}",
-            NeedsModuleContext = true,
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,
             LinkText = this.__ResStr("removeLink", "Remove Audit Record"),

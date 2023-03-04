@@ -159,10 +159,6 @@ public class MenuEditModule : ModuleDefinition2 {
         [UIHint("Boolean")]
         public bool AddToOriginList { get; set; }
 
-        [Caption("Needs Module Context"), Description("The whether module context is required for authorization purposes - This is defined by the action")]
-        [UIHint("Boolean")]
-        public bool NeedsModuleContext { get; set; }
-
         [Caption("Don't Follow"), Description("Defines whether search engines and bots follow this link (select to disable)")]
         [UIHint("Boolean")]
         public bool DontFollow { get; set; }
@@ -270,7 +266,6 @@ public class MenuEditModule : ModuleDefinition2 {
             if (action.SubModule == Guid.Empty)
                 action.SubModule = null;
             action.Location = ModuleAction.ActionLocationEnum.AnyMenu;
-            action.NeedsModuleContext = false;
             if (action.Separator) {
                 // separator without real action
                 action.Url = null;

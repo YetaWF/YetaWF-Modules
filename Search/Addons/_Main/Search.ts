@@ -172,7 +172,8 @@ namespace YetaWF_Search {
             Value: true,
         };
         const uri = $YetaWF.parseUrl(onButton.href);
-        $YetaWF.postJSONIgnore(uri, query, null);
+        const formJson = $YetaWF.Forms.getJSONInfo(onButton);
+        $YetaWF.postJSONIgnore(uri, formJson, query, null);
         return false;
     });
     $YetaWF.registerEventHandlerBody("click", ".YetaWF_Search_SearchControl a[data-name='Off']", (ev: MouseEvent): boolean => {
@@ -190,7 +191,8 @@ namespace YetaWF_Search {
             Value: false,
         }
         const uri = $YetaWF.parseUrl(offButton.href);
-        $YetaWF.postJSONIgnore(uri, query, null);
+        const formJson = $YetaWF.Forms.getJSONInfo(onButton);
+        $YetaWF.postJSONIgnore(uri, formJson, query, null);
         return false;
     });
 }

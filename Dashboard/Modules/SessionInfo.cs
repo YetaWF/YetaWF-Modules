@@ -55,7 +55,6 @@ public class SessionInfoModule : ModuleDefinition2 {
     public ModuleAction GetAction_ClearAll() {
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(SessionInfoModuleEndpoints), SessionInfoModuleEndpoints.ClearAll),
-            QueryArgs = new { __ModuleGuid = ModuleGuid },
             Image = "#Remove",
             LinkText = this.__ResStr("removeLink", "Remove Session Settings"),
             MenuText = this.__ResStr("removeText", "Remove Session Settings"),

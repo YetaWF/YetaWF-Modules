@@ -26,7 +26,6 @@ var YetaWF_Panels;
                 GetValue: null,
                 Enable: null,
             }) || this;
-            _this.ReloadInProgress = false;
             _this.AddCounter = 0;
             _this.Setup = setup;
             _this.Grid = YetaWF.ComponentBaseDataImpl.getControlById(_this.Setup.GridId, YetaWF_ComponentsHTML.Grid.SELECTOR);
@@ -34,19 +33,18 @@ var YetaWF_Panels;
             _this.buttonAdd = $YetaWF.getElement1BySelector("input[name='btnAdd']", [_this.Control]);
             _this.selectUrl = YetaWF_ComponentsHTML.UrlEditComponent.getControlFromSelector("[name$='.NewValue']", YetaWF_ComponentsHTML.UrlEditComponent.SELECTOR, [_this.Control]);
             $YetaWF.registerEventHandler(_this.buttonAdd, "click", null, function (ev) {
-                if (_this.ReloadInProgress)
+                if ($YetaWF.isLoading)
                     return true;
-                _this.ReloadInProgress = true;
                 var uri = $YetaWF.parseUrl(_this.Setup.AddUrl);
                 var query = {
                     NewUrl: _this.selectUrl.value.trim(),
                     FieldPrefix: _this.Grid.FieldName,
                 };
-                var data = $YetaWF.Forms.getJSONInfo(_this.Control);
-                data.GridData = _this.Grid.StaticData;
-                data[YConfigs.Forms.UniqueIdCounters] = { UniqueIdPrefix: "".concat(_this.ControlId, "ls"), UniqueIdPrefixCounter: 0, UniqueIdCounter: ++_this.AddCounter };
-                $YetaWF.postJSON(uri, query, data, function (success, partial) {
-                    _this.ReloadInProgress = false;
+                var data = {
+                    GridData: _this.Grid.StaticData
+                };
+                var formJson = $YetaWF.Forms.getJSONInfo(_this.Control, { UniqueIdPrefix: "".concat(_this.ControlId, "ls"), UniqueIdPrefixCounter: 0, UniqueIdCounter: ++_this.AddCounter });
+                $YetaWF.postJSON(uri, formJson, query, data, function (success, partial) {
                     if (success)
                         _this.Grid.AddRecord(partial.TR, partial.StaticData);
                 });

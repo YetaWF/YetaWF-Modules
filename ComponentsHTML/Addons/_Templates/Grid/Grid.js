@@ -225,7 +225,8 @@ var YetaWF_ComponentsHTML;
                                 gridHiddenColumns.ColumnsOff.push(entry.Name);
                         }
                     }
-                    $YetaWF.postJSON($YetaWF.parseUrl(_this.Setup.SaveSettingsColumnSelectionUrl), null, gridHiddenColumns, function (success, data) {
+                    var formJson = $YetaWF.Forms.getJSONInfo(_this.Control);
+                    $YetaWF.postJSON($YetaWF.parseUrl(_this.Setup.SaveSettingsColumnSelectionUrl), formJson, null, gridHiddenColumns, function (success, data) {
                         if (success) {
                             if (!_this.Setup.StaticData) {
                                 _this.reload(0);
@@ -475,7 +476,8 @@ var YetaWF_ComponentsHTML;
             var uri = $YetaWF.parseUrl(this.Setup.SaveExpandCollapseUrl);
             uri.addSearch("SettingsModuleGuid", this.Setup.SettingsModuleGuid);
             uri.addSearch("Expanded", expanded.toString());
-            $YetaWF.postJSONIgnore(uri, null, null);
+            var formJson = $YetaWF.Forms.getJSONInfo(this.Control);
+            $YetaWF.postJSONIgnore(uri, formJson, null, null);
         };
         Grid.prototype.setExpandCollapseStatus = function (expand) {
             if (!expand && $YetaWF.elementHasClass(this.Control, "t_expanded")) {
@@ -719,7 +721,8 @@ var YetaWF_ComponentsHTML;
                         SettingsModuleGuid: currentControl.Setup.SettingsModuleGuid,
                         Columns: [{ Name: currentControl.Setup.Columns[colIndex].Name, Width: parseInt(currentControl.ColumnResizeHeader.style.width, 10) }],
                     };
-                    $YetaWF.postJSONIgnore($YetaWF.parseUrl(currentControl.Setup.SaveSettingsColumnWidthsUrl), null, gridColumns);
+                    var formJson = $YetaWF.Forms.getJSONInfo(currentControl.Control);
+                    $YetaWF.postJSONIgnore($YetaWF.parseUrl(currentControl.Setup.SaveSettingsColumnWidthsUrl), formJson, null, gridColumns);
                 }
             }
             if (Grid.CurrentControl) {
@@ -777,13 +780,13 @@ var YetaWF_ComponentsHTML;
                     this.setExpandCollapseStatus(true);
                 }
                 else {
-                    var formInfo = $YetaWF.Forms.getFormInfo(this.Control);
+                    var formJson = $YetaWF.Forms.getJSONInfo(this.Control);
                     // fetch data from servers
                     var col = this.getSortColumn();
                     var data = {
                         __UniqueIdCounters: YVolatile.Basics.UniqueIdCounters,
-                        __ModuleGuid: formInfo.ModuleGuid,
-                        __RequestVerificationToken: formInfo.RequestVerificationToken,
+                        __ModuleGuid: formJson.ModuleGuid,
+                        __RequestVerificationToken: formJson.RequestVerificationToken,
                         Data: "",
                         FieldPrefix: this.Setup.FieldName,
                         Skip: page * this.Setup.PageSize,
@@ -849,7 +852,7 @@ var YetaWF_ComponentsHTML;
                     if (this.Setup.StaticData)
                         data.Data = JSON.stringify(this.Setup.StaticData);
                     this.setReloading(true);
-                    $YetaWF.postJSON(uri, null, data, function (success, partial) {
+                    $YetaWF.postJSON(uri, formJson, null, data, function (success, partial) {
                         if (success) {
                             $YetaWF.processClearDiv(_this.TBody);
                             _this.TBody.innerHTML = "";

@@ -86,7 +86,6 @@ public class ModulesBrowseModule : ModuleDefinition2 {
         if (!IsAuthorized("RemoveItems")) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(ModulesBrowseModuleEndpoints), ModulesBrowseModuleEndpoints.Remove),
-            NeedsModuleContext = true,
             QueryArgs = new { ModuleGuid = moduleGuid },
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,
@@ -104,7 +103,6 @@ public class ModulesBrowseModule : ModuleDefinition2 {
         if (!IsAuthorized("RestoreAuthorization")) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(ModulesBrowseModuleEndpoints), ModulesBrowseModuleEndpoints.RestoreAuthorization),
-            NeedsModuleContext = true,
             QueryArgs = new { },
             Image = "",
             Style = ModuleAction.ActionStyleEnum.Post,
@@ -124,7 +122,6 @@ public class ModulesBrowseModule : ModuleDefinition2 {
         if (!IsAuthorized("SetAuthorization")) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(ModulesBrowseModuleEndpoints), ModulesBrowseModuleEndpoints.SetSuperuser),
-            NeedsModuleContext = true,
             QueryArgs = new { Guid = guid },
             Image = await CustomIconAsync("go.png"),
             Style = ModuleAction.ActionStyleEnum.Post,
@@ -141,7 +138,6 @@ public class ModulesBrowseModule : ModuleDefinition2 {
         if (!IsAuthorized("SetAuthorization")) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(ModulesBrowseModuleEndpoints), ModulesBrowseModuleEndpoints.SetAdmin),
-            NeedsModuleContext = true,
             QueryArgs = new { Guid = guid },
             Image = await CustomIconAsync("go.png"),
             Style = ModuleAction.ActionStyleEnum.Post,
@@ -158,7 +154,6 @@ public class ModulesBrowseModule : ModuleDefinition2 {
         if (!IsAuthorized("SetAuthorization")) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(ModulesBrowseModuleEndpoints), ModulesBrowseModuleEndpoints.SetUser),
-            NeedsModuleContext = true,
             QueryArgs = new { Guid = guid },
             Image = await CustomIconAsync("go.png"),
             Style = ModuleAction.ActionStyleEnum.Post,
@@ -175,7 +170,6 @@ public class ModulesBrowseModule : ModuleDefinition2 {
         if (!IsAuthorized("SetAuthorization")) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(ModulesBrowseModuleEndpoints), ModulesBrowseModuleEndpoints.SetAnonymous),
-            NeedsModuleContext = true,
             QueryArgs = new { Guid = guid },
             Image = await CustomIconAsync("go.png"),
             Style = ModuleAction.ActionStyleEnum.Post,

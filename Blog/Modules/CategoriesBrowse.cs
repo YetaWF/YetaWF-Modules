@@ -91,7 +91,6 @@ public class CategoriesBrowseModule : ModuleDefinition2 {
         if (!IsAuthorized("RemoveItems")) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(CategoriesBrowseModuleEndpoints), CategoriesBrowseModuleEndpoints.Remove),
-            NeedsModuleContext = true,
             QueryArgs = new { BlogCategory = blogCategory },
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,
@@ -109,7 +108,6 @@ public class CategoriesBrowseModule : ModuleDefinition2 {
         if (!IsAuthorized("NewsSiteMap")) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(CategoriesBrowseModuleEndpoints), CategoriesBrowseModuleEndpoints.CreateNewsSiteMap),
-            NeedsModuleContext = true,
             QueryArgs = new { },
             Image = "#Add",
             Style = ModuleAction.ActionStyleEnum.Post,
@@ -128,7 +126,6 @@ public class CategoriesBrowseModule : ModuleDefinition2 {
         if (!IsAuthorized("NewsSiteMap")) return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(CategoriesBrowseModuleEndpoints), CategoriesBrowseModuleEndpoints.RemoveNewsSiteMap),
-            NeedsModuleContext = true,
             QueryArgs = new { },
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,
@@ -150,7 +147,6 @@ public class CategoriesBrowseModule : ModuleDefinition2 {
             return null;
         return new ModuleAction(this) {
             Url = Utility.UrlFor(typeof(CategoriesBrowseModuleEndpoints), nameof(CategoriesBrowseModuleEndpoints.DownloadNewsSiteMap)),
-            NeedsModuleContext = true,
             CookieAsDoneSignal = true,
             Image = await CustomIconAsync("Download.png"),
             LinkText = this.__ResStr("downloadLink", "Download News Site Map"),
