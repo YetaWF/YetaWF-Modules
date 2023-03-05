@@ -45,7 +45,7 @@ public class ProfileEditModule : ModuleDefinition2 {
     public string? SaveMessage { get; set; }
 
     public ModuleAction? GetAction_Edit(string? url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Edit",
             LinkText = this.__ResStr("editLink", "Profile"),

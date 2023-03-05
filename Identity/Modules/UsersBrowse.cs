@@ -74,7 +74,7 @@ public class UsersBrowseModule : ModuleDefinition2 {
     }
 
     public ModuleAction GetAction_Users(string url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Browse",
             LinkText = this.__ResStr("usersLink", "Users"),
@@ -90,7 +90,7 @@ public class UsersBrowseModule : ModuleDefinition2 {
 
     public ModuleAction GetAction_RemoveLink(string userName) {
         if (!IsAuthorized("RemoveUsers")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(UsersBrowseModuleEndpoints), UsersBrowseModuleEndpoints.Remove),
             QueryArgs = new { UserName = userName },
             Image = "#Remove",
@@ -108,7 +108,7 @@ public class UsersBrowseModule : ModuleDefinition2 {
 
     public async Task<ModuleAction> GetAction_SendVerificationEmailAsync(string userName) {
         if (!IsAuthorized("SendEmails")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(UsersBrowseModuleEndpoints), nameof(UsersBrowseModuleEndpoints.SendVerificationEmail)),
             QueryArgs = new { UserName = userName },
             Image = await CustomIconAsync("VerificationEmail.png"),
@@ -126,7 +126,7 @@ public class UsersBrowseModule : ModuleDefinition2 {
 
     public async Task<ModuleAction> GetAction_SendApprovedEmailAsync(string userName) {
         if (!IsAuthorized("SendEmails")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(UsersBrowseModuleEndpoints), nameof(UsersBrowseModuleEndpoints.SendApprovedEmail)),
             QueryArgs = new { UserName = userName },
             Image = await CustomIconAsync("ApprovedEmail.png"),
@@ -143,7 +143,7 @@ public class UsersBrowseModule : ModuleDefinition2 {
     }
     public async Task<ModuleAction> GetAction_SendRejectedEmailAsync(string userName) {
         if (!IsAuthorized("SendEmails")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(UsersBrowseModuleEndpoints), nameof(UsersBrowseModuleEndpoints.SendRejectedEmail)),
             QueryArgs = new { UserName = userName },
             Image = await CustomIconAsync("RejectedEmail.png"),
@@ -160,7 +160,7 @@ public class UsersBrowseModule : ModuleDefinition2 {
     }
     public async Task<ModuleAction> GetAction_SendSuspendedEmailAsync(string userName) {
         if (!IsAuthorized("SendEmails")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(UsersBrowseModuleEndpoints), nameof(UsersBrowseModuleEndpoints.SendSuspendedEmail)),
             QueryArgs = new { UserName = userName },
             Image = await CustomIconAsync("SuspendedEmail.png"),
@@ -177,7 +177,7 @@ public class UsersBrowseModule : ModuleDefinition2 {
     }
     public ModuleAction GetAction_RehashAllPasswords() {
         if (!Manager.HasSuperUserRole) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(UsersBrowseModuleEndpoints), nameof(UsersBrowseModuleEndpoints.RehashAllPasswords)),
             Style = ModuleAction.ActionStyleEnum.Post,
             LinkText = this.__ResStr("rehashLink", "Rehash All Passwords"),

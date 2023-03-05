@@ -628,7 +628,7 @@ public partial class PackagesDataProvider {
         object? obj = await EvaluateVariableAsync(menuString);
         if (obj is string) {
             string text = (string)obj;
-            ModuleAction action = new ModuleAction(null) {
+            ModuleAction action = new ModuleAction() {
                 Category = ModuleAction.ActionCategoryEnum.Read,
                 Location = ModuleAction.ActionLocationEnum.MainMenu,
                 LinkText = text,

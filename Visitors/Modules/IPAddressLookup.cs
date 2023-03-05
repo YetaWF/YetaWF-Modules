@@ -35,7 +35,7 @@ public class IPAddressLookupModule : ModuleDefinition2 {
 
     public ModuleAction? GetAction_DisplayHostName(string? url, string ipAddress) {
         if (string.IsNullOrWhiteSpace(ipAddress)) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             QueryArgs = new { IPAddress = ipAddress, GeoData = false },
             Image = "#Display",
@@ -52,7 +52,7 @@ public class IPAddressLookupModule : ModuleDefinition2 {
     }
     public async Task<ModuleAction?> GetAction_DisplayGeoDataAsync(string? url, string ipAddress) {
         if (string.IsNullOrWhiteSpace(ipAddress)) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             QueryArgs = new { IPAddress = ipAddress, GeoData = true },
             Image = await CustomIconAsync("GeoData.png"),

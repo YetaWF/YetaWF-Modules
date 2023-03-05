@@ -36,7 +36,7 @@ public class SelectTwoStepAuthModule : ModuleDefinition2 {
     public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
     public ModuleAction GetAction_SelectTwoStepAuth(string url, int userId, string userName, string userEmail) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             QueryArgs = new { UserId = userId, UserName = userName, UserEmail = userEmail },
             Style = ModuleAction.ActionStyleEnum.ForcePopup,

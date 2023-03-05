@@ -47,7 +47,7 @@ public class CurrencyConverterModule : ModuleDefinition2 {
 
     public async Task<ModuleAction> GetAction_CurrencyConverterAsync(string url, decimal amount = 0.0M) {
         if (amount == 0.0M) amount = DefaultAmount;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             QueryArgs = new { Amount = amount.ToString("0.00") },
             Image = await CustomIconAsync("CurrencyConverter.png"),

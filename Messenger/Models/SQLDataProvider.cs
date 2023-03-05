@@ -4,19 +4,18 @@ using System.Collections.Generic;
 using YetaWF.Core.DataProvider;
 using YetaWF.DataProvider.SQL;
 
-namespace YetaWF.Modules.Messenger.DataProvider.SQL {
+namespace YetaWF.Modules.Messenger.DataProvider.SQL;
 
-    public class SQLDataProvider : IExternalDataProvider {
+public class SQLDataProvider : IExternalDataProvider {
 
-        public void Register() {
-            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.SiteAnnouncementDataProvider), typeof(SiteAnnouncementDataProvider));
-            DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.ActiveUsersDataProvider), typeof(ActiveUsersDataProvider));
-        }
-        class SiteAnnouncementDataProvider : SQLSimpleIdentityObject<int, SiteAnnouncement> {
-            public SiteAnnouncementDataProvider(Dictionary<string, object> options) : base(options) { }
-        }
-        class ActiveUsersDataProvider : SQLSimpleIdentityObject<int, ActiveUser> {
-            public ActiveUsersDataProvider(Dictionary<string, object> options) : base(options) { }
-        }
+    public void Register() {
+        DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.SiteAnnouncementDataProvider), typeof(SiteAnnouncementDataProvider));
+        DataProviderImpl.RegisterExternalDataProvider(SQLBase.ExternalName, typeof(DataProvider.ActiveUsersDataProvider), typeof(ActiveUsersDataProvider));
+    }
+    class SiteAnnouncementDataProvider : SQLSimpleIdentityObject<int, SiteAnnouncement> {
+        public SiteAnnouncementDataProvider(Dictionary<string, object> options) : base(options) { }
+    }
+    class ActiveUsersDataProvider : SQLSimpleIdentityObject<int, ActiveUser> {
+        public ActiveUsersDataProvider(Dictionary<string, object> options) : base(options) { }
     }
 }

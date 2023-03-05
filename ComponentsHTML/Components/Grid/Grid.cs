@@ -1,9 +1,9 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Addons;
@@ -18,6 +18,7 @@ using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Endpoints;
 using YetaWF.Modules.ComponentsHTML.Views;
+using static YetaWF.Modules.ComponentsHTML.Components.GridColumnInfo;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -59,7 +60,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public bool ShowPager { get; internal set; }
         public string FieldName { get; set; } = null!;
         public string AjaxUrl { get; set; } = null!;
-        [JsonConverter(typeof(GridDisplayComponent.StaticDataConverter))]
+        //$$$$ [JsonConverter(typeof(GridDisplayComponent.StaticDataConverter))]
         public List<object> StaticData { get; internal set; } = null!;
         public int Page { get; set; }
         public int PageSize { get; set; }
@@ -103,10 +104,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public GridDefinition.SortBy Sort { get; set; }
         public bool Locked { get; set; }
         public bool OnlySubmitWhenChecked { get; set; }
-        public GridColumnInfo.FilterOptionEnum? FilterOp { get; set; }
+        public GridColumnInfo.FilterOptionEnum FilterOp { get; set; }
         public string? FilterType { get; set; }
-        public string? FilterId { get; set; } = null!;
-        public string? MenuId { get; set; } = null!;
+        public string? FilterId { get; set; }
+        public string? MenuId { get; set; }
         public bool Visible { get; set; }
     }
 
@@ -384,7 +385,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
 
             Manager.ScriptManager.AddLast($@"
-new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeHtml })});");
+new YetaWF_ComponentsHTML.Grid('{model.Id}', {Utility.JsonSerialize(setup)});"); //$$$$$ , new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeHtml })});");
 
             return hb.ToString();
         }
@@ -571,7 +572,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
         </th>");
 
                 List<GridColumnInfo.FilterOptionEnum> filterOpts = new List<GridColumnInfo.FilterOptionEnum>();
-                GridColumnInfo.FilterOptionEnum? filterOp = null;
+                GridColumnInfo.FilterOptionEnum filterOp = GridColumnInfo.FilterOptionEnum.None;
                 string filterValue = string.Empty;
                 string? filterType = null;
                 string? idMenu = null;
@@ -623,9 +624,9 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                             filterOpts = new List<GridColumnInfo.FilterOptionEnum>();// none
                             filterType = "bool";
                             FilterBoolUI filterUI = new FilterBoolUI {
-                                Value = (filterOp != null) ? (Convert.ToBoolean(filterValue) ? FilterBoolEnum.Yes : FilterBoolEnum.No) : FilterBoolEnum.All,
+                                Value = (filterOp != GridColumnInfo.FilterOptionEnum.None) ? (Convert.ToBoolean(filterValue) ? FilterBoolEnum.Yes : FilterBoolEnum.No) : FilterBoolEnum.All,
                             };
-                            filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.Equal;
+                            filterOp = filterOp != GridColumnInfo.FilterOptionEnum.None ? filterOp : GridColumnInfo.FilterOptionEnum.Equal;
 
                             filterhb.Append($@"
                 <div class='tg_fctrls'>
@@ -643,12 +644,12 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                                 };
                                 filterType = "long";
                                 FilterLongUI filterUI = new FilterLongUI();
-                                if (filterOp != null) {
+                                if (filterOp != GridColumnInfo.FilterOptionEnum.None) {
                                     try {
                                         filterUI.Value = Convert.ToInt64(filterValue);
                                     } catch (Exception) { }
                                 }
-                                filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.GreaterEqual;
+                                filterOp = filterOp != GridColumnInfo.FilterOptionEnum.None ? filterOp : GridColumnInfo.FilterOptionEnum.GreaterEqual;
 
                                 filterhb.Append($@"
                 <button class='tg_fmenu y_buttonlite_text' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
@@ -671,12 +672,12 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                                     Value = 0,
                                     Value_List = entries,
                                 };
-                                if (filterOp != null) {
+                                if (filterOp != GridColumnInfo.FilterOptionEnum.None) {
                                     try {
                                         filterUI.Value = Convert.ToInt32(filterValue);
                                     } catch (Exception) { }
                                 }
-                                filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.Equal;
+                                filterOp = filterOp != GridColumnInfo.FilterOptionEnum.None ? filterOp : GridColumnInfo.FilterOptionEnum.Equal;
 
                                 filterhb.Append($@"
                 <button class='tg_fmenu y_buttonlite_text' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
@@ -693,12 +694,12 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                             };
                             filterType = "decimal";
                             FilterDecimalUI filterUI = new FilterDecimalUI();
-                            if (filterOp != null) {
+                            if (filterOp != GridColumnInfo.FilterOptionEnum.None) {
                                 try {
                                     filterUI.Value = Convert.ToDecimal(filterValue);
                                 } catch (Exception) { }
                             }
-                            filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.GreaterEqual;
+                            filterOp = filterOp != GridColumnInfo.FilterOptionEnum.None ? filterOp : GridColumnInfo.FilterOptionEnum.GreaterEqual;
 
                             filterhb.Append($@"
                 <button class='tg_fmenu y_buttonlite_text' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
@@ -716,13 +717,13 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                             if (prop.UIHint == "DateTime" || prop.UIHint.EndsWith("_DateTime")) {
                                 filterType = "datetime";
                                 FilterDateTimeUI filterUI = new FilterDateTimeUI();
-                                if (filterOp != null) {
+                                if (filterOp != GridColumnInfo.FilterOptionEnum.None) {
                                     try {
                                         DateTime dt = Convert.ToDateTime(filterValue);
                                         filterUI.Value = YetaWF.Core.Localize.Formatting.GetUtcDateTime(dt);
                                     } catch (Exception) { }
                                 }
-                                filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.GreaterEqual;
+                                filterOp = filterOp != GridColumnInfo.FilterOptionEnum.None ? filterOp : GridColumnInfo.FilterOptionEnum.GreaterEqual;
 
                                 filterhb.Append($@"
                 <button class='tg_fmenu y_buttonlite_text' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
@@ -734,13 +735,13 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                             } else if (prop.UIHint == "Date" || prop.UIHint.EndsWith("_Date")) {
                                 filterType = "date";
                                 FilterDateUI filterUI = new FilterDateUI();
-                                if (filterOp != null) {
+                                if (filterOp != GridColumnInfo.FilterOptionEnum.None) {
                                     try {
                                         DateTime dt = Convert.ToDateTime(filterValue);
                                         filterUI.Value = YetaWF.Core.Localize.Formatting.GetUtcDateTime(dt).Date;
                                     } catch (Exception) { }
                                 }
-                                filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.GreaterEqual;
+                                filterOp = filterOp != GridColumnInfo.FilterOptionEnum.None ? filterOp : GridColumnInfo.FilterOptionEnum.GreaterEqual;
 
                                 filterhb.Append($@"
                 <button class='tg_fmenu y_buttonlite_text' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
@@ -760,9 +761,9 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                             };
                             filterType = "guid";
                             FilterGuidUI filterUI = new FilterGuidUI {
-                                Value = (filterOp != null) ? filterValue : string.Empty,
+                                Value = (filterOp != GridColumnInfo.FilterOptionEnum.None) ? filterValue : string.Empty,
                             };
-                            filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.Contains;
+                            filterOp = filterOp != GridColumnInfo.FilterOptionEnum.None ? filterOp : GridColumnInfo.FilterOptionEnum.Contains;
 
                             filterhb.Append($@"
                 <button class='tg_fmenu y_buttonlite_text' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
@@ -794,10 +795,10 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                                 });
                             }
                             FilterDynEnumUI filterUI = new FilterDynEnumUI {
-                                Value = (filterOp != null) ? Convert.ToInt32(filterValue) : -1,
+                                Value = (filterOp != GridColumnInfo.FilterOptionEnum.None) ? Convert.ToInt32(filterValue) : -1,
                                 Value_List = entries,
                             };
-                            filterOp = filterOp ?? GridColumnInfo.FilterOptionEnum.Equal;
+                            filterOp = filterOp != GridColumnInfo.FilterOptionEnum.None ? filterOp : GridColumnInfo.FilterOptionEnum.Equal;
 
                             filterhb.Append($@"
                 <button class='tg_fmenu y_buttonlite_text' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
@@ -809,9 +810,9 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                             filterOpts = GetFilterOptions(gridCol);
                             filterType = "text";
                             FilterStringUI filterUI = new FilterStringUI {
-                                Value = (filterOp != null) ? filterValue : string.Empty,
+                                Value = (filterOp != GridColumnInfo.FilterOptionEnum.None) ? filterValue : string.Empty,
                             };
-                            filterOp = filterOp ?? filterOpts.First();
+                            filterOp = filterOp != GridColumnInfo.FilterOptionEnum.None ? filterOp : filterOpts.First();
 
                             filterhb.Append($@"
                 <button class='tg_fmenu y_buttonlite_text' {Basics.CssTooltip}='{HAE(searchToolTip)}'><span>{HE(GetFilterIcon(filterOp))}</span></button>
@@ -826,7 +827,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             &nbsp;");
                     }
                     filterhb.Append($@"
-            {(filterOp != null && idMenu != null ? GetFilterMenu(gridDef, filterOpts, filterOp, idMenu, colIndex) : null)}
+            {(filterOp != GridColumnInfo.FilterOptionEnum.None && idMenu != null ? GetFilterMenu(gridDef, filterOpts, filterOp, idMenu, colIndex) : null)}
         </th>");
 
                 }
@@ -883,7 +884,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
             return hb.ToString();
         }
 
-        private GridColumnInfo.FilterOptionEnum? GetFilterOptionEnum(string filterOp) {
+        private GridColumnInfo.FilterOptionEnum GetFilterOptionEnum(string filterOp) {
             switch (filterOp) {
                 case "==": return GridColumnInfo.FilterOptionEnum.Equal;
                 case "!=": return GridColumnInfo.FilterOptionEnum.NotEqual;
@@ -897,7 +898,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
                 case "NotEndsWith": return GridColumnInfo.FilterOptionEnum.NotEndswith;
                 case "Contains": return GridColumnInfo.FilterOptionEnum.Contains;
                 case "NotContains": return GridColumnInfo.FilterOptionEnum.NotContains;
-                case "Complex": return null;
+                case "Complex": return GridColumnInfo.FilterOptionEnum.None;
             }
             throw new InternalError($"Unexpected filter operator {filterOp}");
         }
@@ -1252,22 +1253,22 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {JsonConvert.SerializeObject(setup,
 
         // Custom serializer to minimize static data being transferred
 
-        internal class StaticDataConverter : JsonConverter {
-            public override bool CanConvert(Type objectType) {
-                return true;
-            }
-            public override bool CanRead {
-                get { return false; }
-            }
+        //internal class StaticDataConverter : JsonConverter {
+        //    public override bool CanConvert(Type objectType) {
+        //        return true;
+        //    }
+        //    public override bool CanRead {
+        //        get { return false; }
+        //    }
 
-            public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer) {
-                throw new NotImplementedException();
-            }
-            public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer) {
-                string array = JsonConvert.SerializeObject(value, new JsonSerializerSettings { ContractResolver = new Utility.PropertyGetSetUIHintContractResolver() });
-                writer.WriteRawValue(array);
-            }
-        }
+        //    public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer) {
+        //        throw new NotImplementedException();
+        //    }
+        //    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer) {
+        //        string array = JsonConvert.SerializeObject(value, new JsonSerializerSettings { ContractResolver = new Utility.PropertyGetSetUIHintContractResolver() });
+        //        writer.WriteRawValue(array);
+        //    }
+        //}
     }
 }
 

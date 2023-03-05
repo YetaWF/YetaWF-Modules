@@ -36,7 +36,7 @@ public class VisitorDisplayModule : ModuleDefinition2 {
         using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
             if (!visitorDP.Usable) return null;
         }
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             QueryArgs = new { Key = key },
             Image = "#Display",

@@ -43,7 +43,7 @@ namespace YetaWF.Modules.ImageRepository.Modules {
             public Model() { }
 
             public async Task UpdateAsync(ModuleDefinition module) {
-                ImageName_Info = new ImageSelectionInfo(module, module.ModuleGuid, null) {
+                ImageName_Info = new ImageSelectionInfo(module.ModuleGuid, null) {
                     AllowUpload = true,
                 };
                 await ImageName_Info.InitAsync();

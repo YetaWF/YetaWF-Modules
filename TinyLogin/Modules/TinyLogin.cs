@@ -85,7 +85,7 @@ public class TinyLoginModule : ModuleDefinition2 {
     public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
 
     public async Task<ModuleAction> GetAction_LoginAsync(string? url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = url,
             LinkText = this.__ResStr("loginLink", "Login"),
             MenuText = this.__ResStr("loginText", "Login"),
@@ -101,7 +101,7 @@ public class TinyLoginModule : ModuleDefinition2 {
     }
     public async Task<ModuleAction?> GetAction_RegisterAsync(string? url) {
         if (!AllowUserRegistration) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = url,
             LinkText = this.__ResStr("registerLink", "Register"),
             MenuText = this.__ResStr("registerText", "Register"),
@@ -116,7 +116,7 @@ public class TinyLoginModule : ModuleDefinition2 {
         };
     }
     public async Task<ModuleAction> GetAction_LogoffAsync(string? url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = url,
             LinkText = this.__ResStr("logoffLink", "Logout"),
             MenuText = this.__ResStr("logoffText", "Logout"),
@@ -131,7 +131,7 @@ public class TinyLoginModule : ModuleDefinition2 {
         };
     }
     public async Task<ModuleAction> GetAction_UserNameAsync(string? url, string userName, string tooltip) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = url,
             LinkText = userName,
             MenuText = userName,

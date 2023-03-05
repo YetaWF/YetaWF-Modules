@@ -62,7 +62,7 @@ public class SearchBrowseModule : ModuleDefinition2 {
     }
 
     public ModuleAction? GetAction_Items(string? url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Browse",
             LinkText = this.__ResStr("browseLink", "Search Keywords"),
@@ -77,7 +77,7 @@ public class SearchBrowseModule : ModuleDefinition2 {
     }
     public ModuleAction? GetAction_Remove(int searchDataId) {
         if (!IsAuthorized("RemoveItems")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = $"{Utility.UrlFor(typeof(SearchBrowseModuleEndpoints), SearchBrowseModuleEndpoints.Remove)}/{searchDataId}",
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,
@@ -94,7 +94,7 @@ public class SearchBrowseModule : ModuleDefinition2 {
     public ModuleAction? GetAction_RemoveAll() {
         if (!IsAuthorized("RemoveItems")) return null;
         if (!SearchDataProvider.IsUsable) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(SearchBrowseModuleEndpoints), SearchBrowseModuleEndpoints.RemoveAll),
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,
@@ -112,7 +112,7 @@ public class SearchBrowseModule : ModuleDefinition2 {
     public async Task<ModuleAction?> GetAction_CollectKeywordsAsync() {
         if (!IsAuthorized("CollectKeywords")) return null;
         if (!SearchDataProvider.IsUsable) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(SearchBrowseModuleEndpoints), SearchBrowseModuleEndpoints.CollectKeywords),
             Image = await CustomIconAsync("CollectKeywords.png"),
             Style = ModuleAction.ActionStyleEnum.Post,

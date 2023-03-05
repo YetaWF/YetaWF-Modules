@@ -35,7 +35,7 @@ public class CategoryAddModule : ModuleDefinition2 {
     public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
     public ModuleAction? GetAction_Add(string? url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Add",
             LinkText = this.__ResStr("addLink", "Add"),

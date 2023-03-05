@@ -55,7 +55,7 @@ public class PagesBrowseModule : ModuleDefinition2 {
     }
 
     public ModuleAction? GetAction_Pages(string? url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Browse",
             LinkText = this.__ResStr("browseLink", "Pages"),
@@ -69,7 +69,7 @@ public class PagesBrowseModule : ModuleDefinition2 {
         };
     }
     public ModuleAction? GetAction_ShowPage(string? url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = url,
             Image = "#Display",
             Style = ModuleAction.ActionStyleEnum.NewWindow,
@@ -86,7 +86,7 @@ public class PagesBrowseModule : ModuleDefinition2 {
     }
     public ModuleAction? GetAction_RemoveLink(string pageName) {
         if (!IsAuthorized("RemovePages")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), PagesBrowseModuleEndpoints.Remove),
             QueryArgs = new { PageName = pageName },
             Image = "#Remove",
@@ -104,7 +104,7 @@ public class PagesBrowseModule : ModuleDefinition2 {
     }
     public ModuleAction? GetAction_UpdateAdminAndEditorAuthorization() {
         if (!IsAuthorized("SetAuthorization")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.UpdateAdminAndEditorAuthorization)),
             QueryArgs = new { },
             Image = "",
@@ -123,7 +123,7 @@ public class PagesBrowseModule : ModuleDefinition2 {
 #if DEBUG
     public async Task<ModuleAction?> GetAction_SetSuperuserAsync(Guid guid) {
         if (!IsAuthorized("SetAuthorization")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.SetSuperuser)),
             QueryArgs = new { Guid = guid },
             Image = await CustomIconAsync("go.png"),
@@ -139,7 +139,7 @@ public class PagesBrowseModule : ModuleDefinition2 {
     }
     public async Task<ModuleAction?> GetAction_SetAdminAsync(Guid guid) {
         if (!IsAuthorized("SetAuthorization")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.SetAdmin)),
             QueryArgs = new { Guid = guid },
             Image = await CustomIconAsync("go.png"),
@@ -155,7 +155,7 @@ public class PagesBrowseModule : ModuleDefinition2 {
     }
     public async Task<ModuleAction?> GetAction_SetUserAsync(Guid guid) {
         if (!IsAuthorized("SetAuthorization")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.SetUser)),
             QueryArgs = new { Guid = guid },
             Image = await CustomIconAsync("go.png"),
@@ -171,7 +171,7 @@ public class PagesBrowseModule : ModuleDefinition2 {
     }
     public async Task<ModuleAction?> GetAction_SetAnonymousAsync(Guid guid) {
         if (!IsAuthorized("SetAuthorization")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.SetAnonymous)),
             QueryArgs = new { Guid = guid },
             Image = await CustomIconAsync("go.png"),
@@ -188,7 +188,7 @@ public class PagesBrowseModule : ModuleDefinition2 {
 #endif
     public ModuleAction? GetAction_CreateSiteMap() {
         if (!IsAuthorized("SiteMaps")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.CreateSiteMap)),
             QueryArgs = new { },
             Image = "#Add",
@@ -206,7 +206,7 @@ public class PagesBrowseModule : ModuleDefinition2 {
     }
     public ModuleAction? GetAction_RemoveSiteMap() {
         if (!IsAuthorized("SiteMaps")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.RemoveSiteMap)),
             QueryArgs = new { },
             Image = "#Remove",
@@ -227,7 +227,7 @@ public class PagesBrowseModule : ModuleDefinition2 {
         string filename = sm.GetSiteMapFileName();
         if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
             return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.DownloadSiteMap)),
             CookieAsDoneSignal = true,
             Image = await CustomIconAsync("Download.png"),
@@ -243,7 +243,7 @@ public class PagesBrowseModule : ModuleDefinition2 {
     }
     public async Task<ModuleAction?> GetAction_CreatePageList() {
         if (!IsAuthorized("SiteMaps")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(PagesBrowseModuleEndpoints), nameof(PagesBrowseModuleEndpoints.CreatePageList)),
             CookieAsDoneSignal = true,
             Image = await CustomIconAsync("Download.png"),

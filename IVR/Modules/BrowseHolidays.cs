@@ -61,7 +61,7 @@ namespace Softelvdm.Modules.IVR.Modules {
         }
 
         public ModuleAction? GetAction_Items(string? url) {
-            return new ModuleAction(this) {
+            return new ModuleAction() {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 Image = "#Browse",
                 LinkText = this.__ResStr("browseLink", "Holiday Entries"),
@@ -76,7 +76,7 @@ namespace Softelvdm.Modules.IVR.Modules {
         }
         public ModuleAction? GetAction_Remove(int id) {
             if (!IsAuthorized("RemoveItems")) return null;
-            return new ModuleAction(this) {
+            return new ModuleAction() {
                 Url = $"{Utility.UrlFor(typeof(BrowseHolidaysModuleEndpoints), BrowseHolidaysModuleEndpoints.Remove)}/{id}",
                 Image = "#Remove",
                 Style = ModuleAction.ActionStyleEnum.Post,

@@ -59,7 +59,7 @@ public class BrowseCallLogModule : ModuleDefinition2 {
     }
 
     public ModuleAction? GetAction_Items(string? url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Browse",
             LinkText = this.__ResStr("browseLink", "Call Log Entries"),
@@ -74,7 +74,7 @@ public class BrowseCallLogModule : ModuleDefinition2 {
     }
     public ModuleAction? GetAction_Remove(int id) {
         if (!IsAuthorized("RemoveItems")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = $"{Utility.UrlFor(typeof(BrowseCallLogModuleEndpoints), BrowseCallLogModuleEndpoints.Remove)}/{id}",
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,

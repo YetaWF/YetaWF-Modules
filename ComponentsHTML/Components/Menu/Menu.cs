@@ -1,6 +1,5 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-using Newtonsoft.Json;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Models.Attributes;
@@ -143,7 +142,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 SmallMenuMaxWidth = model.SmallMenuMaxWidth,
                 HoverDelay = model.HoverDelay,
             };
-            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.MenuComponent('{DivId}', {JsonConvert.SerializeObject(setup)});");
+            Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.MenuComponent('{DivId}', {Utility.JsonSerialize(setup)});");
 
             return hb.ToString();
         }

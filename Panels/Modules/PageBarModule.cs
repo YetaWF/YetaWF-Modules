@@ -95,7 +95,7 @@ public class PageBarModule : ModuleDefinition2 {
     public byte[]? DefaultImage_Data { get; set; }
 
     public ModuleAction GetAction_Display(string url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Display",
             LinkText = this.__ResStr("displayLink", "Page Bar"),

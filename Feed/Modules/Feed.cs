@@ -59,7 +59,7 @@ public class FeedModule : ModuleDefinition2 {
     public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
     public async Task<ModuleAction> GetAction_NewsAsync() {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = FeedUrl,
             Image = await CustomIconAsync("Feed.png"),
             LinkText = Title,

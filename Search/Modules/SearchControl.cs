@@ -42,7 +42,7 @@ public class SearchControlModule : ModuleDefinition2 {
     public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
     public async Task<ModuleAction> GetAction_OnAsync() {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor<SearchControlModuleEndpoints>(SearchControlModuleEndpoints.Switch),
             Image = await CustomIconAsync("On.png"),
             LinkText = this.__ResStr("onLink", "On"),
@@ -58,7 +58,7 @@ public class SearchControlModule : ModuleDefinition2 {
         };
     }
     public async Task<ModuleAction> GetAction_OffAsync() {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor<SearchControlModuleEndpoints>(SearchControlModuleEndpoints.Switch),
             Image = await CustomIconAsync("Off.png"),
             LinkText = this.__ResStr("offLink", "Off"),

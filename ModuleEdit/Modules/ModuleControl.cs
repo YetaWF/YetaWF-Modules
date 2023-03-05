@@ -45,7 +45,7 @@ public class ModuleControlModule : ModuleDefinition2 {
     public async Task<ModuleAction?> GetAction_ExportModuleAsync(ModuleDefinition mod) {
         if (!mod.ModuleHasSettings) return null;
         if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_ModuleExport)) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(ModuleControlModuleEndpoints), ModuleControlModuleEndpoints.ExportModuleData),
             QueryArgs = new { ModuleGuid = mod.ModuleGuid },
             Image = await CustomIconAsync("ExportModule.png"),
@@ -68,7 +68,7 @@ public class ModuleControlModule : ModuleDefinition2 {
         }
         if (string.IsNullOrWhiteSpace(url)) 
             return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = url,
             Image = "#Help",
             LinkText = this.__ResStr("modHelpLink", "Help"),
@@ -86,7 +86,7 @@ public class ModuleControlModule : ModuleDefinition2 {
         if (oldPane == null) return null;
         if (newPane == null) return null;
         if (!page.IsAuthorized_Edit()) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(ModuleControlModuleEndpoints), ModuleControlModuleEndpoints.MoveToPane),
             QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, OldPane = oldPane, NewPane = newPane },
             Image = await CustomIconAsync("MoveToPane.png"),
@@ -107,7 +107,7 @@ public class ModuleControlModule : ModuleDefinition2 {
         if (!page.IsAuthorized_Edit()) return null;
         PageDefinition.ModuleList modList = page.ModuleDefinitions.GetModulesForPane(pane);
         int modIndex = modList.IndexInPane(mod, pane);
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(ModuleControlModuleEndpoints), ModuleControlModuleEndpoints.MoveUp),
             QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, Pane = pane, ModuleIndex = modIndex },
             Image = await CustomIconAsync("MoveUp.png"),
@@ -128,7 +128,7 @@ public class ModuleControlModule : ModuleDefinition2 {
         if (!page.IsAuthorized_Edit()) return null;
         PageDefinition.ModuleList modList = page.ModuleDefinitions.GetModulesForPane(pane);
         int modIndex = modList.IndexInPane(mod, pane);
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(ModuleControlModuleEndpoints), ModuleControlModuleEndpoints.MoveDown),
             QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, Pane = pane, ModuleIndex = modIndex },
             Image = await CustomIconAsync("MoveDown.png"),
@@ -150,7 +150,7 @@ public class ModuleControlModule : ModuleDefinition2 {
         if (!page.IsAuthorized_Edit()) return null;
         PageDefinition.ModuleList modList = page.ModuleDefinitions.GetModulesForPane(pane);
         int modIndex = modList.IndexInPane(mod, pane);
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(ModuleControlModuleEndpoints), ModuleControlModuleEndpoints.MoveTop),
             QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, Pane = pane, ModuleIndex = modIndex },
             Image = await CustomIconAsync("MoveTop.png"),
@@ -172,7 +172,7 @@ public class ModuleControlModule : ModuleDefinition2 {
         if (!page.IsAuthorized_Edit()) return null;
         PageDefinition.ModuleList modList = page.ModuleDefinitions.GetModulesForPane(pane);
         int modIndex = modList.IndexInPane(mod, pane);
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(ModuleControlModuleEndpoints), ModuleControlModuleEndpoints.MoveBottom),
             QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = mod.ModuleGuid, Pane = pane, ModuleIndex = modIndex },
             Image = await CustomIconAsync("MoveBottom.png"),
@@ -198,7 +198,7 @@ public class ModuleControlModule : ModuleDefinition2 {
         }
         PageDefinition.ModuleList modList = page.ModuleDefinitions.GetModulesForPane(pane);
         int modIndex = modList.IndexInPane(moduleGuid, pane);
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(ModuleControlModuleEndpoints), ModuleControlModuleEndpoints.Remove),
             QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = moduleGuid, Pane = pane, ModuleIndex = modIndex },
             Image = "#Remove",
@@ -223,7 +223,7 @@ public class ModuleControlModule : ModuleDefinition2 {
         }
         PageDefinition.ModuleList modList = page.ModuleDefinitions.GetModulesForPane(pane);
         int modIndex = modList.IndexInPane(moduleGuid, pane);
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(ModuleControlModuleEndpoints), ModuleControlModuleEndpoints.RemovePermanent),
             QueryArgs = new { PageGuid = page.PageGuid, ModuleGuid = moduleGuid, Pane = pane, ModuleIndex = modIndex },
             Image = "#Remove",

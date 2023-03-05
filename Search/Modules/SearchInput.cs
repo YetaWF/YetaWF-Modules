@@ -55,7 +55,7 @@ public class SearchInputModule : ModuleDefinition2 {
     public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
     public async Task<ModuleAction> GetAction_SearchAsync(string url, string searchTerms) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             QueryArgs = new { SearchTerms = searchTerms },
             Image = await CustomIconAsync("SearchInput.png"),

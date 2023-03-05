@@ -22,8 +22,7 @@ public class ImageSelectionInfo {
 
     private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(ImageSelectionInfo), name, defaultValue, parms); }
 
-    public ImageSelectionInfo(ModuleDefinition owningModule, Guid folderGuid, string? subFolder, string fileType = "Images") {
-        OwningModule = owningModule;
+    public ImageSelectionInfo(Guid folderGuid, string? subFolder, string fileType = "Images") {
         FolderGuid = folderGuid;
         SubFolder = subFolder;
         FileType = fileType;
@@ -38,9 +37,9 @@ public class ImageSelectionInfo {
         };
     }
     public async Task InitAsync() {
-        ClearImageButton = new ModuleAction(OwningModule) {
+        ClearImageButton = new ModuleAction() {
             QueryArgs = new { FolderGuid = FolderGuid, SubFolder = SubFolder, FileType = FileType },
-            Image = await new SkinImages().FindIcon_PackageAsync("ClearImage.png", Package.GetCurrentPackage(OwningModule)),
+            Image = await new SkinImages().FindIcon_PackageAsync("ClearImage.png", AreaRegistration.CurrentPackage),
             LinkText = __ResStr("clearImage", "Clear"),
             Tooltip = __ResStr("clearImageTT", "Clears the currently selected image (the image itself is NOT removed from the server)"),
             Style = ModuleAction.ActionStyleEnum.Nothing,
@@ -49,7 +48,7 @@ public class ImageSelectionInfo {
             Location = ModuleAction.ActionLocationEnum.NoAuto,
             Name = "Clear"
         };
-        RemoveImageButton = new ModuleAction(OwningModule) {
+        RemoveImageButton = new ModuleAction() {
             Url = Utility.UrlFor(typeof(ImageSelectionEndpoints), nameof(ImageSelectionEndpoints.RemoveSelectedImage)),
             QueryArgs = new { FolderGuid = FolderGuid, SubFolder = SubFolder, FileType = FileType, Name = "" },
             Image = "#Remove",
@@ -98,7 +97,6 @@ public class ImageSelectionInfo {
     public ModuleAction ClearImageButton { get; set; } = null!;
     [UIHint("ModuleAction")]
     public ModuleAction RemoveImageButton { get; set; } = null!;
-    public ModuleDefinition OwningModule { get; set; }
 
     public string MakeImageUrl(string filename, int width = 0, int height = 0) {
         // always defeat browser caching for image selection

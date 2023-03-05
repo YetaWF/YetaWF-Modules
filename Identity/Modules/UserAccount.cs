@@ -42,7 +42,7 @@ public class UserAccountModule : ModuleDefinition2 {
     public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return UserLevel_DefaultAllowedRoles; } }
 
     public ModuleAction GetAction_Edit(string url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Edit",
             LinkText = this.__ResStr("editLink", "Account"),

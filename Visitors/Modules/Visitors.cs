@@ -53,7 +53,7 @@ public class VisitorsModule : ModuleDefinition2 {
     }
 
     public ModuleAction? GetAction_Items(string? url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Browse",
             LinkText = this.__ResStr("browseLink", "Visitor Activity"),
@@ -71,7 +71,7 @@ public class VisitorsModule : ModuleDefinition2 {
         using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
             if (!visitorDP.Usable) return null;
         }
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(VisitorsModuleEndpoints), VisitorsModuleEndpoints.UpdateGeoLocation),
             QueryArgs = new { },
             Image = "#Add",

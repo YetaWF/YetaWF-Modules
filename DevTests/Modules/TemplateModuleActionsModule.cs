@@ -32,7 +32,7 @@ namespace YetaWF.Modules.DevTests.Modules {
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
         public ModuleAction GetAction_User() {
-            return new ModuleAction(this) {
+            return new ModuleAction() {
                 Url = "/User",
                 Image = "#Display",
                 LinkText = this.__ResStr("userLink", "User"),
@@ -47,7 +47,7 @@ namespace YetaWF.Modules.DevTests.Modules {
             };
         }
         public ModuleAction GetAction_Dashboard() {
-            return new ModuleAction(this) {
+            return new ModuleAction() {
                 Url = "/Admin/Bar/Dashboard",
                 Image = "#Display",
                 LinkText = this.__ResStr("dashboardLink", "Dashboard"),

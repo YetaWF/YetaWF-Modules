@@ -53,7 +53,7 @@ public class EntryDisplayModule : ModuleDefinition2 {
 
     public async Task<ModuleAction> GetAction_DisplayAsync(int blogEntry, bool ReadMore = false) {
         string url = await BlogConfigData.GetEntryCanonicalNameAsync(blogEntry);
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = url,
             Image = "#Display",
             LinkText = ReadMore ? this.__ResStr("moreLink", "Read More") : this.__ResStr("displayLink", "Display"),

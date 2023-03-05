@@ -43,7 +43,7 @@ public class StaticPagesBrowseModule : ModuleDefinition2 {
     }
 
     public ModuleAction GetAction_Items(string url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Browse",
             LinkText = this.__ResStr("browseLink", "Static Pages"),
@@ -57,7 +57,7 @@ public class StaticPagesBrowseModule : ModuleDefinition2 {
         };
     }
     public ModuleAction GetAction_Remove(string localUrl) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(StaticPagesBrowseModuleEndpoints), StaticPagesBrowseModuleEndpoints.Remove),
             QueryArgs = new { LocalUrl = localUrl },
             Image = "#Remove",
@@ -73,7 +73,7 @@ public class StaticPagesBrowseModule : ModuleDefinition2 {
         };
     }
     public ModuleAction GetAction_RemoveAll() {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(StaticPagesBrowseModuleEndpoints), StaticPagesBrowseModuleEndpoints.RemoveAll),
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,

@@ -34,7 +34,7 @@ public class OwinEditModule : ModuleDefinition2 {
     public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return SuperuserLevel_DefaultAllowedRoles; } }
 
     public ModuleAction GetAction_OwinEdit(string url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Edit",
             LinkText = this.__ResStr("editLink", "Login Providers"),

@@ -68,7 +68,7 @@ public class BrowseLogModule : ModuleDefinition2 {
     }
 
     public ModuleAction? GetAction_Logging(string url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Browse",
             LinkText = this.__ResStr("browseLink", "Logging"),
@@ -87,7 +87,7 @@ public class BrowseLogModule : ModuleDefinition2 {
             if (!await dataProvider.IsInstalledAsync()) return null;
             if (!dataProvider.CanRemove) return null;
         };
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(BrowseLogModuleEndpoints), BrowseLogModuleEndpoints.RemoveAll),
             Image = await CustomIconAsync("RemoveAll.png"),
             Style = ModuleAction.ActionStyleEnum.Post,
@@ -107,7 +107,7 @@ public class BrowseLogModule : ModuleDefinition2 {
             if (!await dataProvider.IsInstalledAsync()) return null;
             if (!dataProvider.CanDownload) return null;
         };
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(BrowseLogModuleEndpoints), BrowseLogModuleEndpoints.DownloadLog),
             CookieAsDoneSignal = true,
             Image = await CustomIconAsync("Download.png"),
@@ -127,7 +127,7 @@ public class BrowseLogModule : ModuleDefinition2 {
             if (!await dataProvider.IsInstalledAsync()) return null;
             if (!dataProvider.CanDownload) return null;
         };
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(BrowseLogModuleEndpoints), BrowseLogModuleEndpoints.DownloadZippedLog),
             CookieAsDoneSignal = true,
             Image = await CustomIconAsync("Download.png"),

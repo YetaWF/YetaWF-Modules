@@ -38,7 +38,7 @@ public class SessionInfoModule : ModuleDefinition2 {
     public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
     public ModuleAction GetAction_Display(string url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Display",
             LinkText = this.__ResStr("displayLink", "HttpContext.Current.Session"),
@@ -53,7 +53,7 @@ public class SessionInfoModule : ModuleDefinition2 {
         };
     }
     public ModuleAction GetAction_ClearAll() {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(SessionInfoModuleEndpoints), SessionInfoModuleEndpoints.ClearAll),
             Image = "#Remove",
             LinkText = this.__ResStr("removeLink", "Remove Session Settings"),

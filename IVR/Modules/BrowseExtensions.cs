@@ -65,7 +65,7 @@ public class BrowseExtensionsModule : ModuleDefinition2 {
     }
 
     public ModuleAction? GetAction_Items(string? url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Browse",
             LinkText = this.__ResStr("browseLink", "Extensions"),
@@ -80,7 +80,7 @@ public class BrowseExtensionsModule : ModuleDefinition2 {
     }
     public ModuleAction? GetAction_Remove(int id) {
         if (!IsAuthorized("RemoveItems")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = $"{Utility.UrlFor(typeof(BrowseExtensionsModuleEndpoints), BrowseExtensionsModuleEndpoints.Remove)}/{id}",
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,

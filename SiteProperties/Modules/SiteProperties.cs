@@ -33,7 +33,7 @@ public class SitePropertiesModule : ModuleDefinition2 {
     public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
     public ModuleAction GetAction_EditCurrentSite(string url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Edit",
             LinkText = this.__ResStr("editSiteLink", "Site Settings"),
@@ -48,7 +48,7 @@ public class SitePropertiesModule : ModuleDefinition2 {
     }
 
     public ModuleAction GetAction_EditSite(string url, string domain) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             QueryArgs = new { Domain = domain },
             Image = "#Edit",

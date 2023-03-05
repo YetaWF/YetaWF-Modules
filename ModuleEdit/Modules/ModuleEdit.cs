@@ -3,11 +3,8 @@
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
 using System.Threading.Tasks;
-using YetaWF.Core;
 using YetaWF.Core.Addons;
-using YetaWF.Core.Endpoints;
 using YetaWF.Core.Identity;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
@@ -55,7 +52,7 @@ public class ModuleEditModule : ModuleDefinition2 {
         }
         if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_ModuleSettings))
             return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = ModulePermanentUrl,
             QueryArgs = new { ModuleGuid = editGuid },
             Image = "#Edit",
@@ -110,7 +107,7 @@ public class ModuleEditModule : ModuleDefinition2 {
         // we need to find the real type of the module for data binding
         ModuleDefinition origModule = (await ModuleDefinition.LoadAsync(model.ModuleGuid))!;
         Type moduleType = origModule.GetType();
-        ModuleDefinition2? module = JsonSerializer.Deserialize(Dynamic, moduleType, ModuleEndpoints.DeserializeOptions) as ModuleDefinition2;
+        ModuleDefinition2? module = Utility.JsonDeserialize(Dynamic, moduleType) as ModuleDefinition2;
         if (module is null)
             throw new InternalError($"Model data missing for module {moduleType.FullName}");
 

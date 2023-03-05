@@ -74,7 +74,7 @@ public class CategoriesBrowseModule : ModuleDefinition2 {
     }
 
     public ModuleAction? GetAction_Categories(string? url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Browse",
             LinkText = this.__ResStr("browseLink", "Blog Categories"),
@@ -89,7 +89,7 @@ public class CategoriesBrowseModule : ModuleDefinition2 {
     }
     public ModuleAction? GetAction_Remove(int blogCategory) {
         if (!IsAuthorized("RemoveItems")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(CategoriesBrowseModuleEndpoints), CategoriesBrowseModuleEndpoints.Remove),
             QueryArgs = new { BlogCategory = blogCategory },
             Image = "#Remove",
@@ -106,7 +106,7 @@ public class CategoriesBrowseModule : ModuleDefinition2 {
     }
     public ModuleAction? GetAction_CreateNewsSiteMap() {
         if (!IsAuthorized("NewsSiteMap")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(CategoriesBrowseModuleEndpoints), CategoriesBrowseModuleEndpoints.CreateNewsSiteMap),
             QueryArgs = new { },
             Image = "#Add",
@@ -124,7 +124,7 @@ public class CategoriesBrowseModule : ModuleDefinition2 {
     }
     public ModuleAction? GetAction_RemoveNewsSiteMap() {
         if (!IsAuthorized("NewsSiteMap")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(CategoriesBrowseModuleEndpoints), CategoriesBrowseModuleEndpoints.RemoveNewsSiteMap),
             QueryArgs = new { },
             Image = "#Remove",
@@ -145,7 +145,7 @@ public class CategoriesBrowseModule : ModuleDefinition2 {
         string filename = sm.GetNewsSiteMapFileName();
         if (!await FileSystem.FileSystemProvider.FileExistsAsync(filename))
             return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(CategoriesBrowseModuleEndpoints), nameof(CategoriesBrowseModuleEndpoints.DownloadNewsSiteMap)),
             CookieAsDoneSignal = true,
             Image = await CustomIconAsync("Download.png"),

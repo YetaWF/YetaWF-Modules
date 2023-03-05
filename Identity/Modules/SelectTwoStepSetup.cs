@@ -44,7 +44,7 @@ public class SelectTwoStepSetupModule : ModuleDefinition2 {
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             url = config.TwoStepAuthUrl;
         }
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Edit",
             LinkText = this.__ResStr("setupLink", "Two-Step Authentication Setup"),

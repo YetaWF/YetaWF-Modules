@@ -55,7 +55,7 @@ public class LocalizeBrowsePackageModule : ModuleDefinition2 {
 
     public ModuleAction? GetAction_Browse(string? url, Package package) {
         if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsModulePackage && !package.IsSkinPackage) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             QueryArgs = new { PackageName = package.Name },
             Image = "#Browse",
@@ -77,7 +77,7 @@ public class LocalizeBrowsePackageModule : ModuleDefinition2 {
         Package package = Package.GetPackageFromPackageName(packageName);
         if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsModulePackage && !package.IsSkinPackage) return null;
         if (MultiString.ActiveLanguage == MultiString.DefaultLanguage) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(LocalizeBrowsePackageModuleEndpoints), LocalizeBrowsePackageModuleEndpoints.CreateCustomLocalization),
             QueryArgs = new { PackageName = packageName, Language = MultiString.ActiveLanguage },
             Image = await CustomIconAsync("LocalizePackage.png"),
@@ -103,7 +103,7 @@ public class LocalizeBrowsePackageModule : ModuleDefinition2 {
         if (!IsAuthorized("Localize")) return null;
         if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsModulePackage && !package.IsSkinPackage) return null;
         if (MultiString.ActiveLanguage == MultiString.DefaultLanguage) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(LocalizeBrowsePackageModuleEndpoints), LocalizeBrowsePackageModuleEndpoints.CreateInstalledLocalization),
             QueryArgs = new { PackageName = package.Name, Language = MultiString.ActiveLanguage },
             Image = await CustomIconAsync("LocalizePackage.png"),
@@ -122,7 +122,7 @@ public class LocalizeBrowsePackageModule : ModuleDefinition2 {
         if (YetaWFManager.Deployed) return null; // can't do this on a deployed site
         if (!IsAuthorized("Localize")) return null;
         if (MultiString.ActiveLanguage == MultiString.DefaultLanguage) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(LocalizeBrowsePackageModuleEndpoints), LocalizeBrowsePackageModuleEndpoints.CreateAllInstalledLocalizations),
             QueryArgs = new { Language = MultiString.ActiveLanguage },
             Image = await CustomIconAsync("LocalizePackage.png"),
@@ -149,7 +149,7 @@ public class LocalizeBrowsePackageModule : ModuleDefinition2 {
         if (!IsAuthorized("Localize")) return null;
         if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsModulePackage && !package.IsSkinPackage) return null;
         if (MultiString.ActiveLanguage == MultiString.DefaultLanguage) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(LocalizeBrowsePackageModuleEndpoints), LocalizeBrowsePackageModuleEndpoints.LocalizePackageData),
             QueryArgs = new { PackageName = package.Name, Language = MultiString.ActiveLanguage },
             Image = await CustomIconAsync("LocalizePackage.png"),
@@ -168,7 +168,7 @@ public class LocalizeBrowsePackageModule : ModuleDefinition2 {
         if (YetaWFManager.Deployed) return null; // can't do this on a deployed site
         if (!IsAuthorized("Localize")) return null;
         if (MultiString.ActiveLanguage == MultiString.DefaultLanguage) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(LocalizeBrowsePackageModuleEndpoints), LocalizeBrowsePackageModuleEndpoints.LocalizeAllPackagesData),
             QueryArgs = new { Language = MultiString.ActiveLanguage },
             Image = await CustomIconAsync("LocalizePackage.png"),

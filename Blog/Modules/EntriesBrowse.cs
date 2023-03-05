@@ -64,7 +64,7 @@ namespace YetaWF.Modules.Blog.Modules {
         }
 
         public ModuleAction? GetAction_BrowseEntries(string? url, int blogCategory) {
-            return new ModuleAction(this) {
+            return new ModuleAction() {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = new { BlogCategory = blogCategory },
                 Image = "#Browse",
@@ -80,7 +80,7 @@ namespace YetaWF.Modules.Blog.Modules {
         }
         public ModuleAction? GetAction_Remove(int blogEntry) {
             if (!IsAuthorized("RemoveItems")) return null;
-            return new ModuleAction(this) {
+            return new ModuleAction() {
                 Url = Utility.UrlFor(typeof(EntriesBrowseModuleEndpoints), EntriesBrowseModuleEndpoints.Remove),
                 QueryArgs = new { BlogEntry = blogEntry },
                 Image = "#Remove",

@@ -34,7 +34,7 @@ public class UserIdFilterModule : ModuleDefinition2 {
     public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
     public ModuleAction GetAction_Edit() {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = ModulePermanentUrl,
             LinkText = this.__ResStr("editLink", "Filter"),
             MenuText = this.__ResStr("editText", "Filter"),

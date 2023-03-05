@@ -30,7 +30,7 @@ public class MakeKeysModule : ModuleDefinition2 {
     public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
     public async Task<ModuleAction> GetAction_DisplayAsync(string url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = await CustomIconAsync("MakeKeys.png"),
             LinkText = this.__ResStr("displayLink", "Make Keys"),

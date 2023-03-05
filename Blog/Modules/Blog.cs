@@ -60,7 +60,7 @@ public class BlogModule : ModuleDefinition2 {
         } else {
             Count = 0;// must have a date for Count to be displayed
         }
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             QueryArgsDict = query,
             Image = "#Display",
@@ -88,7 +88,7 @@ public class BlogModule : ModuleDefinition2 {
                     qargsHR = new { Title = data.Category.ToString().Truncate(80) };
             }
         }
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(RssController), nameof(RssController.RssFeed)),
             QueryArgs = qargs,
             QueryArgsHR = qargsHR,

@@ -40,7 +40,7 @@ public class ForgotPasswordModule : ModuleDefinition2 {
     public async Task<ModuleAction> GetAction_ForgotPasswordAsync(string url, bool CloseOnLogin = false) {
         LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
         if (config.SavePlainTextPassword) {
-            return new ModuleAction(this) {
+            return new ModuleAction() {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = CloseOnLogin ? new { CloseOnLogin = CloseOnLogin } : null,
                 Image = "#Help",
@@ -56,7 +56,7 @@ public class ForgotPasswordModule : ModuleDefinition2 {
                 AddToOriginList = false,
             };
         } else {
-            return new ModuleAction(this) {
+            return new ModuleAction() {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = CloseOnLogin ? new { CloseOnLogin = CloseOnLogin } : null,
                 Image = "#Help",

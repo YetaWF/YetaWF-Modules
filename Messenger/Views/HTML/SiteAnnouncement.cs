@@ -7,53 +7,51 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
-using YetaWF.Modules.Messenger.Controllers;
 using YetaWF.Modules.Messenger.Modules;
 
-namespace YetaWF.Modules.Messenger.Views {
+namespace YetaWF.Modules.Messenger.Views;
 
-    public class SiteAnnouncementView : YetaWFView, IYetaWFView2<SiteAnnouncementModule, SiteAnnouncementModuleController.AddModel> {
+public class SiteAnnouncementView : YetaWFView, IYetaWFView2<SiteAnnouncementModule, SiteAnnouncementModule.AddModel> {
 
-        public const string ViewName = "SiteAnnouncement";
+    public const string ViewName = "SiteAnnouncement";
 
-        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        public override string GetViewName() { return ViewName; }
+    public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+    public override string GetViewName() { return ViewName; }
 
-        public async Task<string> RenderViewAsync(SiteAnnouncementModule module, SiteAnnouncementModuleController.AddModel model) {
+    public async Task<string> RenderViewAsync(SiteAnnouncementModule module, SiteAnnouncementModule.AddModel model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+        HtmlBuilder hb = new HtmlBuilder();
 
-            string idForm = UniqueId();
-            string idSend = UniqueId();
-            string idCancel = UniqueId();
+        string idForm = UniqueId();
+        string idSend = UniqueId();
+        string idCancel = UniqueId();
 
-            if (!Manager.AddOnManager.HasModuleReference(ModuleDefinition.GetPermanentGuid(typeof(SkinSiteAnnouncementsModule)))) {
+        if (!Manager.AddOnManager.HasModuleReference(ModuleDefinition.GetPermanentGuid(typeof(SkinSiteAnnouncementsModule)))) {
 
-                hb.Append($@"
+            hb.Append($@"
 <div class='yDivAlert'>
     {HE(this.__ResStr("noMsg", "Messaging services are not available (add a reference to the \"Site Announcements (Skin)\" module in Site Settings)."))}
 </div>");
 
-            } else {
+        } else {
 
-                hb.Append($@"
+            hb.Append($@"
 {await RenderBeginFormAsync()}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
     {await FormButtonsAsync(new FormButton[] {
-        new FormButton() { Text=this.__ResStr("btnSend", "Send"), ButtonType= ButtonTypeEnum.Apply, },
-        new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
-    })}
+    new FormButton() { Text=this.__ResStr("btnSend", "Send"), ButtonType= ButtonTypeEnum.Apply, },
+    new FormButton() { ButtonType= ButtonTypeEnum.Cancel, },
+})}
 {await RenderEndFormAsync()}");
 
-            }
-            return hb.ToString();
         }
+        return hb.ToString();
+    }
 
-        public async Task<string> RenderPartialViewAsync(SiteAnnouncementModule module, SiteAnnouncementModuleController.AddModel model) {
+    public async Task<string> RenderPartialViewAsync(SiteAnnouncementModule module, SiteAnnouncementModule.AddModel model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
-            hb.Append(await HtmlHelper.ForEditContainerAsync(model, "PropertyList"));
-            return hb.ToString();
-        }
+        HtmlBuilder hb = new HtmlBuilder();
+        hb.Append(await HtmlHelper.ForEditContainerAsync(model, "PropertyList"));
+        return hb.ToString();
     }
 }

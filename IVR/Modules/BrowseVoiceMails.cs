@@ -59,7 +59,7 @@ public class BrowseVoiceMailsModule : ModuleDefinition2 {
     }
 
     public ModuleAction? GetAction_Items(string? url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Browse",
             LinkText = this.__ResStr("browseLink", "Voice Mail Entries"),
@@ -74,7 +74,7 @@ public class BrowseVoiceMailsModule : ModuleDefinition2 {
     }
     public ModuleAction? GetAction_Remove(int id) {
         if (!IsAuthorized("RemoveItems")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(BrowseVoiceMailsModuleEndpoints), BrowseVoiceMailsModuleEndpoints.Remove),
             QueryArgs = new { Id = id },
             Image = "#Remove",

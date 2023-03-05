@@ -55,7 +55,7 @@ public class PackagesModule : ModuleDefinition2 {
     }
 
     public ModuleAction? GetAction_Packages(string? url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Browse",
             LinkText = this.__ResStr("browseLink", "Packages"),
@@ -69,7 +69,7 @@ public class PackagesModule : ModuleDefinition2 {
     }
     public async Task<ModuleAction?> GetAction_InfoLinkAsync(string? infoLink) {
         if (string.IsNullOrWhiteSpace(infoLink)) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = infoLink,
             Image = await CustomIconAsync("Info.png"),
             Style = ModuleAction.ActionStyleEnum.NewWindow,
@@ -81,7 +81,7 @@ public class PackagesModule : ModuleDefinition2 {
     }
     public async Task<ModuleAction?> GetAction_SupportLinkAsync(string? supportLink) {
         if (string.IsNullOrWhiteSpace(supportLink)) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = supportLink,
             Image = await CustomIconAsync("Support.png"),
             Style = ModuleAction.ActionStyleEnum.NewWindow,
@@ -94,7 +94,7 @@ public class PackagesModule : ModuleDefinition2 {
 
     public async Task<ModuleAction?> GetAction_LicenseLinkAsync(string? licenseLink) {
         if (string.IsNullOrWhiteSpace(licenseLink)) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = licenseLink,
             Image = await CustomIconAsync("License.png"),
             Style = ModuleAction.ActionStyleEnum.NewWindow,
@@ -106,7 +106,7 @@ public class PackagesModule : ModuleDefinition2 {
     }
     public async Task<ModuleAction?> GetAction_ReleaseNoticeLinkAsync(string? releaseNoticeLink) {
         if (string.IsNullOrWhiteSpace(releaseNoticeLink)) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = releaseNoticeLink,
             Image = await CustomIconAsync("Release.png"),
             Style = ModuleAction.ActionStyleEnum.NewWindow,
@@ -123,7 +123,7 @@ public class PackagesModule : ModuleDefinition2 {
         if (!IsAuthorized("Imports")) return null;
         if (!await package.GetHasSourceAsync()) return null;
         if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsDataProviderPackage && !package.IsModulePackage && !package.IsSkinPackage) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.ExportPackage),
             QueryArgs = new { PackageName = package.Name },
             Image = await CustomIconAsync("ExportPackage.png"),
@@ -143,7 +143,7 @@ public class PackagesModule : ModuleDefinition2 {
         if (!IsAuthorized("Imports")) return null;
         if (!await package.GetHasSourceAsync()) return null;
         if (!package.IsCorePackage && !package.IsCoreAssemblyPackage && !package.IsDataProviderPackage && !package.IsModulePackage && !package.IsSkinPackage /*&& !package.IsTemplatePackage && !package.IsUtilityPackage*/) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.ExportPackageWithSource),
             QueryArgs = new { PackageName = package.Name },
             Image = await CustomIconAsync("ExportPackageWithSource.png"),
@@ -159,7 +159,7 @@ public class PackagesModule : ModuleDefinition2 {
     public async Task<ModuleAction?> GetAction_ExportPackageDataAsync(Package package) {
         if (!package.IsModulePackage) return null;
         if (!IsAuthorized("Imports")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.ExportPackageData),
             QueryArgs = new { PackageName = package.Name },
             Image = await CustomIconAsync("ExportPackageData.png"),
@@ -174,7 +174,7 @@ public class PackagesModule : ModuleDefinition2 {
     public async Task<ModuleAction?> GetAction_InstallPackageModelsAsync(Package package) {
         if (!package.IsModulePackage && !package.IsCorePackage && !package.IsDataProviderPackage) return null;
         if (!IsAuthorized("Installs")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Style = ModuleAction.ActionStyleEnum.Post,
             Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.InstallPackageModels),
             QueryArgs = new { PackageName = package.Name },
@@ -189,7 +189,7 @@ public class PackagesModule : ModuleDefinition2 {
     public async Task<ModuleAction?> GetAction_UninstallPackageModelsAsync(Package package) {
         if (!package.IsModulePackage) return null;
         if (!IsAuthorized("Installs")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Style = ModuleAction.ActionStyleEnum.Post,
             Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.UninstallPackageModels),
             QueryArgs = new { PackageName = package.Name },
@@ -205,7 +205,7 @@ public class PackagesModule : ModuleDefinition2 {
         if (YetaWFManager.Deployed) return null; // can't do this on a deployed site
         if (!package.IsModulePackage && !package.IsCorePackage && !package.IsSkinPackage) return null;
         if (!IsAuthorized("Localize")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Style = ModuleAction.ActionStyleEnum.Post,
             Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.LocalizePackage),
             QueryArgs = new { PackageName = package.Name },
@@ -220,7 +220,7 @@ public class PackagesModule : ModuleDefinition2 {
     public async Task<ModuleAction?> GetAction_LocalizeAllPackagesAsync() {
         if (YetaWFManager.Deployed) return null; // can't do this on a deployed site
         if (!IsAuthorized("Localize")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Style = ModuleAction.ActionStyleEnum.Post,
             Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.LocalizeAllPackages),
             Image = await CustomIconAsync("LocalizeAllPackages.png"),
@@ -245,7 +245,7 @@ public class PackagesModule : ModuleDefinition2 {
     public ModuleAction? GetAction_RemovePackage(Package package) {
         if (!package.IsDataProviderPackage && !package.IsModulePackage && !package.IsSkinPackage) return null;
         if (!IsAuthorized("Installs")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Style = ModuleAction.ActionStyleEnum.Post,
             Url = Utility.UrlFor(typeof(PackagesModuleEndpoints), PackagesModuleEndpoints.RemovePackage),
             QueryArgs = new { PackageName = package.Name },

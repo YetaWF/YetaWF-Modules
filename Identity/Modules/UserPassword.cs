@@ -45,7 +45,7 @@ public class UserPasswordModule : ModuleDefinition2 {
     public bool ShowPasswordRules { get; set; }
 
     public ModuleAction GetAction_UserPassword(string url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Edit",
             LinkText = this.__ResStr("editLink", "Change Password"),

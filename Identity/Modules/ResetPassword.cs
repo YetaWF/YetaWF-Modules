@@ -44,7 +44,7 @@ public class ResetPasswordModule : ModuleDefinition2 {
     public bool ShowPasswordRules { get; set; }
 
     public ModuleAction GetAction_ResetPassword(string url, int userId, string resetKey) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             QueryArgs = new { UserId = userId, ResetKey = resetKey },
             Image = "#Edit",

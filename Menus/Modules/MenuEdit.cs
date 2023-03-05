@@ -38,7 +38,7 @@ public class MenuEditModule : ModuleDefinition2 {
 
     public ModuleAction? GetAction_Edit(string? url, Guid menuGuid) {
         if (!IsAuthorized(RoleDefinition.Edit)) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Edit",
             QueryArgs = new { MenuGuid = menuGuid },
@@ -215,7 +215,7 @@ public class MenuEditModule : ModuleDefinition2 {
 
         MenuEditModel model = new MenuEditModel {
             Menu = GetMenuEntries(origMenu),
-            NewEntry = GetMenuEntry(new ModuleAction(this) { Url = "" }),
+            NewEntry = GetMenuEntry(new ModuleAction() { Url = "" }),
 
             MenuGuid = menuGuid,
             ModEntry = new MenuEntry(),

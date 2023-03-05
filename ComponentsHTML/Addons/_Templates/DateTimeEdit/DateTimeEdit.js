@@ -1183,12 +1183,10 @@ var YetaWF_ComponentsHTML;
         };
         DateTimeEditComponent.prototype.setHidden = function (dateVal) {
             var s = "";
-            if (dateVal != null) {
-                if (this.Setup.Style === DateTimeStyleEnum.DateTime || this.Setup.Style === DateTimeStyleEnum.Time || (this.Setup.Style === DateTimeStyleEnum.Date && !this.Setup.UtcMidnight))
-                    s = "".concat(dateVal.getUTCFullYear(), "-").concat(this.zeroPad(dateVal.getUTCMonth() + 1, 2), "-").concat(this.zeroPad(dateVal.getUTCDate(), 2), "T").concat(this.zeroPad(dateVal.getUTCHours(), 2), ":").concat(this.zeroPad(dateVal.getUTCMinutes(), 2), ":00.000Z");
-                else if (this.Setup.Style === DateTimeStyleEnum.Date && this.Setup.UtcMidnight)
-                    s = "".concat(dateVal.getUTCFullYear(), "-").concat(this.zeroPad(dateVal.getUTCMonth() + 1, 2), "-").concat(this.zeroPad(dateVal.getUTCDate(), 2), "T00:00:00.000Z");
-            }
+            if (this.Setup.Style === DateTimeStyleEnum.DateTime || this.Setup.Style === DateTimeStyleEnum.Time || (this.Setup.Style === DateTimeStyleEnum.Date && !this.Setup.UtcMidnight))
+                s = YetaWF.Utility.formatDateTimeUTC(dateVal);
+            else if (this.Setup.Style === DateTimeStyleEnum.Date && this.Setup.UtcMidnight)
+                s = YetaWF.Utility.formatDateUTC(dateVal);
             this.InputHidden.setAttribute("value", s);
         };
         DateTimeEditComponent.prototype.setHiddenInvalid = function (dateVal) {

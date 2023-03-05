@@ -125,8 +125,8 @@ namespace YetaWF.Modules.Text.Modules {
         public async Task<ModuleAction?> GetAction_RssFeedAsync(Guid moduleGuid) {
             TextModule? mod = (TextModule?)await ModuleDefinition.LoadAsync(moduleGuid, AllowNone: true);
             if (mod == null) return null;
-            return new ModuleAction(this) {
-                Url = Utility.UrlFor(typeof(RssController), "RssFeed"),
+            return new ModuleAction() {
+                Url = Utility.UrlFor(typeof(RssController), nameof(RssController.RssFeed)),
                 QueryArgs = new { ModuleGuid = moduleGuid, },
                 QueryArgsHR = new { Title = mod.Title.ToString() },
                 Image = await CustomIconAsync("RssFeed.png"),
@@ -145,7 +145,7 @@ namespace YetaWF.Modules.Text.Modules {
             if (mod == null) return null;
             if (string.IsNullOrWhiteSpace(url))
                 url = Manager.CurrentSite.MakeUrl(GetModuleUrl(moduleGuid));
-            return new ModuleAction(this) {
+            return new ModuleAction() {
                 Url = url,
                 QueryArgs = new { ModuleGuid = moduleGuid, },
                 QueryArgsHR = new { Title = mod.Title.ToString().Truncate(80) },

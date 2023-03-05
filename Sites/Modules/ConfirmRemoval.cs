@@ -36,7 +36,7 @@ public class ConfirmRemovalModule : ModuleDefinition2 {
     public ModuleAction? GetAction_Remove(string? url, SiteDefinition site) {
         if (site.IsDefaultSite) return null;
         string siteName = site.SiteDomain;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             QueryArgs = new { SiteDomain = site.SiteDomain },
             Image = "#Remove",

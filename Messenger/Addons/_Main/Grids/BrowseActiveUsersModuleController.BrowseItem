@@ -1,4 +1,0 @@
-﻿Created             sort filter [Globals.ChDateTime] defaultSort desc
-UserId              filter [Globals.ChEmail]
-IPAddress           sort filter [Globals.ChIPAddressWithLookup]
-ConnectionId        sort filter 30 truncate

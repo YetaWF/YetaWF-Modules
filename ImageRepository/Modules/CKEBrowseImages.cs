@@ -56,8 +56,8 @@ public class CKEBrowseImagesModule : ModuleDefinition2 {
 
         public Model() { }
 
-        public async Task UpdateAsync(ModuleDefinition module) {
-            ImageName_Info = new ImageSelectionInfo(module, FolderGuid, SubFolder) {
+        public async Task UpdateAsync() {
+            ImageName_Info = new ImageSelectionInfo(FolderGuid, SubFolder) {
                 AllowUpload = true,
             };
             await ImageName_Info.InitAsync();
@@ -77,13 +77,13 @@ public class CKEBrowseImagesModule : ModuleDefinition2 {
             CKEditorFuncNum = CKEditorFuncNum,
             LangCode = langCode,
         };
-        await model.UpdateAsync(this);
+        await model.UpdateAsync();
         return await RenderAsync(model);
     }
 
     [ExcludeDemoMode]
     public async Task<IResult> UpdateModuleAsync(Model model) {
-        await model.UpdateAsync(this);
+        await model.UpdateAsync();
         if (!ModelState.IsValid)
             return await PartialViewAsync(model);
 

@@ -51,7 +51,7 @@ public class BackupsModule : ModuleDefinition2 {
     }
 
     public ModuleAction? GetAction_Backups(string url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Browse",
             LinkText = this.__ResStr("browseLink", "Backups"),
@@ -66,7 +66,7 @@ public class BackupsModule : ModuleDefinition2 {
     }
     public async Task<ModuleAction?> GetAction_PerformSiteBackupAsync() {
         if (!IsAuthorized("Backups")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(BackupsModuleEndpoints), nameof(BackupsModuleEndpoints.PerformSiteBackup)),
             Image = await CustomIconAsync("SiteBackup.png"),
             Style = ModuleAction.ActionStyleEnum.Post,
@@ -86,7 +86,7 @@ public class BackupsModule : ModuleDefinition2 {
     public async Task<ModuleAction?> GetAction_MakeSiteTemplateDataAsync() {
         if (YetaWFManager.Deployed) return null; //Can't make site template data on a deployed site
         if (!IsAuthorized("Backups")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(BackupsModuleEndpoints), nameof(BackupsModuleEndpoints.MakeSiteTemplateData)),
             Image = await CustomIconAsync("SiteBackup.png"),
             Style = ModuleAction.ActionStyleEnum.Post,
@@ -103,7 +103,7 @@ public class BackupsModule : ModuleDefinition2 {
 
     public async Task<ModuleAction?> GetAction_DownloadLinkAsync(string filename) {
         if (!IsAuthorized("Downloads")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(BackupsModuleEndpoints), nameof(BackupsModuleEndpoints.Download)),
             QueryArgs = new { FileName = filename },
             Image = await CustomIconAsync("Download.png"),
@@ -120,7 +120,7 @@ public class BackupsModule : ModuleDefinition2 {
     }
     public ModuleAction? GetAction_RemoveLink(string filename) {
         if (!IsAuthorized("Backups")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(BackupsModuleEndpoints), BackupsModuleEndpoints.Remove),
             QueryArgs = new { FileName = filename },
             Image = "#Remove",

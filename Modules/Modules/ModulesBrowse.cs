@@ -53,7 +53,7 @@ public class ModulesBrowseModule : ModuleDefinition2 {
     }
 
     public ModuleAction? GetAction_Modules(string url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Browse",
             LinkText = this.__ResStr("browseLink", "Modules"),
@@ -67,7 +67,7 @@ public class ModulesBrowseModule : ModuleDefinition2 {
         };
     }
     public ModuleAction? GetAction_ShowModule(Guid modGuid) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = ModuleDefinition.GetModulePermanentUrl(modGuid),
             Image = "#Display",
             Style = ModuleAction.ActionStyleEnum.NewWindow,
@@ -84,7 +84,7 @@ public class ModulesBrowseModule : ModuleDefinition2 {
     }
     public ModuleAction? GetAction_Remove(Guid moduleGuid) {
         if (!IsAuthorized("RemoveItems")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(ModulesBrowseModuleEndpoints), ModulesBrowseModuleEndpoints.Remove),
             QueryArgs = new { ModuleGuid = moduleGuid },
             Image = "#Remove",
@@ -101,7 +101,7 @@ public class ModulesBrowseModule : ModuleDefinition2 {
     }
     public ModuleAction? GetAction_RestoreAllDefaultAuthorization() {
         if (!IsAuthorized("RestoreAuthorization")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(ModulesBrowseModuleEndpoints), ModulesBrowseModuleEndpoints.RestoreAuthorization),
             QueryArgs = new { },
             Image = "",
@@ -120,7 +120,7 @@ public class ModulesBrowseModule : ModuleDefinition2 {
 #if DEBUG
     public async Task<ModuleAction?> GetAction_SetSuperuserAsync(Guid guid) {
         if (!IsAuthorized("SetAuthorization")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(ModulesBrowseModuleEndpoints), ModulesBrowseModuleEndpoints.SetSuperuser),
             QueryArgs = new { Guid = guid },
             Image = await CustomIconAsync("go.png"),
@@ -136,7 +136,7 @@ public class ModulesBrowseModule : ModuleDefinition2 {
     }
     public async Task<ModuleAction?> GetAction_SetAdminAsync(Guid guid) {
         if (!IsAuthorized("SetAuthorization")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(ModulesBrowseModuleEndpoints), ModulesBrowseModuleEndpoints.SetAdmin),
             QueryArgs = new { Guid = guid },
             Image = await CustomIconAsync("go.png"),
@@ -152,7 +152,7 @@ public class ModulesBrowseModule : ModuleDefinition2 {
     }
     public async Task<ModuleAction?> GetAction_SetUserAsync(Guid guid) {
         if (!IsAuthorized("SetAuthorization")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(ModulesBrowseModuleEndpoints), ModulesBrowseModuleEndpoints.SetUser),
             QueryArgs = new { Guid = guid },
             Image = await CustomIconAsync("go.png"),
@@ -168,7 +168,7 @@ public class ModulesBrowseModule : ModuleDefinition2 {
     }
     public async Task<ModuleAction?> GetAction_SetAnonymousAsync(Guid guid) {
         if (!IsAuthorized("SetAuthorization")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(ModulesBrowseModuleEndpoints), ModulesBrowseModuleEndpoints.SetAnonymous),
             QueryArgs = new { Guid = guid },
             Image = await CustomIconAsync("go.png"),

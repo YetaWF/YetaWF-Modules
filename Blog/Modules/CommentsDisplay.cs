@@ -47,7 +47,7 @@ public class CommentsDisplayModule : ModuleDefinition2 {
 
     public async Task<ModuleAction?> GetAction_ApproveAsync(int blogEntry, int comment) {
         if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(Info.Resource_AllowManageComments)) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(CommentsDisplayModuleEndpoints), nameof(CommentsDisplayModuleEndpoints.Approve)),
             QueryArgs = new { BlogEntry = blogEntry, Comment = comment },
             Image = await CustomIconAsync("CommentEntryApprove.png"),
@@ -64,7 +64,7 @@ public class CommentsDisplayModule : ModuleDefinition2 {
     }
     public async Task<ModuleAction?> GetAction_RemoveAsync(int blogEntry, int comment) {
         if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(Info.Resource_AllowManageComments)) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(CommentsDisplayModuleEndpoints), nameof(CommentsDisplayModuleEndpoints.Remove)),
             QueryArgs = new { BlogEntry = blogEntry, Comment = comment },
             Image = "#Remove",

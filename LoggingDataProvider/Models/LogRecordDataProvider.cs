@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -90,7 +91,7 @@ public abstract class LogRecordDataProvider : IDisposable {
 
     public static LogRecordDataProvider GetLogRecordDataProvider() {
         if (YetaWF.Core.Log.Logging.DefaultLoggerType == null) throw new Error(__ResStr("noLog", "Logging is not available - See https://yetawf.com/Documentation/YetaWF/Logging"));
-        LogRecordDataProvider dp = (LogRecordDataProvider)Activator.CreateInstance(YetaWF.Core.Log.Logging.DefaultLoggerType)!;
+        LogRecordDataProvider dp = (LogRecordDataProvider)ActivatorUtilities.CreateInstance(YetaWFManager.Manager.ServiceProvider, YetaWF.Core.Log.Logging.DefaultLoggerType)!;
         return dp;
     }
 

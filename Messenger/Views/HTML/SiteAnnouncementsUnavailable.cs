@@ -9,25 +9,24 @@ using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
 using YetaWF.Modules.Messenger.Modules;
 
-namespace YetaWF.Modules.Messenger.Views {
+namespace YetaWF.Modules.Messenger.Views;
 
-    public class SiteAnnouncementsUnavailableView : YetaWFView, IYetaWFView<BrowseSiteAnnouncementModule, object> {
+public class SiteAnnouncementsUnavailableView : YetaWFView, IYetaWFView<BrowseSiteAnnouncementModule, object> {
 
-        public const string ViewName = "SiteAnnouncementsUnavailable";
+    public const string ViewName = "SiteAnnouncementsUnavailable";
 
-        public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
-        public override string GetViewName() { return ViewName; }
+    public override Package GetPackage() { return AreaRegistration.CurrentPackage; }
+    public override string GetViewName() { return ViewName; }
 
-        public Task<string> RenderViewAsync(BrowseSiteAnnouncementModule module, object model) {
+    public Task<string> RenderViewAsync(BrowseSiteAnnouncementModule module, object model) {
 
-            HtmlBuilder hb = new HtmlBuilder();
+        HtmlBuilder hb = new HtmlBuilder();
 
-            hb.Append($@"
+        hb.Append($@"
 <div class='{Globals.CssDivWarning}'>
     {this.__ResStr("unavailable", "Site announcements log is not available - See <a href='https://yetawf.com/Documentation/YetaWF/Messenger' target='_blank' rel='noopener noreferrer'>https://yetawf.com/Documentation/YetaWF/Messenger</a> for additional information.")}
 </div>");
 
-            return Task.FromResult(hb.ToString());
-        }
+        return Task.FromResult(hb.ToString());
     }
 }

@@ -43,7 +43,7 @@ public class EntryAddModule : ModuleDefinition2 {
         object? qs = null;
         if (blogCategory != 0)
             qs = new { BlogCategory = blogCategory };
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             QueryArgs = qs,
             Image = "#Add",

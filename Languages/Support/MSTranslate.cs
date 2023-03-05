@@ -62,7 +62,7 @@ internal class MSTranslate
             if (!response.IsSuccessStatusCode)
                 throw new InternalError($"{nameof(TranslateAsync)} failed - {response.StatusCode}");
             string result = await response.Content.ReadAsStringAsync();
-            List<AllTranslations> trans = Utility.JsonDeserialize<List<AllTranslations>>(result);
+            List<AllTranslations> trans = Utility.JsonDeserializeNewtonsoft<List<AllTranslations>>(result);
             List<string> newStrings = (from t in trans select (from te in t.Translations select te.Text).First()).ToList();
 
             //int requestLength = (from s in strings select s.Length).Sum();

@@ -34,7 +34,7 @@ public class SchedulerDisplayModule : ModuleDefinition {
     public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
     public ModuleAction? GetAction_Display(string? url, string name) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             QueryArgs = new { EventName = name },
             Image = "#Display",

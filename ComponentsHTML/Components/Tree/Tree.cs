@@ -1,8 +1,5 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -123,7 +120,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     {html}
 </div>");
 
-            Manager.ScriptManager.AddLast($"new YetaWF_ComponentsHTML.TreeComponent('{treeModel.Id}', {JsonConvert.SerializeObject(setup, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeHtml })});");
+            Manager.ScriptManager.AddLast($"new YetaWF_ComponentsHTML.TreeComponent('{treeModel.Id}', {Utility.JsonSerialize(setup)});"); //$$$$$, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeHtml }
 
             return hb.ToString();
         }
@@ -298,7 +295,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             string recData = "";
             if (treeModel.JSONData) {
-                string json = JsonConvert.SerializeObject(record, Utility.JsonSettingsGetSet);
+                string json = "";//$$$$$$ JsonConvert.SerializeObject(record, Utility.JsonSettingsGetSet);
                 recData = $" data-record='{HAE(json)}'";
             }
 

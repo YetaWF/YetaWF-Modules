@@ -75,7 +75,7 @@ public class SchedulerBrowseModule : ModuleDefinition2 {
     }
 
     public ModuleAction? GetAction_SchedulerItems(string? url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Browse",
             LinkText = this.__ResStr("browseLink", "Scheduler"),
@@ -89,7 +89,7 @@ public class SchedulerBrowseModule : ModuleDefinition2 {
         };
     }
     public ModuleAction? GetAction_RemoveItem(string? name) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(SchedulerBrowseModuleEndpoints), SchedulerBrowseModuleEndpoints.RemoveItem),
             QueryArgs = new { Name = name },
             Image = "#Remove",
@@ -105,7 +105,7 @@ public class SchedulerBrowseModule : ModuleDefinition2 {
         };
     }
     public async Task<ModuleAction?> GetAction_RunItemAsync(string? name) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(SchedulerBrowseModuleEndpoints), SchedulerBrowseModuleEndpoints.RunItem),
             QueryArgs = new { Name = name },
             Image = await CustomIconAsync("RunItem.png"),
@@ -125,7 +125,7 @@ public class SchedulerBrowseModule : ModuleDefinition2 {
         using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
             running = dataProvider.GetRunning();
         }
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(SchedulerBrowseModuleEndpoints), SchedulerBrowseModuleEndpoints.SchedulerToggle),
             QueryArgs = new { Start = !running },
             Image = await CustomIconAsync("SchedulerToggle.png"),

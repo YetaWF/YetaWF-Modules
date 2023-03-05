@@ -58,7 +58,7 @@ public class SearchResultsModule : ModuleDefinition {
     public bool ShowSummary { get; set; }
 
     public async Task<ModuleAction> GetAction_GetResultsAsync(string url, string searchTerms) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             QueryArgs = new { SearchTerms = searchTerms },
             Image = await CustomIconAsync("SearchResults.png"),

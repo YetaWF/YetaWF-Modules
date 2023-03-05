@@ -84,7 +84,7 @@ public class RegisterModule : ModuleDefinition2 {
         LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
         if (!config.AllowUserRegistration) return null;
         if (!Force && Manager.HaveUser) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             QueryArgs = CloseOnLogin ? new { CloseOnLogin = CloseOnLogin } : null,
             Image = await CustomIconAsync("Register.png"),
@@ -101,7 +101,7 @@ public class RegisterModule : ModuleDefinition2 {
         };
     }
     public async Task<ModuleAction> GetAction_ApproveAsync(string userName) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(RegisterModuleEndpoints), nameof(RegisterModuleEndpoints.Approve)),
             Image = await CustomIconAsync("Approve.png"),
             QueryArgs = new { UserName = userName },
@@ -116,7 +116,7 @@ public class RegisterModule : ModuleDefinition2 {
         };
     }
     public async Task<ModuleAction> GetAction_RejectAsync(string userName) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(RegisterModuleEndpoints), nameof(RegisterModuleEndpoints.Reject)),
             Image = await CustomIconAsync("Reject.png"),
             QueryArgs = new { UserName = userName },

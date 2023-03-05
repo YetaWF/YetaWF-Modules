@@ -51,7 +51,7 @@ public class SitesBrowseModule : ModuleDefinition2 {
     }
 
     public ModuleAction GetAction_Sites(string url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Browse",
             LinkText = this.__ResStr("browseLink", "Sites"),
@@ -65,7 +65,7 @@ public class SitesBrowseModule : ModuleDefinition2 {
         };
     }
     public ModuleAction GetAction_SiteDisplay(SiteDefinition site) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = site.MakeUrl(RealDomain: site.SiteDomain),
             Image = "#Display",
             LinkText = this.__ResStr("dispLink", "Display Site \"{0}\"", site.SiteDomain),

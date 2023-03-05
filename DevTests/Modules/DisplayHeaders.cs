@@ -33,7 +33,7 @@ namespace YetaWF.Modules.DevTests.Modules {
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
         public ModuleAction GetAction_Display(string url, int iD) {
-            return new ModuleAction(this) {
+            return new ModuleAction() {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = new { ID = iD },
                 Image = "#Display",

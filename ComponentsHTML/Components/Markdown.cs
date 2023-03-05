@@ -20,7 +20,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// An instance of this class contains markdown text and HTML used with the Markdown component.
     /// </summary>
     [TypeConverter(typeof(MarkdownStringBaseConv))]
-    [JsonConverter(typeof(NoTypeConverterJsonConverter<MarkdownStringBase>))]
+    [JsonConverter(typeof(NoTypeConverterJsonConverter<MarkdownStringBase>))] //$$$$ 
     public class MarkdownStringBase {
         /// <summary>
         /// The markdown text.
@@ -41,7 +41,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
     }
     /// <summary>
-    /// Type converted implementation for MarkdownStringBase mainly to support conversion to type System.String for validation.
+    /// Type converter implementation for MarkdownStringBase mainly to support conversion to type System.String for validation.
     /// </summary>
     public class MarkdownStringBaseConv : TypeConverter {
         /// <summary>

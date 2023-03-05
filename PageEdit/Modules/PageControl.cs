@@ -74,7 +74,7 @@ public class PageControlModule : ModuleDefinition2 {
     }
 
     public async Task<ModuleAction?> GetAction_PageControlAsync() {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Category = ModuleAction.ActionCategoryEnum.Significant,
             CssClass = "y_button_outline",
             Image = await new SkinImages().FindIcon_PackageAsync("PageEdit.png", Package.GetCurrentPackage(this)),
@@ -90,7 +90,7 @@ public class PageControlModule : ModuleDefinition2 {
 
     public ModuleAction? GetAction_SwitchToEdit() {
         if (!Manager.CurrentPage.IsAuthorized_Edit()) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(PageControlModuleEndpoints), PageControlModuleEndpoints.SwitchToEdit),
             QueryArgs = new { },
             Image = "#Edit",
@@ -108,7 +108,7 @@ public class PageControlModule : ModuleDefinition2 {
 
     }
     public ModuleAction? GetAction_SwitchToView() {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(PageControlModuleEndpoints), PageControlModuleEndpoints.SwitchToView),
             QueryArgs = new { },
             Image = "#Display",
@@ -137,7 +137,7 @@ public class PageControlModule : ModuleDefinition2 {
         }
         if (page == null) return null;
         if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(CoreInfo.Resource_PageExport)) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(PageControlModuleEndpoints), PageControlModuleEndpoints.ExportPage),
             QueryArgs = new { PageGuid = guid },
             Image = await CustomIconAsync("ExportPage.png"),
@@ -159,7 +159,7 @@ public class PageControlModule : ModuleDefinition2 {
         ControlPanelConfigData config = await ControlPanelConfigDataProvider.GetConfigAsync();
         if (string.IsNullOrWhiteSpace(config.W3CUrl)) return null;
         if (!config.W3CUrl.Contains("{0}")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.Format(config.W3CUrl, Manager.CurrentPage.EvaluatedCanonicalUrl),
             Image = await CustomIconAsync("W3CValidator.png"),
             Name = "W3CValidate",
@@ -178,7 +178,7 @@ public class PageControlModule : ModuleDefinition2 {
     public async Task<ModuleAction?> GetAction_RestartSite() {
         if (!Manager.HasSuperUserRole) return null;
         if (YetaWF.Core.Support.Startup.MultiInstance) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = "/$restart",
             Image = await CustomIconAsync("RestartSite.png"),
             LinkText = this.__ResStr("restartLink", "Restart Site"),
@@ -195,7 +195,7 @@ public class PageControlModule : ModuleDefinition2 {
     }
     public ModuleAction? GetAction_ClearJsCssCache() {
         if (!Manager.HasSuperUserRole) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Style = ModuleAction.ActionStyleEnum.Post,
             Url = Utility.UrlFor(typeof(PageControlModuleEndpoints), PageControlModuleEndpoints.ClearJsCss),
             Image = "#Remove",

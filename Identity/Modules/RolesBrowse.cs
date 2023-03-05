@@ -67,7 +67,7 @@ public class RolesBrowseModule : ModuleDefinition2 {
     }
 
     public ModuleAction GetAction_Roles(string url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Browse",
             LinkText = this.__ResStr("rolesLink", "Roles"),
@@ -82,7 +82,7 @@ public class RolesBrowseModule : ModuleDefinition2 {
     }
     public ModuleAction GetAction_RemoveLink(string name) {
         if (!IsAuthorized("RemoveRoles")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(RolesBrowseModuleEndpoints), RolesBrowseModuleEndpoints.Remove),
             QueryArgs = new { Name = name },
             Image = "#Remove",

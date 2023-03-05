@@ -38,7 +38,7 @@ public class SiteTemplateUndoModule : ModuleDefinition2 {
     public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
     public async Task<ModuleAction> GetAction_UndoSiteTemplateAsync(string url, string fileName) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             QueryArgs = new { FileName = fileName },
             Image = await CustomIconAsync("SiteTemplateUndo.png"),

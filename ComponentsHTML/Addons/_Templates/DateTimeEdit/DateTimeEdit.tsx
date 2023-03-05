@@ -1231,12 +1231,10 @@ namespace YetaWF_ComponentsHTML {
 
         private setHidden(dateVal: Date | null): void {
             var s: string = "";
-            if (dateVal != null) {
-                if (this.Setup.Style === DateTimeStyleEnum.DateTime || this.Setup.Style === DateTimeStyleEnum.Time || (this.Setup.Style === DateTimeStyleEnum.Date && !this.Setup.UtcMidnight))
-                    s = `${dateVal.getUTCFullYear()}-${this.zeroPad(dateVal.getUTCMonth()+1, 2)}-${this.zeroPad(dateVal.getUTCDate(), 2)}T${this.zeroPad(dateVal.getUTCHours(), 2)}:${this.zeroPad(dateVal.getUTCMinutes(), 2)}:00.000Z`;
-                else if (this.Setup.Style === DateTimeStyleEnum.Date && this.Setup.UtcMidnight)
-                    s = `${dateVal.getUTCFullYear()}-${this.zeroPad(dateVal.getUTCMonth()+1, 2)}-${this.zeroPad(dateVal.getUTCDate(), 2)}T00:00:00.000Z`;
-            }
+            if (this.Setup.Style === DateTimeStyleEnum.DateTime || this.Setup.Style === DateTimeStyleEnum.Time || (this.Setup.Style === DateTimeStyleEnum.Date && !this.Setup.UtcMidnight))
+                s = YetaWF.Utility.formatDateTimeUTC(dateVal);
+            else if (this.Setup.Style === DateTimeStyleEnum.Date && this.Setup.UtcMidnight)
+                s = YetaWF.Utility.formatDateUTC(dateVal);
             this.InputHidden.setAttribute("value", s);
         }
         private setHiddenInvalid(dateVal: string): void {

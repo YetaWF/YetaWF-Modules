@@ -36,7 +36,7 @@ public class BrowseDataProvidersModule : ModuleDefinition2 {
     public override IModuleDefinitionIO GetDataProvider() { return new BrowseDataProvidersModuleDataProvider(); }
 
     public ModuleAction GetAction_Items(string url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Browse",
             LinkText = this.__ResStr("browseLink", "Data Providers"),

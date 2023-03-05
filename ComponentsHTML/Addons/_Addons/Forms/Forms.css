@@ -6,19 +6,19 @@ img.yform-warningicon {
   padding-top: 1px;
 }
 
-.yform-ajax .t_detailsbuttons {
+.yform .t_detailsbuttons {
   clear: both;
   padding-top: 0.5em;
 }
-.yform-ajax .t_detailsbuttons input,
-.yform-ajax .t_detailsbuttons a.y_act_button,
-.yform-ajax .t_detailsbuttons a.y_act_buttononly,
-.yform-ajax .t_detailsbuttons a.y_act_buttonicon {
+.yform .t_detailsbuttons input,
+.yform .t_detailsbuttons a.y_act_button,
+.yform .t_detailsbuttons a.y_act_buttononly,
+.yform .t_detailsbuttons a.y_act_buttonicon {
   margin-right: 0.5em;
   margin-bottom: 0.1em;
 }
 @media print {
-  .yform-ajax .t_detailsbuttons {
+  .yform .t_detailsbuttons {
     display: none;
   }
 }

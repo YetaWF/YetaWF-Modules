@@ -47,7 +47,7 @@ public class LoginModule : ModuleDefinition2 {
 
     public async Task<ModuleAction> GetAction_LoginAsync(string url = null, bool Force = false, bool CloseOnLogin = false) {
         if (!Force && Manager.HaveUser) return null; // the login action should not be shown if a user is logged on
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             QueryArgs = CloseOnLogin ? new { CloseOnLogin = CloseOnLogin } : null,
             Image = await CustomIconAsync("Login.png"),
@@ -67,7 +67,7 @@ public class LoginModule : ModuleDefinition2 {
     public async Task<ModuleAction> GetAction_LoginAsAsync(int userId, string userName) {
         if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(Info.Resource_AllowUserLogon))
             return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(LoginDirectEndpoints), nameof(LoginDirectEndpoints.LoginAs)),
             QueryArgs = new { UserId = userId },
             Image = await CustomIconAsync("LoginAs.png"),
@@ -83,7 +83,7 @@ public class LoginModule : ModuleDefinition2 {
         };
     }
     public async Task<ModuleAction> GetAction_ResendVerificationEmailAsync(string userName) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(LoginModuleEndpoints), nameof(LoginModuleEndpoints.ResendVerificationEmail)),
             QueryArgs = new { UserName = userName },
             Image = await CustomIconAsync("VerificationEmail.png"),

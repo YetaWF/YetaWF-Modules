@@ -50,7 +50,7 @@ public class PageEditModule : ModuleDefinition2 {
         } else {
             guid = (Guid)pageGuid;
         }
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             QueryArgs = new { PageGuid = guid },
             Image = "#Edit",
@@ -82,7 +82,7 @@ public class PageEditModule : ModuleDefinition2 {
         }
         if (page == null) return null;
         if (!page.IsAuthorized_Remove()) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(PageEditModuleEndpoints), nameof(PageEditModuleEndpoints.RemovePage)),
             QueryArgs = new { PageGuid = guid },
             Image = "#Remove",

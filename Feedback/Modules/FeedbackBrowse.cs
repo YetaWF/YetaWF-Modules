@@ -56,7 +56,7 @@ public class FeedbackBrowseModule : ModuleDefinition2 {
     }
 
     public ModuleAction? GetAction_Feedback(string? url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Browse",
             LinkText = this.__ResStr("browseLink", "Feedback"),
@@ -71,7 +71,7 @@ public class FeedbackBrowseModule : ModuleDefinition2 {
     }
     public ModuleAction? GetAction_RemoveFeedback(int id) {
         if (!IsAuthorized("RemoveFeedback")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = $"{Utility.UrlFor<FeedbackBrowseModuleEndpoints>(FeedbackBrowseModuleEndpoints.Remove)}/{id}",
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,

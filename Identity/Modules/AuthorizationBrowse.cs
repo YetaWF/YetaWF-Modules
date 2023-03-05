@@ -60,7 +60,7 @@ public class AuthorizationBrowseModule : ModuleDefinition2 {
     }
 
     public ModuleAction GetAction_Authorizations(string url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Browse",
             LinkText = this.__ResStr("authLink", "Resources"),
@@ -75,7 +75,7 @@ public class AuthorizationBrowseModule : ModuleDefinition2 {
     }
     public ModuleAction GetAction_Remove(string resourceName) {
         if (!IsAuthorized("RemoveResources")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = Utility.UrlFor(typeof(AuthorizationBrowseModuleEndpoints), AuthorizationBrowseModuleEndpoints.Remove),
             QueryArgs = new { ResourceName = resourceName },
             Image = "#Remove",

@@ -57,6 +57,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public int Icons { get; set; }
         public List<FilterOptionEnum> FilterOptions { get; set; }
         public enum FilterOptionEnum {
+            None = 0,
             Equal = 1,
             NotEqual,
             LessThan,

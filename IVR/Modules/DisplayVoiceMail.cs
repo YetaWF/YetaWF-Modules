@@ -37,7 +37,7 @@ namespace Softelvdm.Modules.IVR.Modules {
                 IVRConfig config = await IVRConfigDataProvider.GetConfigAsync();
                 url = config.DisplayVoiceMailUrl;
             }
-            return new ModuleAction(this) {
+            return new ModuleAction() {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
                 QueryArgs = new { Id = id },
                 Image = "#Display",
@@ -53,7 +53,7 @@ namespace Softelvdm.Modules.IVR.Modules {
             };
         }
         public async Task<ModuleAction> GetAction_ListenAsync(string recordingUrl) {
-            return new ModuleAction(this) {
+            return new ModuleAction() {
                 Url = recordingUrl,
                 Image = await CustomIconAsync("Listen.png"),
                 Style = ModuleAction.ActionStyleEnum.NewWindow,

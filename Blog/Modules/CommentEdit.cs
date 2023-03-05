@@ -41,7 +41,7 @@ public class CommentEditModule : ModuleDefinition2 {
 
     public async Task<ModuleAction?> GetAction_EditAsync(string? url, int blogEntry, int comment) {
         if (!await Resource.ResourceAccess.IsResourceAuthorizedAsync(Info.Resource_AllowManageComments)) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             QueryArgs = new { BlogEntry = blogEntry, Comment = comment },
             Image = "#Edit",

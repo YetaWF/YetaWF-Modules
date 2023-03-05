@@ -60,7 +60,7 @@ public class AuditRecordsModule : ModuleDefinition2 {
     }
 
     public ModuleAction? GetAction_Items(string url) {
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             Image = "#Browse",
             LinkText = this.__ResStr("browseLink", "Audit Information"),
@@ -75,7 +75,7 @@ public class AuditRecordsModule : ModuleDefinition2 {
     }
     public ModuleAction? GetAction_Remove(int id) {
         if (!IsAuthorized("RemoveItems")) return null;
-        return new ModuleAction(this) {
+        return new ModuleAction() {
             Url = $"{Utility.UrlFor(typeof(AuditRecordsModuleEndpoints), AuditRecordsModuleEndpoints.Remove)}/{id}",
             Image = "#Remove",
             Style = ModuleAction.ActionStyleEnum.Post,
