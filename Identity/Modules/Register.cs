@@ -210,9 +210,7 @@ public class RegisterModule : ModuleDefinition2 {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!bool.TryParse(Manager.RequestQueryString["CloseOnLogin"], out bool closeOnLogin)) closeOnLogin = false;
-
+    public async Task<ActionInfo> RenderModuleAsync(bool closeOnLogin) {
         LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
         if (!config.AllowUserRegistration)
             throw new Error(this.__ResStr("cantRegister", "This site does not allow new user registration"));

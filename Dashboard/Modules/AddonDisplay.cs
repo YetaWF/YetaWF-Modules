@@ -106,8 +106,7 @@ public class AddonDisplayModule : ModuleDefinition2 {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        string key = Manager.RequestQueryString["Key"] ?? throw new InternalError("AddOn Info key mising");
+    public async Task<ActionInfo> RenderModuleAsync(string key) {
         List<Package.AddOnProduct> list = Package.GetAvailableAddOns();
         Package.AddOnProduct? data = (from l in list where l.AddonKey == key select l).FirstOrDefault();
         if (data == null)

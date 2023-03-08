@@ -83,8 +83,7 @@ public class SitePropertiesModule : ModuleDefinition2 {
         public string SiteHost { get; set; } = null!;
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        string? domain = Manager.RequestQueryString["Domain"];
+    public async Task<ActionInfo> RenderModuleAsync(string? domain) {
         SiteDefinition? site;
         if (domain == null) {
             site = Manager.CurrentSite;

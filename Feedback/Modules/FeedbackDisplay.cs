@@ -80,8 +80,7 @@ public class FeedbackDisplayModule : ModuleDefinition {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!int.TryParse(Manager.RequestQueryString["Key"], out int key)) key = 0;
+    public async Task<ActionInfo> RenderModuleAsync(int key) {
         using (FeedbackDataProvider dataProvider = new FeedbackDataProvider()) {
             FeedbackData? data = await dataProvider.GetItemAsync(key);
             if (data == null)

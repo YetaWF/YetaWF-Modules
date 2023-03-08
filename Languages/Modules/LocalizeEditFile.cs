@@ -107,9 +107,7 @@ public class LocalizeEditFileModule : ModuleDefinition2 {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        string packageName = Manager.RequestQueryString["PackageName"] ?? throw new InternalError($"Argument {nameof(packageName)} missing");
-        string typeName = Manager.RequestQueryString["TypeName"] ?? throw new InternalError($"Argument {nameof(typeName)} missing");
+    public async Task<ActionInfo> RenderModuleAsync(string packageName, string typeName) {
         Package package = Package.GetPackageFromPackageName(packageName);
         bool custom = true;
         bool forceCustom = false;
@@ -145,8 +143,7 @@ public class LocalizeEditFileModule : ModuleDefinition2 {
     }
 
     [ExcludeDemoMode]
-    public async Task<IResult> UpdateModuleAsync(EditModel model) {
-        if (!bool.TryParse(Manager.RequestQueryString["RestoreDefaults"], out bool RestoreDefaults)) RestoreDefaults = false;
+    public async Task<IResult> UpdateModuleAsync(EditModel model, bool RestoreDefaults) {
         Package package = Package.GetPackageFromPackageName(model.PackageName);
         LocalizationData? data;
         if (RestoreDefaults) {

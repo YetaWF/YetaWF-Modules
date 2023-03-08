@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using YetaWF.Core;
@@ -18,7 +19,6 @@ using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Endpoints;
 using YetaWF.Modules.ComponentsHTML.Views;
-using static YetaWF.Modules.ComponentsHTML.Components.GridColumnInfo;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {
 
@@ -60,7 +60,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public bool ShowPager { get; internal set; }
         public string FieldName { get; set; } = null!;
         public string AjaxUrl { get; set; } = null!;
-        //$$$$ [JsonConverter(typeof(GridDisplayComponent.StaticDataConverter))]
+        [JsonConverter(typeof(GridDisplayComponent.StaticDataConverter))]
         public List<object> StaticData { get; internal set; } = null!;
         public int Page { get; set; }
         public int PageSize { get; set; }
@@ -385,7 +385,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
 
             Manager.ScriptManager.AddLast($@"
-new YetaWF_ComponentsHTML.Grid('{model.Id}', {Utility.JsonSerialize(setup)});"); //$$$$$ , new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeHtml })});");
+new YetaWF_ComponentsHTML.Grid('{model.Id}', {Utility.JsonSerialize(setup)});");
 
             return hb.ToString();
         }
@@ -1253,22 +1253,17 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {Utility.JsonSerialize(setup)});");
 
         // Custom serializer to minimize static data being transferred
 
-        //internal class StaticDataConverter : JsonConverter {
-        //    public override bool CanConvert(Type objectType) {
-        //        return true;
-        //    }
-        //    public override bool CanRead {
-        //        get { return false; }
-        //    }
+        internal class StaticDataConverter : JsonConverter<List<object>> {
 
-        //    public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer) {
-        //        throw new NotImplementedException();
-        //    }
-        //    public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer) {
-        //        string array = JsonConvert.SerializeObject(value, new JsonSerializerSettings { ContractResolver = new Utility.PropertyGetSetUIHintContractResolver() });
-        //        writer.WriteRawValue(array);
-        //    }
-        //}
+            public override List<object> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
+                throw new NotImplementedException();
+            }
+
+            public override void Write(Utf8JsonWriter writer, List<object> value, JsonSerializerOptions options) {
+                string array = Utility.JsonSerialize(value, Utility._JsonSettingsGetSetUIHint);
+                writer.WriteRawValue(array);
+            }
+        }
     }
 }
 

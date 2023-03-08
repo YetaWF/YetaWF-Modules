@@ -74,8 +74,7 @@ public class RolesDisplayModule : ModuleDefinition2 {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        string name = Manager.RequestQueryString["Name"] ?? throw new InternalError("No role name provided");
+    public async Task<ActionInfo> RenderModuleAsync(string name) {
         using (RoleDefinitionDataProvider dataProvider = new RoleDefinitionDataProvider()) {
             DataProvider.RoleDefinition data = await dataProvider.GetItemAsync(name);
             if (data == null)

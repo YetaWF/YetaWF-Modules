@@ -68,13 +68,11 @@ public class CategoriesListModule : ModuleDefinition2 {
 
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!int.TryParse(Manager.RequestQueryString["BlogCategory"], out int category)) category = 0;
+    public async Task<ActionInfo> RenderModuleAsync(int blogCategory) {
         Model model = new Model() {
-            BlogCategory = category,
+            BlogCategory = blogCategory,
         };
-
-        Manager.CurrentPage.EvaluatedCanonicalUrl = await BlogConfigData.GetCategoryCanonicalNameAsync(category);
+        Manager.CurrentPage.EvaluatedCanonicalUrl = await BlogConfigData.GetCategoryCanonicalNameAsync(blogCategory);
         return await RenderAsync(model);
     }
 

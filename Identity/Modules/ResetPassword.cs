@@ -86,10 +86,7 @@ public class ResetPasswordModule : ModuleDefinition2 {
         public int UserId { get; set; }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!int.TryParse(Manager.RequestQueryString["UserId"], out int userId)) userId = 0;
-        string resetKey = Manager.RequestQueryString["ResetKey"] ?? null;
-
+    public async Task<ActionInfo> RenderModuleAsync(int userId, string resetKey) {
         UserManager<UserDefinition> userManager = Managers.GetUserManager();
         UserDefinition user = await userManager.FindByIdAsync(userId.ToString());
         if (user == null)

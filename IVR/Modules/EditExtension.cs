@@ -89,8 +89,7 @@ public class EditExtensionModule : ModuleDefinition2 {
         public EditModel() { }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        string extension = Manager.RequestQueryString["Extension"] ?? throw new InternalError($"Argument {nameof(extension)} missing");
+    public async Task<ActionInfo> RenderModuleAsync(string extension) {
         using (ExtensionEntryDataProvider dataProvider = new ExtensionEntryDataProvider()) {
             EditModel model = new EditModel { };
             ExtensionEntry? data = await dataProvider.GetItemAsync(extension);

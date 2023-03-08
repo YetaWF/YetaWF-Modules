@@ -63,10 +63,7 @@ public class SelectTwoStepAuthModule : ModuleDefinition2 {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!int.TryParse(Manager.RequestQueryString["UserId"], out int userId)) throw new InternalError($"Missing user id");
-        string userName = Manager.RequestQueryString["UserName"] ?? string.Empty;
-        string userEmail = Manager.RequestQueryString["UserEmail"] ?? string.Empty;
+    public async Task<ActionInfo> RenderModuleAsync(int userId, string userName, string userEmail) {
         EditModel model = new EditModel {
             UserId = userId,
             UserName = userName,

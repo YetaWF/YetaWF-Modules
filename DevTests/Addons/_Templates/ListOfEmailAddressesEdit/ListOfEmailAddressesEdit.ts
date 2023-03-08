@@ -45,11 +45,13 @@ namespace YetaWF_DevTests {
                     NewEmailAddress: this.inputEmail.value.trim(),
                     FieldPrefix: this.Grid.FieldName,
                 };
-                const data = {
-                    GridData: this.Grid.StaticData
-                };  
-
                 const formJson = $YetaWF.Forms.getJSONInfo(this.Control, { UniqueIdPrefix: `${this.ControlId}ls`, UniqueIdPrefixCounter: 0, UniqueIdCounter: ++this.AddCounter });
+                const data : YetaWF_ComponentsHTML.GridAdditionPartialViewData = {
+                    GridData: this.Grid.StaticData,
+                    __ModuleGuid: formJson.ModuleGuid,
+                    __UniqueIdCounters: formJson.UniqueIdCounters!,
+                    __RequestVerificationToken: formJson.RequestVerificationToken,
+                };  
                 $YetaWF.postJSON(uri, formJson, query, data, (success: boolean, partial: GridRecordResult): void => {
                     if (success) {
                         this.Grid.AddRecord(partial.TR, partial.StaticData);

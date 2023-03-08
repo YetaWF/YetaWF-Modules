@@ -44,9 +44,9 @@ public class CategoryHeaderModule : ModuleDefinition2 {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!int.TryParse(Manager.RequestQueryString["BlogCategory"], out int category)) category = 0;
-        if (!int.TryParse(Manager.RequestQueryString["BlogEntry"], out int entry)) entry = 0;
+    public async Task<ActionInfo> RenderModuleAsync(int blogCategory, int blogEntry) {
+        int category = blogCategory;
+        int entry = blogEntry;
         if (entry != 0) {
             using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {
                 BlogEntry? data = await entryDP.GetItemAsync(entry);

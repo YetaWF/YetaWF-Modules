@@ -339,9 +339,7 @@ public class PageEditModule : ModuleDefinition2 {
     }
 
     [ResourceAuthorize(CoreInfo.Resource_PageSettings)]
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!Guid.TryParse(Manager.RequestQueryString["PageGuid"], out Guid pageGuid)) throw new InternalError($"Argument {nameof(pageGuid)} missing");
-
+    public async Task<ActionInfo> RenderModuleAsync(Guid pageGuid) {
         PageDefinition? page = await PageDefinition.LoadAsync(pageGuid);
         if (page == null)
             throw new Error(this.__ResStr("notFound", "Page {0} doesn't exist", pageGuid));

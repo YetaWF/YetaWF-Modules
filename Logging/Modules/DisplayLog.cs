@@ -107,8 +107,7 @@ public class DisplayLogModule : ModuleDefinition2 {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!int.TryParse(Manager.RequestQueryString["Key"], out int key)) key = 0;
+    public async Task<ActionInfo> RenderModuleAsync(int key) {
         using (LogRecordDataProvider dataProvider = LogRecordDataProvider.GetLogRecordDataProvider()) {
             LogRecord? data = await dataProvider.GetItemAsync(key);
             if (data == null)

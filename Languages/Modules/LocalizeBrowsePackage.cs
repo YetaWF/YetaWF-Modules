@@ -245,8 +245,7 @@ public class LocalizeBrowsePackageModule : ModuleDefinition2 {
         };
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        string packageName = Manager.RequestQueryString["PackageName"] ?? throw new InternalError($"Argument {nameof(packageName)} missing");
+    public async Task<ActionInfo> RenderModuleAsync(string packageName) {
         Package package = Package.GetPackageFromPackageName(packageName);
         BrowseModel model = new BrowseModel {
             GridDef = GetGridModel(package)

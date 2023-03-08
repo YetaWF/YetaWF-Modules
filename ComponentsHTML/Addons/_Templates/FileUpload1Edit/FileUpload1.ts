@@ -9,7 +9,7 @@ namespace YetaWF_ComponentsHTML {
     interface FileUpload1Setup {
         SaveUrl: string;
         RemoveUrl: string;
-        SerializeForm: boolean;
+        //$$$ SerializeForm: boolean;
     }
 
     export interface FileUploadResponse {

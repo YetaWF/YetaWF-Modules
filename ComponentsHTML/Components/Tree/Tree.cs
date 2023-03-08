@@ -120,7 +120,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     {html}
 </div>");
 
-            Manager.ScriptManager.AddLast($"new YetaWF_ComponentsHTML.TreeComponent('{treeModel.Id}', {Utility.JsonSerialize(setup)});"); //$$$$$, new JsonSerializerSettings { StringEscapeHandling = StringEscapeHandling.EscapeHtml }
+            Manager.ScriptManager.AddLast($"new YetaWF_ComponentsHTML.TreeComponent('{treeModel.Id}', {Utility.JsonSerialize(setup)});");
 
             return hb.ToString();
         }
@@ -295,7 +295,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             string recData = "";
             if (treeModel.JSONData) {
-                string json = "";//$$$$$$ JsonConvert.SerializeObject(record, Utility.JsonSettingsGetSet);
+                string json = Utility.JsonSerialize(record, Utility._JsonSettingsGetSet);
                 recData = $" data-record='{HAE(json)}'";
             }
 

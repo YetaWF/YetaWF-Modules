@@ -46,9 +46,9 @@ public class ArchiveModule : ModuleDefinition2 {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!int.TryParse(Manager.RequestQueryString["BlogCategory"], out int category)) category = 0;
+    public async Task<ActionInfo> RenderModuleAsync(int blogCategory) {
 
+        int category = blogCategory;
         BlogModule blogMod = new BlogModule();
         DisplayModel model = new DisplayModel() { };
 

@@ -205,8 +205,7 @@ public class MenuEditModule : ModuleDefinition2 {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!Guid.TryParse(Manager.RequestQueryString["MenuGuid"], out Guid menuGuid)) menuGuid = Guid.Empty;
+    public async Task<ActionInfo> RenderModuleAsync(Guid menuGuid) {
         MenuModule? modMenu = (MenuModule?)await ModuleDefinition.LoadAsync(menuGuid);
         if (modMenu == null)
             throw new InternalError("Can't find menu module {0}", menuGuid);
@@ -243,9 +242,7 @@ public class MenuEditModule : ModuleDefinition2 {
     }
 
     [ExcludeDemoMode]
-    public async Task<IResult> UpdateModuleAsync(MenuEditModel model) {
-        if (!bool.TryParse(Manager.RequestQueryString["ValidateCurrent"], out bool ValidateCurrent)) ValidateCurrent = false;
-
+    public async Task<IResult> UpdateModuleAsync(MenuEditModel model, bool ValidateCurrent) {
         MenuModule? modMenu = (MenuModule?)await ModuleDefinition.LoadAsync(model.MenuGuid);
         if (modMenu == null)
             throw new InternalError("Can't find menu module {0}", model.MenuGuid);

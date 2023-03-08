@@ -100,8 +100,7 @@ public class SearchEditModule : ModuleDefinition2 {
         public EditModel() { }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!int.TryParse(Manager.RequestQueryString["SearchDataId"], out int searchDataId)) searchDataId = 0;
+    public async Task<ActionInfo> RenderModuleAsync(int searchDataId) {
         if (!SearchDataProvider.IsUsable) return await RenderAsync(new { }, ViewName: "SearchUnavailable_Edit");
         using (SearchDataProvider dataProvider = new SearchDataProvider()) {
             EditModel model = new EditModel { };

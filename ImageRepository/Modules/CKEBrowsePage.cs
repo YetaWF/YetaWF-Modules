@@ -53,10 +53,7 @@ public class CKEBrowsePageModule : ModuleDefinition2 {
         public void Update(ModuleDefinition module) { }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        string CKEditor = Manager.RequestQueryString["CKEditor"] ?? throw new InternalError($"Argument {nameof(CKEditor)} missing");
-        if (!int.TryParse(Manager.RequestQueryString["CKEditorFuncNum"], out int CKEditorFuncNum)) throw new InternalError($"Argument {nameof(CKEditorFuncNum)} missing");
-        string langCode = Manager.RequestQueryString["LangCode"] ?? throw new InternalError($"Argument {nameof(langCode)} missing");
+    public async Task<ActionInfo> RenderModuleAsync(string CKEditor, int CKEditorFuncNum, string langCode) {
         Model model = new Model {
             CKEditor = CKEditor,
             CKEditorFuncNum = CKEditorFuncNum,

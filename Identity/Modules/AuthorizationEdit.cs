@@ -90,8 +90,7 @@ public class AuthorizationEditModule : ModuleDefinition2 {
 
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        string resourceName = Manager.RequestQueryString["ResourceName"] ?? throw new InternalError("Resource Name not specified");
+    public async Task<ActionInfo> RenderModuleAsync(string resourceName) {
         using (AuthorizationDataProvider dataProvider = new AuthorizationDataProvider()) {
             EditModel model = new EditModel { };
             Authorization data = await dataProvider.GetItemAsync(resourceName);

@@ -209,12 +209,7 @@ public class LoginModule : ModuleDefinition2 {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        string name = Manager.RequestQueryString["Name"] ?? string.Empty;
-        string pswd = Manager.RequestQueryString["Pswd"] ?? string.Empty;
-        string v = Manager.RequestQueryString["V"] ?? string.Empty;
-        if (!bool.TryParse(Manager.RequestQueryString["CloseOnLogin"], out bool closeOnLogin)) closeOnLogin = false;
-        if (!bool.TryParse(Manager.RequestQueryString["__f"], out bool __f)) __f = false;
+    public async Task<ActionInfo> RenderModuleAsync(string name, string pswd, string v, bool closeOnLogin, bool __f) {
 
         // add popup support for possible 2fa
         await YetaWFCoreRendering.Render.AddPopupsAddOnsAsync();

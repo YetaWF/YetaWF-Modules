@@ -120,8 +120,7 @@ public class SchedulerEditModule : ModuleDefinition2 {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        string eventName = Manager.RequestQueryString["EventName"] ?? throw new ApplicationException($"{nameof(eventName)} parameter missing");
+    public async Task<ActionInfo> RenderModuleAsync(string eventName) {
         using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
             SchedulerEditModel model = new SchedulerEditModel { };
             SchedulerItemData? evnt = await dataProvider.GetItemAsync(eventName);

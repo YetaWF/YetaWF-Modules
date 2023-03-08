@@ -141,8 +141,8 @@ public class EntryEditModule : ModuleDefinition2 {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!int.TryParse(Manager.RequestQueryString["BlogEntry"], out int entryNum)) entryNum = 0;
+    public async Task<ActionInfo> RenderModuleAsync(int blogEntry) {
+        int entryNum = blogEntry;
         using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {
             EditModel model = new EditModel { };
             BlogEntry? data = await dataProvider.GetItemAsync(entryNum);

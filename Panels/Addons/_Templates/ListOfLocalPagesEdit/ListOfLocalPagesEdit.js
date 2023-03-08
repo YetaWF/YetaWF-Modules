@@ -40,10 +40,13 @@ var YetaWF_Panels;
                     NewUrl: _this.selectUrl.value.trim(),
                     FieldPrefix: _this.Grid.FieldName,
                 };
-                var data = {
-                    GridData: _this.Grid.StaticData
-                };
                 var formJson = $YetaWF.Forms.getJSONInfo(_this.Control, { UniqueIdPrefix: "".concat(_this.ControlId, "ls"), UniqueIdPrefixCounter: 0, UniqueIdCounter: ++_this.AddCounter });
+                var data = {
+                    GridData: _this.Grid.StaticData,
+                    __ModuleGuid: formJson.ModuleGuid,
+                    __UniqueIdCounters: formJson.UniqueIdCounters,
+                    __RequestVerificationToken: formJson.RequestVerificationToken,
+                };
                 $YetaWF.postJSON(uri, formJson, query, data, function (success, partial) {
                     if (success)
                         _this.Grid.AddRecord(partial.TR, partial.StaticData);

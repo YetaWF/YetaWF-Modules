@@ -53,12 +53,7 @@ public partial class PackagesDataProvider : IInitializeApplicationStartup {
 
     public static string LogFile {
         get {
-            string rootFolder;
-#if MVC6
-            rootFolder = YetaWFManager.RootFolderWebProject;
-#else
-            rootFolder = YetaWFManager.RootFolder;
-#endif
+            string rootFolder = YetaWFManager.RootFolderWebProject;
             string folder = Path.Combine(rootFolder, Globals.DataFolder);
             return Path.Combine(folder, "InitialInstall.txt");
         }

@@ -81,8 +81,7 @@ public class SearchInputModule : ModuleDefinition2 {
         public Model() { }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        string searchTerms = Manager.RequestQueryString["SearchTerms"] ?? throw new InternalError($"{nameof(searchTerms)} parameter mising");
+    public async Task<ActionInfo> RenderModuleAsync(string searchTerms) {
         if (!SearchDataProvider.IsUsable)
             return await RenderAsync(new { }, ViewName: "SearchUnavailable_Input");
         if (!Manager.EditMode && string.IsNullOrWhiteSpace(ResultsUrl)) // if no search result url is available, don't show the module

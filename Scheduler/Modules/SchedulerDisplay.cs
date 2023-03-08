@@ -110,8 +110,7 @@ public class SchedulerDisplayModule : ModuleDefinition {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        string eventName = Manager.RequestQueryString["EventName"] ?? throw new ApplicationException($"{nameof(eventName)} parameter missing");
+    public async Task<ActionInfo> RenderModuleAsync(string eventName) {
         using (SchedulerDataProvider dataProvider = new SchedulerDataProvider()) {
             SchedulerDisplayModel model = new SchedulerDisplayModel { };
             SchedulerItemData? evnt = await dataProvider.GetItemAsync(eventName);

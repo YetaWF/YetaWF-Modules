@@ -98,13 +98,10 @@ public class IPAddressLookupModule : ModuleDefinition2 {
         public string? ContinentCode { get; set; }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!bool.TryParse(Manager.RequestQueryString["GeoData"], out bool geoData)) geoData = false;
-        string ipAddress = Manager.RequestQueryString["IpAddress"] ?? throw new InternalError("IP address not specified");
-
-        Model model = new Model();
-        model.IPAddress = ipAddress;
-
+    public async Task<ActionInfo> RenderModuleAsync(bool geoData, string ipAddress) {
+        Model model = new Model {
+            IPAddress = ipAddress
+        };
         if (geoData) {
             GeoLocation geoLocation = new GeoLocation();
             if (geoLocation.GetRemainingRequests() <= 0)

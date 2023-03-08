@@ -126,6 +126,9 @@ namespace YetaWF_ComponentsHTML {
         Sorts: YetaWF.DataProviderSortInfo[];
         Filters: YetaWF.DataProviderFilterInfo[];
     }
+    export interface GridAdditionPartialViewData extends YetaWF.PartialViewData {
+        GridData: any;
+    }
 
     export class Grid extends YetaWF.ComponentBaseDataImpl {
 

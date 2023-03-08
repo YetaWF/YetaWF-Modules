@@ -69,8 +69,7 @@ public class LanguageDisplayModule : ModuleDefinition2 {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        string id = Manager.RequestQueryString["Id"] ?? throw new InternalError($"Argument {nameof(id)} missing");
+    public async Task<ActionInfo> RenderModuleAsync(string id) {
         LanguageEntryElement? language = (from l in LanguageSection.Languages where id == l.Id select l).FirstOrDefault();
         if (language == null)
             throw new Error(this.__ResStr("notFound", "Language \"{0}\" not found"), id);

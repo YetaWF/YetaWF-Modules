@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using System.Linq;
-using System.Threading.Tasks;
 using YetaWF.Core.Endpoints;
 using YetaWF.Core.Endpoints.Filters;
 using YetaWF.Core.Localize;
@@ -26,7 +25,7 @@ public class TemplateListOfLocalPagesEndpoints : YetaWFEndpoints {
 
     public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
-        RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(PagesBrowseModuleEndpoints)))
+        RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(TemplateListOfLocalPagesEndpoints)))
             .RequireAuthorization()
             .AntiForgeryToken();
 

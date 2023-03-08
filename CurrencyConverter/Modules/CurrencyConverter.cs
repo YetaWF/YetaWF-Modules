@@ -74,15 +74,14 @@ public class CurrencyConverterModule : ModuleDefinition2 {
         public SerializableList<ExchangeRateEntry> Rates { get; set; } = null!;
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!decimal.TryParse(Manager.RequestQueryString["Amount"], out decimal amount)) amount = DefaultAmount;
+    public async Task<ActionInfo> RenderModuleAsync(decimal? amount) {        
         using (ExchangeRateDataProvider dp = new ExchangeRateDataProvider()) {
             ExchangeRateData data = await dp.GetItemAsync();
             Model model = new Model() {
                 Rates = data.Rates,
                 FromCountry = FromCountry,
                 ToCountry = ToCountry,
-                Amount = amount,
+                Amount = amount ?? DefaultAmount,
             };
             return await RenderAsync(model);
         }

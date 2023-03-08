@@ -68,8 +68,7 @@ public class ConfirmRemovalModule : ModuleDefinition2 {
         public EditModel() { }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        string siteDomain = Manager.RequestQueryString["SiteDomain"] ?? throw new InternalError($"{nameof(siteDomain)} parameter mising");
+    public async Task<ActionInfo> RenderModuleAsync(string siteDomain) {
         EditModel model = new EditModel { };
         model.SiteDomainDisplay = siteDomain;
         model.SiteDomain = siteDomain;

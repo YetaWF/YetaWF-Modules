@@ -80,8 +80,7 @@ public class LogDisplayModule : ModuleDefinition2 {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!int.TryParse(Manager.RequestQueryString["LogEntry"], out int logEntry)) logEntry = 0;
+    public async Task<ActionInfo> RenderModuleAsync(int logEntry) {
         using (LogDataProvider logDP = new LogDataProvider()) {
             LogData? data = await logDP.GetItemAsync(logEntry);
             if (data == null)

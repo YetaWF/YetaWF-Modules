@@ -91,10 +91,8 @@ public class VisitorDisplayModule : ModuleDefinition2 {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
+    public async Task<ActionInfo> RenderModuleAsync(int key) {
         using (VisitorEntryDataProvider visitorDP = new VisitorEntryDataProvider()) {
-            if (!int.TryParse(Manager.RequestQueryString["Key"], out int key)) key = 0;
-
             VisitorEntry? data = await visitorDP.GetItemAsync(key);
             if (data == null)
                 throw new Error(this.__ResStr("notFound", "Visitor Entry {0} not found."), key);

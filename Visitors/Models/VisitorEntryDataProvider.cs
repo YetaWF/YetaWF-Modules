@@ -168,15 +168,10 @@ public class VisitorEntryDataProvider : DataProviderImpl, IInstallableModel, IIn
 
                     if (!visitorDP.Usable) return;
 
-                    string userAgent;
                     string? sessionId = manager.CurrentSessionId;
                     if (url == null)
                         url = manager.CurrentRequestUrl;
-#if MVC6
-                    userAgent = manager.CurrentRequest.Headers["User-Agent"].ToString();
-#else
-                    userAgent = manager.CurrentRequest.UserAgent;
-#endif
+                    string userAgent = manager.CurrentRequest.Headers["User-Agent"].ToString();
                     string referrer = manager.ReferrerUrl;
 
                     VisitorEntry visitorEntry = new VisitorEntry {

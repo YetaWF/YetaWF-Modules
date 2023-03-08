@@ -125,8 +125,7 @@ public class UsersDisplayModule : ModuleDefinition2 {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        string userName = Manager.RequestQueryString["UserName"] ?? throw new InternalError("User name missing");
+    public async Task<ActionInfo> RenderModuleAsync(string userName) {
         using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
             UserDefinition user = await dataProvider.GetItemAsync(userName);
             if (user == null)

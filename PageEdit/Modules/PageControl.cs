@@ -531,7 +531,7 @@ public class PageControlModule : ModuleDefinition2 {
         }
 
         await page.SaveAsync();
-        return await FormProcessedAsync(model, this.__ResStr("okNewPage", "New page created"), NextPage: page.EvaluatedCanonicalUrl);
+        return await FormProcessedAsync(model, this.__ResStr("okNewPage", "New page created"), NextPage: page.EvaluatedCanonicalUrl, ViewName: AddNewPageView.ViewName);
     }
 
     [ExcludeDemoMode]
@@ -549,7 +549,7 @@ public class PageControlModule : ModuleDefinition2 {
             module.ModuleGuid = Guid.NewGuid();
         page.AddModule(model.SelectedPane!, module, model.ModuleLocation == Location.Top);
         await page.SaveAsync();
-        return await FormProcessedAsync(model, this.__ResStr("okNew", "New module added"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
+        return await FormProcessedAsync(model, this.__ResStr("okNew", "New module added"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage, ViewName: AddNewModuleView.ViewName);
     }
 
     [ExcludeDemoMode]
@@ -566,7 +566,7 @@ public class PageControlModule : ModuleDefinition2 {
         ModuleDefinition? module = await ModuleDefinition.LoadAsync(model.ExistingModule) ?? throw new InternalError($"Existing module {model.ExistingModule} not found");
         page.AddModule(model.ExistingModulePane!, module, model.ModuleLocation == Location.Top);
         await page.SaveAsync();
-        return await FormProcessedAsync(model, this.__ResStr("okExisting", "Module added"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
+        return await FormProcessedAsync(model, this.__ResStr("okExisting", "Module added"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage, ViewName: AddExistingModuleView.ViewName);
     }
 
     [ExcludeDemoMode]
@@ -586,10 +586,10 @@ public class PageControlModule : ModuleDefinition2 {
                 return await FormProcessedAsync(model, this.__ResStr("okSaved", "Site settings updated"));
             case ObjectSupport.ModelDisposition.PageReload:
                 await site.SaveAsync();
-                return await FormProcessedAsync(model, this.__ResStr("okSaved", "Site settings updated"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage, ForceRedirect: true);
+                return await FormProcessedAsync(model, this.__ResStr("okSaved", "Site settings updated"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage, ForceRedirect: true, ViewName: SkinSelectionView.ViewName);
             case ObjectSupport.ModelDisposition.SiteRestart:
                 await site.SaveAsync();
-                return await FormProcessedAsync(model, this.__ResStr("okSavedRestart", "Site settings updated - These settings won't take effect until the site is restarted"));
+                return await FormProcessedAsync(model, this.__ResStr("okSavedRestart", "Site settings updated - These settings won't take effect until the site is restarted"), ViewName: SkinSelectionView.ViewName);
         }
     }
 
@@ -621,6 +621,6 @@ public class PageControlModule : ModuleDefinition2 {
             nextPage = Manager.ReturnToUrl;
         }
         Manager.PageControlShown = false;
-        return await FormProcessedAsync(model, NextPage: nextPage, ForceRedirect: true);
+        return await FormProcessedAsync(model, NextPage: nextPage, ForceRedirect: true, ViewName: LoginSiteSelectionView.ViewName);
     }
 }

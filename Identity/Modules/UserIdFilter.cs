@@ -73,9 +73,7 @@ public class UserIdFilterModule : ModuleDefinition2 {
         public string FilterId { get; set; }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        string data = Manager.RequestQueryString["Data"];
-        string filterId = Manager.RequestQueryString["filterId"];
+    public async Task<ActionInfo> RenderModuleAsync(string data, string filterId) {
         // string uiHint = Manager.RequestQueryString["UiHint"];
 
         UserIdDisplayComponent.UserIdFilterData filterData;

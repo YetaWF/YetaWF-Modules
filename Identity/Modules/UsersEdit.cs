@@ -143,8 +143,7 @@ public class UsersEditModule : ModuleDefinition2 {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        string userName = Manager.RequestQueryString["UserName"] ?? throw new InternalError("User name missing");
+    public async Task<ActionInfo> RenderModuleAsync(string userName) {
         using (UserDefinitionDataProvider dataProvider = new UserDefinitionDataProvider()) {
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             EditModel model = new EditModel {

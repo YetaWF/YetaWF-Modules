@@ -118,11 +118,7 @@ public class ResourceAccessDataProvider : IInitializeApplicationStartup, IResour
             throw new InternalError("No httpRequest");
 
         // check whether we have a logged on user
-#if MVC6
         if (SiteDefinition.INITIAL_INSTALL || !Manager.CurrentContext.User.Identity.IsAuthenticated)
-#else
-        if (SiteDefinition.INITIAL_INSTALL || !Manager.CurrentRequest.IsAuthenticated)
-#endif
         {
             return;// no user logged in
         }
@@ -439,11 +435,7 @@ public class ResourceAccessDataProvider : IInitializeApplicationStartup, IResour
         if (!result.Succeeded) {
             info.ErrorType = AddUserInfo.ErrorTypeEnum.Name;
             foreach (var error in result.Errors) {
-#if MVC6
                 info.Errors.Add(error.Description);
-#else
-                info.Errors.Add(error);
-#endif
                 return info;
             }
         }

@@ -141,7 +141,7 @@ public class CacheInfoModule : ModuleDefinition2 {
         // our MemoryCache instance.  Then use Reflection to gain access to the private property EntriesCollection.
         if (cacheEntriesFieldCollectionDefinition != null) {
             var coherentStateValueCollection = cacheEntriesFieldCollectionDefinition.GetValue(Manager.MemoryCache);
-            var entriesCollectionValueCollection = coherentStateValueCollection.GetType().GetProperty("EntriesCollection", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!;
+            var entriesCollectionValueCollection = coherentStateValueCollection!.GetType().GetProperty("EntriesCollection", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)!;
             cacheEntriesCollection = entriesCollectionValueCollection.GetValue(coherentStateValueCollection)!;
         }
 

@@ -85,8 +85,7 @@ public class DisplayCallLogModule : ModuleDefinition2 {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!int.TryParse(Manager.RequestQueryString["Id"], out int id)) throw new InternalError($"Argument {nameof(id)} missing");
+    public async Task<ActionInfo> RenderModuleAsync(int id) {
         using (CallLogDataProvider dataProvider = new CallLogDataProvider()) {
             CallLogEntry? data = await dataProvider.GetItemByIdentityAsync(id);
             if (data == null)

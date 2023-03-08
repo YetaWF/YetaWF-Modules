@@ -70,33 +70,25 @@ public class LoginConfigData {
     [Data_DontSave]
     public bool UseFacebook {
         get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "FacebookAccount:Enabled") && DefinedFacebook; }
-#if MVC6
         [Obsolete] // needed load existing saved settings
-#endif
         set { }
     }
     [Data_DontSave]
     public bool UseGoogle {
         get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "GoogleAccount:Enabled") && DefinedGoogle; }
-#if MVC6
         [Obsolete]
-#endif
         set { }
     }
     [Data_DontSave]
     public bool UseMicrosoft {
         get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "MicrosoftAccount:Enabled") && DefinedMicrosoft; }
-#if MVC6
         [Obsolete]
-#endif
         set { }
     }
     [Data_DontSave]
     public bool UseTwitter {
         get { return OwinConfigHelper.GetValue<bool>(AreaRegistration.CurrentPackage.AreaName, "TwitterAccount:Enabled") && DefinedTwitter; }
-#if MVC6
         [Obsolete]
-#endif
         set { }
     }
 
@@ -251,7 +243,6 @@ public class LoginConfigDataProvider : DataProviderImpl, IInstallableModel {
     public async Task<List<LoginProviderDescription>> GetActiveExternalLoginProvidersAsync() {
         LoginConfigData configData = await GetConfigAsync();
         List<LoginProviderDescription> list = new List<LoginProviderDescription>();
-#if MVC6
         SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)Manager.ServiceProvider.GetService(typeof(SignInManager<UserDefinition>));
 
         List<AuthenticationScheme> loginProviders = (await _signinManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -266,20 +257,6 @@ public class LoginConfigDataProvider : DataProviderImpl, IInstallableModel {
             else if (name == "Twitter" && configData.UseTwitter && configData.DefinedTwitter)
                 list.Add(new LoginProviderDescription { InternalName = name, DisplayName = provider.DisplayName });
         }
-#else
-        List<AuthenticationDescription> loginProviders = Manager.CurrentContext.GetOwinContext().Authentication.GetExternalAuthenticationTypes().ToList();
-        foreach (AuthenticationDescription provider in loginProviders) {
-            string name = provider.AuthenticationType;
-            if (name == "Facebook" && configData.UseFacebook && configData.DefinedFacebook)
-                list.Add(new LoginProviderDescription { InternalName = name, DisplayName = provider.Caption });
-            else if (name == "Google" && configData.UseGoogle && configData.DefinedGoogle)
-                list.Add(new LoginProviderDescription { InternalName = name, DisplayName = provider.Caption });
-            else if (name == "Microsoft" && configData.UseMicrosoft && configData.DefinedMicrosoft)
-                list.Add(new LoginProviderDescription { InternalName = name, DisplayName = provider.Caption });
-            else if (name == "Twitter" && configData.UseTwitter && configData.DefinedTwitter)
-                list.Add(new LoginProviderDescription { InternalName = name, DisplayName = provider.Caption });
-        }
-#endif
         return list;
     }
 }

@@ -122,8 +122,8 @@ public class CommentsDisplayModule : ModuleDefinition2 {
         public bool OpenForComments { get; set; }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!int.TryParse(Manager.RequestQueryString["BlogEntry"], out int entryNum)) entryNum = 0;
+    public async Task<ActionInfo> RenderModuleAsync(int blogEntry) {
+        int entryNum = blogEntry;
         BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
 
         DisplayModel model = new DisplayModel() { };

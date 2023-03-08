@@ -1,7 +1,5 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Caching#License */
 
-#if MVC6
-
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -88,5 +86,3 @@ internal class FileSystemDataProvider : FileSystemDataProviderBase, IFileSystem 
             return File.WriteAllBytesAsync(filePath, data);
     }
 }
-
-#endif

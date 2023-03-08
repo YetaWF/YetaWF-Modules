@@ -121,8 +121,7 @@ namespace Softelvdm.Modules.IVR.Modules {
             }
         }
 
-        public async Task<ActionInfo> RenderModuleAsync() {
-            if (!int.TryParse(Manager.RequestQueryString["Id"], out int id)) throw new InternalError($"Argument {nameof(id)} missing");
+        public async Task<ActionInfo> RenderModuleAsync(int id) {
             using (VoiceMailDataProvider voiceMailDP = new VoiceMailDataProvider()) {
                 VoiceMailData? voiceMail = await voiceMailDP.GetItemByIdentityAsync(id);
                 if (voiceMail == null)

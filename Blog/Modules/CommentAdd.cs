@@ -117,8 +117,8 @@ public class CommentAddModule : ModuleDefinition2 {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!int.TryParse(Manager.RequestQueryString["BlogEntry"], out int entry)) entry = 0;
+    public async Task<ActionInfo> RenderModuleAsync(int blogEntry) {
+        int entry = blogEntry;
 
         int blogCategory;
         using (BlogEntryDataProvider entryDP = new BlogEntryDataProvider()) {

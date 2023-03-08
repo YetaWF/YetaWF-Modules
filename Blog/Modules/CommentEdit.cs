@@ -122,9 +122,8 @@ public class CommentEditModule : ModuleDefinition2 {
     }
 
     [ResourceAuthorize(Info.Resource_AllowManageComments)]
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!int.TryParse(Manager.RequestQueryString["BlogEntry"], out int entry)) entry = 0;
-        if (!int.TryParse(Manager.RequestQueryString["Comment"], out int comment)) comment = 0;
+    public async Task<ActionInfo> RenderModuleAsync(int blogEntry, int comment) {
+        int entry = blogEntry;
         using (BlogCommentDataProvider dataProvider = new BlogCommentDataProvider(entry)) {
             EditModel model = new EditModel { };
             BlogComment? data = await dataProvider.GetItemAsync(comment);

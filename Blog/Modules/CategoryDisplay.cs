@@ -93,8 +93,8 @@ public class CategoryDisplayModule : ModuleDefinition2 {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!int.TryParse(Manager.RequestQueryString["BlogCategory"], out int category)) category = 0;
+    public async Task<ActionInfo> RenderModuleAsync(int blogCategory) {
+        int category = blogCategory;
         using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
             BlogCategory? data = await dataProvider.GetItemAsync(category);
             if (data == null)

@@ -78,8 +78,7 @@ public class EditBlockedNumberModule : ModuleDefinition2 {
         public EditModel() { }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        string number = Manager.RequestQueryString["Number"] ?? throw new InternalError($"Argument {nameof(number)} missing");
+    public async Task<ActionInfo> RenderModuleAsync(string number) {
         using (BlockedNumberDataProvider dataProvider = new BlockedNumberDataProvider()) {
             BlockedNumberEntry? data = await dataProvider.GetItemAsync(number);
             if (data == null)

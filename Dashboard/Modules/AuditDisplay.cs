@@ -97,8 +97,7 @@ public class AuditDisplayModule : ModuleDefinition {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!int.TryParse(Manager.RequestQueryString["Id"], out int id)) id = 0;
+    public async Task<ActionInfo> RenderModuleAsync(int id) {
         using (AuditInfoDataProvider dataProvider = new AuditInfoDataProvider()) {
             AuditInfo? data = await dataProvider.GetItemAsync(id);
             if (data == null)

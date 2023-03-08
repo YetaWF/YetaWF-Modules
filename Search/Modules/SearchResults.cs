@@ -86,8 +86,7 @@ public class SearchResultsModule : ModuleDefinition {
         public string QSArgs { get; set; } = null!;
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        string searchTerms = Manager.RequestQueryString["SearchTerms"] ?? string.Empty;
+    public async Task<ActionInfo> RenderModuleAsync(string searchTerms) {
         if (string.IsNullOrWhiteSpace(searchTerms)) return ActionInfo.Empty;
 
         if (!SearchDataProvider.IsUsable)

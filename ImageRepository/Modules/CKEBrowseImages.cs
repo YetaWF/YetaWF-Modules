@@ -64,12 +64,7 @@ public class CKEBrowseImagesModule : ModuleDefinition2 {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!Guid.TryParse(Manager.RequestQueryString["__FolderGuid"], out Guid __FolderGuid)) throw new InternalError($"Argument {nameof(__FolderGuid)} missing");
-        if (!Guid.TryParse(Manager.RequestQueryString["__SubFolder"], out Guid __SubFolder)) __SubFolder = Guid.Empty;
-        string CKEditor = Manager.RequestQueryString["CKEditor"] ?? throw new InternalError($"Argument {nameof(CKEditor)} missing");
-        if (!int.TryParse(Manager.RequestQueryString["CKEditorFuncNum"], out int CKEditorFuncNum)) throw new InternalError($"Argument {nameof(CKEditorFuncNum)} missing");
-        string langCode = Manager.RequestQueryString["LangCode"] ?? throw new InternalError($"Argument {nameof(langCode)} missing");
+    public async Task<ActionInfo> RenderModuleAsync(Guid __FolderGuid, Guid __SubFolder, string CKEditor, int CKEditorFuncNum, string langCode) {
         Model model = new Model {
             FolderGuid = __FolderGuid,
             SubFolder = __SubFolder == Guid.Empty ? null : __SubFolder.ToString(),

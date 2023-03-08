@@ -150,9 +150,8 @@ public class BlogModule : ModuleDefinition2 {
         public DateTime? StartDate { get; set; }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!DateTime.TryParse(Manager.RequestQueryString["StartDate"], out DateTime startDate)) startDate = DateTime.MinValue;
-        if (!int.TryParse(Manager.RequestQueryString["BlogCategory"], out int category)) category = 0;
+    public async Task<ActionInfo> RenderModuleAsync(DateTime startDate, int blogCategory) {
+        int category = blogCategory;
 
         BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
         using (BlogEntryDataProvider dataProvider = new BlogEntryDataProvider()) {

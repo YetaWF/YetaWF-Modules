@@ -83,9 +83,7 @@ public class ModuleEditModule : ModuleDefinition2 {
     }
 
     [ResourceAuthorize(CoreInfo.Resource_ModuleSettings)]
-    public async Task<ActionInfo> RenderModuleAsync() {
-        if (!Guid.TryParse(Manager.RequestQueryString["ModuleGuid"], out Guid moduleGuid)) throw new InternalError("No moduleGuid provided");
-
+    public async Task<ActionInfo> RenderModuleAsync(Guid moduleGuid) {
         ModuleDefinition module = await ModuleDefinition.LoadAsync(moduleGuid) ?? throw new InternalError($"{nameof(ModuleEdit)} called with {moduleGuid} which doesn't exist");
         ModuleEditModel model = new ModuleEditModel() {
             Dynamic = module,
