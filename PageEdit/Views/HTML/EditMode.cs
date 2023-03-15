@@ -28,7 +28,7 @@ public class EditModeView : YetaWFView, IYetaWFView<EditModeModule, EditModeModu
 
                 return Task.FromResult($@"
 <div id='yEditControlDiv'>
-    <a class='t_edit y_button_outline y_button yaction-link' {Basics.CssTooltip}='{HAE(action.Tooltip)}' href='{HAE(url)}' rel='nofollow' data-button='' data-save-return=''>
+    <a class='t_edit y_button_outline y_button yaction-link' {Basics.CssTooltip}='{HAE(action.Tooltip)}' href='{HAE(url)}' rel='nofollow' data-post='' data-button='' data-save-return=''>
         {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-pencil-alt")}
     </a>
 </div>");
@@ -36,7 +36,7 @@ public class EditModeView : YetaWFView, IYetaWFView<EditModeModule, EditModeModu
 
                 return Task.FromResult($@"
 <div id='yEditControlDiv'>
-    <a class='t_display y_button_outline y_button yaction-link' {Basics.CssTooltip}='{HAE(action.Tooltip)}' href='{HAE(url)}' rel='nofollow' data-button='' data-save-return=''>
+    <a class='t_display y_button_outline y_button yaction-link' {Basics.CssTooltip}='{HAE(action.Tooltip)}' href='{HAE(url)}' rel='nofollow' data-post='' data-button='' data-save-return=''>
         {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-eye")}
     </a>
 </div>");

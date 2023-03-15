@@ -61,8 +61,7 @@ var YetaWF_ComponentsHTML;
         };
         ImageEditComponent.prototype.setPreview = function (name) {
             var currUri = $YetaWF.parseUrl(this.PreviewImg.src);
-            currUri.removeSearch("Name");
-            currUri.addSearch("Name", name);
+            currUri.replaceSearch("Name", name);
             this.PreviewImg.src = currUri.toUrl();
         };
         ImageEditComponent.TEMPLATE = "yt_image";

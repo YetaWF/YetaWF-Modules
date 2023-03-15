@@ -66,8 +66,7 @@ namespace YetaWF_ComponentsHTML {
         }
         private setPreview(name: string): void {
             var currUri = $YetaWF.parseUrl(this.PreviewImg.src);
-            currUri.removeSearch("Name");
-            currUri.addSearch("Name", name);
+            currUri.replaceSearch("Name", name);
             this.PreviewImg.src = currUri.toUrl();
         }
     }

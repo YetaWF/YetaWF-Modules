@@ -93,6 +93,7 @@ public class PageControlModule : ModuleDefinition2 {
         return new ModuleAction() {
             Url = Utility.UrlFor(typeof(PageControlModuleEndpoints), PageControlModuleEndpoints.SwitchToEdit),
             QueryArgs = new { },
+            Style = ModuleAction.ActionStyleEnum.Post,
             Image = "#Edit",
             LinkText = this.__ResStr("modSwitchToEditLink", "Switch To Site Edit Mode"),
             MenuText = this.__ResStr("modSwitchToEditText", "Switch To Site Edit Mode"),
@@ -111,6 +112,7 @@ public class PageControlModule : ModuleDefinition2 {
         return new ModuleAction() {
             Url = Utility.UrlFor(typeof(PageControlModuleEndpoints), PageControlModuleEndpoints.SwitchToView),
             QueryArgs = new { },
+            Style = ModuleAction.ActionStyleEnum.Post,
             Image = "#Display",
             LinkText = this.__ResStr("modSwitchToViewLink", "Switch To Site View Mode"),
             MenuText = this.__ResStr("modSwitchToViewText", "Switch To Site View Mode"),

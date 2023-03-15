@@ -87,24 +87,21 @@ namespace YetaWF_PageEdit {
             const ps = $YetaWF.getElement1BySelectorCond("a[data-name='PageSettings']", [this.Module]) as HTMLAnchorElement | null;
             if (ps) {
                 let uri = $YetaWF.parseUrl(ps.href);
-                uri.removeSearch("PageGuid");
-                uri.addSearch("PageGuid", YVolatile.Basics.PageGuid);
+                uri.replaceSearch("PageGuid", YVolatile.Basics.PageGuid);
                 ps.href = uri.toUrl();
             }
             // Export Page
             const ep = $YetaWF.getElement1BySelectorCond("a[data-name='ExportPage']", [this.Module]) as HTMLAnchorElement | null;
             if (ep) {
                 let uri = $YetaWF.parseUrl(ep.href);
-                uri.removeSearch("PageGuid");
-                uri.addSearch("PageGuid", YVolatile.Basics.PageGuid);
+                uri.replaceSearch("PageGuid", YVolatile.Basics.PageGuid);
                 ep.href = uri.toUrl();
             }
             // Remove Page
             const rp = $YetaWF.getElement1BySelectorCond("a[data-name='RemovePage']", [this.Module]) as HTMLAnchorElement | null;
             if (rp) {
                 let uri = $YetaWF.parseUrl(rp.href);
-                uri.removeSearch("PageGuid");
-                uri.addSearch("PageGuid", YVolatile.Basics.PageGuid);
+                uri.replaceSearch("PageGuid", YVolatile.Basics.PageGuid);
                 rp.href = uri.toUrl();
             }
             // W3C validation

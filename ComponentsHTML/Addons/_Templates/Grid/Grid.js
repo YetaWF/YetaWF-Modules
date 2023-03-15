@@ -1094,10 +1094,8 @@ var YetaWF_ComponentsHTML;
                             // invoke popup passing the data and filterid as arguments
                             var uri = new YetaWF.Url();
                             uri.parse(url);
-                            uri.removeSearch("FilterId");
-                            uri.addSearch("FilterId", col.FilterId);
-                            uri.removeSearch("Data");
-                            uri.addSearch("Data", elem_1.value);
+                            uri.replaceSearch("FilterId", col.FilterId);
+                            uri.replaceSearch("Data", elem_1.value);
                             if ($YetaWF.Popups.openPopup(uri.toUrl(), false, true))
                                 return false;
                             return true;

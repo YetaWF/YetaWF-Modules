@@ -39,8 +39,7 @@ var YetaWF_ImageRepository;
                 if ($YetaWF.isLoading)
                     return false;
                 var uri = $YetaWF.parseUrl(_this.RemoveButton.href);
-                uri.removeSearch("Name");
-                uri.addSearch("Name", _this.Hidden.value);
+                uri.replaceSearch("Name", _this.Hidden.value);
                 var formJson = $YetaWF.Forms.getJSONInfo(_this.Control);
                 $YetaWF.postJSON(uri, formJson, null, null, function (success, resp) {
                     if (success) {
@@ -56,8 +55,7 @@ var YetaWF_ImageRepository;
         ImageRepository.prototype.setPreview = function (name) {
             this.ButtonDiv.style.display = (name && name.length > 0) ? "" : "none";
             var currUri = $YetaWF.parseUrl(this.Image.src);
-            currUri.removeSearch("Name");
-            currUri.addSearch("Name", name);
+            currUri.replaceSearch("Name", name);
             this.Image.src = currUri.toUrl();
         };
         ImageRepository.prototype.clearFileName = function () {

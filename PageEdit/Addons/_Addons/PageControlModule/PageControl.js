@@ -79,24 +79,21 @@ var YetaWF_PageEdit;
             var ps = $YetaWF.getElement1BySelectorCond("a[data-name='PageSettings']", [this.Module]);
             if (ps) {
                 var uri = $YetaWF.parseUrl(ps.href);
-                uri.removeSearch("PageGuid");
-                uri.addSearch("PageGuid", YVolatile.Basics.PageGuid);
+                uri.replaceSearch("PageGuid", YVolatile.Basics.PageGuid);
                 ps.href = uri.toUrl();
             }
             // Export Page
             var ep = $YetaWF.getElement1BySelectorCond("a[data-name='ExportPage']", [this.Module]);
             if (ep) {
                 var uri = $YetaWF.parseUrl(ep.href);
-                uri.removeSearch("PageGuid");
-                uri.addSearch("PageGuid", YVolatile.Basics.PageGuid);
+                uri.replaceSearch("PageGuid", YVolatile.Basics.PageGuid);
                 ep.href = uri.toUrl();
             }
             // Remove Page
             var rp = $YetaWF.getElement1BySelectorCond("a[data-name='RemovePage']", [this.Module]);
             if (rp) {
                 var uri = $YetaWF.parseUrl(rp.href);
-                uri.removeSearch("PageGuid");
-                uri.addSearch("PageGuid", YVolatile.Basics.PageGuid);
+                uri.replaceSearch("PageGuid", YVolatile.Basics.PageGuid);
                 rp.href = uri.toUrl();
             }
             // W3C validation

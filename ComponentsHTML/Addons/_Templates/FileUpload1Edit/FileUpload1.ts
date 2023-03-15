@@ -110,7 +110,7 @@ namespace YetaWF_ComponentsHTML {
             // }
 
             const info = $YetaWF.Forms.getJSONInfo(this.Control);
-            uri.addSearch(YConfigs.Basics.ModuleGuid, info.ModuleGuid);
+            uri.replaceSearch(YConfigs.Basics.ModuleGuid, info.ModuleGuid);
 
             const request: XMLHttpRequest = new XMLHttpRequest();
             request.open("POST", uri.toUrl(), true);

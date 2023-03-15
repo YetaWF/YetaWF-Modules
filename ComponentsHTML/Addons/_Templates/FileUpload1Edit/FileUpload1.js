@@ -80,7 +80,7 @@ var YetaWF_ComponentsHTML;
             //     }
             // }
             var info = $YetaWF.Forms.getJSONInfo(this.Control);
-            uri.addSearch(YConfigs.Basics.ModuleGuid, info.ModuleGuid);
+            uri.replaceSearch(YConfigs.Basics.ModuleGuid, info.ModuleGuid);
             var request = new XMLHttpRequest();
             request.open("POST", uri.toUrl(), true);
             request.setRequestHeader("RequestVerificationToken", info.RequestVerificationToken);

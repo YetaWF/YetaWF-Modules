@@ -1169,10 +1169,8 @@ namespace YetaWF_ComponentsHTML {
                             // invoke popup passing the data and filterid as arguments
                             let uri = new YetaWF.Url();
                             uri.parse(url);
-                            uri.removeSearch("FilterId");
-                            uri.addSearch("FilterId", col.FilterId);
-                            uri.removeSearch("Data");
-                            uri.addSearch("Data", elem.value);
+                            uri.replaceSearch("FilterId", col.FilterId);
+                            uri.replaceSearch("Data", elem.value);
                             if ($YetaWF.Popups.openPopup(uri.toUrl(), false, true))
                                 return false;
                             return true;

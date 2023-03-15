@@ -55,8 +55,7 @@ namespace YetaWF_ImageRepository {
                 if ($YetaWF.isLoading) return false;
 
                 var uri = $YetaWF.parseUrl(this.RemoveButton.href);
-                uri.removeSearch("Name");
-                uri.addSearch("Name", this.Hidden.value);
+                uri.replaceSearch("Name", this.Hidden.value);
 
                 const formJson = $YetaWF.Forms.getJSONInfo(this.Control);
                 $YetaWF.postJSON(uri, formJson, null, null, (success: boolean, resp: YetaWF_ComponentsHTML.FileUploadRemoveResponse): void => {
@@ -75,8 +74,7 @@ namespace YetaWF_ImageRepository {
         private setPreview(name: string| null): void {
             this.ButtonDiv.style.display = (name && name.length > 0) ? "" : "none";
             var currUri = $YetaWF.parseUrl(this.Image.src);
-            currUri.removeSearch("Name");
-            currUri.addSearch("Name", name);
+            currUri.replaceSearch("Name", name);
             this.Image.src = currUri.toUrl();
         }
         private clearFileName(): void {

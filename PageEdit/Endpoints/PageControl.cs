@@ -154,22 +154,20 @@ public class PageControlModuleEndpoints : YetaWFEndpoints {
         RouteGroupBuilder groupSwitch = endpoints.MapGroup(GetPackageApiRoute(package, typeof(PageControlModuleEndpoints)))
             .RequireAuthorization();
 
-        groupSwitch.MapGet(SwitchToEdit, async (HttpContext context, Guid __ModuleGuid) => {
+        groupSwitch.MapPost(SwitchToEdit, async (HttpContext context, Guid __ModuleGuid) => {
             ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
             if (!module.IsAuthorized()) return Results.Unauthorized();
             Manager.PageControlShown = false;
             Manager.EditMode = true;
-            string url = AddUrlPayload(Manager.ReturnToUrl, true, null);
-            return Results.Redirect(url);
+            return Redirect(Manager.ReturnToUrl, SetCurrentEditMode: true, ForceFullPage: true);
         });
 
-        groupSwitch.MapGet(SwitchToView, async (HttpContext context, Guid __ModuleGuid) => {
+        groupSwitch.MapPost(SwitchToView, async (HttpContext context, Guid __ModuleGuid) => {
             ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
             if (!module.IsAuthorized()) return Results.Unauthorized();
             Manager.PageControlShown = false;
             Manager.EditMode = false;
-            string url = AddUrlPayload(Manager.ReturnToUrl, true, null);
-            return Results.Redirect(url);
+            return Redirect(Manager.ReturnToUrl, SetCurrentEditMode: true, ForceFullPage: true);
         });
     }
 }
