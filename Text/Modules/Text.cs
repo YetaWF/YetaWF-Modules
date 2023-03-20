@@ -18,7 +18,7 @@ using YetaWF.Core.Search;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-using YetaWF.Modules.Text.Controllers;
+using YetaWF.Modules.Text.Endpoints;
 
 namespace YetaWF.Modules.Text.Modules {
 
@@ -115,20 +115,17 @@ namespace YetaWF.Modules.Text.Modules {
 
         public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return EditorLevel_DefaultAllowedRoles; } }
 
-        public override async Task<List<ModuleAction>> RetrieveModuleActionsAsync() {
-            List<ModuleAction> actions = await base.RetrieveModuleActionsAsync();
-            if (Feed)
-                actions.New(await GetAction_RssFeedAsync(ModuleGuid));
-            return actions;
-        }
+        //public override async Task<List<ModuleAction>> RetrieveModuleActionsAsync() {
+        //    List<ModuleAction> actions = await base.RetrieveModuleActionsAsync();
+        //    actions.New(await GetAction_RssFeedAsync());
+        //    return actions;
+        //}
 
-        public async Task<ModuleAction?> GetAction_RssFeedAsync(Guid moduleGuid) {
-            TextModule? mod = (TextModule?)await ModuleDefinition.LoadAsync(moduleGuid, AllowNone: true);
-            if (mod == null) return null;
+        public async Task<ModuleAction?> GetAction_RssFeedAsync() {
+            if (!Feed) return null;
             return new ModuleAction() {
-                Url = Utility.UrlFor(typeof(RssController), nameof(RssController.RssFeed)),
-                QueryArgs = new { ModuleGuid = moduleGuid, },
-                QueryArgsHR = new { Title = mod.Title.ToString() },
+                Url = Utility.UrlFor(typeof(RssEndpoints), nameof(RssEndpoints.RssFeed)),
+                QueryArgsHR = new { Title = Title.ToString() },
                 Image = await CustomIconAsync("RssFeed.png"),
                 Style = ModuleAction.ActionStyleEnum.NewWindow,
                 LinkText = this.__ResStr("rssLink", "RSS Feed"),
@@ -140,15 +137,14 @@ namespace YetaWF.Modules.Text.Modules {
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks,
             };
         }
-        public async Task<ModuleAction?> GetAction_RssDetailAsync(string? url, Guid moduleGuid, string? AnchorId = null) {
-            TextModule? mod = (TextModule?)await ModuleDefinition.LoadAsync(moduleGuid, AllowNone: true);
-            if (mod == null) return null;
+        public async Task<ModuleAction?> GetAction_RssDetailAsync() {
+            if (!Feed) return null;
+            string? url = FeedDetailUrl;
             if (string.IsNullOrWhiteSpace(url))
-                url = Manager.CurrentSite.MakeUrl(GetModuleUrl(moduleGuid));
+                url = Manager.CurrentSite.MakeUrl(GetModuleUrl(ModuleGuid));
             return new ModuleAction() {
                 Url = url,
-                QueryArgs = new { ModuleGuid = moduleGuid, },
-                QueryArgsHR = new { Title = mod.Title.ToString().Truncate(80) },
+                QueryArgsHR = new { Title = Title.ToString().Truncate(80) },
                 AnchorId = AnchorId,
                 Image = await CustomIconAsync("RssFeed.png"),
                 Style = ModuleAction.ActionStyleEnum.NewWindow,

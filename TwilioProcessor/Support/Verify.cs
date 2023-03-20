@@ -13,13 +13,15 @@ using System.Collections.Specialized;
 using Twilio.Security;
 #endif
 
-namespace Softelvdm.Modules.TwilioProcessor.Controllers.Support;
+namespace Softelvdm.Modules.TwilioProcessor.Support;
 
-public static class Verify {
+public static class Verify
+{
 
     private static YetaWFManager Manager { get { return YetaWFManager.Manager; } }
 
-    public static bool VerifyTwilio(string authToken, string verificationRequestUrl) {
+    public static bool VerifyTwilio(string authToken, string verificationRequestUrl)
+    {
 #if !DEBUG
         string requestUrl;
         if (string.IsNullOrWhiteSpace(verificationRequestUrl))
@@ -52,17 +54,20 @@ public static class Verify {
         return true;
     }
 
-    public static void DumpHeaders(string usedRequestUrl, Dictionary<string,string> dict, string signature, bool Error = true) {
+    public static void DumpHeaders(string usedRequestUrl, Dictionary<string, string> dict, string signature, bool Error = true)
+    {
         StringBuilder sb = new StringBuilder();
         sb.Append($"UsedRequestUrl={usedRequestUrl}\r\n");
         sb.Append($"Signature={signature}\r\n");
         string requestUrl = Manager.CurrentRequestUrl;
         sb.Append($"RequestUrl={requestUrl}\r\n");
         HttpRequest request = Manager.CurrentRequest;
-        foreach (string key in request.Headers.Keys) {
+        foreach (string key in request.Headers.Keys)
+        {
             sb.Append($"{key}={request.Headers[key]}\r\n");
         }
-        foreach (string key in dict.Keys) {
+        foreach (string key in dict.Keys)
+        {
             sb.Append($"dict[{key}]={dict[key]}\r\n");
         }
         if (Error)

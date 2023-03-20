@@ -138,7 +138,8 @@ public class BlogConfigModule : ModuleDefinition2 {
         public Model() { }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
+    public async Task<ActionInfo> RenderModuleAsync(
+            ) {
         using (BlogConfigDataProvider dataProvider = new BlogConfigDataProvider()) {
             Model model = new Model { };
             BlogConfigData? data = await dataProvider.GetItemAsync();
@@ -150,7 +151,8 @@ public class BlogConfigModule : ModuleDefinition2 {
     }
 
     [ExcludeDemoMode]
-    public async Task<IResult> UpdateModuleAsync(Model model) {
+    public async Task<IResult> UpdateModuleAsync(
+            Model model) {
         using (BlogConfigDataProvider dataProvider = new BlogConfigDataProvider()) {
             BlogConfigData data = await dataProvider.GetItemAsync();// get the original item
             if (!ModelState.IsValid)

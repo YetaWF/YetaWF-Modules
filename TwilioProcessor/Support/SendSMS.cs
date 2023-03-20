@@ -1,7 +1,7 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TwilioProcessor#License */
 
-using Softelvdm.Modules.TwilioProcessor.Controllers;
 using Softelvdm.Modules.TwilioProcessor.DataProvider;
+using Softelvdm.Modules.TwilioProcessor.Endpoints;
 using System;
 using System.Threading.Tasks;
 using Twilio;
@@ -11,7 +11,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Support;
 using YetaWF.Core.Support.SendSMS;
 
-namespace Softelvdm.Modules.TwilioProcessor.Support; 
+namespace Softelvdm.Modules.TwilioProcessor.Support;
 
 /// <summary>
 /// Implements the Twilio SMS provider used to send text messages.
@@ -57,7 +57,7 @@ public class TwilioSendSMS : ISendSMS, IInitializeApplicationStartup {
         string? callbackUrl = null;
         if (config.DeliveryReceipts) {
             callbackUrl = YetaWFManager.Manager.CurrentSite.MakeUrl(
-                Utility.UrlFor(typeof(TwilioResponseController), nameof(TwilioResponseController.Response), new { ValidateToNumber = to }),
+                Utility.UrlFor(typeof(TwilioResponseEndpoints), nameof(TwilioResponseEndpoints.Response), new { ValidateToNumber = to }),
                 PagePageSecurity: config.UseHttps ? YetaWF.Core.Pages.PageDefinition.PageSecurityType.httpsOnly : YetaWF.Core.Pages.PageDefinition.PageSecurityType.httpOnly
             );
         }

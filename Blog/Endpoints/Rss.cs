@@ -1,38 +1,48 @@
-/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Blog#License */
+/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Pages#License */
 
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.ServiceModel.Syndication;
-using System.Threading.Tasks;
+using System.Xml;
 using YetaWF.Core.Components;
-using YetaWF.Core.Controllers;
 using YetaWF.Core.DataProvider;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Modules;
+using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
-using YetaWF.Core.Support.Rss;
 using YetaWF.Modules.Blog.DataProvider;
 using YetaWF.Modules.Blog.Modules;
 
-namespace YetaWF.Modules.Blog.Controllers {
+namespace YetaWF.Modules.Blog.Endpoints;
 
-    public class RssController : YetaWFController {
+public class RssEndpoints : YetaWFEndpoints {
 
-        // Windows RSS Publisher's Guide http://blogs.msdn.com/b/rssteam/archive/2005/08/02/publishersguide.aspx
+    internal const string RssFeed = "RssFeed";
 
-        public async Task<ActionResult> RssFeed(int? blogCategory) {
+    private static string __ResStr(string name, string defaultValue, params object?[] parms) { return ResourceAccess.GetResourceString(typeof(RssEndpoints), name, defaultValue, parms); }
+
+    public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
+
+        RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(RssEndpoints)));
+
+        group.MapGet(RssFeed, async (HttpContext context, [FromQuery] Guid __ModuleGuid, int blogCategory) => {
             BlogConfigData config = await BlogConfigDataProvider.GetConfigAsync();
             if (!config.Feed)
-                throw new Error(this.__ResStr("noFeed", "The feed is no longer available"));
+                throw new Error(__ResStr("noFeed", "The feed is no longer available"));
 
-            int categoryIdentity = blogCategory ?? 0;
+            int categoryIdentity = blogCategory;
             BlogCategory? category = null;
             if (categoryIdentity != 0) {
                 using (BlogCategoryDataProvider categoryDP = new BlogCategoryDataProvider()) {
                     category = await categoryDP.GetItemAsync(categoryIdentity);
                     if (category == null || !category.Syndicated)
-                        throw new Error(this.__ResStr("noFeed", "The feed is no longer available"));
+                        throw new Error(__ResStr("noFeed", "The feed is no longer available"));
                 }
             }
 
@@ -91,8 +101,18 @@ namespace YetaWF.Modules.Blog.Controllers {
                     feed.ImageUrl = new Uri(Manager.CurrentSite.MakeUrl(ImageHTML.FormatUrl(BlogConfigData.ImageType, null, config.FeedImage))); //$$$ caching issue
                 if (lastUpdated != DateTime.MinValue)
                     feed.LastUpdatedTime = lastUpdated;
-                return new RssResult(feed);
+
+
+                Utility.AllowSyncIO(context);
+
+                Rss20FeedFormatter formatter = new Rss20FeedFormatter(feed);
+                MemoryStream ms = new MemoryStream();
+                using (XmlWriter writer = XmlWriter.Create(ms)) {
+                    formatter.WriteTo(writer);
+                }
+                ms.Position = 0;
+                return Results.Stream(ms, "application/rss+xml");
             }
-        }
+        });
     }
 }

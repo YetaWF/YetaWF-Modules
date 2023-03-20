@@ -14,8 +14,8 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
-using YetaWF.Modules.Blog.Controllers;
 using YetaWF.Modules.Blog.DataProvider;
+using YetaWF.Modules.Blog.Endpoints;
 
 namespace YetaWF.Modules.Blog.Modules;
 
@@ -79,9 +79,8 @@ public class BlogModule : ModuleDefinition2 {
         if (!config.Feed) return null;
         //if (blogCategory == 0)
         //    manager.TryGetUrlArg<int>("BlogCategory", out blogCategory);
-        object? qargs = null, qargsHR = null;
+        object? qargsHR = null;
         if (blogCategory != 0) {
-            qargs = new { BlogCategory = blogCategory, };
             using (BlogCategoryDataProvider dataProvider = new BlogCategoryDataProvider()) {
                 BlogCategory? data = await dataProvider.GetItemAsync(blogCategory);
                 if (data != null)
@@ -89,8 +88,8 @@ public class BlogModule : ModuleDefinition2 {
             }
         }
         return new ModuleAction() {
-            Url = Utility.UrlFor(typeof(RssController), nameof(RssController.RssFeed)),
-            QueryArgs = qargs,
+            Url = Utility.UrlFor(typeof(RssEndpoints), RssEndpoints.RssFeed),
+            QueryArgs = new { BlogCategory = blogCategory, },
             QueryArgsHR = qargsHR,
             Image = await CustomIconAsync("RssFeed.png"),
             Style = ModuleAction.ActionStyleEnum.NewWindow,
