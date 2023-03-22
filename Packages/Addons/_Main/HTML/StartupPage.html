@@ -48,7 +48,7 @@
         <p>
             Finally, click the Start button at the bottom of the page.
         </p>
-        <form id="startform" action="/YetaWF_Packages/StartupPage/Run" method="post">
+        <form id="startform" action="/!api/YetaWF_Packages/StartupPage/Run" method="post">
             <table id="plist" cellspacing="5">
                 <thead>
                     <tr>
@@ -81,7 +81,7 @@
 
         // Load package list
         $.ajax({
-            url: '/YetaWF_Packages/StartupPage/GetPackageList',
+            url: '/!api/YetaWF_Packages/StartupPage/GetPackageList',
             type: 'post',
             success: function (result, textStatus, jqXHR) {
                 $("#plist tbody").append(result);
@@ -117,7 +117,7 @@
             }
             function updateLog() {
                 $.ajax({
-                    url: '/YetaWF_Packages/InitialLogFile/GetInitialInstallLogRecords',
+                    url: '/!api/YetaWF_Packages/InitialLogFile/GetInitialInstallLogRecords',
                     type: 'post',
                     data: { offset: $('option', $log).length },
                     success: function (result, textStatus, jqXHR) {
@@ -147,7 +147,7 @@
                 savedInterval = setInterval(updateLog, 2000);
             }
             $('#btnStart').on('click', function () {
-                $.post('/YetaWF_Packages/StartupPage/Run', $('#startform').serialize());
+                $.post('/!api/YetaWF_Packages/StartupPage/Run', $('#startform').serialize());
                 run();
             });
         });

@@ -1,8 +1,5 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
@@ -51,12 +48,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         /// <param name="HtmlAttributes">The HTML attributes to add to the &lt;form&gt; tag.</param>
         /// <param name="SaveReturnUrl">Defines whether the return URL is saved when the form is submitted.</param>
-        /// <param name="ValidateImmediately">Defines whether client-side validation is immediate (true) or delayed until form submission (false).</param>
         /// <param name="ActionName">Overrides the default action name.</param>
-        /// <param name="ControllerName">Overrides the default controller name.</param>
         /// <param name="Method">The method used to submit the form (get/post)</param>
         /// <returns>Returns the HTML with the generated &lt;form&gt; tag.</returns>
-        protected async Task<string> RenderBeginFormAsync(object? HtmlAttributes = null, bool SaveReturnUrl = false, bool ValidateImmediately = false, string? ActionName = null, string? ControllerName = null, string Method = "post") {
+        protected async Task<string> RenderBeginFormAsync(object? HtmlAttributes = null, bool SaveReturnUrl = false, string? ActionName = null, string Method = "post") {
 
             await YetaWFCoreRendering.Render.AddFormsAddOnsAsync();
             await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Forms");// standard css, validation strings
@@ -65,24 +60,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             Manager.NextUniqueIdPrefix();
 
-            string formAction;
-            string? jsonSubmit = null;
-            if (ModuleBase.JSONModule) {//$$$
-                if (Method.ToLower() != "post") throw new InternalError("Only POST method is supported");
-                formAction = $"{Utility.UrlFor<ModuleEndpoints>(ModuleEndpoints.Update)}/{ModuleBase.ModuleGuid}";
-                if (ActionName != null && ActionName != ModuleBase.Action)
-                    formAction += $"?Action={ActionName}";
-                jsonSubmit = $"data-json-submit ";//$$
-            } else {
-                if (string.IsNullOrWhiteSpace(ActionName))
-                    ActionName = GetViewName();
-                if (!ActionName.EndsWith(YetaWFViewExtender.PartialSuffix))
-                    ActionName += YetaWFViewExtender.PartialSuffix;
-                if (string.IsNullOrWhiteSpace(ControllerName))
-                    ControllerName = ModuleBase.Controller;
-                string areaName = ModuleBase.AreaName;
-                formAction = $"/{areaName}/{ControllerName}/{ActionName}";
-            }
+            if (Method.ToLower() != "post") throw new InternalError("Only POST method is supported");
+            string formAction = $"{Utility.UrlFor<ModuleEndpoints>(ModuleEndpoints.Update)}/{ModuleBase.ModuleGuid}";
+            if (ActionName != null && ActionName != ModuleBase.Action)
+                formAction += $"?Action={ActionName}";
 
             IDictionary<string, object?> attrs = HtmlBuilder.AnonymousObjectToHtmlAttributes(HtmlAttributes);
             if (SaveReturnUrl)
@@ -95,7 +76,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             HtmlBuilder hb = new HtmlBuilder();
             string id = HtmlBuilder.GetId(attrs);
             hb.Append($@"
-<form id='{id}' {jsonSubmit}class='{Forms.CssForm}{HtmlBuilder.GetClasses(attrs, css)}' autocomplete='{(ModuleBase.FormAutoComplete ? "on" : "off")}' action='{Utility.HAE(formAction)}' method='{Method}'{HtmlBuilder.Attributes(attrs)}>
+<form id='{id}' class='{Forms.CssForm}{HtmlBuilder.GetClasses(attrs, css)}' autocomplete='{(ModuleBase.FormAutoComplete ? "on" : "off")}' action='{Utility.HAE(formAction)}' method='{Method}'{HtmlBuilder.Attributes(attrs)}>
     {HtmlBuilder.AntiForgeryToken()}");
 
             return hb.ToString();
