@@ -20,7 +20,7 @@ public class RolesDisplayModuleDataProvider : ModuleDefinitionDataProvider<Guid,
 [ModuleGuid("{6584a819-f957-454d-8d58-aa57f2104e46}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Configuration")]
-public class RolesDisplayModule : ModuleDefinition2 {
+public class RolesDisplayModule : ModuleDefinition {
 
     public RolesDisplayModule() : base() {
         Title = this.__ResStr("modTitle", "Role");

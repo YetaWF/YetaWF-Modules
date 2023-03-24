@@ -27,7 +27,7 @@ public class RolesBrowseModuleDataProvider : ModuleDefinitionDataProvider<Guid, 
 [ModuleGuid("{cc4761a9-977c-438b-880a-3381ab78b4a3}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Configuration")]
-public class RolesBrowseModule : ModuleDefinition2 {
+public class RolesBrowseModule : ModuleDefinition {
 
     public RolesBrowseModule() : base() {
         Title = this.__ResStr("modTitle", "Roles");

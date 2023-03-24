@@ -25,7 +25,7 @@ public class DisqusConfigModuleDataProvider : ModuleDefinitionDataProvider<Guid,
 [ModuleGuid("{71583859-baa9-43fa-895b-a6ebd47561a1}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
 [ModuleCategory("Configuration")]
-public class DisqusConfigModule : ModuleDefinition2 {
+public class DisqusConfigModule : ModuleDefinition {
 
     public DisqusConfigModule() {
         Title = this.__ResStr("modTitle", "Disqus Settings");

@@ -26,7 +26,7 @@ public class VisitorsModuleDataProvider : ModuleDefinitionDataProvider<Guid, Vis
 
 [ModuleGuid("{d0a9aee6-e93f-4c39-afde-3a63cf5b3df7}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class VisitorsModule : ModuleDefinition2 {
+public class VisitorsModule : ModuleDefinition {
 
     public VisitorsModule() {
         Title = this.__ResStr("modTitle", "Visitor Activity");

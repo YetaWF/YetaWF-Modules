@@ -23,7 +23,7 @@ public class PagePanelView : YetaWFView, IYetaWFView2<PagePanelModule, PagePanel
         if (Manager.EditMode) {
 
             hb.Append($@"
-{await RenderBeginFormAsync(SaveReturnUrl: true)}
+{await RenderBeginFormAsync()}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
     {await FormButtonsAsync(new FormButton[] {
     new FormButton() { ButtonType= ButtonTypeEnum.Apply, },

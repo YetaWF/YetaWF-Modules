@@ -20,7 +20,7 @@ public class CategoryDisplayModuleDataProvider : ModuleDefinitionDataProvider<Gu
 [ModuleGuid("{ead14c93-8fe1-4bed-9656-74c08e277723}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Categories")]
-public class CategoryDisplayModule : ModuleDefinition2 {
+public class CategoryDisplayModule : ModuleDefinition {
 
     public CategoryDisplayModule() {
         Title = this.__ResStr("modTitle", "Blog Category");

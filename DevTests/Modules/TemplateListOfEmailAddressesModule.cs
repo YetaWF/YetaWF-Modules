@@ -23,7 +23,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{443bfefa-648c-4b4f-832c-25705636565f}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplateListOfEmailAddressesModule : ModuleDefinition2 {
+    public class TemplateListOfEmailAddressesModule : ModuleDefinition {
 
         public TemplateListOfEmailAddressesModule() {
             Title = this.__ResStr("modTitle", "ListOfEmailAddresses Test Component");

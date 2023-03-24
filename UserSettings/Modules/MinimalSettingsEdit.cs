@@ -20,7 +20,7 @@ namespace YetaWF.Modules.UserSettings.Modules {
 
     [ModuleGuid("{0513D232-F4B1-4a17-A71E-01F7C1ED674C}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class MinimalSettingsEditModule : ModuleDefinition2 {
+    public class MinimalSettingsEditModule : ModuleDefinition {
 
         public MinimalSettingsEditModule() : base() {
             Title = this.__ResStr("modTitle", "User Settings");

@@ -19,7 +19,7 @@ public class DisplayCallLogModuleDataProvider : ModuleDefinitionDataProvider<Gui
 
 [ModuleGuid("{92a027ed-704a-4dd3-bbc7-ff4185539e82}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class DisplayCallLogModule : ModuleDefinition2 {
+public class DisplayCallLogModule : ModuleDefinition {
 
     public DisplayCallLogModule() {
         Title = this.__ResStr("modTitle", "Call Log Entry");

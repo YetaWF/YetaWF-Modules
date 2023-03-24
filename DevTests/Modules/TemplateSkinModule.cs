@@ -18,7 +18,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{b49b3d02-29d4-4466-9ebd-20209f0ba7de}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplateSkinModule : ModuleDefinition2 {
+    public class TemplateSkinModule : ModuleDefinition {
 
         public TemplateSkinModule() {
             Title = this.__ResStr("modTitle", "Skin Selection Test Component");

@@ -20,7 +20,7 @@ public class AddBlockedNumberModuleDataProvider : ModuleDefinitionDataProvider<G
 
 [ModuleGuid("{f57c96c9-f3aa-43f7-b9a6-4e30282889e4}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class AddBlockedNumberModule : ModuleDefinition2 {
+public class AddBlockedNumberModule : ModuleDefinition {
 
     public AddBlockedNumberModule() {
         Title = this.__ResStr("modTitle", "Add New Blocked Number");

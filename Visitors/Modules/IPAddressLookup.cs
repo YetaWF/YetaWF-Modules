@@ -20,7 +20,7 @@ public class IPAddressLookupModuleDataProvider : ModuleDefinitionDataProvider<Gu
 
 [ModuleGuid("{ad95564e-8eb7-4bcb-be64-dc6f1cd6b55d}"), PublishedModuleGuid]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class IPAddressLookupModule : ModuleDefinition2 {
+public class IPAddressLookupModule : ModuleDefinition {
 
     public IPAddressLookupModule() {
         Title = this.__ResStr("modTitle", "IP Address Lookup");

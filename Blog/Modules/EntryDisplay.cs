@@ -22,7 +22,7 @@ public class EntryDisplayModuleDataProvider : ModuleDefinitionDataProvider<Guid,
 [ModuleGuid("{dc5acba8-fdf9-4146-abf3-8321b4fe8c7a}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Entries")]
-public class EntryDisplayModule : ModuleDefinition2 {
+public class EntryDisplayModule : ModuleDefinition {
 
     public EntryDisplayModule() {
         Title = this.__ResStr("modTitle", "Blog Entry");

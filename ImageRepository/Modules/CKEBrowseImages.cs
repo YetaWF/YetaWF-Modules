@@ -19,7 +19,7 @@ public class CKEBrowseImagesModuleDataProvider : ModuleDefinitionDataProvider<Gu
 
 [ModuleGuid("{079f499e-0ce2-4da0-a7e2-e036bc9c98ee}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class CKEBrowseImagesModule : ModuleDefinition2 {
+public class CKEBrowseImagesModule : ModuleDefinition {
 
     public CKEBrowseImagesModule() {
         Title = this.__ResStr("modTitle", "Select Image");

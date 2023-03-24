@@ -18,7 +18,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{d7c549fe-09f2-494f-8ac7-db332d579589}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplateEmailModule : ModuleDefinition2 {
+    public class TemplateEmailModule : ModuleDefinition {
 
         public TemplateEmailModule() {
             Title = this.__ResStr("modTitle", "Email Test Component");

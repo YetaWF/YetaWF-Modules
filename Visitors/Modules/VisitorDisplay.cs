@@ -19,7 +19,7 @@ public class VisitorDisplayModuleDataProvider : ModuleDefinitionDataProvider<Gui
 
 [ModuleGuid("{47362675-fa57-4a47-899d-6a60c263f5c3}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class VisitorDisplayModule : ModuleDefinition2 {
+public class VisitorDisplayModule : ModuleDefinition {
 
     public VisitorDisplayModule() {
         Title = this.__ResStr("modTitle", "Visitor Entry Details");

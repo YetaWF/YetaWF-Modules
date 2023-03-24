@@ -23,7 +23,7 @@ public class LocalizeConfigModuleDataProvider : ModuleDefinitionDataProvider<Gui
 
 [ModuleGuid("{ac486814-9c4b-4c53-986a-e2d02720e867}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class LocalizeConfigModule : ModuleDefinition2 {
+public class LocalizeConfigModule : ModuleDefinition {
 
     public LocalizeConfigModule() {
         Title = this.__ResStr("modTitle", "Localization Settings");

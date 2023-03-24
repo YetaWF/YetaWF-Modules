@@ -28,7 +28,7 @@ public class MarkdownString : MarkdownStringBase {
 
 [ModuleGuid("{5EAF62EB-9B05-45a1-A530-4A721D2F1C33}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class MarkdownModule : ModuleDefinition2 {
+public class MarkdownModule : ModuleDefinition {
 
     public MarkdownModule() : base() {
         Title = this.__ResStr("modTitle", "Edit");

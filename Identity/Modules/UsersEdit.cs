@@ -26,7 +26,7 @@ public class UsersEditModuleDataProvider : ModuleDefinitionDataProvider<Guid, Us
 [ModuleGuid("{31e5b2ed-428c-451c-a25e-5e7e755ef53c}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Configuration")]
-public class UsersEditModule : ModuleDefinition2 {
+public class UsersEditModule : ModuleDefinition {
 
     public UsersEditModule() : base() {
         Title = this.__ResStr("modTitle", "Edit User");

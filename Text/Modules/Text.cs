@@ -26,7 +26,7 @@ namespace YetaWF.Modules.Text.Modules {
 
     [ModuleGuid("{408CA15D-14B0-443b-A66A-14CC6B9EBE38}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TextModule : ModuleDefinition2 {
+    public class TextModule : ModuleDefinition {
 
         public const int MaxContents = 1024 * 1024;
 

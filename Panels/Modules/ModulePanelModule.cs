@@ -19,7 +19,7 @@ public class ModulePanelModuleDataProvider : ModuleDefinitionDataProvider<Guid, 
 
 [ModuleGuid("{c6129cf4-223d-4c12-82a7-beba2d2bbc22}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class ModulePanelModule : ModuleDefinition2 {
+public class ModulePanelModule : ModuleDefinition {
 
     public ModulePanelModule() {
         Title = this.__ResStr("modTitle", "Module Panel");

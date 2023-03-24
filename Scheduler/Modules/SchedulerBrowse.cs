@@ -27,7 +27,7 @@ public class SchedulerBrowseModuleDataProvider : ModuleDefinitionDataProvider<Gu
 
 [ModuleGuid("{9C26B524-2934-44ae-B2AF-672B8F979A71}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class SchedulerBrowseModule : ModuleDefinition2 {
+public class SchedulerBrowseModule : ModuleDefinition {
 
     public SchedulerBrowseModule() : base() {
         Title = this.__ResStr("modTitle", "Scheduler");

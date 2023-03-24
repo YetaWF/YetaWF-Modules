@@ -17,7 +17,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{d5fcf9ab-06a7-456b-8d7c-2e0de134b1e8}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplateProgressBarModule : ModuleDefinition2 {
+    public class TemplateProgressBarModule : ModuleDefinition {
 
         public TemplateProgressBarModule() {
             Title = this.__ResStr("modTitle", "ProgressBar Test Template");

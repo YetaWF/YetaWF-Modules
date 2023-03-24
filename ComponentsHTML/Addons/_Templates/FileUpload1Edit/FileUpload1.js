@@ -72,13 +72,6 @@ var YetaWF_ComponentsHTML;
                 var filename = this.GetFileNameCallback();
                 uri.addSearch("__lastInternalName", filename); // the previous real filename of the file to remove
             }
-            // if (this.Setup.SerializeForm) {//$$$ REMOVE
-            //     var form = $YetaWF.Forms.getForm(this.Control);
-            //     var formData = $YetaWF.Forms.serializeFormArray(form);
-            //     for (let f of formData) {
-            //         uri.addSearch(f.name, f.value);
-            //     }
-            // }
             var info = $YetaWF.Forms.getJSONInfo(this.Control);
             uri.replaceSearch(YConfigs.Basics.ModuleGuid, info.ModuleGuid);
             var request = new XMLHttpRequest();

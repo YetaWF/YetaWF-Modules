@@ -24,7 +24,7 @@ public class BlogModuleDataProvider : ModuleDefinitionDataProvider<Guid, BlogMod
 [ModuleGuid("{e1954fdc-0ccb-40bd-b018-c40dc792e894}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Navigation")]
-public class BlogModule : ModuleDefinition2 {
+public class BlogModule : ModuleDefinition {
 
     public BlogModule() {
         Title = this.__ResStr("modTitle", "Blog");

@@ -18,7 +18,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{8B4EAD54-BC75-459f-8388-4056CB1234D3}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TestExprAttributesModule : ModuleDefinition2 {
+    public class TestExprAttributesModule : ModuleDefinition {
 
         public TestExprAttributesModule() {
             Title = this.__ResStr("modTitle", "Test ExprAttributes");

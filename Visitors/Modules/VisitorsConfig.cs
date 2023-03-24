@@ -21,7 +21,7 @@ public class VisitorsConfigModuleDataProvider : ModuleDefinitionDataProvider<Gui
 
 [ModuleGuid("{2DA557B8-664A-4c23-839B-DC280CECCA47}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class VisitorsConfigModule : ModuleDefinition2 {
+public class VisitorsConfigModule : ModuleDefinition {
 
     public VisitorsConfigModule() {
         Title = this.__ResStr("modTitle", "Visitors Settings");

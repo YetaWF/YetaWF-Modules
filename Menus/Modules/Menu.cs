@@ -23,7 +23,7 @@ public class MenuModuleDataProvider : ModuleDefinitionDataProvider<Guid, MenuMod
 
 [ModuleGuid("{51E5EB91-56CF-4ad6-A0D9-5C084FFD5D3F}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class MenuModule : ModuleDefinition2, IModuleMenuAsync {
+public class MenuModule : ModuleDefinition, IModuleMenuAsync {
 
     private const int MaxLICssClass = 80;
 

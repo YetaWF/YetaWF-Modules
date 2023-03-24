@@ -22,7 +22,7 @@ public class SelectTwoStepSetupModuleDataProvider : ModuleDefinitionDataProvider
 [ModuleGuid("{E70CB5F5-1FAE-4D69-9254-698E8C7C3CC6}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
 [ModuleCategory("Two Step Authentication")]
-public class SelectTwoStepSetupModule : ModuleDefinition2 {
+public class SelectTwoStepSetupModule : ModuleDefinition {
 
     public SelectTwoStepSetupModule() {
         Title = this.__ResStr("modTitle", "Setup Desired Two-Step Authentication");

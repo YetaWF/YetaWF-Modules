@@ -24,7 +24,7 @@ public class RolesEditModuleDataProvider : ModuleDefinitionDataProvider<Guid, Ro
 [ModuleGuid("{e35d6a55-b682-4b4c-9453-04951cc9b9b1}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Configuration")]
-public class RolesEditModule : ModuleDefinition2 {
+public class RolesEditModule : ModuleDefinition {
 
     public RolesEditModule() : base() {
         Title = this.__ResStr("modTitle", "Edit a Role");

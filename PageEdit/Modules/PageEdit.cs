@@ -28,7 +28,7 @@ public class PageEditModuleDataProvider : ModuleDefinitionDataProvider<Guid, Pag
 
 [ModuleGuid("{FBB3C6D3-FBD2-4ab1-BF0E-8716F3D1B052}"), PublishedModuleGuid]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class PageEditModule : ModuleDefinition2 {
+public class PageEditModule : ModuleDefinition {
 
     public PageEditModule() : base() {
         Title = this.__ResStr("modTitle", "Page Edit");

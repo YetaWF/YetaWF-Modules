@@ -24,7 +24,7 @@ public class SiteTemplateUndoModuleDataProvider : ModuleDefinitionDataProvider<G
 
 [ModuleGuid("{E85FCED7-FA21-4697-889C-28DF6632AE0C}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class SiteTemplateUndoModule : ModuleDefinition2 {
+public class SiteTemplateUndoModule : ModuleDefinition {
 
     public SiteTemplateUndoModule() {
         Title = this.__ResStr("modTitle", "Undo Site Template");

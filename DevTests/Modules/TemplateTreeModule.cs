@@ -21,7 +21,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{A1952569-E77D-40fb-8C4A-2A1412EB03E2}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplateTreeModule : ModuleDefinition2 {
+    public class TemplateTreeModule : ModuleDefinition {
 
         public TemplateTreeModule() {
             Title = this.__ResStr("modTitle", "Tree (Static) Test Component");

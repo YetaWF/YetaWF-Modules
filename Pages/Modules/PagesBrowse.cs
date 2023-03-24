@@ -26,7 +26,7 @@ public class PagesBrowseModuleDataProvider : ModuleDefinitionDataProvider<Guid, 
 
 [ModuleGuid("{4AEDC6D5-4655-48fa-A3C1-A1BF2707030D}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class PagesBrowseModule : ModuleDefinition2 {
+public class PagesBrowseModule : ModuleDefinition {
 
     public PagesBrowseModule() : base() {
         Title = this.__ResStr("modTitle", "Pages");

@@ -27,7 +27,7 @@ public class AuthorizationBrowseModuleDataProvider : ModuleDefinitionDataProvide
 [ModuleGuid("{d75f9b25-bede-407c-8737-4506982d8e09}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Configuration")]
-public class AuthorizationBrowseModule : ModuleDefinition2 {
+public class AuthorizationBrowseModule : ModuleDefinition {
 
     public AuthorizationBrowseModule() : base() {
         Title = this.__ResStr("modTitle", "Resources");

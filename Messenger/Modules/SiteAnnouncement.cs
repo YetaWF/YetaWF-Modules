@@ -22,7 +22,7 @@ public class SiteAnnouncementModuleDataProvider : ModuleDefinitionDataProvider<G
 
 [ModuleGuid("{bace50b3-7508-4df9-9e90-62cfd2a7a1a1}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class SiteAnnouncementModule : ModuleDefinition2 {
+public class SiteAnnouncementModule : ModuleDefinition {
 
     public SiteAnnouncementModule() {
         Title = this.__ResStr("modTitle", "New Site Announcement");

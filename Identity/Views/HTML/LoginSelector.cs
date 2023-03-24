@@ -21,7 +21,7 @@ public class LoginSelectorView : YetaWFView, IYetaWFView2<LoginSelectorModule, L
         HtmlBuilder hb = new HtmlBuilder();
 
         hb.Append($@"
-{await RenderBeginFormAsync(SaveReturnUrl: true)}
+{await RenderBeginFormAsync()}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
 {await RenderEndFormAsync()}");
 

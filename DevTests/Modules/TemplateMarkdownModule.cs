@@ -20,7 +20,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{5873e206-5fc5-45ee-932e-1ca53251ccc5}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplateMarkdownModule : ModuleDefinition2 {
+    public class TemplateMarkdownModule : ModuleDefinition {
 
         public TemplateMarkdownModule() {
             Title = this.__ResStr("modTitle", "Markdown Test Template");

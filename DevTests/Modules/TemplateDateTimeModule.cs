@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{2c538164-9151-46b1-8118-c93bbcedd23f}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplateDateTimeModule : ModuleDefinition2 {
+    public class TemplateDateTimeModule : ModuleDefinition {
 
         public TemplateDateTimeModule() {
             Title = this.__ResStr("modTitle", "DateTime Test Component");

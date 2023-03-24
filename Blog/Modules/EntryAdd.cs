@@ -23,7 +23,7 @@ public class EntryAddModuleDataProvider : ModuleDefinitionDataProvider<Guid, Ent
 [ModuleGuid("{a08cc005-5da2-4cc6-91f9-b195879d4dab}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Entries")]
-public class EntryAddModule : ModuleDefinition2 {
+public class EntryAddModule : ModuleDefinition {
 
     public EntryAddModule() {
         Title = this.__ResStr("modTitle", "Add New Blog Entry");

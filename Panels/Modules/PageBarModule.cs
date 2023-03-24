@@ -29,7 +29,7 @@ public class PageBarModuleDataProvider : ModuleDefinitionDataProvider<Guid, Page
 
 [ModuleGuid("{AF54719E-BEB6-4dda-B724-E0399EB57733}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class PageBarModule : ModuleDefinition2 {
+public class PageBarModule : ModuleDefinition {
 
     public PageBarModule() {
         Title = this.__ResStr("modTitle", "Page Bar");

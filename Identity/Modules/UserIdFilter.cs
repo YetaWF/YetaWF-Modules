@@ -20,7 +20,7 @@ public class UserIdFilterModuleDataProvider : ModuleDefinitionDataProvider<Guid,
 [ModuleGuid("{63B188F3-BF70-438e-942C-F397FC0DD88D}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
 [ModuleCategory("Filter")]
-public class UserIdFilterModule : ModuleDefinition2 {
+public class UserIdFilterModule : ModuleDefinition {
 
     public UserIdFilterModule() : base() {
         Title = this.__ResStr("modTitle", "User Filter");

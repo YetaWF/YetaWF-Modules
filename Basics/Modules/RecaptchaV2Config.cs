@@ -22,7 +22,7 @@ public class RecaptchaV2ConfigModuleDataProvider : ModuleDefinitionDataProvider<
 
 [ModuleGuid("{6256FC1B-6E81-4B2A-9D99-FF79FF425C86}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class RecaptchaV2ConfigModule : ModuleDefinition2 {
+public class RecaptchaV2ConfigModule : ModuleDefinition {
 
     public RecaptchaV2ConfigModule() : base() {
         Title = this.__ResStr("modTitle", "RecaptchaV2 Settings");

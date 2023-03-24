@@ -21,7 +21,7 @@ public class TinyVisitorsModuleDataProvider : ModuleDefinitionDataProvider<Guid,
 
 [ModuleGuid("{0180db70-e251-494e-87e9-e97d3796c1ce}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class TinyVisitorsModule : ModuleDefinition2 {
+public class TinyVisitorsModule : ModuleDefinition {
 
     public TinyVisitorsModule() {
         Title = this.__ResStr("modTitle", "Visitor Stats");

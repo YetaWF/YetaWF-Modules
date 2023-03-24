@@ -26,7 +26,7 @@ public class BrowseVoiceMailsModuleDataProvider : ModuleDefinitionDataProvider<G
 
 [ModuleGuid("{1ab039e0-6e16-4992-8fc9-8bfb0c29824b}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class BrowseVoiceMailsModule : ModuleDefinition2 {
+public class BrowseVoiceMailsModule : ModuleDefinition {
 
     public BrowseVoiceMailsModule() {
         Title = this.__ResStr("modTitle", "Voice Mail Entries");

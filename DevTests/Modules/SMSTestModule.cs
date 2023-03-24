@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{f35f5f1c-d3f7-4b33-98a1-6f0700672258}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class SMSTestModule : ModuleDefinition2 {
+    public class SMSTestModule : ModuleDefinition {
 
         public SMSTestModule() {
             Title = this.__ResStr("modTitle", "SMS Test");

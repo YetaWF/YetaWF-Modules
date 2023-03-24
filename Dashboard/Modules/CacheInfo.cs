@@ -26,7 +26,7 @@ public class CacheInfoModuleDataProvider : ModuleDefinitionDataProvider<Guid, Ca
 
 [ModuleGuid("{4dbd47e4-783e-4af9-bf3d-fb98a0d16574}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class CacheInfoModule : ModuleDefinition2 {
+public class CacheInfoModule : ModuleDefinition {
 
     public CacheInfoModule() {
         Title = this.__ResStr("modTitle", "Cache Information (HttpContext.Current.Cache)");

@@ -21,7 +21,7 @@ public class TinyLoginModuleDataProvider : ModuleDefinitionDataProvider<Guid, Ti
 
 [ModuleGuid("{9e929bdc-8810-4710-ab3d-b7bced570e02}"), PublishedModuleGuid]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class TinyLoginModule : ModuleDefinition2 {
+public class TinyLoginModule : ModuleDefinition {
 
     public const int MaxTooltip = 100;
 

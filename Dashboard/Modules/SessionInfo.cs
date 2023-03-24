@@ -24,7 +24,7 @@ public class SessionInfoModuleDataProvider : ModuleDefinitionDataProvider<Guid, 
 
 [ModuleGuid("{FDC457A6-EAF7-4874-949F-67AB6DDD5343}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class SessionInfoModule : ModuleDefinition2 {
+public class SessionInfoModule : ModuleDefinition {
 
     public SessionInfoModule() {
         Title = this.__ResStr("modTitle", "SessionState Information (HttpContext.Current.Session)");

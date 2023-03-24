@@ -25,7 +25,7 @@ public class BackupsModuleDataProvider : ModuleDefinitionDataProvider<Guid, Back
 
 [ModuleGuid("{C819DFC0-2A7D-4263-9388-0AEE779001B2}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class BackupsModule : ModuleDefinition2 {
+public class BackupsModule : ModuleDefinition {
 
     public BackupsModule() : base() {
         Title = this.__ResStr("modTitle", "Site Backups");

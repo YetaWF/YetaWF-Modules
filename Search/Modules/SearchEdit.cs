@@ -22,7 +22,7 @@ public class SearchEditModuleDataProvider : ModuleDefinitionDataProvider<Guid, S
 
 [ModuleGuid("{dfa30d65-52b8-4b7f-a2f4-1e4e73477b04}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class SearchEditModule : ModuleDefinition2 {
+public class SearchEditModule : ModuleDefinition {
 
     public SearchEditModule() {
         Title = this.__ResStr("modTitle", "Search Item");

@@ -22,7 +22,7 @@ public class SchedulerConfigModuleDataProvider : ModuleDefinitionDataProvider<Gu
 
 [ModuleGuid("{A43ECFAE-7ED4-4d96-B5A8-CB5116E5A8DF}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class SchedulerConfigModule : ModuleDefinition2 {
+public class SchedulerConfigModule : ModuleDefinition {
 
     public SchedulerConfigModule() {
         Title = this.__ResStr("modTitle", "Scheduler Settings");

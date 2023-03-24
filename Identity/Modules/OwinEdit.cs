@@ -20,7 +20,7 @@ public class OwinEditModuleDataProvider : ModuleDefinitionDataProvider<Guid, Owi
 [ModuleGuid("{F490DEEB-FF19-4921-894B-4A81D263F97A}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
 [ModuleCategory("Configuration")]
-public class OwinEditModule : ModuleDefinition2 {
+public class OwinEditModule : ModuleDefinition {
 
     public OwinEditModule() : base() {
         Title = this.__ResStr("modTitle", "Login Provider Settings");

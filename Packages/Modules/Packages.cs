@@ -26,7 +26,7 @@ public class PackagesModuleDataProvider : ModuleDefinitionDataProvider<Guid, Pac
 
 [ModuleGuid("{2B4260ED-526D-42d8-9E73-B009A2CBA484}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class PackagesModule : ModuleDefinition2 {
+public class PackagesModule : ModuleDefinition {
 
     public PackagesModule() : base() {
         Title = this.__ResStr("modTitle", "Packages");

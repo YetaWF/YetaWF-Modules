@@ -17,7 +17,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{16d600a0-3519-4cb3-a929-665b23a4347f}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplatePhoneNumberModule : ModuleDefinition2 {
+    public class TemplatePhoneNumberModule : ModuleDefinition {
 
         public TemplatePhoneNumberModule() {
             Title = this.__ResStr("modTitle", "PhoneNumber Test Template");

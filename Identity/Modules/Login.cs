@@ -33,7 +33,7 @@ public class LoginModuleDataProvider : ModuleDefinitionDataProvider<Guid, LoginM
 [ModuleGuid("{47C80477-1F25-4f9d-902C-E3D8B3A62686}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
 [ModuleCategory("Login & Registration")]
-public class LoginModule : ModuleDefinition2 {
+public class LoginModule : ModuleDefinition {
 
     public LoginModule() {
         Title = this.__ResStr("title", "Login");

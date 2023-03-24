@@ -24,7 +24,7 @@ public class LoginSelectorModuleDataProvider : ModuleDefinitionDataProvider<Guid
 [ModuleGuid("{9cdb39c8-4f37-4d30-9eee-68f4bc7420a0}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
 [ModuleCategory("Tools")]
-public class LoginSelectorModule : ModuleDefinition2 {
+public class LoginSelectorModule : ModuleDefinition {
 
     public LoginSelectorModule() : base() {
         Name = this.__ResStr("modName", "User Login Selector");

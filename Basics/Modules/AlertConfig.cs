@@ -22,7 +22,7 @@ public class AlertConfigModuleDataProvider : ModuleDefinitionDataProvider<Guid, 
 
 [ModuleGuid("{d2c029c4-6b03-45e4-9b88-1cbda8972738}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class AlertConfigModule : ModuleDefinition2 {
+public class AlertConfigModule : ModuleDefinition {
 
     public AlertConfigModule() {
         Title = this.__ResStr("modTitle", "Alert Settings");

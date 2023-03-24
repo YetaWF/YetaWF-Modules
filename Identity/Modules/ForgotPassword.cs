@@ -25,7 +25,7 @@ public class ForgotPasswordModuleDataProvider : ModuleDefinitionDataProvider<Gui
 [ModuleGuid("{3437ee4d-747f-4bf1-aa3c-d0417751b24b}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
 [ModuleCategory("Login & Registration")]
-public class ForgotPasswordModule : ModuleDefinition2 {
+public class ForgotPasswordModule : ModuleDefinition {
 
     public ForgotPasswordModule() {
         Title = this.__ResStr("modTitle", "Forgot Password?");

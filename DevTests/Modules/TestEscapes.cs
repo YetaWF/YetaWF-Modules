@@ -18,7 +18,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{d0071658-35f2-453d-a5ba-2a91bd01ee49}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TestEscapesModule : ModuleDefinition2 {
+    public class TestEscapesModule : ModuleDefinition {
 
         public TestEscapesModule() {
             Title = this.__ResStr("modTitle", "Test Escapes");

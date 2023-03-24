@@ -20,7 +20,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{e088faf1-ab2b-446f-b2f8-de0ffd7e4125}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplateTimeZoneModule : ModuleDefinition2 {
+    public class TemplateTimeZoneModule : ModuleDefinition {
 
         public TemplateTimeZoneModule() {
             Title = this.__ResStr("modTitle", "TimeZone Test Component");

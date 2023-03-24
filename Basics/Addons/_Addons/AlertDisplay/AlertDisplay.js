@@ -12,11 +12,9 @@ var YetaWF_Basics;
                 var close = $YetaWF.getElement1BySelector(".t_close", [alert]);
                 var ajaxurl = $YetaWF.getAttribute(close, "data-ajaxurl");
                 alert.style.display = "none";
-                // Save alert status server side
-                var request = new XMLHttpRequest();
-                request.open("POST", ajaxurl, true);
-                request.setRequestHeader("Content-Type", "application/json");
-                request.send("");
+                var uri = $YetaWF.parseUrl(ajaxurl);
+                var formJson = $YetaWF.Forms.getJSONInfo(alert);
+                $YetaWF.postJSONIgnore(uri, formJson, null, null);
                 // we don't care about the result of this request
                 return false;
             });

@@ -21,7 +21,7 @@ public class CategoryAddModuleDataProvider : ModuleDefinitionDataProvider<Guid, 
 [ModuleGuid("{beeabd31-6607-461a-aa0c-717645f1be83}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Categories")]
-public class CategoryAddModule : ModuleDefinition2 {
+public class CategoryAddModule : ModuleDefinition {
 
     public CategoryAddModule() {
         Title = this.__ResStr("modTitle", "Add New Blog Category");

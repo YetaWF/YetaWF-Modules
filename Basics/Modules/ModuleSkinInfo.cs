@@ -18,7 +18,7 @@ public class ModuleSkinInfoModuleDataProvider : ModuleDefinitionDataProvider<Gui
 
 [ModuleGuid("{cfb7fdf4-d62a-4762-a6a0-62cb373053d1}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class ModuleSkinInfoModule : ModuleDefinition2 {
+public class ModuleSkinInfoModule : ModuleDefinition {
 
     public ModuleSkinInfoModule() {
         Title = this.__ResStr("modTitle", "Module Skin Info");

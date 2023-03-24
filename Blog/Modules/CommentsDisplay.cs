@@ -27,7 +27,7 @@ public class CommentsDisplayModuleDataProvider : ModuleDefinitionDataProvider<Gu
 [ModuleGuid("{2539dab0-c210-4578-a615-3e732b65bcec}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Comments")]
-public class CommentsDisplayModule : ModuleDefinition2 {
+public class CommentsDisplayModule : ModuleDefinition {
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "Uhm yeah?")]
     public CommentsDisplayModule() {

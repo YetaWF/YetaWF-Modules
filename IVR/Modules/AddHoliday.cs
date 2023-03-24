@@ -19,7 +19,7 @@ public class AddHolidayModuleDataProvider : ModuleDefinitionDataProvider<Guid, A
 
 [ModuleGuid("{0411e732-cf74-4950-8a1e-545566105f7a}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class AddHolidayModule : ModuleDefinition2 {
+public class AddHolidayModule : ModuleDefinition {
 
     public AddHolidayModule() {
         Title = this.__ResStr("modTitle", "Add New Holiday");

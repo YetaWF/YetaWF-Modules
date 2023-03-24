@@ -16,7 +16,7 @@ namespace YetaWF.Modules.Pages.Modules {
 
     [ModuleGuid("{2a4e6f13-24a0-45c1-8a42-f1072e6ac7de}")]
     [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-    public class SkinScrollToTopModule : ModuleDefinition2 {
+    public class SkinScrollToTopModule : ModuleDefinition {
 
         public SkinScrollToTopModule() {
             Title = this.__ResStr("modTitle", "Skin ScrollToTop");

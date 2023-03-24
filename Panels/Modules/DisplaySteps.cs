@@ -19,7 +19,7 @@ public class DisplayStepsModuleDataProvider : ModuleDefinitionDataProvider<Guid,
 
 [ModuleGuid("{fff6a061-5b49-4501-ad70-3138ec1bf1b3}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class DisplayStepsModule : ModuleDefinition2 {
+public class DisplayStepsModule : ModuleDefinition {
 
     public DisplayStepsModule() {
         Title = this.__ResStr("modTitle", "Steps");

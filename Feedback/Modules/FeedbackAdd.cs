@@ -24,7 +24,7 @@ public class FeedbackAddModuleDataProvider : ModuleDefinitionDataProvider<Guid, 
 
 [ModuleGuid("{30eeace2-f61d-45b7-a430-12c873f78bae}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class FeedbackAddModule : ModuleDefinition2 {
+public class FeedbackAddModule : ModuleDefinition {
 
     public FeedbackAddModule() {
         Title = this.__ResStr("modTitle", "Send Feedback");

@@ -18,7 +18,7 @@ public class BrowserNotificationsModuleDataProvider : ModuleDefinitionDataProvid
 
 [ModuleGuid("{7F60ABC1-07A1-49f1-8381-BD4276977FF0}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class BrowserNotificationsModule : ModuleDefinition2 {
+public class BrowserNotificationsModule : ModuleDefinition {
 
     public BrowserNotificationsModule() {
         Title = this.__ResStr("modTitle", "Web Browser Notification Test");

@@ -19,7 +19,7 @@ public class NeedNewPasswordDisplayModuleDataProvider : ModuleDefinitionDataProv
 [ModuleGuid("{E6B2C413-EBD6-439c-B69A-586C49BF17E7}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
 [ModuleCategory("Login & Registration")]
-public class NeedNewPasswordDisplayModule : ModuleDefinition2 {
+public class NeedNewPasswordDisplayModule : ModuleDefinition {
 
     public NeedNewPasswordDisplayModule() {
         Title = this.__ResStr("modTitle", "New Password Required");

@@ -22,7 +22,7 @@ public class TemplateListOfUserNamesModuleDataProvider : ModuleDefinitionDataPro
 [ModuleGuid("{190287E8-EC79-404C-9FCA-6D43607825BC}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Tools")]
-public class TemplateListOfUserNamesModule : ModuleDefinition2 {
+public class TemplateListOfUserNamesModule : ModuleDefinition {
 
     public TemplateListOfUserNamesModule() {
         Title = this.__ResStr("modTitle", "ListOfUserNames Test Component");

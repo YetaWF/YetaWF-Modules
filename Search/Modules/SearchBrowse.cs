@@ -26,7 +26,7 @@ public class SearchBrowseModuleDataProvider : ModuleDefinitionDataProvider<Guid,
 
 [ModuleGuid("{579f8078-c443-4ca8-9f1c-189b0935303a}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class SearchBrowseModule : ModuleDefinition2 {
+public class SearchBrowseModule : ModuleDefinition {
 
     public SearchBrowseModule() {
         Title = this.__ResStr("modTitle", "Search Keywords");

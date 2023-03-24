@@ -26,7 +26,7 @@ public class LoginConfigModuleDataProvider : ModuleDefinitionDataProvider<Guid, 
 [ModuleGuid("{dbc60a3f-eb01-4fe0-a0aa-4059200b1092}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
 [ModuleCategory("Configuration")]
-public class LoginConfigModule : ModuleDefinition2 {
+public class LoginConfigModule : ModuleDefinition {
 
     public LoginConfigModule() {
         Title = this.__ResStr("modTitle", "User Login Settings");

@@ -21,7 +21,7 @@ public class ArchiveModuleDataProvider : ModuleDefinitionDataProvider<Guid, Arch
 [ModuleGuid("{2b4f7842-370b-4a03-aa09-4e1341f7b87c}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Navigation")]
-public class ArchiveModule : ModuleDefinition2 {
+public class ArchiveModule : ModuleDefinition {
 
     public ArchiveModule() {
         Title = this.__ResStr("modTitle", "Blog Archive");

@@ -27,7 +27,7 @@ public class BrowseBlockedNumbersModuleDataProvider : ModuleDefinitionDataProvid
 
 [ModuleGuid("{9a34582b-631a-4d6f-9557-e2b08228c254}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class BrowseBlockedNumbersModule : ModuleDefinition2 {
+public class BrowseBlockedNumbersModule : ModuleDefinition {
 
     public BrowseBlockedNumbersModule() {
         Title = this.__ResStr("modTitle", "Blocked Numbers");

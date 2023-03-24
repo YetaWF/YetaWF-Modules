@@ -21,7 +21,7 @@ public class TinyLanguageView : YetaWFView, IYetaWFView2<TinyLanguageModule, Tin
         HtmlBuilder hb = new HtmlBuilder();
 
         hb.Append($@"
-{await RenderBeginFormAsync(SaveReturnUrl: true, HtmlAttributes: new { Id = DivId })}
+{await RenderBeginFormAsync(HtmlAttributes: new { Id = DivId })}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model), UsePartialFormCss: false)}
 {await RenderEndFormAsync()}");
         return hb.ToString();

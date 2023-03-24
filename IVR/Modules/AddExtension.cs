@@ -20,7 +20,7 @@ public class AddExtensionModuleDataProvider : ModuleDefinitionDataProvider<Guid,
 
 [ModuleGuid("{cb461097-1109-4a5b-8514-5af0260b98c7}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class AddExtensionModule : ModuleDefinition2 {
+public class AddExtensionModule : ModuleDefinition {
 
     public AddExtensionModule() {
         Title = this.__ResStr("modTitle", "Add New Extension");

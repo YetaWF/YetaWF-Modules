@@ -16,7 +16,7 @@ public class EditModeModuleDataProvider : ModuleDefinitionDataProvider<Guid, Edi
 
 [ModuleGuid("{267f00cc-c619-4854-baed-9e4b812d7e95}"), PublishedModuleGuid]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class EditModeModule : ModuleDefinition2 {
+public class EditModeModule : ModuleDefinition {
 
     public EditModeModule() {
         Title = this.__ResStr("modTitle", "Page Edit Mode Selector");

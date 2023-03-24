@@ -20,7 +20,7 @@ namespace YetaWF.Modules.DevTests.Modules {
     [ModuleGuid("{bf1751a7-d7bb-4338-8f66-420edc135b8b}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
     //[ModuleCategory("...")]
-    public class TemplateCheckListModule : ModuleDefinition2 {
+    public class TemplateCheckListModule : ModuleDefinition {
 
         public TemplateCheckListModule() {
             Title = this.__ResStr("modTitle", "CheckList Test Template");

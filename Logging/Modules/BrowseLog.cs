@@ -26,7 +26,7 @@ public class BrowseLogModuleDataProvider : ModuleDefinitionDataProvider<Guid, Br
 
 [ModuleGuid("{62298abd-1b32-4c04-9477-cba2277f03e6}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class BrowseLogModule : ModuleDefinition2 {
+public class BrowseLogModule : ModuleDefinition {
 
     public BrowseLogModule() : base() {
         Title = this.__ResStr("modTitle", "Log");

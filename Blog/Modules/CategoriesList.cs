@@ -21,7 +21,7 @@ public class CategoriesListModuleDataProvider : ModuleDefinitionDataProvider<Gui
 [ModuleGuid("{9d83d810-2c2d-44eb-a177-c2c00198e9e8}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Navigation")]
-public class CategoriesListModule : ModuleDefinition2 {
+public class CategoriesListModule : ModuleDefinition {
 
     public CategoriesListModule() {
         Title = this.__ResStr("modTitle", "Blog Categories");

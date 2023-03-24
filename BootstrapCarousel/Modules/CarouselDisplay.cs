@@ -20,7 +20,7 @@ public class CarouselDisplayModuleDataProvider : ModuleDefinitionDataProvider<Gu
 
 [ModuleGuid("{d2ddaf6d-dce0-4250-95b2-48a769e04c74}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class CarouselDisplayModule : ModuleDefinition2 {
+public class CarouselDisplayModule : ModuleDefinition {
 
     public CarouselDisplayModule() {
         Title = this.__ResStr("modTitle", "Bootstrap Carousel");

@@ -21,7 +21,7 @@ public class DisqusModuleDataProvider : ModuleDefinitionDataProvider<Guid, Disqu
 [ModuleGuid("{3ba64dfb-9292-4f9b-937e-0c8fe110bf45}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Comments")]
-public class DisqusModule : ModuleDefinition2 {
+public class DisqusModule : ModuleDefinition {
 
     public DisqusModule() {
         Title = this.__ResStr("modTitle", "Comments");

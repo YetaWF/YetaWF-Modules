@@ -23,7 +23,7 @@ public class CategoryEditModuleDataProvider : ModuleDefinitionDataProvider<Guid,
 [ModuleGuid("{9c689112-e55b-4a2e-8570-8e116b2fb75f}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Categories")]
-public class CategoryEditModule : ModuleDefinition2 {
+public class CategoryEditModule : ModuleDefinition {
 
     public CategoryEditModule() {
         Title = this.__ResStr("modTitle", "Blog Category");

@@ -18,7 +18,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{00f87a82-ca91-4436-8353-2cc09cb2b89c}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplateTextAreaSourceOnlyModule : ModuleDefinition2 {
+    public class TemplateTextAreaSourceOnlyModule : ModuleDefinition {
 
         public TemplateTextAreaSourceOnlyModule() {
             Title = this.__ResStr("modTitle", "TextAreaSourceOnly Test Component");

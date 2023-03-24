@@ -21,7 +21,7 @@ public class BackupConfigModuleDataProvider : ModuleDefinitionDataProvider<Guid,
 
 [ModuleGuid("{84b5bc7e-e5d9-4ab1-9535-8ba729d66649}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class BackupConfigModule : ModuleDefinition2 {
+public class BackupConfigModule : ModuleDefinition {
 
     public BackupConfigModule() {
         Title = this.__ResStr("modTitle", "Backup Settings");

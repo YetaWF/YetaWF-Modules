@@ -25,7 +25,7 @@ public class ImportModuleDataProvider : ModuleDefinitionDataProvider<Guid, Impor
 
 [ModuleGuid("{9AC300E6-099B-47d3-A6F6-282DA545998D}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class ImportModule : ModuleDefinition2 {
+public class ImportModule : ModuleDefinition {
 
     public ImportModule() {
         Name = this.__ResStr("modName", "Import Package (Binary or Source Code Package)");

@@ -20,7 +20,7 @@ public class LanguageDisplayModuleDataProvider : ModuleDefinitionDataProvider<Gu
 
 [ModuleGuid("{4cf7299c-1217-47d1-99bf-14b214f609b6}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class LanguageDisplayModule : ModuleDefinition2 {
+public class LanguageDisplayModule : ModuleDefinition {
 
     public LanguageDisplayModule() : base() {
         Title = this.__ResStr("modTitle", "Language");

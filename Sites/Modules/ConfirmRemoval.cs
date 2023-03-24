@@ -20,7 +20,7 @@ public class ConfirmRemovalModuleDataProvider : ModuleDefinitionDataProvider<Gui
 
 [ModuleGuid("{a3d76eb7-f9c2-4dca-b486-797b2d7d0037}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class ConfirmRemovalModule : ModuleDefinition2 {
+public class ConfirmRemovalModule : ModuleDefinition {
 
     public ConfirmRemovalModule() {
         Title = this.__ResStr("modTitle", "Remove Site");

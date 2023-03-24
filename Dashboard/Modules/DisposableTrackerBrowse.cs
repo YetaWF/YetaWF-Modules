@@ -25,7 +25,7 @@ public class DisposableTrackerBrowseModuleDataProvider : ModuleDefinitionDataPro
 
 [ModuleGuid("{56e429a9-2c8d-49dd-8e78-fb1202aefb93}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class DisposableTrackerBrowseModule : ModuleDefinition2 {
+public class DisposableTrackerBrowseModule : ModuleDefinition {
 
     public DisposableTrackerBrowseModule() {
         Title = this.__ResStr("modTitle", "Disposable Objects");

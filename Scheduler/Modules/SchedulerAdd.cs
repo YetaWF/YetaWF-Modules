@@ -21,7 +21,7 @@ public class SchedulerAddModuleDataProvider : ModuleDefinitionDataProvider<Guid,
 
 [ModuleGuid("{F541B60F-4468-40ed-A59D-707463B1FBAA}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class SchedulerAddModule : ModuleDefinition2 {
+public class SchedulerAddModule : ModuleDefinition {
 
     public SchedulerAddModule() : base() {
         Title = this.__ResStr("modTitle", "New Scheduler Item");

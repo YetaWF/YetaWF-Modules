@@ -47,11 +47,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Renders the beginning &lt;form&gt; tag with the specified attributes.
         /// </summary>
         /// <param name="HtmlAttributes">The HTML attributes to add to the &lt;form&gt; tag.</param>
-        /// <param name="SaveReturnUrl">Defines whether the return URL is saved when the form is submitted.</param>
         /// <param name="ActionName">Overrides the default action name.</param>
         /// <param name="Method">The method used to submit the form (get/post)</param>
         /// <returns>Returns the HTML with the generated &lt;form&gt; tag.</returns>
-        protected async Task<string> RenderBeginFormAsync(object? HtmlAttributes = null, bool SaveReturnUrl = false, string? ActionName = null, string Method = "post") {
+        protected async Task<string> RenderBeginFormAsync(object? HtmlAttributes = null, string? ActionName = null, string Method = "post") {
 
             await YetaWFCoreRendering.Render.AddFormsAddOnsAsync();
             await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Forms");// standard css, validation strings
@@ -66,8 +65,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 formAction += $"?Action={ActionName}";
 
             IDictionary<string, object?> attrs = HtmlBuilder.AnonymousObjectToHtmlAttributes(HtmlAttributes);
-            if (SaveReturnUrl)
-                attrs.Add(Basics.CssSaveReturnUrl, string.Empty);
 
             string? css = null;
             if (Manager.CurrentSite.FormErrorsImmed)

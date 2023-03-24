@@ -22,7 +22,7 @@ public class SettingsEditModuleDataProvider : ModuleDefinitionDataProvider<Guid,
 
 [ModuleGuid("{4034971e-82c3-49de-9467-11219a8f61e3}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class SettingsEditModule : ModuleDefinition2 {
+public class SettingsEditModule : ModuleDefinition {
 
     public SettingsEditModule() : base() {
         Title = this.__ResStr("modTitle", "User Settings");

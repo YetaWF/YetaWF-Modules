@@ -18,7 +18,7 @@ public class SkinBrowserNotificationsModuleDataProvider : ModuleDefinitionDataPr
 
 [ModuleGuid("{9E074871-5C52-43af-8439-D14CB2FDA71D}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class SkinBrowserNotificationsModule : ModuleDefinition2 {
+public class SkinBrowserNotificationsModule : ModuleDefinition {
 
     public SkinBrowserNotificationsModule() {
         Title = this.__ResStr("modTitle", "Skin Web Browser Notifications");

@@ -19,7 +19,7 @@ public class SkinHighlightJSModuleDataProvider : ModuleDefinitionDataProvider<Gu
 [ModuleGuid("{25068AC6-BA74-4644-8B46-9D7FEC291E45}"), PublishedModuleGuid]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
 [ModuleCategory("Highlight.js")]
-public class SkinHighlightJSModule : ModuleDefinition2 {
+public class SkinHighlightJSModule : ModuleDefinition {
 
     public SkinHighlightJSModule() {
         Title = this.__ResStr("modTitle", "Skin Syntax Highlighter (Highlight.js)");

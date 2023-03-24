@@ -18,7 +18,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{4485D52E-A8E3-40fa-9251-B6F7A34CEDA1}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplateMultiStringModule : ModuleDefinition2 {
+    public class TemplateMultiStringModule : ModuleDefinition {
 
         public TemplateMultiStringModule() {
             Title = this.__ResStr("modTitle", "MultiString Test Component");

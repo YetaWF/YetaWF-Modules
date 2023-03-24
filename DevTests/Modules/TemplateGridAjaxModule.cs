@@ -24,7 +24,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{1316f4c8-a594-4831-b44d-1c7e925ac8a6}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplateGridAjaxModule : ModuleDefinition2 {
+    public class TemplateGridAjaxModule : ModuleDefinition {
 
         public TemplateGridAjaxModule() {
             Title = this.__ResStr("modTitle", "Grid (Ajax) Test Component");

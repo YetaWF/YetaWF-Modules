@@ -21,7 +21,7 @@ public class EditBlocksModuleDataProvider : ModuleDefinitionDataProvider<Guid, E
 
 [ModuleGuid("{9492c9e8-8df1-45a0-9c0f-18370cbcb6de}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class EditBlocksModule : ModuleDefinition2 {
+public class EditBlocksModule : ModuleDefinition {
 
     public EditBlocksModule() {
         Title = this.__ResStr("modTitle", "Request Blocking");

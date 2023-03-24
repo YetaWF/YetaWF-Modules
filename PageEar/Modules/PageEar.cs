@@ -20,7 +20,7 @@ public class PageEarModuleDataProvider : ModuleDefinitionDataProvider<Guid, Page
 
 [ModuleGuid("{b140e078-a3a8-4be7-8383-fd901e882b35}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class PageEarModule : ModuleDefinition2 {
+public class PageEarModule : ModuleDefinition {
 
     public PageEarModule() {
         Name = this.__ResStr("modName", "Page Ear");

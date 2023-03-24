@@ -21,7 +21,7 @@ public class RolesAddModuleDataProvider : ModuleDefinitionDataProvider<Guid, Rol
 [ModuleGuid("{97285509-fb4e-4f13-a3bc-cd4957f1cff0}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Configuration")]
-public class RolesAddModule : ModuleDefinition2 {
+public class RolesAddModule : ModuleDefinition {
 
     public RolesAddModule() {
         Title = this.__ResStr("modTitle", "New Role");

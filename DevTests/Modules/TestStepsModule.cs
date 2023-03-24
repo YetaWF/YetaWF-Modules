@@ -16,7 +16,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{7a151158-7afd-48ad-95f5-011034760111}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TestStepsModule : ModuleDefinition2 {
+    public class TestStepsModule : ModuleDefinition {
 
         public TestStepsModule() {
             Title = this.__ResStr("modTitle", "Steps Test");

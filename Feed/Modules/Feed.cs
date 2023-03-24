@@ -24,7 +24,7 @@ public class FeedModuleDataProvider : ModuleDefinitionDataProvider<Guid, FeedMod
 
 [ModuleGuid("{04c32e25-f9bf-4baf-9602-3c929ce77790}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class FeedModule : ModuleDefinition2 {
+public class FeedModule : ModuleDefinition {
 
     public FeedModule() : base() {
         Title = this.__ResStr("modTitle", "News Feed");

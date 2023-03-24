@@ -19,7 +19,7 @@ public class CKEBrowsePageModuleDataProvider : ModuleDefinitionDataProvider<Guid
 
 [ModuleGuid("{3645C411-EF04-4fd3-8B87-9E37B803C4B5}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class CKEBrowsePageModule : ModuleDefinition2 {
+public class CKEBrowsePageModule : ModuleDefinition {
 
     public CKEBrowsePageModule() {
         Title = this.__ResStr("modTitle", "Select Page");

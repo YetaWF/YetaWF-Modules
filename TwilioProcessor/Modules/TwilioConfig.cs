@@ -23,7 +23,7 @@ public class TwilioConfigModuleDataProvider : ModuleDefinitionDataProvider<Guid,
 
 [ModuleGuid("{876c6c1f-2101-4488-80b8-5262318deea3}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class TwilioConfigModule : ModuleDefinition2 {
+public class TwilioConfigModule : ModuleDefinition {
 
     public TwilioConfigModule() {
         Title = this.__ResStr("modTitle", "TwilioProcessor Settings");

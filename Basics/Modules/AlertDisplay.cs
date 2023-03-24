@@ -17,7 +17,7 @@ public class AlertDisplayModuleDataProvider : ModuleDefinitionDataProvider<Guid,
 
 [ModuleGuid("{24b7dc07-e96a-409d-911f-47bffd38d0fc}"), PublishedModuleGuid]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class AlertDisplayModule : ModuleDefinition2 {
+public class AlertDisplayModule : ModuleDefinition {
 
     public AlertDisplayModule() {
         Title = this.__ResStr("modTitle", "Alert Message (Skin)");

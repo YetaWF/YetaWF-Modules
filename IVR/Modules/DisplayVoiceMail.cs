@@ -19,7 +19,7 @@ namespace Softelvdm.Modules.IVR.Modules {
 
     [ModuleGuid("{e8ec7d7d-6c13-4821-aaad-bbc162879ac5}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class DisplayVoiceMailModule : ModuleDefinition2 {
+    public class DisplayVoiceMailModule : ModuleDefinition {
 
         public DisplayVoiceMailModule() {
             Title = this.__ResStr("modTitle", "Voice Mail Entry");

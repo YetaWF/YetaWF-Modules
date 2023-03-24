@@ -16,7 +16,7 @@ public class MailtoObfuscatorSkinModuleDataProvider : ModuleDefinitionDataProvid
 
 [ModuleGuid("{749d0ca9-75e5-40b8-82e3-466a11d3b1d2}")] // Published Guid
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class MailtoObfuscatorSkinModule : ModuleDefinition2 {
+public class MailtoObfuscatorSkinModule : ModuleDefinition {
 
     public MailtoObfuscatorSkinModule() {
         Title = this.__ResStr("modTitle", "Mailto Obfuscator");

@@ -21,7 +21,7 @@ public class ModuleEditModuleDataProvider : ModuleDefinitionDataProvider<Guid, M
 
 [ModuleGuid("{ACDC1453-32BD-4de2-AB2B-7BF5CE217762}"), PublishedModuleGuid]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class ModuleEditModule : ModuleDefinition2 {
+public class ModuleEditModule : ModuleDefinition {
 
     public ModuleEditModule() {
         Name = this.__ResStr("modName", "Module Edit");
@@ -105,7 +105,7 @@ public class ModuleEditModule : ModuleDefinition2 {
         // we need to find the real type of the module for data binding
         ModuleDefinition origModule = (await ModuleDefinition.LoadAsync(model.ModuleGuid))!;
         Type moduleType = origModule.GetType();
-        ModuleDefinition2? module = Utility.JsonDeserialize(Dynamic, moduleType) as ModuleDefinition2;
+        ModuleDefinition? module = Utility.JsonDeserialize(Dynamic, moduleType) as ModuleDefinition;
         if (module is null)
             throw new InternalError($"Model data missing for module {moduleType.FullName}");
 

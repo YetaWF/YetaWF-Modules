@@ -25,7 +25,7 @@ public class UsersDisplayModuleDataProvider : ModuleDefinitionDataProvider<Guid,
 [ModuleGuid("{e6c98552-d1fa-48aa-a690-e5f933dd71ac}"), PublishedModuleGuid]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Configuration")]
-public class UsersDisplayModule : ModuleDefinition2 {
+public class UsersDisplayModule : ModuleDefinition {
 
     public UsersDisplayModule() : base() {
         Title = this.__ResStr("modTitle", "User");

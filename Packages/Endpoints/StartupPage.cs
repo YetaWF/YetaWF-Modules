@@ -64,7 +64,7 @@ public class StartupPageEndpoints : YetaWFEndpoints {
             return Results.Empty;
         });
 
-        group.MapPost(GetPackageList, async (HttpContext context) => {
+        group.MapPost(GetPackageList, (HttpContext context) => {
 
             HtmlBuilder hb = new HtmlBuilder();
 

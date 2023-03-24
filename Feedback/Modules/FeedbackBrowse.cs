@@ -26,7 +26,7 @@ public class FeedbackBrowseModuleDataProvider : ModuleDefinitionDataProvider<Gui
 
 [ModuleGuid("{1dc47bb4-bcf9-4615-992a-29e2a4450f32}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class FeedbackBrowseModule : ModuleDefinition2 {
+public class FeedbackBrowseModule : ModuleDefinition {
 
     public FeedbackBrowseModule() : base() {
         Title = this.__ResStr("modTitle", "Feedback");

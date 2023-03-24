@@ -22,7 +22,7 @@ public class LoggingConfigModuleDataProvider : ModuleDefinitionDataProvider<Guid
 
 [ModuleGuid("{5F8435C9-9896-460b-A0CC-26F5C3693B39}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class LoggingConfigModule : ModuleDefinition2 {
+public class LoggingConfigModule : ModuleDefinition {
 
     public LoggingConfigModule() {
         Title = this.__ResStr("modTitle", "Logging Settings");

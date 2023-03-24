@@ -18,7 +18,7 @@ public class SkinActiveUsersModuleDataProvider : ModuleDefinitionDataProvider<Gu
 
 [ModuleGuid("{E3542667-1884-4bac-BC58-F3CA458199F3}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class SkinActiveUsersModule : ModuleDefinition2 {
+public class SkinActiveUsersModule : ModuleDefinition {
 
     public SkinActiveUsersModule() {
         Title = this.__ResStr("modTitle", "Skin Active Users");

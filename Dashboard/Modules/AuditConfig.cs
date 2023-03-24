@@ -21,7 +21,7 @@ public class AuditConfigModuleDataProvider : ModuleDefinitionDataProvider<Guid, 
 
 [ModuleGuid("{3C45FB8E-123A-45f6-89BD-75596473F70B}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class AuditConfigModule : ModuleDefinition2 {
+public class AuditConfigModule : ModuleDefinition {
 
     public AuditConfigModule() {
         Title = this.__ResStr("modTitle", "Audit Settings");

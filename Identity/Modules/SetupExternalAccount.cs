@@ -29,7 +29,7 @@ public class ExternalAccountModuleDataProvider : ModuleDefinitionDataProvider<Gu
 
 [ModuleGuid("{85E71C49-7C67-4119-AB60-8D3177B15040}")]
 [ModuleCategory("Two Step Authentication")]
-public class SetupExternalAccountModule : ModuleDefinition2 {
+public class SetupExternalAccountModule : ModuleDefinition {
 
     public SetupExternalAccountModule() {
         Title = this.__ResStr("title", "External Account Setup");

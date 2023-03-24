@@ -16,7 +16,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{8494d18a-a8da-40e4-a3d6-05fb75b76d53}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplateMaskedEditModule : ModuleDefinition2 {
+    public class TemplateMaskedEditModule : ModuleDefinition {
 
         public TemplateMaskedEditModule() {
             Title = this.__ResStr("modTitle", "MaskedEdit Test Template");

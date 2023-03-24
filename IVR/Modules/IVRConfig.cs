@@ -24,7 +24,7 @@ public class IVRConfigModuleDataProvider : ModuleDefinitionDataProvider<Guid, IV
 
 [ModuleGuid("{4E07DE60-5B6C-41cc-8CA0-AF6F99663D50}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class IVRConfigModule : ModuleDefinition2 {
+public class IVRConfigModule : ModuleDefinition {
 
     public IVRConfigModule() {
         Title = this.__ResStr("modTitle", "IVR Settings");

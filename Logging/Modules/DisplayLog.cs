@@ -19,7 +19,7 @@ public class DisplayLogModuleDataProvider : ModuleDefinitionDataProvider<Guid, D
 
 [ModuleGuid("{8327e155-409c-438e-83ef-1f7f7ac1e951}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class DisplayLogModule : ModuleDefinition2 {
+public class DisplayLogModule : ModuleDefinition {
 
     public DisplayLogModule() : base() {
         Title = this.__ResStr("modTitle", "Log Record");

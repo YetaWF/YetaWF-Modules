@@ -21,7 +21,7 @@ namespace YetaWF.Modules.Pages.Modules {
 
     [ModuleGuid("{44977a1b-18bb-4585-9db6-29330c181319}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplateListOfLocalPagesModule : ModuleDefinition2 {
+    public class TemplateListOfLocalPagesModule : ModuleDefinition {
 
         public TemplateListOfLocalPagesModule() {
             Title = this.__ResStr("modTitle", "ListOfLocalPages Test Component");

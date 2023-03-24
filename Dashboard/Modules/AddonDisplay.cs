@@ -21,7 +21,7 @@ public class AddonDisplayModuleDataProvider : ModuleDefinitionDataProvider<Guid,
 
 [ModuleGuid("{df3df0e1-f88b-45e1-a04e-864748166a21}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class AddonDisplayModule : ModuleDefinition2 {
+public class AddonDisplayModule : ModuleDefinition {
 
     public AddonDisplayModule() {
         Title = this.__ResStr("modTitle", "AddOn Details");

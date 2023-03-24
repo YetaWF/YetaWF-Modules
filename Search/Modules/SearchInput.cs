@@ -23,7 +23,7 @@ public class SearchInputModuleDataProvider : ModuleDefinitionDataProvider<Guid, 
 
 [ModuleGuid("{c7991e91-c691-449a-a911-e5feacfba8a4}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class SearchInputModule : ModuleDefinition2 {
+public class SearchInputModule : ModuleDefinition {
 
     public SearchInputModule() {
         Title = this.__ResStr("modTitle", "Search");

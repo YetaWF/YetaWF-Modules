@@ -26,7 +26,7 @@ public class LogBrowseModuleDataProvider : ModuleDefinitionDataProvider<Guid, Lo
 
 [ModuleGuid("{5ababac3-7319-40ba-b73c-54b3946489bb}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class LogBrowseModule : ModuleDefinition2 {
+public class LogBrowseModule : ModuleDefinition {
 
     public LogBrowseModule() {
         Title = this.__ResStr("modTitle", "Scheduler Log");

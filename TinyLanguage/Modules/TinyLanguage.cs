@@ -19,7 +19,7 @@ public class TinyLanguageModuleDataProvider : ModuleDefinitionDataProvider<Guid,
 
 [ModuleGuid("{bb3653e4-6d75-45e2-b998-714b225b5ffa}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class TinyLanguageModule : ModuleDefinition2 {
+public class TinyLanguageModule : ModuleDefinition {
 
     public TinyLanguageModule() : base() {
         Title = this.__ResStr("modTitle", "Tiny Language Selection");

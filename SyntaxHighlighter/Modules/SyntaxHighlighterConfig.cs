@@ -22,7 +22,7 @@ public class SyntaxHighlighterConfigModuleDataProvider : ModuleDefinitionDataPro
 [ModuleGuid("{75e0578c-336a-4bd0-9966-b89edf1d3388}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
 [ModuleCategory("Configuration")]
-public class SyntaxHighlighterConfigModule : ModuleDefinition2 {
+public class SyntaxHighlighterConfigModule : ModuleDefinition {
 
     public SyntaxHighlighterConfigModule() {
         Title = this.__ResStr("modTitle", "Syntax Highlighter Settings");

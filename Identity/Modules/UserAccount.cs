@@ -28,7 +28,7 @@ public class UserAccountModuleDataProvider : ModuleDefinitionDataProvider<Guid, 
 [ModuleGuid("{222d53c2-8c9e-41df-8366-96060a4f5b57}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Login & Registration")]
-public class UserAccountModule : ModuleDefinition2 {
+public class UserAccountModule : ModuleDefinition {
 
     public UserAccountModule() : base() {
         Title = this.__ResStr("modTitle", "User Account");

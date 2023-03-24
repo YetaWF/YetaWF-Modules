@@ -19,7 +19,7 @@ public class DisqusLinksModuleDataProvider : ModuleDefinitionDataProvider<Guid, 
 [ModuleGuid("{776adfcd-da5f-4926-b29d-4c06353266c0}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
 [ModuleCategory("Comments")]
-public class DisqusLinksModule : ModuleDefinition2 {
+public class DisqusLinksModule : ModuleDefinition {
 
     public DisqusLinksModule() {
         Title = this.__ResStr("modTitle", "Disqus Links");

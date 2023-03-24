@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{fbcc7d7a-5090-48a7-9958-6eff8b8c6d7e}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplateTestUrlModule : ModuleDefinition2 {
+    public class TemplateTestUrlModule : ModuleDefinition {
 
         public TemplateTestUrlModule() {
             Title = this.__ResStr("modTitle", "Url Test Component");

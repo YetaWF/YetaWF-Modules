@@ -19,7 +19,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{b43ee2f3-dfa7-49c8-8c9e-861901bf0365}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplateRecaptchaV2Module : ModuleDefinition2 {
+    public class TemplateRecaptchaV2Module : ModuleDefinition {
 
         public TemplateRecaptchaV2Module() {
             Title = this.__ResStr("modTitle", "RecaptchaV2 Test Component");

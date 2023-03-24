@@ -25,7 +25,7 @@ public class ControlPanelConfigModuleDataProvider : ModuleDefinitionDataProvider
 
 [ModuleGuid("{6c41ee8f-fcba-4bbd-90cc-8cae9ccd899e}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class ControlPanelConfigModule : ModuleDefinition2 {
+public class ControlPanelConfigModule : ModuleDefinition {
 
     public ControlPanelConfigModule() {
         Title = this.__ResStr("modTitle", "Control Panel Settings");

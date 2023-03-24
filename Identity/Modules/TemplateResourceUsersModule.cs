@@ -20,7 +20,7 @@ public class TemplateResourceUsersModuleDataProvider : ModuleDefinitionDataProvi
 
 [ModuleGuid("{fc6b0bad-5416-4fb0-b9d1-e5a02359a7b9}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class TemplateResourceUsersModule : ModuleDefinition2 {
+public class TemplateResourceUsersModule : ModuleDefinition {
 
     public TemplateResourceUsersModule() {
         Title = this.__ResStr("modTitle", "ResourceUsers Test Template");

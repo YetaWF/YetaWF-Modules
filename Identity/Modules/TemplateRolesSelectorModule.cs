@@ -23,7 +23,7 @@ public class TemplateRolesSelectorModuleDataProvider : ModuleDefinitionDataProvi
 [ModuleGuid("{3dc50ef9-ca0f-4a57-9f56-7bbec59f303b}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Tools")]
-public class TemplateRolesSelectorModule : ModuleDefinition2 {
+public class TemplateRolesSelectorModule : ModuleDefinition {
 
     public TemplateRolesSelectorModule() {
         Title = this.__ResStr("modTitle", "RolesSelector Test Component");

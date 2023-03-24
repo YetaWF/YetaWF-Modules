@@ -26,7 +26,7 @@ public class PagePanelModuleDataProvider : ModuleDefinitionDataProvider<Guid, Pa
 
 [ModuleGuid("{F8EF23F3-A690-47FC-ABB5-753D8BA9B9DA}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class PagePanelModule : ModuleDefinition2 {
+public class PagePanelModule : ModuleDefinition {
 
     public PagePanelModule() {
         Title = this.__ResStr("modTitle", "Page Panel");

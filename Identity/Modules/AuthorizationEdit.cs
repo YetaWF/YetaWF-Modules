@@ -24,7 +24,7 @@ public class AuthorizationEditModuleDataProvider : ModuleDefinitionDataProvider<
 [ModuleGuid("{0fd20e73-a4c3-44cb-8b71-0bab64343007}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Configuration")]
-public class AuthorizationEditModule : ModuleDefinition2 {
+public class AuthorizationEditModule : ModuleDefinition {
 
     public AuthorizationEditModule() : base() {
         Title = this.__ResStr("modTitle", "Edit Resource");

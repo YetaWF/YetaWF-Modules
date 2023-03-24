@@ -23,7 +23,7 @@ public class SchedulerEditModuleDataProvider : ModuleDefinitionDataProvider<Guid
 
 [ModuleGuid("{09EB1AB0-2FA1-4d41-A853-91778FC86355}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class SchedulerEditModule : ModuleDefinition2 {
+public class SchedulerEditModule : ModuleDefinition {
 
     public SchedulerEditModule() : base() {
         Title = this.__ResStr("modTitle", "Scheduler Item");

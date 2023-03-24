@@ -27,7 +27,7 @@ public class BrowseSiteAnnouncementModuleDataProvider : ModuleDefinitionDataProv
 
 [ModuleGuid("{7057f2ab-39cd-4db3-ba27-1302a184ebaf}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class BrowseSiteAnnouncementModule : ModuleDefinition2 {
+public class BrowseSiteAnnouncementModule : ModuleDefinition {
 
     public BrowseSiteAnnouncementModule() {
         Title = this.__ResStr("modTitle", "Site Announcements");

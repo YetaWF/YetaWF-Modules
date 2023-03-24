@@ -18,7 +18,7 @@ public class IFrameDisplayModuleDataProvider : ModuleDefinitionDataProvider<Guid
 
 [ModuleGuid("{b8004ca1-50bd-45cd-b9c5-77e8ba27234d}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class IFrameDisplayModule : ModuleDefinition2 {
+public class IFrameDisplayModule : ModuleDefinition {
 
     public override IModuleDefinitionIO GetDataProvider() { return new IFrameDisplayModuleDataProvider(); }
 

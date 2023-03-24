@@ -27,7 +27,7 @@ public class AuditRecordsModuleDataProvider : ModuleDefinitionDataProvider<Guid,
 
 [ModuleGuid("{8c1a3287-433f-4354-a3e8-867d5bd87b93}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class AuditRecordsModule : ModuleDefinition2 {
+public class AuditRecordsModule : ModuleDefinition {
 
     public AuditRecordsModule() {
         Title = this.__ResStr("modTitle", "Audit Information");

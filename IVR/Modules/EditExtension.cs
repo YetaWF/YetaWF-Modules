@@ -23,7 +23,7 @@ public class EditExtensionModuleDataProvider : ModuleDefinitionDataProvider<Guid
 
 [ModuleGuid("{2bd2f6c5-daf4-48c0-bdc4-4eb20f1bca8a}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class EditExtensionModule : ModuleDefinition2 {
+public class EditExtensionModule : ModuleDefinition {
 
     public EditExtensionModule() {
         Title = this.__ResStr("modTitle", "Extension");

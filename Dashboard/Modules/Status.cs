@@ -20,7 +20,7 @@ public class StatusModuleDataProvider : ModuleDefinitionDataProvider<Guid, Statu
 
 [ModuleGuid("{c93657d3-522c-483a-a51a-e20d39d95b6a}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class StatusModule : ModuleDefinition2 {
+public class StatusModule : ModuleDefinition {
 
     public StatusModule() {
         Title = this.__ResStr("modTitle", "Status Information");

@@ -20,7 +20,7 @@ public class ImportDataModuleDataProvider : ModuleDefinitionDataProvider<Guid, I
 
 [ModuleGuid("{3AEB70E7-A60F-4306-BDE3-C4355B9B30A4}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class ImportDataModule : ModuleDefinition2 {
+public class ImportDataModule : ModuleDefinition {
 
     public ImportDataModule() {
         Name = this.__ResStr("modName", "Import Package Data");

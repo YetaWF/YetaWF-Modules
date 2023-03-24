@@ -21,7 +21,7 @@ public class SplitterModuleDataProvider : ModuleDefinitionDataProvider<Guid, Spl
 
 [ModuleGuid("{75C8D7C9-CE51-4d1b-A698-DEEC6757FA03}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class SplitterModule : ModuleDefinition2, ISearchDynamicUrls, ISiteMapDynamicUrls {
+public class SplitterModule : ModuleDefinition, ISearchDynamicUrls, ISiteMapDynamicUrls {
 
     public SplitterModule() {
         Title = this.__ResStr("modTitle", "Splitter");

@@ -19,7 +19,7 @@ public class LogDisplayModuleDataProvider : ModuleDefinitionDataProvider<Guid, L
 
 [ModuleGuid("{c279240c-bbe6-49e6-9dcf-5681754d8ff5}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class LogDisplayModule : ModuleDefinition2 {
+public class LogDisplayModule : ModuleDefinition {
 
     public LogDisplayModule() {
         Title = this.__ResStr("modTitle", "Scheduler Log Entry");

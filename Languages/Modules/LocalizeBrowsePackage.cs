@@ -27,7 +27,7 @@ public class LocalizeBrowsePackageModuleDataProvider : ModuleDefinitionDataProvi
 
 [ModuleGuid("{b30d6119-4769-4702-88d8-585ee4ebd4a7}"), PublishedModuleGuid]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class LocalizeBrowsePackageModule : ModuleDefinition2 {
+public class LocalizeBrowsePackageModule : ModuleDefinition {
 
     public LocalizeBrowsePackageModule() {
         Title = this.__ResStr("modTitle", "Localization Resources");

@@ -26,7 +26,7 @@ public class UsersAddModuleDataProvider : ModuleDefinitionDataProvider<Guid, Use
 [ModuleGuid("{55928a06-793e-46d1-929e-e403a59de98a}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Configuration")]
-public class UsersAddModule : ModuleDefinition2 {
+public class UsersAddModule : ModuleDefinition {
 
     public UsersAddModule() {
         Title = this.__ResStr("modTitle", "New User");

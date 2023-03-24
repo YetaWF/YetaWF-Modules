@@ -16,7 +16,7 @@ public class ShowMessageModuleDataProvider : ModuleDefinitionDataProvider<Guid, 
 
 [ModuleGuid("{b486cdfc-3726-4549-889e-1f833eb49865}"), PublishedModuleGuid] // This permanent Guid is used in the YetaWF Core
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class ShowMessageModule : ModuleDefinition2 {
+public class ShowMessageModule : ModuleDefinition {
 
     public ShowMessageModule() : base() {
         Title = this.__ResStr("modTitle", "An Error Occurred");

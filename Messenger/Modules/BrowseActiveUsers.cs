@@ -25,7 +25,7 @@ public class BrowseActiveUsersModuleDataProvider : ModuleDefinitionDataProvider<
 
 [ModuleGuid("{A48F67F7-AF4A-47cf-AE9F-1859E5FB722C}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class BrowseActiveUsersModule : ModuleDefinition2 {
+public class BrowseActiveUsersModule : ModuleDefinition {
 
     public BrowseActiveUsersModule() {
         Title = this.__ResStr("modTitle", "Active Users");

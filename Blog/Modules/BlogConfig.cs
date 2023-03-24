@@ -24,7 +24,7 @@ public class BlogConfigModuleDataProvider : ModuleDefinitionDataProvider<Guid, B
 [ModuleGuid("{8e6986c9-3d25-4479-bce6-a54062efdb15}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
 [ModuleCategory("Configuration")]
-public class BlogConfigModule : ModuleDefinition2 {
+public class BlogConfigModule : ModuleDefinition {
 
     public BlogConfigModule() {
         Title = this.__ResStr("modTitle", "Blog Settings");

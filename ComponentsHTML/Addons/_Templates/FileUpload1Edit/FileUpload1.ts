@@ -9,7 +9,6 @@ namespace YetaWF_ComponentsHTML {
     interface FileUpload1Setup {
         SaveUrl: string;
         RemoveUrl: string;
-        //$$$ SerializeForm: boolean;
     }
 
     export interface FileUploadResponse {
@@ -100,14 +99,6 @@ namespace YetaWF_ComponentsHTML {
                 const filename = this.GetFileNameCallback();
                 uri.addSearch("__lastInternalName", filename);// the previous real filename of the file to remove
             }
-
-            // if (this.Setup.SerializeForm) {//$$$ REMOVE
-            //     var form = $YetaWF.Forms.getForm(this.Control);
-            //     var formData = $YetaWF.Forms.serializeFormArray(form);
-            //     for (let f of formData) {
-            //         uri.addSearch(f.name, f.value);
-            //     }
-            // }
 
             const info = $YetaWF.Forms.getJSONInfo(this.Control);
             uri.replaceSearch(YConfigs.Basics.ModuleGuid, info.ModuleGuid);

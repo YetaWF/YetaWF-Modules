@@ -18,7 +18,7 @@ public class Need2FADisplayModuleDataProvider : ModuleDefinitionDataProvider<Gui
 [ModuleGuid("{661bb0dd-769f-4850-bd6f-3d1c563e84b2}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
 [ModuleCategory("Two Step Authentication")]
-public class Need2FADisplayModule : ModuleDefinition2 {
+public class Need2FADisplayModule : ModuleDefinition {
 
     public Need2FADisplayModule() {
         Title = this.__ResStr("modTitle", "Two-Step Authentication Setup Required");

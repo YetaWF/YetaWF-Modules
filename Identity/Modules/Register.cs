@@ -41,7 +41,7 @@ public enum RegistrationTypeEnum {
 [ModuleGuid("{60E09334-3ECA-466f-BDF9-9933971B0991}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
 [ModuleCategory("Login & Registration")]
-public class RegisterModule : ModuleDefinition2 {
+public class RegisterModule : ModuleDefinition {
 
     public RegisterModule() {
         Title = this.__ResStr("title", "New User Registration");

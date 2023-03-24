@@ -18,7 +18,7 @@ public class SkinTawkToModuleDataProvider : ModuleDefinitionDataProvider<Guid, S
 
 [ModuleGuid("{c063e089-aff3-44e4-ac44-063911853579}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class SkinTawkToModule : ModuleDefinition2 {
+public class SkinTawkToModule : ModuleDefinition {
 
     public SkinTawkToModule() {
         Title = this.__ResStr("modTitle", "Skin Tawk.to");

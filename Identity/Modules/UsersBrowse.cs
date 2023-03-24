@@ -30,7 +30,7 @@ public class UsersBrowseModuleDataProvider : ModuleDefinitionDataProvider<Guid, 
 [ModuleGuid("{040eb38f-069a-4bf0-894d-bcb3ff8816e7}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Configuration")]
-public class UsersBrowseModule : ModuleDefinition2 {
+public class UsersBrowseModule : ModuleDefinition {
 
     public UsersBrowseModule() : base() {
         Title = this.__ResStr("modTitle", "Users");

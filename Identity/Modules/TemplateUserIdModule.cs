@@ -19,7 +19,7 @@ public class TemplateUserIdModuleDataProvider : ModuleDefinitionDataProvider<Gui
 [ModuleGuid("{985c4c49-8103-4b5c-a9ae-2bb108ef58a6}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Tools")]
-public class TemplateUserIdModule : ModuleDefinition2 {
+public class TemplateUserIdModule : ModuleDefinition {
 
     public TemplateUserIdModule() {
         Title = this.__ResStr("modTitle", "UserId Test Component");

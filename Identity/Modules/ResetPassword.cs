@@ -24,7 +24,7 @@ public class ResetPasswordModuleDataProvider : ModuleDefinitionDataProvider<Guid
 [ModuleGuid("{9FFEAA14-1366-4462-B6F4-1035F1672DBC}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
 [ModuleCategory("Login & Registration")]
-public class ResetPasswordModule : ModuleDefinition2 {
+public class ResetPasswordModule : ModuleDefinition {
 
     public ResetPasswordModule() : base() {
         Title = this.__ResStr("modTitle", "Reset Password");

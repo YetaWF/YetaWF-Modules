@@ -90,10 +90,10 @@ var YetaWF_ComponentsHTML;
             $YetaWF.error(YLocs.Forms.FormErrors + s);
         };
         /**
-         * Serializes the form and returns a name/value pairs array
+         * Serializes the form and returns an object
          */
-        FormsImpl.prototype.serializeFormArray = function (form) {
-            var array = [];
+        FormsImpl.prototype.serializeFormObject = function (form) {
+            var obj = {};
             var elems = $YetaWF.getElementsBySelector("input,select,textarea", [form]);
             for (var _i = 0, elems_1 = elems; _i < elems_1.length; _i++) {
                 var elem = elems_1[_i];
@@ -104,34 +104,12 @@ var YetaWF_ComponentsHTML;
                     $YetaWF.elementHasClass(elem, YConfigs.Forms.CssFormNoSubmit) || // don't submit nosubmit fields
                     $YetaWF.elementClosestCond(elem, ".".concat(YConfigs.Forms.CssFormNoSubmitContents))) // don't submit input fields in containers (usually grids)
                     continue;
-                array.push({
-                    name: name_1,
-                    value: YetaWF_ComponentsHTML_Validation.getFieldValue(elem).toString()
-                });
-            }
-            return array;
-        };
-        /**
-         * Serializes the form and returns an object
-         */
-        FormsImpl.prototype.serializeFormObject = function (form) {
-            var obj = {};
-            var elems = $YetaWF.getElementsBySelector("input,select,textarea", [form]);
-            for (var _i = 0, elems_2 = elems; _i < elems_2.length; _i++) {
-                var elem = elems_2[_i];
-                var name_2 = elem.name;
-                if (!name_2 ||
-                    ($YetaWF.getAttributeCond(elem, "disabled") && !$YetaWF.elementHasClass(elem, "disabled-submit")) || // don't submit disabled fields
-                    ($YetaWF.getAttributeCond(elem, "readonly") && !$YetaWF.elementHasClass(elem, "readonly-submit")) || // don't submit readonly fields
-                    $YetaWF.elementHasClass(elem, YConfigs.Forms.CssFormNoSubmit) || // don't submit nosubmit fields
-                    $YetaWF.elementClosestCond(elem, ".".concat(YConfigs.Forms.CssFormNoSubmitContents))) // don't submit input fields in containers (usually grids)
-                    continue;
                 // translate HTML type arrays/objects into javascript objects
                 // translate Prop[0].Key / Prop[0].Value into Prop: [] = [{ Key:.. Value:.. }, { Key:.. Value:.. }]
                 // TODO: This is really only needed because we used to submit forms. Eventually we'll need to change this to
                 // be easily collectable from each component in a form.
                 var fieldValue = YetaWF_ComponentsHTML_Validation.getFieldValue(elem);
-                this.parseField(obj, fieldValue, name_2);
+                this.parseField(obj, fieldValue, name_1);
             }
             return obj;
         };
@@ -236,9 +214,9 @@ var YetaWF_ComponentsHTML;
                 var fields = $YetaWF.getElementsBySelector("[name^='".concat(prefix, "[']"), [row]);
                 for (var _a = 0, fields_1 = fields; _a < fields_1.length; _a++) {
                     var field = fields_1[_a];
-                    var name_3 = $YetaWF.getAttribute(field, "name");
-                    name_3 = name_3.replace(re1, "".concat(prefix, "[").concat(index.toString(), "]"));
-                    $YetaWF.setAttribute(field, "name", name_3);
+                    var name_2 = $YetaWF.getAttribute(field, "name");
+                    name_2 = name_2.replace(re1, "".concat(prefix, "[").concat(index.toString(), "]"));
+                    $YetaWF.setAttribute(field, "name", name_2);
                     var v = $YetaWF.getAttributeCond(field, "data-v");
                     if (v) {
                         v = v.replace(re1, "".concat(prefix, "[").concat(index.toString(), "]"));
@@ -249,14 +227,14 @@ var YetaWF_ComponentsHTML;
                 fields = $YetaWF.getElementsBySelector("[data-v-for^='".concat(prefix, "[']"), [row]);
                 for (var _b = 0, fields_2 = fields; _b < fields_2.length; _b++) {
                     var field = fields_2[_b];
-                    var name_4 = $YetaWF.getAttribute(field, "data-v-for");
-                    name_4 = name_4.replace(re1, "".concat(prefix, "[").concat(index.toString(), "]"));
-                    $YetaWF.setAttribute(field, "data-v-for", name_4);
+                    var name_3 = $YetaWF.getAttribute(field, "data-v-for");
+                    name_3 = name_3.replace(re1, "".concat(prefix, "[").concat(index.toString(), "]"));
+                    $YetaWF.setAttribute(field, "data-v-for", name_3);
                     var img = $YetaWF.getElement1BySelectorCond("img", [field]);
                     if (img) {
-                        name_4 = $YetaWF.getAttribute(img, "name");
-                        name_4 = name_4.replace(re1, "".concat(prefix, "[").concat(index.toString(), "]"));
-                        $YetaWF.setAttribute(field, "name", name_4);
+                        name_3 = $YetaWF.getAttribute(img, "name");
+                        name_3 = name_3.replace(re1, "".concat(prefix, "[").concat(index.toString(), "]"));
+                        $YetaWF.setAttribute(field, "name", name_3);
                     }
                 }
                 ++index;

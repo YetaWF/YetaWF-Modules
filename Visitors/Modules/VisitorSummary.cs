@@ -17,7 +17,7 @@ public class VisitorSummaryModuleDataProvider : ModuleDefinitionDataProvider<Gui
 
 [ModuleGuid("{20b91de2-6bec-4790-8499-1da48fe405f7}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class VisitorSummaryModule : ModuleDefinition2 {
+public class VisitorSummaryModule : ModuleDefinition {
 
     public VisitorSummaryModule() {
         Title = this.__ResStr("modTitle", "Visitor Activity Summary");

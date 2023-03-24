@@ -22,7 +22,7 @@ public class SkinPaletteModuleDataProvider : ModuleDefinitionDataProvider<Guid, 
 [ModuleGuid("{915a366d-facb-4d02-b8f8-bb1acef73c4c}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
 //[ModuleCategory("...")]
-public class SkinPaletteModule : ModuleDefinition2 {
+public class SkinPaletteModule : ModuleDefinition {
 
     public SkinPaletteModule() {
         Title = this.__ResStr("modTitle", "Skin Palette");

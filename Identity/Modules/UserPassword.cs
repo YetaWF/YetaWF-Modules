@@ -25,7 +25,7 @@ public class UserPasswordModuleDataProvider : ModuleDefinitionDataProvider<Guid,
 [ModuleGuid("{2ca21dad-34d0-4e2c-83c2-e3f6b31ca630}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Login & Registration")]
-public class UserPasswordModule : ModuleDefinition2 {
+public class UserPasswordModule : ModuleDefinition {
 
     public UserPasswordModule() : base() {
         Title = this.__ResStr("modTitle", "Change Password");

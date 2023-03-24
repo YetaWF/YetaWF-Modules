@@ -27,7 +27,7 @@ namespace YetaWF.Modules.Blog.Modules {
     [ModuleGuid("{2809e9cf-1de8-41f2-9108-bc84ae7fb2f4}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
     [ModuleCategory("Entries")]
-    public class EntriesBrowseModule : ModuleDefinition2 {
+    public class EntriesBrowseModule : ModuleDefinition {
 
         public EntriesBrowseModule() {
             Title = this.__ResStr("modTitle", "Blog Entries");

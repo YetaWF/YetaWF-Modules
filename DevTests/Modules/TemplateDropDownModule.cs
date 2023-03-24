@@ -22,7 +22,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{2274EE2B-D9EE-46b1-AFDC-6BF3713A60CA}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplateDropDownModule : ModuleDefinition2 {
+    public class TemplateDropDownModule : ModuleDefinition {
 
         public TemplateDropDownModule() {
             Title = this.__ResStr("modTitle", "DropDown Test Component");

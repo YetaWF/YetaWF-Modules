@@ -22,7 +22,7 @@ public class SummaryModuleDataProvider : ModuleDefinitionDataProvider<Guid, Summ
 [ModuleGuid("{2b2c61b6-8f0c-4f39-b927-e09f5e118d86}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Navigation")]
-public class SummaryModule : ModuleDefinition2 {
+public class SummaryModule : ModuleDefinition {
 
     public SummaryModule() {
         Title = this.__ResStr("modTitle", "Blog Summary");

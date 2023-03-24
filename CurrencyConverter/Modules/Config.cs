@@ -22,7 +22,7 @@ public class ConfigModuleDataProvider : ModuleDefinitionDataProvider<Guid, Confi
 
 [ModuleGuid("{03950959-d8d7-44bc-a6f7-3162b4db82ac}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class ConfigModule : ModuleDefinition2 {
+public class ConfigModule : ModuleDefinition {
 
     public ConfigModule() {
         Title = this.__ResStr("modTitle", "Currency Converter Settings");

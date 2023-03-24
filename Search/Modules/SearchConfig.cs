@@ -22,7 +22,7 @@ public class SearchConfigModuleDataProvider : ModuleDefinitionDataProvider<Guid,
 
 [ModuleGuid("{f27ed8f6-e844-4668-a9fe-1dda07bd7277}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class SearchConfigModule : ModuleDefinition2 {
+public class SearchConfigModule : ModuleDefinition {
 
     public SearchConfigModule() {
         Title = this.__ResStr("modTitle", "Search Settings");

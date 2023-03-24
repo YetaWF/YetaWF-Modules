@@ -24,7 +24,7 @@ public class ModulesBrowseModuleDataProvider : ModuleDefinitionDataProvider<Guid
 
 [ModuleGuid("{276dcecf-f890-4c54-b010-679ee58f0034}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class ModulesBrowseModule : ModuleDefinition2 {
+public class ModulesBrowseModule : ModuleDefinition {
 
     public ModulesBrowseModule() {
         Title = this.__ResStr("modTitle", "Modules");

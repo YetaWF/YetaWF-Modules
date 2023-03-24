@@ -25,7 +25,7 @@ public class StaticPagesBrowseModuleDataProvider : ModuleDefinitionDataProvider<
 
 [ModuleGuid("{21b15c5c-d999-424e-8bff-17d9919a9ce8}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class StaticPagesBrowseModule : ModuleDefinition2 {
+public class StaticPagesBrowseModule : ModuleDefinition {
 
     public StaticPagesBrowseModule() {
         Title = this.__ResStr("modTitle", "Static Pages");

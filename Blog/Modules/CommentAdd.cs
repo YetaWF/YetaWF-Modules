@@ -25,7 +25,7 @@ public class CommentAddModuleDataProvider : ModuleDefinitionDataProvider<Guid, C
 [ModuleGuid("{07c08323-3153-474c-a974-8f5c168eef8f}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Comments")]
-public class CommentAddModule : ModuleDefinition2 {
+public class CommentAddModule : ModuleDefinition {
 
     public CommentAddModule() {
         Title = this.__ResStr("modTitle", "Add New Comment");

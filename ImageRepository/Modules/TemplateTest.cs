@@ -18,7 +18,7 @@ namespace YetaWF.Modules.ImageRepository.Modules {
 
     [ModuleGuid("{66fb78ed-a185-4251-8115-d783b5554b37}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplateTestModule : ModuleDefinition2 {
+    public class TemplateTestModule : ModuleDefinition {
 
         public TemplateTestModule() {
             Title = this.__ResStr("modTitle", "Image Repository Component Test");

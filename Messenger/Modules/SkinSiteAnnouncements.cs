@@ -18,7 +18,7 @@ public class SkinSiteAnnouncementsModuleDataProvider : ModuleDefinitionDataProvi
 
 [ModuleGuid("{54F6B691-B835-4568-90AA-AA9B308D4272}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class SkinSiteAnnouncementsModule : ModuleDefinition2 {
+public class SkinSiteAnnouncementsModule : ModuleDefinition {
 
     public SkinSiteAnnouncementsModule() {
         Title = this.__ResStr("modTitle", "Skin Site Announcements");

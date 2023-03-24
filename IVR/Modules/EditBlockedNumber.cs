@@ -22,7 +22,7 @@ public class EditBlockedNumberModuleDataProvider : ModuleDefinitionDataProvider<
 
 [ModuleGuid("{6f29aca3-e0c3-4e92-aa65-1d9ca8596bfe}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class EditBlockedNumberModule : ModuleDefinition2 {
+public class EditBlockedNumberModule : ModuleDefinition {
 
     public EditBlockedNumberModule() {
         Title = this.__ResStr("modTitle", "Blocked Number");

@@ -19,7 +19,7 @@ public class SearchControlModuleDataProvider : ModuleDefinitionDataProvider<Guid
 
 [ModuleGuid("{f7202e79-30bc-43ea-8d7a-12218785207b}"), PublishedModuleGuid]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class SearchControlModule : ModuleDefinition2 {
+public class SearchControlModule : ModuleDefinition {
 
     public SearchControlModule() {
         Title = this.__ResStr("modTitle", "Skin Search Results Highlighter");

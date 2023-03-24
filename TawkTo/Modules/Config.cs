@@ -22,7 +22,7 @@ public class ConfigModuleDataProvider : ModuleDefinitionDataProvider<Guid, Confi
 
 [ModuleGuid("{fdfa95b0-1dfb-4f62-ab07-7328c9d3aff2}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class ConfigModule : ModuleDefinition2 {
+public class ConfigModule : ModuleDefinition {
 
     public ConfigModule() {
         Title = this.__ResStr("modTitle", "TawkTo Settings");

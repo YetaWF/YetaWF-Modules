@@ -26,7 +26,7 @@ namespace Softelvdm.Modules.IVR.Modules {
 
     [ModuleGuid("{b8096d87-6485-49b3-a831-a73d29472fb0}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class BrowseHolidaysModule : ModuleDefinition2 {
+    public class BrowseHolidaysModule : ModuleDefinition {
 
         public BrowseHolidaysModule() {
             Title = this.__ResStr("modTitle", "Holidays");

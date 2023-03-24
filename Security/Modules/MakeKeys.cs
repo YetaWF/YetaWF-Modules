@@ -17,7 +17,7 @@ public class MakeKeysModuleDataProvider : ModuleDefinitionDataProvider<Guid, Mak
 
 [ModuleGuid("{ec1ffd3b-6e5f-4063-b8f2-8ca55d636cf9}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class MakeKeysModule : ModuleDefinition2 {
+public class MakeKeysModule : ModuleDefinition {
 
     public MakeKeysModule() {
         Title = this.__ResStr("modTitle", "RSA Keys");

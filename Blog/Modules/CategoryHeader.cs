@@ -19,7 +19,7 @@ public class CategoryHeaderModuleDataProvider : ModuleDefinitionDataProvider<Gui
 [ModuleGuid("{7c3d3c99-78a0-4661-bbc7-77c71978463c}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Categories")]
-public class CategoryHeaderModule : ModuleDefinition2 {
+public class CategoryHeaderModule : ModuleDefinition {
 
     public CategoryHeaderModule() {
         Title = this.__ResStr("modTitle", "Blog Category Header");

@@ -22,7 +22,7 @@ public class ProfileEditModuleDataProvider : ModuleDefinitionDataProvider<Guid, 
 
 [ModuleGuid("{9ba8e8dc-7e04-492c-850d-27f0ca6fa2d3}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class ProfileEditModule : ModuleDefinition2 {
+public class ProfileEditModule : ModuleDefinition {
 
     public ProfileEditModule() {
         Title = this.__ResStr("modTitle", "User Profile");

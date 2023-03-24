@@ -22,7 +22,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{e356901b-fd5f-49d9-a438-af7f6c491c9e}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplatePropertyListModule : ModuleDefinition2 {
+    public class TemplatePropertyListModule : ModuleDefinition {
 
         public TemplatePropertyListModule() {
             Title = this.__ResStr("modTitle", "PropertyList Test Template");

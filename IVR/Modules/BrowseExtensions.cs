@@ -27,7 +27,7 @@ public class BrowseExtensionsModuleDataProvider : ModuleDefinitionDataProvider<G
 
 [ModuleGuid("{c90d1c0b-7ed3-4584-8e1e-561714cf7c57}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class BrowseExtensionsModule : ModuleDefinition2 {
+public class BrowseExtensionsModule : ModuleDefinition {
 
     public BrowseExtensionsModule() {
         Title = this.__ResStr("modTitle", "Extensions");

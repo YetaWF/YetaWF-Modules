@@ -26,7 +26,7 @@ public class RecoveryCodesModuleDataProvider : ModuleDefinitionDataProvider<Guid
 [ModuleGuid("{e26230b2-a603-4a54-97ca-1e1b0b400d19}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 [ModuleCategory("Login & Registration")]
-public class RecoveryCodesModule : ModuleDefinition2 {
+public class RecoveryCodesModule : ModuleDefinition {
 
     public RecoveryCodesModule() {
         Title = this.__ResStr("modTitle", "Recovery Codes");

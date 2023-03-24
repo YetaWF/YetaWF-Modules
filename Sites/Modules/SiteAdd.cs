@@ -21,7 +21,7 @@ public class SiteAddModuleDataProvider : ModuleDefinitionDataProvider<Guid, Site
 
 [ModuleGuid("{c4505071-bc76-4c88-8b01-fe40a8bc273d}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class SiteAddModule : ModuleDefinition2 {
+public class SiteAddModule : ModuleDefinition {
 
     public SiteAddModule() {
         Title = this.__ResStr("modTitle", "Add New Site");

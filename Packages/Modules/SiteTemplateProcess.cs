@@ -24,7 +24,7 @@ public class SiteTemplateProcessModuleDataProvider : ModuleDefinitionDataProvide
 
 [ModuleGuid("{8a375e4b-f0ee-4d95-8c18-4e51e83c06e5}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class SiteTemplateProcessModule : ModuleDefinition2 {
+public class SiteTemplateProcessModule : ModuleDefinition {
 
     public SiteTemplateProcessModule() {
         Title = this.__ResStr("modTitle", "Process Site Template");

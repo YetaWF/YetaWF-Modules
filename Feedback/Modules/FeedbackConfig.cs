@@ -23,7 +23,7 @@ public class FeedbackConfigModuleDataProvider : ModuleDefinitionDataProvider<Gui
 
 [ModuleGuid("{933431f8-8ac9-45b8-99e5-05abe2fd8f56}")]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class FeedbackConfigModule : ModuleDefinition2 {
+public class FeedbackConfigModule : ModuleDefinition {
 
     public FeedbackConfigModule() {
         Title = this.__ResStr("modTitle", "Feedback Settings");

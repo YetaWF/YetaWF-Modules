@@ -18,7 +18,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{806e260e-608a-4ff1-97cc-58c3f8421ae6}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplateTabsModule : ModuleDefinition2 {
+    public class TemplateTabsModule : ModuleDefinition {
 
         public TemplateTabsModule() {
             Title = this.__ResStr("modTitle", "Tabs Test Template");

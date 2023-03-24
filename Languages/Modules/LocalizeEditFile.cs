@@ -21,7 +21,7 @@ public class LocalizeEditFileModuleDataProvider : ModuleDefinitionDataProvider<G
 
 [ModuleGuid("{1b17a5d7-2b3a-4759-919e-f6509403a16b}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class LocalizeEditFileModule : ModuleDefinition2 {
+public class LocalizeEditFileModule : ModuleDefinition {
 
     public LocalizeEditFileModule() {
         Title = this.__ResStr("modTitle", "Localization Resource");

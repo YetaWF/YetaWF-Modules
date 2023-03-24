@@ -22,11 +22,9 @@ namespace YetaWF_Basics {
 
                 alert.style.display = "none";
 
-                // Save alert status server side
-                let request: XMLHttpRequest = new XMLHttpRequest();
-                request.open("POST", ajaxurl, true);
-                request.setRequestHeader("Content-Type", "application/json");
-                request.send("");
+                let uri = $YetaWF.parseUrl(ajaxurl);
+                const formJson = $YetaWF.Forms.getJSONInfo(alert);
+                $YetaWF.postJSONIgnore(uri, formJson, null, null);
                 // we don't care about the result of this request
                 return false;
             });

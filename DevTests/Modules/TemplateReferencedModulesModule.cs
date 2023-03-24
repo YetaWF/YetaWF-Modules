@@ -22,7 +22,7 @@ namespace YetaWF.Modules.DevTests.Modules {
 
     [ModuleGuid("{8c9deda8-82e5-44fa-9aba-d1625b3c277d}")]
     [UniqueModule(UniqueModuleStyle.NonUnique)]
-    public class TemplateReferencedModulesModule : ModuleDefinition2 {
+    public class TemplateReferencedModulesModule : ModuleDefinition {
 
         public TemplateReferencedModulesModule() {
             Title = this.__ResStr("modTitle", "ReferencedModules Test Component");

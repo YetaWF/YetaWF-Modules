@@ -32,7 +32,7 @@ public class PageControlModuleDataProvider : ModuleDefinitionDataProvider<Guid, 
 
 [ModuleGuid("{466C0CCA-3E63-43f3-8754-F4267767EED1}"), PublishedModuleGuid]
 [UniqueModule(UniqueModuleStyle.UniqueOnly)]
-public class PageControlModule : ModuleDefinition2 {
+public class PageControlModule : ModuleDefinition {
 
     public PageControlModule() {
         Name = this.__ResStr("modName", "Control Panel (Skin)");

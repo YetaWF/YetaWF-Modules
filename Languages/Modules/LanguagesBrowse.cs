@@ -26,7 +26,7 @@ public class LanguagesBrowseModuleDataProvider : ModuleDefinitionDataProvider<Gu
 
 [ModuleGuid("{0ce1d3eb-6f43-44ad-acf0-4590652f9012}")]
 [UniqueModule(UniqueModuleStyle.NonUnique)]
-public class LanguagesBrowseModule : ModuleDefinition2 {
+public class LanguagesBrowseModule : ModuleDefinition {
 
     public LanguagesBrowseModule() : base() {
         Title = this.__ResStr("modTitle", "Languages");
