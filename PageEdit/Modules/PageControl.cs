@@ -103,7 +103,6 @@ public class PageControlModule : ModuleDefinition {
             Mode = ModuleAction.ActionModeEnum.View,
             Location = ModuleAction.ActionLocationEnum.NoAuto |
                     ModuleAction.ActionLocationEnum.MainMenu | ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
-            SaveReturnUrl = true,
             DontFollow = true,
         };
 
@@ -122,7 +121,6 @@ public class PageControlModule : ModuleDefinition {
             Mode = ModuleAction.ActionModeEnum.Edit,
             Location = ModuleAction.ActionLocationEnum.NoAuto |
                         ModuleAction.ActionLocationEnum.MainMenu | ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
-            SaveReturnUrl = true,
             DontFollow = true,
         };
     }
@@ -588,7 +586,7 @@ public class PageControlModule : ModuleDefinition {
                 return await FormProcessedAsync(model, this.__ResStr("okSaved", "Site settings updated"));
             case ObjectSupport.ModelDisposition.PageReload:
                 await site.SaveAsync();
-                return await FormProcessedAsync(model, this.__ResStr("okSaved", "Site settings updated"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage, ForceRedirect: true, ViewName: SkinSelectionView.ViewName);
+                return await FormProcessedAsync(model, this.__ResStr("okSaved", "Site settings updated"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage, ForceReload: true, ViewName: SkinSelectionView.ViewName);
             case ObjectSupport.ModelDisposition.SiteRestart:
                 await site.SaveAsync();
                 return await FormProcessedAsync(model, this.__ResStr("okSavedRestart", "Site settings updated - These settings won't take effect until the site is restarted"), ViewName: SkinSelectionView.ViewName);
@@ -623,6 +621,6 @@ public class PageControlModule : ModuleDefinition {
             nextPage = Manager.ReturnToUrl;
         }
         Manager.PageControlShown = false;
-        return await FormProcessedAsync(model, NextPage: nextPage, ForceRedirect: true, ViewName: LoginSiteSelectionView.ViewName);
+        return await FormProcessedAsync(model, NextPage: nextPage, ForceReload: true, ViewName: LoginSiteSelectionView.ViewName);
     }
 }

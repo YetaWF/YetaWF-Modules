@@ -48,7 +48,7 @@ namespace YetaWF_PageEdit {
             uri.removeSearch(YConfigs.Basics.Link_PageControl);
             if (YVolatile.Basics.PageControlVisible)
                 uri.addSearch(YConfigs.Basics.Link_PageControl, "y");
-            $YetaWF.setUrl(uri.toUrl());
+            $YetaWF.pushUrl(uri.toUrl());
         }
 
         private toggleControlPanel() :void {

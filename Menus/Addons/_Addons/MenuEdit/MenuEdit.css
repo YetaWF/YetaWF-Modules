@@ -17,7 +17,3 @@
   max-width: 100%;
   font-size: smaller;
 }
-.YetaWF_Menus_MenuEdit .t_details .t_row.t_needsmodulecontext {
-  /* Hide "Needs Module Context" for now as that is not customizable */
-  display: none;
-}

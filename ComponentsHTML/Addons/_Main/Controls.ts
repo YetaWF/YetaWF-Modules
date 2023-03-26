@@ -69,10 +69,10 @@ namespace YetaWF_ComponentsHTML {
             switch (item.ControlType) {
                 default:
                     throw `Invalid control type ${item.ControlType} in getControlValue`;
+                case ControlTypeEnum.Div:
                 case ControlTypeEnum.Input:
                 case ControlTypeEnum.Select:
                 case ControlTypeEnum.TextArea:
-                case ControlTypeEnum.Div:
                 case ControlTypeEnum.Hidden:
                     return item.GetValue(item.Template);
                 case ControlTypeEnum.Template: {

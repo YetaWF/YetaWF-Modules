@@ -49,7 +49,7 @@ public class SessionInfoModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Read,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-            SaveReturnUrl = true,
+
         };
     }
     public ModuleAction GetAction_ClearAll() {

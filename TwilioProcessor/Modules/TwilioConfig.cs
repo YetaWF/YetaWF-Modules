@@ -50,7 +50,7 @@ public class TwilioConfigModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Update,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-            SaveReturnUrl = true,
+
         };
     }
 
@@ -152,7 +152,7 @@ public class TwilioConfigModule : ModuleDefinition {
             model.SetData(config); // and all the data back into model for final display
             await configDP.UpdateConfigAsync(config);
 
-            return await FormProcessedAsync(model, this.__ResStr("okSaved", "TwilioProcessor settings saved"), NextPage: Manager.ReturnToUrl);
+            return await FormProcessedAsync(model, this.__ResStr("okSaved", "TwilioProcessor settings saved"));
         }
     }
 }

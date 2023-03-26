@@ -1275,7 +1275,7 @@ public class SkinPaletteModule : ModuleDefinition {
             // when a new theme is saved, activate it for the current site
             Manager.CurrentSite.Theme = model.Theme;
             await Manager.CurrentSite.SaveAsync();
-            return await FormProcessedAsync(model, this.__ResStr("okUpdated", "Theme {0} successfully saved - The current site has been updated to use the new theme", model.Theme), ForceRedirect: true);
+            return await FormProcessedAsync(model, this.__ResStr("okUpdated", "Theme {0} successfully saved - The current site has been updated to use the new theme", model.Theme), ForceReload: true);
         } else
             return await FormProcessedAsync(model, this.__ResStr("ok", "Theme {0} successfully saved", model.Theme));
     }

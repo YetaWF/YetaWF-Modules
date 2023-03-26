@@ -56,7 +56,7 @@ public class UserPasswordModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Update,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
-            SaveReturnUrl = true,
+
         };
     }
 
@@ -186,6 +186,6 @@ public class UserPasswordModule : ModuleDefinition {
         // logoff/logon for any side effects in identity (like SecurityStamp update/cookies)
         await LoginModule.UserLoginAsync(user);
 
-        return await FormProcessedAsync(model, this.__ResStr("okSaved", "Your new password has been saved"), ForceRedirect: forceReload);
+        return await FormProcessedAsync(model, this.__ResStr("okSaved", "Your new password has been saved"), ForceReload: forceReload);
     }
 }

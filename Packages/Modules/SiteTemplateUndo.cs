@@ -50,7 +50,7 @@ public class SiteTemplateUndoModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Significant,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-            SaveReturnUrl = true,
+
         };
     }
 

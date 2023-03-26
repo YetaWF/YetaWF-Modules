@@ -28,11 +28,6 @@ namespace YetaWF.Modules.ComponentsHTML {
             string? text = formButton.Text;
             switch (formButton.ButtonType) {
                 case ButtonTypeEnum.Submit:
-                case ButtonTypeEnum.ConditionalSubmit:
-                    if (formButton.ButtonType == ButtonTypeEnum.ConditionalSubmit && !Manager.IsInPopup && !Manager.HaveReturnToUrl) {
-                        // if we don't have anyplace to return to and we're not in a popup we don't need a submit button
-                        return string.Empty;
-                    }
                     if (string.IsNullOrWhiteSpace(text)) text = this.__ResStr("btnSave", "Save");
                     attrs.Add("type", "submit");
                     break;

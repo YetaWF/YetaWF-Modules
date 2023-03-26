@@ -53,7 +53,7 @@ public class UserAccountModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Update,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
-            SaveReturnUrl = true,
+
         };
     }
 
@@ -196,6 +196,6 @@ public class UserAccountModule : ModuleDefinition {
             if (!result.Succeeded)
                 throw new Error(string.Join(" - ", (from e in result.Errors select e.Description)));
         }
-        return await FormProcessedAsync(model, this.__ResStr("okSaved", "Your account information has been saved"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage, ForceRedirect: true);// reload for tiny login module to refresh
+        return await FormProcessedAsync(model, this.__ResStr("okSaved", "Your account information has been saved"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage, ForceReload: true);// reload for tiny login module to refresh
     }
 }

@@ -55,8 +55,7 @@ public class SelectTwoStepSetupModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Update,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-            SaveReturnUrl = true,
-            AddToOriginList = true,
+
         };
     }
 

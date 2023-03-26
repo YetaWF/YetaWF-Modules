@@ -200,11 +200,6 @@ namespace YetaWF.Modules.ComponentsHTML {
             if (action.CookieAsDoneSignal)
                 attrs.Add(Basics.CookieDoneCssAttr, string.Empty);
 
-            if (action.SaveReturnUrl) {
-                attrs.Add(Basics.CssSaveReturnUrl, string.Empty);
-                if (!action.AddToOriginList)
-                    attrs.Add(Basics.CssDontAddToOriginList, string.Empty);
-            }
             if (!string.IsNullOrWhiteSpace(action.ExtraData))
                 attrs.Add(Basics.CssExtraData, action.ExtraData);
 

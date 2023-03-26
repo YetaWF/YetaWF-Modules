@@ -28,7 +28,7 @@ public class ProfileEditModule : ModuleDefinition {
         Title = this.__ResStr("modTitle", "User Profile");
         Name = this.__ResStr("modName", "Edit User Profile");
         Description = this.__ResStr("modSummary", "Edits the logged on user's profile (name, address). This is accessible using User > My Profile (standard YetaWF site).");
-        DefaultViewName = StandardViews.Edit;
+        DefaultViewName = StandardViews.EditApply;
     }
 
     public override IModuleDefinitionIO GetDataProvider() { return new ProfileEditModuleDataProvider(); }
@@ -56,7 +56,6 @@ public class ProfileEditModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Update,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-            SaveReturnUrl = true,
         };
     }
 

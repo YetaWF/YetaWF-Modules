@@ -52,7 +52,7 @@ public class IVRConfigModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Update,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-            SaveReturnUrl = true,
+
         };
     }
 
@@ -102,11 +102,11 @@ public class IVRConfigModule : ModuleDefinition {
         [UIHint("IntValue2"), Range(0, 99)]
         public int MaxErrors { get; set; }
 
-        [Category("IVR"), Caption("Live Call Process Url"), Description("Defines the Request Url used to verify a Twilio Call request in Live mode - This is typically used for load balancers and cases where the request is redirected, which changes the original Url - Instead of inspecting the various non-standard headers, specify the expected Url here - If not specified the default is http[s]://...yoursite.com.../Softelvdm_IVR/Call/Process")]
+        [Category("IVR"), Caption("Live Call Process Url"), Description("Defines the Request Url used to verify a Twilio Call request in Live mode - This is typically used for load balancers and cases where the request is redirected, which changes the original Url - Instead of inspecting the various non-standard headers, specify the expected Url here - If not specified the default is http[s]://...yoursite.com.../!api/Softelvdm_IVR/Call/Process")]
         [UIHint("Text80"), StringLength(Globals.MaxUrl), Trim]
         public string? LiveVerificationProcessCallUrl { get; set; }
 
-        [Category("IVR"), Caption("Test Call Process Url"), Description("Defines the Request Url used to verify a Twilio Fax Sent request in Test mode - This is typically used for load balancers and cases where the request is redirected, which changes the original Url - Instead of inspecting the various non-standard headers, specify the expected Url here - If not specified the default is http[s]://...yoursite.com.../Softelvdm_IVR/Call/Process")]
+        [Category("IVR"), Caption("Test Call Process Url"), Description("Defines the Request Url used to verify a Twilio Fax Sent request in Test mode - This is typically used for load balancers and cases where the request is redirected, which changes the original Url - Instead of inspecting the various non-standard headers, specify the expected Url here - If not specified the default is http[s]://...yoursite.com.../!api/Softelvdm_IVR/Call/Process")]
         [UIHint("Text80"), StringLength(Globals.MaxUrl), Trim]
         public string? TestVerificationProcessCallUrl { get; set; }
 
@@ -188,7 +188,7 @@ public class IVRConfigModule : ModuleDefinition {
             using (ScriptDataProvider scriptDP = new ScriptDataProvider()) {
                 scriptDP.ClearScript();
             }
-            return await FormProcessedAsync(model, this.__ResStr("okSaved", "IVR settings saved"), NextPage: Manager.ReturnToUrl);
+            return await FormProcessedAsync(model, this.__ResStr("okSaved", "IVR settings saved"));
         }
     }
 }

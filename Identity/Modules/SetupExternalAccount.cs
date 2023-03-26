@@ -197,7 +197,7 @@ public class SetupExternalAccountModule : ModuleDefinition {
                 await emails.SendNewUserCreatedAsync(user);
             await LoginModule.UserLoginAsync(user, config.PersistentLogin);
             return await FormProcessedAsync(model, this.__ResStr("okRegText", "Your new account has been successfully registered."), this.__ResStr("okRegTitle", "Welcome!"),
-                NextPage: Manager.ReturnToUrl, ForceRedirect: true);
+                ForceReload: true);//$$$$
         } else
             throw new InternalError("badUserStatus", "Unexpected account status {0}", user.UserStatus);
     }

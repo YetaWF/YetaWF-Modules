@@ -51,7 +51,7 @@ public class BlogConfigModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Update,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-            SaveReturnUrl = true,
+
         };
     }
 
@@ -138,8 +138,7 @@ public class BlogConfigModule : ModuleDefinition {
         public Model() { }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync(
-            ) {
+    public async Task<ActionInfo> RenderModuleAsync() {
         using (BlogConfigDataProvider dataProvider = new BlogConfigDataProvider()) {
             Model model = new Model { };
             BlogConfigData? data = await dataProvider.GetItemAsync();
@@ -151,8 +150,7 @@ public class BlogConfigModule : ModuleDefinition {
     }
 
     [ExcludeDemoMode]
-    public async Task<IResult> UpdateModuleAsync(
-            Model model) {
+    public async Task<IResult> UpdateModuleAsync(Model model) {
         using (BlogConfigDataProvider dataProvider = new BlogConfigDataProvider()) {
             BlogConfigData data = await dataProvider.GetItemAsync();// get the original item
             if (!ModelState.IsValid)

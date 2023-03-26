@@ -52,7 +52,7 @@ public class ControlPanelConfigModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Update,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-            SaveReturnUrl = true,
+
         };
     }
 
@@ -110,7 +110,7 @@ public class ControlPanelConfigModule : ModuleDefinition {
                 case ObjectSupport.ModelDisposition.None:
                     return await FormProcessedAsync(model, this.__ResStr("okSaved", "Control Panel settings saved"));
                 case ObjectSupport.ModelDisposition.PageReload:
-                    return await FormProcessedAsync(model, this.__ResStr("okSaved", "Control Panel settings saved"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage, ForceRedirect: true);
+                    return await FormProcessedAsync(model, this.__ResStr("okSaved", "Control Panel settings saved"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage, ForceReload: true);
                 case ObjectSupport.ModelDisposition.SiteRestart:
                     return await FormProcessedAsync(model, this.__ResStr("okSavedRestart", "Control Panel settings saved - These settings won't take effect until the site is restarted"));
             }

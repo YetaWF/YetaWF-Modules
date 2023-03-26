@@ -56,7 +56,7 @@ public class CarouselDisplayModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Read,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-            SaveReturnUrl = true,
+
         };
     }
 

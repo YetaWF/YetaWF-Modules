@@ -90,8 +90,6 @@ public class LoginExternalEndpoints : YetaWFEndpoints {
                 return Redirect(Manager.ReturnToUrl);
             }
 
-            if (string.IsNullOrWhiteSpace(returnUrl) && Manager.HaveReturnToUrl)
-                returnUrl = Manager.ReturnToUrl;
             if (string.IsNullOrWhiteSpace(returnUrl))
                 returnUrl = await Resource.ResourceAccess.GetUserPostLoginUrlAsync((from u in user.RolesList select u.RoleId).ToList());
             if (string.IsNullOrWhiteSpace(returnUrl))

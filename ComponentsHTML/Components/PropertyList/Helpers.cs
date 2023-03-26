@@ -157,8 +157,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             foreach (var prop in props) {
                 if (!string.IsNullOrWhiteSpace(category) && !prop.Categories.Contains(category))
                     continue;
-
-                if (ExprAttribute.IsSuppressed(prop.ExprValidationAttributes, obj))
+                if (ExprAttribute.IsSuppressed(prop.ExprValidationAttributes, obj, out _))
                     continue;// suppress this as requested
 
                 bool editable = prop.PropInfo.CanWrite;

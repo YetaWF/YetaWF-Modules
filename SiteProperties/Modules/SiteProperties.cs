@@ -43,7 +43,7 @@ public class SitePropertiesModule : ModuleDefinition {
             Location = ModuleAction.ActionLocationEnum.MainMenu,
             Mode = ModuleAction.ActionModeEnum.View,
             Style = ModuleAction.ActionStyleEnum.Popup,
-            SaveReturnUrl = true,
+
         };
     }
 
@@ -59,7 +59,7 @@ public class SitePropertiesModule : ModuleDefinition {
             Location = ModuleAction.ActionLocationEnum.MainMenu,
             Mode = ModuleAction.ActionModeEnum.View,
             Style = ModuleAction.ActionStyleEnum.Popup,
-            SaveReturnUrl = true,
+
         };
     }
 
@@ -83,9 +83,9 @@ public class SitePropertiesModule : ModuleDefinition {
         public string SiteHost { get; set; } = null!;
     }
 
-    public async Task<ActionInfo> RenderModuleAsync(string? domain) {
+    public async Task<ActionInfo> RenderModuleAsync(string domain) {
         SiteDefinition? site;
-        if (domain == null) {
+        if (string.IsNullOrEmpty(domain)) {
             site = Manager.CurrentSite;
             domain = site.SiteDomain;
         } else
@@ -116,7 +116,7 @@ public class SitePropertiesModule : ModuleDefinition {
             case ObjectSupport.ModelDisposition.None:
                 return await FormProcessedAsync(model, this.__ResStr("okSaved", "Site settings updated"));
             case ObjectSupport.ModelDisposition.PageReload:
-                return await FormProcessedAsync(model, this.__ResStr("okSaved", "Site settings updated"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage, ForceRedirect: true);
+                return await FormProcessedAsync(model, this.__ResStr("okSaved", "Site settings updated"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage, ForceReload: true);
             case ObjectSupport.ModelDisposition.SiteRestart:
                 return await FormProcessedAsync(model, this.__ResStr("okSavedRestart", "Site settings updated - These settings won't take effect until the site is restarted"));
         }

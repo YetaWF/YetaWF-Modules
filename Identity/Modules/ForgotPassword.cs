@@ -52,8 +52,7 @@ public class ForgotPasswordModule : ModuleDefinition {
                 Location = ModuleAction.ActionLocationEnum.NoAuto | ModuleAction.ActionLocationEnum.InPopup | ModuleAction.ActionLocationEnum.ModuleLinks,
                 Category = ModuleAction.ActionCategoryEnum.Update,
                 Mode = ModuleAction.ActionModeEnum.Any,
-                SaveReturnUrl = false,
-                AddToOriginList = false,
+
             };
         } else {
             return new ModuleAction() {
@@ -68,8 +67,7 @@ public class ForgotPasswordModule : ModuleDefinition {
                 Location = ModuleAction.ActionLocationEnum.NoAuto | ModuleAction.ActionLocationEnum.InPopup | ModuleAction.ActionLocationEnum.ModuleLinks,
                 Category = ModuleAction.ActionCategoryEnum.Update,
                 Mode = ModuleAction.ActionModeEnum.Any,
-                SaveReturnUrl = false,
-                AddToOriginList = false,
+
             };
         }
     }
@@ -125,12 +123,8 @@ public class ForgotPasswordModule : ModuleDefinition {
             Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
 
             ModuleAction logAction = await loginMod.GetAction_LoginAsync(config.LoginUrl, Force: true, CloseOnLogin: closeOnLogin);
-            if (logAction != null)
-                logAction.AddToOriginList = false;
             Actions.New(logAction);
             ModuleAction regAction = await regMod.GetAction_RegisterAsync(config.RegisterUrl, Force: true, CloseOnLogin: closeOnLogin);
-            if (regAction != null)
-                regAction.AddToOriginList = false;
             Actions.New(regAction);
         }
     }

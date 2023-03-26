@@ -49,7 +49,7 @@ namespace Softelvdm.Modules.IVR.Modules {
                 Category = ModuleAction.ActionCategoryEnum.Read,
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.NoAuto,
-                SaveReturnUrl = true,
+
             };
         }
         public async Task<ModuleAction> GetAction_ListenAsync(string recordingUrl) {

@@ -49,7 +49,7 @@ public class AlertConfigModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Update,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-            SaveReturnUrl = true,
+
         };
     }
 
@@ -99,7 +99,7 @@ public class AlertConfigModule : ModuleDefinition {
             data = model.GetData(data); // merge new data into original
             model.SetData(data); // and all the data back into model for final display
             await dataProvider.UpdateConfigAsync(data);
-            return await FormProcessedAsync(model, this.__ResStr("okSaved", "Alert settings saved"), NextPage: Manager.ReturnToUrl);
+            return await FormProcessedAsync(model, this.__ResStr("okSaved", "Alert settings saved"));
         }
     }
 }

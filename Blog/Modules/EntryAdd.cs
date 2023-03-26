@@ -55,7 +55,7 @@ public class EntryAddModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Update,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.ModuleLinks,
-            SaveReturnUrl = true,
+
         };
     }
 

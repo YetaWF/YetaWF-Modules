@@ -120,6 +120,6 @@ public class LoginSelectorModule : ModuleDefinition {
             await Resource.ResourceAccess.LoginAsAsync(userId);
         if (model.SuperuserStillActive != null && !(bool)model.SuperuserStillActive)
             Manager.SetSuperUserRole(false);
-        return await FormProcessedAsync(model, NextPage: Manager.ReturnToUrl, ForceRedirect: true, OnClose: OnCloseEnum.GotoNewPage, OnPopupClose: OnPopupCloseEnum.GotoNewPage);
+        return await FormProcessedAsync(model, ForceReload: true);//$$$$
     }
 }

@@ -96,7 +96,7 @@ public class TinyLoginModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Update,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-            SaveReturnUrl = false,
+
         };
     }
     public async Task<ModuleAction?> GetAction_RegisterAsync(string? url) {
@@ -112,7 +112,7 @@ public class TinyLoginModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Update,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-            SaveReturnUrl = false,
+
         };
     }
     public async Task<ModuleAction> GetAction_LogoffAsync(string? url) {
@@ -141,7 +141,7 @@ public class TinyLoginModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Update,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-            SaveReturnUrl = true,
+
         };
     }
 

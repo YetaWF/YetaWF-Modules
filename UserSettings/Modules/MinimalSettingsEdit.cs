@@ -45,7 +45,7 @@ namespace YetaWF.Modules.UserSettings.Modules {
                 Category = ModuleAction.ActionCategoryEnum.Update,
                 Mode = ModuleAction.ActionModeEnum.Any,
                 Location = ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
-                SaveReturnUrl = true,
+
             };
         }
 
@@ -95,7 +95,7 @@ namespace YetaWF.Modules.UserSettings.Modules {
                 data = model.GetData(data); // merge new data into original
                 model.SetData(data); // and all the data back into model for final display
                 await dataProvider.UpdateItemAsync(data);
-                return await FormProcessedAsync(model, this.__ResStr("okSaved", "Your settings have been successfully saved"), ForceRedirect: true);
+                return await FormProcessedAsync(model, this.__ResStr("okSaved", "Your settings have been successfully saved"), ForceReload: true);
             }
         }
     }

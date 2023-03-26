@@ -65,7 +65,7 @@ public class ModuleEditModule : ModuleDefinition {
             Mode = ModuleAction.ActionModeEnum.Any,
             Style = ModuleAction.ActionStyleEnum.PopupEdit,
             Location = ModuleAction.ActionLocationEnum.ModuleMenu | ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.GridLinks,
-            SaveReturnUrl = true,
+
         };
     }
 

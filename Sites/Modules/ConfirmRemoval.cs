@@ -48,7 +48,7 @@ public class ConfirmRemovalModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Delete,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-            SaveReturnUrl = true,
+
             DontFollow = true,
         };
     }

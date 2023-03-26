@@ -103,9 +103,9 @@ public class ExchangeRateDataProvider : DataProviderImpl, IInstallableModel {
         CheckForErrors(jsonCurrencies);
 
         // get all currencies
-        Dictionary<string, object> currencies = Utility.JsonDeserialize<Dictionary<string, object>>(jsonCurrencies);
+        Dictionary<string, object> currencies = Utility.JsonDeserializeNewtonsoft<Dictionary<string, object>>(jsonCurrencies);
         // add all rates
-        dynamic jsonObject = Utility.JsonDeserialize(json);
+        dynamic jsonObject = Utility.JsonDeserializeNewtonsoft(json);
         var rates = jsonObject.rates;
         foreach (var rate in rates) {
             string code = rate.Name;
@@ -144,7 +144,7 @@ public class ExchangeRateDataProvider : DataProviderImpl, IInstallableModel {
     }
 
     private void CheckForErrors(string json) {
-        dynamic jsonObject = Utility.JsonDeserialize(json);
+        dynamic jsonObject = Utility.JsonDeserializeNewtonsoft(json);
         if (!string.IsNullOrWhiteSpace(jsonObject.error))
             throw new InternalError("An error occurred retrieving exchange rates from openexchangerates.org - {0}: {1}", jsonObject["message"], jsonObject["description"]);
     }

@@ -96,8 +96,7 @@ public class RegisterModule : ModuleDefinition {
             Location = ModuleAction.ActionLocationEnum.NoAuto | ModuleAction.ActionLocationEnum.InPopup | ModuleAction.ActionLocationEnum.ModuleLinks,
             Category = ModuleAction.ActionCategoryEnum.Update,
             Mode = ModuleAction.ActionModeEnum.Any,
-            SaveReturnUrl = false,
-            AddToOriginList = false,
+
         };
     }
     public async Task<ModuleAction> GetAction_ApproveAsync(string userName) {
@@ -204,8 +203,6 @@ public class RegisterModule : ModuleDefinition {
             bool closeOnLogin;
             Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
             ModuleAction logAction = await loginMod.GetAction_LoginAsync(config.LoginUrl, Force: true, CloseOnLogin: closeOnLogin);
-            if (logAction != null)
-                logAction.AddToOriginList = false;
             Actions.New(logAction);
         }
     }
@@ -241,8 +238,6 @@ public class RegisterModule : ModuleDefinition {
                 string url = Package.GetAddOnPackageUrl(package.AreaName);
                 model.Images.Add(Manager.GetCDNUrl(string.Format("{0}Icons/LoginProviders/{1}.png", url, provider.InternalName)));
             }
-            if (Manager.HaveReturnToUrl)
-                model.ReturnUrl = Manager.ReturnToUrl;
 
             await model.UpdateAsync();
             return await RenderAsync(model);
@@ -352,8 +347,6 @@ public class RegisterModule : ModuleDefinition {
             await LoginModule.UserLoginAsync(user, config.PersistentLogin);
 
             string nextUrl = null;
-            if (Manager.HaveReturnToUrl)
-                nextUrl = Manager.ReturnToUrl;
             if (string.IsNullOrWhiteSpace(nextUrl) && !string.IsNullOrWhiteSpace(PostRegisterUrl)) {
                 nextUrl = PostRegisterUrl;
                 if (PostRegisterQueryString)
@@ -366,9 +359,9 @@ public class RegisterModule : ModuleDefinition {
 
             if (!string.IsNullOrWhiteSpace(nextUrl)) {
                 return await FormProcessedAsync(model, this.__ResStr("okRegText", "Your new account has been successfully registered."), this.__ResStr("okRegTitle", "Welcome!"),
-                    OnClose: OnCloseEnum.GotoNewPage, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: nextUrl, ForceRedirect: true);
+                    OnClose: OnCloseEnum.GotoNewPage, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: nextUrl, ForceReload: true);
             }
-            return await FormProcessedAsync(model, this.__ResStr("okRegText", "Your new account has been successfully registered."), this.__ResStr("okRegTitle", "Welcome!"), ForceRedirect: true);
+            return await FormProcessedAsync(model, this.__ResStr("okRegText", "Your new account has been successfully registered."), this.__ResStr("okRegTitle", "Welcome!"), ForceReload: true);
 
         } else
             throw new InternalError("badUserStatus", "Unexpected account status {0}", user.UserStatus);

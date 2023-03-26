@@ -28,9 +28,9 @@ public class ShowMessageModule : ModuleDefinition {
 
     public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
 
-    public async Task<ActionInfo> RenderModuleAsync(string? message, int code) {
+    public async Task<ActionInfo> RenderModuleAsync(string message, int code) {
         if (code != 0)
             Manager.CurrentResponse.StatusCode = (int)code;
-        return await RenderAsync(message ?? string.Empty, ViewName: "ShowMessage", UseAreaViewName: false);
+        return await RenderAsync(message, ViewName: "ShowMessage", UseAreaViewName: false);
     }
 }

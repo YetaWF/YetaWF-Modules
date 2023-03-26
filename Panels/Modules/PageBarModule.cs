@@ -106,7 +106,7 @@ public class PageBarModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Read,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
-            SaveReturnUrl = true,
+
         };
     }
 

@@ -59,8 +59,6 @@ public class LoginModule : ModuleDefinition {
             Location = ModuleAction.ActionLocationEnum.NoAuto | ModuleAction.ActionLocationEnum.InPopup | ModuleAction.ActionLocationEnum.ModuleLinks,
             Category = ModuleAction.ActionCategoryEnum.Update,
             Mode = ModuleAction.ActionModeEnum.Any,
-            SaveReturnUrl = true,
-            AddToOriginList = true,
         };
     }
 
@@ -199,12 +197,8 @@ public class LoginModule : ModuleDefinition {
             Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
             ForgotPasswordModule pswdMod = (ForgotPasswordModule)await ModuleDefinition.CreateUniqueModuleAsync(typeof(ForgotPasswordModule));
             ModuleAction pswdAction = await pswdMod.GetAction_ForgotPasswordAsync(config.ForgotPasswordUrl, CloseOnLogin: closeOnLogin);
-            if (pswdAction != null)
-                pswdAction.AddToOriginList = false;
             Actions.New(pswdAction);
             ModuleAction registerAction = await regMod.GetAction_RegisterAsync(config.RegisterUrl, Force: true, CloseOnLogin: closeOnLogin);
-            if (registerAction != null)
-                registerAction.AddToOriginList = false;
             Actions.New(registerAction);
         }
     }
@@ -230,8 +224,6 @@ public class LoginModule : ModuleDefinition {
             ShowVerification = !string.IsNullOrWhiteSpace(v),
             ShowCaptcha = config.Captcha && string.IsNullOrWhiteSpace(v) && !Manager.IsLocalHost,
         };
-        if (Manager.HaveReturnToUrl)
-            model.ReturnUrl = Manager.ReturnToUrl;
 
         using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
             List<LoginConfigDataProvider.LoginProviderDescription> loginProviders = await logConfigDP.GetActiveExternalLoginProvidersAsync();
@@ -408,8 +400,6 @@ public class LoginModule : ModuleDefinition {
         } else if (user.UserStatus == UserStatusEnum.Approved) {
 
             string nextUrl = null;
-            if (Manager.HaveReturnToUrl)
-                nextUrl = Manager.ReturnToUrl;
             if (string.IsNullOrWhiteSpace(nextUrl))
                 nextUrl = await Resource.ResourceAccess.GetUserPostLoginUrlAsync((from u in user.RolesList select u.RoleId).ToList());
             if (string.IsNullOrWhiteSpace(nextUrl))
@@ -431,7 +421,7 @@ public class LoginModule : ModuleDefinition {
             model.Success = true;
             Logging.AddLog("User {0} - logged on", model.UserName);
 
-            return await FormProcessedAsync(model, OnClose: OnCloseEnum.GotoNewPage, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: nextUrl, ForceRedirect: true);
+            return await FormProcessedAsync(model, OnClose: OnCloseEnum.GotoNewPage, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: nextUrl, ForceReload: true);
 
         } else
             throw new InternalError("badUserStatus", "Unexpected account status {0}", user.UserStatus);

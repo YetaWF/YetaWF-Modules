@@ -79,6 +79,6 @@ public class CategoriesListModule : ModuleDefinition {
     public async Task<IResult> UpdateModuleAsync(Model model) {
         if (!ModelState.IsValid)
             return await PartialViewAsync(model);
-        return await FormProcessedAsync(model, ForceRedirect: true, NextPage: await BlogConfigData.GetCategoryCanonicalNameAsync(model.BlogCategory) ?? Manager.CurrentSite.HomePageUrl);
+        return await FormProcessedAsync(model, ForceReload: true, NextPage: await BlogConfigData.GetCategoryCanonicalNameAsync(model.BlogCategory) ?? Manager.CurrentSite.HomePageUrl);
     }
 }

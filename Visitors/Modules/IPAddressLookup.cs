@@ -47,7 +47,7 @@ public class IPAddressLookupModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Read,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-            SaveReturnUrl = true,
+
         };
     }
     public async Task<ModuleAction?> GetAction_DisplayGeoDataAsync(string? url, string ipAddress) {
@@ -64,7 +64,7 @@ public class IPAddressLookupModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Read,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-            SaveReturnUrl = true,
+
         };
     }
 

@@ -57,7 +57,7 @@ public class FeedbackAddModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Update,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,
-            SaveReturnUrl = true,
+
         };
     }
 
@@ -135,7 +135,7 @@ public class FeedbackAddModule : ModuleDefinition {
             Emails emails = new Emails();
             await emails.SendFeedbackAsync(config.Email, model.Email, model.Subject!, model.Message!, model.Name!, config.BccEmails ? Manager.CurrentSite.AdminEmail : null);
 
-            return await FormProcessedAsync(model, this.__ResStr("okSaved", "Your message has been sent!"), NextPage: Manager.ReturnToUrl);
+            return await FormProcessedAsync(model, this.__ResStr("okSaved", "Your message has been sent!"));
         }
     }
 }

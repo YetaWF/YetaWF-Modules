@@ -59,7 +59,7 @@ public class CurrencyConverterModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Read,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-            SaveReturnUrl = true,
+
         };
     }
 
@@ -74,14 +74,14 @@ public class CurrencyConverterModule : ModuleDefinition {
         public SerializableList<ExchangeRateEntry> Rates { get; set; } = null!;
     }
 
-    public async Task<ActionInfo> RenderModuleAsync(decimal? amount) {        
+    public async Task<ActionInfo> RenderModuleAsync(decimal amount) {
         using (ExchangeRateDataProvider dp = new ExchangeRateDataProvider()) {
             ExchangeRateData data = await dp.GetItemAsync();
             Model model = new Model() {
                 Rates = data.Rates,
                 FromCountry = FromCountry,
                 ToCountry = ToCountry,
-                Amount = amount ?? DefaultAmount,
+                Amount = amount <= 0.0M ? DefaultAmount : amount,
             };
             return await RenderAsync(model);
         }

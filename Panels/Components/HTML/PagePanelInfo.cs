@@ -62,12 +62,12 @@ public class PagePanelInfoDisplayComponent : PagePanelInfoComponentBase, IYetaWF
             hb.Append($@"
     <div class='t_entry'>
         <div class='t_image'>
-            <a class='{actionLinkClass}' {Basics.CssSaveReturnUrl}='' href='{HAE(entry.Url)}' data-tooltip='{HAE(entry.ToolTip.ToString())}'>
+            <a class='{actionLinkClass}' href='{HAE(entry.Url)}' data-tooltip='{HAE(entry.ToolTip.ToString())}'>
                 <img src='{HAE(entry.ImageUrl)}' alt='{HAE(caption)}' title='{HAE(entry.ToolTip.ToString())}' />
             </a>
         </div>
         <div class='t_link'>
-            <a class='{actionLinkClass}' {Basics.CssSaveReturnUrl}='' href='{HAE(entry.Url)}' data-tooltip='{HAE(entry.ToolTip.ToString())}'>{HE(caption)}</a>
+            <a class='{actionLinkClass}' href='{HAE(entry.Url)}' data-tooltip='{HAE(entry.ToolTip.ToString())}'>{HE(caption)}</a>
         </div>");
 
             if (model.Style == PagePanelModule.PanelStyleEnum.SmallTable) {

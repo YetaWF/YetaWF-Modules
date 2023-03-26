@@ -92,7 +92,7 @@ public class PageBarInfoComponent : PageBarInfoComponentBase, IYetaWFComponent<P
             string anchor = $"";
 
             hb.Append($@"
-        <a class='t_entry{active} yaction-link' data-contenttarget='{DivId}' data-contentpane='{HAE(pane == "" ? "MainPane" : pane)}' {Basics.CssSaveReturnUrl}='' href='{HAE(qh.ToUrl(pageUrlOnly))}' data-tooltip='{HAE(entry.ToolTip.ToString())}'>");
+        <a class='t_entry{active} yaction-link' data-contenttarget='{DivId}' data-contentpane='{HAE(pane == "" ? "MainPane" : pane)}' href='{HAE(qh.ToUrl(pageUrlOnly))}' data-tooltip='{HAE(entry.ToolTip.ToString())}'>");
 
             if (entry.ImageSVG != null) {
                 hb.Append($@"

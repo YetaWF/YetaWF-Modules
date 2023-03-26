@@ -80,7 +80,7 @@ public class PagesBrowseModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Read,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-            SaveReturnUrl = true,
+
             DontFollow = true,
         };
     }
@@ -99,7 +99,7 @@ public class PagesBrowseModule : ModuleDefinition {
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
             ConfirmationText = this.__ResStr("removeConfirm", "Are you sure you want to remove page \"{0}\"?", pageName),
-            SaveReturnUrl = true,
+
         };
     }
     public ModuleAction? GetAction_UpdateAdminAndEditorAuthorization() {

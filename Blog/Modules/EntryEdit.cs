@@ -49,7 +49,7 @@ public class EntryEditModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Update,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.ModuleLinks,
-            SaveReturnUrl = true,
+
         };
         if (!await action.IsAuthorizedAsync()) return null;
         return action;

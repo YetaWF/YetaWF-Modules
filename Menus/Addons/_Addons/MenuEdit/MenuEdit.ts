@@ -39,9 +39,6 @@ namespace YetaWF_Menus {
         AuthorizationIgnore: boolean;
         ConfirmationText: object;
         PleaseWaitText: object;
-        SaveReturnUrl: boolean;
-        AddToOriginList: boolean;
-        NeedsModuleContext: boolean;
         DontFollow: boolean;
     }
     interface DataHierarchy extends Data {
@@ -86,9 +83,6 @@ namespace YetaWF_Menus {
         private AuthorizationIgnore!: HTMLInputElement;
         private ConfirmationText!: YetaWF_ComponentsHTML.MultiStringEditComponent;
         private PleaseWaitText!: YetaWF_ComponentsHTML.MultiStringEditComponent;
-        private SaveReturnUrl!: HTMLInputElement;
-        private AddToOriginList!: HTMLInputElement;
-        private NeedsModuleContext!: HTMLInputElement;
         private DontFollow!: HTMLInputElement;
 
         private SaveButton: HTMLInputElement;
@@ -271,9 +265,6 @@ namespace YetaWF_Menus {
             this.AuthorizationIgnore = $YetaWF.getElement1BySelector("input[name='ModEntry.AuthorizationIgnore']", [this.Details]) as HTMLInputElement;
             this.ConfirmationText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.ConfirmationText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
             this.PleaseWaitText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.PleaseWaitText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
-            this.SaveReturnUrl = $YetaWF.getElement1BySelector("input[name='ModEntry.SaveReturnUrl']", [this.Details]) as HTMLInputElement;
-            this.AddToOriginList = $YetaWF.getElement1BySelector("input[name='ModEntry.AddToOriginList']", [this.Details]) as HTMLInputElement;
-            this.NeedsModuleContext = $YetaWF.getElement1BySelector("input[name='ModEntry.NeedsModuleContext']", [this.Details]) as HTMLInputElement;
             this.DontFollow = $YetaWF.getElement1BySelector("input[name='ModEntry.DontFollow']", [this.Details]) as HTMLInputElement;
 
             $YetaWF.registerCustomEventHandler(this.EntryType.Control, YetaWF_ComponentsHTML.DropDownListEditComponent.EVENTCHANGE, null, (ev: Event): boolean => {
@@ -345,9 +336,6 @@ namespace YetaWF_Menus {
                 if (this.AuthorizationIgnore.checked !== data.AuthorizationIgnore) return true;
                 if (this.ConfirmationText.hasChanged(data.ConfirmationText)) return true;
                 if (this.PleaseWaitText.hasChanged(data.PleaseWaitText)) return true;
-                if (this.SaveReturnUrl.checked !== data.SaveReturnUrl) return true;
-                if (this.AddToOriginList.checked !== data.AddToOriginList) return true;
-                if (this.NeedsModuleContext.checked !== data.NeedsModuleContext) return true;
                 if (this.DontFollow.checked !== data.DontFollow) return true;
             }
             return false;
@@ -372,9 +360,6 @@ namespace YetaWF_Menus {
             data.AuthorizationIgnore = this.AuthorizationIgnore.checked;
             data.ConfirmationText = this.ConfirmationText.value;
             data.PleaseWaitText = this.PleaseWaitText.value;
-            data.SaveReturnUrl = this.SaveReturnUrl.checked;
-            data.AddToOriginList = this.AddToOriginList.checked;
-            data.NeedsModuleContext = this.NeedsModuleContext.checked;
             data.DontFollow = this.DontFollow.checked;
             this.Tree.setSelectData(data as any as YetaWF_ComponentsHTML.TreeEntry);
         }
@@ -399,9 +384,6 @@ namespace YetaWF_Menus {
                 this.AuthorizationIgnore.checked = data.AuthorizationIgnore;
                 this.ConfirmationText.value = data.ConfirmationText;
                 this.PleaseWaitText.value = data.PleaseWaitText;
-                this.SaveReturnUrl.checked = data.SaveReturnUrl;
-                this.AddToOriginList.checked = data.AddToOriginList;
-                this.NeedsModuleContext.checked = data.NeedsModuleContext;
                 this.DontFollow.checked = data.DontFollow;
                 this.enableFields(true);
             } else {
@@ -422,9 +404,6 @@ namespace YetaWF_Menus {
                 this.AuthorizationIgnore.checked = false;
                 this.ConfirmationText.clear();
                 this.PleaseWaitText.clear();
-                this.SaveReturnUrl.checked = false;
-                this.AddToOriginList.checked = false;
-                this.NeedsModuleContext.checked = false;
                 this.DontFollow.checked = false;
                 this.enableFields(false);
             }
@@ -451,9 +430,6 @@ namespace YetaWF_Menus {
                         $YetaWF.elementEnable(this.AuthorizationIgnore);
                         this.ConfirmationText.enable(true);
                         this.PleaseWaitText.enable(true);
-                        $YetaWF.elementEnable(this.SaveReturnUrl);
-                        $YetaWF.elementEnable(this.AddToOriginList);
-                        $YetaWF.elementEnable(this.NeedsModuleContext);
                         $YetaWF.elementEnable(this.DontFollow);
                         break;
                     case MenuEntryType.Parent:
@@ -473,9 +449,6 @@ namespace YetaWF_Menus {
                         $YetaWF.elementDisable(this.AuthorizationIgnore);
                         this.ConfirmationText.enable(false);
                         this.PleaseWaitText.enable(false);
-                        $YetaWF.elementDisable(this.SaveReturnUrl);
-                        $YetaWF.elementDisable(this.AddToOriginList);
-                        $YetaWF.elementDisable(this.NeedsModuleContext);
                         $YetaWF.elementDisable(this.DontFollow);
                         break;
                     case MenuEntryType.Separator:
@@ -495,9 +468,6 @@ namespace YetaWF_Menus {
                         $YetaWF.elementDisable(this.AuthorizationIgnore);
                         this.ConfirmationText.enable(false);
                         this.PleaseWaitText.enable(false);
-                        $YetaWF.elementDisable(this.SaveReturnUrl);
-                        $YetaWF.elementDisable(this.AddToOriginList);
-                        $YetaWF.elementDisable(this.NeedsModuleContext);
                         $YetaWF.elementDisable(this.DontFollow);
                         break;
                 }
@@ -519,9 +489,6 @@ namespace YetaWF_Menus {
                 $YetaWF.elementDisable(this.AuthorizationIgnore);
                 this.ConfirmationText.enable(false);
                 this.PleaseWaitText.enable(false);
-                $YetaWF.elementDisable(this.SaveReturnUrl);
-                $YetaWF.elementDisable(this.AddToOriginList);
-                $YetaWF.elementDisable(this.NeedsModuleContext);
                 $YetaWF.elementDisable(this.DontFollow);
             }
         }

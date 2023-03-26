@@ -50,7 +50,7 @@ public class MenuEditModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Update,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.ModuleLinks | (Manager.EditMode ? ModuleAction.ActionLocationEnum.ModuleMenu : 0),
-            SaveReturnUrl = true,
+
         };
     }
 
@@ -151,12 +151,10 @@ public class MenuEditModule : ModuleDefinition {
         [UIHint("MultiString"), StringLength(ModuleAction.MaxPleaseWaitText)]
         public MultiString PleaseWaitText { get; set; }
 
-        [Caption("Save Return Url"), Description("Defines whether this action will preserve the origin list (past Urls visited) and save the current Url - This is typically used for actions that display a form with a Cancel or Return button, which would return to the current Url if Save Return Url is selected")]
-        [UIHint("Boolean")]
+        [DontSave, ReadOnly, Obsolete("Do not use!")]// THIS IS STRICTLY USED FOR SERIALIZATION - DO NOT ACCESS DIRECTLY
         public bool SaveReturnUrl { get; set; }
 
-        [Caption("Add to Origin List"), Description("Defines whether the current Url will be added to the origin list so we can return to the current Url - This is used in conjunction with the Save Return Url property - If the Save Return Url property is false, the AddToOriginList property is ignored")]
-        [UIHint("Boolean")]
+        [DontSave, ReadOnly, Obsolete("Do not use!")]// THIS IS STRICTLY USED FOR SERIALIZATION - DO NOT ACCESS DIRECTLY
         public bool AddToOriginList { get; set; }
 
         [Caption("Don't Follow"), Description("Defines whether search engines and bots follow this link (select to disable)")]
@@ -279,8 +277,6 @@ public class MenuEditModule : ModuleDefinition {
                 action.AuthorizationIgnore = false;
                 action.ConfirmationText = new MultiString();
                 action.PleaseWaitText = new MultiString();
-                action.SaveReturnUrl = false;
-                action.AddToOriginList = false;
                 action.DontFollow = false;
             } else if (string.IsNullOrWhiteSpace(action.Url) && action.SubModule == null) {
                 // parent item without real action
@@ -291,8 +287,6 @@ public class MenuEditModule : ModuleDefinition {
                 action.Category = ModuleAction.ActionCategoryEnum.Read;
                 action.ConfirmationText = new MultiString();
                 action.PleaseWaitText = new MultiString();
-                action.SaveReturnUrl = false;
-                action.AddToOriginList = false;
                 action.DontFollow = false;
             }
             if (action.SubMenu != null && action.SubMenu.Count > 0)

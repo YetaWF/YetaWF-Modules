@@ -66,7 +66,6 @@ public class PageEditModule : ModuleDefinition {
             Mode = ModuleAction.ActionModeEnum.Any,
             DontFollow = true,
 
-            SaveReturnUrl = true,
         };
     }
     public async Task<ModuleAction?> GetAction_RemoveAsync(Guid? pageGuid = null) {
@@ -372,10 +371,6 @@ public class PageEditModule : ModuleDefinition {
         MenuList.ClearCachedMenus();// page changes may affect all menus so clear the menu cache (this only clears current session)
         // if we're in a popup and the parent page is the page we're editing, then force a reload
 
-        //$$$$ rename with querystring doesn't work
-        OnPopupCloseEnum popupClose = OnPopupCloseEnum.ReloadModule;
-        if (PageDefinition.IsSamePage(Manager.QueryReturnToUrl.Url, model.Page.Url ?? string.Empty))
-            popupClose = OnPopupCloseEnum.ReloadParentPage;
-        return await FormProcessedAsync(model, this.__ResStr("okSaved", "Page settings saved"), OnPopupClose: popupClose);
+        return await FormProcessedAsync(model, this.__ResStr("okSaved", "Page settings saved"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
     }
 }

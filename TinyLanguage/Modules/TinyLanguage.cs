@@ -55,6 +55,6 @@ public class TinyLanguageModule : ModuleDefinition {
         if (!ModelState.IsValid)
             return await PartialViewAsync(model);
         await Manager.SetUserLanguageAsync(model.LanguageId!);
-        return await FormProcessedAsync(model, NextPage: Manager.ReturnToUrl, ForceRedirect: true);
+        return await FormProcessedAsync(model, NextPage: Manager.ReturnToUrl, ForceReload: true);
     }
 }
