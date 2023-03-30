@@ -47,7 +47,7 @@
 /* Print */
 @media print {
   .yt_scroller .t_left,
-.yt_scroller .t_right {
+  .yt_scroller .t_right {
     display: none;
   }
 }

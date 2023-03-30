@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
@@ -99,11 +100,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             using (Manager.StartNestedComponent(FieldName)) {
 
                 hb.Append($@"
-    <div class='t_days'>
+    <div class='t_days {Forms.CssFormNoSubmitContents}'>
         {await HtmlHelper.ForEditAsync(ts, nameof(TimeSpanUI.Days))}{ValidationMessage(nameof(TimeSpanUI.Days))}
         {await HtmlHelper.ForLabelAsync(ts, nameof(TimeSpanUI.Days))}
     </div>
-    <div class='t_hours'>
+    <div class='t_hours {Forms.CssFormNoSubmitContents}'>
         {await HtmlHelper.ForEditAsync(ts, nameof(TimeSpanUI.Hours))}{ValidationMessage(nameof(TimeSpanUI.Hours))}
         {await HtmlHelper.ForLabelAsync(ts, nameof(TimeSpanUI.Hours))}
     </div>");
