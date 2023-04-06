@@ -103,9 +103,11 @@ namespace YetaWF_ComponentsHTML {
             const info = $YetaWF.Forms.getJSONInfo(this.Control);
             uri.replaceSearch(YConfigs.Basics.ModuleGuid, info.ModuleGuid);
 
+            document.cookie = `${YConfigs.Basics.AntiforgeryCookieName}=${YVolatile.Basics.AntiforgeryCookieToken}`;
+
             const request: XMLHttpRequest = new XMLHttpRequest();
             request.open("POST", uri.toUrl(), true);
-            request.setRequestHeader("RequestVerificationToken", info.RequestVerificationToken);
+            request.setRequestHeader(YConfigs.Basics.AntiforgeryRequestName, YVolatile.Basics.AntiforgeryRequestToken);
 
             request.upload.onprogress = (ev: ProgressEvent<EventTarget>): any => {
                 let percent = 0;

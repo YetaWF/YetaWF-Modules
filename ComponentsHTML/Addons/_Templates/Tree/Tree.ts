@@ -353,7 +353,6 @@ namespace YetaWF_ComponentsHTML {
                 let data: TreePartialViewData = {
                     __UniqueIdCounters: YVolatile.Basics.UniqueIdCounters,
                     __ModuleGuid: formJson.ModuleGuid,
-                    __RequestVerificationToken: formJson.RequestVerificationToken,
                     Entry: this.getElementDataCond(liElem),
                 }
 

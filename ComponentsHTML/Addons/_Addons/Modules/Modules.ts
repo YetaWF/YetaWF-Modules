@@ -77,7 +77,14 @@ namespace YetaWF_ComponentsHTML {
                     var menuDiv = $YetaWF.getElement1BySelector(".yModuleMenu", [modDiv]);
                     let menu = YetaWF_ComponentsHTML.MenuULComponent.getControlFromTagCond<YetaWF_ComponentsHTML.MenuULComponent>(menuDiv, YetaWF_ComponentsHTML.MenuULComponent.SELECTOR);
                     if (!menu)
-                        menu = new YetaWF_ComponentsHTML.MenuULComponent(menuDiv.id, {"Owner": editIcon!, "AutoOpen": false, "AutoRemove": false, "AttachTo": null });
+                        menu = new YetaWF_ComponentsHTML.MenuULComponent(menuDiv.id, 
+                            {
+                                Owner: editIcon!, 
+                                AutoOpen: false, 
+                                AutoRemove: false, 
+                                AttachTo: null,
+                            }
+                        );
                     menu.open();
                     return true;
                 });

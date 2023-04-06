@@ -30,7 +30,7 @@ public class LoginDirectEndpoints : YetaWFEndpoints {
 
         RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(LoginDirectEndpoints)));
 
-        group.MapPost(LoginAs, async (HttpContext context, int userId) => {
+        group.MapGet(LoginAs, async (HttpContext context, int userId) => {
             Package package = AreaRegistration.CurrentPackage;
             await Resource.ResourceAccess.LoginAsAsync(userId);
             string url = Manager.CurrentSite.HomePageUrl;

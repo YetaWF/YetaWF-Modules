@@ -26,6 +26,7 @@ var YetaWF_ComponentsHTML;
                 GetValue: null,
                 Enable: null,
             }) || this;
+            _this.Setup = setup;
             _this.MenuControl = $YetaWF.getElementById(setup.MenuId);
             _this.ButtonControl = YetaWF_ComponentsHTML.DropDownButtonComponent.getControlFromSelector("button", YetaWF_ComponentsHTML.DropDownButtonComponent.SELECTOR, [_this.Control]);
             $YetaWF.registerCustomEventHandler(_this.ButtonControl.Control, YetaWF_ComponentsHTML.DropDownButtonComponent.CLICKEDEVENT, null, function (ev) {
@@ -38,8 +39,16 @@ var YetaWF_ComponentsHTML;
         ModuleActionsComponent.prototype.openMenu = function () {
             var menuDiv = this.MenuControl.cloneNode(true);
             menuDiv.id = "".concat(this.MenuControl.id, "_live");
+            if (this.Setup.OwningModuleGuid)
+                menuDiv.setAttribute(YConfigs.Basics.CssModuleGuid, this.Setup.OwningModuleGuid);
             document.body.appendChild(menuDiv);
-            new YetaWF_ComponentsHTML.MenuULComponent(menuDiv.id, { "Owner": this.MenuControl, "AutoOpen": true, "AutoRemove": true, "AttachTo": this.ButtonControl.Control, Dynamic: true });
+            new YetaWF_ComponentsHTML.MenuULComponent(menuDiv.id, {
+                Owner: this.MenuControl,
+                AutoOpen: true,
+                AutoRemove: true,
+                AttachTo: this.ButtonControl.Control,
+                Dynamic: true
+            });
         };
         ModuleActionsComponent.TEMPLATE = "yt_moduleactions";
         ModuleActionsComponent.SELECTOR = ".yt_moduleactions";

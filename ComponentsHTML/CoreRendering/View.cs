@@ -32,7 +32,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                     css = CssManager.CombineCss(css, Manager.SkinInfo.PartialFormCss);
             }
 
-            string tags = $@"<div{id} class='{css}'>{HtmlBuilder.AntiForgeryToken()}{viewHtml}</div>";
+            string tags = $@"<div{id} class='{css}'>{viewHtml}</div>";
 
             if (Manager.IsPostRequest)
                 Manager.ScriptManager.AddLast($"$YetaWF.Forms.initPartialForm('{divId}');");

@@ -54,14 +54,14 @@ var YetaWF_ComponentsHTML;
             }
             document.body.appendChild(menu);
             new YetaWF_ComponentsHTML.MenuULComponent(menu.id, {
-                "Owner": this.Menu,
-                "AutoOpen": true,
-                "AutoRemove": true,
-                "AttachTo": this.Button,
-                "Dynamic": true,
-                "RightAlign": true,
-                "CloseOnClick": false,
-                "Click": function (liElem, target) {
+                Owner: this.Menu,
+                AutoOpen: true,
+                AutoRemove: true,
+                AttachTo: this.Button,
+                Dynamic: true,
+                RightAlign: true,
+                CloseOnClick: false,
+                Click: function (liElem, target) {
                     setTimeout(function () {
                         var check = $YetaWF.getElement1BySelector("input", [liElem]);
                         check.checked = !check.checked;

@@ -59,14 +59,14 @@ namespace YetaWF_ComponentsHTML {
 
             new YetaWF_ComponentsHTML.MenuULComponent(menu.id,
                 {
-                    "Owner": this.Menu,
-                    "AutoOpen": true,
-                    "AutoRemove": true,
-                    "AttachTo": this.Button,
-                    "Dynamic": true,
-                    "RightAlign": true,
-                    "CloseOnClick": false,
-                    "Click": (liElem: HTMLLIElement, target?: HTMLElement|null): void => {
+                    Owner: this.Menu,
+                    AutoOpen: true,
+                    AutoRemove: true,
+                    AttachTo: this.Button,
+                    Dynamic: true,
+                    RightAlign: true,
+                    CloseOnClick: false,
+                    Click: (liElem: HTMLLIElement, target?: HTMLElement|null): void => {
                         setTimeout((): void => {// checkboxes are weird
                             let check = $YetaWF.getElement1BySelector("input", [liElem]) as HTMLInputElement;
                             check.checked = !check.checked;

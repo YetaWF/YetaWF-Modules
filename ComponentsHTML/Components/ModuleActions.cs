@@ -1,8 +1,10 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core;
+using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -29,6 +31,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
         internal class ModuleActionsSetup {
             public string MenuId { get; set; } = null!;
+            public Guid? OwningModuleGuid { get; set; }
         }
 
         /// <inheritdoc/>
@@ -78,6 +81,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string buttonId = component.ControlId + "_btn";
             ModuleActionsSetup setup = new ModuleActionsSetup {
                 MenuId = component.ControlId + "_menu",
+                OwningModuleGuid = Manager.CurrentModule?.ModuleGuid,
             };
             string menuHTML = await MenuDisplayComponent.RenderMenuAsync(menu, setup.MenuId, Globals.CssGridActionMenu, HtmlHelper: component.HtmlHelper, Hidden: true);
 

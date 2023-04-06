@@ -45,7 +45,6 @@ var YetaWF_Panels;
                     GridData: _this.Grid.StaticData,
                     __ModuleGuid: formJson.ModuleGuid,
                     __UniqueIdCounters: formJson.UniqueIdCounters,
-                    __RequestVerificationToken: formJson.RequestVerificationToken,
                 };
                 $YetaWF.postJSON(uri, formJson, query, data, function (success, partial) {
                     if (success)

@@ -398,10 +398,12 @@ namespace YetaWF_ComponentsHTML {
                         $YetaWF.elementAddClass(menuDiv, "yt_grid_menu");
                         document.body.appendChild(menuDiv);
                         new YetaWF_ComponentsHTML.MenuULComponent(menuDiv.id, {
-                            "Owner": this.FilterBar!,
-                            "AutoOpen": true, "AutoRemove": true,
-                            "AttachTo": button, "Dynamic": true,
-                            "Click": (liElem: HTMLLIElement): void => {
+                            Owner: this.FilterBar!,
+                            AutoOpen: true, 
+                            AutoRemove: true,
+                            AttachTo: button, 
+                            Dynamic: true,
+                            Click: (liElem: HTMLLIElement): void => {
                                 this.menuSelected(liElem, colIndex);
                             },
                         });
@@ -875,7 +877,6 @@ namespace YetaWF_ComponentsHTML {
                     let data: GridPartialViewData = {
                         __UniqueIdCounters: YVolatile.Basics.UniqueIdCounters,
                         __ModuleGuid: formJson.ModuleGuid,
-                        __RequestVerificationToken: formJson.RequestVerificationToken,
                         Data: "",
                         FieldPrefix: this.Setup.FieldName,
                         Skip: page * this.Setup.PageSize,

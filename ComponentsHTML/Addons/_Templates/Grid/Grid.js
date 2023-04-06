@@ -307,10 +307,12 @@ var YetaWF_ComponentsHTML;
                         $YetaWF.elementAddClass(menuDiv, "yt_grid_menu");
                         document.body.appendChild(menuDiv);
                         new YetaWF_ComponentsHTML.MenuULComponent(menuDiv.id, {
-                            "Owner": _this.FilterBar,
-                            "AutoOpen": true, "AutoRemove": true,
-                            "AttachTo": button, "Dynamic": true,
-                            "Click": function (liElem) {
+                            Owner: _this.FilterBar,
+                            AutoOpen: true,
+                            AutoRemove: true,
+                            AttachTo: button,
+                            Dynamic: true,
+                            Click: function (liElem) {
                                 _this.menuSelected(liElem, colIndex);
                             },
                         });
@@ -786,7 +788,6 @@ var YetaWF_ComponentsHTML;
                     var data = {
                         __UniqueIdCounters: YVolatile.Basics.UniqueIdCounters,
                         __ModuleGuid: formJson.ModuleGuid,
-                        __RequestVerificationToken: formJson.RequestVerificationToken,
                         Data: "",
                         FieldPrefix: this.Setup.FieldName,
                         Skip: page * this.Setup.PageSize,

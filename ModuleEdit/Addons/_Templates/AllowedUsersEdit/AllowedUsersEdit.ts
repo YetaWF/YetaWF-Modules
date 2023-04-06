@@ -53,7 +53,6 @@ namespace YetaWF_ModuleEdit {
                     GridData: this.Grid.StaticData,
                     __ModuleGuid: formJson.ModuleGuid,
                     __UniqueIdCounters: formJson.UniqueIdCounters!,
-                    __RequestVerificationToken: formJson.RequestVerificationToken,
                 };  
                 if (this.Grid.ExtraData)
                     uri.addSearchSimpleObject(this.Grid.ExtraData);

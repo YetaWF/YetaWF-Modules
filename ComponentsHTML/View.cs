@@ -74,7 +74,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string id = HtmlBuilder.GetId(attrs);
             hb.Append($@"
 <form id='{id}' class='{Forms.CssForm}{HtmlBuilder.GetClasses(attrs, css)}' autocomplete='{(ModuleBase.FormAutoComplete ? "on" : "off")}' action='{Utility.HAE(formAction)}' method='{Method}'{HtmlBuilder.Attributes(attrs)}>
-    {HtmlBuilder.AntiForgeryToken()}");
+");
 
             return hb.ToString();
         }

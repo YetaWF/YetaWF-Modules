@@ -336,7 +336,6 @@ var YetaWF_ComponentsHTML;
                 var data = {
                     __UniqueIdCounters: YVolatile.Basics.UniqueIdCounters,
                     __ModuleGuid: formJson.ModuleGuid,
-                    __RequestVerificationToken: formJson.RequestVerificationToken,
                     Entry: this.getElementDataCond(liElem),
                 };
                 var uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
