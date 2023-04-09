@@ -17,7 +17,7 @@ public class AlertDisplayModuleEndpoints : YetaWFEndpoints {
         endpoints.MapPost(GetPackageApiEndpoint(package, typeof(AlertDisplayModuleEndpoints), Off), (HttpContext context) => {
             Manager.SessionSettings.SiteSettings.SetValue<bool>("YetaWF_Basics_AlertDone", true);
             Manager.SessionSettings.SiteSettings.Save();
-            return Results.Ok();
+            return Done();
         });
     }
 }

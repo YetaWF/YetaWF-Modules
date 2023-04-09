@@ -20,7 +20,7 @@ public static class Verify
 
     private static YetaWFManager Manager { get { return YetaWFManager.Manager; } }
 
-    public static bool VerifyTwilio(string authToken, string verificationRequestUrl)
+    public static bool VerifyTwilio(string authToken, string? verificationRequestUrl)
     {
 #if !DEBUG
         string requestUrl;
@@ -33,12 +33,12 @@ public static class Verify
         }
 
         HttpRequest request = Manager.CurrentRequest;
-        string signature = request.Headers["X-Twilio-Signature"];
+        string? signature = request.Headers["X-Twilio-Signature"];
         RequestValidator validator = new RequestValidator(authToken);
 
         Dictionary<string, string> dict = new Dictionary<string, string>();
         foreach (string key in request.Form.Keys) {
-            dict.Add(key, request.Form[key]);
+            dict.Add(key, request.Form[key]!);
         }
 
         if (!validator.Validate(requestUrl, dict, signature)) {
@@ -54,7 +54,7 @@ public static class Verify
         return true;
     }
 
-    public static void DumpHeaders(string usedRequestUrl, Dictionary<string, string> dict, string signature, bool Error = true)
+    public static void DumpHeaders(string usedRequestUrl, Dictionary<string, string> dict, string? signature, bool Error = true)
     {
         StringBuilder sb = new StringBuilder();
         sb.Append($"UsedRequestUrl={usedRequestUrl}\r\n");

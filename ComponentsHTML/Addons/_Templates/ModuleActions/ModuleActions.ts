@@ -41,13 +41,13 @@ namespace YetaWF_ComponentsHTML {
             if (this.Setup.OwningModuleGuid)
                 menuDiv.setAttribute(YConfigs.Basics.CssModuleGuid, this.Setup.OwningModuleGuid);
             document.body.appendChild(menuDiv);
-            new YetaWF_ComponentsHTML.MenuULComponent(menuDiv.id, 
-                { 
-                    Owner: this.MenuControl, 
-                    AutoOpen: true, 
-                    AutoRemove: true, 
-                    AttachTo: this.ButtonControl.Control, 
-                    Dynamic: true 
+            new YetaWF_ComponentsHTML.MenuULComponent(menuDiv.id,
+                {
+                    Owner: this.MenuControl,
+                    AutoOpen: true,
+                    AutoRemove: true,
+                    AttachTo: this.ButtonControl.Control,
+                    Dynamic: true
                 }
             );
         }

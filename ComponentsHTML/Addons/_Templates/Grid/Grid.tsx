@@ -307,7 +307,7 @@ namespace YetaWF_ComponentsHTML {
                         SettingsModuleGuid: this.Setup.SettingsModuleGuid,
                         ColumnsOn: [],
                         ColumnsOff: [],
-                    }
+                    };
                     // build list of columns
                     let entries = this.ColumnSelection!.getValueEntries();
                     let colIndex = 0;
@@ -317,7 +317,7 @@ namespace YetaWF_ComponentsHTML {
                                 gridHiddenColumns.ColumnsOn.push(entry.Name);
                         } else {
                             if (this.Setup.Columns[colIndex].Visible)
-                            gridHiddenColumns.ColumnsOff.push(entry.Name);
+                                gridHiddenColumns.ColumnsOff.push(entry.Name);
                         }
                     }
 
@@ -399,9 +399,9 @@ namespace YetaWF_ComponentsHTML {
                         document.body.appendChild(menuDiv);
                         new YetaWF_ComponentsHTML.MenuULComponent(menuDiv.id, {
                             Owner: this.FilterBar!,
-                            AutoOpen: true, 
+                            AutoOpen: true,
                             AutoRemove: true,
-                            AttachTo: button, 
+                            AttachTo: button,
                             Dynamic: true,
                             Click: (liElem: HTMLLIElement): void => {
                                 this.menuSelected(liElem, colIndex);
@@ -809,7 +809,7 @@ namespace YetaWF_ComponentsHTML {
                     const gridColumns: GridColumns = {
                         SettingsModuleGuid: currentControl.Setup.SettingsModuleGuid,
                         Columns: [{ Name: currentControl.Setup.Columns[colIndex].Name, Width: parseInt(currentControl.ColumnResizeHeader.style.width, 10) }],
-                    }
+                    };
                     const formJson = $YetaWF.Forms.getJSONInfo(currentControl.Control);
                     $YetaWF.postJSONIgnore($YetaWF.parseUrl(currentControl.Setup.SaveSettingsColumnWidthsUrl), formJson, null, gridColumns);
                 }
@@ -887,8 +887,8 @@ namespace YetaWF_ComponentsHTML {
                     };
                     // sort order
                     if (col) {
-                        data.Sorts.push({ 
-                            Field: col.Name, 
+                        data.Sorts.push({
+                            Field: col.Name,
                             Order: col.Sort === SortByEnum.Descending ? YetaWF.SortDirection.Descending : YetaWF.SortDirection.Asending,
                         });
                     }
@@ -932,14 +932,14 @@ namespace YetaWF_ComponentsHTML {
                             ++colIndex;
                         }
                     }
-    
+
                     let uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
 
                     if (this.Setup.ExtraData)
                         uri.addSearchSimpleObject(this.Setup.ExtraData);
 
                     if (this.Setup.StaticData)
-                        data.Data = JSON.stringify(this.Setup.StaticData)
+                        data.Data = JSON.stringify(this.Setup.StaticData);
 
                     this.setReloading(true);
                     $YetaWF.postJSON(uri, formJson, null,  data, (success: boolean, partial: GridPartialResult): void => {

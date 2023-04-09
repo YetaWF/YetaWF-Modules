@@ -23,6 +23,9 @@ using YetaWF.Core.Security;
 using YetaWF.Core.Support;
 using YetaWF.Core.Support.SendSMS;
 
+#if !DEBUG
+using Softelvdm.Modules.TwilioProcessor.Support;
+#endif
 namespace Softelvdm.Modules.IVR.Endpoints;
 
 public class CallEndpoints : YetaWFEndpoints {

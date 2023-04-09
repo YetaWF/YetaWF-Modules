@@ -53,8 +53,8 @@ namespace YetaWF_Identity {
                     GridData: this.Grid.StaticData,
                     __ModuleGuid: formJson.ModuleGuid,
                     __UniqueIdCounters: formJson.UniqueIdCounters!,
-                };  
-                if (this.Grid.ExtraData) 
+                };
+                if (this.Grid.ExtraData)
                     uri.addSearchSimpleObject(this.Grid.ExtraData);
 
                 $YetaWF.postJSON(uri, formJson, query, data, (success: boolean, partial: GridRecordResult): void => {

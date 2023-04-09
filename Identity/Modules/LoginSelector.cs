@@ -90,7 +90,7 @@ public class LoginSelectorModule : ModuleDefinition {
 
     public async Task<ActionInfo> RenderModuleAsync() {
 #if !DEBUG
-        if (YetaWFManager.Deployed && !Manager.HasSuperUserRole) return new EmptyResult();
+        if (YetaWFManager.Deployed && !Manager.HasSuperUserRole) return ActionInfo.Empty;
 #endif
         if (Manager.RenderStaticPage) return ActionInfo.Empty;
 

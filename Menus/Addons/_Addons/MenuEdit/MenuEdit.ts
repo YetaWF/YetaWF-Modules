@@ -505,7 +505,7 @@ namespace YetaWF_Menus {
         private sendEntireMenu(): void {
 
             if ($YetaWF.isLoading) return;
-            
+
             let form = $YetaWF.Forms.getForm(this.Details);
             let menuVersionInput = $YetaWF.getElement1BySelector("input[name='MenuVersion']", [form]) as HTMLInputElement;
             let menuVersion = menuVersionInput.value;

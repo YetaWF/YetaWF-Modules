@@ -23,6 +23,7 @@ public class LoginModuleEndpoints : YetaWFEndpoints {
 
     private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(LoginModuleEndpoints), name, defaultValue, parms); }
 
+    public const string LoginDirect = "LoginDirect";
     public const string LoginDirectGet = "LoginDirectGet";
     public const string ResendVerificationEmail = "ResendVerificationEmail";
 
@@ -30,21 +31,13 @@ public class LoginModuleEndpoints : YetaWFEndpoints {
 
         RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(LoginModuleEndpoints)));
 
-        group.MapGet(LoginDirectGet, async (HttpContext context, string name, string password, Guid security) => {
-            Package package = AreaRegistration.CurrentPackage;
-            Guid batchKey = WebConfigHelper.GetValue<Guid>(package.AreaName, "BatchKey");
-            if (batchKey != security)
-                return Results.Unauthorized();
+        group.MapPost(LoginDirect, (HttpContext context, string name, string password, Guid security) => {
+            return PerformLogin(context, name, password, security);
+        })
+            .ExcludeDemoMode();
 
-            CompleteLoginModel model = new CompleteLoginModel {
-                UserName = name,
-                Password = password
-            };
-
-            await CompleteLoginAsync(model);
-            if (!model.Success)
-                return Results.Unauthorized();
-            return Results.Ok();
+        group.MapGet(LoginDirectGet, (HttpContext context, string name, string password, Guid security) => {
+            return PerformLogin(context, name, password, security);
         })
             .ExcludeDemoMode();
 
@@ -70,6 +63,23 @@ public class LoginModuleEndpoints : YetaWFEndpoints {
         public string UserName { get; set; }
         public string Password { get; set; }
         public bool Success { get; set; }
+    }
+
+    private static async Task<IResult> PerformLogin(HttpContext context, string name, string password, Guid security) {
+        Package package = AreaRegistration.CurrentPackage;
+        Guid batchKey = WebConfigHelper.GetValue<Guid>(package.AreaName, "BatchKey");
+        if (batchKey != security)
+            return Results.Unauthorized();
+
+        CompleteLoginModel model = new CompleteLoginModel {
+            UserName = name,
+            Password = password
+        };
+
+        await CompleteLoginAsync(model);
+        if (!model.Success)
+            return Results.Unauthorized();
+        return Results.Ok();
     }
 
     private static async Task CompleteLoginAsync(CompleteLoginModel model) {

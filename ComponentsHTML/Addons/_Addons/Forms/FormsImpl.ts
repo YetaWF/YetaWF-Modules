@@ -163,7 +163,7 @@ namespace YetaWF_ComponentsHTML {
                 obj[left] = {};
             this.parseField(obj[left], fieldValue, right);
         }
-        
+
         /**
          * Validate all fields in the current form.
          */

@@ -74,10 +74,9 @@ var YetaWF_ComponentsHTML;
             }
             var info = $YetaWF.Forms.getJSONInfo(this.Control);
             uri.replaceSearch(YConfigs.Basics.ModuleGuid, info.ModuleGuid);
-            document.cookie = "".concat(YConfigs.Basics.AntiforgeryCookieName, "=").concat(YVolatile.Basics.AntiforgeryCookieToken);
             var request = new XMLHttpRequest();
             request.open("POST", uri.toUrl(), true);
-            request.setRequestHeader(YConfigs.Basics.AntiforgeryRequestName, YVolatile.Basics.AntiforgeryRequestToken);
+            request.setRequestHeader(YConfigs.Basics.AntiforgeryHeader, YVolatile.Basics.AntiforgeryRequestToken);
             request.upload.onprogress = function (ev) {
                 var percent = 0;
                 var position = ev.loaded;

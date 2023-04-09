@@ -189,7 +189,7 @@ namespace YetaWF_Search {
 
         let query = {
             Value: false,
-        }
+        };
         const uri = $YetaWF.parseUrl(offButton.href);
         const formJson = $YetaWF.Forms.getJSONInfo(onButton);
         $YetaWF.postJSONIgnore(uri, formJson, query, null);

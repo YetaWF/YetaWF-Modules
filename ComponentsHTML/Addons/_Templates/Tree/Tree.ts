@@ -354,7 +354,7 @@ namespace YetaWF_ComponentsHTML {
                     __UniqueIdCounters: YVolatile.Basics.UniqueIdCounters,
                     __ModuleGuid: formJson.ModuleGuid,
                     Entry: this.getElementDataCond(liElem),
-                }
+                };
 
                 var uri = $YetaWF.parseUrl(this.Setup.AjaxUrl);
 
