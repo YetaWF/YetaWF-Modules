@@ -113,6 +113,30 @@ namespace YetaWF_ComponentsHTML {
             return obj;
         }
 
+        /**
+         * Serializes the form and returns a name/value pairs array
+         */
+        public serializeFormArray(form: HTMLFormElement): YetaWF.NameValuePair[] {
+            let array: YetaWF.NameValuePair[] = [];
+
+            let elems = $YetaWF.getElementsBySelector("input,select,textarea", [form]);
+            for (let elem of elems) {
+                let name = $YetaWF.getAttributeCond(elem, "name");
+                if (!name ||
+                    ($YetaWF.getAttributeCond(elem, "disabled") && !$YetaWF.elementHasClass(elem, "disabled-submit")) || // don't submit disabled fields
+                    ($YetaWF.getAttributeCond(elem, "readonly") && !$YetaWF.elementHasClass(elem, "readonly-submit")) || // don't submit readonly fields
+                    $YetaWF.elementHasClass(elem, YConfigs.Forms.CssFormNoSubmit) || // don't submit nosubmit fields
+                    $YetaWF.elementClosestCond(elem, `.${YConfigs.Forms.CssFormNoSubmitContents}`)) // don't submit input fields in containers (usually grids)
+                    continue;
+
+                array.push({
+                    name: name,
+                    value: YetaWF_ComponentsHTML_Validation.getFieldValue(elem).toString()
+                });
+            }
+            return array;
+        }
+
         private parseField(obj: any, fieldValue: string|boolean, name: string): void {
             if (!name) return;
             const br = name.indexOf("[");

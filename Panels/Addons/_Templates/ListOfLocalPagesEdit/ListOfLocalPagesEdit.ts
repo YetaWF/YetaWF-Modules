@@ -51,7 +51,7 @@ namespace YetaWF_Panels {
                 const data : YetaWF_ComponentsHTML.GridAdditionPartialViewData = {
                     GridData: this.Grid.StaticData,
                     __ModuleGuid: formJson.ModuleGuid,
-                    __UniqueIdCounters: formJson.UniqueIdCounters!,
+                    __UniqueIdCounters: formJson.UniqueIdCounters,
                 };
                 $YetaWF.postJSON(uri, formJson, query, data, (success: boolean, partial: GridRecordResult): void => {
                     if (success)
