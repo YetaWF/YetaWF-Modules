@@ -1,7 +1,5 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,7 +8,6 @@ using YetaWF.Core.Extensions;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
-using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.ComponentsHTML.Components {

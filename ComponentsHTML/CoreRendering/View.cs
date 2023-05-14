@@ -18,7 +18,7 @@ namespace YetaWF.Modules.ComponentsHTML {
         /// <param name="viewHtml">The current view contents to be wrapped in the view.</param>
         /// <param name="UsePartialFormCss">Defines whether the partial form CSS should be used.</param>
         /// <returns>Returns the complete view as HTML.</returns>
-        public Task<string> RenderViewAsync(YHtmlHelper htmlHelper, ModuleDefinition module, string viewHtml, bool UsePartialFormCss) {
+        public Task<string> RenderPartialFormAsync(YHtmlHelper htmlHelper, ModuleDefinition module, string viewHtml, bool UsePartialFormCss) {
 
             string css = Manager.AddOnManager.CheckInvokedCssModule(Forms.CssFormPartial);
 

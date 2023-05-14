@@ -64,7 +64,7 @@ a.y_act_buttonbar.t_middle {
 
 @media print {
   .yt_moduleactions,
-.yt_moduleactionsplain {
+  .yt_moduleactionsplain {
     display: none;
   }
 }
