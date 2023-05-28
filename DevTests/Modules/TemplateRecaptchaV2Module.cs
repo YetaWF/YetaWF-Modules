@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Endpoints.Support;
@@ -54,6 +55,9 @@ namespace YetaWF.Modules.DevTests.Modules {
             [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
             [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot")]
             public RecaptchaV2Data Prop1 { get; set; }
+
+            [JsonPropertyName("g-recaptcha-response")]
+            public string? g_recaptcha_response { get; set; }
 
             public Model() {
                 Prop1 = new RecaptchaV2Data();

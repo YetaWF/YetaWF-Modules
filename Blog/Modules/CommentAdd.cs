@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Components;
@@ -78,6 +79,9 @@ public class CommentAddModule : ModuleDefinition {
         [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
         [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf("ShowCaptcha", false)]
         public RecaptchaV2Data Captcha { get; set; }
+
+        [JsonPropertyName("g-recaptcha-response")]
+        public string? g_recaptcha_response { get; set; }
 
         [UIHint("Hidden")]
         public bool ShowCaptcha { get; set; }

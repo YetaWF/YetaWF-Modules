@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Components;
@@ -106,6 +107,9 @@ public class ForgotPasswordModule : ModuleDefinition {
         public RecaptchaV2Data Captcha { get; set; }
         [UIHint("Hidden")]
         public bool ShowCaptcha { get; set; }
+
+        [JsonPropertyName("g-recaptcha-response")]
+        public string? g_recaptcha_response { get; set; }
 
         [UIHint("Hidden")]
         public RegistrationTypeEnum RegistrationType { get; set; }

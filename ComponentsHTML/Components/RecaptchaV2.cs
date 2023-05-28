@@ -1,5 +1,6 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Packages;
@@ -14,6 +15,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
     /// [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot")]
     /// public RecaptchaV2Data Captcha { get; set; }
+    /// [JsonPropertyName("g-recaptcha-response")]
+    /// public string? g_recaptcha_response { get; set; }
     /// </example>
     public class RecaptchaV2EditComponent : YetaWFComponent, IYetaWFComponent<RecaptchaV2Data> {
 

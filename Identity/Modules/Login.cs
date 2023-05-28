@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.Components;
@@ -165,6 +166,9 @@ public class LoginModule : ModuleDefinition {
         [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot")]
         [SuppressIf(nameof(ShowCaptcha), false)]
         public RecaptchaV2Data Captcha { get; set; }
+
+        [JsonPropertyName("g-recaptcha-response")]
+        public string? g_recaptcha_response { get; set; }
 
         [Caption(""), Description("")]
         [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.NormalLinks), ReadOnly]

@@ -48,8 +48,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// Help files are cached if the are smaller than 1K of data.
     ///
     /// The search path is as follows (in this example, the user's defined language is DE-de):
-    /// ./AddonsCustom/..sitename../..Package.Domain../..Package.Product../_Main/Help/DE-de/..filename...html
-    /// ./AddonsCustom/..sitename../..Package.Domain../..Package.Product../_Main/Help/..filename...html
+    /// ./Addons/Custom/..sitename../..Package.Domain../..Package.Product../_Main/Help/DE-de/..filename...html
+    /// ./Addons/Custom/..sitename../..Package.Domain../..Package.Product../_Main/Help/..filename...html
     /// ..package../Addons/_Main/Help/DE-de/..filename...html
     /// ..package../Addons/_Main/Help/..filename...html
     /// </remarks>
