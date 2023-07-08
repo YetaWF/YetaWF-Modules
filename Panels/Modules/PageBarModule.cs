@@ -189,7 +189,7 @@ public class PageBarModule : ModuleDefinition {
                         model.PanelInfo.ContentPage = page;
                     } else {
                         if (!Manager.HaveUser)
-                            return RedirectToUrl(Manager.CurrentSite.LoginUrl);
+                            return RedirectActionInfo(Manager.CurrentSite.LoginUrl);
                     }
                 }
             }
@@ -218,8 +218,8 @@ public class PageBarModule : ModuleDefinition {
             return await FormProcessedAsync(model, OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
         }
         Manager.EditMode = false;
-        string url = YetaWFEndpoints.AddUrlPayload(Manager.ReturnToUrl, true, null);
-        return await FormProcessedAsync(model, NextPage: url, OnClose: OnCloseEnum.GotoNewPage, OnPopupClose: OnPopupCloseEnum.GotoNewPage);
+        //$$$string url = YetaWFEndpoints.AddUrlPayload(Manager.ReturnToUrl, true, null);
+        return await FormProcessedAsync(model, OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
     }
 
     private async Task<List<PageBarInfo.PanelEntry>> GetPanelsAsync() {

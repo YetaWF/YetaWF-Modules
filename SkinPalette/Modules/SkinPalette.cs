@@ -1120,6 +1120,26 @@ public class SkinPaletteModule : ModuleDefinition {
         public string PanelShadow { get; set; } = null!;
 
 
+        [Category("Switch"), Caption("--switch-bg-on"), Description("Color")]
+        [UIHint("Color"), StringLength(MaxColor), Required]
+        public string SwitchBgOn { get; set; } = null!;
+
+        [Category("Switch"), Caption("--switch-clr-on"), Description("Color")]
+        [UIHint("Color"), StringLength(MaxColor), Required]
+        public string SwitchClrOn { get; set; } = null!;
+
+        [Category("Switch"), Caption("--switch-bg-off"), Description("Color")]
+        [UIHint("Color"), StringLength(MaxColor), Required]
+        public string SwitchBgOff { get; set; } = null!;
+
+        [Category("Switch"), Caption("--switch-clr-off"), Description("Color")]
+        [UIHint("Color"), StringLength(MaxColor), Required]
+        public string SwitchClrOff { get; set; } = null!;
+
+        [Category("Switch"), Caption("--switch-bg-switch"), Description("Color")]
+        [UIHint("Color"), StringLength(MaxColor), Required]
+        public string SwitchBgSwitch { get; set; } = null!;
+
 
         [Category("Indicators"), Caption("--mod-current-bg"), Description("Color")]
         [UIHint("Color"), StringLength(MaxColor), Required]

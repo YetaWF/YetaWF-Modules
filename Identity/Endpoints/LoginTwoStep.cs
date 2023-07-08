@@ -19,7 +19,6 @@ public class LoginTwoStepEndpoints : YetaWFEndpoints {
 
     public const string IDENTITY_TWOSTEP_USERID = "YetaWF_Identity-Login-TwoStep";
     public const string IDENTITY_TWOSTEP_NEXTURL = "YetaWF_Identity-Login-NextUrl";
-    public const string IDENTITY_TWOSTEP_CLOSEONLOGIN = "YetaWF_Identity-Login-CloseOnLogin";
 
     public const string Login = "Login";
 
@@ -30,30 +29,23 @@ public class LoginTwoStepEndpoints : YetaWFEndpoints {
         group.MapGet(Login, async (HttpContext context) => {
             // verify that the user already entered the name/password correctly
             int userId = Manager.SessionSettings.SiteSettings.GetValue<int>(IDENTITY_TWOSTEP_USERID, 0);
-            bool closeOnLogin = Manager.SessionSettings.SiteSettings.GetValue<bool>(IDENTITY_TWOSTEP_CLOSEONLOGIN, false);
             string returnUrl = Manager.SessionSettings.SiteSettings.GetValue<string>(IDENTITY_TWOSTEP_NEXTURL);
 
             Manager.SessionSettings.SiteSettings.ClearValue(IDENTITY_TWOSTEP_USERID);
             Manager.SessionSettings.SiteSettings.ClearValue(IDENTITY_TWOSTEP_NEXTURL);
-            Manager.SessionSettings.SiteSettings.ClearValue(IDENTITY_TWOSTEP_CLOSEONLOGIN);
             Manager.SessionSettings.SiteSettings.Save();
-            if (userId == 0) return Results.Redirect(Manager.CurrentSite.HomePageUrl);
+            if (userId == 0) return Redirect(Manager.CurrentSite.HomePageUrl);
 
             // verify that the TwoStepAuthorization provider just verified this user
             TwoStepAuth twoStep = new TwoStepAuth();
             if (!await twoStep.VerifyTwoStepAutheticationDoneAsync(userId))
-                return Results.Redirect(Manager.CurrentSite.HomePageUrl);
+                return Redirect(Manager.CurrentSite.HomePageUrl);
             await twoStep.ClearTwoStepAutheticationAsync(userId);
 
             await Resource.ResourceAccess.LoginAsAsync(userId);
 
-            if (closeOnLogin)
-                throw new NotImplementedException();
-                //$$$ return View("YetaWF_Identity_TwoStepDone");
-            else {
-                returnUrl = QueryHelper.AddRando(returnUrl); // to defeat client-side caching
-                return Results.Redirect(returnUrl);
-            }
+            returnUrl = QueryHelper.AddRando(returnUrl); // to defeat client-side caching
+            return Redirect(returnUrl);
         });
     }
 }

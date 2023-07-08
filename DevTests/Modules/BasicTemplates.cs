@@ -205,6 +205,25 @@ namespace YetaWF.Modules.DevTests.Modules {
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public SMTPServer? SMTPServer { get; set; }
 
+            [Category("Core"), Caption("Switch"), Description("Switch")]
+            [UIHint("Switch"), Required]
+            [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
+            public bool Switch { get; set; } = true;
+            public string Switch_Text { get; set; } = "Lorem ipsum";
+            public string Switch_Tooltip { get; set; } = "Lorem ipsum tooltip";
+            public string Switch_On { get; set; } = "Enabled";
+            public string Switch_Off { get; set; } = "Disabled";
+            public string Switch_Size { get; set; } = "md";
+
+            [Category("Core"), Caption("Switch (Disabled)"), Description("Switch (Disabled)")]
+            [UIHint("Switch"), ReadOnly]
+            public bool SwitchDis { get; set; } = true;
+            public string SwitchDis_Text { get; set; } = "Lorem ipsum";
+            public string SwitchDis_Tooltip { get; set; } = "Lorem ipsum tooltip";
+            public string SwitchDis_On { get; set; } = "On";
+            public string SwitchDis_Off { get; set; } = "Off";
+            //public string SwitchDis_Size { get; set; } = "md";
+
             [Category("Core"), Caption("Text"), Description("Text (Required)")]
             [UIHint("Text"), StringLength(200)]
             [RequiredIf(nameof(ControlStatus), ControlStatusEnum.Normal)]

@@ -82,7 +82,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     if (property.TextAbove.StartsWith("-"))
                         hb.Append(property.TextAbove.Substring(1));
                     else
-                        hb.Append(Utility.HE(property.TextAbove).Replace(ScriptBuilder.NL, "<br/>"));
+                        hb.Append(Utility.HE(property.TextAbove).Replace(ScriptBuilder.NL, "<br>"));
                     hb.Append("</div>");
                 }
                 if (haveValue || string.IsNullOrWhiteSpace(property.TextAbove)) {
@@ -126,7 +126,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                     if (property.TextBelow.StartsWith("-"))
                         hb.Append(property.TextBelow.Substring(1));
                     else
-                        hb.Append(Utility.HE(property.TextBelow).Replace(ScriptBuilder.NL, "<br/>"));
+                        hb.Append(Utility.HE(property.TextBelow).Replace(ScriptBuilder.NL, "<br>"));
                     hb.Append("</div>");
                 }
                 hb.Append("</div>");

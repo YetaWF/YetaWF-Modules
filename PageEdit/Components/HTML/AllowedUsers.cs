@@ -174,7 +174,7 @@ public class AllowedUsersEditComponent : AllowedUsersComponentBase, IYetaWFCompo
     <div class='t_newvalue {Forms.CssFormNoSubmitContents}'>
         {await HtmlHelper.ForLabelAsync(newModel, nameof(newModel.NewValue))}
         {await HtmlHelper.ForEditAsync(newModel, nameof(newModel.NewValue))}
-        <input name='btnAdd' type='button' class='y_button' value='Add' disabled='disabled' />
+        <input name='btnAdd' type='button' class='y_button' value='Add' disabled='disabled'>
     </div>");
 
         }

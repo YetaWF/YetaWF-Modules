@@ -35,7 +35,7 @@ public class LoginDirectEndpoints : YetaWFEndpoints {
             await Resource.ResourceAccess.LoginAsAsync(userId);
             string url = Manager.CurrentSite.HomePageUrl;
             url = QueryHelper.AddRando(url); // to defeat client-side caching
-            return Results.Redirect(url);
+            return Redirect(url);
         })
             .ResourceAuthorize(Info.Resource_AllowUserLogon);
 
@@ -49,7 +49,7 @@ public class LoginDirectEndpoints : YetaWFEndpoints {
                 } else {
                     await Resource.ResourceAccess.LoginAsAsync(user.UserId);
                 }
-                return Results.Redirect(url);
+                return Redirect(url);
             }
         });
 
@@ -63,7 +63,7 @@ public class LoginDirectEndpoints : YetaWFEndpoints {
             if (string.IsNullOrWhiteSpace(url))
                 url = Manager.CurrentSite.HomePageUrl;
             url = QueryHelper.AddRando(url); // to defeat client-side caching
-            return Results.Redirect(url);
+            return Redirect(url);
         });
 
         group.MapPost(LogoffDirect, async (HttpContext context, string nextUrl) => {

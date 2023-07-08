@@ -61,14 +61,13 @@ public class Emails {
     }
     public async Task SendVerificationAsync(UserDefinition user, string ccEmail = null) {
 
-        string retUrl = Manager.ReturnToUrl;
+        string retUrl = Manager.CurrentSite.HomePageUrl;//$$$ this should be an "account verified" page
         string urlOnly;
         QueryHelper qh = QueryHelper.FromUrl(Manager.CurrentSite.LoginUrl, out urlOnly);
         qh.Add("Name", user.UserName, Replace: true);
         qh.Add("V", user.VerificationCode, Replace: true);
         string urlNoOrigin = qh.ToUrl(urlOnly);
-        qh.Add("CloseOnLogin", "true", Replace: true);
-        qh.Add(Globals.Link_OriginList, Utility.JsonSerialize(new List<Origin> { new Origin { Url = retUrl } }), Replace: true);
+        qh.Add("ReturnUrl", retUrl, Replace: true);
         string url = qh.ToUrl(urlOnly);
 
         SendEmail sendEmail = new SendEmail();

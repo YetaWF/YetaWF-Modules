@@ -101,8 +101,7 @@ public class MarkdownModule : ModuleDefinition {
         } else {
             if (Manager.IsInPopup) throw new InternalError("Save & Display not available in a popup window");
             Manager.EditMode = false;
-            return await FormProcessedAsync(model, NextPage: Manager.ReturnToUrl, OnClose: OnCloseEnum.GotoNewPage, OnPopupClose: OnPopupCloseEnum.GotoNewPage);
-            //$$$$ return Redirect(Manager.ReturnToUrl, SetCurrentEditMode: true);
+            return await FormProcessedAsync(model, OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
         }
     }
 }

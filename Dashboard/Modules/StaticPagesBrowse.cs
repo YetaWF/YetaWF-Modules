@@ -107,7 +107,7 @@ public class StaticPagesBrowseModule : ModuleDefinition {
         [UIHint("Enum"), ReadOnly]
         public StaticPageManager.PageEntryEnum StorageType { get; set; }
         [Caption("Local Files"), Description("The local file(s) containing the contents of the static page")]
-        [UIHint("ListOfStrings"), AdditionalMetadata("Delimiter", "<br/>"), ReadOnly]
+        [UIHint("ListOfStrings"), AdditionalMetadata("Delimiter", "<br>"), ReadOnly]
         public List<string> FileNames { get; set; }
 
         public StaticPagesBrowseModule Module { get; set; }

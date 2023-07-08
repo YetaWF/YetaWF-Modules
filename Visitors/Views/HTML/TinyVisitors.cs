@@ -28,13 +28,13 @@ public class TinyVisitorsView : YetaWFView, IYetaWFView<TinyVisitorsModule, Tiny
         if (string.IsNullOrWhiteSpace(model.VisitorsUrl)) {
 
             hb.Append($@"
-    <img src='{HAE(Manager.GetCDNUrl(model.ImageUrl))}' data-tooltip='{HAE(model.Tooltip)}' />");
+    <img src='{HAE(Manager.GetCDNUrl(model.ImageUrl))}' data-tooltip='{HAE(model.Tooltip)}'>");
 
         } else {
 
             hb.Append($@"
     <a href='{HAE(model.VisitorsUrl)}' class='{HAE(Basics.CssActionLink)}'>
-        <img src='{HAE(Manager.GetCDNUrl(model.ImageUrl))}' data-tooltip='{HAE(model.Tooltip)}' alt='{HAE(this.__ResStr("visitors", "Visitors"))}' />
+        <img src='{HAE(Manager.GetCDNUrl(model.ImageUrl))}' data-tooltip='{HAE(model.Tooltip)}' alt='{HAE(this.__ResStr("visitors", "Visitors"))}'>
     </a>");
 
         }

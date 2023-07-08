@@ -645,7 +645,7 @@ var YetaWF_ComponentsHTML;
             this.TimePopup =
                 $YetaWF.createElement("div", { id: DateTimeEditComponent.TIMEPOPUPID, "data-owner": this.ControlId, "aria-hidden": "false" },
                     $YetaWF.createElement("div", { class: "t_container", "data-role": "popup", "aria-hidden": "false" },
-                        $YetaWF.createElement("div", { class: "t_scroller", unselectable: "on" },
+                        $YetaWF.createElement("div", { class: "t_scroller" },
                             $YetaWF.createElement("ul", { unselectable: "on", class: "t_list", tabindex: "-1", "aria-hidden": "true", "aria-live": "off", "data-role": "staticlist", role: "listbox" }))));
             var ul = $YetaWF.getElement1BySelector("ul", [this.TimePopup]);
             var len = times.length;
@@ -892,7 +892,7 @@ var YetaWF_ComponentsHTML;
             this.YearPopup =
                 $YetaWF.createElement("div", { id: DateTimeEditComponent.YEARPOPUPID, "data-owner": this.ControlId, "aria-hidden": "false" },
                     $YetaWF.createElement("div", { class: "t_container", "data-role": "popup", "aria-hidden": "false" },
-                        $YetaWF.createElement("div", { class: "t_scroller", unselectable: "on" },
+                        $YetaWF.createElement("div", { class: "t_scroller" },
                             $YetaWF.createElement("ul", { unselectable: "on", class: "t_list", tabindex: "-1", "aria-hidden": "true", "aria-live": "off", "data-role": "staticlist", role: "listbox" }))));
             var minDate = new Date(this.Setup.MinDate);
             var maxDate = new Date(this.Setup.MaxDate);
@@ -974,7 +974,7 @@ var YetaWF_ComponentsHTML;
             this.MonthPopup =
                 $YetaWF.createElement("div", { id: DateTimeEditComponent.MONTHPOPUPID, "data-owner": this.ControlId, "aria-hidden": "false" },
                     $YetaWF.createElement("div", { class: "t_container", "data-role": "popup", "aria-hidden": "false" },
-                        $YetaWF.createElement("div", { class: "t_scroller", unselectable: "on" },
+                        $YetaWF.createElement("div", { class: "t_scroller" },
                             $YetaWF.createElement("ul", { unselectable: "on", class: "t_list", tabindex: "-1", "aria-hidden": "true", "aria-live": "off", "data-role": "staticlist", role: "listbox" }))));
             var ul = $YetaWF.getElement1BySelector("ul", [this.MonthPopup]);
             var startMonth = 0;

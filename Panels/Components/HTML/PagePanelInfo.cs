@@ -63,7 +63,7 @@ public class PagePanelInfoDisplayComponent : PagePanelInfoComponentBase, IYetaWF
     <div class='t_entry'>
         <div class='t_image'>
             <a class='{actionLinkClass}' href='{HAE(entry.Url)}' data-tooltip='{HAE(entry.ToolTip.ToString())}'>
-                <img src='{HAE(entry.ImageUrl)}' alt='{HAE(caption)}' title='{HAE(entry.ToolTip.ToString())}' />
+                <img src='{HAE(entry.ImageUrl)}' alt='{HAE(caption)}' title='{HAE(entry.ToolTip.ToString())}'>
             </a>
         </div>
         <div class='t_link'>

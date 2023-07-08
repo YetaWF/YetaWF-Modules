@@ -83,10 +83,12 @@ public class SetupExternalAccountModule : ModuleDefinition {
         public bool AllowNewUser { get; set; }
         [UIHint("Hidden"), ReadOnly]
         public bool ExistingUser { get; set; }
+        [UIHint("Hidden"), ReadOnly]
+        public string ReturnUrl { get; set; }
         public string LoginProviderDisplay { get; set; }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
+    public async Task<ActionInfo> RenderModuleAsync(string returnUrl) {
 
         // get the registration module for some defaults
         LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
@@ -104,6 +106,7 @@ public class SetupExternalAccountModule : ModuleDefinition {
             Email = extInfo.Email,
             RegistrationType = config.RegistrationType,
             LoginProviderDisplay = extInfo.LoginProviderDisplay,
+            ReturnUrl = returnUrl,
         };
         return await RenderAsync(model);
     }
@@ -197,7 +200,8 @@ public class SetupExternalAccountModule : ModuleDefinition {
                 await emails.SendNewUserCreatedAsync(user);
             await LoginModule.UserLoginAsync(user, config.PersistentLogin);
             return await FormProcessedAsync(model, this.__ResStr("okRegText", "Your new account has been successfully registered."), this.__ResStr("okRegTitle", "Welcome!"),
-                ForceReload: true);//$$$$
+                OnClose: OnCloseEnum.GotoNewPage, OnPopupClose: OnPopupCloseEnum.GotoNewPage,
+                NextPage: model.ReturnUrl, ForceReload: true);
         } else
             throw new InternalError("badUserStatus", "Unexpected account status {0}", user.UserStatus);
     }

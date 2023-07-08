@@ -59,7 +59,7 @@ public class RegisterView : YetaWFView, IYetaWFView2<RegisterModule, RegisterMod
             foreach (FormButton formButton in model.ExternalProviders) {
                 hb.Append($@"
         <div class='t_extentry'>
-            <img src='{HAE(model.Images[index])}' alt='{HAE(formButton.Title)}' title='{HAE(formButton.Title)}' />
+            <img src='{HAE(model.Images[index])}' alt='{HAE(formButton.Title)}' title='{HAE(formButton.Title)}'>
             {await formButton.RenderAsync()}
         </div>");
                 ++index;

@@ -112,7 +112,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             };
 
             string tags = $@"
-<div id='{component.DivId}' class='yt_dropdownsearch_base t_edit' unselectable='on' role='listbox' aria-haspopup='true' aria-expanded='false' aria-owns='yDDPopup' aria-live='polite' aria-busy='false' aria-activedescendant='{Guid.NewGuid().ToString()}'>
+<div id='{component.DivId}' class='yt_dropdownsearch_base t_edit' role='listbox' aria-haspopup='true' aria-expanded='false' aria-owns='yDDPopup' aria-live='polite' aria-busy='false' aria-activedescendant='{Guid.NewGuid().ToString()}'>
     <input{component.FieldSetup(component.Validation ? FieldType.Validated : FieldType.Normal)} id='{component.ControlId}' type='hidden' value='{HAE(model?.ToString() ?? string.Empty)}'>
     <input type='text' value='{HAE(text ?? string.Empty)}' class='yt_text_base t_edit' autocomplete='off'{placeHolder}>
 </div>";

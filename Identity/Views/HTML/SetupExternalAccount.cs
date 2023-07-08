@@ -6,6 +6,7 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Packages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.ComponentsHTML.Components;
+using YetaWF.Modules.Identity.Endpoints;
 using YetaWF.Modules.Identity.Modules;
 
 namespace YetaWF.Modules.Identity.Views;
@@ -22,7 +23,7 @@ public class SetupExternalAccountView : YetaWFView, IYetaWFView2<SetupExternalAc
         HtmlBuilder hb = new HtmlBuilder();
 
         hb.Append($@"
-{await RenderBeginFormAsync()}
+{await RenderBeginFormAsync(/*SubmitAction: Utility.UrlFor<SetupExternalAccountEndpoints>(SetupExternalAccountEndpoints.SetupExternalAccount)*/)}
     {await PartialForm(async () => await RenderPartialViewAsync(module, model))}
     {await FormButtonsAsync(new FormButton[] {
     new FormButton() { ButtonType= ButtonTypeEnum.Submit, Text=this.__ResStr("btnSave", "Setup External Account") },
@@ -41,14 +42,14 @@ public class SetupExternalAccountView : YetaWFView, IYetaWFView2<SetupExternalAc
 
             hb.Append($@"
 <p class='t_header'>
-    {this.__ResStr("extAcct", "You have successfully authenticated with <strong>{0}</strong>.<br/>Please enter your information below and click the Setup External Account button to finish logging in.", HE(model.LoginProviderDisplay))}
+    {this.__ResStr("extAcct", "You have successfully authenticated with <strong>{0}</strong>.<br>Please enter your information below and click the Setup External Account button to finish logging in.", HE(model.LoginProviderDisplay))}
 </p>");
 
         } else {
 
             hb.Append($@"
 <p class='t_header'>
-    {this.__ResStr("extAcctInvite", "You have successfully authenticated with <strong>{0}</strong>.<br/>Please enter the invitation code below and click the Setup External Account button to finish logging in.", HE(model.LoginProviderDisplay))}
+    {this.__ResStr("extAcctInvite", "You have successfully authenticated with <strong>{0}</strong>.<br>Please enter the invitation code below and click the Setup External Account button to finish logging in.", HE(model.LoginProviderDisplay))}
 </p>");
 
         }

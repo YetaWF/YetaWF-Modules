@@ -217,7 +217,7 @@ namespace Softelvdm.Modules.IVR.Components {
     <div class='t_newvalue {Forms.CssFormNoSubmitContents}'>
         {await HtmlHelper.ForLabelAsync(newModel, nameof(newModel.NewPhoneNumber))}
         {await HtmlHelper.ForEditAsync(newModel, nameof(newModel.NewPhoneNumber), Validation:false)}
-        <input name='btnAdd' type='button' class='y_button' value='Add' disabled='disabled' />
+        <input name='btnAdd' type='button' class='y_button' value='Add' disabled='disabled'>
     </div>");
 
             }

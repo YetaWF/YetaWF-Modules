@@ -81,13 +81,12 @@ public class RegisterModule : ModuleDefinition {
     [Data_NewValue]
     public bool ShowPasswordRules { get; set; }
 
-    public async Task<ModuleAction> GetAction_RegisterAsync(string url, bool Force = false, bool CloseOnLogin = false) {
+    public async Task<ModuleAction> GetAction_RegisterAsync(string url, bool Force = false) {
         LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
         if (!config.AllowUserRegistration) return null;
         if (!Force && Manager.HaveUser) return null;
         return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
-            QueryArgs = CloseOnLogin ? new { CloseOnLogin = CloseOnLogin } : null,
             Image = await CustomIconAsync("Register.png"),
             LinkText = this.__ResStr("regLink", "Register a new user account"),
             MenuText = this.__ResStr("regText", "Register"),
@@ -177,7 +176,7 @@ public class RegisterModule : ModuleDefinition {
         public RecaptchaV2Data Captcha { get; set; }
 
         [JsonPropertyName("g-recaptcha-response")]
-        public string? g_recaptcha_response { get; set; }
+        public string g_recaptcha_response { get; set; }
 
         [Caption(""), Description("")]
         [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.NormalLinks), ReadOnly]
@@ -188,9 +187,6 @@ public class RegisterModule : ModuleDefinition {
         public RegistrationTypeEnum RegistrationType { get; set; }
         [UIHint("Hidden"), ReadOnly]
         public bool ShowCaptcha { get; set; }
-
-        [UIHint("Hidden"), ReadOnly]
-        public bool CloseOnLogin { get; set; }
 
         [UIHint("Hidden"), ReadOnly]
         public string QueryString { get; set; }
@@ -204,14 +200,12 @@ public class RegisterModule : ModuleDefinition {
         public async Task UpdateAsync() {
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             LoginModule loginMod = (LoginModule)await ModuleDefinition.CreateUniqueModuleAsync(typeof(LoginModule));
-            bool closeOnLogin;
-            Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
-            ModuleAction logAction = await loginMod.GetAction_LoginAsync(config.LoginUrl, Force: true, CloseOnLogin: closeOnLogin);
+            ModuleAction logAction = await loginMod.GetAction_LoginAsync(config.LoginUrl, Force: true);
             Actions.New(logAction);
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync(bool closeOnLogin) {
+    public async Task<ActionInfo> RenderModuleAsync() {
         LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
         if (!config.AllowUserRegistration)
             throw new Error(this.__ResStr("cantRegister", "This site does not allow new user registration"));
@@ -222,7 +216,6 @@ public class RegisterModule : ModuleDefinition {
                 RegistrationType = config.RegistrationType,
                 ShowCaptcha = config.Captcha && !Manager.IsLocalHost,
                 Captcha = new RecaptchaV2Data(),
-                CloseOnLogin = closeOnLogin,
                 QueryString = Manager.RequestQueryString.ToQueryString(),
                 PasswordRules = ShowPasswordRules ? logConfigDP.PasswordRules : null,
             };

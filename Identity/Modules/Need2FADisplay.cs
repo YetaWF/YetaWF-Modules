@@ -40,7 +40,7 @@ public class Need2FADisplayModule : ModuleDefinition {
         public ModuleAction SetupAction { get; set; }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync() {
+    public async Task<ActionInfo> RenderModuleAsync(string returnUrl) {
         if (!Manager.Need2FA) return ActionInfo.Empty;
         if (Manager.EditMode) return ActionInfo.Empty;
         if (Manager.IsInPopup) return ActionInfo.Empty;
@@ -49,7 +49,7 @@ public class Need2FADisplayModule : ModuleDefinition {
         if (mod2FA == null)
             throw new InternalError("Two-step authentication setup module not found");
 
-        ModuleAction action2FA = await mod2FA.GetAction_SelectTwoStepSetupAsync(null);
+        ModuleAction action2FA = await mod2FA.GetAction_SelectTwoStepSetupAsync(null, returnUrl);
         if (action2FA == null)
             throw new InternalError("Two-step authentication setup action not found");
 

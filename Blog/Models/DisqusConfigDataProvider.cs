@@ -2,7 +2,6 @@
 
 using System;
 using System.Threading.Tasks;
-using YetaWF.Core;
 using YetaWF.Core.Audit;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.DataProvider.Attributes;
@@ -23,8 +22,6 @@ public class DisqusConfigData {
     }
 
     public const int MaxShortName = 40;
-    public const int MaxPublicKey = 200;
-    public const int MaxPrivateKey = 200;
 
     [Data_PrimaryKey]
     public int Id { get; set; }
@@ -32,28 +29,12 @@ public class DisqusConfigData {
     [StringLength(MaxShortName)]
     public string? ShortName { get; set; }
 
-    public bool UseSSO { get; set; }
-
-    [StringLength(MaxPublicKey)]
-    public string? PublicKey { get; set; }
-    [StringLength(MaxPrivateKey)]
-    public string? PrivateKey { get; set; }
-
-    [StringLength(Globals.MaxUrl)]
-    public string? LoginUrl { get; set; }
-
-    public int Width { get; set; }
-    public int Height { get; set; }
-
     public AvatarTypeEnum AvatarType { get; set; }
     public Gravatar.GravatarEnum GravatarDefault { get; set; }
     public Gravatar.GravatarRatingEnum GravatarRating { get; set; }
     public int GravatarSize { get; set; }
 
     public DisqusConfigData() {
-        LoginUrl = "/User/Login?CloseOnLogin=true";
-        Width = 1200;
-        Height = 800;
         AvatarType = AvatarTypeEnum.Default;
         GravatarDefault = Gravatar.GravatarEnum.wavatar;
         GravatarRating = Gravatar.GravatarRatingEnum.G;

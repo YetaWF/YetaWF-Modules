@@ -198,7 +198,7 @@ var YetaWF_ComponentsHTML;
             this.Popup =
                 $YetaWF.createElement("div", { id: DropDownSearchEditComponent.POPUPID, "data-owner": this.ControlId, "aria-hidden": "false" },
                     $YetaWF.createElement("div", { class: "t_container", "data-role": "popup", "aria-hidden": "false" },
-                        $YetaWF.createElement("div", { class: "t_scroller", unselectable: "on" },
+                        $YetaWF.createElement("div", { class: "t_scroller" },
                             $YetaWF.createElement("ul", { unselectable: "on", class: "t_list", tabindex: "-1", "aria-hidden": "true", "aria-live": "off", "data-role": "staticlist", role: "listbox" }))));
             var ul = $YetaWF.getElement1BySelector("ul", [this.Popup]);
             var len = list.length;

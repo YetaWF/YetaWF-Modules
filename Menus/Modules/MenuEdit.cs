@@ -154,7 +154,7 @@ public class MenuEditModule : ModuleDefinition {
         [DontSave, ReadOnly, Obsolete("Do not use!")]// THIS IS STRICTLY USED FOR SERIALIZATION - DO NOT ACCESS DIRECTLY
         public bool SaveReturnUrl { get; set; }
 
-        [DontSave, ReadOnly, Obsolete("Do not use!")]// THIS IS STRICTLY USED FOR SERIALIZATION - DO NOT ACCESS DIRECTLY
+        [DontSave, ReadOnly, Obsolete("Do not use!")]// THIS IS STRICTLY USED FOR SERIALIZATION - DO NOT ACCESS DIRECTLY - DO NOT REMOVE
         public bool AddToOriginList { get; set; }
 
         [Caption("Don't Follow"), Description("Defines whether search engines and bots follow this link (select to disable)")]

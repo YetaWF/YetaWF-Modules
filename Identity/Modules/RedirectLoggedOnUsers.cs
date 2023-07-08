@@ -44,7 +44,7 @@ public class RedirectLoggedOnUsersModule : ModuleDefinition {
             if (string.IsNullOrWhiteSpace(nextUrl))
                 nextUrl = Manager.CurrentSite.PostLoginUrl;
             if (!string.IsNullOrWhiteSpace(nextUrl))
-                return RedirectToUrl(nextUrl);
+                return RedirectActionInfo(nextUrl);
         }
         return ActionInfo.Empty;
     }

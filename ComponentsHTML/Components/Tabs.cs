@@ -114,7 +114,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             TabsSetup setup = GetTabsSetup(model);
             hb.Append($@"
-    <input name='_ActiveTab' type='hidden' value='{model.ActiveTabIndex}' id='{setup.ActiveTabHiddenId}' />");
+    <input name='_ActiveTab' type='hidden' value='{model.ActiveTabIndex}' id='{setup.ActiveTabHiddenId}'>");
 
             hb.Append($@"
 </div>");

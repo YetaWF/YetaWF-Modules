@@ -9,12 +9,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using YetaWF.Core.Endpoints;
-using YetaWF.Core.Endpoints.Filters;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Log;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Site;
 using YetaWF.Core.Support;
 using YetaWF.Core.Support.UrlHistory;
 using YetaWF.Modules.Identity.DataProvider;
@@ -34,37 +34,41 @@ public class LoginExternalEndpoints : YetaWFEndpoints {
     public const string Logoff = "Logoff";
     public const string LogoffDirect = "LogoffDirect";
 
+    public class ExternalLoginData {
+        public string? Provider { get; set; }
+        public string? ReturnUrl { get; set; }
+    }
+
     public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
         RouteGroupBuilder group = endpoints.MapGroup(GetPackageApiRoute(package, typeof(LoginExternalEndpoints)));
 
-        group.MapPost(ExternalLogin, (HttpContext context, string provider, string returnUrl) => {
+        group.MapPost(ExternalLogin, (HttpContext context) => {
             try {
+                string provider = context.Request.Form["provider"].ToString() ?? throw new InternalError("No external login provider found");
+                string returnUrl = context.Request.Form["returnUrl"].ToString();
+
                 if (YetaWFManager.IsDemo || Manager.IsDemoUser)
                     throw new Error("This action is not available in Demo mode.");
 
                 // Request a redirect to the external login provider
-                if (provider == null)
-                    throw new InternalError("No external login provider found");
-
                 SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)Manager.ServiceProvider.GetRequiredService(typeof(SignInManager<UserDefinition>));
-                var redirectUrl = Manager.CurrentSite.MakeFullUrl(Utility.UrlFor(typeof(LoginExternalEndpoints), nameof(ExternalLoginCallback), new { ReturnUrl = returnUrl }));
+                var redirectUrl = Manager.CurrentSite.MakeFullUrl(Utility.UrlFor<LoginExternalEndpoints>(ExternalLoginCallback, new { ReturnUrl = returnUrl }));
                 var properties = _signinManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
                 return Results.Challenge(properties, new List<string> { provider });
             } catch (Exception exc) {
                 return Redirect(MessageUrl(ErrorHandling.FormatExceptionMessage(exc)));
             }
-        })
-            .AntiForgeryToken();
+        });
 
-        group.MapPost(ExternalLoginCallback, async (HttpContext context, string? returnUrl, string? remoteError) => {
+        group.MapGet(ExternalLoginCallback, async (HttpContext context, string? returnUrl, string? remoteError) => {
             if (remoteError != null)
                 throw new Error(__ResStr("extErr", "The external login provider reported this error: {0}", remoteError));
 
             SignInManager<UserDefinition> _signinManager = (SignInManager<UserDefinition>)Manager.ServiceProvider.GetRequiredService(typeof(SignInManager<UserDefinition>));
             ExternalLoginInfo? loginInfo = await _signinManager.GetExternalLoginInfoAsync();
             if (loginInfo == null) {
-                Logging.AddErrorLog("AuthenticationManager.GetExternalLoginInfoAsync() returned null");
+                Logging.AddErrorLog("_signinManager.GetExternalLoginInfoAsync() returned null");
                 return Redirect(Helper.GetSafeReturnUrl(Manager.CurrentSite.LoginUrl));
             }
             using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
@@ -83,11 +87,10 @@ public class LoginExternalEndpoints : YetaWFEndpoints {
             if (user == null) {
                 // If the user does not have an account, then prompt the user to create an account
                 // we will go to a page where the user can set up a local account
-                Manager.OriginList = new List<Origin>();
-                if (!string.IsNullOrWhiteSpace(returnUrl))
-                    Manager.OriginList.Add(new Origin() { Url = returnUrl });// where to go after setup
-                Manager.OriginList.Add(new Origin() { Url = Helper.GetSafeReturnUrl(Manager.CurrentSite.ExternalAccountSetupUrl) }); // setup
-                return Redirect(Manager.ReturnToUrl);
+                if (Manager.CurrentSite.ExternalAccountSetupUrl == null) throw new InternalError($"{nameof(SiteDefinition.ExternalAccountSetupUrl)} is not defined");
+                QueryHelper qh = QueryHelper.FromUrl(Manager.CurrentSite.ExternalAccountSetupUrl, out string setupUrl);
+                qh.Add("returnUrl", returnUrl);
+                return Redirect(qh.ToUrl(setupUrl));
             }
 
             if (string.IsNullOrWhiteSpace(returnUrl))
@@ -131,7 +134,6 @@ public class LoginExternalEndpoints : YetaWFEndpoints {
                 throw new InternalError("badUserStatus", "Unexpected account status {0}", user.UserStatus);
             }
         });
-
     }
 
     /// <summary>

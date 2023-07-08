@@ -73,20 +73,20 @@ public class AddonDisplayModule : ModuleDefinition {
         public string Url { get; set; } = null!;
 
         [Caption("JavaScript Files"), Description("List of JavaScript files for this AddOn (filelistJS.txt file contents)")]
-        [UIHint("ListOfStrings"), AdditionalMetadata("Delimiter", "<br/>"), ReadOnly]
+        [UIHint("ListOfStrings"), AdditionalMetadata("Delimiter", "<br>"), ReadOnly]
         public List<string> JsFiles { get; set; } = null!;
         [Caption("JavaScript Path"), Description("The AddOn's location for JavaScript files (overrides Url) - only used if a Folder directive was found in filelistJS.txt")]
         [UIHint("String"), ReadOnly]
         public string? JsPathUrl { get; set; }
         [Caption("Css Files"), Description("List of Css files for this AddOn (filelistCSS.txt file contents)")]
-        [UIHint("ListOfStrings"), AdditionalMetadata("Delimiter", "<br/>"), ReadOnly]
+        [UIHint("ListOfStrings"), AdditionalMetadata("Delimiter", "<br>"), ReadOnly]
         public List<string>? CssFiles { get; set; }
         [Caption("Css Path"), Description("The AddOn's location for Css files (overrides Url) - only used if a Folder directive was found in filelistCSS.txt")]
         [UIHint("String"), ReadOnly]
         public string CssPathUrl { get; set; } = null!;
 
         [Caption("Support Types"), Description("List of types that define the IAddOnSupport interface for this AddOn, used to add Localization and Config information for client-side JavaScript use")]
-        [UIHint("ListOfStrings"), AdditionalMetadata("Delimiter", "<br/>"), ReadOnly]
+        [UIHint("ListOfStrings"), AdditionalMetadata("Delimiter", "<br>"), ReadOnly]
         public List<string> SupportTypesStrings { get; set; } = null!;
 
         [Caption("Skin Definition Path"), Description("The location where the Skin.txt file is located defining the Skin attributes - only used for Skin AddOns")]

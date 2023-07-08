@@ -25,7 +25,7 @@ public class AddExistingModuleView : YetaWFView, IYetaWFView2<PageControlModule,
         {await RenderBeginFormAsync(ActionName: GetViewName())}
             {await PartialForm(async () => await RenderPartialViewAsync(module, model), UsePartialFormCss: false)}
             <div class='t_detailsbuttons'>
-                <input type='submit' class='y_button' value='{this.__ResStr("addOldModule", "Add")}' />
+                <input type='submit' class='y_button' value='{this.__ResStr("addOldModule", "Add")}'>
             </div>
         {await RenderEndFormAsync()}");
 

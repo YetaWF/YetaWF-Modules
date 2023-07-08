@@ -99,7 +99,7 @@ public class PageBarInfoComponent : PageBarInfoComponentBase, IYetaWFComponent<P
             {entry.ImageSVG}");
             } else {
                 hb.Append($@"
-            <img src='{HAE(entry.ImageUrl)}' alt='{HAE(caption)}' title='{HAE(entry.ToolTip.ToString())}' />");
+            <img src='{HAE(entry.ImageUrl)}' alt='{HAE(caption)}' title='{HAE(entry.ToolTip.ToString())}'>");
             }
 
             hb.Append($@"

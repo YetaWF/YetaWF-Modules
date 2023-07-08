@@ -25,7 +25,7 @@ public class SkinSelectionView : YetaWFView, IYetaWFView2<PageControlModule, Pag
         {await RenderBeginFormAsync(ActionName: GetViewName())}
             {await PartialForm(async () => await RenderPartialViewAsync(module, model), UsePartialFormCss: false)}
             <div class='t_detailsbuttons'>
-                <input type='submit' class='y_button' value='{this.__ResStr("saveSkins", "Save & Display")}' />
+                <input type='submit' class='y_button' value='{this.__ResStr("saveSkins", "Save & Display")}'>
             </div>
         {await RenderEndFormAsync()}");
 

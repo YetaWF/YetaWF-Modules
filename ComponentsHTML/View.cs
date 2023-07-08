@@ -1,5 +1,6 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
+using Microsoft.SqlServer.Server;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core.Addons;
@@ -47,10 +48,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// Renders the beginning &lt;form&gt; tag with the specified attributes.
         /// </summary>
         /// <param name="HtmlAttributes">The HTML attributes to add to the &lt;form&gt; tag.</param>
-        /// <param name="ActionName">Overrides the default action name.</param>
+        /// <param name="ActionName">Overrides the default action name used to submit the form (via JSON Update api).</param>
+        /// <param name="SubmitAction">Optional complete Url to submit the form (using submit)</param>
         /// <param name="Method">The method used to submit the form (get/post)</param>
         /// <returns>Returns the HTML with the generated &lt;form&gt; tag.</returns>
-        protected async Task<string> RenderBeginFormAsync(object? HtmlAttributes = null, string? ActionName = null, string Method = "post") {
+        protected async Task<string> RenderBeginFormAsync(object? HtmlAttributes = null, string? ActionName = null, string? SubmitAction = null, string Method = "post") {
 
             await YetaWFCoreRendering.Render.AddFormsAddOnsAsync();
             await Manager.AddOnManager.AddAddOnNamedAsync("YetaWF_Core", "Forms");// standard css, validation strings
@@ -60,20 +62,29 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             Manager.NextUniqueIdPrefix();
 
             if (Method.ToLower() != "post") throw new InternalError("Only POST method is supported");
-            string formAction = $"{Utility.UrlFor<ModuleEndpoints>(ModuleEndpoints.Update)}/{ModuleBase.ModuleGuid}";
-            if (ActionName != null && ActionName != ModuleBase.Action)
-                formAction += $"?Action={ActionName}";
-
-            IDictionary<string, object?> attrs = HtmlBuilder.AnonymousObjectToHtmlAttributes(HtmlAttributes);
+            if (SubmitAction != null && ActionName != null) throw new InternalError($"Can't use {nameof(SubmitAction)} and {nameof(ActionName)} at the same time");
 
             string? css = null;
-            if (Manager.CurrentSite.FormErrorsImmed)
-                css = CssManager.CombineCss(css, "yValidateImmediately");
 
+            string formAction = string.Empty;
+            if (SubmitAction != null) {
+                // plain submit
+                formAction = SubmitAction;
+            } else {
+                // module update via api
+                formAction = $"{Utility.UrlFor<ModuleEndpoints>(ModuleEndpoints.Update)}/{ModuleBase.ModuleGuid}";
+                if (ActionName != null && ActionName != ModuleBase.Action)
+                    formAction += $"?Action={ActionName}";
+                css = CssManager.CombineCss(css, Forms.CssForm);
+                if (Manager.CurrentSite.FormErrorsImmed)
+                    css = CssManager.CombineCss(css, "yValidateImmediately");
+            }
+
+            IDictionary<string, object?> attrs = HtmlBuilder.AnonymousObjectToHtmlAttributes(HtmlAttributes);
             HtmlBuilder hb = new HtmlBuilder();
             string id = HtmlBuilder.GetId(attrs);
             hb.Append($@"
-<form id='{id}' class='{Forms.CssForm}{HtmlBuilder.GetClasses(attrs, css)}' autocomplete='{(ModuleBase.FormAutoComplete ? "on" : "off")}' action='{Utility.HAE(formAction)}' method='{Method}'{HtmlBuilder.Attributes(attrs)}>
+<form id='{id}' class='{HtmlBuilder.GetClasses(attrs, css)}' autocomplete='{(ModuleBase.FormAutoComplete ? "on" : "off")}' action='{Utility.HAE(formAction)}' method='{Method}'{HtmlBuilder.Attributes(attrs)}>
 ");
 
             return hb.ToString();

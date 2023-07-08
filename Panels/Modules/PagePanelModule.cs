@@ -190,7 +190,7 @@ public class PagePanelModule : ModuleDefinition {
             return await FormProcessedAsync(model, OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
         }
         Manager.EditMode = false;
-        return await FormProcessedAsync(model, NextPage: Manager.ReturnToUrl, OnClose: OnCloseEnum.GotoNewPage, OnPopupClose: OnPopupCloseEnum.GotoNewPage);
+        return await FormProcessedAsync(model, OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
     }
 
     private async Task<List<PagePanelInfo.PanelEntry>> GetPanelsAsync() {

@@ -35,11 +35,6 @@ public class DisqusModule : ModuleDefinition {
 
     public class DisplayModel {
         public string ShortName { get; set; } = null!;
-        public bool UseSSO { get; set; }
-        public string AuthPayload { get; set; } = null!;
-        public string PublicKey { get; set; } = null!;
-        public string LoginUrl { get; set; } = null!;
-        public string LogoffUrl { get; set; } = null!;
         public int Width { get; set; }
         public int Height { get; set; }
     }
@@ -54,27 +49,6 @@ public class DisqusModule : ModuleDefinition {
             DisplayModel model = new DisplayModel {
                 ShortName = config.ShortName,
             };
-            if (config.UseSSO &&
-                    !string.IsNullOrWhiteSpace(config.PrivateKey) && !string.IsNullOrWhiteSpace(config.PublicKey) &&
-                    !string.IsNullOrWhiteSpace(config.LoginUrl)) {
-                model.UseSSO = true;
-                if (Manager.HaveUser) {
-                    model.PublicKey = config.PublicKey;
-                    string avatarUrl = "";
-                    if (config.AvatarType == DisqusConfigData.AvatarTypeEnum.Gravatar)
-                        avatarUrl = "https:" + GravatarComponentBase.GravatarUrl(Manager.UserEmail!, config.GravatarSize, config.GravatarRating, config.GravatarDefault);
-                    SSO sso = new Support.SSO(config.PrivateKey);
-                    model.AuthPayload = sso.GetPayload(Manager.UserId.ToString(), Manager.UserName!, Manager.UserEmail!, avatarUrl);
-                } else {
-                    model.LoginUrl = Manager.CurrentSite.MakeUrl(config.LoginUrl);
-                    model.Width = config.Width;
-                    model.Height = config.Height;
-                }
-                string? logoffUrl = WebConfigHelper.GetValue<string>("Application", "LogoffUrl", null, Package: false);
-                if (string.IsNullOrWhiteSpace(logoffUrl))
-                    throw new InternalError("Application LogoffUrl not defined in web.cofig/appsettings.json - This is required to log off the current user");
-                model.LogoffUrl = Manager.CurrentSite.MakeUrl(logoffUrl + Manager.CurrentPage.EvaluatedCanonicalUrl);
-            }
             return await RenderAsync(model);
         }
     }

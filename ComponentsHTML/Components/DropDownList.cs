@@ -183,11 +183,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             // &zwj; below is intended to work around sass failing to compile \200b. This should be in CSS.
             string tags = $@"
-<div id='{component.ControlId}' class='yt_dropdownlist_base t_edit {cssClass}' {(disabled ? "aria-disabled='true'" : "tabindex='0' aria-disabled='false'")} unselectable='on' role='listbox' aria-haspopup='true' aria-expanded='false' aria-owns='yDDPopup' aria-live='polite' aria-busy='false'
+<div id='{component.ControlId}' class='yt_dropdownlist_base t_edit {cssClass}' {(disabled ? "aria-disabled='true'" : "tabindex='0' aria-disabled='false'")} role='listbox' aria-haspopup='true' aria-expanded='false' aria-owns='yDDPopup' aria-live='polite' aria-busy='false'
         aria-activedescendant='{Guid.NewGuid().ToString()}'>
-    <div unselectable='on' class='t_container {(disabled ? "t_disabled" : "")}' {(disabled ? "disabled='disabled'" : "")}>
-        <div unselectable='on' class='t_input'>{HAE(selItem != null ? selItem.Text : null)}&zwj;</div>
-        <div unselectable='on' class='t_select' aria-label='select'>
+    <div class='t_container {(disabled ? "t_disabled" : "")}' {(disabled ? "disabled='disabled'" : "")}>
+        <div class='t_input'>{HAE(selItem != null ? selItem.Text : null)}&zwj;</div>
+        <div class='t_select' aria-label='select'>
             {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-caret-down")}
         </div>
     </div>

@@ -56,7 +56,6 @@ public class LoginModuleEndpoints : YetaWFEndpoints {
             }
         })
             .ExcludeDemoMode();
-
     }
 
     public class CompleteLoginModel {

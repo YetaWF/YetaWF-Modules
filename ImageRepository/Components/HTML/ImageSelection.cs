@@ -53,7 +53,7 @@ public class ImageSelectionEditComponent : ImageSelectionComponent, IYetaWFCompo
             </select>
         </div>
         <div class='t_preview'>
-            <img src='{HAE(info.MakeImageUrl(model ?? string.Empty, info.PreviewWidth, info.PreviewHeight))}' alt='{__ResStr("preview", "Image Preview")}' />
+            <img src='{HAE(info.MakeImageUrl(model ?? string.Empty, info.PreviewWidth, info.PreviewHeight))}' alt='{__ResStr("preview", "Image Preview")}'>
         </div>
     </div>
     <div class='t_haveimage' {(string.IsNullOrWhiteSpace(model) ? "style='display:none'" : "")}>

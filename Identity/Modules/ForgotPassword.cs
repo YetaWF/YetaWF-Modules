@@ -38,12 +38,11 @@ public class ForgotPasswordModule : ModuleDefinition {
 
     public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
 
-    public async Task<ModuleAction> GetAction_ForgotPasswordAsync(string url, bool CloseOnLogin = false) {
+    public async Task<ModuleAction> GetAction_ForgotPasswordAsync(string url) {
         LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
         if (config.SavePlainTextPassword) {
             return new ModuleAction() {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
-                QueryArgs = CloseOnLogin ? new { CloseOnLogin = CloseOnLogin } : null,
                 Image = "#Help",
                 LinkText = this.__ResStr("forgotLink", "Forgot your password?"),
                 MenuText = this.__ResStr("forgotText", "Forgot your password?"),
@@ -58,7 +57,6 @@ public class ForgotPasswordModule : ModuleDefinition {
         } else {
             return new ModuleAction() {
                 Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
-                QueryArgs = CloseOnLogin ? new { CloseOnLogin = CloseOnLogin } : null,
                 Image = "#Help",
                 LinkText = this.__ResStr("resetLink", "Forgot your password?"),
                 MenuText = this.__ResStr("resetText", "Forgot your password?"),
@@ -97,11 +95,6 @@ public class ForgotPasswordModule : ModuleDefinition {
         [RequiredIf(nameof(RegistrationType), RegistrationTypeEnum.NameAndEmail)]
         public string UserNameOrEmail { get; set; }
 
-        [Caption(""), Description("")]
-        [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.NormalLinks), ReadOnly]
-        [SuppressEmpty]
-        public List<ModuleAction> Actions { get; set; }
-
         [Caption("Captcha"), Description("Please verify that you're a human and not a spam bot")]
         [UIHint("RecaptchaV2"), RecaptchaV2("Please verify that you're a human and not a spam bot"), SuppressIf("ShowCaptcha", false)]
         public RecaptchaV2Data Captcha { get; set; }
@@ -109,7 +102,12 @@ public class ForgotPasswordModule : ModuleDefinition {
         public bool ShowCaptcha { get; set; }
 
         [JsonPropertyName("g-recaptcha-response")]
-        public string? g_recaptcha_response { get; set; }
+        public string g_recaptcha_response { get; set; }
+
+        [Caption(""), Description("")]
+        [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.NormalLinks), ReadOnly]
+        [SuppressEmpty]
+        public List<ModuleAction> Actions { get; set; }
 
         [UIHint("Hidden")]
         public RegistrationTypeEnum RegistrationType { get; set; }
@@ -123,12 +121,10 @@ public class ForgotPasswordModule : ModuleDefinition {
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             RegisterModule regMod = (RegisterModule)await ModuleDefinition.CreateUniqueModuleAsync(typeof(RegisterModule));
             LoginModule loginMod = (LoginModule)await ModuleDefinition.CreateUniqueModuleAsync(typeof(LoginModule));
-            bool closeOnLogin;
-            Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
 
-            ModuleAction logAction = await loginMod.GetAction_LoginAsync(config.LoginUrl, Force: true, CloseOnLogin: closeOnLogin);
+            ModuleAction logAction = await loginMod.GetAction_LoginAsync(config.LoginUrl, Force: true);
             Actions.New(logAction);
-            ModuleAction regAction = await regMod.GetAction_RegisterAsync(config.RegisterUrl, Force: true, CloseOnLogin: closeOnLogin);
+            ModuleAction regAction = await regMod.GetAction_RegisterAsync(config.RegisterUrl, Force: true);
             Actions.New(regAction);
         }
     }

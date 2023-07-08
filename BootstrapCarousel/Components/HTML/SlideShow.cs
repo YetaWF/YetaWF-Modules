@@ -151,12 +151,12 @@ namespace YetaWF.Modules.BootstrapCarousel.Components {
         {await HtmlHelper.ForDisplayAsync(ui, nameof(ui.TabsDef), HtmlAttributes: new { __NoTemplate = true })}
     </div>
     <div class='t_buttons'>
-        <input type='button' class='y_button t_apply' value='{HAE(this.__ResStr("btnApply", "Apply"))}' title='{HAE(this.__ResStr("txtApply", "Click to apply the current changes"))}' />
-        <input type='button' class='y_button t_up' value='{HAE(this.__ResStr("btnUp", "<<"))}' title='{HAE(this.__ResStr("txtUp", "Click to move the current image"))}' />
-        <input type='button' class='y_button t_down' value='{HAE(this.__ResStr("btnDown", ">>"))}' title='{HAE(this.__ResStr("txtDown", "Click move the current image"))}' />
-        <input type='button' class='y_button t_ins' value='{HAE(this.__ResStr("btnIns", "Insert"))}' title='{HAE(this.__ResStr("txtIns", "Click to insert a new image before the current image"))}' />
-        <input type='button' class='y_button t_add' class='y_button' value='{HAE(this.__ResStr("btnAdd", "Add"))}' title='{HAE(this.__ResStr("txtAdd", "Click to add a new image after the current image"))}' />
-        <input type='button' class='y_button t_delete' value='{HAE(this.__ResStr("btnDelete", "Remove"))}' title='{HAE(this.__ResStr("txtDelete", "Click to remove the current image"))}' />
+        <input type='button' class='y_button t_apply' value='{HAE(this.__ResStr("btnApply", "Apply"))}' title='{HAE(this.__ResStr("txtApply", "Click to apply the current changes"))}'>
+        <input type='button' class='y_button t_up' value='{HAE(this.__ResStr("btnUp", "<<"))}' title='{HAE(this.__ResStr("txtUp", "Click to move the current image"))}'>
+        <input type='button' class='y_button t_down' value='{HAE(this.__ResStr("btnDown", ">>"))}' title='{HAE(this.__ResStr("txtDown", "Click move the current image"))}'>
+        <input type='button' class='y_button t_ins' value='{HAE(this.__ResStr("btnIns", "Insert"))}' title='{HAE(this.__ResStr("txtIns", "Click to insert a new image before the current image"))}'>
+        <input type='button' class='y_button t_add' class='y_button' value='{HAE(this.__ResStr("btnAdd", "Add"))}' title='{HAE(this.__ResStr("txtAdd", "Click to add a new image after the current image"))}'>
+        <input type='button' class='y_button t_delete' value='{HAE(this.__ResStr("btnDelete", "Remove"))}' title='{HAE(this.__ResStr("txtDelete", "Click to remove the current image"))}'>
     </div>
 </div>");
 

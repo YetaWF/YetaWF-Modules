@@ -52,14 +52,14 @@ public class LoginView : YetaWFView, IYetaWFView2<LoginModule, LoginModule.Login
             }
 
             hb.Append($@"
-    <form action='{HAE(Utility.UrlFor(typeof(LoginExternalEndpoints), nameof(LoginExternalEndpoints.ExternalLogin)))}' method='post'>
+    <form action='{HAE(Utility.UrlFor<LoginExternalEndpoints>(LoginExternalEndpoints.ExternalLogin))}' method='post'>
         {await HtmlHelper.ForDisplayAsync(model, nameof(model.ReturnUrl))}");
 
             int index = 0;
             foreach (FormButton formButton in model.ExternalProviders) {
                 hb.Append($@"
         <div class='t_extentry'>
-            <img src='{HAE(model.Images[index])}' alt='{HAE(formButton.Title)}' title='{HAE(formButton.Title)}' />
+            <img src='{HAE(model.Images[index])}' alt='{HAE(formButton.Title)}' title='{HAE(formButton.Title)}'>
             {await formButton.RenderAsync()}
         </div>");
                 ++index;

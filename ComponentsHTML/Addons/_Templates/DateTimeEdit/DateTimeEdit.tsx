@@ -630,7 +630,7 @@ namespace YetaWF_ComponentsHTML {
             this.TimePopup =
                 <div id={DateTimeEditComponent.TIMEPOPUPID} data-owner={this.ControlId} aria-hidden="false">
                     <div class="t_container" data-role="popup" aria-hidden="false">
-                        <div class="t_scroller" unselectable="on">
+                        <div class="t_scroller">
                             <ul unselectable="on" class="t_list" tabindex="-1" aria-hidden="true" aria-live="off" data-role="staticlist" role="listbox">
                             </ul>
                         </div>
@@ -918,7 +918,7 @@ namespace YetaWF_ComponentsHTML {
             this.YearPopup =
                 <div id={DateTimeEditComponent.YEARPOPUPID} data-owner={this.ControlId} aria-hidden="false">
                     <div class="t_container" data-role="popup" aria-hidden="false">
-                        <div class="t_scroller" unselectable="on">
+                        <div class="t_scroller">
                             <ul unselectable="on" class="t_list" tabindex="-1" aria-hidden="true" aria-live="off" data-role="staticlist" role="listbox">
                             </ul>
                         </div>
@@ -1012,7 +1012,7 @@ namespace YetaWF_ComponentsHTML {
             this.MonthPopup =
                 <div id={DateTimeEditComponent.MONTHPOPUPID} data-owner={this.ControlId} aria-hidden="false">
                     <div class="t_container" data-role="popup" aria-hidden="false">
-                        <div class="t_scroller" unselectable="on">
+                        <div class="t_scroller">
                             <ul unselectable="on" class="t_list" tabindex="-1" aria-hidden="true" aria-live="off" data-role="staticlist" role="listbox">
                             </ul>
                         </div>

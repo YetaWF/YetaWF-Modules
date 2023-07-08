@@ -605,9 +605,12 @@ public class PageControlModule : ModuleDefinition {
             return await PartialViewAsync(model, ViewName: LoginSiteSelectionView.ViewName);
         }
 
+        Manager.PageControlShown = false;
+
         string nextPage;
         if (Manager.CurrentSite.SiteDomain != model.SiteDomain) {
             nextPage = Manager.CurrentSite.MakeFullUrl(RealDomain: model.SiteDomain, SecurityType: Core.Pages.PageDefinition.PageSecurityType.httpOnly);
+            return await FormProcessedAsync(model, OnClose: OnCloseEnum.GotoNewPage, OnPopupClose: OnPopupCloseEnum.GotoNewPage, ForceReload: true, NextPage: nextPage);
         } else { /* if (model.UserId != Manager.UserId) */
             //if (model.SuperuserStillActive != null && !(bool)model.SuperuserStillActive)
             Manager.SetSuperUserRole(false);
@@ -618,9 +621,7 @@ public class PageControlModule : ModuleDefinition {
                 await Resource.ResourceAccess.LoginAsAsync(userId);
             //if (model.SuperuserStillActive != null && !(bool)model.SuperuserStillActive)
             //  Manager.SetSuperUserRole(false);
-            nextPage = Manager.ReturnToUrl;
+            return await FormProcessedAsync(model, OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage, ForceReload: true);
         }
-        Manager.PageControlShown = false;
-        return await FormProcessedAsync(model, NextPage: nextPage, ForceReload: true, ViewName: LoginSiteSelectionView.ViewName);
     }
 }

@@ -89,17 +89,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             hb.Append($@"
 <div class='yt_fileupload1' id='{ControlId}' data-saveurl='{HAE(model.SaveURL)}' data-removeurl='{HAE(model.RemoveURL)}'>
-    <input type='button' class='y_button t_upload' value='{HAE(model.SelectButtonText)}' title='{HAE(model.SelectButtonTooltip)}' />
+    <input type='button' class='y_button t_upload' value='{HAE(model.SelectButtonText)}' title='{HAE(model.SelectButtonTooltip)}'>
     <div class='t_drop'>{HAE(model.DropFilesText)}</div>
     {await HtmlHelper.ForDisplayAsync(ui, nameof(ui.ProgressBar))}");
 
             if (!IsContainerComponent) {
                 hb.Append($@"
-    <input type='hidden' name='{FieldName}' class='{Forms.CssFormNoSubmit}' style='display:none' />");
+    <input type='hidden' name='{FieldName}' class='{Forms.CssFormNoSubmit}' style='display:none'>");
             }
 
             hb.Append($@"
-    <input type='file' name='__filename' class='t_filename t_button {Forms.CssFormNoSubmit}' style='display:none' />
+    <input type='file' name='__filename' class='t_filename t_button {Forms.CssFormNoSubmit}' style='display:none'>
 </div>");
 
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.FileUpload1Component('{ControlId}', {Utility.JsonSerialize(setup)});");

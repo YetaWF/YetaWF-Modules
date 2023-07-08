@@ -52,11 +52,11 @@ namespace YetaWF.Modules.DevTests.Modules {
         public class DisplayModel {
 
             [Caption("Headers"), Description("Request Headers")]
-            [UIHint("ListOfStrings"), AdditionalMetadata("Delimiter", "<br/>"), ReadOnly]
+            [UIHint("ListOfStrings"), AdditionalMetadata("Delimiter", "<br>"), ReadOnly]
             public List<string> Headers { get; set; }
 
             [Caption("Variables"), Description("Various Variables")]
-            [UIHint("ListOfStrings"), AdditionalMetadata("Delimiter", "<br/>"), ReadOnly]
+            [UIHint("ListOfStrings"), AdditionalMetadata("Delimiter", "<br>"), ReadOnly]
             public List<string> Variables { get; set; }
 
             public DisplayModel() {

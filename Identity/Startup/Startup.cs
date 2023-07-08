@@ -53,7 +53,7 @@ public class Startup : IIdentity {
             long ticks = OwinConfigHelper.GetValue<long>(AREA, "OWin:ExpireTimeSpan", new TimeSpan(10, 0, 0, 0).Ticks);
             c.Cookie.Name = string.Format(".YetaWF.Cookies.{0}", YetaWFManager.DefaultSiteName);
             c.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.SameAsRequest;
-            c.Cookie.SameSite = OwinConfigHelper.GetValue<Microsoft.AspNetCore.Http.SameSiteMode>(AREA, "OWin:SameSiteMode", Microsoft.AspNetCore.Http.SameSiteMode.Strict);
+            c.Cookie.SameSite = OwinConfigHelper.GetValue<Microsoft.AspNetCore.Http.SameSiteMode>(AREA, "OWin:SameSiteMode", Microsoft.AspNetCore.Http.SameSiteMode.Lax);
             c.ExpireTimeSpan = new TimeSpan(ticks);
             c.SlidingExpiration = OwinConfigHelper.GetValue<bool>(AREA, "OWin:SlidingExpiration", true);
         });
@@ -61,7 +61,7 @@ public class Startup : IIdentity {
             long ticks = OwinConfigHelper.GetValue<long>(AREA, "OWin:ExpireTimeSpan", new TimeSpan(10, 0, 0, 0).Ticks);
             c.Cookie.Name = string.Format(".YetaWF.Cookies.Ext.{0}", YetaWFManager.DefaultSiteName);
             c.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.SameAsRequest;
-            c.Cookie.SameSite = OwinConfigHelper.GetValue<Microsoft.AspNetCore.Http.SameSiteMode>(AREA, "OWin:SameSiteMode", Microsoft.AspNetCore.Http.SameSiteMode.Strict);
+            c.Cookie.SameSite = OwinConfigHelper.GetValue<Microsoft.AspNetCore.Http.SameSiteMode>(AREA, "OWin:SameSiteMode", Microsoft.AspNetCore.Http.SameSiteMode.None);
             c.ExpireTimeSpan = new TimeSpan(ticks);
             c.SlidingExpiration = OwinConfigHelper.GetValue<bool>(AREA, "OWin:SlidingExpiration", true);
         });

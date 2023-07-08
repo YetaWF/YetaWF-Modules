@@ -36,16 +36,18 @@ public class SelectTwoStepSetupModule : ModuleDefinition {
 
     public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-    public async Task<ModuleAction> GetAction_SelectTwoStepSetupAsync(string url) {
-        return await GetAction_ForceTwoStepSetupAsync(url);
+
+    public async Task<ModuleAction> GetAction_SelectTwoStepSetupAsync(string url, string returnUrl) {
+        return await GetAction_ForceTwoStepSetupAsync(url, returnUrl);
     }
-    public async Task<ModuleAction> GetAction_ForceTwoStepSetupAsync(string url) {
+    public async Task<ModuleAction> GetAction_ForceTwoStepSetupAsync(string url, string returnUrl) {
         if (string.IsNullOrWhiteSpace(url)) {
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             url = config.TwoStepAuthUrl;
         }
         return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
+            QueryArgs = new { ReturnUrl = returnUrl },
             Image = "#Edit",
             LinkText = this.__ResStr("setupLink", "Two-Step Authentication Setup"),
             MenuText = this.__ResStr("setupText", "Two-Step Authentication Setup"),

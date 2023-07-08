@@ -46,11 +46,10 @@ public class LoginModule : ModuleDefinition {
 
     public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
 
-    public async Task<ModuleAction> GetAction_LoginAsync(string url = null, bool Force = false, bool CloseOnLogin = false) {
+    public async Task<ModuleAction> GetAction_LoginAsync(string url = null, bool Force = false) {
         if (!Force && Manager.HaveUser) return null; // the login action should not be shown if a user is logged on
         return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
-            QueryArgs = CloseOnLogin ? new { CloseOnLogin = CloseOnLogin } : null,
             Image = await CustomIconAsync("Login.png"),
             LinkText = this.__ResStr("loginLink", "Login using your existing account"),
             MenuText = this.__ResStr("loginText", "Login"),
@@ -168,7 +167,7 @@ public class LoginModule : ModuleDefinition {
         public RecaptchaV2Data Captcha { get; set; }
 
         [JsonPropertyName("g-recaptcha-response")]
-        public string? g_recaptcha_response { get; set; }
+        public string g_recaptcha_response { get; set; }
 
         [Caption(""), Description("")]
         [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.NormalLinks), ReadOnly]
@@ -179,8 +178,6 @@ public class LoginModule : ModuleDefinition {
         public bool ShowVerification { get; set; }
         [UIHint("Hidden"), ReadOnly]
         public bool ShowCaptcha { get; set; }
-        [UIHint("Hidden"), ReadOnly]
-        public bool CloseOnLogin { get; set; }
 
         public List<string> Images { get; set; }
         public List<FormButton> ExternalProviders { get; set; }
@@ -192,22 +189,20 @@ public class LoginModule : ModuleDefinition {
         [UIHint("Hidden"), ReadOnly]
         public bool AllowNewUser { get; set; }
         [UIHint("Hidden"), ReadOnly]
-        public string ReturnUrl { get; set; } // for external login only
+        public string ReturnUrl { get; set; }
 
         public async Task UpdateAsync() {
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             RegisterModule regMod = (RegisterModule)await ModuleDefinition.CreateUniqueModuleAsync(typeof(RegisterModule));
-            bool closeOnLogin;
-            Manager.TryGetUrlArg<bool>("CloseOnLogin", out closeOnLogin, false);
             ForgotPasswordModule pswdMod = (ForgotPasswordModule)await ModuleDefinition.CreateUniqueModuleAsync(typeof(ForgotPasswordModule));
-            ModuleAction pswdAction = await pswdMod.GetAction_ForgotPasswordAsync(config.ForgotPasswordUrl, CloseOnLogin: closeOnLogin);
+            ModuleAction pswdAction = await pswdMod.GetAction_ForgotPasswordAsync(config.ForgotPasswordUrl);
             Actions.New(pswdAction);
-            ModuleAction registerAction = await regMod.GetAction_RegisterAsync(config.RegisterUrl, Force: true, CloseOnLogin: closeOnLogin);
+            ModuleAction registerAction = await regMod.GetAction_RegisterAsync(config.RegisterUrl, Force: true);
             Actions.New(registerAction);
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync(string name, string pswd, string v, bool closeOnLogin, bool __f) {
+    public async Task<ActionInfo> RenderModuleAsync(string name, string pswd, string v, bool __f, string returnUrl) {
 
         // add popup support for possible 2fa
         await YetaWFCoreRendering.Render.AddPopupsAddOnsAsync();
@@ -224,9 +219,9 @@ public class LoginModule : ModuleDefinition {
             VerificationCode = v,
             Captcha = new RecaptchaV2Data(),
             RememberMe = isPersistent,
-            CloseOnLogin = closeOnLogin,
             ShowVerification = !string.IsNullOrWhiteSpace(v),
             ShowCaptcha = config.Captcha && string.IsNullOrWhiteSpace(v) && !Manager.IsLocalHost,
+            ReturnUrl = returnUrl,
         };
 
         using (LoginConfigDataProvider logConfigDP = new LoginConfigDataProvider()) {
@@ -241,9 +236,9 @@ public class LoginModule : ModuleDefinition {
                     Title = this.__ResStr("logAccountTitle", "Log in using your {0} account", provider.DisplayName),
                     CssClass = "t_" + provider.InternalName.ToLower(),
                 });
-                YetaWF.Core.Packages.Package package = AreaRegistration.CurrentPackage;
+                Package package = AreaRegistration.CurrentPackage;
                 string url = Package.GetAddOnPackageUrl(package.AreaName);
-                model.Images.Add(Manager.GetCDNUrl(string.Format("{0}Icons/LoginProviders/{1}.png", url, provider.InternalName)));
+                model.Images.Add(Manager.GetCDNUrl($"{url}Icons/LoginProviders/{provider.InternalName}.png"));
             }
         }
         if (__f)
@@ -292,7 +287,6 @@ public class LoginModule : ModuleDefinition {
 
         Manager.SessionSettings.SiteSettings.ClearValue(LoginTwoStepEndpoints.IDENTITY_TWOSTEP_USERID);
         Manager.SessionSettings.SiteSettings.ClearValue(LoginTwoStepEndpoints.IDENTITY_TWOSTEP_NEXTURL);
-        Manager.SessionSettings.SiteSettings.ClearValue(LoginTwoStepEndpoints.IDENTITY_TWOSTEP_CLOSEONLOGIN);
         Manager.SessionSettings.SiteSettings.Save();
         model.Success = false;
 
@@ -403,7 +397,7 @@ public class LoginModule : ModuleDefinition {
                 NextPage: nextPage);
         } else if (user.UserStatus == UserStatusEnum.Approved) {
 
-            string nextUrl = null;
+            string nextUrl = model.ReturnUrl;
             if (string.IsNullOrWhiteSpace(nextUrl))
                 nextUrl = await Resource.ResourceAccess.GetUserPostLoginUrlAsync((from u in user.RolesList select u.RoleId).ToList());
             if (string.IsNullOrWhiteSpace(nextUrl))
@@ -416,7 +410,6 @@ public class LoginModule : ModuleDefinition {
                 if (actionResult != null) {
                     Manager.SessionSettings.SiteSettings.SetValue<int>(LoginTwoStepEndpoints.IDENTITY_TWOSTEP_USERID, user.UserId);// marker that user has entered correct name/password
                     Manager.SessionSettings.SiteSettings.SetValue<string>(LoginTwoStepEndpoints.IDENTITY_TWOSTEP_NEXTURL, nextUrl);
-                    Manager.SessionSettings.SiteSettings.SetValue<bool>(LoginTwoStepEndpoints.IDENTITY_TWOSTEP_CLOSEONLOGIN, model.CloseOnLogin);
                     Manager.SessionSettings.SiteSettings.Save();
                     return actionResult;
                 }
@@ -440,7 +433,7 @@ public class LoginModule : ModuleDefinition {
         ModuleAction action = await twoStep.GetLoginActionAsync(enabledTwoStepAuthentications, user.UserId, user.UserName, user.Email);
         if (action == null)
             return null;
-        return Results.Redirect(action.GetCompleteUrl());
+        return Redirect(action.GetCompleteUrl());
     }
 
     // User logoff

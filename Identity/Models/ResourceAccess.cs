@@ -464,9 +464,9 @@ public class ResourceAccessDataProvider : IInitializeApplicationStartup, IResour
         SelectTwoStepAuthModule mod = new SelectTwoStepAuthModule();
         return mod.GetAction_SelectTwoStepAuth(null, userId, userName, userEmail);
     }
-    public async Task<ModuleAction> GetForceTwoStepActionSetupAsync(string url) {
+    public async Task<ModuleAction> GetForceTwoStepActionSetupAsync(string url, string returnUrl) {
         SelectTwoStepSetupModule mod = new SelectTwoStepSetupModule();
-        return await mod.GetAction_ForceTwoStepSetupAsync(url);
+        return await mod.GetAction_ForceTwoStepSetupAsync(url, returnUrl);
     }
     public void ShowNeed2FA() {
         Manager.AddOnManager.AddExplicitlyInvokedModules(
