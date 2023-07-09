@@ -206,7 +206,7 @@ namespace YetaWF.Modules.DevTests.Modules {
             public SMTPServer? SMTPServer { get; set; }
 
             [Category("Core"), Caption("Switch"), Description("Switch")]
-            [UIHint("Switch"), Required]
+            [UIHint("Switch")]
             [ProcessIf(nameof(ControlStatus), ControlStatusEnum.Normal, Disable = true)]
             public bool Switch { get; set; } = true;
             public string Switch_Text { get; set; } = "Lorem ipsum";

@@ -1,0 +1,102 @@
+@charset "UTF-8";
+/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+.yt_switch {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+.yt_switch input {
+  display: none;
+}
+.yt_switch input:checked + label {
+  background-color: var(--switch-bg-off);
+}
+.yt_switch label {
+  margin-right: 0.5em;
+  font-size: 1rem;
+  line-height: 1;
+  width: 56px;
+  height: 24px;
+  background-color: var(--switch-bg-off);
+  background-image: none;
+  border-radius: 2rem;
+  padding: 0.16667rem;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  position: relative;
+  transition: all 0.1s ease-in-out;
+  outline: 0;
+}
+.yt_switch label:before {
+  color: var(--switch-clr-off);
+  content: attr(data-text-off);
+  display: block;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 21px;
+  position: absolute;
+  right: 1px;
+  margin: 3px;
+  top: -2px;
+  text-align: center;
+  min-width: 1.66667rem;
+  overflow: hidden;
+  transition: all 0.1s ease-in-out;
+}
+.yt_switch label:after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  background-color: var(--switch-bg-switch);
+  box-shadow: none;
+  border-radius: 2rem;
+  height: 20px;
+  width: 20px;
+  top: 2px;
+  transition: all 0.1s ease-in-out;
+}
+
+.yt_switch input:checked + label {
+  background-color: var(--switch-bg-on);
+}
+.yt_switch input:checked + label:before {
+  color: var(--switch-clr-on);
+  content: attr(data-text-on);
+  right: auto;
+  left: 3px;
+}
+.yt_switch input:checked + label:after {
+  left: 34px;
+  background-color: var(--switch-bg-switch);
+}
+
+.yt_switch input:disabled + label {
+  opacity: var(--body-dis-opacity);
+}
+
+.yt_switch.t_md input + label {
+  width: 76px;
+}
+
+.yt_switch.t_lg input + label {
+  width: 96px;
+}
+
+.yt_switch.t_xl input + label {
+  width: 116px;
+}
+
+.yt_switch.t_md input:checked + label:after {
+  left: 54px;
+}
+
+.yt_switch.t_lg input:checked + label:after {
+  left: 74px;
+}
+
+.yt_switch.t_xl input:checked + label:after {
+  left: 94px;
+}

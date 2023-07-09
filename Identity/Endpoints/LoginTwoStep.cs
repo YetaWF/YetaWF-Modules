@@ -3,7 +3,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using System;
 using YetaWF.Core.Endpoints;
 using YetaWF.Core.Identity;
 using YetaWF.Core.Localize;
@@ -17,8 +16,8 @@ public class LoginTwoStepEndpoints : YetaWFEndpoints {
 
     private static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(LoginTwoStepEndpoints), name, defaultValue, parms); }
 
-    public const string IDENTITY_TWOSTEP_USERID = "YetaWF_Identity-Login-TwoStep";
-    public const string IDENTITY_TWOSTEP_NEXTURL = "YetaWF_Identity-Login-NextUrl";
+    internal const string IDENTITY_TWOSTEP_USERID = "YetaWF_Identity-Login-TwoStep";
+    internal const string IDENTITY_TWOSTEP_NEXTURL = "YetaWF_Identity-Login-NextUrl";//$$$ needed?
 
     public const string Login = "Login";
 
@@ -31,9 +30,8 @@ public class LoginTwoStepEndpoints : YetaWFEndpoints {
             int userId = Manager.SessionSettings.SiteSettings.GetValue<int>(IDENTITY_TWOSTEP_USERID, 0);
             string returnUrl = Manager.SessionSettings.SiteSettings.GetValue<string>(IDENTITY_TWOSTEP_NEXTURL);
 
-            Manager.SessionSettings.SiteSettings.ClearValue(IDENTITY_TWOSTEP_USERID);
-            Manager.SessionSettings.SiteSettings.ClearValue(IDENTITY_TWOSTEP_NEXTURL);
-            Manager.SessionSettings.SiteSettings.Save();
+            await Resource.ResourceAccess.LoginAsAsync(userId);
+            await Resource.ResourceAccess.ClearTwoStepUserAsync();
             if (userId == 0) return Redirect(Manager.CurrentSite.HomePageUrl);
 
             // verify that the TwoStepAuthorization provider just verified this user

@@ -285,9 +285,7 @@ public class LoginModule : ModuleDefinition {
 
     private async Task<IResult> CompleteLoginAsync(LoginModel model, LoginConfigData config, bool useTwoStep) {
 
-        Manager.SessionSettings.SiteSettings.ClearValue(LoginTwoStepEndpoints.IDENTITY_TWOSTEP_USERID);
-        Manager.SessionSettings.SiteSettings.ClearValue(LoginTwoStepEndpoints.IDENTITY_TWOSTEP_NEXTURL);
-        Manager.SessionSettings.SiteSettings.Save();
+        await Resource.ResourceAccess.ClearTwoStepUserAsync();
         model.Success = false;
 
         // make sure it's a valid user
@@ -430,7 +428,7 @@ public class LoginModule : ModuleDefinition {
     private async Task<IResult> TwoStepAuthetication(UserDefinition user) {
         TwoStepAuth twoStep = new TwoStepAuth();
         List<string> enabledTwoStepAuthentications = (from e in user.EnabledTwoStepAuthentications select e.Name).ToList();
-        ModuleAction action = await twoStep.GetLoginActionAsync(enabledTwoStepAuthentications, user.UserId, user.UserName, user.Email);
+        ModuleAction action = await twoStep.GetLoginActionAsync(enabledTwoStepAuthentications);
         if (action == null)
             return null;
         return Redirect(action.GetCompleteUrl());

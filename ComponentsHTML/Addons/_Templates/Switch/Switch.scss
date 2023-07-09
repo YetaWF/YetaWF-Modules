@@ -1,0 +1,126 @@
+/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+$width: 60px;
+$mdwidth: 80px;
+$lgwidth: 100px;
+$xlwidth: 120px;
+
+.yt_switch {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    input {
+        display: none;
+        &:checked+label {
+            background-color: var(--switch-bg-off);
+        }
+    }
+    label {
+        margin-right:.5em;
+        font-size: 1rem;
+        line-height: 1;
+        width: $width - 4px;        
+        height: 24px;
+        background-color: var(--switch-bg-off);
+        background-image: none;
+        border-radius: 2rem;
+        padding: 0.16667rem;
+        cursor: pointer;
+        display: inline-block;
+        text-align: center;
+        position: relative;
+        //font-weight: $font-weight-medium;
+        transition: all 0.1s ease-in-out;
+        outline: 0;
+
+        &:before {
+            color: var(--switch-clr-off);
+            content: attr(data-text-off);
+            display: block;
+            font-family: inherit;
+            font-weight: 500;
+            font-size: 12px;
+            line-height: 21px;
+            position: absolute;
+            right: 1px;
+            margin: 3px;
+            top: -2px;
+            text-align: center;
+            min-width: 1.66667rem;
+            overflow: hidden;
+            transition: all 0.1s ease-in-out;
+        }
+
+        &:after {
+            content: '';
+            position: absolute;
+            left: 3px;
+            background-color: var(--switch-bg-switch);
+            box-shadow: none;
+            border-radius: 2rem;
+            height: 20px;
+            width: 20px;
+            top: 2px;
+            transition: all 0.1s ease-in-out;
+        }
+    }
+}
+
+.yt_switch input:checked+label {
+    background-color: var(--switch-bg-on);
+
+    &:before {
+        color: var(--switch-clr-on);
+        content: attr(data-text-on);
+        right: auto;
+        left: 3px;
+    }
+
+    &:after {
+        left: $width - 26px;
+        background-color: var(--switch-bg-switch);
+    }
+}
+.yt_switch input:disabled+label {
+    opacity: var(--body-dis-opacity);
+}
+.yt_switch.t_md {
+    input+label {
+        width: $mdwidth - 4px;
+    }
+}
+.yt_switch.t_lg {
+    input+label {
+        width: $lgwidth - 4px;
+    }
+}
+.yt_switch.t_xl {
+    input+label {
+        width: $xlwidth - 4px;
+    }
+}
+.yt_switch.t_md input:checked+label {
+    &:after {
+        left: $mdwidth - 26px;
+    }
+}
+.yt_switch.t_lg input:checked+label {
+    &:after {
+        left: $lgwidth - 26px;
+    }
+}
+.yt_switch.t_xl input:checked+label {
+    &:after {
+        left: $xlwidth - 26px;
+    }
+}
+
+// .square-switch {
+//     margin-right: 7px;
+
+//     input[switch]+label,
+//     input[switch]+label:after {
+//         border-radius: 4px;
+//     }
+// }

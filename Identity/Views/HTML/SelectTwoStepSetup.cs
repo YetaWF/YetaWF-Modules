@@ -35,16 +35,17 @@ public class SelectTwoStepSetupView : YetaWFView, IYetaWFView<SelectTwoStepSetup
 
                 hb.Append($@"
 <div class='t_auth_info'>
-    <div class='t_auth'>
-        {await meth.Action.RenderAsLinkAsync()}
-    </div>
     <div class='t_stat'>
-        {HE(meth.Status)}
+        {await HtmlHelper.ForDisplayAsync(meth, nameof(meth.Enabled))}
     </div>
-    <div class='t_desc'>
-        {HE(meth.Description)}
+    <div class='t_auth'>
+        {await HtmlHelper.ForDisplayAsync(meth, nameof(meth.Action))}
     </div>
-</div>");
+</div>
+<div class='t_auth_desc'>
+    {HE(meth.Description)}
+</div>
+");
 
             }
         }

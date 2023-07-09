@@ -65,8 +65,16 @@ public class SelectTwoStepSetupModule : ModuleDefinition {
     [Header("Please set up a two-step authentication method to protect your account from being hijacked.")]
     public class EditModel {
         public class AuthMethod {
+
+            [UIHint("ModuleAction"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.LinksOnly), ReadOnly]
             public ModuleAction Action { get; set; }
-            public string Status { get; set; }
+
+            [UIHint("Switch"), ReadOnly]
+            public bool Enabled { get; set; }
+            public string Enabled_On { get; set; } = "Enabled";
+            public string Enabled_Off { get; set; } = "Disabled";
+            public string Enabled_Size { get; set; } = "md";
+
             public string Description { get; set; }
         }
         public List<AuthMethod> AuthMethods { get; set; }
@@ -98,14 +106,10 @@ public class SelectTwoStepSetupModule : ModuleDefinition {
                 if (auth != null) {
                     ModuleAction action = await auth.GetSetupActionAsync();
                     if (action != null) {
-                        string status;
-                        if (enabledTwoStepAuths.Contains(auth.Name))
-                            status = this.__ResStr("enabled", "(Enabled)");
-                        else
-                            status = this.__ResStr("notEnabled", "(Not Enabled)");
+                        bool enabled = enabledTwoStepAuths.Contains(auth.Name);
                         model.AuthMethods.Add(new EditModel.AuthMethod {
                             Action = action,
-                            Status = status,
+                            Enabled = enabled,
                             Description = auth.GetDescription()
                         });
                     }

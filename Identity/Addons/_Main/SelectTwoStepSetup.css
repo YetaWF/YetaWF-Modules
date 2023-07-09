@@ -1,17 +1,21 @@
 @charset "UTF-8";
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 .yModule.YetaWF_Identity_SelectTwoStepSetup .t_auth_info {
-  padding-bottom: 0.5em;
-}
-.yModule.YetaWF_Identity_SelectTwoStepSetup .t_auth_info .t_auth {
-  padding-left: 3ch;
-  display: inline-block;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
 }
 .yModule.YetaWF_Identity_SelectTwoStepSetup .t_auth_info .t_stat {
   padding-left: 3ch;
   display: inline-block;
 }
-.yModule.YetaWF_Identity_SelectTwoStepSetup .t_auth_info .t_desc {
+.yModule.YetaWF_Identity_SelectTwoStepSetup .t_auth_info .t_auth {
+  padding-left: 1ch;
+  display: inline-block;
+}
+.yModule.YetaWF_Identity_SelectTwoStepSetup .t_auth_desc {
   padding-top: 0.5em;
   padding-left: 10ch;
+  padding-bottom: 1em;
 }

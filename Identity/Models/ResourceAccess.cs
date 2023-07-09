@@ -460,9 +460,9 @@ public class ResourceAccessDataProvider : IInitializeApplicationStartup, IResour
         }
     }
 
-    public ModuleAction GetSelectTwoStepAction(int userId, string userName, string userEmail) {
+    public ModuleAction GetSelectTwoStepAction() {
         SelectTwoStepAuthModule mod = new SelectTwoStepAuthModule();
-        return mod.GetAction_SelectTwoStepAuth(null, userId, userName, userEmail);
+        return mod.GetAction_SelectTwoStepAuth(null);
     }
     public async Task<ModuleAction> GetForceTwoStepActionSetupAsync(string url, string returnUrl) {
         SelectTwoStepSetupModule mod = new SelectTwoStepSetupModule();
@@ -512,13 +512,23 @@ public class ResourceAccessDataProvider : IInitializeApplicationStartup, IResour
             }
         }
     }
-    public async Task AddTwoStepLoginFailureAsync() {
+    public Task<int> GetTwoStepUserAsync() {
         int userId = Manager.SessionSettings.SiteSettings.GetValue<int>(LoginTwoStepEndpoints.IDENTITY_TWOSTEP_USERID);
         if (userId == 0)
-            throw new InternalError("No user id available in AddTwoStepLoginFailure");
+            throw new InternalError($"No user id available in {nameof(GetTwoStepUserAsync)}");
+        return Task.FromResult(userId);
+    }
+    public Task ClearTwoStepUserAsync() {
+        Manager.SessionSettings.SiteSettings.ClearValue(LoginTwoStepEndpoints.IDENTITY_TWOSTEP_USERID);
+        Manager.SessionSettings.SiteSettings.ClearValue(LoginTwoStepEndpoints.IDENTITY_TWOSTEP_NEXTURL);
+        Manager.SessionSettings.SiteSettings.Save();
+        return Task.CompletedTask;
+    }
+    public async Task AddTwoStepLoginFailureAsync() {
+        int userId = await GetTwoStepUserAsync();
         using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
             UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
-            if (user == null) throw new InternalError("Unexpected error in AddTwoStepLoginFailure - no user found");
+            if (user == null) throw new InternalError($"Unexpected error in {nameof(AddTwoStepLoginFailureAsync)}- no user found");
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             user.LoginFailures = user.LoginFailures + 1;
             if (config.MaxLoginFailures != 0 && user.LoginFailures >= config.MaxLoginFailures) {
@@ -531,12 +541,10 @@ public class ResourceAccessDataProvider : IInitializeApplicationStartup, IResour
         }
     }
     public async Task<bool> GetTwoStepLoginFailuresExceededAsync() {
-        int userId = Manager.SessionSettings.SiteSettings.GetValue<int>(LoginTwoStepEndpoints.IDENTITY_TWOSTEP_USERID);
-        if (userId == 0)
-            throw new InternalError("No user id available in GetTwoStepLoginFailures");
+        int userId = await GetTwoStepUserAsync();
         using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
             UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
-            if (user == null) throw new InternalError("Unexpected error in GetTwoStepLoginFailures - no user found");
+            if (user == null) throw new InternalError($"Unexpected error in {nameof(GetTwoStepLoginFailuresExceededAsync)}- no user found");
             LoginConfigData config = await LoginConfigDataProvider.GetConfigAsync();
             return config.MaxLoginFailures != 0 && user.LoginFailures >= config.MaxLoginFailures;
         }
@@ -545,7 +553,7 @@ public class ResourceAccessDataProvider : IInitializeApplicationStartup, IResour
     public async Task<bool> VerifyTwoStepAuthenticationRecoveryCodeAsync(int userId, string code) {
         using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
             UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
-            if (user == null) throw new InternalError($"Unexpected error in {nameof(VerifyTwoStepAuthenticationRecoveryCodeAsync)} - no user found");
+            if (user == null) throw new InternalError($"Unexpected error in {nameof(VerifyTwoStepAuthenticationRecoveryCodeAsync)}- no user found");
             return user.RecoveryCode == code;
         }
     }

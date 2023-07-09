@@ -55,10 +55,11 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
 
             HtmlBuilder hb = new HtmlBuilder();
 
-            string? apply = null, applyTT = null; bool applyShown;
+            string? apply = null, applyTT = null; bool applyShown; ModuleAction? applyAction = null;
             if (ObjectSupport.TryGetPropertyValue<bool>(model, "__applyShown", out applyShown, GetViewName() == EditApplyView.ViewName) && applyShown) {
                 ObjectSupport.TryGetPropertyValue<string>(model, "__applyTT", out applyTT);
                 ObjectSupport.TryGetPropertyValue<string>(model, "__apply", out apply);
+                ObjectSupport.TryGetPropertyValue<ModuleAction>(model, "__applyAction", out applyAction);
             }
             string? submit = null, submitTT = null; bool submitShown;  ButtonTypeEnum submitType = ButtonTypeEnum.Submit; string? submitName = null;
             if (ObjectSupport.TryGetPropertyValue<bool>(model, "__submitShown", out submitShown, true) && submitShown) {
@@ -76,7 +77,7 @@ namespace YetaWF.Modules.ComponentsHTML.Views {
 
             List<FormButton> buttons = new List<FormButton>();
             if (applyShown)
-                buttons.Add(new FormButton() { ButtonType = ButtonTypeEnum.Apply, Text = apply, Title = applyTT,  });
+                buttons.Add(new FormButton() { ButtonType = ButtonTypeEnum.Apply, Text = apply, Title = applyTT, Action = applyAction  });
             if (submitShown)
                 buttons.Add(new FormButton() { ButtonType = submitType, Text = submit, Title = submitTT, Name = submitName });
             if (cancelShown)

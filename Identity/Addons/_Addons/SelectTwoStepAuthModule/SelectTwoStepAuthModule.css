@@ -1,0 +1,5 @@
+@charset "UTF-8";
+/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
+.YetaWF_Identity_SelectTwoStepAuth .t_auth {
+  margin-bottom: 0.5em;
+}

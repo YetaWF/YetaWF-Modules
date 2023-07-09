@@ -42,7 +42,7 @@ public class RecoveryCodesModule : ModuleDefinition {
     public const string IDENTITY_RECOVERY_PROGRESS = "YetaWF_Identity-Recovery-Progress";
 
     [Trim]
-    [Header("Recovery codes are used to access your account should you be unable to authenticate using the currently defined two step authentication.")]
+    [Header("Recovery codes are used to access your account should you be unable to authenticate using the currently defined two step authentication(s). Make sure to save the recovery code in a safe place so you can access your account in case you are unable to use any of the enabled authentication methods.")]
     public class EditModel {
 
         public enum ModelProgressEnum {

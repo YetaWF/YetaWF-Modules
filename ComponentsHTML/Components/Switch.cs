@@ -14,7 +14,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     public abstract class SwitchComponentBase : YetaWFComponent {
 
-        internal static string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(SwitchComponentBase), name, defaultValue, parms); }
+        internal string __ResStr(string name, string defaultValue, params object[] parms) { return ResourceAccess.GetResourceString(typeof(SwitchComponentBase), name, defaultValue, parms); }
 
         /// <summary>
         /// UI hint name.
@@ -60,12 +60,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (TryGetSiblingProperty($"{PropertyName}_Tooltip", out string? tooltip))
                 tooltip = $" data-tooltip='{Utility.HAE(tooltip)}'";
 
-            Manager.ScriptManager.AddLast($"new YetaWF_ComponentsHTML.SwitchEditComponent('{ControlId}');");
+            Manager.ScriptManager.AddLast($"new YetaWF_ComponentsHTML.SwitchComponent('{DivId}');");
 
             return Task.FromResult($@"
-<input id='{ControlId}'{FieldSetup(FieldType.Anonymous)} class='yt_switch t_display{GetClasses()}{size}' type='checkbox' value='true'{check} disabled>
-<label for='{ControlId}' data-text-on='{textOn}' data-text-off='{textOff}'{tooltip} tabindex='0'></label>
-<div>{HE(text)}</div>");
+<div id='{DivId}' class='yt_switch t_display{GetClasses()}{size}'>
+    <input id='{ControlId}' {FieldSetup(FieldType.Anonymous)} type='checkbox' value='true'{check} disabled>
+    <label for='{ControlId}' data-text-on='{textOn}' data-text-off='{textOff}'{tooltip} tabindex='0'></label>
+    <div class='t_desc'>{HE(text)}</div>
+</div>");
+
         }
     }
     /// <summary>
@@ -73,6 +76,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     /// <remarks>
     /// The additional text shown does not change as the checkbox status is changed by the user.
+    /// </remarks>
     [UsesSibling("_Text", "string", "Defines the additional text shown next to the checkbox.")]
     [UsesSibling("_Tooltip", "string", "Defines the tooltip shown for the checkbox.")]
     public class SwitchEditComponent : SwitchComponentBase, IYetaWFComponent<bool?> {
@@ -98,12 +102,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (TryGetSiblingProperty($"{PropertyName}_Tooltip", out string? tooltip))
                 tooltip = $" data-tooltip='{Utility.HAE(tooltip)}'";
 
-            Manager.ScriptManager.AddLast($"new YetaWF_ComponentsHTML.SwitchEditComponent('{ControlId}');");
+            Manager.ScriptManager.AddLast($"new YetaWF_ComponentsHTML.SwitchComponent('{DivId}');");
 
             return Task.FromResult($@"
-<input id='{ControlId}'{FieldSetup(Validation ? FieldType.Validated : FieldType.Anonymous)} class='yt_switch t_edit{GetClasses()}{size}' type='checkbox' value='true'{check}>
-<label for='{ControlId}' data-text-on='{textOn}' data-text-off='{textOff}'{tooltip} tabindex='0'></label>
-<div class='t_desc'>{HE(text)}</div>");
+<div id='{DivId}' class='yt_switch t_edit{GetClasses()}{size}'>
+    <input id='{ControlId}' {FieldSetup(Validation ? FieldType.Validated : FieldType.Anonymous)} type='checkbox' value='true'{check}>
+    <label for='{ControlId}' data-text-on='{textOn}' data-text-off='{textOff}'{tooltip} tabindex='0'></label>
+    <div class='t_desc'>{HE(text)}</div>
+</div>");
         }
     }
 }

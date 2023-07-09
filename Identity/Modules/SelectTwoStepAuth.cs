@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using YetaWF.Core.Identity;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;
 using YetaWF.Core.Models.Attributes;
@@ -35,10 +36,9 @@ public class SelectTwoStepAuthModule : ModuleDefinition {
 
     public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
 
-    public ModuleAction GetAction_SelectTwoStepAuth(string url, int userId, string userName, string userEmail) {
+    public ModuleAction GetAction_SelectTwoStepAuth(string url) {
         return new ModuleAction() {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
-            QueryArgs = new { UserId = userId, UserName = userName, UserEmail = userEmail },
             Style = ModuleAction.ActionStyleEnum.ForcePopup,
             Category = ModuleAction.ActionCategoryEnum.Update,
             Mode = ModuleAction.ActionModeEnum.Any,
@@ -49,13 +49,6 @@ public class SelectTwoStepAuthModule : ModuleDefinition {
     [Trim]
     [Header("Please click on one of the available authentication methods to complete logging in.")]
     public class EditModel {
-        [UIHint("Hidden")]
-        public int UserId { get; set; }
-        [UIHint("Hidden")]
-        public string UserName { get; set; }
-        [UIHint("Hidden")]
-        public string UserEmail { get; set; }
-
         public List<ModuleAction> Actions { get; set; }
 
         public EditModel() {
@@ -63,12 +56,9 @@ public class SelectTwoStepAuthModule : ModuleDefinition {
         }
     }
 
-    public async Task<ActionInfo> RenderModuleAsync(int userId, string userName, string userEmail) {
-        EditModel model = new EditModel {
-            UserId = userId,
-            UserName = userName,
-            UserEmail = userEmail,
-        };
+    public async Task<ActionInfo> RenderModuleAsync() {
+        int userId = await Resource.ResourceAccess.GetTwoStepUserAsync();
+        EditModel model = new EditModel();
         using (UserDefinitionDataProvider userDP = new UserDefinitionDataProvider()) {
             UserDefinition user = await userDP.GetItemByUserIdAsync(userId);
             if (user == null)
@@ -81,11 +71,13 @@ public class SelectTwoStepAuthModule : ModuleDefinition {
             foreach (string proc in procs) {
                 ITwoStepAuth auth = await twoStep.GetTwoStepAuthProcessorByNameAsync(proc);
                 if (auth != null) {
-                    model.Actions.New(await auth.GetLoginActionAsync(userId, userName, userEmail));
+                    model.Actions.New(await auth.GetLoginActionAsync());
                 }
             }
-            if (model.Actions.Count == 0)
+            if (model.Actions.Count == 0) {
+                await Resource.ResourceAccess.ClearTwoStepUserAsync();
                 throw new InternalError("There are no two-step authentication providers installed");
+            }
         }
         return await RenderAsync(model);
     }
