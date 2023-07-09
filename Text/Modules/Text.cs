@@ -1,11 +1,13 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Text#License */
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider.Attributes;
+using YetaWF.Core.Endpoints;
 using YetaWF.Core.Endpoints.Support;
 using YetaWF.Core.Extensions;
 using YetaWF.Core.IO;
@@ -211,7 +213,7 @@ namespace YetaWF.Modules.Text.Modules {
 
         [Permission("Edit")]
         [ExcludeDemoMode]
-        public async Task<IResult> UpdateModuleAsync(TextModel model) {
+        public async Task<IResult> UpdateModuleAsync(TextModel model, [FromQuery] string __CurrentUrl) {
             Contents = model.Contents;
             await SaveAsync();
             if (IsApply) {
@@ -219,7 +221,8 @@ namespace YetaWF.Modules.Text.Modules {
             } else {
                 if (Manager.IsInPopup) throw new InternalError("Save & Display not available in a popup window");
                 Manager.EditMode = false;
-                return await FormProcessedAsync(model, OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage);
+                string url = YetaWFEndpoints.AddUrlPayload(__CurrentUrl, true, null);
+                return await FormProcessedAsync(model, OnClose: OnCloseEnum.GotoNewPage, OnPopupClose: OnPopupCloseEnum.GotoNewPage, NextPage: url, ForceReload: true);
             }
         }
     }

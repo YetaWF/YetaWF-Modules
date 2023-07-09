@@ -105,7 +105,7 @@ public class SelectTwoStepSetupModule : ModuleDefinition {
                 ITwoStepAuth auth = await twoStep.GetTwoStepAuthProcessorByNameAsync(proc);
                 if (auth != null) {
                     ModuleAction action = await auth.GetSetupActionAsync();
-                    if (action != null) {
+                    if (action != null && await action.IsAuthorizedAsync()) {
                         bool enabled = enabledTwoStepAuths.Contains(auth.Name);
                         model.AuthMethods.Add(new EditModel.AuthMethod {
                             Action = action,
