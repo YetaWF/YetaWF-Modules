@@ -132,7 +132,6 @@ public class AuthorizationBrowseModule : ModuleDefinition {
     }
     public GridDefinition GetGridModel() {
         return new GridDefinition {
-            ModuleGuid = ModuleGuid,
             SettingsModuleGuid = PermanentGuid,
             RecordType = typeof(BrowseItem),
             AjaxUrl = Utility.UrlFor<Endpoints.AuthorizationBrowseModuleEndpoints>(GridSupport.BrowseGridData),

@@ -73,7 +73,7 @@ var YetaWF_ComponentsHTML;
                 uri.addSearch("__lastInternalName", filename); // the previous real filename of the file to remove
             }
             var info = $YetaWF.Forms.getJSONInfo(this.Control);
-            uri.replaceSearch(YConfigs.Basics.ModuleGuid, info.ModuleGuid);
+            uri.replaceSearch("__ModuleGuid", info.ModuleGuid);
             var request = new XMLHttpRequest();
             request.open("POST", uri.toUrl(), true);
             request.setRequestHeader(YConfigs.Basics.AntiforgeryHeader, YVolatile.Basics.AntiforgeryRequestToken);

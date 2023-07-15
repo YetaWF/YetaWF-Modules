@@ -143,7 +143,6 @@ public class FeedbackBrowseModule : ModuleDefinition {
     }
     public GridDefinition GetGridModel() {
         return new GridDefinition {
-            ModuleGuid = ModuleGuid,
             SettingsModuleGuid = PermanentGuid,
             RecordType = typeof(BrowseItem),
             AjaxUrl = Utility.UrlFor<FeedbackBrowseModuleEndpoints>(GridSupport.BrowseGridData),

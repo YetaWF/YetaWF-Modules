@@ -143,7 +143,6 @@ public class BrowseCallLogModule : ModuleDefinition {
     public GridDefinition GetGridModel() {
         return new GridDefinition {
             SizeStyle = GridDefinition.SizeStyleEnum.SizeToFit,
-            ModuleGuid = ModuleGuid,
             SettingsModuleGuid = PermanentGuid,
             RecordType = typeof(BrowseItem),
             AjaxUrl = Utility.UrlFor<BrowseCallLogModuleEndpoints>(GridSupport.BrowseGridData),

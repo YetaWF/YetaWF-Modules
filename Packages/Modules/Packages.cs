@@ -342,7 +342,6 @@ public class PackagesModule : ModuleDefinition {
     }
     public GridDefinition GetGridModel() {
         return new GridDefinition {
-            ModuleGuid = ModuleGuid,
             SettingsModuleGuid = PermanentGuid,
             RecordType = typeof(PackageModel),
             AjaxUrl = Utility.UrlFor<PackagesModuleEndpoints>(GridSupport.BrowseGridData),

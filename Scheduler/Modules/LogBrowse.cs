@@ -200,7 +200,6 @@ public class LogBrowseModule : ModuleDefinition {
     public GridDefinition GetGridModel() {
         return new GridDefinition {
             SizeStyle = GridDefinition.SizeStyleEnum.SizeToFit,
-            ModuleGuid = ModuleGuid,
             SettingsModuleGuid = PermanentGuid,
             RecordType = typeof(BrowseItem),
             InitialPageSize = 20,

@@ -177,7 +177,6 @@ public class AuditRecordsModule : ModuleDefinition {
 
     public GridDefinition GetGridModel() {
         return new GridDefinition {
-            ModuleGuid = ModuleGuid,
             SettingsModuleGuid = PermanentGuid,
             InitialPageSize = 20,
             RecordType = typeof(BrowseItem),

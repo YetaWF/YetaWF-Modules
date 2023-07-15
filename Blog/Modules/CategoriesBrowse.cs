@@ -230,7 +230,6 @@ public class CategoriesBrowseModule : ModuleDefinition {
 
     public GridDefinition GetGridModel() {
         return new GridDefinition {
-            ModuleGuid = ModuleGuid,
             SettingsModuleGuid = PermanentGuid,
             RecordType = typeof(BrowseItem),
             AjaxUrl = Utility.UrlFor<CategoriesBrowseModuleEndpoints>(GridSupport.BrowseGridData),

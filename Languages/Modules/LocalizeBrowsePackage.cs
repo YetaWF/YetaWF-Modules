@@ -229,7 +229,6 @@ public class LocalizeBrowsePackageModule : ModuleDefinition {
     }
     public GridDefinition GetGridModel(Package package) {
         return new GridDefinition {
-            ModuleGuid = ModuleGuid,
             SettingsModuleGuid = PermanentGuid,
             RecordType = typeof(BrowseItem),
             AjaxUrl = Utility.UrlFor<LocalizeBrowsePackageModuleEndpoints>(GridSupport.BrowseGridData),

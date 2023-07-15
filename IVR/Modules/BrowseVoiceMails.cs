@@ -161,7 +161,6 @@ public class BrowseVoiceMailsModule : ModuleDefinition {
     public GridDefinition GetGridModel() {
         return new GridDefinition {
             SizeStyle = GridDefinition.SizeStyleEnum.SizeToFit,
-            ModuleGuid = ModuleGuid,
             //SettingsModuleGuid = PermanentGuid,
             RecordType = typeof(BrowseItem),
             AjaxUrl = Utility.UrlFor<BrowseVoiceMailsModuleEndpoints>(GridSupport.BrowseGridData),

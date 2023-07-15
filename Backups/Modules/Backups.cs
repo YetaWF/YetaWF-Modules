@@ -181,7 +181,6 @@ public class BackupsModule : ModuleDefinition {
 
     public GridDefinition GetGridModel() {
         return new GridDefinition {
-            ModuleGuid = ModuleGuid,
             SettingsModuleGuid = PermanentGuid,
             RecordType = typeof(BackupModel),
             AjaxUrl = Utility.UrlFor(typeof(BackupsModuleEndpoints), nameof(GridSupport.BrowseGridData)),

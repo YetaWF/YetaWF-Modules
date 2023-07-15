@@ -97,7 +97,6 @@ public class CacheInfoModule : ModuleDefinition {
 
     public GridDefinition GetGridModel() {
         return new GridDefinition {
-            ModuleGuid = ModuleGuid,
             SettingsModuleGuid = PermanentGuid,
             RecordType = typeof(BrowseItem),
             AjaxUrl = Utility.UrlFor<CacheInfoModuleEndpoints>(GridSupport.BrowseGridData),

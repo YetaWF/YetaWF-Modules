@@ -101,7 +101,7 @@ namespace YetaWF_ComponentsHTML {
             }
 
             const info = $YetaWF.Forms.getJSONInfo(this.Control);
-            uri.replaceSearch(YConfigs.Basics.ModuleGuid, info.ModuleGuid);
+            uri.replaceSearch("__ModuleGuid", info.ModuleGuid);
 
             const request: XMLHttpRequest = new XMLHttpRequest();
             request.open("POST", uri.toUrl(), true);

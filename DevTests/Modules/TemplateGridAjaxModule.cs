@@ -163,7 +163,6 @@ namespace YetaWF.Modules.DevTests.Modules {
 
             return new GridDefinition {
                 InitialPageSize = 10,
-                ModuleGuid = ModuleGuid,
                 SettingsModuleGuid = PermanentGuid,
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = Utility.UrlFor<TemplateGridAjaxModuleEndpoints>(GridSupport.BrowseGridData),

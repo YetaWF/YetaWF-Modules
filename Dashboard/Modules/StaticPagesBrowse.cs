@@ -131,7 +131,6 @@ public class StaticPagesBrowseModule : ModuleDefinition {
     public GridDefinition GetGridModel() {
         return new GridDefinition {
             InitialPageSize = 20,
-            ModuleGuid = ModuleGuid,
             SettingsModuleGuid = PermanentGuid,
             RecordType = typeof(BrowseItem),
             AjaxUrl = Utility.UrlFor<StaticPagesBrowseModuleEndpoints>(GridSupport.BrowseGridData),

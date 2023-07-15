@@ -101,7 +101,6 @@ public class LanguagesBrowseModule : ModuleDefinition {
     }
     public GridDefinition GetGridModel() {
         return new GridDefinition {
-            ModuleGuid = ModuleGuid,
             SettingsModuleGuid = PermanentGuid,
             RecordType = typeof(BrowseItem),
             AjaxUrl = Utility.UrlFor<LanguagesBrowseModuleEndpoints>(GridSupport.BrowseGridData),

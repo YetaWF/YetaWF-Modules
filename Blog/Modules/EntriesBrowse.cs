@@ -176,7 +176,6 @@ namespace YetaWF.Modules.Blog.Modules {
 
         public GridDefinition GetGridModel(int blogCategory) {
             return new GridDefinition {
-                ModuleGuid = ModuleGuid,
                 SettingsModuleGuid = PermanentGuid,
                 RecordType = typeof(BrowseItem),
                 AjaxUrl = Utility.UrlFor<EntriesBrowseModuleEndpoints>(GridSupport.BrowseGridData),

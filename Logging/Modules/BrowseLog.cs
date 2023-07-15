@@ -227,7 +227,6 @@ public class BrowseLogModule : ModuleDefinition {
     }
     public GridDefinition GetGridModel() {
         return new GridDefinition {
-            ModuleGuid = ModuleGuid,
             SettingsModuleGuid = PermanentGuid,
             PageSizes = new List<int>() { 5, 10, 20, 50 },
             InitialPageSize = 20,
