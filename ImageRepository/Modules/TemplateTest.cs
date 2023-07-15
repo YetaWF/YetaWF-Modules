@@ -56,7 +56,6 @@ namespace YetaWF.Modules.ImageRepository.Modules {
             return await RenderAsync(model);
         }
 
-        [ConditionalAntiForgeryToken]
         public async Task<IResult> UpdateModuleAsync(Model model) {
             await model.UpdateAsync(this);
             if (!ModelState.IsValid)

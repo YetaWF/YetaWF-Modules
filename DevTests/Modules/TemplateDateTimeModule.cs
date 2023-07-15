@@ -150,7 +150,6 @@ namespace YetaWF.Modules.DevTests.Modules {
             return await RenderAsync(model);
         }
 
-        [ConditionalAntiForgeryToken]
         public async Task<IResult> UpdateModuleAsync(Model model) {
             if (!ModelState.IsValid)
                 return await PartialViewAsync(model);
