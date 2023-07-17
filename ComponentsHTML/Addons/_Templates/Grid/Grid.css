@@ -82,6 +82,7 @@
   padding: 0.25em 0.25em 0.25em 0.25em;
   text-overflow: ellipsis;
   -webkit-user-select: none;
+     -moz-user-select: none;
           user-select: none; /* Standard syntax */
 }
 .yt_grid .tg_table table .tg_header th span {
@@ -95,6 +96,7 @@
   top: 0;
   cursor: col-resize;
   -webkit-user-select: none;
+     -moz-user-select: none;
           user-select: none;
   overflow: hidden;
 }
@@ -213,6 +215,7 @@
 }
 .yt_grid .tg_pager {
   -webkit-user-select: none;
+     -moz-user-select: none;
           user-select: none; /* Standard syntax */
 }
 .yt_grid .tg_pager .tg_pgbtns, .yt_grid .tg_pager .tg_pgctl, .yt_grid .tg_pager .tg_pgnum, .yt_grid .tg_pager .tg_pgsel, .yt_grid .tg_pager .tg_totals {

@@ -33,7 +33,7 @@ public class DisposableTrackerBrowseView : YetaWFView, IYetaWFView2<DisposableTr
 
         HtmlBuilder hb = new HtmlBuilder();
         hb.Append($@"
-{this.__ResStr("explain", "<p>Disposable objects implement the IDisposable interface. Their creation/destruction is tracked using the DisposableTracker class. If objects are shown they should be checked as they are possible leaks.Some classes deliberately create near permanent disposable object. These are SiteDefinition, LanguageData and LogRecordDataProvider.More than one object may be created per class. Only objects with explicit calls to DisposableTracker.AddObject/RemoveObject are tracked.</p><p>Tracking is enabled/disabled in the site's Appsettings.json file using \"P:YetaWF_Core:DisposableTracker\" set to true or false.</p>")}
+{this.__ResStr("explain", "<p>Disposable objects implement the IDisposable interface. Their creation/destruction is tracked using the DisposableTracker class. If objects are shown they should be checked as they are possible leaks.Some classes deliberately create near permanent disposable object. These are SiteDefinition, LanguageData, LogRecordDataProvider and all database data providers. More than one object may be created per class. Only objects with explicit calls to DisposableTracker.AddObject/RemoveObject are tracked.</p><p>Tracking is enabled/disabled in the site's Appsettings.json file using \"P:YetaWF_Core:DisposableTracker\" set to true or false.</p>")}
 {await HtmlHelper.ForDisplayAsync(model, nameof(model.GridDef))}");
 
         return hb.ToString();

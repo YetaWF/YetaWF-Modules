@@ -100,6 +100,7 @@
   top: 0;
   cursor: col-resize;
   -webkit-user-select: none;
+     -moz-user-select: none;
           user-select: none;
   overflow: hidden;
 }
