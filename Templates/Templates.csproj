@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Version>5.5.0.0</Version>
+    <TargetFramework>net7.0</TargetFramework>
+
+    <DefineConstants>$(DefineConstants);MVC6;NETCOREAPP</DefineConstants>
+    <AssemblyName>YetaWF.Templates</AssemblyName>
+    <PackageId>Templates</PackageId>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <GenerateAssemblyDescriptionAttribute>false</GenerateAssemblyDescriptionAttribute>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GenerateAssemblyCopyrightAttribute>false</GenerateAssemblyCopyrightAttribute>
+    <GenerateAssemblyVersionAttribute>false</GenerateAssemblyVersionAttribute>
+    <RootNamespace>YetaWF.Modules.Templates</RootNamespace>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj" />
+    <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj" />
+    <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Addons\_Main\" />
+    <Folder Include="Addons\_SiteTemplates\" />
+    <Folder Include="Addons\_Templates\" />
+    <Folder Include="Components\HTML\" />
+    <Folder Include="Endpoints\" />
+    <Folder Include="Modules\" />
+    <Folder Include="Views\HTML\" />
+  </ItemGroup>
+
+</Project>
