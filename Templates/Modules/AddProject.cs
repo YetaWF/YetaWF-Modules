@@ -54,6 +54,7 @@ public class AddProjectModule : ModuleDefinition {
 
     [Trim]
     [Header("Creates a new project. This new project can be used to develop new YetaWF modules, skins and/or new shared templates (Editor/Display).\r\n\r\nOnce the project has been created, you can add new items (e.g. Browse Module) and other available items.")]
+    [Footer("Once generated, add the new project to your solution, add a project reference in the Website project and rebuild/restart your solution.")]
     public class Model {
 
         [Caption("Company"), Description("Enter your company name")]
@@ -75,10 +76,6 @@ public class AddProjectModule : ModuleDefinition {
         [TextBelow("Example:  StoreFont or Blog or Forum - This is used as part of the generated namespace and will also be used for all new items added to this project. The identifier can only contain letters and numbers.")]
         [UIHint("Text40"), StringLength(TemplateDefaults.MaxProject), Required, Trim]
         public string? Project { get; set; }
-
-        [Caption("Namespace"), Description("Shows the generated namespace")]
-        [UIHint("Text80"), ReadOnly]
-        public string? NameSpace { get; set; }
 
         public Model() { }
 
@@ -111,6 +108,7 @@ public class AddProjectModule : ModuleDefinition {
 
             // set up all variables
             string path = Path.Combine(YetaWFManager.RootFolderSolution, "Modules", model.Domain!, model.Project!);
+            path = Path.GetFullPath(path);
             if (Directory.Exists(path))
                 throw new Error(this.__ResStr("exists", "The folder {0} already exists.", path));
 
@@ -123,14 +121,14 @@ public class AddProjectModule : ModuleDefinition {
             variables.Add("$webprojectfolder$", YetaWFManager.RootFolderWebProject);
 
             // create all folders typically used (eventually)
-            Directory.CreateDirectory(Path.Combine(path, "Addons", "_Addons"));
-            Directory.CreateDirectory(Path.Combine(path, "Addons", "_Main"));
-            Directory.CreateDirectory(Path.Combine(path, "Addons", "_Templates"));
-            Directory.CreateDirectory(Path.Combine(path, "Components", "HTML"));
-            Directory.CreateDirectory(Path.Combine(path, "Endpoints"));
-            Directory.CreateDirectory(Path.Combine(path, "Models"));
-            Directory.CreateDirectory(Path.Combine(path, "Modules"));
-            Directory.CreateDirectory(Path.Combine(path, "Views", "HTML"));
+            //Directory.CreateDirectory(Path.Combine(path, "Addons", "_Addons"));
+            //Directory.CreateDirectory(Path.Combine(path, "Addons", "_Main"));
+            //Directory.CreateDirectory(Path.Combine(path, "Addons", "_Templates"));
+            //Directory.CreateDirectory(Path.Combine(path, "Components", "HTML"));
+            //Directory.CreateDirectory(Path.Combine(path, "Endpoints"));
+            //Directory.CreateDirectory(Path.Combine(path, "Models"));
+            //Directory.CreateDirectory(Path.Combine(path, "Modules"));
+            //Directory.CreateDirectory(Path.Combine(path, "Views", "HTML"));
 
             // copy project files
             string sourceUrl = Package.GetAddOnPackageUrl(AreaRegistration.CurrentPackage.AreaName) + "Project";

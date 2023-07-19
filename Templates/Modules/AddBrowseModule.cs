@@ -144,12 +144,18 @@ public class AddBrowseModule : ModuleDefinition {
         if (!ModelState.IsValid)
             return await PartialViewAsync(model);
 
+        if (!model.BrowseWanted && !model.AddWanted && !model.EditWanted && !model.DisplayWanted) {
+            ModelState.AddModelError(nameof(model.BrowseWanted), this.__ResStr("select", "At least one module type must be selected."));
+            return await PartialViewAsync(model);
+        }
+
         using (TemplateDefaultsDataProvider TemplateDefaultsDP = new TemplateDefaultsDataProvider()) {
             if (!await TemplateDefaultsDP.AddItemAsync(model.GetData()))
                 throw new Error(this.__ResStr("cantSave", "Unable to save template defaults"));
 
             // set up all variables
             string path = Path.Combine(YetaWFManager.RootFolderSolution, "Modules", model.Domain!, model.Project!);
+            path = Path.GetFullPath(path);
             if (!Directory.Exists(path))
                 throw new Error(this.__ResStr("notExists", "Project {0} not found. The folder {1} doesn't exist. Modules can only be added to existing projects.", model.Project, path));
 

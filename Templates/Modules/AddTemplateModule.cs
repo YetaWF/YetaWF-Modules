@@ -112,6 +112,7 @@ public class AddTemplateModule : ModuleDefinition {
 
             // set up all variables
             string path = Path.Combine(YetaWFManager.RootFolderSolution, "Modules", model.Domain!, model.Project!);
+            path = Path.GetFullPath(path);
             if (!Directory.Exists(path))
                 throw new Error(this.__ResStr("notExists", "Project {0} not found. The folder {1} doesn't exist. Modules can only be added to existing projects.", model.Project, path));
 

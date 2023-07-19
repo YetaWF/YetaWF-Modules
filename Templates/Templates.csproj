@@ -22,14 +22,17 @@
     <Compile Remove="Addons\_Main\BrowseModules\**" />
     <Compile Remove="Addons\_Main\ConfigModule\**" />
     <Compile Remove="Addons\_Main\Project\**" />
+    <Compile Remove="Addons\_Main\SkinModule\**" />
     <Compile Remove="Addons\_Main\TemplateModule\**" />
     <EmbeddedResource Remove="Addons\_Main\BrowseModules\**" />
     <EmbeddedResource Remove="Addons\_Main\ConfigModule\**" />
     <EmbeddedResource Remove="Addons\_Main\Project\**" />
+    <EmbeddedResource Remove="Addons\_Main\SkinModule\**" />
     <EmbeddedResource Remove="Addons\_Main\TemplateModule\**" />
     <None Remove="Addons\_Main\BrowseModules\**" />
     <None Remove="Addons\_Main\ConfigModule\**" />
     <None Remove="Addons\_Main\Project\**" />
+    <None Remove="Addons\_Main\SkinModule\**" />
     <None Remove="Addons\_Main\TemplateModule\**" />
   </ItemGroup>
 

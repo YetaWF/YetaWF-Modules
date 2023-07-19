@@ -25,7 +25,7 @@ using YetaWF.PackageAttributes;
 [assembly: RequiresPackage("YetaWF.ComponentsHTML")] // needed for HTML components (can be removed if no views/components are implemented by this package)
 
 // TODO:    The following is only needed if this package contains a skin.
-//          All modules used by a skin must reference the package (Add Reference) and the RequiresPackage attributes should list each referenced package.
+//          All modules used by a skin must reference the package (Add Reference) and the RequiresPackage attributes must list each referenced package.
 //
 //[assembly: RequiresPackage("YetaWF.Menus")]
 //[assembly: RequiresPackage("YetaWF.Text")]

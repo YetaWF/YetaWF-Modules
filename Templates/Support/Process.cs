@@ -26,13 +26,13 @@ public class Process {
         Directory.CreateDirectory(destPath);
         foreach (string file in Directory.GetFiles(sourcePath)) {
             string name = Path.GetFileName(file)!;
-            if (ProcessFileName(ref name)) {
+            if (ProcessFileName(ref name))
                 PreProcessFile(file, destPath, name);
-            }
         }
         foreach (string dir in Directory.GetDirectories(sourcePath)) {
             string name = Path.GetFileName(dir)!;
-            InternalCopyFiles(dir, Path.Combine(destPath, name));
+            if (ProcessFileName(ref name))
+                InternalCopyFiles(dir, Path.Combine(destPath, name));
         }
     }
 
