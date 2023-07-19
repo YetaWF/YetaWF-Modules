@@ -126,7 +126,7 @@ var YetaWF_ComponentsHTML;
         Object.defineProperty(MultiStringEditComponent.prototype, "value", {
             get: function () {
                 var _a;
-                var data = {};
+                var data = [];
                 var newText = this.InputText.value;
                 var sel = ((_a = this.SelectLang) === null || _a === void 0 ? void 0 : _a.selectedIndex) || 0;
                 var hid = $YetaWF.getElement1BySelector("input[name*='[".concat(sel, "]']"), [this.Control]);
@@ -138,7 +138,9 @@ var YetaWF_ComponentsHTML;
                     if (langText === "")
                         langText = newText;
                     var lang = YLocs.YetaWF_ComponentsHTML.Languages[index];
-                    data[lang] = langText;
+                    var o = {};
+                    o[lang] = langText;
+                    data.push(o);
                 }
                 return data;
             },

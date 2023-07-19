@@ -124,21 +124,23 @@ namespace YetaWF_ComponentsHTML {
             return this.InputText.value;
         }
         get value(): object {
-            var data = {};
+            const data: any = [];
 
-            var newText = this.InputText.value;
-            var sel = this.SelectLang?.selectedIndex || 0;
-            var hid = $YetaWF.getElement1BySelector(`input[name*='[${sel}]']`, [this.Control]) as HTMLInputElement;
+            const newText = this.InputText.value;
+            const sel = this.SelectLang?.selectedIndex || 0;
+            let hid = $YetaWF.getElement1BySelector(`input[name*='[${sel}]']`, [this.Control]) as HTMLInputElement;
             hid.value = newText;
 
             var count = YLocs.YetaWF_ComponentsHTML.Languages.length;
             for (var index = 0; index < count; ++index) {
                 hid = $YetaWF.getElement1BySelector(`input[name*='[${index}]']`, [this.Control]) as HTMLInputElement;
-                var langText = hid.value;
+                let langText = hid.value;
                 if (langText === "")
                     langText = newText;
-                var lang = YLocs.YetaWF_ComponentsHTML.Languages[index];
-                data[lang] = langText;
+                const lang = YLocs.YetaWF_ComponentsHTML.Languages[index];
+                const o = {};
+                o[lang] = langText;
+                data.push(o);
             }
             return data;
         }
