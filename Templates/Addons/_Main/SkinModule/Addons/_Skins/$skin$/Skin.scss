@@ -1,0 +1,373 @@
+﻿/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Licensing */
+
+:root {
+   --body-bg: #ffffff;
+   --body-clr: #212529;
+   --body-font: normal normal normal 1rem "Open Sans", sans-serif;
+   --body-dis-opacity: 0.5;
+   --overlay-bg: #aaaaaa;
+   --overlay-opacity: 0.5;
+   --mstd-title-font: normal normal normal 2rem "Open Sans", sans-serif;
+   --mpnl-bg: #f6f6f6;
+   --mpnl-clr: #454545;
+   --mpnl-border: 1px solid #c5c5c5;
+   --mpnl-border-radius: 3px;
+   --mpnl-title-font: normal normal normal 1rem "Open Sans", sans-serif;
+   --mpnl-link-font: normal normal normal 0.7rem "Open Sans", sans-serif;
+   --mm-0-bg: #343a40;
+   --mm-0-clr: rgba(255,255,255,0.5);
+   --mm-0-font: normal normal normal 1rem "Open Sans", sans-serif;
+   --mm-0-border: none;
+   --mm-0-border-radius: 3px;
+   --mm-0-padding: 0;
+   --mm-0-a-bg: #343a40;
+   --mm-0-a-clr: rgba(255,255,255,0.5);
+   --mm-0-a-bg-hover: #343a40;
+   --mm-0-a-clr-hover: rgba(255,255,255,0.8);
+   --mm-0-a-bg-path: #343a40;
+   --mm-0-a-clr-path: rgba(255,255,255,0.8);
+   --mm-0-a-padding: 0.7em 1.5em;
+   --mm-0-a-small-padding: 0.7em 1.5em;
+   --mm-0-ddwidth: 16px;
+   --mm-0-ddheight: 16px;
+   --mm-1-bg: #FFFFFF;
+   --mm-1-clr: #6a6a6a;
+   --mm-1-font: normal normal normal 1rem "Open Sans", sans-serif;
+   --mm-1-border: 1px solid #c5c5c5;
+   --mm-1-border-radius: 3px;
+   --mm-1-small-margin: 0.5em;
+   --mm-1-padding: 0.3em 0;
+   --mm-1-small-padding: 0.5em 0 0.5em 0;
+   --mm-1-a-bg: #FFFFFF;
+   --mm-1-a-clr: #6a6a6a;
+   --mm-1-a-bg-hover: #ebebeb;
+   --mm-1-a-clr-hover: #6a6a6a;
+   --mm-1-a-bg-path: #ebebeb;
+   --mm-1-a-clr-path: #6a6a6a;
+   --mm-1-a-padding: 0.4em 1.5em 0.4em 1.5em;
+   --mm-1-a-small-padding: 0.4em 0.5em 0.4em 0.75em;
+   --mm-1-ddwidth: 16px;
+   --mm-1-ddheight: 16px;
+   --mm-1-mm-width: 800px;
+   --mm-1-mm-bg: #FFFFFF;
+   --mm-1-mm-clr: #7e7e7e;
+   --mm-1-mm-font: normal normal normal 1rem "Open Sans", sans-serif;
+   --mm-2-bg: #FFFFFF;
+   --mm-2-clr: #6a6a6a;
+   --mm-2-font: normal normal normal 1rem "Open Sans", sans-serif;
+   --mm-2-border: 1px solid #c5c5c5;
+   --mm-2-border-radius: 3px;
+   --mm-2-small-margin: 0.5em;
+   --mm-2-padding: 0.3em 0;
+   --mm-2-small-padding: 0.5em 0;
+   --mm-2-a-bg: #FFFFFF;
+   --mm-2-a-clr: #6a6a6a;
+   --mm-2-a-bg-hover: #ebebeb;
+   --mm-2-a-clr-hover: #6a6a6a;
+   --mm-2-a-bg-path: #ebebeb;
+   --mm-2-a-clr-path: #6a6a6a;
+   --mm-2-a-padding: 0.1em 1em 0.1em 1em;
+   --mm-2-a-small-padding: 0.4em 0.5em 0.4em 0.75em;
+   --mm-2-ddwidth: 16px;
+   --mm-2-ddheight: 16px;
+   --mm-svg-small-border: 1px solid #c5c5c5;
+   --mm-svg-small-border-radius: 3px;
+   --pm-1-bg: #FFFFFF;
+   --pm-1-clr: #7e7e7e;
+   --pm-1-font: normal normal normal 0.7rem "Open Sans", sans-serif;
+   --pm-1-border: 1px solid #c5c5c5;
+   --pm-1-border-radius: 3px;
+   --pm-1-padding: 0;
+   --pm-1-a-bg: #FFFFFF;
+   --pm-1-a-clr: #7e7e7e;
+   --pm-1-a-bg-hover: #ebebeb;
+   --pm-1-a-clr-hover: #6a6a6a;
+   --pm-1-a-bg-path: #ebebeb;
+   --pm-1-a-clr-path: #6a6a6a;
+   --pm-1-a-padding: 0.4em 0.5em 0.4em 0.5em;
+   --pm-1-ddwidth: 16px;
+   --pm-1-ddheight: 16px;
+   --pm-2-bg: #FFFFFF;
+   --pm-2-clr: #7e7e7e;
+   --pm-2-font: normal normal normal 0.7rem "Open Sans", sans-serif;
+   --pm-2-border: 1px solid #c5c5c5;
+   --pm-2-border-radius: 3px;
+   --pm-2-padding: 0;
+   --pm-2-a-bg: #FFFFFF;
+   --pm-2-a-clr: #7e7e7e;
+   --pm-2-a-bg-hover: #ebebeb;
+   --pm-2-a-clr-hover: #6a6a6a;
+   --pm-2-a-bg-path: #ebebeb;
+   --pm-2-a-clr-path: #6a6a6a;
+   --pm-2-a-padding: 0.4em 0.5em 0.4em 0.5em;
+   --pm-2-ddwidth: 16px;
+   --pm-2-ddheight: 16px;
+   --tt-bg: #FFFFFF;
+   --tt-clr: #7e7e7e;
+   --tt-font: normal normal normal 1rem "Open Sans", sans-serif;
+   --tt-border: 1px solid #c5c5c5;
+   --tt-border-radius: 3px;
+   --tt-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+   --dialog-bg: #FFFFFF;
+   --dialog-clr: #212529;
+   --dialog-title-bg: #cecece;
+   --dialog-title-clr: #1d1d1d;
+   --dialog-title-font: #7e7e7e;
+   --dialog-line: #c5c5c5;
+   --dialog-border: 1px solid #c5c5c5;
+   --dialog-border-radius: 3px;
+   --tst-title-font: normal normal normal 1rem "Open Sans", sans-serif;
+   --tst-msg-font: normal normal normal 1rem "Open Sans", sans-serif;
+   --tst-border: 1px solid #c5c5c5;
+   --tst-border-radius: 3px;
+   --tst-info-bg: #9bef9f;
+   --tst-info-clr: #555;
+   --tst-info-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+   --tst-info-line: 1px solid #c5c5c5;
+   --tst-warn-bg: orange;
+   --tst-warn-clr: rgb(49, 46, 46);
+   --tst-warn-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+   --tst-warn-line: 1px solid #c5c5c5;
+   --tst-error-bg: red;
+   --tst-error-clr: white;
+   --tst-error-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.5);
+   --tst-error-line: 1px solid #c5c5c5;
+   --bar-bg: #f6f6f6;
+   --bar-clr: #454545;
+   --bar-bg-hover: #e2e2e2;
+   --bar-clr-hover: #313131;
+   --bar-bg-active: #1a99e2;
+   --bar-clr-active: #FFFFFF;
+   --bar-border: 1px solid #c5c5c5;
+   --bar-border-radius: 3px;
+   --bar-h1-font-size: 1.25rem;
+   --prop-border: 1px solid #c5c5c5;
+   --prop-border-radius: 3px;
+   --prop-cat-bg: #f6f6f6;
+   --prop-cat-clr: #454545;
+   --prop-cat-border: 1px solid #c5c5c5;
+   --prop-cat-border-radius: 3px;
+   --inp-bg: #FFFFFF;
+   --inp-clr: #212529;
+   --inp-border: 1px solid #c5c5c5;
+   --inp-border-hover: 1px solid #b1b1b1;
+   --inp-border-focus: 1px solid #9d9d9d;
+   --inp-border-radius: 3px;
+   --inp-error-clr: red;
+   --inp-ph-clr: black;
+   --inp-ph-opacity: 0.5;
+   --dd-bg: #f0f0f0 linear-gradient(to bottom,rgba(255,255,255,0.25) 0,rgba(255,255,255,0) 100%);
+   --dd-clr: #212529;
+   --dd-bg-hover: #ebebeb;
+   --dd-clr-hover: #6a6a6a;
+   --dd-bg-active: #2fa4e7;
+   --dd-clr-active: #9e9e9e;
+   --dd-bg-focus: #d7d7d7;
+   --dd-clr-focus: #565656;
+   --dd-border: 1px solid #c5c5c5;
+   --dd-border-hover: 1px solid #b1b1b1;
+   --dd-border-focus: 1px solid #9d9d9d;
+   --dd-border-radius: 3px;
+   --dd-p-bg: #FFFFFF;
+   --dd-p-clr: #212529;
+   --dd-p-bg-hover: #ebebeb;
+   --dd-p-clr-hover: #212529;
+   --dd-p-bg-focus: #d7d7d7;
+   --dd-p-clr-focus: #212529;
+   --dd-p-border: 1px solid #c5c5c5;
+   --dd-p-border-radius: 3px;
+   --dd-p-shadow: 0 2px 2px 0 rgba(0,0,0,0.3);
+   --dd-p-shadow-focus: inset 0px 0px 3px 0px rgba(0, 0, 0, 0.25);
+   --a-clr: #007bff;
+   --a-dec: none;
+   --a-clr-hover: #007bff;
+   --a-dec-hover: underline;
+   --a-clr-focus: #007bff;
+   --a-dec-focus: underline;
+   --button-bg: #007bff;
+   --button-clr: #ffffff;
+   --button-bg-hover: #0069d9;
+   --button-clr-hover: #ffffff;
+   --button-bg-focus: #0069d9;
+   --button-clr-focus: #ffffff;
+   --button-border: 1px solid #c5c5c5;
+   --button-border-radius: 3px;
+   --button-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px 0px;
+   --button-focus-shadow: rgba(0, 0, 0, 0.5) 0px 0px 5px 0px;
+   --buttonlite-bg: #f6f6f6;
+   --buttonlite-clr: #454545;
+   --buttonlite-bg-hover: #e2e2e2;
+   --buttonlite-clr-hover: #313131;
+   --buttonlite-bg-focus: #cecece;
+   --buttonlite-clr-focus: #1d1d1d;
+   --buttonlite-border: 1px solid #c5c5c5;
+   --buttonlite-border-radius: 3px;
+   --pbar-bg: #f6f6f6;
+   --pbar-value-bg: #454545;
+   --pbar-border: 1px solid #c5c5c5;
+   --pbar-border-radius: 3px;
+   --tbl-bg: #FFFFFF;
+   --tbl-clr: #212529;
+   --tbl-bg-hover: #ebebeb;
+   --tbl-clr-hover: #212529;
+   --tbl-bg-active: #2fa4e7;
+   --tbl-clr-active: #212529;
+   --tbl-bg-focus: #d7d7d7;
+   --tbl-clr-focus: #212529;
+   --tbl-bg-highlight: silver;
+   --tbl-clr-highlight: white;
+   --tbl-bg-lowlight: ghostwhite;
+   --tbl-clr-lowlight: darkslategray;
+   --tbl-font: normal normal normal 0.8rem "Open Sans", sans-serif;
+   --tbl-border: 1px solid #c5c5c5;
+   --tbl-border-lite: 1px solid #d9d9d9;
+   --tbl-border-radius: 3px;
+   --tbl-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+   --tbl-header-bg: #f6f6f6;
+   --tbl-header-clr: #454545;
+   --tbl-header-bg-hover: #e2e2e2;
+   --tbl-header-clr-hover: #313131;
+   --tbl-header-bg-active: #1a99e2;
+   --tbl-header-clr-active: #FFFFFF;
+   --tbl-header-font: normal normal normal 0.8rem "Open Sans", sans-serif;
+   --tabs-bg: #FFFFFF;
+   --tabs-clr: #7e7e7e;
+   --tabs-strip-bg: #cecece;
+   --tabs-strip-border: 1px solid #c5c5c5;
+   --tabs-strip-border-radius: 3px;
+   --tabs-tab-bg: #f6f6f6;
+   --tabs-tab-clr: #454545;
+   --tabs-tab-bg-hover: #e2e2e2;
+   --tabs-tab-clr-hover: #313131;
+   --tabs-tab-bg-active: #1a99e2;
+   --tabs-tab-clr-active: #FFFFFF;
+   --tabs-tab-bg-focus: #0071ba;
+   --tabs-tab-clr-focus: #d7d7d7;
+   --tabs-tab-border: 1px solid #c5c5c5;
+   --tabs-tab-border-radius: 3px;
+   --step-bg: #f6f6f6;
+   --step-clr: #454545;
+   --step-bg-active: #1a99e2;
+   --step-clr-active: #FFFFFF;
+   --panel-bg: #f6f6f6;
+   --panel-border: 1px solid #c5c5c5;
+   --panel-border-radius: 0.25rem;
+   --panel-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+   --mod-current-bg: #f6f6f6;
+   --own-page-noUserAnon: aliceblue;
+   --own-page-noAnon: antiquewhite;
+   --own-page-noUser: blanchedalmond;
+   --own-mod-noUserAnon: aliceblue;
+   --own-mod-noAnon: antiquewhite;
+   --own-mod-noUser: blanchedalmond;
+   --switch-bg-on: #9386ec;
+   --switch-bg-off: #9ce1f5;
+   --switch-clr-on: #FFFFFF;
+   --switch-clr-off: #1a4c4c;
+   --switch-bg-switch: #5e65ac;
+}
+
+ // We're using bootstrap's reboot and grid only
+// https://stackoverflow.com/questions/38684023/bootstrap-4-flex-grid-system-only
+@import "node_modules/bootstrap5/scss/bootstrap-reboot";
+@import "node_modules/bootstrap5/scss/bootstrap-grid";
+
+
+// SKIN SPECIFIC CUSTOMIZATIONS BELOW
+
+/* GLOBALS */
+/* GLOBALS */
+/* GLOBALS */
+
+p, li {
+    line-height:1.5;
+}
+form p,
+form li {
+    line-height:1.2;
+}
+
+h1, h2, h3, h4, h5,
+.h1, .h2, .h3, .h4, .h5 {
+    color:var(--body-clr);
+    font-weight: bold;
+}
+
+h1,.h1 {
+    margin-top:1em;
+    padding-bottom:10px;
+    font-size:1.5rem;
+}
+h2,.h2 {
+    margin-top:.6em;
+    font-size:24px;
+}
+h3,.h3 {
+    font-size:20px;
+}
+h4,.h4 {
+    font-size:18px;
+}
+h5,.h5 {
+    font-size:16px;
+}
+
+
+.MainNavMenu {
+    background-color: #343a40;
+    padding: .5rem 1rem;
+}
+
+.YetaWF_Menus_MainMenu ul.t_megamenu_content {
+    padding: 0 1rem 1rem 1rem !important;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,.2);
+}
+
+.YetaWF_Menus_MenuToggle {
+    button {
+        margin-top: .25rem;
+        margin-bottom:1rem;
+    }
+}
+
+footer {
+    padding:20px 0 20px 0;
+    text-align: center;
+}
+
+/* Landing Page - add LandingPage to page as Page Css to show the jumbotron */
+
+/* if there is no jumbotron, add some space below the menu */
+
+.jumbotron {
+    background: rgb(233, 236, 239);
+    padding: 4rem 2rem;
+}
+body:not(.yEditMode) .jumbotron {
+    display:none;
+}
+body.LandingPage .jumbotron {
+    display:block;
+}
+body:not(.yEditMode) .PaneSetFooter {
+    display:none;
+}
+body.LandingPage .PaneSetFooter {
+    background-color: #eee;
+    display:block;
+}
+
+/* TINYLOGIN MODULE COSMETICS */
+/* TINYLOGIN MODULE COSMETICS */
+/* TINYLOGIN MODULE COSMETICS */
+
+.skinTinyLogin {
+    div.t_haveuser,
+    div.t_nouser {
+        display: inline-block;
+    }
+    div.t_haveuser.t_link,
+    div.t_nouser.t_logon {
+        padding-right:1ch;
+    }
+}

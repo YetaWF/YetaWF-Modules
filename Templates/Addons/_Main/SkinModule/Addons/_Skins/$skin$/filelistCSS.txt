@@ -1,0 +1,2 @@
+﻿Skin.scss
+Themes/{0}.css

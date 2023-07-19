@@ -1,0 +1,28 @@
+SizeStyle: SizeToFit
+Panel: {}
+Columns:
+- Name: Commands
+  Icons: 2
+  FilterOptions: []
+  Align: Center
+$iff $dp$ == SQLFile
+- Name: $modelkeyname$
+  DefaultSort: Ascending
+  Sort: true
+  Filter: true
+  Width: 25
+  Align: Unspecified
+$end
+- Name: Field1
+  DefaultSort: Ascending
+  Sort: true
+  Filter: true
+  Width: 40
+  Align: Unspecified
+$iff $dp$ == SQLIdentity
+- Name: $modelkeyname$
+  Sort: true
+  Filter: true
+  Width: <Globals.ChId>
+  Align: Right
+$end

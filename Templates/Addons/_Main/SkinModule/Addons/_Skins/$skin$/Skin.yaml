@@ -1,0 +1,46 @@
+﻿
+Description: Skin ($companyname$)
+PartialFormCss: card
+MinWidthForPopups: 0
+MinWidthForCondense: 970
+
+PageSkins:
+    - Name: Default
+      ViewName: Default
+      Description: Standard page with a header, footer and 1, 2 and 3 column layouts
+      CSS: pageSkinDefault
+    - Name: Plain Page
+      ViewName: Plain
+      Description: Simple page for just one module
+      CSS: pageSkinPlain
+
+PopupSkins:
+    - Name: Popup (Default)
+      ViewName: Popup
+      Description: Standard popup window
+      CSS: popup
+      Width: 1000
+      Height: 700
+      MaximizeButton: false
+    - Name: Medium Popup
+      ViewName: PopupMedium
+      Description: Medium popup window
+      CSS: popupMedium
+      Width: 700
+      Height: 600
+      MaximizeButton: false
+    - Name: Small Popup
+      ViewName: PopupSmall
+      Description: Small popup window
+      CSS: popupSmall
+      Width: 500
+      Height: 300
+      MaximizeButton: false
+
+ModuleSkins:
+    - Name: Standard (Default)
+      Description: Standard module
+      CSS: modStandard
+    - Name: Panel
+      Description: Panel module
+      CSS: modPanel

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <Version>5.5.0.0</Version>
@@ -19,6 +19,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Addons\_Main\BrowseModules\**" />
+    <Compile Remove="Addons\_Main\ConfigModule\**" />
+    <Compile Remove="Addons\_Main\Project\**" />
+    <Compile Remove="Addons\_Main\TemplateModule\**" />
+    <EmbeddedResource Remove="Addons\_Main\BrowseModules\**" />
+    <EmbeddedResource Remove="Addons\_Main\ConfigModule\**" />
+    <EmbeddedResource Remove="Addons\_Main\Project\**" />
+    <EmbeddedResource Remove="Addons\_Main\TemplateModule\**" />
+    <None Remove="Addons\_Main\BrowseModules\**" />
+    <None Remove="Addons\_Main\ConfigModule\**" />
+    <None Remove="Addons\_Main\Project\**" />
+    <None Remove="Addons\_Main\TemplateModule\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\CoreComponents\Core\Core.csproj" />
     <ProjectReference Include="..\..\..\DataProvider\ModuleDefinition\ModuleDefinition.csproj" />
     <ProjectReference Include="..\ComponentsHTML\ComponentsHTML.csproj" />
@@ -26,12 +41,6 @@
 
   <ItemGroup>
     <Folder Include="Addons\_Main\" />
-    <Folder Include="Addons\_SiteTemplates\" />
-    <Folder Include="Addons\_Templates\" />
-    <Folder Include="Components\HTML\" />
-    <Folder Include="Endpoints\" />
-    <Folder Include="Modules\" />
-    <Folder Include="Views\HTML\" />
   </ItemGroup>
 
 </Project>

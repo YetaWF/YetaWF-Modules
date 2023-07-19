@@ -51,9 +51,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             TryGetSiblingProperty($"{PropertyName}_Text", out string? text);
             if (!TryGetSiblingProperty($"{PropertyName}_On", out string? textOn))
-                textOn = this.__ResStr("on", "On");
+                textOn = string.Empty;
             if (!TryGetSiblingProperty($"{PropertyName}_Off", out string? textOff))
-                textOn = this.__ResStr("off", "Off");
+                textOff = string.Empty;
             if (TryGetSiblingProperty($"{PropertyName}_Size", out string? size))
                 size = $" t_{size}";
 
@@ -93,9 +93,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             TryGetSiblingProperty($"{PropertyName}_Text", out string? text);
             if (!TryGetSiblingProperty($"{PropertyName}_On", out string? textOn))
-                textOn = this.__ResStr("on", "On");
+                textOn = string.Empty;
             if (!TryGetSiblingProperty($"{PropertyName}_Off", out string? textOff))
-                textOn = this.__ResStr("off", "Off");
+                textOn = string.Empty;
             if (TryGetSiblingProperty($"{PropertyName}_Size", out string? size))
                 size = $" t_{size}";
 
