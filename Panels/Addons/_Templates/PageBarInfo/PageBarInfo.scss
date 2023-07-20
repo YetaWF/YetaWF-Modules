@@ -86,7 +86,8 @@ $large-screen: 1500px;
         &.t_stylesvert {
             display: flex;
             .yt_panels_pagebarinfo_list {
-                flex: 0 0  $entry-width;
+                transition: flex-basis .3s;
+                flex: 0 0 $entry-width;
                 overflow-x:hidden;
                 overflow-y:auto;
                 text-align:center;
@@ -117,7 +118,8 @@ $large-screen: 1500px;
     .yt_panels_pagebarinfo {
         &.t_stylesvert.t_expanded { // if expanded
             .yt_panels_pagebarinfo_list {
-                flex: 0 0  $large-entry-width;
+                transition: flex-basis .3s;
+                flex: 0 0 $large-entry-width;
                 overflow-x:hidden;
                 overflow-y:auto;
                 text-align:left;

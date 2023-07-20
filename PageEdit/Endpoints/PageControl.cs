@@ -144,7 +144,7 @@ public class PageControlModuleEndpoints : YetaWFEndpoints {
             ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
             if (!module.IsAuthorized()) return Results.Unauthorized();
             PageDefinition page = await PageDefinition.LoadAsync(pageGuid) ?? throw new InternalError($"Page {pageGuid} not found");
-            YetaWFZipFile zipFile = await page.ExportAsync();
+            using YetaWFZipFile zipFile = await page.ExportAsync();
             return await ZippedFileResult.ZipFileAsync(context, zipFile, cookieToReturn);
         })
             .ResourceAuthorize(CoreInfo.Resource_PageExport)

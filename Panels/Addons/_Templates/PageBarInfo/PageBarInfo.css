@@ -69,6 +69,7 @@
     display: flex;
   }
   .yt_panels_pagebarinfo.t_stylesvert .yt_panels_pagebarinfo_list {
+    transition: flex-basis 0.3s;
     flex: 0 0 120px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -94,6 +95,7 @@
 }
 @media (min-width: 1500px) {
   .yt_panels_pagebarinfo.t_stylesvert.t_expanded .yt_panels_pagebarinfo_list {
+    transition: flex-basis 0.3s;
     flex: 0 0 250px;
     overflow-x: hidden;
     overflow-y: auto;
