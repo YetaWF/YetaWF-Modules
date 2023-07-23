@@ -188,7 +188,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     <div class='t_container {(disabled ? "t_disabled" : "")}' {(disabled ? "disabled='disabled'" : "")}>
         <div class='t_input'>{HAE(selItem != null ? selItem.Text : null)}&zwj;</div>
         <div class='t_select' aria-label='select'>
-            {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-caret-down")}
+            {SkinSVGs.GetCaret(AreaRegistration.CurrentPackage, "down")}
         </div>
     </div>
     <select{component.FieldSetup(disabled ? FieldType.Normal : (component.Validation ? FieldType.Validated : FieldType.Normal))}{component.GetClassAttribute(css)}>{tagHtml.ToString()}</select>

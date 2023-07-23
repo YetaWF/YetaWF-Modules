@@ -25,8 +25,8 @@ namespace YetaWF.Modules.ComponentsHTML.Addons.Templates {
             Package package = AreaRegistration.CurrentPackage;
             string areaName = package.AreaName;
 
-            scripts.AddConfigOption(areaName, "SVG_fas_caret_up", SkinSVGs.Get(package, "fas-caret-up"));
-            scripts.AddConfigOption(areaName, "SVG_fas_caret_down", SkinSVGs.Get(package, "fas-caret-down"));
+            scripts.AddConfigOption(areaName, "SVG_fas_caret_up", SkinSVGs.GetCaret(package, "up"));
+            scripts.AddConfigOption(areaName, "SVG_fas_caret_down", SkinSVGs.GetCaret(package, "down"));
             scripts.AddConfigOption(areaName, "SVG_fas_exclamation_triangle", SkinSVGs.Get(package, "fas-exclamation-triangle"));
 
             return Task.CompletedTask;

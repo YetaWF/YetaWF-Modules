@@ -3,6 +3,8 @@
 namespace YetaWF_ComponentsHTML {
 
     interface MenuSetup {
+        Orientation: OrientationEnum;
+        VerticalWidth: number;
         SmallMenuMaxWidth: number;
         HoverDelay: number;
     }
@@ -13,6 +15,11 @@ namespace YetaWF_ComponentsHTML {
         owningAnchor: HTMLAnchorElement;
         subUL: HTMLUListElement;
         subLI: HTMLLIElement;
+    }
+
+    enum OrientationEnum {
+        Horizontal = 0,
+        Vertical = 1,
     }
 
     export class MenuComponent extends YetaWF.ComponentBaseDataImpl {
@@ -44,8 +51,7 @@ namespace YetaWF_ComponentsHTML {
 
             let liSubs = $YetaWF.getElementsBySelector("li > a", [this.Control]);
             $YetaWF.registerMultipleEventHandlers(liSubs, ["mouseenter"], null, (ev: Event): boolean => {
-
-                if (this.isSmall) return true;
+                if (this.isVertical || this.isSmall) return true;
 
                 let owningAnchor = ev.__YetaWFElem as HTMLAnchorElement;
                 let owningLI = $YetaWF.elementClosest(owningAnchor, "li") as HTMLLIElement;
@@ -66,7 +72,7 @@ namespace YetaWF_ComponentsHTML {
             });
             $YetaWF.registerMultipleEventHandlers(liSubs, ["click"], null, (ev: Event): boolean => {
 
-                if (!this.isSmall) return true;
+                if (this.isSmall) return true;// allow anchor processing
 
                 let owningAnchor = ev.__YetaWFElem as HTMLAnchorElement;
                 let owningLI = $YetaWF.elementClosest(owningAnchor, "li") as HTMLLIElement;
@@ -81,11 +87,16 @@ namespace YetaWF_ComponentsHTML {
                 let subLI = $YetaWF.getElement1BySelector("li", [subUL]) as HTMLLIElement;
 
                 let levelInfo = { owningUL: owningUL, owningLI: owningLI, owningAnchor: owningAnchor, subUL: subUL, subLI: subLI };
-                if (this.closeSublevelsForNewSublevel(levelInfo))
+                if (this.closeSublevelsForNewSublevel(levelInfo)) {
                     this.openSublevel(levelInfo);
-                else
                     return true; // allow anchor processing
-                return false;
+                } else {
+                    if (this.isVertical) {
+                        if (subUL.style.display === "")
+                            this.closeSublevelsStartingAt(owningUL);
+                    }
+                    return true; // allow anchor processing
+                }
             });
             $YetaWF.registerEventHandler(this.Control, "click", "li > a > svg", (ev: Event): boolean => {
 
@@ -104,10 +115,11 @@ namespace YetaWF_ComponentsHTML {
                 let subLI = $YetaWF.getElement1BySelector("li", [subUL]) as HTMLLIElement;
 
                 let levelInfo = { owningUL: owningUL, owningLI: owningLI, owningAnchor: owningAnchor, subUL: subUL, subLI: subLI };
-                if (this.closeSublevelsForNewSublevel(levelInfo))
+                if (this.closeSublevelsForNewSublevel(levelInfo)) {
                     this.openSublevel(levelInfo);
-                else
+                } else {
                     this.closeSublevelsStartingAt(owningUL);
+                }
                 return false;
             });
             $YetaWF.registerMultipleEventHandlers(liSubs, ["keydown"], null, (ev: Event): boolean => {
@@ -138,18 +150,16 @@ namespace YetaWF_ComponentsHTML {
 
         private openSublevel(levelInfo: LevelInfo): void {
             let level = this.Levels.length;
-            levelInfo.subUL.style.display = "";// open new sublevel
+            this.openLevel(levelInfo);
 
-            let subUL = levelInfo.subUL;
-            let owningLI = levelInfo.owningLI;
-
-            let owningRect = owningLI.getBoundingClientRect();
-
-            if (this.isSmall) {
+            if (this.isVertical || this.isSmall) {
 
 
             } else {
                 // position the sublevel
+                const subUL = levelInfo.subUL;
+                const owningLI = levelInfo.owningLI;
+                const owningRect = owningLI.getBoundingClientRect();
                 switch (level) {
                     case 0:
                         subUL.style.left = "0";
@@ -172,6 +182,26 @@ namespace YetaWF_ComponentsHTML {
             this.setPath();
         }
 
+        private openLevel(levelInfo: LevelInfo): void {
+            const subUL = levelInfo.subUL;
+            levelInfo.owningAnchor.setAttribute("aria-expanded", "true");
+            if (this.isVertical || this.isSmall) {
+                $YetaWF.animateHeight(subUL, true);
+            } else {
+                subUL.style.display = "";// show
+            }
+        }
+        private closeLevel(levelInfo: LevelInfo): void {
+            const subUL = levelInfo.subUL;
+            levelInfo.owningAnchor.setAttribute("aria-expanded", "false");
+            if (this.isVertical || this.isSmall) {
+                $YetaWF.animateHeight(subUL, false, 400, (): void => {
+                    subUL.style.display = "none";// hide
+                });
+            } else {
+                subUL.style.display = "none";// hide
+            }
+        }
 
         private CloseSublevelsTimout: number = 0;
 
@@ -208,7 +238,7 @@ namespace YetaWF_ComponentsHTML {
                         newLevels.push(levelInfo);
                 }
                 if (closing)
-                    levelInfo.subUL.style.display = "none";
+                    this.closeLevel(levelInfo);
             }
             this.clearPath();
             this.Levels = newLevels;
@@ -226,14 +256,14 @@ namespace YetaWF_ComponentsHTML {
             for (let levelInfo of this.Levels) {
                 if (!closing) {
                     if (levelInfo.owningUL === newLevel.owningUL) {
-                        if (levelInfo.subUL === newLevel.subUL) // the new sublevel is already open
+                        if (levelInfo.subUL === newLevel.subUL && newLevel.subUL.style.display === "") // the new sublevel is already open
                             return false;
                         closing = true;
                     } else
                         newLevels.push(levelInfo);
                 }
                 if (closing)
-                    levelInfo.subUL.style.display = "none";
+                    this.closeLevel(levelInfo);
             }
             this.clearPath();
             this.Levels = newLevels;
@@ -243,7 +273,7 @@ namespace YetaWF_ComponentsHTML {
 
         public handleMouseMove(cursorX: number, cursorY: number): boolean {
 
-            if (this.isSmall) return true;
+            if (this.isVertical || this.isSmall) return true;
 
             if (this.Levels.length > 0) {
                 let rect = this.Levels[0].owningLI.getBoundingClientRect();
@@ -272,7 +302,7 @@ namespace YetaWF_ComponentsHTML {
             if (!this.CloseTimeout) {
                 this.CloseTimeout = setTimeout((): void => {
                     for (let levelInfo of this.Levels) {
-                        levelInfo.subUL.style.display = "none";
+                        this.closeLevel(levelInfo);
                     }
                     this.clearPath();
                     this.Levels = [];
@@ -298,15 +328,23 @@ namespace YetaWF_ComponentsHTML {
         public updateSize(): void {
             if (this.isSmall) {
                 if (!$YetaWF.elementHasClass(this.Control, "t_small")) {
-                    $YetaWF.elementRemoveClasses(this.Control, ["t_large", "t_small"]);
+                    $YetaWF.elementRemoveClasses(this.Control, ["t_large", "t_small", "t_horizontal", "t_vertical"]);
                     $YetaWF.elementAddClass(this.Control, "t_small");
+                    this.Control.style.width = "";
                     this.hide();
                     this.closeAll();
                 }
             } else {
                 if (!$YetaWF.elementHasClass(this.Control, "t_large")) {
-                    $YetaWF.elementRemoveClasses(this.Control, ["t_large", "t_small"]);
+                    $YetaWF.elementRemoveClasses(this.Control, ["t_large", "t_small", "t_horizontal", "t_vertical"]);
                     $YetaWF.elementAddClass(this.Control, "t_large");
+                    if (this.isVertical) {
+                        $YetaWF.elementAddClass(this.Control, "t_vertical");
+                        this.Control.style.width = `${this.Setup.VerticalWidth}px`;
+                    } else {
+                        $YetaWF.elementAddClass(this.Control, "t_horizontal");
+                        this.Control.style.width = "";
+                    }
                     this.show();
                     this.closeAll();
                 }
@@ -316,8 +354,9 @@ namespace YetaWF_ComponentsHTML {
         // API
 
         public closeAll(): void {
+            if (this.isVertical) return;
             for (let levelInfo of this.Levels) {
-                levelInfo.subUL.style.display = "none";
+                this.closeLevel(levelInfo);
             }
             this.clearPath();
             this.Levels = [];
@@ -333,6 +372,10 @@ namespace YetaWF_ComponentsHTML {
             }
         }
 
+        public get isShown(): boolean {
+            return this.Control.style.display !== "none";
+        }
+
         public get isSmall(): boolean {
             let small = false;
             if (this.Setup.SmallMenuMaxWidth !== 0) {
@@ -343,9 +386,11 @@ namespace YetaWF_ComponentsHTML {
             }
             return small;
         }
-
-        public get isShown(): boolean {
-            return this.Control.style.display !== "none";
+        public get isHorizontal(): boolean {
+            return !this.isSmall && this.Setup.Orientation == OrientationEnum.Horizontal;
+        }
+        public get isVertical(): boolean {
+            return !this.isSmall && this.Setup.Orientation == OrientationEnum.Vertical;
         }
 
         public show(): void {

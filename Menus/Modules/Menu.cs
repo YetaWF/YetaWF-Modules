@@ -39,6 +39,7 @@ public class MenuModule : ModuleDefinition, IModuleMenuAsync {
         WantSearch = false;
         WantFocus = false;
         Print = false;
+        Orientation = MenuComponentBase.OrientationEnum.Horizontal;
         SmallMenuMaxWidth = 750;
     }
 
@@ -97,6 +98,17 @@ public class MenuModule : ModuleDefinition, IModuleMenuAsync {
     [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
     public string? EditUrl { get; set; }
 
+    [Category("General"), Caption("Orientation"), Description("Defines the orientation of the menu.")]
+    [UIHint("Enum")]
+    [Data_NewValue]
+    public MenuComponentBase.OrientationEnum Orientation { get; set; }
+
+    [Category("General"), Caption("Vertical Menu Width"), Description("Defines width of the menu (Vertical Orientation only).")]
+    [UIHint("IntValue4"), Range(0, 9999)]
+    [ProcessIf(nameof(Orientation), MenuComponentBase.OrientationEnum.Vertical, Disable = true), RequiredIf(nameof(Orientation), MenuComponentBase.OrientationEnum.Vertical)]
+    [Data_NewValue]
+    public int VerticalWidth { get; set; }
+
     [Category("General"), Caption("Small Screen Maximum Size"), Description("Defines the largest screen size where the small menu is used - If the screen is wider, the large menu is shown.")]
     [UIHint("IntValue4"), Range(0, 999999), Required]
     [Data_NewValue]
@@ -107,7 +119,8 @@ public class MenuModule : ModuleDefinition, IModuleMenuAsync {
     public string? LICssClass { get; set; }
 
     [Category("General"), Caption("Hover Delay"), Description("Specifies the delay (in milliseconds) before the menu is closed - Used to avoid accidental closure on leaving")]
-    [UIHint("IntValue4"), Required, Range(0, 10000)]
+    [UIHint("IntValue4"), Range(0, 10000)]
+    [ProcessIf(nameof(Orientation), MenuComponentBase.OrientationEnum.Horizontal, Disable = true), RequiredIf(nameof(Orientation), MenuComponentBase.OrientationEnum.Horizontal)]
     public int HoverDelay { get; set; }
 
     public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
@@ -130,6 +143,8 @@ public class MenuModule : ModuleDefinition, IModuleMenuAsync {
                 MenuList = await GetMenu(),
                 HoverDelay = HoverDelay,
                 CssClass = CssClass,
+                Orientation = Orientation,
+                VerticalWidth = VerticalWidth,
                 SmallMenuMaxWidth = SmallMenuMaxWidth
             },
         };

@@ -41,7 +41,6 @@ var YetaWF_ComponentsHTML;
             _this.setInternalValue(_this.InputHidden.value);
             var warn = $YetaWF.createElement("div", { class: "t_warn", style: "display:none" });
             warn.innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_exclamation_triangle;
-            // icons used: fas-caret-up, fas-caret-down
             var updown = $YetaWF.createElement("div", { class: "t_number_updown" },
                 $YetaWF.createElement("div", { class: "t_number_up" }),
                 $YetaWF.createElement("div", { class: "t_number_down" }));

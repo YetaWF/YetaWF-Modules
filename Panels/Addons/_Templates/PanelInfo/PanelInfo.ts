@@ -17,9 +17,6 @@ namespace YetaWF_Panels {
         public static readonly SELECTOR: string = ".yt_panels_panelinfo.t_display";
         public static TEMPLATENAME: string = "YetaWF_Panels_PanelInfo";
 
-        private static MAXTIME: number = 0.6;
-        private static INCRTIME: number = 0.03;
-
         private Setup: Setup;
 
         constructor(controlId: string, setup: Setup) {
@@ -32,11 +29,11 @@ namespace YetaWF_Panels {
             this.Setup = setup;
 
             if (this.Setup.Style === StyleEnum.Accordion) {
-                $YetaWF.registerEventHandler(this.Control, "click", "h2", (ev: MouseEvent): boolean => {
+                $YetaWF.registerEventHandler(this.Control, "click", "h2.t_accheader", (ev: MouseEvent): boolean => {
                     let hActive = ev.__YetaWFElem as HTMLElement;
                     let contentActive = hActive.nextElementSibling as HTMLElement;
                     let activeShown = this.isShown(contentActive);
-                    let headers = $YetaWF.getElementsBySelector("h2", [this.Control]) as HTMLLIElement[];
+                    let headers = $YetaWF.getElementsBySelector("h2.t_accheader", [this.Control]) as HTMLLIElement[];
                     for (let header of headers)
                         this.hide(header, header.nextElementSibling as HTMLElement);
                     if (!activeShown)
@@ -47,8 +44,6 @@ namespace YetaWF_Panels {
         }
 
         private hide(header: HTMLElement, tag: HTMLElement): void {
-            this.collapse(tag);
-
             $YetaWF.elementRemoveClasses(header, ["t_active", "t_collapsed"]);
             $YetaWF.elementAddClass(header, "t_collapsed");
             $YetaWF.setAttribute(header, "aria-expanded", "false");
@@ -57,10 +52,12 @@ namespace YetaWF_Panels {
 
             $YetaWF.elementRemoveClass(tag, "t_active");
             $YetaWF.setAttribute(tag, "aria-hidden", "true");
+
+            $YetaWF.animateHeight(tag, false, 600, (): void => {
+                tag.style.display = "none";
+            });
         }
         private show(header: HTMLElement, tag: HTMLElement): void {
-            this.expand(tag);
-
             $YetaWF.elementRemoveClasses(header, ["t_active", "t_collapsed"]);
             $YetaWF.elementAddClass(header, "t_active");
             $YetaWF.setAttribute(header, "aria-expanded", "true");
@@ -70,54 +67,12 @@ namespace YetaWF_Panels {
             $YetaWF.elementRemoveClass(tag, "t_active");
             $YetaWF.elementAddClass(tag, "t_active");
             $YetaWF.setAttribute(tag, "aria-hidden", "false");
+
+            $YetaWF.animateHeight(tag, true);
         }
 
         private isShown(tag: HTMLElement): boolean {
             return tag.style.display === "block" || tag.style.display === "";
-        }
-
-        // helper
-
-        private expand(tag: HTMLElement): void {
-            let steps = PanelInfoComponent.MAXTIME / PanelInfoComponent.INCRTIME;
-            let incr = window.innerHeight / steps;
-            let height = incr;
-            tag.style.maxHeight = `${height}px`;
-            tag.style.display = "block";
-            const timer = setInterval((): void => {
-                let rect = tag.getBoundingClientRect();
-                height += incr;
-                tag.style.maxHeight = `${height}px`;
-                let newRect = tag.getBoundingClientRect();
-                if (rect.height >= newRect.height) {
-                    clearInterval(timer);
-                    $YetaWF.sendActivateDivEvent([tag]);
-                }
-            }, PanelInfoComponent.INCRTIME);
-
-        }
-        private collapse(tag: HTMLElement): void {
-            let steps = PanelInfoComponent.MAXTIME / PanelInfoComponent.INCRTIME;
-            let rect = tag.getBoundingClientRect();
-            let incr = rect.height / steps;
-            let height = rect.height - incr;
-            if (height <= 0)
-                height = 0;
-            tag.style.maxHeight = `${height}px`;
-            if (height > 0) {
-                const timer = setInterval((): void => {
-                    let rect = tag.getBoundingClientRect();
-                    height -= incr;
-                    if (height <= 0)
-                        height = 0;
-                    tag.style.maxHeight = `${height}px`;
-                    let newRect = tag.getBoundingClientRect();
-                    if (rect.height <= newRect.height || rect.height <= 0) {
-                        clearInterval(timer);
-                        tag.style.display = "none";
-                    }
-                }, PanelInfoComponent.INCRTIME);
-            }
         }
     }
 }

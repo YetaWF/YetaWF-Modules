@@ -88,7 +88,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             hb.Append($@"
 <div id='{ControlId}'{FieldSetup(Validation ? FieldType.Validated : FieldType.Normal)} class='yt_checklistmenu t_edit{GetClasses()}'>
-    <button class='y_buttonlite'>{(svg != null ? SkinSVGs.Get(AreaRegistration.CurrentPackage, svg) : null)}{SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-caret-down")}</button>");
+    <button class='y_buttonlite'>{(svg != null ? SkinSVGs.Get(AreaRegistration.CurrentPackage, svg) : null)}{SkinSVGs.GetCaret(AreaRegistration.CurrentPackage, "down")}</button>");
 
             int listLength = details!.Count;
             int index = 0;

@@ -104,8 +104,7 @@ public class ModulePanelInfoDisplayComponent : PanelInfoComponentBase, IYetaWFCo
         <h2 class='t_accheader {(active ? "t_active" : "t_collapsed")}' role='tab'
             id='{DivId}_{panelIndex}_lb' aria-controls='{DivId}_{panelIndex}_pane' aria-selected='{(active ? "true" : "false")}' aria-expanded='{(active ? "true" : "false")}' tabindex='{(active ? "0" : "-1")}'>
             <div class='t_accicon'>
-                {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-caret-down")}
-                {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-caret-up")}
+                {SkinSVGs.GetCaret(AreaRegistration.CurrentPackage, "down")}
             </div>
             {Utility.HE(caption)}
         </h2>

@@ -355,6 +355,7 @@ namespace YetaWF_ComponentsHTML {
 
             this.Toasts.push(entry);
             let entryDiv = document.createElement("div");
+            entryDiv.style.opacity = "0";
             entry.EntryDiv = entryDiv;
             $YetaWF.setAttribute(entryDiv, "aria-atomic", "true");
             let html = "";
@@ -374,8 +375,6 @@ namespace YetaWF_ComponentsHTML {
                 }
             }
             entryDiv.innerHTML = html;
-            let toastDiv = this.getToastDiv();
-            toastDiv.appendChild(entryDiv);
 
             $YetaWF.elementAddClass(entryDiv, "t_entry");
             switch (severity) {
@@ -397,6 +396,12 @@ namespace YetaWF_ComponentsHTML {
                     break;
             }
 
+            let toastDiv = this.getToastDiv();
+            toastDiv.appendChild(entryDiv);
+
+            $YetaWF.animateHeight(entryDiv, true);
+            entryDiv.style.opacity = "";
+
             if (options.canClose) {
                 $YetaWF.registerEventHandler(entryDiv, "click", ".t_close", (ev: MouseEvent): boolean => {
                     this.removeToast(entryDiv, entry);
@@ -411,13 +416,16 @@ namespace YetaWF_ComponentsHTML {
             }
         }
         private removeToast(entryDiv: HTMLElement, entry: ToastEntry): void {
-            entryDiv.remove();
-            this.Toasts = this.Toasts.filter((e: ToastEntry): boolean => { return e !== entry; });
-            if (this.Toasts.length === 0) {
-                let toastDiv = $YetaWF.getElement1BySelectorCond(BasicsImpl.ToastDivSelector) as HTMLDivElement | null;
-                if (toastDiv)
-                    toastDiv.remove();
-            }
+            entryDiv.style.opacity = "0";// also animated
+            $YetaWF.animateHeight(entryDiv, false, 300, (): void => {
+                entryDiv.remove();
+                this.Toasts = this.Toasts.filter((e: ToastEntry): boolean => { return e !== entry; });
+                if (this.Toasts.length === 0) {
+                    let toastDiv = $YetaWF.getElement1BySelectorCond(BasicsImpl.ToastDivSelector) as HTMLDivElement | null;
+                    if (toastDiv)
+                        toastDiv.remove();
+                }
+            });
         }
         private getToastDiv(): HTMLDivElement {
             // if we're in an iframe popup, find outer window to add toast div

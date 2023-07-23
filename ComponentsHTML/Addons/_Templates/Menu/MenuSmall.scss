@@ -1,0 +1,337 @@
+/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+
+ul.yt_menu.t_display.t_small {
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    overflow:hidden;
+
+    padding: var(--mmsm-0-padding);
+    margin:0;
+    list-style:none;
+
+    background: var(--mmsm-0-bg);
+    color: var(--mmsm-0-clr);
+    border: var(--mmsm-0-border);
+    border-radius: var(--mmsm-0-border-radius);
+
+    > li { // Main level
+
+        position: relative;
+        list-style: none;
+        line-height:1;
+        cursor:pointer;
+
+        padding:0;
+        margin:0;
+
+        background: var(--mmsm-0-bg);
+        color: var(--mmsm-0-clr);
+        font: var(--mmsm-0-font);
+
+        > a {
+            display:flex;
+            align-items: center;
+            outline:none;
+            text-decoration: none;
+
+            padding: var(--mmsm-0-a-padding);
+            margin: 0;
+
+            background: var(--mmsm-0-a-bg);
+            color: var(--mmsm-0-a-clr);
+            font: var(--mmsm-0-font);
+
+            &.t_path {
+                background: var(--mmsm-0-a-bg-path);
+                color: var(--mmsm-0-a-clr-path);
+            }
+            &:hover, &:focus {
+                background: var(--mmsm-0-a-bg-hover);
+                color: var(--mmsm-0-a-clr-hover);
+            }
+            &[aria-expanded="true"] > svg {
+                transition: transform .2s;
+                transform: rotate(180deg);
+            }
+            &[aria-expanded="false"] > svg {
+                transition: transform .2s;
+                transform: rotate(0deg);
+            }
+            > span {
+                flex: 1 1 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                i, img {
+                    margin-right:.5ch;
+                }
+            }
+            > svg {
+                width: var(--mmsm-0-ddwidth);
+                height: var(--mmsm-0-ddheight);
+                border: var(--mm-svg-small-border);
+                border-radius: var(--mm-svg-small-border-radius);
+            }
+        }
+        > ul {
+
+            display: flex;
+            flex-direction: column;
+            flex-wrap: nowrap;
+
+            padding: var(--mmsm-1-padding);
+            margin: 0;
+            list-style:none;
+
+            background: var(--mmsm-1-bg);
+            color: var(--mmsm-1-clr);
+            border: var(--mmsm-1-border);
+            border-radius: var(--mmsm-1-border-radius);
+
+            transition: height .4s;
+            overflow: hidden;
+
+            &.t_megamenu_content {
+                width: var(--mmsm-1-mm-width);
+            }
+
+            > li { // 1st level
+
+                position: relative;
+                list-style: none;
+                line-height:1;
+                cursor:pointer;
+
+                margin:0;
+                padding:0;
+
+                height:auto;
+                width:auto;
+
+                background: var(--mmsm-1-bg);
+                color: var(--mmsm-1-clr);
+                font: var(--mmsm-1-font);
+
+                &.t_megamenu_content {
+                    background: var(--mmsm-1-mm-bg);
+                    color: var(--mmsm-1-mm-clr);
+                    font: var(--mmsm-1-mm-font);
+                    a, a:hover, a:focus {
+                        color: var(--mmsm-1-mm-clr);
+                    }
+                }
+
+                > a {
+                    position: relative;
+                    display:flex;
+                    align-items: center;
+                    outline: none;
+                    text-decoration: none;
+
+                    padding: var(--mmsm-1-a-padding);
+                    margin: 0;
+
+                    background: var(--mmsm-1-a-bg);
+                    color: var(--mmsm-1-a-clr);
+                    font: var(--mmsm-1-font);
+
+                    &.t_path {
+                        background: var(--mmsm-1-a-bg-path);
+                        color: var(--mmsm-1-a-clr-path);
+                    }
+                    &:hover, &:focus {
+                        background: var(--mmsm-1-a-bg-hover);
+                        color: var(--mmsm-1-a-clr-hover);
+                    }
+                    &[aria-expanded="true"] > svg {
+                        transition: transform .2s;
+                        transform: rotate(180deg);
+                    }
+                    &[aria-expanded="false"] > svg {
+                        transition: transform .2s;
+                        transform: rotate(0deg);
+                    }
+                    > span {
+                        flex: 1 1 100%;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        i, img {
+                            margin-right:.5ch;
+                        }
+                    }
+                    > svg {
+                        width: var(--mmsm-1-ddwidth);
+                        height: var(--mmsm-1-ddheight);
+                        border: var(--mm-svg-small-border);
+                        border-radius: var(--mm-svg-small-border-radius);
+                    }
+                }
+                > ul {
+
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: nowrap;
+
+                    padding:var(--mmsm-2-padding);
+                    margin: 0;
+                    list-style:none;
+
+                    background: var(--mmsm-2-bg);
+                    color: var(--mmsm-2-clr);
+                    border: var(--mmsm-2-border);
+                    border-radius: var(--mmsm-2-border-radius);
+
+                    transition: height .4s;
+                    overflow: hidden;
+
+                    > li { // 2nd level
+
+                        position: relative;
+                        list-style: none;
+                        line-height:1;
+                        cursor:pointer;
+
+                        margin:0;
+                        padding:0;
+
+                        height:auto;
+                        width:auto;
+
+                        background: var(--mmsm-2-bg);
+                        color: var(--mmsm-2-clr);
+                        font: var(--mmsm-2-font);
+
+                        > a {
+                            position: relative;
+                            display:flex;
+                            align-items: center;
+                            outline:none;
+                            text-decoration: none;
+
+                            padding: var(--mmsm-2-a-padding);
+                            margin: 0;
+
+                            background: var(--mmsm-2-a-bg);
+                            color: var(--mmsm-2-a-clr);
+
+                            &.t_path {
+                                background: var(--mmsm-2-a-bg-path);
+                                color: var(--mmsm-2-a-clr-path);
+                            }
+                            &:hover, &:focus {
+                                background: var(--mmsm-2-a-bg-hover);
+                                color: var(--mmsm-2-a-clr-hover);
+                            }
+                            &[aria-expanded="true"] > svg {
+                                transition: transform .2s;
+                                transform: rotate(180deg);
+                            }
+                            &[aria-expanded="false"] > svg {
+                                transition: transform .2s;
+                                transform: rotate(0deg);
+                            }
+                            > span {
+                                flex: 1 1 100%;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                i, img {
+                                    margin-right:.5ch;
+                                }
+                            }
+                            > svg {
+                                width: var(--mmsm-2-ddwidth);
+                                height: var(--mmsm-2-ddheight);
+                                border: var(--mm-svg-small-border);
+                                border-radius: var(--mm-svg-small-border-radius);
+                            }
+                        }
+                        > ul {
+
+                            display: flex;
+                            flex-direction: column;
+                            flex-wrap: nowrap;
+
+                            padding: var(--mmsm-2-padding);
+                            margin: 0;
+                            list-style:none;
+
+                            background: var(--mmsm-2-bg);
+                            color: var(--mmsm-2-clr);
+                            border: var(--mmsm-2-border);
+                            border-radius: var(--mmsm-2-border-radius);
+
+                            transition: height .4s;
+                            overflow: hidden;
+
+                            > li {
+
+                                position: relative;
+                                list-style: none;
+                                line-height:1;
+                                cursor:pointer;
+
+                                margin:0;
+                                padding:0;
+
+                                height:auto;
+                                width:auto;
+
+                                background: var(--mmsm-2-bg);
+                                color: var(--mmsm-2-clr);
+                                font: var(--mmsm-2-font);
+
+                                > a {
+                                    position: relative;
+                                    display:flex;
+                                    align-items: center;
+                                    outline:none;
+                                    text-decoration: none;
+
+                                    padding: var(--mmsm-2-a-padding);
+                                    margin: 0;
+
+                                    background: var(--mmsm-2-a-bg);
+                                    color: var(--mmsm-2-a-clr);
+                                    font: var(--mmsm-2-font);
+
+                                    &.t_path {
+                                        background: var(--mmsm-2-a-bg-path);
+                                        color: var(--mmsm-2-a-clr-path);
+                                    }
+                                    &:hover, &:focus {
+                                        background: var(--mmsm-2-a-bg-hover);
+                                        color: var(--mmsm-2-a-clr-hover);
+                                    }
+                                    &[aria-expanded="true"] > svg {
+                                        transition: transform .2s;
+                                        transform: rotate(180deg);
+                                    }
+                                    &[aria-expanded="false"] > svg {
+                                        transition: transform .2s;
+                                        transform: rotate(0deg);
+                                    }
+                                    > span {
+                                        flex: 1 1 100%;
+                                        overflow: hidden;
+                                        text-overflow: ellipsis;
+                                        i, img {
+                                            margin-right:.5ch;
+                                        }
+                                    }
+                                    svg {
+                                        width: var(--mmsm-2-ddwidth);
+                                        height: var(--mmsm-2-ddheight);
+                                        border: var(--mm-svg-small-border);
+                                        border-radius: var(--mm-svg-small-border-radius);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+

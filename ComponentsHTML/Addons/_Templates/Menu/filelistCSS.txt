@@ -1,2 +1,4 @@
-﻿Menu.scss
+﻿MenuLargeHorz.scss
+MenuLargeVert.scss
+MenuSmall.scss
 

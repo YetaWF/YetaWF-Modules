@@ -252,6 +252,7 @@ public class MenuEditModule : ModuleDefinition {
             ModelState.Clear();
         if (!ModelState.IsValid)
             return await PartialViewAsync(model);
+        MenuList.ClearCachedMenus();// changes may affect main menu so clear the menu cache (this only clears current session)
 
         return await PartialViewAsync(model);
     }

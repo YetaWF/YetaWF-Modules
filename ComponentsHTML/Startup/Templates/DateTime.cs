@@ -27,8 +27,8 @@ namespace YetaWF.Modules.ComponentsHTML.Addons.Templates {
             Package package = AreaRegistration.CurrentPackage;
             string area = package.AreaName;
 
-            scripts.AddConfigOption(area, "SVG_fas_caret_left", SkinSVGs.Get(package, "fas-caret-left"));
-            scripts.AddConfigOption(area, "SVG_fas_caret_right", SkinSVGs.Get(package, "fas-caret-right"));
+            scripts.AddConfigOption(area, "SVG_fas_caret_left", SkinSVGs.GetCaret(package, "left"));
+            scripts.AddConfigOption(area, "SVG_fas_caret_right", SkinSVGs.GetCaret(package, "down"));
 
             scripts.AddLocalization(area, "DateFormat", UserSettings.GetProperty<Formatting.DateFormatEnum>("DateFormat"));
             scripts.AddLocalization(area, "TimeFormat", UserSettings.GetProperty<Formatting.TimeFormatEnum>("TimeFormat"));

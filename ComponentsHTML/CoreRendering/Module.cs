@@ -257,7 +257,7 @@ namespace YetaWF.Modules.ComponentsHTML {
                 }
             }
 
-            return $@"<a{(id != null ? $" id='{id}'" : null)} class='{Globals.CssModuleNoPrint}{HtmlBuilder.GetClasses(attrs, css)}'{HtmlBuilder.Attributes(attrs)}>{innerHtml}{EndIcon}</a>";
+            return $@"<a{(id != null ? $" id='{id}'" : null)} class='{Globals.CssModuleNoPrint}{HtmlBuilder.GetClasses(attrs, css)}'{HtmlBuilder.Attributes(attrs)}><span>{innerHtml}</span>{EndIcon}</a>";
         }
     }
 }

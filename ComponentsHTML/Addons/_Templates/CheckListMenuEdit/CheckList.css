@@ -1,0 +1,5 @@
+@charset "UTF-8";
+/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+.yt_checklistmenu svg:nth-child(2) {
+  margin-left: 0.5em;
+}

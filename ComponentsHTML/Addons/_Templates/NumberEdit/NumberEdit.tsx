@@ -67,7 +67,6 @@ namespace YetaWF_ComponentsHTML {
 
             let warn = <div class="t_warn" style="display:none"></div>;
             warn.innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_exclamation_triangle;
-            // icons used: fas-caret-up, fas-caret-down
             let updown =
                 <div class="t_number_updown">
                     <div class="t_number_up">

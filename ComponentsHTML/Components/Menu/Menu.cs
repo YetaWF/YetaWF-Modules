@@ -90,6 +90,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// </summary>
             public int HoverDelay { get; set; }
             /// <summary>
+            /// Defines the orientation of the menu.
+            /// </summary>
+            public OrientationEnum Orientation { get; set; }
+            /// <summary>
+            /// Defines the width of the menu (vertical mode only) in pixels.
+            /// </summary>
+            public int VerticalWidth { get; set; }
+            /// <summary>
             /// Defines the largest screen size for which the small menu is shown. If the screen is wider, the large menu is shown.
             /// </summary>
             public int SmallMenuMaxWidth { get; set; }
@@ -115,7 +123,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public async Task<string> RenderAsync(MenuComponentBase.MenuData model) {
 
             string css = "yt_menu t_display t_large"; // start out with a large menu
-            string menuHTML = await RenderMenuAsync(model.MenuList, DivId, css, WantArrows: true, HtmlHelper: HtmlHelper);
+            css = CssManager.CombineCss(css, model.Orientation == OrientationEnum.Horizontal ? "t_horizontal" : "t_vertical");
+            string menuHTML = await RenderMenuAsync(model.MenuList, DivId, css, WantArrows: true, width: model.Orientation == OrientationEnum.Vertical ? model.VerticalWidth : null, HtmlHelper: HtmlHelper);
             if (string.IsNullOrWhiteSpace(menuHTML))
                 return string.Empty;
 
@@ -139,6 +148,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 {menuHTML}");
 
             MenuSetup setup = new MenuSetup {
+                Orientation = model.Orientation,
+                VerticalWidth = model.VerticalWidth,
                 SmallMenuMaxWidth = model.SmallMenuMaxWidth,
                 HoverDelay = model.HoverDelay,
             };

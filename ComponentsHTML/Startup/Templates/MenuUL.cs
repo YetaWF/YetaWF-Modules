@@ -25,7 +25,7 @@ namespace YetaWF.Modules.ComponentsHTML.Addons.Templates {
             Package package = AreaRegistration.CurrentPackage;
             string areaName = package.AreaName;
 
-            scripts.AddConfigOption(areaName, "SVG_fas_caret_right", SkinSVGs.Get(package, "fas-caret-right"));
+            scripts.AddConfigOption(areaName, "SVG_fas_caret_right", SkinSVGs.GetCaret(package, "right"));
 
             return Task.CompletedTask;
         }

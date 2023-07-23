@@ -322,6 +322,7 @@ var YetaWF_ComponentsHTML;
                 return;
             this.Toasts.push(entry);
             var entryDiv = document.createElement("div");
+            entryDiv.style.opacity = "0";
             entry.EntryDiv = entryDiv;
             $YetaWF.setAttribute(entryDiv, "aria-atomic", "true");
             var html = "";
@@ -342,8 +343,6 @@ var YetaWF_ComponentsHTML;
                 }
             }
             entryDiv.innerHTML = html;
-            var toastDiv = this.getToastDiv();
-            toastDiv.appendChild(entryDiv);
             $YetaWF.elementAddClass(entryDiv, "t_entry");
             switch (severity) {
                 default:
@@ -363,6 +362,10 @@ var YetaWF_ComponentsHTML;
                     $YetaWF.elementAddClass(entryDiv, "t_error");
                     break;
             }
+            var toastDiv = this.getToastDiv();
+            toastDiv.appendChild(entryDiv);
+            $YetaWF.animateHeight(entryDiv, true);
+            entryDiv.style.opacity = "";
             if (options.canClose) {
                 $YetaWF.registerEventHandler(entryDiv, "click", ".t_close", function (ev) {
                     _this.removeToast(entryDiv, entry);
@@ -376,13 +379,17 @@ var YetaWF_ComponentsHTML;
             }
         };
         BasicsImpl.prototype.removeToast = function (entryDiv, entry) {
-            entryDiv.remove();
-            this.Toasts = this.Toasts.filter(function (e) { return e !== entry; });
-            if (this.Toasts.length === 0) {
-                var toastDiv = $YetaWF.getElement1BySelectorCond(BasicsImpl.ToastDivSelector);
-                if (toastDiv)
-                    toastDiv.remove();
-            }
+            var _this = this;
+            entryDiv.style.opacity = "0"; // also animated
+            $YetaWF.animateHeight(entryDiv, false, 300, function () {
+                entryDiv.remove();
+                _this.Toasts = _this.Toasts.filter(function (e) { return e !== entry; });
+                if (_this.Toasts.length === 0) {
+                    var toastDiv = $YetaWF.getElement1BySelectorCond(BasicsImpl.ToastDivSelector);
+                    if (toastDiv)
+                        toastDiv.remove();
+                }
+            });
         };
         BasicsImpl.prototype.getToastDiv = function () {
             // if we're in an iframe popup, find outer window to add toast div

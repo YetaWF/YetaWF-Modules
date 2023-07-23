@@ -1,0 +1,301 @@
+@charset "UTF-8";
+/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
+ul.yt_menu.t_display.t_large.t_vertical {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  padding: var(--mmv-0-padding);
+  margin: 0;
+  list-style: none;
+  background: var(--mmv-0-bg);
+  color: var(--mmv-0-clr);
+  border: var(--mmv-0-border);
+  border-radius: var(--mmv-0-border-radius);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li {
+  position: relative;
+  list-style: none;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  background: var(--mmv-0-bg);
+  color: var(--mmv-0-clr);
+  font: var(--mmv-0-font);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > a {
+  display: flex;
+  align-items: center;
+  outline: none;
+  text-decoration: none;
+  padding: var(--mmv-0-a-padding);
+  margin: 0;
+  background: var(--mmv-0-a-bg);
+  color: var(--mmv-0-a-clr);
+  font: var(--mmv-0-font);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > a.t_path {
+  background: var(--mmv-0-a-bg-path);
+  color: var(--mmv-0-a-clr-path);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > a:hover, ul.yt_menu.t_display.t_large.t_vertical > li > a:focus {
+  background: var(--mmv-0-a-bg-hover);
+  color: var(--mmv-0-a-clr-hover);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > a[aria-expanded=true] > svg {
+  transition: -webkit-transform 0.2s;
+  transition: transform 0.2s;
+  transition: transform 0.2s, -webkit-transform 0.2s;
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > a[aria-expanded=false] > svg {
+  transition: -webkit-transform 0.2s;
+  transition: transform 0.2s;
+  transition: transform 0.2s, -webkit-transform 0.2s;
+  -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > a > span {
+  flex: 1 1 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > a > span i, ul.yt_menu.t_display.t_large.t_vertical > li > a > span img {
+  margin-right: 0.5ch;
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > a > svg {
+  width: var(--mmv-0-ddwidth);
+  height: var(--mmv-0-ddheight);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  padding: var(--mmv-1-padding);
+  margin: 0;
+  list-style: none;
+  background: var(--mmv-1-bg);
+  color: var(--mmv-1-clr);
+  border: var(--mmv-1-border);
+  border-radius: var(--mmv-1-border-radius);
+  transition: height 0.4s;
+  overflow: hidden;
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul.t_megamenu_content {
+  width: var(--mmv-1-mm-width);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li {
+  position: relative;
+  list-style: none;
+  line-height: 1;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  height: auto;
+  width: auto;
+  background: var(--mmv-1-bg);
+  color: var(--mmv-1-clr);
+  font: var(--mmv-1-font);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li.t_megamenu_content {
+  background: var(--mmv-1-mm-bg);
+  color: var(--mmv-1-mm-clr);
+  font: var(--mmv-1-mm-font);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li.t_megamenu_content a, ul.yt_menu.t_display.t_large.t_vertical > li > ul > li.t_megamenu_content a:hover, ul.yt_menu.t_display.t_large.t_vertical > li > ul > li.t_megamenu_content a:focus {
+  color: var(--mmv-1-mm-clr);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  outline: none;
+  text-decoration: none;
+  padding: var(--mmv-1-a-padding);
+  margin: 0;
+  background: var(--mmv-1-a-bg);
+  color: var(--mmv-1-a-clr);
+  font: var(--mmv-1-font);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > a.t_path {
+  background: var(--mmv-1-a-bg-path);
+  color: var(--mmv-1-a-clr-path);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > a:hover, ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > a:focus {
+  background: var(--mmv-1-a-bg-hover);
+  color: var(--mmv-1-a-clr-hover);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > a[aria-expanded=true] > svg {
+  transition: -webkit-transform 0.2s;
+  transition: transform 0.2s;
+  transition: transform 0.2s, -webkit-transform 0.2s;
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > a[aria-expanded=false] > svg {
+  transition: -webkit-transform 0.2s;
+  transition: transform 0.2s;
+  transition: transform 0.2s, -webkit-transform 0.2s;
+  -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > a > span {
+  flex: 1 1 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > a > span i, ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > a > span img {
+  margin-right: 0.5ch;
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > a > svg {
+  width: var(--mmv-1-ddwidth);
+  height: var(--mmv-1-ddheight);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  padding: var(--mmv-2-padding);
+  margin: 0;
+  list-style: none;
+  background: var(--mmv-2-bg);
+  color: var(--mmv-2-clr);
+  border: var(--mmv-2-border);
+  border-radius: var(--mmv-2-border-radius);
+  transition: height 0.4s;
+  overflow: hidden;
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul > li {
+  position: relative;
+  list-style: none;
+  line-height: 1;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  height: auto;
+  width: auto;
+  background: var(--mmv-2-bg);
+  color: var(--mmv-2-clr);
+  font: var(--mmv-2-font);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul > li > a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  outline: none;
+  text-decoration: none;
+  padding: var(--mmv-2-a-padding);
+  margin: 0;
+  background: var(--mmv-2-a-bg);
+  color: var(--mmv-2-a-clr);
+  font: var(--mmv-2-font);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul > li > a.t_path {
+  background: var(--mmv-2-a-bg-path);
+  color: var(--mmv-2-a-clr-path);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul > li > a:hover, ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul > li > a:focus {
+  background: var(--mmv-2-a-bg-hover);
+  color: var(--mmv-2-a-clr-hover);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul > li > a[aria-expanded=true] > svg {
+  transition: -webkit-transform 0.2s;
+  transition: transform 0.2s;
+  transition: transform 0.2s, -webkit-transform 0.2s;
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul > li > a[aria-expanded=false] > svg {
+  transition: -webkit-transform 0.2s;
+  transition: transform 0.2s;
+  transition: transform 0.2s, -webkit-transform 0.2s;
+  -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul > li > a > span {
+  flex: 1 1 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul > li > a > span i, ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul > li > a > span img {
+  margin-right: 0.5ch;
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul > li > a > svg {
+  width: var(--mmv-2-ddwidth);
+  height: var(--mmv-2-ddheight);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul > li > ul {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  padding: var(--mmv-2-padding);
+  margin: 0;
+  list-style: none;
+  background: var(--mmv-2-bg);
+  color: var(--mmv-2-clr);
+  border: var(--mmv-2-border);
+  border-radius: var(--mmv-2-border-radius);
+  transition: height 0.4s;
+  overflow: hidden;
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul > li > ul > li {
+  position: relative;
+  list-style: none;
+  line-height: 1;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  height: auto;
+  width: auto;
+  background: var(--mmv-2-bg);
+  color: var(--mmv-2-clr);
+  font: var(--mmv-2-font);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul > li > ul > li > a {
+  position: relative;
+  display: flex;
+  align-items: center;
+  outline: none;
+  text-decoration: none;
+  padding: var(--mmv-2-a-padding);
+  margin: 0;
+  background: var(--mmv-2-a-bg);
+  color: var(--mmv-2-a-clr);
+  font: var(--mmv-2-font);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul > li > ul > li > a.t_path {
+  background: var(--mmv-2-a-bg-path);
+  color: var(--mmv-2-a-clr-path);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul > li > ul > li > a:hover, ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul > li > ul > li > a:focus {
+  background: var(--mmv-2-a-bg-hover);
+  color: var(--mmv-2-a-clr-hover);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul > li > ul > li > a[aria-expanded=true] > svg {
+  transition: -webkit-transform 0.2s;
+  transition: transform 0.2s;
+  transition: transform 0.2s, -webkit-transform 0.2s;
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul > li > ul > li > a[aria-expanded=false] > svg {
+  transition: -webkit-transform 0.2s;
+  transition: transform 0.2s;
+  transition: transform 0.2s, -webkit-transform 0.2s;
+  -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul > li > ul > li > a > span {
+  flex: 1 1 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul > li > ul > li > a > span i, ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul > li > ul > li > a > span img {
+  margin-right: 0.5ch;
+}
+ul.yt_menu.t_display.t_large.t_vertical > li > ul > li > ul > li > ul > li > a > svg {
+  width: var(--mmv-2-ddwidth);
+  height: var(--mmv-2-ddheight);
+}

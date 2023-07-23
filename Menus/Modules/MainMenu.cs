@@ -33,6 +33,8 @@ public class MainMenuModule : MenuModule {
                 MenuList = await GetMenu(true),
                 HoverDelay = HoverDelay,
                 CssClass = CssClass,
+                Orientation = Orientation,
+                VerticalWidth = VerticalWidth,
                 SmallMenuMaxWidth = SmallMenuMaxWidth
             },
         };

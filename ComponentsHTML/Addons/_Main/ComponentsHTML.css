@@ -79,8 +79,11 @@ i.yic.yic_componentshtml_modmenuedit {
   position: relative;
   border: var(--tst-border);
   margin: 1ch;
-  padding: 1ch;
+  padding: 0 1ch 1ch 1ch;
   border-radius: var(--tst-border-radius);
+  opacity: 1;
+  transition: height 0.3s, opacity 0.3s ease-in;
+  overflow: hidden;
 }
 #ytoast .t_entry .t_title {
   font: var(--tst-title-font);

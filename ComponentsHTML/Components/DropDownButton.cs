@@ -103,7 +103,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
 
             hb.Append($@"
-        {SkinSVGs.Get(AreaRegistration.CurrentPackage, "fas-caret-down")}
+        {SkinSVGs.GetCaret(AreaRegistration.CurrentPackage, "down")}
     {model.MenuHTML}
 </button>");
 
