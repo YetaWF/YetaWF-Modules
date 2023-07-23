@@ -57,7 +57,7 @@ var YetaWF_Panels;
             $YetaWF.setAttribute(header, "tabindex", "-1");
             $YetaWF.elementRemoveClass(tag, "t_active");
             $YetaWF.setAttribute(tag, "aria-hidden", "true");
-            $YetaWF.animateHeight(tag, false, 600, function () {
+            $YetaWF.animateHeight(tag, false, function () {
                 tag.style.display = "none";
             });
         };

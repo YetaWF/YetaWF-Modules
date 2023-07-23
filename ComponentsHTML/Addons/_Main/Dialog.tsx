@@ -92,7 +92,9 @@ namespace YetaWF_ComponentsHTML {
             DialogClass.addOverlay();
 
             dialog.style.display = "";
+            dialog.style.opacity = "0";
             DialogClass.reposition();
+            dialog.style.opacity = "1";
 
             // set focus on first button
             $YetaWF.getElementsBySelector("button", [buttonSet])[0].focus();
@@ -124,19 +126,26 @@ namespace YetaWF_ComponentsHTML {
 
         public static close(): void {
             DialogClass.DragDropInProgress = false;
-            let dialog = $YetaWF.getElementByIdCond("yDialogContainer");
+            const dialog = $YetaWF.getElementByIdCond("yDialogContainer");
             if (!dialog) return;
-            dialog.remove();
-            let overlay = $YetaWF.getElementById("yDialogOverlay");
-            overlay.remove();
+            const overlay = $YetaWF.getElementById("yDialogOverlay");
+            if (!overlay) return;
+            dialog.style.opacity = "0";// animation
+            overlay.style.opacity = "0";// animation
+            setTimeout((): void => {
+                dialog.remove();
+                overlay.remove();
+            }, 300);
         }
         static get isActive(): boolean {
             return $YetaWF.getElementByIdCond("yDialogContainer") != null;
         }
 
         private static addOverlay(): void {
-            let overlay = <div id="yDialogOverlay"></div> as HTMLDivElement;
+            const overlay = <div id="yDialogOverlay" style="opacity:0"></div> as HTMLDivElement;
             document.body.appendChild(overlay);
+            $YetaWF.forceRedraw(overlay);
+            overlay.style.opacity = "";//animation to css defined value
         }
         private static setupDragDrop(): void {
             let dialog = $YetaWF.getElementById("yDialogContainer");

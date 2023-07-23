@@ -27,19 +27,24 @@ var YetaWF_ComponentsHTML;
             // with unified page sets there may actually not be a parent, but window.parent returns itself in this case anyway
             var win = window.parent;
             var popup = win.document.YPopupWindowActive;
+            if (!popup)
+                return;
             var overlay = $YetaWF.getElement1BySelectorCond("#ypopupOverlay", [window.parent.document.body]);
-            if (overlay)
-                overlay.remove();
-            win.document.body.style.overflow = "";
-            win.YVolatile.Basics.IsInPopup = false; // we're no longer in a popup
-            win.document.YPopupDragDropInProgress = false;
-            win.document.YPopupXOffset = 0;
-            win.document.YPopupYOffset = 0;
-            win.document.YPopupWindowActive = null;
-            if (popup) {
+            if (!overlay)
+                return;
+            popup.style.opacity = "0"; // animation
+            overlay.style.opacity = "0"; // animation
+            setTimeout(function () {
+                win.document.body.style.overflow = "";
+                win.YVolatile.Basics.IsInPopup = false; // we're no longer in a popup
+                win.document.YPopupDragDropInProgress = false;
+                win.document.YPopupXOffset = 0;
+                win.document.YPopupYOffset = 0;
+                win.document.YPopupWindowActive = null;
                 $YetaWF.processClearDiv(popup);
                 popup.remove();
-            }
+                overlay.remove();
+            }, 300);
         };
         /**
          * Opens a dynamic popup, usually a div added to the current document.
@@ -75,7 +80,9 @@ var YetaWF_ComponentsHTML;
             document.body.style.overflow = "hidden";
             // Create the window
             document.body.appendChild(popup);
+            popup.style.opacity = "0";
             PopupsImpl.reposition();
+            popup.style.opacity = "1";
             PopupsImpl.setupDragDrop();
             $YetaWF.setLoading(false);
             done(popup);
@@ -96,8 +103,10 @@ var YetaWF_ComponentsHTML;
             });
         };
         PopupsImpl.addOverlay = function () {
-            var overlay = $YetaWF.createElement("div", { id: "ypopupOverlay" });
+            var overlay = $YetaWF.createElement("div", { id: "ypopupOverlay", style: "opacity:0" });
             document.body.appendChild(overlay);
+            $YetaWF.forceRedraw(overlay);
+            overlay.style.opacity = ""; //animation to css defined value
         };
         PopupsImpl.reposition = function () {
             // with unified page sets there may actually not be a parent, but window.parent returns itself in this case anyway
@@ -194,7 +203,7 @@ var YetaWF_ComponentsHTML;
                     PopupsImpl.internalClosePopup();
                 }
             }
-            var popup = $YetaWF.createElement("div", { id: PopupsImpl.POPUPID, tabindex: "-1", role: "dialog", class: "yPopup", "aria-labelledby": "ypopupTitle", style: "display:none" },
+            var popup = $YetaWF.createElement("div", { id: PopupsImpl.POPUPID, tabindex: "-1", role: "dialog", class: "yPopup", "aria-labelledby": "ypopupTitle", style: "display:none;opacity:0" },
                 $YetaWF.createElement("div", { class: "t_titlebar" },
                     $YetaWF.createElement("span", { id: "ypopupTitle", class: "t_title" }, "..."),
                     $YetaWF.createElement("button", { type: "button", class: "y_buttonlite t_close" })),
@@ -219,7 +228,9 @@ var YetaWF_ComponentsHTML;
             document.body.style.overflow = "hidden";
             // Create the window
             document.body.appendChild(popup);
+            popup.style.opacity = "0";
             PopupsImpl.reposition();
+            popup.style.opacity = "1";
             PopupsImpl.setupDragDrop();
             // handle close button
             var closeButton = $YetaWF.getElement1BySelector(".t_titlebar button", [popup]);

@@ -21,6 +21,8 @@
     flex-direction: column;
     overflow:hidden;
 
+    transition: opacity .3s;
+
     .t_titlebar {
         display:flex;
         flex-direction: row;
@@ -79,6 +81,8 @@
     @media print {
        display: none;
     }
+
+    transition: opacity .3s;
 }
 
 body.yPopup {

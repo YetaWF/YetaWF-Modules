@@ -69,7 +69,9 @@ var YetaWF_ComponentsHTML;
             document.body.appendChild(dialog);
             DialogClass.addOverlay();
             dialog.style.display = "";
+            dialog.style.opacity = "0";
             DialogClass.reposition();
+            dialog.style.opacity = "1";
             // set focus on first button
             $YetaWF.getElementsBySelector("button", [buttonSet])[0].focus();
             DialogClass.setupDragDrop();
@@ -94,9 +96,15 @@ var YetaWF_ComponentsHTML;
             var dialog = $YetaWF.getElementByIdCond("yDialogContainer");
             if (!dialog)
                 return;
-            dialog.remove();
             var overlay = $YetaWF.getElementById("yDialogOverlay");
-            overlay.remove();
+            if (!overlay)
+                return;
+            dialog.style.opacity = "0"; // animation
+            overlay.style.opacity = "0"; // animation
+            setTimeout(function () {
+                dialog.remove();
+                overlay.remove();
+            }, 300);
         };
         Object.defineProperty(DialogClass, "isActive", {
             get: function () {
@@ -106,8 +114,10 @@ var YetaWF_ComponentsHTML;
             configurable: true
         });
         DialogClass.addOverlay = function () {
-            var overlay = $YetaWF.createElement("div", { id: "yDialogOverlay" });
+            var overlay = $YetaWF.createElement("div", { id: "yDialogOverlay", style: "opacity:0" });
             document.body.appendChild(overlay);
+            $YetaWF.forceRedraw(overlay);
+            overlay.style.opacity = ""; //animation to css defined value
         };
         DialogClass.setupDragDrop = function () {
             var dialog = $YetaWF.getElementById("yDialogContainer");

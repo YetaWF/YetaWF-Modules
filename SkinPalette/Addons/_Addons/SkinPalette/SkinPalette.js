@@ -39,10 +39,16 @@ var YetaWF_SkinPalette;
             _this.updateGenValues();
             $YetaWF.registerEventHandler(_this.ExpandCollapse, "click", null, function (ev) {
                 if (_this.Contents.style.display === "") {
-                    _this.Contents.style.display = "none";
+                    _this.Contents.style.opacity = "0";
+                    $YetaWF.transitionEnd(_this.Contents, function () {
+                        _this.Contents.style.display = "none";
+                    });
                 }
                 else {
+                    _this.Contents.style.opacity = "0";
                     _this.Contents.style.display = "";
+                    $YetaWF.forceRedraw(_this.Contents);
+                    _this.Contents.style.opacity = "1";
                 }
                 return false;
             });

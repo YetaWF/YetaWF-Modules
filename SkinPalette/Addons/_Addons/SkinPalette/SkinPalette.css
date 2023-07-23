@@ -32,6 +32,7 @@
   background: var(--bar-bg);
   border: var(--bar-border);
   border-radius: var(--bar-border-radius);
+  transition: opacity 0.3s;
 }
 .YetaWF_SkinPalette_SkinPalette .t_contents textarea[name=CSSVariables] {
   overflow: auto;

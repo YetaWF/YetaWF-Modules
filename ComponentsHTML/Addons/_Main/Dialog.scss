@@ -13,6 +13,8 @@
     width:400px;
     padding: .2em;
 
+    transition: opacity .3s;
+
     .t_titlebar {
         display:flex;
         flex-direction: row;
@@ -72,4 +74,6 @@
     left: 0;
     width: 100%;
     height: 100%;
+
+    transition: opacity .3s;
 }

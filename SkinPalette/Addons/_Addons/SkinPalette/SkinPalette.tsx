@@ -66,9 +66,15 @@ namespace YetaWF_SkinPalette {
 
             $YetaWF.registerEventHandler(this.ExpandCollapse, "click", null, (ev: MouseEvent): boolean => {
                 if (this.Contents.style.display === "") {
-                    this.Contents.style.display = "none";
+                    this.Contents.style.opacity = "0";
+                    $YetaWF.transitionEnd(this.Contents, (): void =>{
+                        this.Contents.style.display = "none";
+                    });
                 } else {
+                    this.Contents.style.opacity = "0";
                     this.Contents.style.display = "";
+                    $YetaWF.forceRedraw(this.Contents);
+                    this.Contents.style.opacity = "1";
                 }
                 return false;
             });

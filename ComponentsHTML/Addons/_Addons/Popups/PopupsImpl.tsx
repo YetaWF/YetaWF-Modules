@@ -49,24 +49,28 @@ namespace YetaWF_ComponentsHTML {
 
         private static internalClosePopup(): void {
             // with unified page sets there may actually not be a parent, but window.parent returns itself in this case anyway
-            let win = window.parent;
-            let popup = win.document.YPopupWindowActive;
+            const win = window.parent;
+            const popup = win.document.YPopupWindowActive;
+            if (!popup) return;
 
-            let overlay = $YetaWF.getElement1BySelectorCond("#ypopupOverlay", [window.parent.document.body]);
-            if (overlay)
-                overlay.remove();
+            const overlay = $YetaWF.getElement1BySelectorCond("#ypopupOverlay", [window.parent.document.body]);
+            if (!overlay) return;
 
-            win.document.body.style.overflow = "";
-            (win as any).YVolatile.Basics.IsInPopup = false; // we're no longer in a popup
-            win.document.YPopupDragDropInProgress = false;
-            win.document.YPopupXOffset = 0;
-            win.document.YPopupYOffset = 0;
-            win.document.YPopupWindowActive = null;
+            popup.style.opacity = "0";// animation
+            overlay.style.opacity = "0";// animation
+            setTimeout((): void => {
+                win.document.body.style.overflow = "";
+                (win as any).YVolatile.Basics.IsInPopup = false; // we're no longer in a popup
+                win.document.YPopupDragDropInProgress = false;
+                win.document.YPopupXOffset = 0;
+                win.document.YPopupYOffset = 0;
+                win.document.YPopupWindowActive = null;
 
-            if (popup) {
                 $YetaWF.processClearDiv(popup);
                 popup.remove();
-            }
+
+                overlay.remove();
+            }, 300);
         }
 
         /**
@@ -77,7 +81,7 @@ namespace YetaWF_ComponentsHTML {
             // we're already in a popup
             PopupsImpl.internalClosePopup();
 
-            let popup = <div id={PopupsImpl.POPUPID} tabindex="-1" role="dialog" class="yPopupDyn" aria-describedby="ypopupContent" aria-labelledby="ypopupTitle" style="display:none">
+            const popup = <div id={PopupsImpl.POPUPID} tabindex="-1" role="dialog" class="yPopupDyn" aria-describedby="ypopupContent" aria-labelledby="ypopupTitle" style="display:none">
                 <div class="t_titlebar">
                     <div id="ypopupTitle" class="t_title">{result.PageTitle}</div>
                     <button type="button" class="y_buttonlite t_close"></button>
@@ -113,7 +117,9 @@ namespace YetaWF_ComponentsHTML {
 
             // Create the window
             document.body.appendChild(popup);
+            popup.style.opacity = "0";
             PopupsImpl.reposition();
+            popup.style.opacity = "1";
 
             PopupsImpl.setupDragDrop();
 
@@ -140,8 +146,10 @@ namespace YetaWF_ComponentsHTML {
         }
 
         private static addOverlay(): void {
-            let overlay = <div id="ypopupOverlay"></div> as HTMLDivElement;
+            let overlay = <div id="ypopupOverlay" style="opacity:0"></div> as HTMLDivElement;
             document.body.appendChild(overlay);
+            $YetaWF.forceRedraw(overlay);
+            overlay.style.opacity = "";//animation to css defined value
         }
 
         public static reposition(): void {
@@ -243,7 +251,7 @@ namespace YetaWF_ComponentsHTML {
                 }
             }
 
-            let popup = <div id={PopupsImpl.POPUPID} tabindex="-1" role="dialog" class="yPopup" aria-labelledby="ypopupTitle" style="display:none">
+            let popup = <div id={PopupsImpl.POPUPID} tabindex="-1" role="dialog" class="yPopup" aria-labelledby="ypopupTitle" style="display:none;opacity:0">
                 <div class="t_titlebar">
                     <span id="ypopupTitle" class="t_title">...</span>
                     <button type="button" class="y_buttonlite t_close"></button>
@@ -274,7 +282,9 @@ namespace YetaWF_ComponentsHTML {
 
             // Create the window
             document.body.appendChild(popup);
+            popup.style.opacity = "0";
             PopupsImpl.reposition();
+            popup.style.opacity = "1";
 
             PopupsImpl.setupDragDrop();
 

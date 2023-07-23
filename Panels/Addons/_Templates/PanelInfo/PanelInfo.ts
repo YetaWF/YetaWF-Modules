@@ -53,7 +53,7 @@ namespace YetaWF_Panels {
             $YetaWF.elementRemoveClass(tag, "t_active");
             $YetaWF.setAttribute(tag, "aria-hidden", "true");
 
-            $YetaWF.animateHeight(tag, false, 600, (): void => {
+            $YetaWF.animateHeight(tag, false, (): void => {
                 tag.style.display = "none";
             });
         }

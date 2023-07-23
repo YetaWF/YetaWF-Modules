@@ -417,7 +417,7 @@ namespace YetaWF_ComponentsHTML {
         }
         private removeToast(entryDiv: HTMLElement, entry: ToastEntry): void {
             entryDiv.style.opacity = "0";// also animated
-            $YetaWF.animateHeight(entryDiv, false, 300, (): void => {
+            $YetaWF.animateHeight(entryDiv, false, (): void => {
                 entryDiv.remove();
                 this.Toasts = this.Toasts.filter((e: ToastEntry): boolean => { return e !== entry; });
                 if (this.Toasts.length === 0) {

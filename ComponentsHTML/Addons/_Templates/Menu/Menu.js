@@ -183,7 +183,7 @@ var YetaWF_ComponentsHTML;
             var subUL = levelInfo.subUL;
             levelInfo.owningAnchor.setAttribute("aria-expanded", "false");
             if (this.isVertical || this.isSmall) {
-                $YetaWF.animateHeight(subUL, false, 400, function () {
+                $YetaWF.animateHeight(subUL, false, function () {
                     subUL.style.display = "none"; // hide
                 });
             }

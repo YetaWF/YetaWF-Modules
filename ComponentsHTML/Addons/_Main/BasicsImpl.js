@@ -381,7 +381,7 @@ var YetaWF_ComponentsHTML;
         BasicsImpl.prototype.removeToast = function (entryDiv, entry) {
             var _this = this;
             entryDiv.style.opacity = "0"; // also animated
-            $YetaWF.animateHeight(entryDiv, false, 300, function () {
+            $YetaWF.animateHeight(entryDiv, false, function () {
                 entryDiv.remove();
                 _this.Toasts = _this.Toasts.filter(function (e) { return e !== entry; });
                 if (_this.Toasts.length === 0) {

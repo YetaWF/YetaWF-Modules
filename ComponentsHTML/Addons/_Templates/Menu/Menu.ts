@@ -195,7 +195,7 @@ namespace YetaWF_ComponentsHTML {
             const subUL = levelInfo.subUL;
             levelInfo.owningAnchor.setAttribute("aria-expanded", "false");
             if (this.isVertical || this.isSmall) {
-                $YetaWF.animateHeight(subUL, false, 400, (): void => {
+                $YetaWF.animateHeight(subUL, false, (): void => {
                     subUL.style.display = "none";// hide
                 });
             } else {

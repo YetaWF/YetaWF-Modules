@@ -10,6 +10,7 @@
   border-radius: var(--dialog-border-radius);
   width: 400px;
   padding: 0.2em;
+  transition: opacity 0.3s;
 }
 #yDialogContainer .t_titlebar {
   display: flex;
@@ -68,4 +69,5 @@
   left: 0;
   width: 100%;
   height: 100%;
+  transition: opacity 0.3s;
 }
