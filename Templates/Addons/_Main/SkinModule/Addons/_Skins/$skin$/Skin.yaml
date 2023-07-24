@@ -3,6 +3,7 @@ Description: Skin ($companyname$)
 PartialFormCss: card
 MinWidthForPopups: 0
 MinWidthForCondense: 970
+CaretIcons: angle
 
 PageSkins:
     - Name: Default
