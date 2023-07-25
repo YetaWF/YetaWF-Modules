@@ -45,7 +45,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (id == null)
                 id = Manager.UniqueId();
         
-            return $@"<ul{(id != null ? $" id='{id}'" : "")} class='{css}'{style}>{menuContents}</ul>";
+            return $@"<ul{(id != null ? $" id='{id}'" : "")} class='t_menu {css}'{style}>{menuContents}</ul>";
         }
 
         private static async Task<string> RenderMenuAsync(YHtmlHelper? htmlHelper, List<ModuleAction>? subMenu, Guid? subGuid, string? cssClass, ModuleAction.RenderModeEnum renderMode, int level, bool wantArrows) {
@@ -58,7 +58,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 css = CssManager.CombineCss(css, "t_megamenu_content");
             css = CssManager.CombineCss(css, cssClass);
 
-            return $@"<ul class='{css}' style='display:none'>{menuContents}</ul>";
+            return $@"<ul class='t_menu {css}' style='display:none'>{menuContents}</ul>";
         }
 
         private static async Task<string> RenderLIAsync(YHtmlHelper? htmlHelper, List<ModuleAction>? subMenu, Guid? subGuid, ModuleAction.RenderModeEnum renderMode, string? liCss, int level, bool wantArrows) {
@@ -78,7 +78,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                         throw new InternalError("HtmlHelper required for module rendering");
                     contents = await subMod.RenderModuleWithContainerAsync(htmlHelper);
                 }
-                hb.Append($"<li class='t_megamenu_content {css} t_lvl{level}'>{contents}</li>\n");
+                hb.Append($"<li class='t_menu t_megamenu_content {css} t_lvl{level}'>{contents}</li>\n");
 
             } else if (subMenu != null) { 
                 foreach (var menuEntry in subMenu) {
@@ -109,7 +109,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                                     arrow = SkinSVGs.GetCaret(AreaRegistration.CurrentPackage, "down");
                                 string menuContents = await CoreRendering.RenderActionAsync(menuEntry, renderMode, null, null, EndIcon: arrow);
 
-                                hb.Append($"<li class='t_lvl{level} {css}'>\n{menuContents}\n{subMenuContents}</li>\n");
+                                hb.Append($"<li class='t_menu t_lvl{level} {css}'>\n{menuContents}\n{subMenuContents}</li>\n");
                                 rendered = true;
                             }
                         }
@@ -120,7 +120,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
                             string menuContents = await CoreRendering.RenderActionAsync(menuEntry, renderMode, null, null);
 
-                            hb.Append($"<li class='t_lvl{level} {css}'>{menuContents}</li>\n");
+                            hb.Append($"<li class='t_menu t_lvl{level} {css}'>{menuContents}</li>\n");
                         }
                     }
                 }

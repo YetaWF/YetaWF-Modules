@@ -31,19 +31,19 @@ var YetaWF_ComponentsHTML;
                 GetValue: null,
                 Enable: null,
             }) || this;
-            _this.Levels = [];
             _this.CloseTimeout = 0;
+            _this.MenuRects = [];
             _this.CloseSublevelsTimout = 0;
             _this.Setup = setup;
             _this.updateSize();
             // update aria info
-            var aSubs = $YetaWF.getElementsBySelector("li.t_hassub > a", [_this.Control]);
+            var aSubs = $YetaWF.getElementsBySelector("li.t_menu.t_hassub > a", [_this.Control]);
             for (var _i = 0, aSubs_1 = aSubs; _i < aSubs_1.length; _i++) {
                 var aSub = aSubs_1[_i];
                 aSub.setAttribute("aria-haspopup", "true");
                 aSub.setAttribute("aria-expanded", "false");
             }
-            var liSubs = $YetaWF.getElementsBySelector("li > a", [_this.Control]);
+            var liSubs = $YetaWF.getElementsBySelector("li.t_menu > a", [_this.Control]);
             $YetaWF.registerMultipleEventHandlers(liSubs, ["mouseenter"], null, function (ev) {
                 if (_this.isVertical || _this.isSmall)
                     return true;
@@ -51,16 +51,13 @@ var YetaWF_ComponentsHTML;
                 var owningLI = $YetaWF.elementClosest(owningAnchor, "li");
                 if ($YetaWF.elementHasClass(owningLI, "t_megamenu_content"))
                     return true; //we're within a megamenu (can't have menus within megamenu)
-                var owningUL = $YetaWF.elementClosest(owningAnchor, "ul");
-                var subUL = $YetaWF.getElement1BySelectorCond("ul", [owningLI]);
+                var subUL = $YetaWF.getElement1BySelectorCond("ul.t_menu", [owningLI]);
                 if (!subUL) {
-                    _this.scheduleCloseSublevelsStartingAt(owningUL);
+                    _this.scheduleCloseSublevelsStartingAt(owningAnchor);
                     return true;
                 }
-                var subLI = $YetaWF.getElement1BySelector("li", [subUL]);
-                var levelInfo = { owningUL: owningUL, owningLI: owningLI, owningAnchor: owningAnchor, subUL: subUL, subLI: subLI };
-                if (_this.closeSublevelsForNewSublevel(levelInfo))
-                    _this.openSublevel(levelInfo);
+                _this.closeSublevelsStartingAt(owningAnchor);
+                _this.openSublevel(owningAnchor);
                 return false;
             });
             $YetaWF.registerMultipleEventHandlers(liSubs, ["click"], null, function (ev) {
@@ -70,83 +67,47 @@ var YetaWF_ComponentsHTML;
                 var owningLI = $YetaWF.elementClosest(owningAnchor, "li");
                 if ($YetaWF.elementHasClass(owningLI, "t_megamenu_content"))
                     return true; //we're within a megamenu (can't have menus within megamenu)
-                var owningUL = $YetaWF.elementClosest(owningAnchor, "ul");
                 var subUL = $YetaWF.getElement1BySelectorCond("ul", [owningLI]);
-                if (!subUL) {
-                    _this.closeSublevelsStartingAt(owningUL);
-                    return true;
-                }
-                var subLI = $YetaWF.getElement1BySelector("li", [subUL]);
-                var levelInfo = { owningUL: owningUL, owningLI: owningLI, owningAnchor: owningAnchor, subUL: subUL, subLI: subLI };
-                if (_this.closeSublevelsForNewSublevel(levelInfo)) {
-                    _this.openSublevel(levelInfo);
-                    return true; // allow anchor processing
-                }
-                else {
-                    if (_this.isVertical) {
-                        if (subUL.style.display === "")
-                            _this.closeSublevelsStartingAt(owningUL);
-                    }
-                    return true; // allow anchor processing
-                }
+                var isOpen = subUL && subUL.style.display === "";
+                _this.closeSublevelsStartingAt(owningAnchor);
+                if (isOpen)
+                    _this.closeLevel(owningAnchor);
+                else
+                    _this.openSublevel(owningAnchor);
+                return true; // allow anchor processing
             });
-            $YetaWF.registerEventHandler(_this.Control, "click", "li > a > svg", function (ev) {
+            $YetaWF.registerEventHandler(_this.Control, "click", "li.t_menu > a > svg", function (ev) {
                 if (!_this.isSmall)
                     return true;
                 var svg = ev.__YetaWFElem;
                 var owningAnchor = svg.parentElement;
-                var owningLI = $YetaWF.elementClosest(owningAnchor, "li");
-                var owningUL = $YetaWF.elementClosest(owningAnchor, "ul");
-                var subUL = $YetaWF.getElement1BySelectorCond("ul", [owningLI]);
-                if (!subUL) {
-                    _this.closeSublevelsStartingAt(owningUL);
-                    return true;
-                }
-                var subLI = $YetaWF.getElement1BySelector("li", [subUL]);
-                var levelInfo = { owningUL: owningUL, owningLI: owningLI, owningAnchor: owningAnchor, subUL: subUL, subLI: subLI };
-                if (_this.closeSublevelsForNewSublevel(levelInfo)) {
-                    _this.openSublevel(levelInfo);
-                }
-                else {
-                    _this.closeSublevelsStartingAt(owningUL);
-                }
+                _this.closeSublevelsStartingAt(owningAnchor, owningAnchor);
+                _this.openSublevel(owningAnchor);
                 return false;
             });
             $YetaWF.registerMultipleEventHandlers(liSubs, ["keydown"], null, function (ev) {
                 var key = ev.key;
                 if (key === "Enter") {
                     var owningAnchor = ev.__YetaWFElem;
-                    var owningLI = $YetaWF.elementClosestCond(owningAnchor, "li");
-                    if (!owningLI)
-                        return true;
-                    var owningUL = $YetaWF.elementClosestCond(owningAnchor, "ul");
-                    if (!owningUL)
-                        return true;
-                    var subUL = $YetaWF.getElement1BySelectorCond("ul", [owningLI]);
-                    if (!subUL)
-                        return true; // no submenus
-                    var subLI = $YetaWF.getElement1BySelector("li", [subUL]);
                     // we're in a menu and someone hit Enter on an anchor
-                    var levelInfo = { owningUL: owningUL, owningLI: owningLI, owningAnchor: owningAnchor, subUL: subUL, subLI: subLI };
-                    if (_this.closeSublevelsForNewSublevel(levelInfo))
-                        _this.openSublevel(levelInfo);
-                    else
-                        _this.closeSublevelsStartingAt(owningUL);
-                    return false;
+                    _this.closeSublevelsStartingAt(owningAnchor, owningAnchor);
+                    _this.openSublevel(owningAnchor);
                 }
                 return true;
             });
             return _this;
         }
-        MenuComponent.prototype.openSublevel = function (levelInfo) {
-            var level = this.Levels.length;
-            this.openLevel(levelInfo);
+        MenuComponent.prototype.openSublevel = function (owningAnchor) {
+            var level = this.getLevel(owningAnchor);
+            this.openLevel(owningAnchor);
             if (this.isVertical || this.isSmall) {
             }
             else {
                 // position the sublevel
-                var subUL = levelInfo.subUL;
-                var owningLI = levelInfo.owningLI;
+                var subUL = owningAnchor.nextElementSibling;
+                if (!subUL)
+                    return;
+                var owningLI = $YetaWF.elementClosest(owningAnchor, "li");
                 var owningRect = owningLI.getBoundingClientRect();
                 switch (level) {
                     case 0:
@@ -165,115 +126,114 @@ var YetaWF_ComponentsHTML;
                         throw "Too many menu levels";
                 }
             }
-            this.clearPath();
-            this.Levels.push(levelInfo);
-            this.setPath();
         };
-        MenuComponent.prototype.openLevel = function (levelInfo) {
-            var subUL = levelInfo.subUL;
-            levelInfo.owningAnchor.setAttribute("aria-expanded", "true");
-            if (this.isVertical || this.isSmall) {
-                $YetaWF.animateHeight(subUL, true);
+        MenuComponent.prototype.scheduleCloseSublevelsStartingAt = function (owningAnchor) {
+            var _this = this;
+            this.clearScheduleCloseSublevel();
+            this.CloseSublevelsTimout = setTimeout(function () {
+                _this.closeSublevelsStartingAt(owningAnchor);
+            }, this.Setup.HoverDelay || 1);
+        };
+        MenuComponent.prototype.clearScheduleCloseSublevel = function () {
+            clearTimeout(this.CloseSublevelsTimout);
+            this.CloseSublevelsTimout = 0;
+        };
+        MenuComponent.prototype.closeSublevelsStartingAt = function (anchor, exceptAnchor) {
+            this.clearScheduleCloseSublevel();
+            var owningUL = $YetaWF.elementClosest(anchor, "ul");
+            var owningAnchor = owningUL.previousElementSibling;
+            if (owningAnchor && owningAnchor.tagName === "A") {
+                // sublevel
+                this.internalCloseSublevelsStartingAt(owningAnchor, exceptAnchor);
             }
             else {
-                subUL.style.display = ""; // show
+                // main level
+                var anchors = $YetaWF.getElementsBySelector("ul.".concat(MenuComponent.TEMPLATE, " > li > a"), [this.Control]); // all top level anchors
+                for (var _i = 0, anchors_1 = anchors; _i < anchors_1.length; _i++) {
+                    var a = anchors_1[_i];
+                    this.internalCloseSublevelsStartingAt(a, exceptAnchor);
+                    this.closeLevel(a);
+                }
             }
         };
-        MenuComponent.prototype.closeLevel = function (levelInfo) {
-            var subUL = levelInfo.subUL;
-            levelInfo.owningAnchor.setAttribute("aria-expanded", "false");
+        MenuComponent.prototype.internalCloseSublevelsStartingAt = function (owningAnchor, exceptAnchor) {
+            var subUL = owningAnchor.nextElementSibling;
+            if (!subUL)
+                return;
+            var subLIs = $YetaWF.getChildElementsByTag("li", subUL);
+            for (var _i = 0, subLIs_1 = subLIs; _i < subLIs_1.length; _i++) {
+                var subLI = subLIs_1[_i];
+                var anchor = $YetaWF.getChildElement1ByTagCond("a", subLI);
+                if (anchor && anchor != exceptAnchor) {
+                    var subUL_1 = owningAnchor.nextElementSibling;
+                    if (subUL_1)
+                        this.internalCloseSublevelsStartingAt(anchor, exceptAnchor);
+                    this.closeLevel(anchor);
+                }
+            }
+        };
+        MenuComponent.prototype.getLevel = function (owningAnchor) {
+            var level = 0;
+            var elem = owningAnchor;
+            while (elem) {
+                elem = $YetaWF.elementClosestCond(elem.parentElement, "ul");
+                if (!elem || $YetaWF.elementHasClass(elem, MenuComponent.TEMPLATE))
+                    return level;
+                ++level;
+            }
+            return level;
+        };
+        MenuComponent.prototype.openLevel = function (owningAnchor) {
+            var _this = this;
+            owningAnchor.setAttribute("aria-expanded", "true");
+            var subUL = owningAnchor.nextElementSibling;
+            if (!subUL)
+                return;
             if (this.isVertical || this.isSmall) {
-                $YetaWF.animateHeight(subUL, false, function () {
-                    subUL.style.display = "none"; // hide
+                $YetaWF.animateHeight(subUL, true, function () {
+                    subUL.style.height = "auto"; // height to auto, so submenus can expand
+                    _this.MenuRects.push({ Anchor: owningAnchor, Rect: subUL.getBoundingClientRect(), });
                 });
             }
             else {
-                subUL.style.display = "none"; // hide
+                subUL.style.display = ""; // show
+                this.MenuRects.push({ Anchor: owningAnchor, Rect: subUL.getBoundingClientRect(), });
             }
         };
-        MenuComponent.prototype.scheduleCloseSublevelsStartingAt = function (newOwningUL) {
-            var _this = this;
-            var closing = false; // defines whether any sublevels are to be closed
-            if (!this.CloseSublevelsTimout) {
-                for (var _i = 0, _a = this.Levels; _i < _a.length; _i++) {
-                    var levelInfo = _a[_i];
-                    if (!closing) {
-                        if (levelInfo.owningUL === newOwningUL)
-                            closing = true;
-                    }
+        MenuComponent.prototype.closeLevel = function (owningAnchor) {
+            var subUL = owningAnchor.nextElementSibling;
+            if (subUL) {
+                owningAnchor.setAttribute("aria-expanded", "false");
+                if (this.isVertical || this.isSmall) {
+                    $YetaWF.animateHeight(subUL, false, function () {
+                        subUL.style.display = "none"; // hide
+                    });
                 }
-                if (closing) {
-                    this.CloseSublevelsTimout = setTimeout(function () {
-                        _this.closeSublevelsStartingAt(newOwningUL);
-                    }, this.Setup.HoverDelay || 1);
+                else {
+                    subUL.style.display = "none"; // hide
                 }
+                this.MenuRects = this.MenuRects.filter(function (v, index) {
+                    return v.Anchor !== owningAnchor;
+                });
             }
-            return closing;
-        };
-        MenuComponent.prototype.closeSublevelsStartingAt = function (newOwningUL) {
-            var newLevels = [];
-            var closing = false;
-            clearTimeout(this.CloseSublevelsTimout);
-            this.CloseSublevelsTimout = 0;
-            for (var _i = 0, _a = this.Levels; _i < _a.length; _i++) {
-                var levelInfo = _a[_i];
-                if (!closing) {
-                    if (levelInfo.owningUL === newOwningUL)
-                        closing = true;
-                    else
-                        newLevels.push(levelInfo);
-                }
-                if (closing)
-                    this.closeLevel(levelInfo);
-            }
-            this.clearPath();
-            this.Levels = newLevels;
-            this.setPath();
-            return closing; // returns whether any sublevels were closed
-        };
-        MenuComponent.prototype.closeSublevelsForNewSublevel = function (newLevel) {
-            var newLevels = [];
-            var closing = false;
-            clearTimeout(this.CloseSublevelsTimout);
-            this.CloseSublevelsTimout = 0;
-            for (var _i = 0, _a = this.Levels; _i < _a.length; _i++) {
-                var levelInfo = _a[_i];
-                if (!closing) {
-                    if (levelInfo.owningUL === newLevel.owningUL) {
-                        if (levelInfo.subUL === newLevel.subUL && newLevel.subUL.style.display === "") // the new sublevel is already open
-                            return false;
-                        closing = true;
-                    }
-                    else
-                        newLevels.push(levelInfo);
-                }
-                if (closing)
-                    this.closeLevel(levelInfo);
-            }
-            this.clearPath();
-            this.Levels = newLevels;
-            this.setPath();
-            return true; // we closed all necessary sublevels
         };
         MenuComponent.prototype.handleMouseMove = function (cursorX, cursorY) {
             if (this.isVertical || this.isSmall)
                 return true;
-            if (this.Levels.length > 0) {
-                var rect = this.Levels[0].owningLI.getBoundingClientRect();
+            var mainRect = this.Control.getBoundingClientRect();
+            if (mainRect.left <= cursorX && cursorX < mainRect.right && mainRect.top <= cursorY && cursorY < mainRect.bottom) {
+                this.killTimeout();
+                return true;
+            }
+            for (var _i = 0, _a = this.MenuRects; _i < _a.length; _i++) {
+                var menuRect = _a[_i];
+                var rect = menuRect.Rect;
                 if (rect.left <= cursorX && cursorX < rect.right && rect.top <= cursorY && cursorY < rect.bottom) {
                     this.killTimeout();
                     return true;
                 }
-                for (var _i = 0, _a = this.Levels; _i < _a.length; _i++) {
-                    var levelInfo = _a[_i];
-                    rect = levelInfo.subUL.getBoundingClientRect();
-                    if (rect.left <= cursorX && cursorX < rect.right && rect.top <= cursorY && cursorY < rect.bottom) {
-                        this.killTimeout();
-                        return true;
-                    }
-                }
-                this.startTimeout();
             }
+            this.startTimeout();
             return true;
         };
         MenuComponent.prototype.killTimeout = function () {
@@ -286,29 +246,17 @@ var YetaWF_ComponentsHTML;
             var _this = this;
             if (!this.CloseTimeout) {
                 this.CloseTimeout = setTimeout(function () {
-                    for (var _i = 0, _a = _this.Levels; _i < _a.length; _i++) {
-                        var levelInfo = _a[_i];
-                        _this.closeLevel(levelInfo);
-                    }
-                    _this.clearPath();
-                    _this.Levels = [];
+                    _this.closeAll();
                 }, this.Setup.HoverDelay || 1);
             }
         };
-        MenuComponent.prototype.setPath = function () {
-            for (var _i = 0, _a = this.Levels; _i < _a.length; _i++) {
-                var levelInfo = _a[_i];
-                $YetaWF.elementAddClass(levelInfo.owningUL, "t_path");
-                $YetaWF.elementAddClass(levelInfo.owningLI, "t_path");
-                $YetaWF.elementAddClass(levelInfo.owningAnchor, "t_path");
-            }
-        };
         MenuComponent.prototype.clearPath = function () {
-            for (var _i = 0, _a = this.Levels; _i < _a.length; _i++) {
-                var levelInfo = _a[_i];
-                $YetaWF.elementRemoveClass(levelInfo.owningUL, "t_path");
-                $YetaWF.elementRemoveClass(levelInfo.owningLI, "t_path");
-                $YetaWF.elementRemoveClass(levelInfo.owningAnchor, "t_path");
+            var anchors = $YetaWF.getElementsBySelector("ul.t_menu > li > a", [this.Control]);
+            for (var _i = 0, anchors_2 = anchors; _i < anchors_2.length; _i++) {
+                var a = anchors_2[_i];
+                $YetaWF.elementRemoveClass(a, "t_path");
+                $YetaWF.elementRemoveClass($YetaWF.elementClosest(a, "li"), "t_path");
+                $YetaWF.elementRemoveClass($YetaWF.elementClosest(a, "ul"), "t_path");
             }
         };
         MenuComponent.prototype.updateSize = function () {
@@ -340,14 +288,15 @@ var YetaWF_ComponentsHTML;
         };
         // API
         MenuComponent.prototype.closeAll = function () {
+            this.MenuRects = [];
+            this.clearScheduleCloseSublevel();
             if (this.isVertical)
                 return;
-            for (var _i = 0, _a = this.Levels; _i < _a.length; _i++) {
-                var levelInfo = _a[_i];
-                this.closeLevel(levelInfo);
+            var anchors = $YetaWF.getElementsBySelector("ul.".concat(MenuComponent.TEMPLATE, " > li > a"), [this.Control]); // all top level anchors
+            for (var _i = 0, anchors_3 = anchors; _i < anchors_3.length; _i++) {
+                var anchor = anchors_3[_i];
+                this.closeSublevelsStartingAt(anchor);
             }
-            this.clearPath();
-            this.Levels = [];
             if (this.isSmall)
                 this.hide();
         };
@@ -400,17 +349,59 @@ var YetaWF_ComponentsHTML;
         MenuComponent.prototype.hide = function () {
             this.Control.style.display = "none";
         };
+        MenuComponent.prototype.selectEntry = function (path) {
+            this.clearPath();
+            var subUL = this.Control;
+            return this.selectSublevelEntry(this.normalizePath(path), subUL);
+        };
+        MenuComponent.prototype.selectSublevelEntry = function (path, subUL) {
+            var result = false;
+            var subLI = $YetaWF.getChildElement1ByTagCond("li", subUL);
+            while (!!subLI) {
+                var anchor = $YetaWF.getChildElement1ByTagCond("a", subLI);
+                if (anchor) {
+                    if (this.normalizePath(anchor.href) === path) {
+                        $YetaWF.elementToggleClass(subLI, "t_selected", true);
+                        $YetaWF.elementToggleClass(subLI, "t_path", true);
+                        $YetaWF.elementToggleClass(subUL, "t_path", true);
+                        $YetaWF.elementToggleClass(anchor, "t_path", true);
+                        result = true;
+                    }
+                    else {
+                        $YetaWF.elementRemoveClasses(subLI, ["t_selected"]);
+                    }
+                    var subSubUL = $YetaWF.getChildElement1ByTagCond("ul", subLI);
+                    if (subSubUL) {
+                        if (this.selectSublevelEntry(path, subSubUL)) {
+                            $YetaWF.elementToggleClass(subLI, "t_path", true);
+                            $YetaWF.elementToggleClass(subUL, "t_path", true);
+                            $YetaWF.elementToggleClass(anchor, "t_path", true);
+                            if (this.isVertical)
+                                subSubUL.style.display = ""; // expand it (no transition)
+                            result = true;
+                        }
+                    }
+                }
+                subLI = subLI.nextElementSibling;
+            }
+            return result;
+        };
+        MenuComponent.prototype.normalizePath = function (path) {
+            var i = path.indexOf("?");
+            if (i > 0)
+                path = path.substring(0, i);
+            return path.toLowerCase();
+        };
         MenuComponent.TEMPLATE = "yt_menu";
         MenuComponent.SELECTOR = ".yt_menu.t_display";
         return MenuComponent;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.MenuComponent = MenuComponent;
     $YetaWF.registerEventHandlerBody("mousemove", null, function (ev) {
-        var controls = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR);
-        for (var _i = 0, controls_2 = controls; _i < controls_2.length; _i++) {
-            var control = controls_2[_i];
-            control.handleMouseMove(ev.clientX, ev.clientY);
-        }
+        // let controls: MenuComponent[] = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR);
+        // for (let control of controls) {
+        //     control.handleMouseMove(ev.clientX, ev.clientY);
+        // }
         return true;
     });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, function (ev) {
@@ -427,6 +418,7 @@ var YetaWF_ComponentsHTML;
         for (var _i = 0, menus_2 = menus; _i < menus_2.length; _i++) {
             var menu = menus_2[_i];
             menu.closeAll();
+            menu.selectEntry(window.location.href);
         }
         return true;
     });
