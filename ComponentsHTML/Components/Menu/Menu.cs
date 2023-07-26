@@ -72,6 +72,17 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             [EnumDescription("Vertical menu")]
             Vertical = 1,
         }
+        /// <summary>
+        /// Defines the alignment of dropdown menus.
+        /// </summary>
+        public enum HorizontalAlignEnum {
+            /// <summary>
+            /// Align along right side.
+            /// </summary>
+            Right = 0,
+            /// Align along left side.
+            Left = 1,
+        }
 
         /// <summary>
         /// An instance of this class is used as data model for the Menu component.

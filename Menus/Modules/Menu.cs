@@ -52,7 +52,7 @@ public class MenuModule : ModuleDefinition, IModuleMenuAsync {
     [Data_NewValue]
     public long MenuVersion { get; set; }
 
-    public void NewMenuVersion() { MenuVersion = MenuVersion+1; }
+    public void NewMenuVersion() { MenuVersion++; }
 
     public async Task<MenuList> GetMenuAsync() {
         using (MenuInfoDataProvider menuInfoDP = new MenuInfoDataProvider()) {

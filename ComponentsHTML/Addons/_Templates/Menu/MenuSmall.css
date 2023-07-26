@@ -13,6 +13,10 @@ ul.yt_menu.t_display.t_small {
   border: var(--mmsm-0-border);
   border-radius: var(--mmsm-0-border-radius);
 }
+ul.yt_menu.t_display.t_small hr {
+  margin: 0;
+  padding: 0;
+}
 ul.yt_menu.t_display.t_small > li {
   position: relative;
   list-style: none;

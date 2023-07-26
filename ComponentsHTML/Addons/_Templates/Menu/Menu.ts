@@ -7,11 +7,16 @@ namespace YetaWF_ComponentsHTML {
         VerticalWidth: number;
         SmallMenuMaxWidth: number;
         HoverDelay: number;
+        HorizontalAlign: HorizontalAlignEnum;
     }
 
     enum OrientationEnum {
         Horizontal = 0,
         Vertical = 1,
+    }
+    enum HorizontalAlignEnum {
+        Right = 0,
+        Left = 1,
     }
 
     interface MenuRect {
@@ -93,7 +98,6 @@ namespace YetaWF_ComponentsHTML {
                 return false;
             });
             $YetaWF.registerMultipleEventHandlers(liSubs, ["keydown"], null, (ev: Event): boolean => {
-
                 let key = (ev as KeyboardEvent).key;
                 if (key === "Enter") {
                     let owningAnchor = ev.__YetaWFElem as HTMLAnchorElement;
@@ -119,15 +123,24 @@ namespace YetaWF_ComponentsHTML {
                 const owningRect = owningLI.getBoundingClientRect();
                 switch (level) {
                     case 0:
-                        subUL.style.left = "0";
+                        if (this.Setup.HorizontalAlign === HorizontalAlignEnum.Right)
+                            subUL.style.left = "0";
+                        else
+                            subUL.style.right = "0";
                         subUL.style.top = `${owningRect.height}px`;
                         break;
                     case 1:
-                        subUL.style.left = `${owningRect.width - 3}px`;// slight overlap
+                        if (this.Setup.HorizontalAlign === HorizontalAlignEnum.Right)
+                            subUL.style.left = `${owningRect.width - 3}px`;// slight overlap
+                        else
+                            subUL.style.right = `${owningRect.width - 3}px`;// slight overlap
                         subUL.style.top = "-3px";
                         break;
                     case 2:
-                        subUL.style.left = `${owningRect.width - 3}px`;// slight overlap
+                        if (this.Setup.HorizontalAlign === HorizontalAlignEnum.Right)
+                            subUL.style.left = `${owningRect.width - 3}px`;// slight overlap
+                        else
+                            subUL.style.right = `${owningRect.width - 3}px`;// slight overlap
                         subUL.style.top = "-3px";
                         break;
                     default:
@@ -303,6 +316,7 @@ namespace YetaWF_ComponentsHTML {
             const anchors = $YetaWF.getElementsBySelector(`ul.${MenuComponent.TEMPLATE} > li > a`, [this.Control]) as HTMLAnchorElement[];// all top level anchors
             for (const anchor of anchors) {
                 this.closeSublevelsStartingAt(anchor);
+                this.closeLevel(anchor);
             }
             if (this.isSmall)
                 this.hide();
@@ -389,10 +403,10 @@ namespace YetaWF_ComponentsHTML {
     }
 
     $YetaWF.registerEventHandlerBody("mousemove", null, (ev: MouseEvent): boolean => {
-        // let controls: MenuComponent[] = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR);
-        // for (let control of controls) {
-        //     control.handleMouseMove(ev.clientX, ev.clientY);
-        // }
+        let controls: MenuComponent[] = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR);
+        for (let control of controls) {
+            control.handleMouseMove(ev.clientX, ev.clientY);
+        }
         return true;
     });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: CustomEvent<YetaWF.DetailsEventContainerResize>): boolean => {

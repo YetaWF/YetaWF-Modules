@@ -16,6 +16,8 @@ ul.yt_menu.t_display.t_small {
     border: var(--mmsm-0-border);
     border-radius: var(--mmsm-0-border-radius);
 
+    hr { margin: 0; padding: 0; }
+
     > li { // Main level
 
         position: relative;

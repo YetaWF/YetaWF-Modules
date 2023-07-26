@@ -16,11 +16,32 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </summary>
     public partial class MenuDisplayComponent {
 
-        internal class MenuSetup {
+        /// <summary>
+        /// Defines the overall menu appearance and behavior.
+        /// </summary>
+        public class MenuSetup {
+            /// <summary>
+            /// Defines the orientation of the menu.
+            /// </summary>
             public OrientationEnum Orientation { get; set; }
+            /// <summary>
+            /// Defines the width of a vertical menu. Ignored for horizontal or mobile menus.
+            /// </summary>
             public int VerticalWidth { get; set; }
+            /// <summary>
+            /// Defines the maximum width of the screen where a mobile menu is displayed. 
+            /// Once the screen is above the defined width, a regular horizontal or vertical menu is displayed.
+            /// Set to 0 to never display a mobile menu.
+            /// </summary>
             public int SmallMenuMaxWidth { get; set; }
+            /// <summary>
+            /// Defines the number of milliseconds the cursor can move outside a horizontal menu before all submenus are closed. Ignored for vertical and mobile menus.
+            /// </summary>
             public int HoverDelay { get; set; }
+            /// <summary>
+            /// Defines the alignment of dropdown menus.
+            /// </summary>
+            public HorizontalAlignEnum HorizontalAlign { get; set; }
         }   
         internal static async Task<string> RenderMenuAsync(MenuList? menu, string? id = null, string? cssClass = null, bool Hidden = false, YHtmlHelper? HtmlHelper = null, bool WantArrows = false, int? width = null) {
 
@@ -61,7 +82,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             return $@"<ul class='t_menu {css}' style='display:none'>{menuContents}</ul>";
         }
 
-        private static async Task<string> RenderLIAsync(YHtmlHelper? htmlHelper, List<ModuleAction>? subMenu, Guid? subGuid, ModuleAction.RenderModeEnum renderMode, string? liCss, int level, bool wantArrows) {
+        /// <summary>
+        /// Renders  module actions for use in a menu.
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <param name="subMenu"></param>
+        /// <param name="subGuid"></param>
+        /// <param name="renderMode"></param>
+        /// <param name="liCss"></param>
+        /// <param name="level"></param>
+        /// <param name="wantArrows"></param>
+        /// <returns></returns>
+        public static async Task<string> RenderLIAsync(YHtmlHelper? htmlHelper, List<ModuleAction>? subMenu, Guid? subGuid, ModuleAction.RenderModeEnum renderMode, string? liCss, int level, bool wantArrows) {
 
             HtmlBuilder hb = new HtmlBuilder();
 

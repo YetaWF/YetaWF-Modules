@@ -1,0 +1,22 @@
+/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
+
+.YetaWF_TinyLogin_TinyLogin {
+    ul.yt_menu.t_display.t_large.t_horizontal > li > a { // need specificity
+        padding: 0;
+        margin: 0;
+        width: 32px;
+        height: 32px;
+        background: var(--switch-bg-on);
+        color: var(--switch-clr-on);
+        text-align: center;
+        line-height: 1;
+        border-radius: 50%;
+        span {
+            padding: 2px;
+            width: 32px;
+            height: 32px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    }
+}

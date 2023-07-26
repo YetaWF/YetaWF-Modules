@@ -25,8 +25,14 @@ public class TinyLoginModule : ModuleDefinition {
 
     public const int MaxTooltip = 100;
 
-    public TinyLoginModule()
-        : base() {
+    public enum AppearanceEnum {
+        [EnumDescription("Classic", "Renders using the original, classic design")]
+        Classic = 0,
+        [EnumDescription("Modern", "Renders using the modern design")]
+        Modern = 1,
+    }
+
+    public TinyLoginModule() : base() {
         Title = this.__ResStr("modTitle", "Tiny Login");
         Name = this.__ResStr("modName", "Tiny Login");
         Description = this.__ResStr("modSummary", "Provides Login/Register links and displays a logged on user's account name. This module is typically added to every page (as a skin module) so anonymous users can log in or register a new account. For logged on users their account name is shown with a link to the user settings.");
@@ -41,6 +47,11 @@ public class TinyLoginModule : ModuleDefinition {
 
     public override IModuleDefinitionIO GetDataProvider() { return new TinyLoginModuleDataProvider(); }
     public override bool ShowActionMenu { get { return false; } }
+
+    [Category("General"), Caption("Appearance"), Description("Defines the appearance of the displayed module")]
+    [UIHint("Enum")]
+    [Data_NewValue]
+    public AppearanceEnum Appearance { get; set; }
 
     [Category("General"), Caption("Use Popup Windows"), Description("Use popup windows to Login and Register")]
     [UIHint("Boolean")]
@@ -96,7 +107,6 @@ public class TinyLoginModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Update,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-
         };
     }
     public async Task<ModuleAction?> GetAction_RegisterAsync(string? url) {
@@ -112,7 +122,6 @@ public class TinyLoginModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Update,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-
         };
     }
     public async Task<ModuleAction> GetAction_LogoffAsync(string? url) {
@@ -141,7 +150,6 @@ public class TinyLoginModule : ModuleDefinition {
             Category = ModuleAction.ActionCategoryEnum.Update,
             Mode = ModuleAction.ActionModeEnum.Any,
             Location = ModuleAction.ActionLocationEnum.NoAuto,
-
         };
     }
 
@@ -170,6 +178,7 @@ public class TinyLoginModule : ModuleDefinition {
             UserUrl = string.IsNullOrWhiteSpace(UserUrl) ? Manager.CurrentSite.HomePageUrl : UserUrl,
             UserTooltip = UserTooltip,
         };
+        CssClass = CssManager.CombineCss(CssClass, Appearance == AppearanceEnum.Modern ? "t_modern" : "t_classic");
         return await RenderAsync(model);
     }
 }

@@ -94,6 +94,10 @@ namespace YetaWF.Modules.ComponentsHTML {
 
             await Manager.AddOnManager.AddTemplateFromUIHintAsync(null, ModuleActionsComponent.TemplateName, YetaWFComponentBase.ComponentType.Display);// this is needed because we're not used by templates
 
+            if (action.EntryType == ModuleAction.MenuEntryType.Separator) {
+                return $@"<a href='javascript:void(0);' class='{Globals.CssModuleNoPrint}'><span><hr></span></a>";
+            }
+
             if (!string.IsNullOrWhiteSpace(action.ConfirmationText) && (action.Style != ModuleAction.ActionStyleEnum.Post && action.Style != ModuleAction.ActionStyleEnum.Nothing))
                 throw new InternalError("When using ConfirmationText, the Style property must be set to Post");
             if (!string.IsNullOrWhiteSpace(action.PleaseWaitText) && (action.Style != ModuleAction.ActionStyleEnum.Normal && action.Style != ModuleAction.ActionStyleEnum.Post))

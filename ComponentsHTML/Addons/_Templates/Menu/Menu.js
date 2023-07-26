@@ -22,6 +22,11 @@ var YetaWF_ComponentsHTML;
         OrientationEnum[OrientationEnum["Horizontal"] = 0] = "Horizontal";
         OrientationEnum[OrientationEnum["Vertical"] = 1] = "Vertical";
     })(OrientationEnum || (OrientationEnum = {}));
+    var HorizontalAlignEnum;
+    (function (HorizontalAlignEnum) {
+        HorizontalAlignEnum[HorizontalAlignEnum["Right"] = 0] = "Right";
+        HorizontalAlignEnum[HorizontalAlignEnum["Left"] = 1] = "Left";
+    })(HorizontalAlignEnum || (HorizontalAlignEnum = {}));
     var MenuComponent = /** @class */ (function (_super) {
         __extends(MenuComponent, _super);
         function MenuComponent(controlId, setup) {
@@ -111,15 +116,24 @@ var YetaWF_ComponentsHTML;
                 var owningRect = owningLI.getBoundingClientRect();
                 switch (level) {
                     case 0:
-                        subUL.style.left = "0";
+                        if (this.Setup.HorizontalAlign === HorizontalAlignEnum.Right)
+                            subUL.style.left = "0";
+                        else
+                            subUL.style.right = "0";
                         subUL.style.top = "".concat(owningRect.height, "px");
                         break;
                     case 1:
-                        subUL.style.left = "".concat(owningRect.width - 3, "px"); // slight overlap
+                        if (this.Setup.HorizontalAlign === HorizontalAlignEnum.Right)
+                            subUL.style.left = "".concat(owningRect.width - 3, "px"); // slight overlap
+                        else
+                            subUL.style.right = "".concat(owningRect.width - 3, "px"); // slight overlap
                         subUL.style.top = "-3px";
                         break;
                     case 2:
-                        subUL.style.left = "".concat(owningRect.width - 3, "px"); // slight overlap
+                        if (this.Setup.HorizontalAlign === HorizontalAlignEnum.Right)
+                            subUL.style.left = "".concat(owningRect.width - 3, "px"); // slight overlap
+                        else
+                            subUL.style.right = "".concat(owningRect.width - 3, "px"); // slight overlap
                         subUL.style.top = "-3px";
                         break;
                     default:
@@ -296,6 +310,7 @@ var YetaWF_ComponentsHTML;
             for (var _i = 0, anchors_3 = anchors; _i < anchors_3.length; _i++) {
                 var anchor = anchors_3[_i];
                 this.closeSublevelsStartingAt(anchor);
+                this.closeLevel(anchor);
             }
             if (this.isSmall)
                 this.hide();
@@ -398,10 +413,11 @@ var YetaWF_ComponentsHTML;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_ComponentsHTML.MenuComponent = MenuComponent;
     $YetaWF.registerEventHandlerBody("mousemove", null, function (ev) {
-        // let controls: MenuComponent[] = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR);
-        // for (let control of controls) {
-        //     control.handleMouseMove(ev.clientX, ev.clientY);
-        // }
+        var controls = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR);
+        for (var _i = 0, controls_2 = controls; _i < controls_2.length; _i++) {
+            var control = controls_2[_i];
+            control.handleMouseMove(ev.clientX, ev.clientY);
+        }
         return true;
     });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, function (ev) {

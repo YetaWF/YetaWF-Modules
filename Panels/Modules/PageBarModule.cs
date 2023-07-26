@@ -8,7 +8,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider.Attributes;
-using YetaWF.Core.Endpoints;
 using YetaWF.Core.Endpoints.Support;
 using YetaWF.Core.IO;
 using YetaWF.Core.Localize;

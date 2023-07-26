@@ -83,7 +83,7 @@ public class MenuEditModule : ModuleDefinition {
 
         [Caption("Url"), Description("The Url")]
         [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local | UrlTypeEnum.Remote), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local | UrlTypeEnum.Remote)]
-        [RequiredIf(nameof(EntryType), (int)ModuleAction.MenuEntryType.Entry)]
+        [RequiredIf(nameof(EntryType), ModuleAction.MenuEntryType.Entry)]
         [StringLength(Globals.MaxUrl), Trim]
         public string? Url { get; set; } // The Url to cause this action
 
@@ -96,11 +96,13 @@ public class MenuEditModule : ModuleDefinition {
         public Guid? SubModule { get; set; }
 
         [Caption("Menu Text"), Description("The text shown for this menu entry when used as a menu entry")]
-        [UIHint("MultiString20"), StringLength(ModuleAction.MaxMenuText), RequiredIfNotAttribute("EntryType", (int)ModuleAction.MenuEntryType.Separator)]
+        [UIHint("MultiString20"), StringLength(ModuleAction.MaxMenuText)]
+        [RequiredIfNot(nameof(EntryType), ModuleAction.MenuEntryType.Separator)]
         public MultiString MenuText { get; set; }
 
         [Caption("Link Text"), Description("The text shown for this menu entry when used as a link")]
-        [UIHint("MultiString20"), StringLength(ModuleAction.MaxLinkText), RequiredIfNotAttribute("EntryType", (int)ModuleAction.MenuEntryType.Separator)]
+        [UIHint("MultiString20"), StringLength(ModuleAction.MaxLinkText)]
+        [RequiredIfNot(nameof(EntryType), ModuleAction.MenuEntryType.Separator)]
         public MultiString LinkText { get; set; }
 
         [Caption("Image URL"), Description("The URL of the image shown for this entry")]
@@ -124,15 +126,15 @@ public class MenuEditModule : ModuleDefinition {
         public string? CssClass { get; set; }
 
         [Caption("Style"), Description("Defines how this action affects the current window")]
-        [UIHint("Enum"), RequiredIfAttribute("EntryType", (int)ModuleAction.MenuEntryType.Entry)]
+        [UIHint("Enum"), RequiredIf(nameof(EntryType), ModuleAction.MenuEntryType.Entry)]
         public ModuleAction.ActionStyleEnum Style { get; set; } // how the action affects the current window
 
         [Caption("Mode"), Description("Defines where this entry is available")]
-        [UIHint("Enum"), RequiredIfAttribute("EntryType", (int)ModuleAction.MenuEntryType.Entry)]
+        [UIHint("Enum"), RequiredIf(nameof(EntryType), ModuleAction.MenuEntryType.Entry)]
         public ModuleAction.ActionModeEnum Mode { get; set; } // in which page mode the action is available
 
         [Caption("Category"), Description("The type of action this entry takes")]
-        [UIHint("Enum"), RequiredIfAttribute("EntryType", (int)ModuleAction.MenuEntryType.Entry)]
+        [UIHint("Enum"), RequiredIf(nameof(EntryType), ModuleAction.MenuEntryType.Entry)]
         public ModuleAction.ActionCategoryEnum Category { get; set; } // the type of action taken
 
         [Caption("Limit To Role"), Description("Defines which role must be present for this action to be shown - This is normally only used for specialized entries which should only be shown in some cases but are available (by Url) to other roles also - This setting is ignored for superusers")]

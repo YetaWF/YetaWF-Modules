@@ -12,6 +12,10 @@ ul.yt_menu.t_display.t_large.t_horizontal {
   border: var(--mm-0-border);
   border-radius: var(--mm-0-border-radius);
 }
+ul.yt_menu.t_display.t_large.t_horizontal hr {
+  margin: 0;
+  padding: 0;
+}
 ul.yt_menu.t_display.t_large.t_horizontal > li {
   position: relative;
   list-style: none;

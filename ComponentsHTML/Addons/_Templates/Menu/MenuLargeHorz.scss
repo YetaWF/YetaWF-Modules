@@ -17,6 +17,8 @@ ul.yt_menu.t_display.t_large.t_horizontal {
     border: var(--mm-0-border);
     border-radius: var(--mm-0-border-radius);
 
+    hr { margin: 0; padding: 0; }
+
     > li { // Main level
 
         position: relative;
