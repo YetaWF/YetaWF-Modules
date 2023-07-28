@@ -112,6 +112,18 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// Defines the largest screen size for which the small menu is shown. If the screen is wider, the large menu is shown.
             /// </summary>
             public int SmallMenuMaxWidth { get; set; }
+            /// <summary>
+            /// Defines whether the dropdown is automatically opened when hovering over a horizontal menu.
+            /// </summary>
+            public bool OpenOnHover { get; set; }
+            /// <summary>
+            /// Defines the alignment of dropdown menus.
+            /// </summary>
+            public HorizontalAlignEnum HorizontalAlign { get; set; }
+            /// <summary>
+            /// Defines whether expand/collapse arrows are shown.
+            /// </summary>
+            public bool WantArrows { get; set; }
         }
     }
 
@@ -135,7 +147,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             string css = "yt_menu t_display t_large"; // start out with a large menu
             css = CssManager.CombineCss(css, model.Orientation == OrientationEnum.Horizontal ? "t_horizontal" : "t_vertical");
-            string menuHTML = await RenderMenuAsync(model.MenuList, DivId, css, WantArrows: true, width: model.Orientation == OrientationEnum.Vertical ? model.VerticalWidth : null, HtmlHelper: HtmlHelper);
+            string menuHTML = await RenderMenuAsync(model.MenuList, DivId, css, WantArrows: model.WantArrows, width: model.Orientation == OrientationEnum.Vertical ? model.VerticalWidth : null, HtmlHelper: HtmlHelper);
             if (string.IsNullOrWhiteSpace(menuHTML))
                 return string.Empty;
 
@@ -162,7 +174,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 Orientation = model.Orientation,
                 VerticalWidth = model.VerticalWidth,
                 SmallMenuMaxWidth = model.SmallMenuMaxWidth,
+                OpenOnHover = model.OpenOnHover,
                 HoverDelay = model.HoverDelay,
+                HorizontalAlign = model.HorizontalAlign,
             };
             Manager.ScriptManager.AddLast($@"new YetaWF_ComponentsHTML.MenuComponent('{DivId}', {Utility.JsonSerialize(setup)});");
 

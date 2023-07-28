@@ -1,0 +1,33 @@
+/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
+
+.YetaWF_TinyBar_TinyBar {
+    ul.yt_menu.t_display.t_large.t_horizontal {
+        padding:0;
+        > li > a { // need specificity
+            padding: 0;
+            margin: 0;
+            &.t_user {
+                background: var(--switch-bg-on);
+                color: var(--switch-clr-on);
+            }
+            margin-left:1em;
+            &.t_search,
+            &.t_shopping,
+            &.t_lang,
+            &.t_user {
+                width: 32px;
+                height: 32px;
+                text-align: center;
+                line-height: 1;
+                border-radius: 50%;
+                span {
+                    padding: 2px;
+                    width: 32px;
+                    height: 32px;
+                    font-size: 24px;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}

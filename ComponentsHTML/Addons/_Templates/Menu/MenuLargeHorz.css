@@ -4,6 +4,7 @@ ul.yt_menu.t_display.t_large.t_horizontal {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  align-items: center;
   padding: var(--mm-0-padding);
   margin: 0;
   list-style: none;

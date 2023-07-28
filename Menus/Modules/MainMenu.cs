@@ -35,7 +35,10 @@ public class MainMenuModule : MenuModule {
                 CssClass = CssClass,
                 Orientation = Orientation,
                 VerticalWidth = VerticalWidth,
-                SmallMenuMaxWidth = SmallMenuMaxWidth
+                SmallMenuMaxWidth = SmallMenuMaxWidth,
+                OpenOnHover = true,
+                HorizontalAlign = MenuComponentBase.HorizontalAlignEnum.Right,
+                WantArrows = true,
             },
         };
         model.Menu.MenuList.LICssClass = LICssClass;

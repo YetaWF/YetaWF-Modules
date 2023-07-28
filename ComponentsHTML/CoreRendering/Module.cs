@@ -235,10 +235,16 @@ namespace YetaWF.Modules.ComponentsHTML {
 
             bool hasText = false, hasImg = false;
             string innerHtml = string.Empty;
-            if (mode != ModuleAction.RenderModeEnum.LinksOnly && mode != ModuleAction.RenderModeEnum.ButtonOnly && !string.IsNullOrWhiteSpace(action.ImageUrlFinal)) {
-                string text = mode == ModuleAction.RenderModeEnum.NormalMenu ? action.MenuText : action.LinkText;
-                innerHtml = ImageHTML.BuildKnownIcon(action.ImageUrlFinal, alt: text, cssClass: Basics.CssNoTooltip);
-                hasImg = true;
+            if (mode != ModuleAction.RenderModeEnum.LinksOnly && mode != ModuleAction.RenderModeEnum.ButtonOnly) {
+                if (!string.IsNullOrWhiteSpace(action.ImageSVG)) {
+                    string text = mode == ModuleAction.RenderModeEnum.NormalMenu ? action.MenuText : action.LinkText;
+                    innerHtml = ImageHTML.BuildKnownIcon(action.ImageSVG, alt: text, cssClass: Basics.CssNoTooltip);
+                    hasImg = true;
+                } else if (!string.IsNullOrWhiteSpace(action.ImageUrlFinal)) {
+                    string text = mode == ModuleAction.RenderModeEnum.NormalMenu ? action.MenuText : action.LinkText;
+                    innerHtml = ImageHTML.BuildKnownIcon(action.ImageUrlFinal, alt: text, cssClass: Basics.CssNoTooltip);
+                    hasImg = true;
+                }
             }
 
             if (mode != ModuleAction.RenderModeEnum.IconsOnly && mode != ModuleAction.RenderModeEnum.ButtonIcon && mode != ModuleAction.RenderModeEnum.ButtonBar) {

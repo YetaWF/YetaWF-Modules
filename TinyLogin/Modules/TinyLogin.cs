@@ -1,7 +1,6 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/TinyLogin#License */
 
 using System;
-using System.Threading.Tasks;
 using YetaWF.Core;
 using YetaWF.Core.DataProvider.Attributes;
 using YetaWF.Core.IO;
@@ -9,11 +8,12 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
-using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
-using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.TinyLogin.Support;
+using System.Threading.Tasks;
+using YetaWF.Core.Support;
+using YetaWF.Core.Pages;
 
 namespace YetaWF.Modules.TinyLogin.Modules;
 
@@ -24,13 +24,6 @@ public class TinyLoginModuleDataProvider : ModuleDefinitionDataProvider<Guid, Ti
 public class TinyLoginModule : ModuleDefinition {
 
     public const int MaxTooltip = 100;
-
-    public enum AppearanceEnum {
-        [EnumDescription("Classic", "Renders using the original, classic design")]
-        Classic = 0,
-        [EnumDescription("Modern", "Renders using the modern design")]
-        Modern = 1,
-    }
 
     public TinyLoginModule() : base() {
         Title = this.__ResStr("modTitle", "Tiny Login");
@@ -47,11 +40,6 @@ public class TinyLoginModule : ModuleDefinition {
 
     public override IModuleDefinitionIO GetDataProvider() { return new TinyLoginModuleDataProvider(); }
     public override bool ShowActionMenu { get { return false; } }
-
-    [Category("General"), Caption("Appearance"), Description("Defines the appearance of the displayed module")]
-    [UIHint("Enum")]
-    [Data_NewValue]
-    public AppearanceEnum Appearance { get; set; }
 
     [Category("General"), Caption("Use Popup Windows"), Description("Use popup windows to Login and Register")]
     [UIHint("Boolean")]
@@ -96,7 +84,7 @@ public class TinyLoginModule : ModuleDefinition {
     public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
 
     public async Task<ModuleAction> GetAction_LoginAsync(string? url) {
-        return new ModuleAction() {
+        return new ModuleAction {
             Url = url,
             LinkText = this.__ResStr("loginLink", "Login"),
             MenuText = this.__ResStr("loginText", "Login"),
@@ -111,7 +99,7 @@ public class TinyLoginModule : ModuleDefinition {
     }
     public async Task<ModuleAction?> GetAction_RegisterAsync(string? url) {
         if (!AllowUserRegistration) return null;
-        return new ModuleAction() {
+        return new ModuleAction {
             Url = url,
             LinkText = this.__ResStr("registerLink", "Register"),
             MenuText = this.__ResStr("registerText", "Register"),
@@ -125,7 +113,7 @@ public class TinyLoginModule : ModuleDefinition {
         };
     }
     public async Task<ModuleAction> GetAction_LogoffAsync(string? url) {
-        return new ModuleAction() {
+        return new ModuleAction {
             Url = url,
             LinkText = this.__ResStr("logoffLink", "Logout"),
             MenuText = this.__ResStr("logoffText", "Logout"),
@@ -140,7 +128,7 @@ public class TinyLoginModule : ModuleDefinition {
         };
     }
     public async Task<ModuleAction> GetAction_UserNameAsync(string? url, string userName, string tooltip) {
-        return new ModuleAction() {
+        return new ModuleAction {
             Url = url,
             LinkText = userName,
             MenuText = userName,
@@ -178,7 +166,6 @@ public class TinyLoginModule : ModuleDefinition {
             UserUrl = string.IsNullOrWhiteSpace(UserUrl) ? Manager.CurrentSite.HomePageUrl : UserUrl,
             UserTooltip = UserTooltip,
         };
-        CssClass = CssManager.CombineCss(CssClass, Appearance == AppearanceEnum.Modern ? "t_modern" : "t_classic");
         return await RenderAsync(model);
     }
 }

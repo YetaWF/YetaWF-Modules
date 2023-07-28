@@ -187,9 +187,13 @@ var YetaWF_ComponentsHTML;
             return false;
         };
         MultiStringEditComponent.prototype.findLanguageText = function (data, lang) {
-            if (!data.hasOwnProperty(lang))
-                return null;
-            return data[lang];
+            var arr = data;
+            for (var _i = 0, arr_1 = arr; _i < arr_1.length; _i++) {
+                var a = arr_1[_i];
+                if (a[lang])
+                    return a[lang];
+            }
+            return null;
         };
         MultiStringEditComponent.TEMPLATE = "yt_multistring";
         MultiStringEditComponent.SELECTOR = ".yt_multistring.t_edit";

@@ -21,13 +21,18 @@ namespace YetaWF_Menus {
             this.Button = $YetaWF.getElementByIdCond(this.Setup.ButtonId) as HTMLButtonElement;
             this.updateButton();
 
-            $YetaWF.registerEventHandler(this.Button, "click", null, (ev: MouseEvent): boolean =>{
-                let menus = YetaWF.ComponentBaseDataImpl.getControls<YetaWF_ComponentsHTML.MenuComponent>(YetaWF_ComponentsHTML.MenuComponent.SELECTOR, $YetaWF.getElementsBySelector(this.Setup.Target));
+            $YetaWF.registerEventHandler(this.Button, "click", null, (ev: MouseEvent): boolean => {
+                let menus = YetaWF.ComponentBaseDataImpl.getControls<YetaWF_ComponentsHTML.MenuComponent>(YetaWF_ComponentsHTML.MenuComponent.SELECTOR);
                 for (let menu of menus) {
-                    if (menu.isShown)
-                        menu.hide();
-                    else
-                        menu.show();
+                    const modDiv = YetaWF.ModuleBase.getModuleDivFromTagCond(menu.Control);
+                    if (modDiv && $YetaWF.elementMatches(modDiv, this.Setup.Target)) {
+                        if (menu.isShown)
+                            menu.hide();
+                        else
+                            menu.show();
+                    } else {
+                        menu.closeAll();// other menu
+                    }
                 }
                 return false;
             });

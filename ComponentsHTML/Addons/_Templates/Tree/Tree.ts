@@ -57,6 +57,7 @@ namespace YetaWF_ComponentsHTML {
         private DDLastTarget: HTMLLIElement | null = null;
         private DDLastTargetAnchor: HTMLAnchorElement | null = null;
         private DDTargetPosition: TargetPositionEnum = TargetPositionEnum.on;
+        private TREmpty: HTMLDivElement = null!;
 
         constructor(controlId: string, setup: TreeSetup) {
             super(controlId, TreeComponent.TEMPLATE, TreeComponent.SELECTOR, {
@@ -66,6 +67,7 @@ namespace YetaWF_ComponentsHTML {
                 Enable: null,
             });
             this.Setup = setup;
+            this.TREmpty = $YetaWF.getElement1BySelector("div.tg_emptytr", [this.Control]) as HTMLDivElement;
 
             $YetaWF.registerEventHandler(this.Control, "click", "a.t_entry", (ev: MouseEvent): boolean => {
                 var liElem = $YetaWF.elementClosest(ev.__YetaWFElem, "li") as HTMLLIElement; // get row we're on
@@ -376,6 +378,13 @@ namespace YetaWF_ComponentsHTML {
             }
         }
 
+        private updateTotals(): void {
+            if (this.getFirstVisibleItem())
+                this.TREmpty.style.display = "none";
+            else
+                this.TREmpty.style.display = "";
+        }
+
         // API
 
         public canCollapse(liElem: HTMLLIElement): boolean {
@@ -532,6 +541,7 @@ namespace YetaWF_ComponentsHTML {
                 ul.remove();
                 ul = parentUl;
             }
+            this.updateTotals();
         }
         public getNextSibling(liElem: HTMLLIElement): HTMLLIElement | null {
             var li = liElem.nextElementSibling as HTMLLIElement | null;
@@ -644,13 +654,25 @@ namespace YetaWF_ComponentsHTML {
             }
             return liElem;
         }
-        public addEntry<T = TreeEntry>(liElem: HTMLLIElement, text: string, data?: T): HTMLLIElement {
+        public addEntry<T = TreeEntry>(liElem: HTMLLIElement|null, text: string, data?: T): HTMLLIElement {
             var text = $YetaWF.htmlEscape(text);
             var entry = this.getNewEntry(text);
-            liElem.insertAdjacentHTML("afterend", entry);
-            let newElem = this.getNextSibling(liElem)!;
+            let newElem: HTMLLIElement = null!;
+            if (!liElem) {
+                // adding new entry to empty tree
+                const li = this.getFirstVisibleItem();
+                if (li)
+                    throw new Error("Adding a new entry to an already populated tree is not possible (liElem is null)");
+                const ul = $YetaWF.getElement1BySelector("ul.tg_root", [this.Control]) as HTMLUListElement;
+                ul.insertAdjacentHTML("beforeend", entry);
+                newElem = ul.firstElementChild as HTMLLIElement;
+            } else {
+                liElem.insertAdjacentHTML("afterend", entry);
+                newElem = this.getNextSibling(liElem)!;
+            }
             if (data)
                 this.setElementData(newElem, data);
+            this.updateTotals();
             return newElem;
         }
         public insertEntry<T = TreeEntry>(liElem: HTMLLIElement, text: string, data?: T): HTMLLIElement {
@@ -660,6 +682,7 @@ namespace YetaWF_ComponentsHTML {
             let newElem = this.getPrevSibling(liElem)!;
             if (data)
                 this.setElementData(newElem, data);
+            this.updateTotals();
             return newElem;
         }
         private getNewEntry(text: string): string {

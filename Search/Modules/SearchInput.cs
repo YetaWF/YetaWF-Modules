@@ -13,6 +13,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.Search.DataProvider;
@@ -21,7 +22,7 @@ namespace YetaWF.Modules.Search.Modules;
 
 public class SearchInputModuleDataProvider : ModuleDefinitionDataProvider<Guid, SearchInputModule>, IInstallableModel { }
 
-[ModuleGuid("{c7991e91-c691-449a-a911-e5feacfba8a4}")]
+[ModuleGuid("{c7991e91-c691-449a-a911-e5feacfba8a4}")] // Published
 [UniqueModule(UniqueModuleStyle.NonUnique)]
 public class SearchInputModule : ModuleDefinition {
 
@@ -59,6 +60,7 @@ public class SearchInputModule : ModuleDefinition {
             Url = string.IsNullOrWhiteSpace(url) ? ModulePermanentUrl : url,
             QueryArgs = new { SearchTerms = searchTerms },
             Image = await CustomIconAsync("SearchInput.png"),
+            ImageSVG = SkinSVGs.GetSkin("FAV_Search"),
             LinkText = this.__ResStr("editLink", "Search"),
             MenuText = this.__ResStr("editText", "Search"),
             Tooltip = this.__ResStr("editTooltip", "Search for keywords on this site"),

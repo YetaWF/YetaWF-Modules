@@ -25,13 +25,19 @@ var YetaWF_Menus;
             _this.Button = $YetaWF.getElementByIdCond(_this.Setup.ButtonId);
             _this.updateButton();
             $YetaWF.registerEventHandler(_this.Button, "click", null, function (ev) {
-                var menus = YetaWF.ComponentBaseDataImpl.getControls(YetaWF_ComponentsHTML.MenuComponent.SELECTOR, $YetaWF.getElementsBySelector(_this.Setup.Target));
+                var menus = YetaWF.ComponentBaseDataImpl.getControls(YetaWF_ComponentsHTML.MenuComponent.SELECTOR);
                 for (var _i = 0, menus_1 = menus; _i < menus_1.length; _i++) {
                     var menu = menus_1[_i];
-                    if (menu.isShown)
-                        menu.hide();
-                    else
-                        menu.show();
+                    var modDiv = YetaWF.ModuleBase.getModuleDivFromTagCond(menu.Control);
+                    if (modDiv && $YetaWF.elementMatches(modDiv, _this.Setup.Target)) {
+                        if (menu.isShown)
+                            menu.hide();
+                        else
+                            menu.show();
+                    }
+                    else {
+                        menu.closeAll(); // other menu
+                    }
                 }
                 return false;
             });

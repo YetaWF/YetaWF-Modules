@@ -16,12 +16,22 @@ a.y_act_normlink {
     i {
         margin-right: .5ch;
     }
+    svg {
+        margin-right: 1ch;
+        width: 1em;
+        height: 1em;
+    }
 }
 
 a.y_act_icon {
     img,
     i {
+        margin-right: .5ch;
+    }
+    svg {
         margin-right: 1ch;
+        width: 1em;
+        height: 1em;
     }
 }
 
@@ -34,6 +44,11 @@ a.y_act_button {
     img,
     i {
         margin-right: .5ch;
+    }
+    svg {
+        margin-right: 1ch;
+        width: 1em;
+        height: 1em;
     }
 }
 

@@ -6,6 +6,7 @@ namespace YetaWF_ComponentsHTML {
         Orientation: OrientationEnum;
         VerticalWidth: number;
         SmallMenuMaxWidth: number;
+        OpenOnHover: boolean;
         HoverDelay: number;
         HorizontalAlign: HorizontalAlignEnum;
     }
@@ -54,7 +55,7 @@ namespace YetaWF_ComponentsHTML {
             let liSubs = $YetaWF.getElementsBySelector("li.t_menu > a", [this.Control]);
 
             $YetaWF.registerMultipleEventHandlers(liSubs, ["mouseenter"], null, (ev: Event): boolean => {
-                if (this.isVertical || this.isSmall) return true;
+                if (this.isVertical || this.isSmall || !this.Setup.OpenOnHover) return true;
 
                 let owningAnchor = ev.__YetaWFElem as HTMLAnchorElement;
                 let owningLI = $YetaWF.elementClosest(owningAnchor, "li") as HTMLLIElement;
@@ -65,18 +66,17 @@ namespace YetaWF_ComponentsHTML {
                     this.scheduleCloseSublevelsStartingAt(owningAnchor);
                     return true;
                 }
+                this.closeOtherMenus();
                 this.closeSublevelsStartingAt(owningAnchor);
                 this.openSublevel(owningAnchor);
                 return false;
             });
             $YetaWF.registerMultipleEventHandlers(liSubs, ["click"], null, (ev: Event): boolean => {
-
-                if (this.isSmall) return true;// allow anchor processing
-
                 let owningAnchor = ev.__YetaWFElem as HTMLAnchorElement;
                 let owningLI = $YetaWF.elementClosest(owningAnchor, "li") as HTMLLIElement;
                 if ($YetaWF.elementHasClass(owningLI, "t_megamenu_content")) return true;//we're within a megamenu (can't have menus within megamenu)
 
+                this.closeOtherMenus();
                 let subUL = $YetaWF.getElement1BySelectorCond("ul", [owningLI]) as HTMLUListElement;
                 const isOpen = subUL && subUL.style.display === "";
                 this.closeSublevelsStartingAt(owningAnchor);
@@ -84,22 +84,14 @@ namespace YetaWF_ComponentsHTML {
                     this.closeLevel(owningAnchor);
                 else
                     this.openSublevel(owningAnchor);
-                return true; // allow anchor processing
-            });
-            $YetaWF.registerEventHandler(this.Control, "click", "li.t_menu > a > svg", (ev: Event): boolean => {
-
-                if (!this.isSmall) return true;
-
-                let svg = ev.__YetaWFElem;
-                let owningAnchor = svg.parentElement! as HTMLAnchorElement;
-
-                this.closeSublevelsStartingAt(owningAnchor, owningAnchor);
-                this.openSublevel(owningAnchor);
+                if (!this.isSmall || !ev.target || ((ev.target as HTMLElement).tagName.toLowerCase() !== "svg" && (ev.target as HTMLElement).tagName.toLowerCase() !== "path"))
+                    return true; // allow anchor processing
                 return false;
             });
             $YetaWF.registerMultipleEventHandlers(liSubs, ["keydown"], null, (ev: Event): boolean => {
                 let key = (ev as KeyboardEvent).key;
                 if (key === "Enter") {
+                    this.closeOtherMenus();
                     let owningAnchor = ev.__YetaWFElem as HTMLAnchorElement;
                     // we're in a menu and someone hit Enter on an anchor
                     this.closeSublevelsStartingAt(owningAnchor, owningAnchor);
@@ -113,12 +105,13 @@ namespace YetaWF_ComponentsHTML {
             const level = this.getLevel(owningAnchor);
             this.openLevel(owningAnchor);
 
+            const subUL = owningAnchor.nextElementSibling as HTMLUListElement;
+            if (!subUL) return;
+
             if (this.isVertical || this.isSmall) {
 
             } else {
                 // position the sublevel
-                const subUL = owningAnchor.nextElementSibling as HTMLUListElement;
-                if (!subUL) return;
                 const owningLI = $YetaWF.elementClosest(owningAnchor, "li");
                 const owningRect = owningLI.getBoundingClientRect();
                 switch (level) {
@@ -147,6 +140,7 @@ namespace YetaWF_ComponentsHTML {
                         throw "Too many menu levels";
                 }
             }
+            this.MenuRects.push({ Anchor: owningAnchor, Rect: subUL.getBoundingClientRect(), });
         }
 
         private CloseSublevelsTimout: number = 0;
@@ -214,11 +208,9 @@ namespace YetaWF_ComponentsHTML {
             if (this.isVertical || this.isSmall) {
                 $YetaWF.animateHeight(subUL, true, (): void => {
                     subUL.style.height = "auto";// height to auto, so submenus can expand
-                    this.MenuRects.push({ Anchor: owningAnchor, Rect: subUL.getBoundingClientRect(), });
                 });
             } else {
                 subUL.style.display = "";// show
-                this.MenuRects.push({ Anchor: owningAnchor, Rect: subUL.getBoundingClientRect(), });
             }
         }
 
@@ -242,12 +234,19 @@ namespace YetaWF_ComponentsHTML {
         public handleMouseMove(cursorX: number, cursorY: number): boolean {
 
             if (this.isVertical || this.isSmall) return true;
+            if (!this.MenuRects.length) {
+                this.killTimeout();
+                return true;
+            }
 
+            console.log(`handleMouseMove main`);
             const mainRect = this.Control.getBoundingClientRect();
+            console.log(`handleMouseMove x=${cursorX} y=${cursorY} main ${JSON.stringify(mainRect)}`);
             if (mainRect.left <= cursorX && cursorX < mainRect.right && mainRect.top <= cursorY && cursorY < mainRect.bottom) {
                 this.killTimeout();
                 return true;
             }
+            console.log(`handleMouseMove x=${cursorX} y=${cursorY} ${JSON.stringify(this.MenuRects)}`);
             for (const menuRect of this.MenuRects) {
                 const rect = menuRect.Rect;
                 if (rect.left <= cursorX && cursorX < rect.right && rect.top <= cursorY && cursorY < rect.bottom) {
@@ -265,8 +264,10 @@ namespace YetaWF_ComponentsHTML {
             }
         }
         private startTimeout():void {
+            console.log(`startTimeout entry`);
             if (!this.CloseTimeout) {
                 this.CloseTimeout = setTimeout((): void => {
+                    console.log(`startTimeout fired`);
                     this.closeAll();
                 }, this.Setup.HoverDelay || 1);
             }
@@ -287,9 +288,9 @@ namespace YetaWF_ComponentsHTML {
                     $YetaWF.elementRemoveClasses(this.Control, ["t_large", "t_small", "t_horizontal", "t_vertical"]);
                     $YetaWF.elementAddClass(this.Control, "t_small");
                     this.Control.style.width = "";
-                    this.hide();
-                    this.closeAll();
                 }
+                this.hide();
+                this.closeAll();
             } else {
                 if (!$YetaWF.elementHasClass(this.Control, "t_large")) {
                     $YetaWF.elementRemoveClasses(this.Control, ["t_large", "t_small", "t_horizontal", "t_vertical"]);
@@ -309,7 +310,16 @@ namespace YetaWF_ComponentsHTML {
 
         // API
 
+        public closeOtherMenus(): void {
+            let menus = YetaWF.ComponentBaseDataImpl.getControls<MenuComponent>(MenuComponent.SELECTOR);
+            for (let menu of menus) {
+                if (this !== menu)
+                    menu.closeAll();
+            }
+        }
+
         public closeAll(): void {
+            console.log(`closeAll entry`);
             this.MenuRects = [];
             this.clearScheduleCloseSublevel();
             if (this.isVertical) return;
@@ -318,11 +328,11 @@ namespace YetaWF_ComponentsHTML {
                 this.closeSublevelsStartingAt(anchor);
                 this.closeLevel(anchor);
             }
-            if (this.isSmall)
-                this.hide();
+            this.hide();
         }
 
         public static closeAllMenus(): void {
+            console.log(`closeAllMenus entry`);
             let controls: MenuComponent[] = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR);
             for (let control of controls) {
                 control.closeAll();
@@ -352,9 +362,15 @@ namespace YetaWF_ComponentsHTML {
 
         public show(): void {
             this.Control.style.display = "";
+            if (this.isSmall) {
+                const width = window.innerWidth;
+                const rect = this.Control.getBoundingClientRect();
+                this.Control.style.width = `${Math.max(100, width-2*rect.left)}px`;
+            }
         }
         public hide(): void {
-            this.Control.style.display = "none";
+            if (this.isSmall)
+                this.Control.style.display = "none";
         }
 
         public selectEntry(path: string): boolean {
@@ -418,6 +434,7 @@ namespace YetaWF_ComponentsHTML {
     });
     // handle new content
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: CustomEvent<YetaWF.DetailsEventNavPageLoaded>): boolean => {
+        console.log(`EVENTNAVPAGELOADED entry`);
         let menus = YetaWF.ComponentBaseDataImpl.getControls<MenuComponent>(MenuComponent.SELECTOR);
         for (let menu of menus) {
             menu.closeAll();
@@ -428,6 +445,7 @@ namespace YetaWF_ComponentsHTML {
 
     // Handle Escape key to close any open menus
     $YetaWF.registerEventHandlerBody("keydown", null, (ev: KeyboardEvent): boolean => {
+        console.log(`keydown entry`);
         if (ev.key !== "Escape") return true;
         let menus = YetaWF.ComponentBaseDataImpl.getControls<MenuComponent>(MenuComponent.SELECTOR);
         for (let menu of menus) {

@@ -96,6 +96,7 @@ public class MenuModule : ModuleDefinition, IModuleMenuAsync {
 
     [Category("General"), Caption("Edit Url"), Description("The Url used to edit this menu - If omitted, a default page is generated")]
     [UIHint("Url"), AdditionalMetadata("UrlType", UrlTypeEnum.Local), UrlValidation(UrlValidationAttribute.SchemaEnum.Any, UrlTypeEnum.Local), StringLength(Globals.MaxUrl), Trim]
+    [Data_NewValue]
     public string? EditUrl { get; set; }
 
     [Category("General"), Caption("Orientation"), Description("Defines the orientation of the menu.")]
@@ -116,11 +117,13 @@ public class MenuModule : ModuleDefinition, IModuleMenuAsync {
 
     [Category("General"), Caption("<LI> Css Class"), Description("The optional Css class added to every <LI> tag in the menu")]
     [UIHint("Text40"), StringLength(MaxLICssClass)]
+    [Data_NewValue]
     public string? LICssClass { get; set; }
 
     [Category("General"), Caption("Hover Delay"), Description("Specifies the delay (in milliseconds) before the menu is closed - Used to avoid accidental closure on leaving")]
     [UIHint("IntValue4"), Range(0, 10000)]
     [ProcessIf(nameof(Orientation), MenuComponentBase.OrientationEnum.Horizontal, Disable = true), RequiredIf(nameof(Orientation), MenuComponentBase.OrientationEnum.Horizontal)]
+    [Data_NewValue]
     public int HoverDelay { get; set; }
 
     public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AdministratorLevel_DefaultAllowedRoles; } }
@@ -145,7 +148,10 @@ public class MenuModule : ModuleDefinition, IModuleMenuAsync {
                 CssClass = CssClass,
                 Orientation = Orientation,
                 VerticalWidth = VerticalWidth,
-                SmallMenuMaxWidth = SmallMenuMaxWidth
+                SmallMenuMaxWidth = SmallMenuMaxWidth,
+                OpenOnHover = true,
+                HorizontalAlign = MenuComponentBase.HorizontalAlignEnum.Right,
+                WantArrows = true,
             },
         };
         model.Menu.MenuList.LICssClass = LICssClass;

@@ -28,6 +28,7 @@ namespace YetaWF_Menus {
         MenuText: object;
         LinkText: object;
         ImageUrlFinal: string;
+        ImageSVG: string;
         Tooltip: object;
         Legend: object;
         Enabled: boolean;
@@ -72,6 +73,7 @@ namespace YetaWF_Menus {
         private MenuText!: YetaWF_ComponentsHTML.MultiStringEditComponent;
         private LinkText!: YetaWF_ComponentsHTML.MultiStringEditComponent;
         private ImageUrlFinal!: HTMLInputElement;
+        private ImageSVG!: HTMLTextAreaElement;
         private Tooltip!: YetaWF_ComponentsHTML.MultiStringEditComponent;
         private Legend!: YetaWF_ComponentsHTML.MultiStringEditComponent;
         private Enabled!: HTMLInputElement;
@@ -138,14 +140,19 @@ namespace YetaWF_Menus {
             });
 
             $YetaWF.registerEventHandler(this.AddButton, "click", null, (ev: MouseEvent): boolean => {
-                if (this.ActiveEntry && this.changeSelection()) {
-                    let li = this.Tree.addEntry(this.ActiveEntry, YLocs.YetaWF_Menus.NewEntryText, this.Setup.NewEntry as any as YetaWF_ComponentsHTML.TreeEntry);
-                    this.Tree.setSelect(li);
-                    this.ActiveEntry = this.Tree.getSelect();
-                    this.ActiveData = this.Tree.getSelectData() as Data|null;
-                    this.ActiveNew = true;
-                    this.update();
-                }
+                if (!this.ActiveEntry && !this.Tree.getFirstVisibleItem()) {
+                    // empty tree
+                } else if (this.ActiveEntry && this.changeSelection()) {
+                    // change selection OK
+                } else
+                    return false;
+
+                let li = this.Tree.addEntry(this.ActiveEntry, YLocs.YetaWF_Menus.NewEntryText, this.Setup.NewEntry as any as YetaWF_ComponentsHTML.TreeEntry);
+                this.Tree.setSelect(li);
+                this.ActiveEntry = this.Tree.getSelect();
+                this.ActiveData = this.Tree.getSelectData() as Data|null;
+                this.ActiveNew = true;
+                this.update();
                 return false;
             });
             $YetaWF.registerEventHandler(this.InsertButton, "click", null, (ev: MouseEvent): boolean => {
@@ -254,6 +261,7 @@ namespace YetaWF_Menus {
             this.MenuText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.MenuText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
             this.LinkText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.LinkText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
             this.ImageUrlFinal = $YetaWF.getElement1BySelector("input[name='ModEntry.ImageUrlFinal']", [this.Details]) as HTMLInputElement;
+            this.ImageSVG = $YetaWF.getElement1BySelector("textarea[name='ModEntry.ImageSVG']", [this.Details]) as HTMLTextAreaElement;
             this.Tooltip = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.Tooltip']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
             this.Legend = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.Legend']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
             this.Enabled = $YetaWF.getElement1BySelector("input[name='ModEntry.Enabled']", [this.Details]) as HTMLInputElement;
@@ -325,6 +333,7 @@ namespace YetaWF_Menus {
                 if (this.MenuText.hasChanged(data.MenuText)) return true;
                 if (this.LinkText.hasChanged(data.LinkText)) return true;
                 if (!$YetaWF.stringCompare(this.ImageUrlFinal.value, data.ImageUrlFinal)) return true;
+                if (!$YetaWF.stringCompare(this.ImageSVG.value, data.ImageSVG)) return true;
                 if (this.Tooltip.hasChanged(data.Tooltip)) return true;
                 if (this.Legend.hasChanged(data.Legend)) return true;
                 if (this.Enabled.checked !== data.Enabled) return true;
@@ -349,6 +358,7 @@ namespace YetaWF_Menus {
             data.MenuText = this.MenuText.value;
             data.LinkText = this.LinkText.value;
             data.ImageUrlFinal = this.ImageUrlFinal.value;
+            data.ImageSVG = this.ImageSVG.value;
             data.Tooltip = this.Tooltip.value;
             data.Legend = this.Legend.value;
             data.Enabled = this.Enabled.checked;
@@ -373,6 +383,7 @@ namespace YetaWF_Menus {
                 this.MenuText.value = data.MenuText;
                 this.LinkText.value = data.LinkText;
                 this.ImageUrlFinal.value = data.ImageUrlFinal;
+                this.ImageSVG.value = data.ImageSVG;
                 this.Tooltip.value = data.Tooltip;
                 this.Legend.value = data.Legend;
                 this.Enabled.checked = data.Enabled;
@@ -393,6 +404,7 @@ namespace YetaWF_Menus {
                 this.MenuText.clear();
                 this.LinkText.clear();
                 this.ImageUrlFinal.value = "";
+                this.ImageSVG.value = "";
                 this.Tooltip.clear();
                 this.Legend.clear();
                 this.Enabled.checked = false;
@@ -419,6 +431,7 @@ namespace YetaWF_Menus {
                         this.MenuText.enable(true);
                         this.LinkText.enable(true);
                         $YetaWF.elementEnable(this.ImageUrlFinal);
+                        $YetaWF.elementEnable(this.ImageSVG);
                         this.Tooltip.enable(true);
                         this.Legend.enable(true);
                         $YetaWF.elementEnable(this.Enabled);
@@ -438,6 +451,7 @@ namespace YetaWF_Menus {
                         this.MenuText.enable(true);
                         this.LinkText.enable(true);
                         $YetaWF.elementEnable(this.ImageUrlFinal);
+                        $YetaWF.elementEnable(this.ImageSVG);
                         this.Tooltip.enable(true);
                         this.Legend.enable(true);
                         $YetaWF.elementEnable(this.Enabled);
@@ -457,6 +471,7 @@ namespace YetaWF_Menus {
                         this.MenuText.enable(false);
                         this.LinkText.enable(false);
                         $YetaWF.elementDisable(this.ImageUrlFinal);
+                        $YetaWF.elementDisable(this.ImageSVG);
                         this.Tooltip.enable(false);
                         this.Legend.enable(false);
                         $YetaWF.elementDisable(this.Enabled);
@@ -478,6 +493,7 @@ namespace YetaWF_Menus {
                 this.MenuText.enable(false);
                 this.LinkText.enable(false);
                 $YetaWF.elementDisable(this.ImageUrlFinal);
+                $YetaWF.elementDisable(this.ImageSVG);
                 this.Tooltip.enable(false);
                 this.Legend.enable(false);
                 $YetaWF.elementDisable(this.Enabled);
@@ -498,8 +514,10 @@ namespace YetaWF_Menus {
             $YetaWF.elementEnableToggle(this.SaveButton, enable);
             $YetaWF.elementEnableToggle(this.DeleteButton, enable);
             $YetaWF.elementEnableToggle(this.ResetButton, enable);
-            $YetaWF.elementEnableToggle(this.AddButton, enable);
             $YetaWF.elementEnableToggle(this.InsertButton, enable);
+
+            enable = enable || (!this.ActiveEntry && !this.Tree.getFirstVisibleItem());// also allow empty
+            $YetaWF.elementEnableToggle(this.AddButton, enable);
         }
 
         private sendEntireMenu(): void {

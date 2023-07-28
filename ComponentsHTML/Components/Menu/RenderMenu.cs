@@ -35,6 +35,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// </summary>
             public int SmallMenuMaxWidth { get; set; }
             /// <summary>
+            /// Defines whether the dropdown is automatically opened when hovering over a horizontal menu.
+            /// </summary>
+            public bool OpenOnHover { get; set; }
+            /// <summary>
             /// Defines the number of milliseconds the cursor can move outside a horizontal menu before all submenus are closed. Ignored for vertical and mobile menus.
             /// </summary>
             public int HoverDelay { get; set; }
@@ -112,10 +116,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 }
                 hb.Append($"<li class='t_menu t_megamenu_content {css} t_lvl{level}'>{contents}</li>\n");
 
-            } else if (subMenu != null) { 
+            } else if (subMenu != null) {
+
+                int totalEntries = 0, separatorEntries = 0;
                 foreach (var menuEntry in subMenu) {
 
-                    if (menuEntry.Enabled && await menuEntry.RendersSomethingAsync()) {
+                    if (menuEntry.EntryType == ModuleAction.MenuEntryType.Separator || (menuEntry.Enabled && await menuEntry.RendersSomethingAsync())) {
+                        ++totalEntries;
+                        if (menuEntry.EntryType == ModuleAction.MenuEntryType.Separator)
+                            ++separatorEntries;
 
                         bool rendered = false;
 
@@ -150,12 +159,15 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                             string css = string.Empty;
                             css = CssManager.CombineCss(css, liCss);
 
-                            string menuContents = await CoreRendering.RenderActionAsync(menuEntry, renderMode, null, null);
-
-                            hb.Append($"<li class='t_menu t_lvl{level} {css}'>{menuContents}</li>\n");
+                            if (menuEntry.EntryType != ModuleAction.MenuEntryType.Parent) {
+                                string menuContents = await CoreRendering.RenderActionAsync(menuEntry, renderMode, null, null);
+                                hb.Append($"<li class='t_menu t_lvl{level} {css}'>{menuContents}</li>\n");
+                            }
                         }
                     }
                 }
+                if (totalEntries == separatorEntries) // we only generated separators
+                    return string.Empty;
             }
             return hb.ToString();
         }

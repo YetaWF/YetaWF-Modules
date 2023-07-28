@@ -5,6 +5,8 @@ ul.yt_menu.t_display.t_small {
   flex-direction: column;
   flex-wrap: nowrap;
   overflow: hidden;
+  position: absolute;
+  z-index: 1000;
   padding: var(--mmsm-0-padding);
   margin: 0;
   list-style: none;

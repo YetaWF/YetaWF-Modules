@@ -172,19 +172,20 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     </div>
 </div>");
 
-            if (data != null && data.Count > 0) {
-
-                hb.Append($@"
+            hb.Append($@"
 <ul class='tg_root t_sub'>");
 
+            if (data != null && data.Count > 0) {
                 foreach (TreeEntry record in data) {
                     hb.Append(await RenderRecordHTMLAsync(htmlHelper, treeModel, setup, record));
                 }
+            }
 
-                hb.Append($@"
+            hb.Append($@"
 </ul>");
-            } else {
-                // when initially rendering a tree with 0 records, we have to prepare for all templates
+
+            // when initially rendering a tree with 0 records, we have to prepare for all templates
+            if (data != null && data.Count > 0) {
                 await YetaWFComponentExtender.AddComponentSupportForType(treeModel.RecordType);
             }
 

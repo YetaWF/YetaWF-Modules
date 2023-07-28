@@ -183,8 +183,11 @@ namespace YetaWF_ComponentsHTML {
             return false;
         }
         private findLanguageText(data: object, lang: string): string | null {
-            if (!data.hasOwnProperty(lang)) return null;
-            return data[lang];
+            const arr = data as [];
+            for (const a of arr) {
+                if (a[lang]) return a[lang];
+            }
+            return null;
         }
     }
     if (YLocs.YetaWF_ComponentsHTML.Languages === undefined) throw "YLocs.YetaWF_ComponentsHTML.Languages missing";/*DEBUG*/

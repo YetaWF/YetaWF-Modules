@@ -48,14 +48,20 @@ var YetaWF_Menus;
                 return true;
             });
             $YetaWF.registerEventHandler(this.AddButton, "click", null, function (ev) {
-                if (_this.ActiveEntry && _this.changeSelection()) {
-                    var li = _this.Tree.addEntry(_this.ActiveEntry, YLocs.YetaWF_Menus.NewEntryText, _this.Setup.NewEntry);
-                    _this.Tree.setSelect(li);
-                    _this.ActiveEntry = _this.Tree.getSelect();
-                    _this.ActiveData = _this.Tree.getSelectData();
-                    _this.ActiveNew = true;
-                    _this.update();
+                if (!_this.ActiveEntry && !_this.Tree.getFirstVisibleItem()) {
+                    // empty tree
                 }
+                else if (_this.ActiveEntry && _this.changeSelection()) {
+                    // change selection OK
+                }
+                else
+                    return false;
+                var li = _this.Tree.addEntry(_this.ActiveEntry, YLocs.YetaWF_Menus.NewEntryText, _this.Setup.NewEntry);
+                _this.Tree.setSelect(li);
+                _this.ActiveEntry = _this.Tree.getSelect();
+                _this.ActiveData = _this.Tree.getSelectData();
+                _this.ActiveNew = true;
+                _this.update();
                 return false;
             });
             $YetaWF.registerEventHandler(this.InsertButton, "click", null, function (ev) {
@@ -155,6 +161,7 @@ var YetaWF_Menus;
             this.MenuText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.MenuText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
             this.LinkText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.LinkText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
             this.ImageUrlFinal = $YetaWF.getElement1BySelector("input[name='ModEntry.ImageUrlFinal']", [this.Details]);
+            this.ImageSVG = $YetaWF.getElement1BySelector("textarea[name='ModEntry.ImageSVG']", [this.Details]);
             this.Tooltip = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.Tooltip']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
             this.Legend = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.Legend']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
             this.Enabled = $YetaWF.getElement1BySelector("input[name='ModEntry.Enabled']", [this.Details]);
@@ -229,6 +236,8 @@ var YetaWF_Menus;
                     return true;
                 if (!$YetaWF.stringCompare(this.ImageUrlFinal.value, data.ImageUrlFinal))
                     return true;
+                if (!$YetaWF.stringCompare(this.ImageSVG.value, data.ImageSVG))
+                    return true;
                 if (this.Tooltip.hasChanged(data.Tooltip))
                     return true;
                 if (this.Legend.hasChanged(data.Legend))
@@ -266,6 +275,7 @@ var YetaWF_Menus;
             data.MenuText = this.MenuText.value;
             data.LinkText = this.LinkText.value;
             data.ImageUrlFinal = this.ImageUrlFinal.value;
+            data.ImageSVG = this.ImageSVG.value;
             data.Tooltip = this.Tooltip.value;
             data.Legend = this.Legend.value;
             data.Enabled = this.Enabled.checked;
@@ -289,6 +299,7 @@ var YetaWF_Menus;
                 this.MenuText.value = data.MenuText;
                 this.LinkText.value = data.LinkText;
                 this.ImageUrlFinal.value = data.ImageUrlFinal;
+                this.ImageSVG.value = data.ImageSVG;
                 this.Tooltip.value = data.Tooltip;
                 this.Legend.value = data.Legend;
                 this.Enabled.checked = data.Enabled;
@@ -310,6 +321,7 @@ var YetaWF_Menus;
                 this.MenuText.clear();
                 this.LinkText.clear();
                 this.ImageUrlFinal.value = "";
+                this.ImageSVG.value = "";
                 this.Tooltip.clear();
                 this.Legend.clear();
                 this.Enabled.checked = false;
@@ -336,6 +348,7 @@ var YetaWF_Menus;
                         this.MenuText.enable(true);
                         this.LinkText.enable(true);
                         $YetaWF.elementEnable(this.ImageUrlFinal);
+                        $YetaWF.elementEnable(this.ImageSVG);
                         this.Tooltip.enable(true);
                         this.Legend.enable(true);
                         $YetaWF.elementEnable(this.Enabled);
@@ -355,6 +368,7 @@ var YetaWF_Menus;
                         this.MenuText.enable(true);
                         this.LinkText.enable(true);
                         $YetaWF.elementEnable(this.ImageUrlFinal);
+                        $YetaWF.elementEnable(this.ImageSVG);
                         this.Tooltip.enable(true);
                         this.Legend.enable(true);
                         $YetaWF.elementEnable(this.Enabled);
@@ -374,6 +388,7 @@ var YetaWF_Menus;
                         this.MenuText.enable(false);
                         this.LinkText.enable(false);
                         $YetaWF.elementDisable(this.ImageUrlFinal);
+                        $YetaWF.elementDisable(this.ImageSVG);
                         this.Tooltip.enable(false);
                         this.Legend.enable(false);
                         $YetaWF.elementDisable(this.Enabled);
@@ -396,6 +411,7 @@ var YetaWF_Menus;
                 this.MenuText.enable(false);
                 this.LinkText.enable(false);
                 $YetaWF.elementDisable(this.ImageUrlFinal);
+                $YetaWF.elementDisable(this.ImageSVG);
                 this.Tooltip.enable(false);
                 this.Legend.enable(false);
                 $YetaWF.elementDisable(this.Enabled);
@@ -416,8 +432,9 @@ var YetaWF_Menus;
             $YetaWF.elementEnableToggle(this.SaveButton, enable);
             $YetaWF.elementEnableToggle(this.DeleteButton, enable);
             $YetaWF.elementEnableToggle(this.ResetButton, enable);
-            $YetaWF.elementEnableToggle(this.AddButton, enable);
             $YetaWF.elementEnableToggle(this.InsertButton, enable);
+            enable = enable || (!this.ActiveEntry && !this.Tree.getFirstVisibleItem()); // also allow empty
+            $YetaWF.elementEnableToggle(this.AddButton, enable);
         };
         MenuEditView.prototype.sendEntireMenu = function () {
             if ($YetaWF.isLoading)

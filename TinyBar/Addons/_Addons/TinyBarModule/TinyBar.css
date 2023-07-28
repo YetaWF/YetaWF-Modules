@@ -1,0 +1,28 @@
+@charset "UTF-8";
+/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
+.YetaWF_TinyBar_TinyBar ul.yt_menu.t_display.t_large.t_horizontal {
+  padding: 0;
+}
+.YetaWF_TinyBar_TinyBar ul.yt_menu.t_display.t_large.t_horizontal > li > a {
+  padding: 0;
+  margin: 0;
+  margin-left: 1em;
+}
+.YetaWF_TinyBar_TinyBar ul.yt_menu.t_display.t_large.t_horizontal > li > a.t_user {
+  background: var(--switch-bg-on);
+  color: var(--switch-clr-on);
+}
+.YetaWF_TinyBar_TinyBar ul.yt_menu.t_display.t_large.t_horizontal > li > a.t_search, .YetaWF_TinyBar_TinyBar ul.yt_menu.t_display.t_large.t_horizontal > li > a.t_shopping, .YetaWF_TinyBar_TinyBar ul.yt_menu.t_display.t_large.t_horizontal > li > a.t_lang, .YetaWF_TinyBar_TinyBar ul.yt_menu.t_display.t_large.t_horizontal > li > a.t_user {
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  line-height: 1;
+  border-radius: 50%;
+}
+.YetaWF_TinyBar_TinyBar ul.yt_menu.t_display.t_large.t_horizontal > li > a.t_search span, .YetaWF_TinyBar_TinyBar ul.yt_menu.t_display.t_large.t_horizontal > li > a.t_shopping span, .YetaWF_TinyBar_TinyBar ul.yt_menu.t_display.t_large.t_horizontal > li > a.t_lang span, .YetaWF_TinyBar_TinyBar ul.yt_menu.t_display.t_large.t_horizontal > li > a.t_user span {
+  padding: 2px;
+  width: 32px;
+  height: 32px;
+  font-size: 24px;
+  font-weight: bold;
+}

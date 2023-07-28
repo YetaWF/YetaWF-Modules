@@ -109,6 +109,10 @@ public class MenuEditModule : ModuleDefinition {
         [UIHint("Text80"), StringLength(Globals.MaxUrl)]
         public string? ImageUrlFinal { get; set; }
 
+        [Caption("Image SVG"), Description("The SVG of the image shown for this entry - If the Image SVG is set, the Image Url property is ignored")]
+        [UIHint("TextAreaSourceOnly"), StringLength(Globals.MaxSVG), AdditionalMetadata("EmHeight", 3)]
+        public string? ImageSVG { get; set; }
+
         [Caption("Tooltip"), Description("The tooltip for this entry")]
         [UIHint("MultiString40"), StringLength(ModuleAction.MaxTooltip)]
         public MultiString Tooltip { get; set; }

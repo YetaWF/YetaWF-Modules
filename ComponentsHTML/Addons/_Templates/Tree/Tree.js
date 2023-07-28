@@ -40,7 +40,9 @@ var YetaWF_ComponentsHTML;
             _this.DDLastTarget = null;
             _this.DDLastTargetAnchor = null;
             _this.DDTargetPosition = TargetPositionEnum.on;
+            _this.TREmpty = null;
             _this.Setup = setup;
+            _this.TREmpty = $YetaWF.getElement1BySelector("div.tg_emptytr", [_this.Control]);
             $YetaWF.registerEventHandler(_this.Control, "click", "a.t_entry", function (ev) {
                 var liElem = $YetaWF.elementClosest(ev.__YetaWFElem, "li"); // get row we're on
                 _this.setSelect(liElem);
@@ -357,6 +359,12 @@ var YetaWF_ComponentsHTML;
                 });
             }
         };
+        TreeComponent.prototype.updateTotals = function () {
+            if (this.getFirstVisibleItem())
+                this.TREmpty.style.display = "none";
+            else
+                this.TREmpty.style.display = "";
+        };
         // API
         TreeComponent.prototype.canCollapse = function (liElem) {
             var ul = $YetaWF.getElement1BySelectorCond("ul.t_sub", [liElem]); // get the subitems
@@ -523,6 +531,7 @@ var YetaWF_ComponentsHTML;
                 ul.remove();
                 ul = parentUl;
             }
+            this.updateTotals();
         };
         TreeComponent.prototype.getNextSibling = function (liElem) {
             var li = liElem.nextElementSibling;
@@ -637,10 +646,23 @@ var YetaWF_ComponentsHTML;
         TreeComponent.prototype.addEntry = function (liElem, text, data) {
             var text = $YetaWF.htmlEscape(text);
             var entry = this.getNewEntry(text);
-            liElem.insertAdjacentHTML("afterend", entry);
-            var newElem = this.getNextSibling(liElem);
+            var newElem = null;
+            if (!liElem) {
+                // adding new entry to empty tree
+                var li = this.getFirstVisibleItem();
+                if (li)
+                    throw new Error("Adding a new entry to an already populated tree is not possible (liElem is null)");
+                var ul = $YetaWF.getElement1BySelector("ul.tg_root", [this.Control]);
+                ul.insertAdjacentHTML("beforeend", entry);
+                newElem = ul.firstElementChild;
+            }
+            else {
+                liElem.insertAdjacentHTML("afterend", entry);
+                newElem = this.getNextSibling(liElem);
+            }
             if (data)
                 this.setElementData(newElem, data);
+            this.updateTotals();
             return newElem;
         };
         TreeComponent.prototype.insertEntry = function (liElem, text, data) {
@@ -650,6 +672,7 @@ var YetaWF_ComponentsHTML;
             var newElem = this.getPrevSibling(liElem);
             if (data)
                 this.setElementData(newElem, data);
+            this.updateTotals();
             return newElem;
         };
         TreeComponent.prototype.getNewEntry = function (text) {
