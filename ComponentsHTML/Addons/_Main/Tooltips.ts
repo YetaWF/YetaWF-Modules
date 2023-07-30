@@ -44,6 +44,8 @@ namespace YetaWF_ComponentsHTML {
                         return true;
                     var s = $YetaWF.getAttributeCond(elem, YConfigs.Basics.CssTooltip) || $YetaWF.getAttributeCond(elem, YConfigs.Basics.CssTooltipSpan) || $YetaWF.getAttributeCond(elem, "title");
                     if (s) {
+                        if ($YetaWF.isMobile() && ev.type === "click" && $YetaWF.elementClosestCond(elem, "a") != null)
+                            return true;// ignore anchor clicks for tooltips on mobile
                         this.showTooltip(elem, s);
                         return true;
                     }
