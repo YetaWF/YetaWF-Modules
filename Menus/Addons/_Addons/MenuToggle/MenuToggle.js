@@ -33,7 +33,7 @@ var YetaWF_Menus;
                         if (menu.isShown)
                             menu.hide();
                         else
-                            menu.show();
+                            menu.show(_this.Button);
                     }
                     else {
                         menu.closeAll(); // other menu

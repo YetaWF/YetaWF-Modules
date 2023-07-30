@@ -125,6 +125,14 @@
   display: none;
 }
 
+/* Blog Summary */
+/* Blog Summary */
+/* Blog Summary */
+.YetaWF_Blog_Summary .t_entry {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
 /* Blog Comments Display */
 /* Blog Comments Display */
 /* Blog Comments Display */

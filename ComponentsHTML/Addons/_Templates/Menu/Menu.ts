@@ -166,7 +166,7 @@ namespace YetaWF_ComponentsHTML {
                 this.internalCloseSublevelsStartingAt(owningAnchor, exceptAnchor);
             } else {
                 // main level
-                const anchors = $YetaWF.getElementsBySelector(`ul.${MenuComponent.TEMPLATE} > li > a`, [this.Control]) as HTMLAnchorElement[];// all top level anchors
+                const anchors = $YetaWF.getElementsBySelector(`ul.${MenuComponent.TEMPLATE} li.t_lvl0 > a`, [this.Control]) as HTMLAnchorElement[];// all top level anchors
                 for (const a of anchors) {
                     this.internalCloseSublevelsStartingAt(a, exceptAnchor);
                     this.closeLevel(a);
@@ -239,14 +239,14 @@ namespace YetaWF_ComponentsHTML {
                 return true;
             }
 
-            console.log(`handleMouseMove main`);
+            // console.log(`handleMouseMove main`);
             const mainRect = this.Control.getBoundingClientRect();
-            console.log(`handleMouseMove x=${cursorX} y=${cursorY} main ${JSON.stringify(mainRect)}`);
+            // console.log(`handleMouseMove x=${cursorX} y=${cursorY} main ${JSON.stringify(mainRect)}`);
             if (mainRect.left <= cursorX && cursorX < mainRect.right && mainRect.top <= cursorY && cursorY < mainRect.bottom) {
                 this.killTimeout();
                 return true;
             }
-            console.log(`handleMouseMove x=${cursorX} y=${cursorY} ${JSON.stringify(this.MenuRects)}`);
+            // console.log(`handleMouseMove x=${cursorX} y=${cursorY} ${JSON.stringify(this.MenuRects)}`);
             for (const menuRect of this.MenuRects) {
                 const rect = menuRect.Rect;
                 if (rect.left <= cursorX && cursorX < rect.right && rect.top <= cursorY && cursorY < rect.bottom) {
@@ -264,17 +264,17 @@ namespace YetaWF_ComponentsHTML {
             }
         }
         private startTimeout():void {
-            console.log(`startTimeout entry`);
+            // console.log(`startTimeout entry`);
             if (!this.CloseTimeout) {
                 this.CloseTimeout = setTimeout((): void => {
-                    console.log(`startTimeout fired`);
+                    // console.log(`startTimeout fired`);
                     this.closeAll();
                 }, this.Setup.HoverDelay || 1);
             }
         }
 
         private clearPath(): void {
-            const anchors = $YetaWF.getElementsBySelector("ul.t_menu > li > a", [this.Control]);
+            const anchors = $YetaWF.getElementsBySelector("ul.yt_menu li.t_lvl0 > a, ul.t_menu > li > a", [this.Control]);
             for (const a of anchors) {
                 $YetaWF.elementRemoveClass(a, "t_path");
                 $YetaWF.elementRemoveClass($YetaWF.elementClosest(a, "li"), "t_path");
@@ -319,11 +319,11 @@ namespace YetaWF_ComponentsHTML {
         }
 
         public closeAll(): void {
-            console.log(`closeAll entry`);
+            // console.log(`closeAll entry`);
             this.MenuRects = [];
             this.clearScheduleCloseSublevel();
             if (this.isVertical) return;
-            const anchors = $YetaWF.getElementsBySelector(`ul.${MenuComponent.TEMPLATE} > li > a`, [this.Control]) as HTMLAnchorElement[];// all top level anchors
+            const anchors = $YetaWF.getElementsBySelector(`ul.${MenuComponent.TEMPLATE} li.t_lvl0 > a`, [this.Control]) as HTMLAnchorElement[];// all top level anchors
             for (const anchor of anchors) {
                 this.closeSublevelsStartingAt(anchor);
                 this.closeLevel(anchor);
@@ -332,7 +332,7 @@ namespace YetaWF_ComponentsHTML {
         }
 
         public static closeAllMenus(): void {
-            console.log(`closeAllMenus entry`);
+            // console.log(`closeAllMenus entry`);
             let controls: MenuComponent[] = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR);
             for (let control of controls) {
                 control.closeAll();
@@ -360,12 +360,26 @@ namespace YetaWF_ComponentsHTML {
             return !this.isSmall && this.Setup.Orientation == OrientationEnum.Vertical;
         }
 
-        public show(): void {
+        public show(control?: HTMLElement): void {
             this.Control.style.display = "";
             if (this.isSmall) {
                 const width = window.innerWidth;
-                const rect = this.Control.getBoundingClientRect();
-                this.Control.style.width = `${Math.max(100, width-2*rect.left)}px`;
+                let rect: DOMRect = null!;
+                if (control) {
+                    rect = control.getBoundingClientRect();
+                    this.Control.style.top = `${rect.bottom}px`;
+                    let diff = 0;
+                    if (rect.left < width / 2) {
+                        diff = rect.left;
+                    } else {
+                        diff = Math.max(0,width-rect.right);
+                    }
+                    this.Control.style.left = `${diff}px`;
+                    this.Control.style.width = `${Math.max(100, width-2*diff)}px`;
+                } else {
+                    rect = this.Control.getBoundingClientRect();
+                    this.Control.style.width = `${Math.max(100, width-2*rect.left)}px`;
+                }
             }
         }
         public hide(): void {
@@ -373,18 +387,25 @@ namespace YetaWF_ComponentsHTML {
                 this.Control.style.display = "none";
         }
 
-        public selectEntry(path: string): boolean {
+        public selectEntry(path: string, compareFunc?: (path: string, pathSel: string) => boolean): boolean {
             this.clearPath();
+            path = this.normalizePath(path)
             const subUL = this.Control as HTMLUListElement;
-            return this.selectSublevelEntry(this.normalizePath(path), subUL);
+            if (compareFunc) {
+                if (this.selectSublevelEntry(path, subUL, 0, compareFunc))
+                    return true;
+            }
+            if (this.selectSublevelEntry(path, subUL, 0, this.comparePath))
+                return true;
+            return this.selectSublevelEntry(path, subUL, 0, this.comparePathPartial);
         }
-        private selectSublevelEntry(path: string, subUL: HTMLUListElement): boolean {
+        private selectSublevelEntry(path: string, subUL: HTMLUListElement, level: number, compareFunc: (path: string, pathSel: string) => boolean): boolean {
             let result = false;
-            let subLI = $YetaWF.getChildElement1ByTagCond("li", subUL) as HTMLLIElement|null;
+            let subLI = $YetaWF.getElement1BySelector(`li.t_lvl${level}`, [subUL]) as HTMLLIElement|null;
             while (!!subLI) {
                 let anchor = $YetaWF.getChildElement1ByTagCond("a", subLI) as HTMLAnchorElement|null;
                 if (anchor) {
-                    if (this.normalizePath(anchor.href) === path) {
+                    if (compareFunc(this.normalizePath(anchor.href), path)) {
                         $YetaWF.elementToggleClass(subLI, "t_selected", true);
                         $YetaWF.elementToggleClass(subLI, "t_path", true);
                         $YetaWF.elementToggleClass(subUL, "t_path", true);
@@ -395,7 +416,7 @@ namespace YetaWF_ComponentsHTML {
                     }
                     const subSubUL = $YetaWF.getChildElement1ByTagCond("ul", subLI) as HTMLUListElement;
                     if (subSubUL) {
-                        if (this.selectSublevelEntry(path, subSubUL)) {
+                        if (this.selectSublevelEntry(path, subSubUL, level+1, compareFunc)) {
                             $YetaWF.elementToggleClass(subLI, "t_path", true);
                             $YetaWF.elementToggleClass(subUL, "t_path", true);
                             $YetaWF.elementToggleClass(anchor, "t_path", true);
@@ -413,9 +434,19 @@ namespace YetaWF_ComponentsHTML {
             const i = path.indexOf("?");
             if (i > 0)
                 path = path.substring(0, i);
+            if (path.startsWith("https:"))
+                path = path.substring(6);
+            else if (path.startsWith("http:"))
+                path = path.substring(5);
             return path.toLowerCase();
         }
-
+        private comparePath(path: string, pathSel: string): boolean {
+            console.log(`compare ${path} -> ${pathSel}`);
+            return path === pathSel;
+        }
+        private comparePathPartial(path: string, pathSel: string): boolean {
+            return path.startsWith(`${pathSel}/`);
+        }
     }
 
     $YetaWF.registerEventHandlerBody("mousemove", null, (ev: MouseEvent): boolean => {
@@ -434,7 +465,6 @@ namespace YetaWF_ComponentsHTML {
     });
     // handle new content
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, (ev: CustomEvent<YetaWF.DetailsEventNavPageLoaded>): boolean => {
-        console.log(`EVENTNAVPAGELOADED entry`);
         let menus = YetaWF.ComponentBaseDataImpl.getControls<MenuComponent>(MenuComponent.SELECTOR);
         for (let menu of menus) {
             menu.closeAll();
@@ -445,7 +475,6 @@ namespace YetaWF_ComponentsHTML {
 
     // Handle Escape key to close any open menus
     $YetaWF.registerEventHandlerBody("keydown", null, (ev: KeyboardEvent): boolean => {
-        console.log(`keydown entry`);
         if (ev.key !== "Escape") return true;
         let menus = YetaWF.ComponentBaseDataImpl.getControls<MenuComponent>(MenuComponent.SELECTOR);
         for (let menu of menus) {

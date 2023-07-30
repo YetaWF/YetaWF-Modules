@@ -17,6 +17,7 @@ using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
+using YetaWF.Modules.Menu.Endpoints;
 
 namespace YetaWF.Modules.Menus.Modules;
 
@@ -94,6 +95,38 @@ public class MenuEditModule : ModuleDefinition {
             "This is best used to display formatted links or images, etc. with a Text module.")]
         [UIHint("ModuleSelection")]
         public Guid? SubModule { get; set; }
+
+        [Caption(" "), Description("")]
+        [UIHint("ModuleActions"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.Button), ReadOnly]
+        public List<ModuleAction> CopyActions {
+            get {
+                return new List<ModuleAction> {
+                    new ModuleAction {
+                        Name = "CopyAction",
+                        LinkText = this.__ResStr("linkCopy", "Copy From Designed Page"),
+                        MenuText = this.__ResStr("linkCopy", "Copy From Designed Page"),
+                        Tooltip = this.__ResStr("linkCopyTT", "Copies information from the designed page - Copied properties are Menu/Link Text, Image SVG and Tooltip"),
+                        Enabled = true,
+                        Style = ModuleAction.ActionStyleEnum.Nothing,
+                        Url = Utility.UrlFor<MenuEditModuleEndpoints>(MenuEditModuleEndpoints.CopyPage),
+                        Mode = ModuleAction.ActionModeEnum.Any,
+                        Location = ModuleAction.ActionLocationEnum.NoAuto,
+                    },
+                    new ModuleAction {
+                        Name = "SaveAction",
+                        LinkText = this.__ResStr("linkSave", "Save To Designed Page"),
+                        MenuText = this.__ResStr("linkSave", "Save To Designed Page"),
+                        Tooltip = this.__ResStr("linkSaveTT", "Saves information to the designed page - Copied properties are Menu Text, Image SVG and Tooltip"),
+                        Enabled = true,
+                        Style = ModuleAction.ActionStyleEnum.Nothing,
+                        Url = Utility.UrlFor<MenuEditModuleEndpoints>(MenuEditModuleEndpoints.SavePage),
+                        ConfirmationText = this.__ResStr("linkConfirmTT", "Are you sure you want to save the information to the designed page (Image SVG and Tooltip) ?"),
+                        Mode = ModuleAction.ActionModeEnum.Any,
+                        Location = ModuleAction.ActionLocationEnum.NoAuto,
+                    },
+                };
+            }
+        }
 
         [Caption("Menu Text"), Description("The text shown for this menu entry when used as a menu entry")]
         [UIHint("MultiString20"), StringLength(ModuleAction.MaxMenuText)]

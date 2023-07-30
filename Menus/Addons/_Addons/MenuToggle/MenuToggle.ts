@@ -29,7 +29,7 @@ namespace YetaWF_Menus {
                         if (menu.isShown)
                             menu.hide();
                         else
-                            menu.show();
+                            menu.show(this.Button);
                     } else {
                         menu.closeAll();// other menu
                     }

@@ -47,6 +47,41 @@ var YetaWF_Menus;
                 }
                 return true;
             });
+            $YetaWF.registerEventHandler(this.Details, "click", "a[data-name='CopyAction']", function (ev) {
+                var anchor = ev.__YetaWFElem;
+                var url = $YetaWF.getAttribute(anchor, "href");
+                var uri = $YetaWF.parseUrl(url);
+                uri.addSearch("Page", _this.Url.value);
+                var formJson = $YetaWF.Forms.getJSONInfo(anchor);
+                $YetaWF.postJSON(uri, formJson, null, null, function (success, data) {
+                    if (success) {
+                        _this.MenuText.value = data.MenuText;
+                        _this.LinkText.value = data.MenuText;
+                        //this.ImageUrlFinal.value = data.ImagePNG;
+                        _this.ImageSVG.value = data.ImageSVG;
+                        _this.Tooltip.value = data.Tooltip;
+                    }
+                });
+                return false;
+            });
+            $YetaWF.registerEventHandler(this.Details, "click", "a[data-name='SaveAction']", function (ev) {
+                var anchor = ev.__YetaWFElem;
+                var confirmText = $YetaWF.getAttribute(anchor, "data-confirm");
+                $YetaWF.alertYesNo(confirmText, undefined, function () {
+                    var url = $YetaWF.getAttribute(anchor, "href");
+                    var uri = $YetaWF.parseUrl(url);
+                    uri.addSearch("Page", _this.Url.value);
+                    var data = {
+                        MenuText: _this.MenuText.value,
+                        //ImagePNG: this.ImageUrlFinal.value,
+                        ImageSVG: _this.ImageSVG.value,
+                        Tooltip: _this.Tooltip.value,
+                    };
+                    var formJson = $YetaWF.Forms.getJSONInfo(anchor);
+                    $YetaWF.postJSON(uri, formJson, null, data, function (success) { });
+                });
+                return false;
+            });
             $YetaWF.registerEventHandler(this.AddButton, "click", null, function (ev) {
                 if (!_this.ActiveEntry && !_this.Tree.getFirstVisibleItem()) {
                     // empty tree
@@ -158,6 +193,8 @@ var YetaWF_Menus;
             this.EntryType = YetaWF.ComponentBaseDataImpl.getControlFromSelector("select[name='ModEntry.EntryType']", YetaWF_ComponentsHTML.DropDownListEditComponent.SELECTOR, [this.Details]);
             this.Url = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.Url']", YetaWF_ComponentsHTML.UrlEditComponent.SELECTOR, [this.Details]);
             this.SubModule = YetaWF.ComponentBaseDataImpl.getControlFromSelector("[name='ModEntry.SubModule']", YetaWF_ComponentsHTML.ModuleSelectionEditComponent.SELECTOR, [this.Details]);
+            this.CopyAction = $YetaWF.getElement1BySelector("a[data-name='CopyAction']", [this.Details]);
+            this.SaveAction = $YetaWF.getElement1BySelector("a[data-name='SaveAction']", [this.Details]);
             this.MenuText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.MenuText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
             this.LinkText = YetaWF.ComponentBaseDataImpl.getControlFromSelector("input[name='ModEntry.LinkText']", YetaWF_ComponentsHTML.MultiStringEditComponent.SELECTOR, [this.Details]);
             this.ImageUrlFinal = $YetaWF.getElement1BySelector("input[name='ModEntry.ImageUrlFinal']", [this.Details]);
@@ -197,6 +234,10 @@ var YetaWF_Menus;
                     _this.update();
                 }
                 return false;
+            });
+            $YetaWF.registerCustomEventHandler(this.Url.Control, YetaWF_ComponentsHTML.UrlEditComponent.EVENTCHANGE, null, function (ev) {
+                _this.enableFields(_this.ActiveData != null);
+                return true;
             });
         };
         MenuEditView.prototype.changeSelection = function () {
@@ -345,6 +386,8 @@ var YetaWF_Menus;
                     case MenuEntryType.Entry:
                         this.Url.enable(true);
                         this.SubModule.enable(true);
+                        $YetaWF.elementEnableToggle(this.CopyAction, this.Url.value.startsWith("/"));
+                        $YetaWF.elementEnableToggle(this.SaveAction, this.Url.value.startsWith("/"));
                         this.MenuText.enable(true);
                         this.LinkText.enable(true);
                         $YetaWF.elementEnable(this.ImageUrlFinal);
@@ -365,6 +408,8 @@ var YetaWF_Menus;
                     case MenuEntryType.Parent:
                         this.Url.enable(false);
                         this.SubModule.enable(false);
+                        $YetaWF.elementDisable(this.CopyAction);
+                        $YetaWF.elementDisable(this.SaveAction);
                         this.MenuText.enable(true);
                         this.LinkText.enable(true);
                         $YetaWF.elementEnable(this.ImageUrlFinal);
@@ -385,6 +430,8 @@ var YetaWF_Menus;
                     case MenuEntryType.Separator:
                         this.Url.enable(false);
                         this.SubModule.enable(false);
+                        $YetaWF.elementDisable(this.CopyAction);
+                        $YetaWF.elementDisable(this.SaveAction);
                         this.MenuText.enable(false);
                         this.LinkText.enable(false);
                         $YetaWF.elementDisable(this.ImageUrlFinal);
@@ -408,6 +455,8 @@ var YetaWF_Menus;
                 this.EntryType.enable(false);
                 this.Url.enable(false);
                 this.SubModule.enable(false);
+                $YetaWF.elementDisable(this.CopyAction);
+                $YetaWF.elementDisable(this.SaveAction);
                 this.MenuText.enable(false);
                 this.LinkText.enable(false);
                 $YetaWF.elementDisable(this.ImageUrlFinal);

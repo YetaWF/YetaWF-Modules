@@ -141,7 +141,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             [UIHint("UrlType")]
             public UrlTypeEnum UrlType { get; set; }
-            [UIHint("UrlDesignedPage")]
+            [UIHint("UrlDesignedPage"), AdditionalMetadata("DropDownHeightFactor", 3.0)]
             public string _Local { get; set; } = null!;
             [UIHint("UrlRemotePage")]
             public string _Remote { get; set; } = null!;

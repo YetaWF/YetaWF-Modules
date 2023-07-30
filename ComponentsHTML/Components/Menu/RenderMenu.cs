@@ -47,7 +47,8 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// </summary>
             public HorizontalAlignEnum HorizontalAlign { get; set; }
         }   
-        internal static async Task<string> RenderMenuAsync(MenuList? menu, string? id = null, string? cssClass = null, bool Hidden = false, YHtmlHelper? HtmlHelper = null, bool WantArrows = false, int? width = null) {
+        internal static async Task<string> RenderMenuAsync(MenuList? menu, string? id = null, string? CssClass = null, bool Hidden = false, YHtmlHelper? HtmlHelper = null,
+            bool WantArrows = false, int? Width = null, bool? MiniScrollbar = false) {
 
             if (menu == null || menu.Count == 0)
                 return string.Empty;
@@ -59,18 +60,24 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string styleBits = string.Empty;
             if (Hidden)
                 styleBits += "display:none;";
-            if (width != null)
-                styleBits += $"width:{(int)width}px;";
+            if (Width != null)
+                styleBits += $"width:{(int)Width}px;";
             if (!string.IsNullOrEmpty(styleBits))
                 style = $" style='{styleBits}'";
 
             string css = "t_lvl0";
-            css = CssManager.CombineCss(css, Manager.AddOnManager.CheckInvokedCssModule(cssClass));
+            css = CssManager.CombineCss(css, Manager.AddOnManager.CheckInvokedCssModule(CssClass));
 
             if (id == null)
                 id = Manager.UniqueId();
-        
-            return $@"<ul{(id != null ? $" id='{id}'" : "")} class='t_menu {css}'{style}>{menuContents}</ul>";
+
+            string scroll = string.Empty;
+            if (MiniScrollbar == true) {
+                await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.AreaName, "github.com.grsmto.simplebar");
+                scroll = " data-simplebar data-simplebar-auto-hide='false'";
+            }
+           
+            return $@"<ul{(id != null ? $" id='{id}'" : "")} class='t_menu {css}'{style}{scroll}>{menuContents}</ul>";
         }
 
         private static async Task<string> RenderMenuAsync(YHtmlHelper? htmlHelper, List<ModuleAction>? subMenu, Guid? subGuid, string? cssClass, ModuleAction.RenderModeEnum renderMode, int level, bool wantArrows) {

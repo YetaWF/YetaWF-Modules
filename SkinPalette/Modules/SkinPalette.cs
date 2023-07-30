@@ -106,6 +106,10 @@ public class SkinPaletteModule : ModuleDefinition {
         [UIHint("Color"), StringLength(MaxColor), Required]
         public string ModPanelClr { get; set; } = null!;
 
+        [Category("modPanel"), Caption("--mpnl-padding"), Description("Padding")]
+        [UIHint("Text20"), StringLength(MaxPadding), Required]
+        public string ModPanelPadding { get; set; } = null!;
+
         [Category("modPanel"), Caption("--mpnl-border"), Description("Border")]
         [UIHint("Text40"), StringLength(MaxBorder), Required]
         public string ModPanelBorder { get; set; } = null!;
@@ -113,6 +117,10 @@ public class SkinPaletteModule : ModuleDefinition {
         [Category("modPanel"), Caption("--mpnl-border-radius"), Description("Border Radius")]
         [UIHint("Text40"), StringLength(MaxRadius), Required]
         public string ModPanelBorderRadius { get; set; } = null!;
+
+        [Category("modPanel"), Caption("--mpnl-shadow"), Description("Shadow")]
+        [UIHint("Text40"), StringLength(MaxShadow), Required]
+        public string ModPanelShadow { get; set; } = null!;
 
         [Category("modPanel"), Caption("--mpnl-title-font"), Description("Font")]
         [UIHint("Text40"), StringLength(MaxFont), Required]
@@ -728,15 +736,19 @@ public class SkinPaletteModule : ModuleDefinition {
         [UIHint("Text20"), StringLength(MaxHeight), Required]
         public string MainMenuSm2DDHeight { get; set; } = null!;
 
-
-
-        [Category("Menu"), Caption("--mm-svg-small-border"), Description("Border")]
+        [Category("Main Menu (small)"), Caption("--mm-svg-small-border"), Description("Border")]
         [UIHint("Text40"), StringLength(MaxBorder), Required]
         public string MenuSVGSmallBorder { get; set; } = null!;
 
-        [Category("Menu"), Caption("--mm-svg-small-border-radius"), Description("Border Radius")]
+        [Category("Main Menu (small)"), Caption("--mm-svg-small-border-radius"), Description("Border Radius")]
         [UIHint("Text40"), StringLength(MaxRadius), Required]
         public string MenuSVGSmallBorderRadius { get; set; } = null!;
+
+
+
+        [Category("Mini Scroll"), Caption("--ms-1-clr"), Description("Color")]
+        [UIHint("Color"), StringLength(MaxColor), Required]
+        public string MiniScrollClr { get; set; } = null!;
 
 
 

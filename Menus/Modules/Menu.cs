@@ -45,6 +45,8 @@ public class MenuModule : ModuleDefinition, IModuleMenuAsync {
 
     public override IModuleDefinitionIO GetDataProvider() { return new MenuModuleDataProvider(); }
 
+    public override bool ShowActionMenu { get { return false; } }
+
     [Data_Binary, CopyAttribute]
     [Obsolete("Do not use directly - use GetMenu()/SaveMenu() instead - preserved for data conversion (pre 1.1.1)")]
     public MenuList? Menu { get; set; }
@@ -110,6 +112,12 @@ public class MenuModule : ModuleDefinition, IModuleMenuAsync {
     [Data_NewValue]
     public int VerticalWidth { get; set; }
 
+    [Category("General"), Caption("Mini Scrollbars"), Description("Defines whether minimal scrollbars are used (Vertical Orientation only).")]
+    [UIHint("Boolean")]
+    [ProcessIf(nameof(Orientation), MenuComponentBase.OrientationEnum.Vertical, Disable = true), RequiredIf(nameof(Orientation), MenuComponentBase.OrientationEnum.Vertical)]
+    [Data_NewValue]
+    public bool MiniScroll { get; set; }
+
     [Category("General"), Caption("Small Screen Maximum Size"), Description("Defines the largest screen size where the small menu is used - If the screen is wider, the large menu is shown.")]
     [UIHint("IntValue4"), Range(0, 999999), Required]
     [Data_NewValue]
@@ -152,6 +160,7 @@ public class MenuModule : ModuleDefinition, IModuleMenuAsync {
                 OpenOnHover = true,
                 HorizontalAlign = MenuComponentBase.HorizontalAlignEnum.Right,
                 WantArrows = true,
+                MiniScroll = MiniScroll,
             },
         };
         model.Menu.MenuList.LICssClass = LICssClass;

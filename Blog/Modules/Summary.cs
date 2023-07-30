@@ -29,6 +29,8 @@ public class SummaryModule : ModuleDefinition {
         Name = this.__ResStr("modName", "Blog Summary");
         Description = this.__ResStr("modSummary", "Displays a summary of blog entries. The most recent blog entries for all categories are shown. This module is typically used in a sidebar on a page showing blog entries (using the Blog Entries Module).");
         Entries = 20;
+        Print = false;
+        WantSearch = false;
     }
 
     public override IModuleDefinitionIO GetDataProvider() { return new SummaryModuleDataProvider(); }

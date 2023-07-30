@@ -27,6 +27,7 @@ public class ImportDataModule : ModuleDefinition {
         Title = this.__ResStr("modTitle", "Import Package Data");
         Description = this.__ResStr("modSummary", "Used to import all the data for one package. Only data for the current site is imported. A site backup contains multiple zip files, each containing data a backup for a particular package. These zip files can be restored, or imported, using the Import Package Data Module. The Import Package Data Module is accessible using Admin > Panel > Packages.");
         Print = false;
+        DefaultViewName = StandardViews.PropertyListEdit;
     }
 
     public override IModuleDefinitionIO GetDataProvider() { return new ImportDataModuleDataProvider(); }
@@ -42,7 +43,9 @@ public class ImportDataModule : ModuleDefinition {
         }
     }
 
+    [Header("Import package data from a zip file(created by Export Data).")]
     public class ImportDataModel {
+        [Category("Import"), Caption(""), Description("")]
         [UIHint("FileUpload1")]
         public FileUpload1? UploadFile { get; set; }
     }

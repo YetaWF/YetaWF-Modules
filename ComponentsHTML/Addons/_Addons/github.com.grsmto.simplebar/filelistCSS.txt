@@ -1,0 +1,3 @@
+﻿https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.min.css,CDN
+/node_modules/simplebar/dist/simplebar.min.css,nominify,noCDN
+MiniScroll.scss

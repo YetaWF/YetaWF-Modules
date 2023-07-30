@@ -4,9 +4,9 @@
     .t_palette {
         display:block;
         position: fixed;
+        z-index:1510;
         left:58px;
         top:5px;
-        z-index:901;
         padding:4px;
         width:16px;
         height:16px;
@@ -24,7 +24,7 @@
     //     font-size:.6em;
     // }
     .t_contents {
-        z-index: 900;
+        z-index:1500;
         position: fixed;
         top: 0;
         right: 0;

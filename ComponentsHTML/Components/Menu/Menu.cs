@@ -124,6 +124,10 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             /// Defines whether expand/collapse arrows are shown.
             /// </summary>
             public bool WantArrows { get; set; }
+            /// <summary>
+            /// Defines whether small scrollbars are shown.
+            /// </summary>
+            public bool MiniScroll { get; set; }
         }
     }
 
@@ -147,7 +151,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             string css = "yt_menu t_display t_large"; // start out with a large menu
             css = CssManager.CombineCss(css, model.Orientation == OrientationEnum.Horizontal ? "t_horizontal" : "t_vertical");
-            string menuHTML = await RenderMenuAsync(model.MenuList, DivId, css, WantArrows: model.WantArrows, width: model.Orientation == OrientationEnum.Vertical ? model.VerticalWidth : null, HtmlHelper: HtmlHelper);
+            string menuHTML = await RenderMenuAsync(model.MenuList, DivId, css, 
+                WantArrows: model.WantArrows,
+                Width: model.Orientation == OrientationEnum.Vertical ? model.VerticalWidth : null,
+                MiniScrollbar: model.MiniScroll,
+                HtmlHelper: HtmlHelper);
             if (string.IsNullOrWhiteSpace(menuHTML))
                 return string.Empty;
 

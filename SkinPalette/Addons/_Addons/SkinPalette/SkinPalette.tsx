@@ -278,8 +278,10 @@ namespace YetaWF_SkinPalette {
 
             this.getColor("ModPanelBg").value = values.GenBgShaded;
             this.getColor("ModPanelClr").value = values.GenClrShaded;
+            this.getInput("ModPanelPadding").value = "1em";
             this.getInput("ModPanelBorder").value = `${values.GenBorderWidth}px solid ${values.GenBorderClr}`;
             this.getInput("ModPanelBorderRadius").value = `${values.GenBorderRadius}px`;
+            this.getInput("ModPanelShadow").value = "none";
             this.getInput("ModPanelTitleFont").value = values.GenFont;
             this.getInput("ModPanelLinkFont").value = values.GenSmallFont;
 
@@ -435,6 +437,8 @@ namespace YetaWF_SkinPalette {
 
             this.getInput("MenuSVGSmallBorder").value = `${values.GenBorderWidth}px solid ${values.GenBorderClr}`;
             this.getInput("MenuSVGSmallBorderRadius").value = `${values.GenBorderRadius}px`;
+
+            this.getColor("MiniScrollClr").value = values.GenClr;
 
             this.getColor("PopupMenu1Bg").value = values.GenBg;
             this.getColor("PopupMenu1Clr").value = values.GenClr;

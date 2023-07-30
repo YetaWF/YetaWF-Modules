@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,10 @@ using YetaWF.Core.Components;
 using YetaWF.Core.Endpoints;
 using YetaWF.Core.Endpoints.Filters;
 using YetaWF.Core.Localize;
+using YetaWF.Core.Models;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Pages;
 using YetaWF.Core.Support;
 using YetaWF.Modules.Menus.Modules;
 
@@ -20,8 +23,17 @@ namespace YetaWF.Modules.Menu.Endpoints;
 public class MenuEditModuleEndpoints : YetaWFEndpoints {
 
     public const string EntireMenu = "EntireMenu";
+    public const string CopyPage = "CopyPage";
+    public const string SavePage = "SavePage";
 
     private static string __ResStr(string name, string defaultValue, params object?[] parms) { return ResourceAccess.GetResourceString(typeof(MenuEditModuleEndpoints), name, defaultValue, parms); }
+
+    public class PageData {
+        public MultiString MenuText { get; set; } = null!;
+        //public string ImagePNG { get; set; }
+        public string ImageSVG { get; set; } = null!;
+        public MultiString Tooltip { get; set; } = null!;
+    }
 
     public static void RegisterEndpoints(IEndpointRouteBuilder endpoints, Package package, string areaName) {
 
@@ -47,6 +59,36 @@ public class MenuEditModuleEndpoints : YetaWFEndpoints {
             return Results.Json(new EntireMenuResult {
                 NewVersion = modMenu.MenuVersion
             });
+        });
+
+        group.MapPost(CopyPage, async (HttpContext context, Guid __ModuleGuid, string page) => {
+            ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
+            if (!module.IsAuthorized()) return Results.Unauthorized();
+
+            PageDefinition? pageDef = await PageDefinition.LoadFromUrlAsync(page);
+            if (pageDef == null)
+                throw new Error(__ResStr("noPage", "Page {0} doesn't exist.", page));
+            return Results.Json(new PageData {
+                MenuText = pageDef.Title,
+                //ImagePNG = pageDef.FavIcon ?? string.Empty,
+                ImageSVG = pageDef.Fav_SVG ?? string.Empty,
+                Tooltip = pageDef.Description,
+            });
+        });
+
+        group.MapPost(SavePage, async (HttpContext context, Guid __ModuleGuid, string page, [FromBody] PageData data) => {
+            ModuleDefinition module = await GetModuleAsync(__ModuleGuid);
+            if (!module.IsAuthorized()) return Results.Unauthorized();
+
+            PageDefinition? pageDef = await PageDefinition.LoadFromUrlAsync(page);
+            if (pageDef == null)
+                throw new Error(__ResStr("noPage", "Page {0} doesn't exist.", page));
+            pageDef.Title = data.MenuText;
+            //pageDef.FavIcon = string.IsNullOrWhiteSpace(data.ImagePNG) ? null : data.ImagePNG;
+            pageDef.Fav_SVG = string.IsNullOrWhiteSpace(data.ImageSVG) ? null : data.ImageSVG;
+            pageDef.Description = data.Tooltip;
+            await pageDef.SaveAsync();
+            return Results.Ok();
         });
     }
 

@@ -157,7 +157,7 @@ var YetaWF_ComponentsHTML;
             }
             else {
                 // main level
-                var anchors = $YetaWF.getElementsBySelector("ul.".concat(MenuComponent.TEMPLATE, " > li > a"), [this.Control]); // all top level anchors
+                var anchors = $YetaWF.getElementsBySelector("ul.".concat(MenuComponent.TEMPLATE, " li.t_lvl0 > a"), [this.Control]); // all top level anchors
                 for (var _i = 0, anchors_1 = anchors; _i < anchors_1.length; _i++) {
                     var a = anchors_1[_i];
                     this.internalCloseSublevelsStartingAt(a, exceptAnchor);
@@ -230,14 +230,14 @@ var YetaWF_ComponentsHTML;
                 this.killTimeout();
                 return true;
             }
-            console.log("handleMouseMove main");
+            // console.log(`handleMouseMove main`);
             var mainRect = this.Control.getBoundingClientRect();
-            console.log("handleMouseMove x=".concat(cursorX, " y=").concat(cursorY, " main ").concat(JSON.stringify(mainRect)));
+            // console.log(`handleMouseMove x=${cursorX} y=${cursorY} main ${JSON.stringify(mainRect)}`);
             if (mainRect.left <= cursorX && cursorX < mainRect.right && mainRect.top <= cursorY && cursorY < mainRect.bottom) {
                 this.killTimeout();
                 return true;
             }
-            console.log("handleMouseMove x=".concat(cursorX, " y=").concat(cursorY, " ").concat(JSON.stringify(this.MenuRects)));
+            // console.log(`handleMouseMove x=${cursorX} y=${cursorY} ${JSON.stringify(this.MenuRects)}`);
             for (var _i = 0, _a = this.MenuRects; _i < _a.length; _i++) {
                 var menuRect = _a[_i];
                 var rect = menuRect.Rect;
@@ -257,16 +257,16 @@ var YetaWF_ComponentsHTML;
         };
         MenuComponent.prototype.startTimeout = function () {
             var _this = this;
-            console.log("startTimeout entry");
+            // console.log(`startTimeout entry`);
             if (!this.CloseTimeout) {
                 this.CloseTimeout = setTimeout(function () {
-                    console.log("startTimeout fired");
+                    // console.log(`startTimeout fired`);
                     _this.closeAll();
                 }, this.Setup.HoverDelay || 1);
             }
         };
         MenuComponent.prototype.clearPath = function () {
-            var anchors = $YetaWF.getElementsBySelector("ul.t_menu > li > a", [this.Control]);
+            var anchors = $YetaWF.getElementsBySelector("ul.yt_menu li.t_lvl0 > a, ul.t_menu > li > a", [this.Control]);
             for (var _i = 0, anchors_2 = anchors; _i < anchors_2.length; _i++) {
                 var a = anchors_2[_i];
                 $YetaWF.elementRemoveClass(a, "t_path");
@@ -311,12 +311,12 @@ var YetaWF_ComponentsHTML;
             }
         };
         MenuComponent.prototype.closeAll = function () {
-            console.log("closeAll entry");
+            // console.log(`closeAll entry`);
             this.MenuRects = [];
             this.clearScheduleCloseSublevel();
             if (this.isVertical)
                 return;
-            var anchors = $YetaWF.getElementsBySelector("ul.".concat(MenuComponent.TEMPLATE, " > li > a"), [this.Control]); // all top level anchors
+            var anchors = $YetaWF.getElementsBySelector("ul.".concat(MenuComponent.TEMPLATE, " li.t_lvl0 > a"), [this.Control]); // all top level anchors
             for (var _i = 0, anchors_3 = anchors; _i < anchors_3.length; _i++) {
                 var anchor = anchors_3[_i];
                 this.closeSublevelsStartingAt(anchor);
@@ -325,7 +325,7 @@ var YetaWF_ComponentsHTML;
             this.hide();
         };
         MenuComponent.closeAllMenus = function () {
-            console.log("closeAllMenus entry");
+            // console.log(`closeAllMenus entry`);
             var controls = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR);
             for (var _i = 0, controls_1 = controls; _i < controls_1.length; _i++) {
                 var control = controls_1[_i];
@@ -368,30 +368,53 @@ var YetaWF_ComponentsHTML;
             enumerable: false,
             configurable: true
         });
-        MenuComponent.prototype.show = function () {
+        MenuComponent.prototype.show = function (control) {
             this.Control.style.display = "";
             if (this.isSmall) {
                 var width = window.innerWidth;
-                var rect = this.Control.getBoundingClientRect();
-                this.Control.style.width = "".concat(Math.max(100, width - 2 * rect.left), "px");
+                var rect = null;
+                if (control) {
+                    rect = control.getBoundingClientRect();
+                    this.Control.style.top = "".concat(rect.bottom, "px");
+                    var diff = 0;
+                    if (rect.left < width / 2) {
+                        diff = rect.left;
+                    }
+                    else {
+                        diff = Math.max(0, width - rect.right);
+                    }
+                    this.Control.style.left = "".concat(diff, "px");
+                    this.Control.style.width = "".concat(Math.max(100, width - 2 * diff), "px");
+                }
+                else {
+                    rect = this.Control.getBoundingClientRect();
+                    this.Control.style.width = "".concat(Math.max(100, width - 2 * rect.left), "px");
+                }
             }
         };
         MenuComponent.prototype.hide = function () {
             if (this.isSmall)
                 this.Control.style.display = "none";
         };
-        MenuComponent.prototype.selectEntry = function (path) {
+        MenuComponent.prototype.selectEntry = function (path, compareFunc) {
             this.clearPath();
+            path = this.normalizePath(path);
             var subUL = this.Control;
-            return this.selectSublevelEntry(this.normalizePath(path), subUL);
+            if (compareFunc) {
+                if (this.selectSublevelEntry(path, subUL, 0, compareFunc))
+                    return true;
+            }
+            if (this.selectSublevelEntry(path, subUL, 0, this.comparePath))
+                return true;
+            return this.selectSublevelEntry(path, subUL, 0, this.comparePathPartial);
         };
-        MenuComponent.prototype.selectSublevelEntry = function (path, subUL) {
+        MenuComponent.prototype.selectSublevelEntry = function (path, subUL, level, compareFunc) {
             var result = false;
-            var subLI = $YetaWF.getChildElement1ByTagCond("li", subUL);
+            var subLI = $YetaWF.getElement1BySelector("li.t_lvl".concat(level), [subUL]);
             while (!!subLI) {
                 var anchor = $YetaWF.getChildElement1ByTagCond("a", subLI);
                 if (anchor) {
-                    if (this.normalizePath(anchor.href) === path) {
+                    if (compareFunc(this.normalizePath(anchor.href), path)) {
                         $YetaWF.elementToggleClass(subLI, "t_selected", true);
                         $YetaWF.elementToggleClass(subLI, "t_path", true);
                         $YetaWF.elementToggleClass(subUL, "t_path", true);
@@ -403,7 +426,7 @@ var YetaWF_ComponentsHTML;
                     }
                     var subSubUL = $YetaWF.getChildElement1ByTagCond("ul", subLI);
                     if (subSubUL) {
-                        if (this.selectSublevelEntry(path, subSubUL)) {
+                        if (this.selectSublevelEntry(path, subSubUL, level + 1, compareFunc)) {
                             $YetaWF.elementToggleClass(subLI, "t_path", true);
                             $YetaWF.elementToggleClass(subUL, "t_path", true);
                             $YetaWF.elementToggleClass(anchor, "t_path", true);
@@ -421,7 +444,18 @@ var YetaWF_ComponentsHTML;
             var i = path.indexOf("?");
             if (i > 0)
                 path = path.substring(0, i);
+            if (path.startsWith("https:"))
+                path = path.substring(6);
+            else if (path.startsWith("http:"))
+                path = path.substring(5);
             return path.toLowerCase();
+        };
+        MenuComponent.prototype.comparePath = function (path, pathSel) {
+            console.log("compare ".concat(path, " -> ").concat(pathSel));
+            return path === pathSel;
+        };
+        MenuComponent.prototype.comparePathPartial = function (path, pathSel) {
+            return path.startsWith("".concat(pathSel, "/"));
         };
         MenuComponent.TEMPLATE = "yt_menu";
         MenuComponent.SELECTOR = ".yt_menu.t_display";
@@ -446,7 +480,6 @@ var YetaWF_ComponentsHTML;
     });
     // handle new content
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.Content.EVENTNAVPAGELOADED, null, function (ev) {
-        console.log("EVENTNAVPAGELOADED entry");
         var menus = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR);
         for (var _i = 0, menus_3 = menus; _i < menus_3.length; _i++) {
             var menu = menus_3[_i];
@@ -457,7 +490,6 @@ var YetaWF_ComponentsHTML;
     });
     // Handle Escape key to close any open menus
     $YetaWF.registerEventHandlerBody("keydown", null, function (ev) {
-        console.log("keydown entry");
         if (ev.key !== "Escape")
             return true;
         var menus = YetaWF.ComponentBaseDataImpl.getControls(MenuComponent.SELECTOR);
