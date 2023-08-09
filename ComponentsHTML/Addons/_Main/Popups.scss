@@ -16,18 +16,15 @@
     border-radius: var(--dialog-border-radius);
 
     padding: .2em;
-
-    display: flex;
-    flex-direction: column;
-    overflow:hidden;
-
     transition: opacity .3s;
 
-    .t_titlebar {
+    > .t_titlebar {
+
         display:flex;
         flex-direction: row;
         flex-wrap: nowrap;
         align-items: center;
+
         background: var(--dialog-title-bg);
         color: var(--dialog-title-clr);
         cursor: move;
@@ -51,21 +48,12 @@
             }
         }
     }
-    .t_content {
+    > .t_content {
+
         width: auto;
-        min-height: 2em;
-        max-height: none;
-        height: auto;
         margin:0;
         padding: .5em 1em;
         overflow: auto;
-    }
-    iframe {
-        padding:0;
-        margin:0;
-        height:100%;
-        width:100%;
-        max-height:none;
     }
 }
 
@@ -85,13 +73,7 @@
     transition: opacity .3s;
 }
 
-body.yPopup {
-    padding: .5em 1em;
-    height:100%;
-}
-
-body.yPopup,
-#ypopup.yPopupDyn {
+#ypopup {
     .yPane .yModule {
         margin:0;
         padding:0;
@@ -104,3 +86,36 @@ body.yPopup,
     }
 }
 
+// Make property tab panes scrollable instead of just main popup window
+
+#ypopup.popupFixed {
+    > .t_content {
+
+        display: flex;
+        flex-direction: column;
+        overflow:hidden;
+
+        > .yPane,
+        > .yPane > .yModule,
+        > .yPane > .yModule > .yModuleContents,
+        > .yPane > .yModule > .yModuleContents > form,
+        > .yPane > .yModule > .yModuleContents > form > .yform-partial,
+        > .yPane > .yModule > .yModuleContents > form > .yform-partial > .yt_propertylist,
+        > .yPane > .yModule > .yModuleContents > form > .yform-partial > .yt_propertylist > .yt_tabs  {
+            flex: 1 1 100%;
+            overflow:hidden;
+
+            display: flex;
+            flex-direction: column;
+        }
+        > .yPane > .yModule > .yModuleContents > form > .yform-partial > .yt_propertylist > .yt_tabs > .t_tabpanel  {
+            flex: 1 1 100%;
+            overflow: auto;
+        }
+        > .yPane > .yModule > .yModuleLinksContainer,
+        > .yPane > .yModule > .yModuleContents > form > .t_detailsbuttons,
+        > .yPane > .yModule > .yModuleContents > form > .yform-partial > .yt_propertylist > .yt_tabs > .t_tabstrip {
+            flex: 0 0 auto;
+        }
+    }
+}

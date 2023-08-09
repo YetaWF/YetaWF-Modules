@@ -52,7 +52,7 @@ var YetaWF_ComponentsHTML;
         PopupsImpl.prototype.openDynamicPopup = function (result, done) {
             // we're already in a popup
             PopupsImpl.internalClosePopup();
-            var popup = $YetaWF.createElement("div", { id: PopupsImpl.POPUPID, tabindex: "-1", role: "dialog", class: "yPopupDyn", "aria-describedby": "ypopupContent", "aria-labelledby": "ypopupTitle", style: "display:none" },
+            var popup = $YetaWF.createElement("div", { id: PopupsImpl.POPUPID, tabindex: "-1", role: "dialog", "aria-describedby": "ypopupContent", "aria-labelledby": "ypopupTitle", style: "display:none" },
                 $YetaWF.createElement("div", { class: "t_titlebar" },
                     $YetaWF.createElement("div", { id: "ypopupTitle", class: "t_title" }, result.PageTitle),
                     $YetaWF.createElement("button", { type: "button", class: "y_buttonlite t_close" })),
@@ -61,7 +61,6 @@ var YetaWF_ComponentsHTML;
             // mark that a popup is active
             document.expando = true;
             document.YPopupWindowActive = popup;
-            document.YPopupWindowStatic = false;
             document.YPopupDragDropInProgress = false;
             document.YPopupXOffset = 0;
             document.YPopupYOffset = 0;
@@ -116,33 +115,19 @@ var YetaWF_ComponentsHTML;
             if (!popup)
                 return;
             var content = $YetaWF.getElement1BySelectorCond("#ypopupContent", [popup]);
-            var popupWidth;
-            var popupHeight;
-            if (win.document.YPopupWindowStatic) {
-                // only inner window knows popup width/height for a static popup
-                var iframe = $YetaWF.getElement1BySelector("iframe", [popup]);
-                var yVolatile = iframe.contentWindow.YVolatile;
-                if (yVolatile) {
-                    var skin = iframe.contentWindow.YVolatile.Skin;
-                    if (skin) {
-                        popupWidth = skin.PopupWidth;
-                        popupHeight = skin.PopupHeight;
-                    }
-                }
-            }
-            else {
-                popupWidth = YVolatile.Skin.PopupWidth;
-                popupHeight = YVolatile.Skin.PopupHeight;
-            }
+            var popupWidth = YVolatile.Skin.PopupWidth;
+            var popupHeight = YVolatile.Skin.PopupHeight;
+            var popupMaxHeight = YVolatile.Skin.PopupMaxHeight;
             if (popupWidth === undefined || popupHeight === undefined)
                 return; // popup dimensions not yet known. We'll get another call later.
             var width;
-            if (win.innerWidth <= popupWidth || win.innerHeight <= popupHeight) {
+            if (win.innerWidth <= popupWidth || (popupHeight > 0 && win.innerHeight <= popupHeight) || (popupMaxHeight > 0 && win.innerHeight <= popupMaxHeight)) {
                 width = win.innerWidth;
                 popup.style.width = "".concat(win.innerWidth, "px");
-                popup.style.height = "".concat(win.innerHeight, "px");
+                popup.style.height = popup.style.minHeight = "".concat(win.innerHeight, "px");
+                popup.style.maxHeight = "initial";
                 if (content)
-                    content.style.maxHeight = "none";
+                    content.style.height = "initial";
                 popup.style.left = "0px";
                 popup.style.top = "0px";
                 popup.style.display = "";
@@ -150,15 +135,18 @@ var YetaWF_ComponentsHTML;
             else {
                 width = popupWidth;
                 popup.style.width = "".concat(popupWidth, "px");
-                if (!win.document.YPopupWindowStatic) {
+                if (popupHeight) {
                     popup.style.height = "auto";
-                    if (content)
-                        content.style.maxHeight = "".concat(win.innerHeight * 3 / 4, "px");
+                    if (content) {
+                        content.style.height = "".concat(popupHeight, "px");
+                        content.style.maxHeight = "initial";
+                    }
                 }
                 else {
-                    popup.style.height = "".concat(popupHeight, "px");
-                    if (content)
-                        content.style.maxHeight = "none";
+                    if (content) {
+                        content.style.height = "auto";
+                        content.style.maxHeight = popupMaxHeight ? "".concat(popupMaxHeight, "px") : "".concat(win.innerHeight * 3 / 4, "px");
+                    }
                 }
                 // center
                 popup.style.display = "";
@@ -168,8 +156,7 @@ var YetaWF_ComponentsHTML;
                 popup.style.left = "".concat(left, "px"); // or + win.pageXOffset if position:absolute
                 popup.style.top = "".concat(top_1, "px"); //  + win.pageYOffset
             }
-            if (!win.document.YPopupWindowStatic)
-                $YetaWF.setCondense(popup, width);
+            $YetaWF.setCondense(popup, width);
         };
         PopupsImpl.setupDragDrop = function () {
             var win = window.parent;
@@ -184,78 +171,17 @@ var YetaWF_ComponentsHTML;
                 return false;
             });
         };
-        /**
-         * Open a static popup, usually a popup based on iframe.
-         */
-        PopupsImpl.prototype.openStaticPopup = function (url) {
-            var win = window.parent;
-            // we're already in a popup
-            if (win.document.YPopupWindowActive != null) {
-                // we handle links within a popup by replacing the current popup page with the new page
-                if (win.document.YPopupWindowStatic) {
-                    var popup_1 = win.document.YPopupWindowActive;
-                    var iframe_1 = $YetaWF.getElement1BySelector("iframe", [popup_1]);
-                    iframe_1.src = url;
-                    return;
-                }
-                else {
-                    // we had a dynamic popup, close it and build static popup
-                    PopupsImpl.internalClosePopup();
-                }
-            }
-            var popup = $YetaWF.createElement("div", { id: PopupsImpl.POPUPID, tabindex: "-1", role: "dialog", class: "yPopup", "aria-labelledby": "ypopupTitle", style: "display:none;opacity:0" },
-                $YetaWF.createElement("div", { class: "t_titlebar" },
-                    $YetaWF.createElement("span", { id: "ypopupTitle", class: "t_title" }, "..."),
-                    $YetaWF.createElement("button", { type: "button", class: "y_buttonlite t_close" })),
-                $YetaWF.createElement("iframe", { title: "(???)", frameborder: "0" }));
-            // mark that a popup is active
-            document.expando = true;
-            document.YPopupWindowActive = popup;
-            document.YPopupWindowStatic = true;
-            document.YPopupDragDropInProgress = false;
-            YVolatile.Basics.IsInPopup = true; // we're now in a popup
-            win.document.YPopupDragDropInProgress = false;
-            var iframe = $YetaWF.getElement1BySelector("iframe", [popup]);
-            iframe.onload = function (ev) {
-                var title = $YetaWF.getElementById("ypopupTitle");
-                if (iframe.contentDocument)
-                    title.innerText = iframe.contentDocument.title;
-                $YetaWF.setLoading(false);
-                return true;
-            };
-            iframe.src = url;
-            PopupsImpl.addOverlay();
-            document.body.style.overflow = "hidden";
-            // Create the window
-            document.body.appendChild(popup);
-            popup.style.opacity = "0";
-            PopupsImpl.reposition();
-            popup.style.opacity = "1";
-            PopupsImpl.setupDragDrop();
-            // handle close button
-            var closeButton = $YetaWF.getElement1BySelector(".t_titlebar button", [popup]);
-            closeButton.innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_multiply; //close button image
-            $YetaWF.registerEventHandler(closeButton, "click", null, function (ev) {
-                PopupsImpl.internalClosePopup();
-                return false;
-            });
-        };
         PopupsImpl.pageLoad = function () {
             if (YVolatile.Basics.IsInPopup) {
                 PopupsImpl.reposition();
-                var win = window.parent;
-                /**
-                 * Handle Escape key in iframe for static popups
-                 */
-                if (win.document.YPopupWindowStatic) {
-                    document.body.addEventListener("keydown", function (ev) {
-                        if (ev.key === "Escape") {
-                            PopupsImpl.internalClosePopup();
-                            return false;
-                        }
-                        return true;
-                    });
-                }
+                // Handle Escape key
+                document.body.addEventListener("keydown", function (ev) {
+                    if (ev.key === "Escape") {
+                        PopupsImpl.internalClosePopup();
+                        return false;
+                    }
+                    return true;
+                });
             }
         };
         PopupsImpl.handleMouseMove = function (clientX, clientY) {
@@ -266,21 +192,8 @@ var YetaWF_ComponentsHTML;
                 if (!popup)
                     return true;
                 var drect = popup.getBoundingClientRect();
-                if ($YetaWF.elementHas(document.body, popup)) {
-                    // outer window
-                    // console.debug(`handleMouseMove x ${clientX} y ${clientY} ${drect.left},${drect.top}${drect.width},${drect.height}`);
-                }
-                else {
-                    // inner iframe window
-                    // console.debug(`adjust handleMouseMove x ${clientX} y ${clientY} ${drect.left},${drect.top}${drect.width},${drect.height}`);
-                    // we're handling a mousemove for a static popup
-                    // adjust the mouse coordinates
-                    clientX += drect.left;
-                    clientY += drect.top;
-                    // adjust clientY for title
-                    var title = $YetaWF.getElement1BySelector(".t_titlebar", [popup]);
-                    clientY += title.clientHeight;
-                }
+                // outer window
+                // console.debug(`handleMouseMove x ${clientX} y ${clientY} ${drect.left},${drect.top}${drect.width},${drect.height}`);
                 var left = clientX - win.document.YPopupXOffset;
                 if (left + drect.width > win.innerWidth)
                     left = win.innerWidth - drect.width;

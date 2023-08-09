@@ -1097,7 +1097,7 @@ var YetaWF_ComponentsHTML;
                             uri.parse(url);
                             uri.replaceSearch("FilterId", col.FilterId);
                             uri.replaceSearch("Data", elem_1.value);
-                            if ($YetaWF.Popups.openPopup(uri.toUrl(), false, true))
+                            if ($YetaWF.Popups.openPopup(uri.toUrl(), true))
                                 return false;
                             return true;
                         });

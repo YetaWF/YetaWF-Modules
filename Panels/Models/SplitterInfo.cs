@@ -9,6 +9,7 @@ namespace YetaWF.Modules.Panels.Models;
 public class SplitterInfo {
 
     public int Height { get; set; }
+    public int ContainerCss { get; set; }
     public Guid ModuleLeft { get; set; }
     public int MinWidth { get; set; }// pixels
     public int Width { get; set; }// percentage
@@ -19,6 +20,7 @@ public class SplitterInfo {
     public string? CollapseText { get; set; }
     public string? CollapseToolTip { get; set; }
     public string? ExpandToolTip { get; set; }
+    public string? ContainerSelector { get; set; }
 
     public SplitterInfo() { }
 

@@ -1172,7 +1172,7 @@ namespace YetaWF_ComponentsHTML {
                             uri.parse(url);
                             uri.replaceSearch("FilterId", col.FilterId);
                             uri.replaceSearch("Data", elem.value);
-                            if ($YetaWF.Popups.openPopup(uri.toUrl(), false, true))
+                            if ($YetaWF.Popups.openPopup(uri.toUrl(), true))
                                 return false;
                             return true;
                         });

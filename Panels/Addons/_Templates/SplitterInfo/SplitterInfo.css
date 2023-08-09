@@ -67,7 +67,6 @@
   border-right: var(--bar-border);
 }
 .yt_panels_splitterinfo .yt_panels_splitterinfo_left .t_area {
-  overflow: auto;
   height: 100%;
 }
 @media screen and (max-width: 900px) {
@@ -106,6 +105,13 @@
 }
 .yt_panels_splitterinfo svg {
   position: relative;
+}
+.yt_panels_splitterinfo .yModule {
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
 }
 
 @media print {

@@ -49,9 +49,18 @@ var YetaWF_Panels;
             });
             return _this;
         }
-        SplitterInfoComponent.prototype.resized = function () {
+        SplitterInfoComponent.resizeAll = function (printing) {
+            var ctrlDivs = $YetaWF.getElementsBySelector(SplitterInfoComponent.SELECTOR);
+            for (var _i = 0, ctrlDivs_1 = ctrlDivs; _i < ctrlDivs_1.length; _i++) {
+                var ctrlDiv = ctrlDivs_1[_i];
+                var ctrl = SplitterInfoComponent.getControlFromTag(ctrlDiv, SplitterInfoComponent.SELECTOR);
+                ctrl.resized(printing);
+            }
+        };
+        SplitterInfoComponent.prototype.resized = function (printing) {
             if (this.Setup.Height === 0) {
-                if ($YetaWF.isPrinting) {
+                console.log("resized ".concat(printing));
+                if (printing) {
                     this.Control.style.height = "";
                 }
                 else {
@@ -62,6 +71,14 @@ var YetaWF_Panels;
                     var winWidth = window.innerWidth;
                     if (winWidth >= this.SMALLSCREEN) {
                         window.scrollTo(0, 0);
+                        if (this.Setup.ContainerSelector) {
+                            var container = $YetaWF.getElement1BySelectorCond(this.Setup.ContainerSelector);
+                            if (container) {
+                                var height = container.clientHeight;
+                                this.Control.style.height = "".concat(height, "px");
+                                return;
+                            }
+                        }
                         var ctrlRect = this.Control.getBoundingClientRect();
                         var ctrlHeight = winHeight - ctrlRect.top;
                         if (ctrlHeight < 0)
@@ -125,25 +142,25 @@ var YetaWF_Panels;
     }(YetaWF.ComponentBaseDataImpl));
     YetaWF_Panels.SplitterInfoComponent = SplitterInfoComponent;
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, function (ev) {
-        var ctrlDivs = $YetaWF.getElementsBySelector(SplitterInfoComponent.SELECTOR);
-        for (var _i = 0, ctrlDivs_1 = ctrlDivs; _i < ctrlDivs_1.length; _i++) {
-            var ctrlDiv = ctrlDivs_1[_i];
-            if ($YetaWF.elementHas(ev.detail.container, ctrlDiv)) {
-                var ctrl = SplitterInfoComponent.getControlFromTag(ctrlDiv, SplitterInfoComponent.SELECTOR);
-                ctrl.resized();
-            }
-        }
+        SplitterInfoComponent.resizeAll();
         return true;
     });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, function (ev) {
-        var ctrlDivs = $YetaWF.getElementsBySelector(SplitterInfoComponent.SELECTOR);
-        for (var _i = 0, ctrlDivs_2 = ctrlDivs; _i < ctrlDivs_2.length; _i++) {
-            var ctrlDiv = ctrlDivs_2[_i];
-            if ($YetaWF.elementHas(ev.detail.container, ctrlDiv)) {
-                var ctrl = SplitterInfoComponent.getControlFromTag(ctrlDiv, SplitterInfoComponent.SELECTOR);
-                ctrl.resized();
-            }
-        }
+        // let ctrlDivs = $YetaWF.getElementsBySelector(SplitterInfoComponent.SELECTOR);
+        // for (let ctrlDiv of ctrlDivs) {
+        //     if ($YetaWF.elementHas(ev.detail.container, ctrlDiv)) {
+        //         let ctrl = SplitterInfoComponent.getControlFromTag<SplitterInfoComponent>(ctrlDiv, SplitterInfoComponent.SELECTOR);
+        //         ctrl.resized();
+        //     }
+        // }
+        return true;
+    });
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTBEFOREPRINT, null, function (ev) {
+        SplitterInfoComponent.resizeAll(true);
+        return true;
+    });
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTAFTERPRINT, null, function (ev) {
+        SplitterInfoComponent.resizeAll();
         return true;
     });
 })(YetaWF_Panels || (YetaWF_Panels = {}));

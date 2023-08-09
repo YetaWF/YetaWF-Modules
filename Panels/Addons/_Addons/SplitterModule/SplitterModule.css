@@ -3,4 +3,5 @@
 .YetaWF_Panels_Splitter {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }

@@ -392,8 +392,6 @@ var YetaWF_ComponentsHTML;
             });
         };
         BasicsImpl.prototype.getToastDiv = function () {
-            // if we're in an iframe popup, find outer window to add toast div
-            // if we're not in an iframe, window.parent simply returns window, so we're all good
             var doc = window.parent.document;
             var toastDiv = $YetaWF.getElement1BySelectorCond(BasicsImpl.ToastDivSelector, [doc.body]);
             if (!toastDiv) {

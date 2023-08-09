@@ -79,7 +79,6 @@ $smallscreen: 900px;
         position: relative;
         border-right: var(--bar-border);
         .t_area {
-            overflow: auto;
             height:100%;
         }
     }
@@ -117,6 +116,13 @@ $smallscreen: 900px;
     }
     svg {// fix clickable in IE
         position:relative;
+    }
+    .yModule {
+        margin:0 !important;
+        padding:0 !important;
+        border:none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
     }
 }
 

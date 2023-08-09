@@ -63,7 +63,12 @@ public class SplitterModule : ModuleDefinition, ISearchDynamicUrls, ISiteMapDyna
     [Data_NewValue]
     public string? ExpandToolTip { get; set; }
 
-    [Category("General"), Caption("Height (Pixels)"), Description("Defines the height of the module in pixels - Set to 0 to calculate the height automatically to fill the remainder of the page")]
+    [Category("General"), Caption("Container Selector"), Description("Defines a selector used to locate the container - If found, the height of the splitter module is based on the container height and the Height property is ignored")]
+    [UIHint("Text40"), StringLength(100)]
+    [Data_NewValue]
+    public string? ContainerSelector { get; set; }
+
+    [Category("General"), Caption("Height (Pixels)"), Description("Defines the height of the module in pixels - Set to 0 to calculate the height automatically to fill the remainder of the page - This property is ignored if the ContainerSelector defines a container which can be found")]
     [UIHint("IntValue4"), Range(0, 9999), Required]
     [Data_NewValue]
     public int Height { get; set; }
@@ -164,6 +169,7 @@ public class SplitterModule : ModuleDefinition, ISearchDynamicUrls, ISiteMapDyna
                 CollapseToolTip = CollapseToolTip,
                 ExpandToolTip = ExpandToolTip,
 
+                ContainerSelector = ContainerSelector,
                 Height = Height,
                 ModuleLeft = ModuleLeft,
                 MinWidth = MinWidth,

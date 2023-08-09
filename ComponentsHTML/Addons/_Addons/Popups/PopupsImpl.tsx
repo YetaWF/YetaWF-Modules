@@ -15,7 +15,6 @@ namespace YetaWF_ComponentsHTML {
 
 interface Document {
     YPopupWindowActive: HTMLDivElement | null;
-    YPopupWindowStatic: boolean;
     YPopupDragDropInProgress: boolean;
     YPopupXOffset: number;
     YPopupYOffset: number;
@@ -81,7 +80,7 @@ namespace YetaWF_ComponentsHTML {
             // we're already in a popup
             PopupsImpl.internalClosePopup();
 
-            const popup = <div id={PopupsImpl.POPUPID} tabindex="-1" role="dialog" class="yPopupDyn" aria-describedby="ypopupContent" aria-labelledby="ypopupTitle" style="display:none">
+            const popup = <div id={PopupsImpl.POPUPID} tabindex="-1" role="dialog" aria-describedby="ypopupContent" aria-labelledby="ypopupTitle" style="display:none">
                 <div class="t_titlebar">
                     <div id="ypopupTitle" class="t_title">{result.PageTitle}</div>
                     <button type="button" class="y_buttonlite t_close"></button>
@@ -94,7 +93,6 @@ namespace YetaWF_ComponentsHTML {
             // mark that a popup is active
             (document as any).expando = true;
             document.YPopupWindowActive = popup;
-            document.YPopupWindowStatic = false;
             document.YPopupDragDropInProgress = false;
             document.YPopupXOffset = 0;
             document.YPopupYOffset = 0;
@@ -163,47 +161,37 @@ namespace YetaWF_ComponentsHTML {
 
             let content = $YetaWF.getElement1BySelectorCond("#ypopupContent", [popup]);
 
-            let popupWidth: number | undefined;
-            let popupHeight: number | undefined;
-            if (win.document.YPopupWindowStatic) {
-                // only inner window knows popup width/height for a static popup
-                let iframe = $YetaWF.getElement1BySelector("iframe", [popup]) as HTMLIFrameElement;
-                let yVolatile: YetaWF.IVolatile = (iframe.contentWindow as any).YVolatile;
-                if (yVolatile) {
-                    let skin = (iframe.contentWindow as any).YVolatile.Skin;
-                    if (skin) {
-                        popupWidth = skin.PopupWidth;
-                        popupHeight = skin.PopupHeight;
-                    }
-                }
-            } else {
-                popupWidth = YVolatile.Skin.PopupWidth;
-                popupHeight = YVolatile.Skin.PopupHeight;
-            }
+            let popupWidth = YVolatile.Skin.PopupWidth;
+            let popupHeight = YVolatile.Skin.PopupHeight;
+            let popupMaxHeight = YVolatile.Skin.PopupMaxHeight;
             if (popupWidth === undefined || popupHeight === undefined)
                 return; // popup dimensions not yet known. We'll get another call later.
 
             let width: number;
-            if (win.innerWidth <= popupWidth || win.innerHeight <= popupHeight) {
+            if (win.innerWidth <= popupWidth || (popupHeight > 0 && win.innerHeight <= popupHeight) || (popupMaxHeight > 0 && win.innerHeight <= popupMaxHeight)) {
                 width = win.innerWidth;
                 popup.style.width = `${win.innerWidth}px`;
-                popup.style.height = `${win.innerHeight}px`;
+                popup.style.height = popup.style.minHeight = `${win.innerHeight}px`;
+                popup.style.maxHeight = "initial";
                 if (content)
-                    content.style.maxHeight = "none";
+                    content.style.height = "initial";
                 popup.style.left = "0px";
                 popup.style.top = "0px";
                 popup.style.display = "";
             } else {
                 width = popupWidth;
                 popup.style.width = `${popupWidth}px`;
-                if (!win.document.YPopupWindowStatic) {
+                if (popupHeight) {
                     popup.style.height = "auto";
-                    if (content)
-                        content.style.maxHeight = `${win.innerHeight * 3 / 4}px`;
+                    if (content) {
+                        content.style.height = `${popupHeight}px`;
+                        content.style.maxHeight = "initial";
+                    }
                 } else {
-                    popup.style.height = `${popupHeight}px`;
-                    if (content)
-                        content.style.maxHeight = "none";
+                    if (content) {
+                        content.style.height = "auto";
+                        content.style.maxHeight = popupMaxHeight ? `${popupMaxHeight}px` : `${win.innerHeight * 3 / 4}px`;
+                    }
                 }
                 // center
                 popup.style.display = "";
@@ -213,8 +201,7 @@ namespace YetaWF_ComponentsHTML {
                 popup.style.left = `${left}px`;  // or + win.pageXOffset if position:absolute
                 popup.style.top = `${top}px`; //  + win.pageYOffset
             }
-            if (!win.document.YPopupWindowStatic)
-                $YetaWF.setCondense(popup, width);
+            $YetaWF.setCondense(popup, width);
         }
 
         private static setupDragDrop(): void {
@@ -230,92 +217,19 @@ namespace YetaWF_ComponentsHTML {
             });
         }
 
-        /**
-         * Open a static popup, usually a popup based on iframe.
-         */
-        public openStaticPopup(url: string): void {
-
-            let win = window.parent;
-
-            // we're already in a popup
-            if (win.document.YPopupWindowActive != null) {
-                // we handle links within a popup by replacing the current popup page with the new page
-                if (win.document.YPopupWindowStatic) {
-                    let popup = win.document.YPopupWindowActive;
-                    let iframe = $YetaWF.getElement1BySelector("iframe", [popup]) as HTMLIFrameElement;
-                    iframe.src = url;
-                    return;
-                } else {
-                    // we had a dynamic popup, close it and build static popup
-                    PopupsImpl.internalClosePopup();
-                }
-            }
-
-            let popup = <div id={PopupsImpl.POPUPID} tabindex="-1" role="dialog" class="yPopup" aria-labelledby="ypopupTitle" style="display:none;opacity:0">
-                <div class="t_titlebar">
-                    <span id="ypopupTitle" class="t_title">...</span>
-                    <button type="button" class="y_buttonlite t_close"></button>
-                </div>
-                <iframe title="(???)" frameborder="0"></iframe>
-            </div> as HTMLDivElement;
-
-            // mark that a popup is active
-            (document as any).expando = true;
-            document.YPopupWindowActive = popup;
-            document.YPopupWindowStatic = true;
-            document.YPopupDragDropInProgress = false;
-            YVolatile.Basics.IsInPopup = true; // we're now in a popup
-            win.document.YPopupDragDropInProgress = false;
-
-            let iframe = $YetaWF.getElement1BySelector("iframe", [popup]) as HTMLIFrameElement;
-            iframe.onload = (ev: Event): boolean => {
-                let title = $YetaWF.getElementById("ypopupTitle");
-                if (iframe.contentDocument)
-                    title.innerText = iframe.contentDocument.title;
-                $YetaWF.setLoading(false);
-                return true;
-            };
-            iframe.src = url;
-
-            PopupsImpl.addOverlay();
-            document.body.style.overflow = "hidden";
-
-            // Create the window
-            document.body.appendChild(popup);
-            popup.style.opacity = "0";
-            PopupsImpl.reposition();
-            popup.style.opacity = "1";
-
-            PopupsImpl.setupDragDrop();
-
-            // handle close button
-            let closeButton = $YetaWF.getElement1BySelector(".t_titlebar button", [popup]);
-            closeButton.innerHTML = YConfigs.YetaWF_ComponentsHTML.SVG_fas_multiply;//close button image
-            $YetaWF.registerEventHandler(closeButton, "click", null, (ev: MouseEvent): boolean => {
-                PopupsImpl.internalClosePopup();
-                return false;
-            });
-        }
-
         public static pageLoad(): void {
 
             if (YVolatile.Basics.IsInPopup) {
                 PopupsImpl.reposition();
 
-                let win = window.parent;
-
-                /**
-                 * Handle Escape key in iframe for static popups
-                 */
-                if (win.document.YPopupWindowStatic) {
-                    document.body.addEventListener("keydown", (ev: KeyboardEvent): boolean => {
-                        if (ev.key === "Escape") {
-                            PopupsImpl.internalClosePopup();
-                            return false;
-                        }
-                        return true;
-                    });
-                }
+                // Handle Escape key
+                document.body.addEventListener("keydown", (ev: KeyboardEvent): boolean => {
+                    if (ev.key === "Escape") {
+                        PopupsImpl.internalClosePopup();
+                        return false;
+                    }
+                    return true;
+                });
             }
         }
 
@@ -328,23 +242,8 @@ namespace YetaWF_ComponentsHTML {
                 if (!popup) return true;
 
                 let drect = popup.getBoundingClientRect();
-
-                if ($YetaWF.elementHas(document.body, popup)) {
-                    // outer window
-                    // console.debug(`handleMouseMove x ${clientX} y ${clientY} ${drect.left},${drect.top}${drect.width},${drect.height}`);
-                } else {
-                    // inner iframe window
-                    // console.debug(`adjust handleMouseMove x ${clientX} y ${clientY} ${drect.left},${drect.top}${drect.width},${drect.height}`);
-                    // we're handling a mousemove for a static popup
-                    // adjust the mouse coordinates
-                    clientX += drect.left;
-                    clientY += drect.top;
-
-                    // adjust clientY for title
-                    let title = $YetaWF.getElement1BySelector(".t_titlebar", [popup]);
-                    clientY += title.clientHeight;
-
-                }
+                // outer window
+                // console.debug(`handleMouseMove x ${clientX} y ${clientY} ${drect.left},${drect.top}${drect.width},${drect.height}`);
                 let left = clientX - win.document.YPopupXOffset;
                 if (left + drect.width > win.innerWidth) left = win.innerWidth - drect.width;
                 if (left < 0) left = 0;

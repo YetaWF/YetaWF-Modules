@@ -3,6 +3,7 @@
 namespace YetaWF_Panels {
 
     interface Setup {
+        ContainerSelector?: string;
         Height: number;     // 0 (auto-fill), or pixels
         MinWidth: number;   // pixels
         Width: number;      // percentage
@@ -57,9 +58,18 @@ namespace YetaWF_Panels {
             });
         }
 
-        public resized(): void { /* main window resized, reposition */
+        public static resizeAll(printing?: boolean): void {
+            const ctrlDivs = $YetaWF.getElementsBySelector(SplitterInfoComponent.SELECTOR);
+            for (let ctrlDiv of ctrlDivs) {
+                let ctrl = SplitterInfoComponent.getControlFromTag<SplitterInfoComponent>(ctrlDiv, SplitterInfoComponent.SELECTOR);
+                ctrl.resized(printing);
+            }
+        }
+
+        public resized(printing?: boolean): void { /* main window resized, reposition */
             if (this.Setup.Height === 0) {
-                if ($YetaWF.isPrinting) {
+                console.log(`resized ${printing}`);
+                if (printing) {
                     this.Control.style.height = "";
                 } else {
                     // Resize in height so we fill the remaining page height
@@ -73,8 +83,15 @@ namespace YetaWF_Panels {
 
                         window.scrollTo(0,0);
 
-                        let ctrlRect = this.Control.getBoundingClientRect();
-
+                        if (this.Setup.ContainerSelector) {
+                            const container = $YetaWF.getElement1BySelectorCond(this.Setup.ContainerSelector);
+                            if (container) {
+                                const height = container.clientHeight;
+                                this.Control.style.height = `${height}px`;
+                                return;
+                            }
+                        }
+                        const ctrlRect = this.Control.getBoundingClientRect();
                         let ctrlHeight = winHeight - ctrlRect.top;
                         if (ctrlHeight < 0) ctrlHeight = 0;
                         this.Control.style.height = `${ctrlHeight}px`;
@@ -134,23 +151,25 @@ namespace YetaWF_Panels {
     }
 
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERRESIZE, null, (ev: CustomEvent<YetaWF.DetailsEventContainerResize>): boolean => {
-        let ctrlDivs = $YetaWF.getElementsBySelector(SplitterInfoComponent.SELECTOR);
-        for (let ctrlDiv of ctrlDivs) {
-            if ($YetaWF.elementHas(ev.detail.container, ctrlDiv)) {
-                let ctrl = SplitterInfoComponent.getControlFromTag<SplitterInfoComponent>(ctrlDiv, SplitterInfoComponent.SELECTOR);
-                ctrl.resized();
-            }
-        }
+        SplitterInfoComponent.resizeAll();
         return true;
     });
     $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTCONTAINERSCROLL, null, (ev: CustomEvent<YetaWF.DetailsEventContainerScroll>): boolean => {
-        let ctrlDivs = $YetaWF.getElementsBySelector(SplitterInfoComponent.SELECTOR);
-        for (let ctrlDiv of ctrlDivs) {
-            if ($YetaWF.elementHas(ev.detail.container, ctrlDiv)) {
-                let ctrl = SplitterInfoComponent.getControlFromTag<SplitterInfoComponent>(ctrlDiv, SplitterInfoComponent.SELECTOR);
-                ctrl.resized();
-            }
-        }
+        // let ctrlDivs = $YetaWF.getElementsBySelector(SplitterInfoComponent.SELECTOR);
+        // for (let ctrlDiv of ctrlDivs) {
+        //     if ($YetaWF.elementHas(ev.detail.container, ctrlDiv)) {
+        //         let ctrl = SplitterInfoComponent.getControlFromTag<SplitterInfoComponent>(ctrlDiv, SplitterInfoComponent.SELECTOR);
+        //         ctrl.resized();
+        //     }
+        // }
+        return true;
+    });
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTBEFOREPRINT, null, (ev: Event): boolean => {
+        SplitterInfoComponent.resizeAll(true);
+        return true;
+    });
+    $YetaWF.registerCustomEventHandlerDocument(YetaWF.BasicsServices.EVENTAFTERPRINT, null, (ev: Event): boolean => {
+        SplitterInfoComponent.resizeAll();
         return true;
     });
 }

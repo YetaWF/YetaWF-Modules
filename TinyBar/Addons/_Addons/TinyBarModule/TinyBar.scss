@@ -1,7 +1,7 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
 
 .YetaWF_TinyBar_TinyBar {
-    ul.yt_menu.t_display.t_large.t_horizontal {
+    .yModuleContents ul.yt_menu.t_display.t_large.t_horizontal {
         padding:0;
         > li > a { // need specificity
             padding: 0;

@@ -34,6 +34,7 @@ public class SplitterInfoDisplayComponent : SplitterInfoComponentBase, IYetaWFCo
     public override ComponentType GetComponentType() { return ComponentType.Display; }
 
     public class Setup {
+        public string? ContainerSelector { get; set; }
         public string ContentId { get; set; } = null!;
         public int Height { get; set; }// 0 (auto-fill), or pixels
         public int MinWidth { get; set; }// pixels
@@ -120,6 +121,7 @@ public class SplitterInfoDisplayComponent : SplitterInfoComponentBase, IYetaWFCo
             Height = Manager.EditMode ? 300 : model.Height,
             MinWidth = model.MinWidth,
             Width = model.Width,
+            ContainerSelector = model.ContainerSelector,
         };
 
         Manager.ScriptManager.AddLast($@"new YetaWF_Panels.SplitterInfoComponent('{ControlId}', {Utility.JsonSerialize(setup)});");

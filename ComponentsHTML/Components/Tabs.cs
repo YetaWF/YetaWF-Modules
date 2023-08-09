@@ -101,8 +101,14 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 string tabId = $"{model.Id}_tab{count}";
                 string? cssClass = tabEntry.PaneCssClasses;
 
+                string scroll = string.Empty;
+                if (tabEntry.MiniScroll) {
+                    await Manager.AddOnManager.AddAddOnNamedAsync(AreaRegistration.CurrentPackage.AreaName, "github.com.grsmto.simplebar");
+                    scroll = " data-simplebar data-simplebar-auto-hide='false'";
+                }
+
                 hb.Append($@"
-     <div class='t_proptable t_cat t_tabpanel {cssClass}' data-tab='{count}' id='{tabId}' aria-labelledby='{tabId}_lb' role='tabpanel' {(active ? "" : "style='display:none'")} aria-hidden='{(active ? "false" : "true")}'>");
+     <div class='t_proptable t_cat t_tabpanel {cssClass}' data-tab='{count}' id='{tabId}' aria-labelledby='{tabId}_lb' role='tabpanel' {(active ? "" : "style='display:none'")} aria-hidden='{(active ? "false" : "true")}'{scroll}>");
 
                 if (tabEntry.RenderPaneAsync != null)
                     hb.Append(await tabEntry.RenderPaneAsync(count));

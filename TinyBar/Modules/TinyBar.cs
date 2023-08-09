@@ -61,6 +61,8 @@ public class TinyBarModule : MenuModule {
     [Data_DontSave]
     public new int VerticalWidth { get; set; }
     [Data_DontSave]
+    public new bool MiniScroll { get; set; }
+    [Data_DontSave]
     public new int SmallMenuMaxWidth { get; set; }
     [Data_DontSave]
     public new string? LICssClass { get; set; }
