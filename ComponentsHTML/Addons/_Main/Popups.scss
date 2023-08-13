@@ -8,6 +8,8 @@
 
     position: fixed;
     z-index:2002 !important;
+    display:flex;
+    flex-direction: column;
 
     font: var(--body-font);
     background: var(--dialog-bg);
@@ -24,6 +26,7 @@
         flex-direction: row;
         flex-wrap: nowrap;
         align-items: center;
+        flex: 0 0;
 
         background: var(--dialog-title-bg);
         color: var(--dialog-title-clr);
@@ -49,7 +52,7 @@
         }
     }
     > .t_content {
-
+        flex: 1 1;
         width: auto;
         margin:0;
         padding: .5em 1em;
@@ -66,10 +69,6 @@
     left: 0;
     width: 100%;
     height: 100%;
-    @media print {
-       display: none;
-    }
-
     transition: opacity .3s;
 }
 
@@ -81,6 +80,7 @@
 }
 
 @media print {
+    #ypopupOverlay,
     #ypopup { /* Don't show popups for print/print preview */
         display: none;
     }

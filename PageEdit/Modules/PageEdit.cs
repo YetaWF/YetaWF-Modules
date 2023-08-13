@@ -18,6 +18,7 @@ using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
 using YetaWF.Core.Site;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 using YetaWF.Modules.PageEdit.Endpoints;
@@ -34,6 +35,7 @@ public class PageEditModule : ModuleDefinition {
         Title = this.__ResStr("modTitle", "Page Edit");
         Name = this.__ResStr("modName", "Page Edit");
         Description = this.__ResStr("modSummary", "Implements page editing services.");
+        PopupPage = SkinAccess.POPUP_VIEW_FIXED;
     }
 
     public override IModuleDefinitionIO GetDataProvider() { return new PageEditModuleDataProvider(); }
@@ -59,7 +61,6 @@ public class PageEditModule : ModuleDefinition {
             MenuText = this.__ResStr("editText", "Page Settings"),
             Tooltip = this.__ResStr("editTooltip", "Edit page settings"),
             Legend = this.__ResStr("editLegend", "Edits page settings"),
-            
             Style = ModuleAction.ActionStyleEnum.PopupEdit,
             Category = ModuleAction.ActionCategoryEnum.Update,
             Location = ModuleAction.ActionLocationEnum.ModuleLinks | ModuleAction.ActionLocationEnum.ModuleMenu,

@@ -2,7 +2,6 @@
 
 @use "sass:math";
 
-$fontsize: 11px;
 $indent: 24px;
 
 $entryheight: 24px;
@@ -36,7 +35,7 @@ $cellhorzpadding: 2px;
         background: var(--tbl-header-bg);
         color: var(--tbl-header-clr);
         white-space:nowrap;
-        font-size:$fontsize;
+        font: var(--tbl-font);
         padding: $headerverticalpadding $headerhorzpadding $headerverticalpadding $headerhorzpadding;
         span {
             cursor:default;
@@ -44,7 +43,7 @@ $cellhorzpadding: 2px;
         user-select: none; /* Standard syntax */
     }
     .tg_emptytr {
-        font-size:$fontsize;
+        font: var(--tbl-font);
         padding:2em 0 2em 2ch;
     }
     .tg_root {
@@ -58,7 +57,7 @@ $cellhorzpadding: 2px;
         margin:0 0 0 $indent;
     }
     li {
-        font-size:$fontsize;
+        font: var(--tbl-font);
         padding:0;
         list-style-type:none;
         white-space:nowrap;

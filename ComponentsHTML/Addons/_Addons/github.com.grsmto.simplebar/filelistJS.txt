@@ -1,2 +1,2 @@
 ﻿https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.min.js,CDN
-/node_modules/simplebar/dist/simplebar.min.js,nominify,noCDN
+/node_modules/simplebar/dist/simplebar.js,nominify,noCDN

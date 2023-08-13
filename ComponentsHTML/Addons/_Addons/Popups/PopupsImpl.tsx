@@ -183,10 +183,8 @@ namespace YetaWF_ComponentsHTML {
                 popup.style.width = `${popupWidth}px`;
                 if (popupHeight) {
                     popup.style.height = "auto";
-                    if (content) {
-                        content.style.height = `${popupHeight}px`;
-                        content.style.maxHeight = "initial";
-                    }
+                    if (content)
+                        content.style.height = content.style.maxHeight = `${popupHeight}px`;
                 } else {
                     if (content) {
                         content.style.height = "auto";
@@ -197,7 +195,7 @@ namespace YetaWF_ComponentsHTML {
                 popup.style.display = "";
                 let drect = popup.getBoundingClientRect();
                 let left = (win.innerWidth - drect.width) / 2;
-                let top = (win.innerHeight - drect.height) / 2;
+                let top = (win.innerHeight - drect.height) / 3;
                 popup.style.left = `${left}px`;  // or + win.pageXOffset if position:absolute
                 popup.style.top = `${top}px`; //  + win.pageYOffset
             }

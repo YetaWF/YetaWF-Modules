@@ -62,6 +62,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <inheritdoc/>
         public override async Task IncludeAsync() {
             await Manager.AddOnManager.AddTemplateFromUIHintAsync(null, DateTimeEditComponent.TemplateName, ComponentType.Edit);
+            await Manager.AddOnManager.AddAddOnNamedAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, "github.com.grsmto.simplebar");
             await base.IncludeAsync();
         }
 

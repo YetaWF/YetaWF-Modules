@@ -43,7 +43,7 @@ public class ImportDataModule : ModuleDefinition {
         }
     }
 
-    [Header("Import package data from a zip file(created by Export Data).")]
+    [Header("Import package data from a zip file (created by Export Data).")]
     public class ImportDataModel {
         [Category("Import"), Caption(""), Description("")]
         [UIHint("FileUpload1")]

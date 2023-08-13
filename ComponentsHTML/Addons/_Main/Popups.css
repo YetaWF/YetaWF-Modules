@@ -6,6 +6,8 @@
 #ypopup {
   position: fixed;
   z-index: 2002 !important;
+  display: flex;
+  flex-direction: column;
   font: var(--body-font);
   background: var(--dialog-bg);
   color: var(--dialog-clr);
@@ -19,6 +21,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
   align-items: center;
+  flex: 0 0;
   background: var(--dialog-title-bg);
   color: var(--dialog-title-clr);
   cursor: move;
@@ -43,6 +46,7 @@
   height: 1rem;
 }
 #ypopup > .t_content {
+  flex: 1 1;
   width: auto;
   margin: 0;
   padding: 0.5em 1em;
@@ -60,11 +64,6 @@
   height: 100%;
   transition: opacity 0.3s;
 }
-@media print {
-  #ypopupOverlay {
-    display: none;
-  }
-}
 
 #ypopup .yPane .yModule {
   margin: 0;
@@ -72,6 +71,7 @@
 }
 
 @media print {
+  #ypopupOverlay,
   #ypopup { /* Don't show popups for print/print preview */
     display: none;
   }

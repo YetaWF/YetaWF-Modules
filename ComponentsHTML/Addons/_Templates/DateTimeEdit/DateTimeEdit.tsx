@@ -630,7 +630,7 @@ namespace YetaWF_ComponentsHTML {
             this.TimePopup =
                 <div id={DateTimeEditComponent.TIMEPOPUPID} data-owner={this.ControlId} aria-hidden="false">
                     <div class="t_container" data-role="popup" aria-hidden="false">
-                        <div class="t_scroller">
+                        <div class="t_scroller" data-simplebar data-simplebar-auto-hide='false'>
                             <ul unselectable="on" class="t_list" tabindex="-1" aria-hidden="true" aria-live="off" data-role="staticlist" role="listbox">
                             </ul>
                         </div>
@@ -661,8 +661,12 @@ namespace YetaWF_ComponentsHTML {
 
             $YetaWF.positionLeftAlignedBelow(this.Control, this.TimePopup);
 
+            this.TimePopup.style.height = "0px";
             document.body.appendChild(this.TimePopup);
-            this.Control.setAttribute("aria-expanded", "true");
+            $YetaWF.animateHeight(this.TimePopup, true, (): void => {
+                this.Control.setAttribute("aria-expanded", "true");
+                this.TimePopup!.style.height = "auto";
+            });
 
             let sel =  $YetaWF.getElement1BySelectorCond(".t_list .t_selected", [this.TimePopup]);
             if (sel) {
@@ -690,6 +694,9 @@ namespace YetaWF_ComponentsHTML {
                 }
                 return false;
             });
+            $YetaWF.registerMultipleEventHandlers([this.TimePopup], ["mousedown", "mouseup", "click"], ".t_scroller", (ev: Event): boolean => {
+                return false;
+            });
             $YetaWF.registerEventHandler(this.TimePopup, "mouseover", "ul li", (ev: MouseEvent): boolean => {
                 let li = ev.__YetaWFElem;
                 $YetaWF.elementRemoveClass(li, "t_hover");
@@ -702,11 +709,19 @@ namespace YetaWF_ComponentsHTML {
                 return true;
             });
         }
-        private closeTimeList(): void {
+        private closeTimeList(animate?: boolean): void {
             if (this.TimePopup) {
-                this.TimePopup.remove();
-                this.TimePopup = null;
-                this.Control.setAttribute("aria-expanded", "false");
+                if (animate === true) {
+                    $YetaWF.animateHeight(this.TimePopup, false, (): void => {
+                        this.TimePopup?.remove();
+                        this.TimePopup = null;
+                        this.Control.setAttribute("aria-expanded", "false");
+                    });
+                } else {
+                    this.TimePopup.remove();
+                    this.TimePopup = null;
+                    this.Control.setAttribute("aria-expanded", "false");
+                }
             }
         }
 
@@ -768,8 +783,12 @@ namespace YetaWF_ComponentsHTML {
 
             $YetaWF.positionLeftAlignedBelow(this.Control, this.CalendarPopup);
 
+            this.CalendarPopup.style.height = "0px";
             document.body.appendChild(this.CalendarPopup);
-            this.Control.setAttribute("aria-expanded", "true");
+            $YetaWF.animateHeight(this.CalendarPopup, true, (): void => {
+                this.Control.setAttribute("aria-expanded", "true");
+                this.CalendarPopup!.style.height = "auto";
+            });
 
             $YetaWF.registerEventHandler(this.CalendarPopup, "mouseover", "table td", (ev: MouseEvent): boolean => {
                 let td = ev.__YetaWFElem;
@@ -851,11 +870,21 @@ namespace YetaWF_ComponentsHTML {
                 return false;
             });
         }
-        private closeCalendar(): void {
+        private closeCalendar(animate?: boolean): void {
+            this.closeMonthList();
+            this.closeTimeList();
             if (this.CalendarPopup) {
-                this.CalendarPopup.remove();
-                this.CalendarPopup = null;
-                this.Control.setAttribute("aria-expanded", "false");
+                if (animate === true) {
+                    $YetaWF.animateHeight(this.CalendarPopup, false, (): void => {
+                        this.CalendarPopup!.remove();
+                        this.CalendarPopup = null;
+                        this.Control.setAttribute("aria-expanded", "false");
+                    });
+                } else {
+                    this.CalendarPopup.remove();
+                    this.CalendarPopup = null;
+                    this.Control.setAttribute("aria-expanded", "false");
+                }
             }
         }
         private buildCalendarMonthPage(tbody: HTMLElement, startDate: Date): void {
@@ -917,8 +946,8 @@ namespace YetaWF_ComponentsHTML {
 
             this.YearPopup =
                 <div id={DateTimeEditComponent.YEARPOPUPID} data-owner={this.ControlId} aria-hidden="false">
-                    <div class="t_container" data-role="popup" aria-hidden="false">
-                        <div class="t_scroller">
+                    <div class="t_container" data-role="popup" aria-hidden="false" style="width: 4em">
+                        <div class="t_scroller" data-simplebar data-simplebar-auto-hide='false'>
                             <ul unselectable="on" class="t_list" tabindex="-1" aria-hidden="true" aria-live="off" data-role="staticlist" role="listbox">
                             </ul>
                         </div>
@@ -980,6 +1009,9 @@ namespace YetaWF_ComponentsHTML {
                 }
                 return false;
             });
+            $YetaWF.registerMultipleEventHandlers([this.YearPopup], ["mousedown", "mouseup", "click"], ".t_scroller", (ev: Event): boolean => {
+                return false;
+            });
             $YetaWF.registerEventHandler(this.YearPopup, "click", "ul li", (ev: MouseEvent): boolean => {
                 return false;
             });
@@ -1011,8 +1043,8 @@ namespace YetaWF_ComponentsHTML {
 
             this.MonthPopup =
                 <div id={DateTimeEditComponent.MONTHPOPUPID} data-owner={this.ControlId} aria-hidden="false">
-                    <div class="t_container" data-role="popup" aria-hidden="false">
-                        <div class="t_scroller">
+                    <div class="t_container" data-role="popup" aria-hidden="false" style="width: 10em">
+                        <div class="t_scroller" data-simplebar data-simplebar-auto-hide='false'>
                             <ul unselectable="on" class="t_list" tabindex="-1" aria-hidden="true" aria-live="off" data-role="staticlist" role="listbox">
                             </ul>
                         </div>
@@ -1071,6 +1103,9 @@ namespace YetaWF_ComponentsHTML {
                 }
                 return false;
             });
+            $YetaWF.registerMultipleEventHandlers([this.MonthPopup], ["mousedown", "mouseup", "click"], ".t_scroller", (ev: Event): boolean => {
+                return false;
+            });
             $YetaWF.registerEventHandler(this.MonthPopup, "click", "ul li", (ev: MouseEvent): boolean => {
                 return false;
             });
@@ -1123,23 +1158,23 @@ namespace YetaWF_ComponentsHTML {
             switch (YLocs.YetaWF_ComponentsHTML.DateFormat) {
                 default:
                 case DateFormatEnum.MMDDYYYY:
-                    return `${this.zeroPad(m, 2)}/${this.zeroPad(d, 2)}/${y}`;
+                    return `${YetaWF.Utility.zeroPad(m, 2)}/${YetaWF.Utility.zeroPad(d, 2)}/${y}`;
                 case DateFormatEnum.MMDDYYYYdash:
-                    return `${this.zeroPad(m, 2)}-${this.zeroPad(d, 2)}-${y}`;
+                    return `${YetaWF.Utility.zeroPad(m, 2)}-${YetaWF.Utility.zeroPad(d, 2)}-${y}`;
                 case DateFormatEnum.MMDDYYYYdot:
-                    return `${this.zeroPad(m, 2)}.${this.zeroPad(d, 2)}.${y}`;
+                    return `${YetaWF.Utility.zeroPad(m, 2)}.${YetaWF.Utility.zeroPad(d, 2)}.${y}`;
                 case DateFormatEnum.DDMMYYYY:
-                    return `${this.zeroPad(d, 2)}/${this.zeroPad(m, 2)}/${y}`;
+                    return `${YetaWF.Utility.zeroPad(d, 2)}/${YetaWF.Utility.zeroPad(m, 2)}/${y}`;
                 case DateFormatEnum.DDMMYYYYdash:
-                    return `${this.zeroPad(d, 2)}-${this.zeroPad(m, 2)}-${y}`;
+                    return `${YetaWF.Utility.zeroPad(d, 2)}-${YetaWF.Utility.zeroPad(m, 2)}-${y}`;
                 case DateFormatEnum.DDMMYYYYdot:
-                    return `${this.zeroPad(d, 2)}.${this.zeroPad(m, 2)}.${y}`;
+                    return `${YetaWF.Utility.zeroPad(d, 2)}.${YetaWF.Utility.zeroPad(m, 2)}.${y}`;
                 case DateFormatEnum.YYYYMMDD:
-                    return `${y}/${this.zeroPad(m, 2)}/${this.zeroPad(d, 2)}`;
+                    return `${y}/${YetaWF.Utility.zeroPad(m, 2)}/${YetaWF.Utility.zeroPad(d, 2)}`;
                 case DateFormatEnum.YYYYMMDDdash:
-                    return `${y}-${this.zeroPad(m, 2)}-${this.zeroPad(d, 2)}`;
+                    return `${y}-${YetaWF.Utility.zeroPad(m, 2)}-${YetaWF.Utility.zeroPad(d, 2)}`;
                 case DateFormatEnum.YYYYMMDDdot:
-                    return `${y}.${this.zeroPad(m, 2)}.${this.zeroPad(d, 2)}`;
+                    return `${y}.${YetaWF.Utility.zeroPad(m, 2)}.${YetaWF.Utility.zeroPad(d, 2)}`;
             }
         }
         private getFormattedTime(time: number):string {
@@ -1157,25 +1192,18 @@ namespace YetaWF_ComponentsHTML {
                         default:
                         case TimeFormatEnum.HHMMAM:
                         case TimeFormatEnum.HHMMSSAM:
-                            return `${this.zeroPad(hour, 2)}:${this.zeroPad(m, 2)} ${h < 12 ? "AM" : "PM"}`;
+                            return `${YetaWF.Utility.zeroPad(hour, 2)}:${YetaWF.Utility.zeroPad(m, 2)} ${h < 12 ? "AM" : "PM"}`;
                         case TimeFormatEnum.HHMMAMdot:
                         case TimeFormatEnum.HHMMSSAMdot:
-                            return `${this.zeroPad(hour, 2)}.${this.zeroPad(m, 2)} ${h < 12 ? "AM" : "PM"}`;
+                            return `${YetaWF.Utility.zeroPad(hour, 2)}.${YetaWF.Utility.zeroPad(m, 2)} ${h < 12 ? "AM" : "PM"}`;
                     }
                 case TimeFormatEnum.HHMM:
                 case TimeFormatEnum.HHMMSS:
-                    return `${this.zeroPad(h, 2)}:${this.zeroPad(m, 2)}`;
+                    return `${YetaWF.Utility.zeroPad(h, 2)}:${YetaWF.Utility.zeroPad(m, 2)}`;
                 case TimeFormatEnum.HHMMdot:
                 case TimeFormatEnum.HHMMSSdot:
-                    return `${this.zeroPad(h, 2)}.${this.zeroPad(m, 2)}`;
+                    return `${YetaWF.Utility.zeroPad(h, 2)}.${YetaWF.Utility.zeroPad(m, 2)}`;
             }
-        }
-        private zeroPad(val: number, pos: number): string {
-            if (val < 0) return val.toFixed();
-            let s = val.toFixed(0);
-            while (s.length < pos)
-                s = "0" + s;
-            return s;
         }
         private getLongFormattedDate(date: Date): string {
             let day = date.getDay();
@@ -1293,7 +1321,7 @@ namespace YetaWF_ComponentsHTML {
             this.setHidden(null);
         }
         public enable(enabled: boolean): void {
-            this.closeTimeList();
+            this.closeTimeList(false);
             $YetaWF.elementEnableToggle(this.InputControl, enabled);
             $YetaWF.elementEnableToggle(this.InputHidden, enabled);
             $YetaWF.elementRemoveClass(this.Control, "t_disabled");
@@ -1311,8 +1339,8 @@ namespace YetaWF_ComponentsHTML {
             ToolTipsHTMLHelper.removeTooltips();
             this.closeMonthList();
             this.closeYearList();
-            this.closeTimeList();
-            this.closeCalendar();
+            this.closeTimeList(false);
+            this.closeCalendar(false);
         }
         public static closeAll(): void {
             let ctrls = $YetaWF.getElementsBySelector(DateTimeEditComponent.SELECTOR);

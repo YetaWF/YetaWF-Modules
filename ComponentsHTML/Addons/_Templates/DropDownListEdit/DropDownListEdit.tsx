@@ -265,7 +265,7 @@ namespace YetaWF_ComponentsHTML {
             this.Popup =
                 <div id={DropDownListEditComponent.POPUPID} data-owner={this.ControlId} aria-hidden="false">
                     <div class="t_container" data-role="popup" aria-hidden="false">
-                        <div class="t_scroller">
+                        <div class="t_scroller" data-simplebar data-simplebar-auto-hide='false'>
                             <ul unselectable="on" class="t_list" tabindex="-1" aria-hidden="true" aria-live="off" data-role="staticlist" role="listbox">
                             </ul>
                         </div>

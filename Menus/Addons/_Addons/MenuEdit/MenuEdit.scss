@@ -9,9 +9,9 @@
         margin-right:1%;
         .t_treeview {
             height:50em;
-            .yt_tree {
-                overflow: auto;
-            }
+            // .yt_tree { // removed to fix simplebar
+            //     overflow: auto;
+            // }
         }
     }
     .t_details {

@@ -138,6 +138,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         /// <inheritdoc/>
+        public override async Task IncludeAsync() {
+            await Manager.AddOnManager.AddAddOnNamedAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, "github.com.grsmto.simplebar");
+            await base.IncludeAsync();
+        }
+
+        /// <inheritdoc/>
         public async Task<string> RenderAsync(DateTime model) {
             return await RenderAsync((DateTime?)model);
         }

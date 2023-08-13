@@ -137,10 +137,8 @@ var YetaWF_ComponentsHTML;
                 popup.style.width = "".concat(popupWidth, "px");
                 if (popupHeight) {
                     popup.style.height = "auto";
-                    if (content) {
-                        content.style.height = "".concat(popupHeight, "px");
-                        content.style.maxHeight = "initial";
-                    }
+                    if (content)
+                        content.style.height = content.style.maxHeight = "".concat(popupHeight, "px");
                 }
                 else {
                     if (content) {
@@ -152,7 +150,7 @@ var YetaWF_ComponentsHTML;
                 popup.style.display = "";
                 var drect = popup.getBoundingClientRect();
                 var left = (win.innerWidth - drect.width) / 2;
-                var top_1 = (win.innerHeight - drect.height) / 2;
+                var top_1 = (win.innerHeight - drect.height) / 3;
                 popup.style.left = "".concat(left, "px"); // or + win.pageXOffset if position:absolute
                 popup.style.top = "".concat(top_1, "px"); //  + win.pageYOffset
             }

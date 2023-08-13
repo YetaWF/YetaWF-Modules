@@ -48,11 +48,11 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         }
 
         /// <summary>
-        /// Includes required JavaScript, CSS files when using a display component, for all components in this package.
+        /// Includes required JavaScript, CSS files when using a display component.
         /// </summary>
         public override Task IncludeStandardDisplayAsync() { return Task.CompletedTask; }
         /// <summary>
-        /// Includes required JavaScript, CSS files when using an edit component, for all components in this package.
+        /// Includes required JavaScript, CSS files when using an edit component.
         /// </summary>
         public override Task IncludeStandardEditAsync() { return Task.CompletedTask; }
 

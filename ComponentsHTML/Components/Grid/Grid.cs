@@ -143,6 +143,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <inheritdoc/>
         public override async Task IncludeAsync() {
             // Add required menu support
+            await Manager.AddOnManager.AddAddOnNamedAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, "github.com.grsmto.simplebar");
             await Manager.AddOnManager.AddTemplateFromUIHintAsync(null, "MenuUL", ComponentType.Display);
             await base.IncludeAsync();
         }
@@ -352,7 +353,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             }
 
             hb.Append($@"
-    <div class='tg_table'>
+    <div class='tg_table' data-simplebar data-simplebar-auto-hide='true'>
         <table role='presentation'{cssTableStyle}>
             {setup.HeaderHTML}
             <tbody>

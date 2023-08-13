@@ -114,9 +114,11 @@
 #yt_datetime_popup {
   position: absolute;
   z-index: 2500;
+  overflow: hidden;
+  transition: height 0.3s;
+  padding: 0.12em;
 }
 #yt_datetime_popup .t_container {
-  padding: 0.12em;
   background: var(--dd-p-bg);
   color: var(--dd-p-clr);
   border: var(--dd-p-border);
@@ -124,12 +126,14 @@
   box-shadow: var(--dd-p-shadow);
 }
 #yt_datetime_popup .t_container .t_scroller {
+  padding: 0.12em 1em 0.12em 0.25em;
   overflow: auto;
+  max-height: 250px;
 }
 #yt_datetime_popup .t_container .t_scroller .t_list {
   outline: 0;
   list-style: none;
-  padding-left: 0;
+  padding: 0;
   margin: 0;
   height: auto;
   max-height: 250px;
@@ -137,7 +141,6 @@
 #yt_datetime_popup .t_container .t_scroller .t_list li {
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding: 0 0.25em;
   line-height: 1.8em;
   min-height: 1.8em;
   cursor: default;
@@ -158,6 +161,8 @@
   position: absolute;
   z-index: 2500;
   box-sizing: content-box;
+  overflow: hidden;
+  transition: height 0.3s;
 }
 #yt_datetime_calendarpopup .t_container {
   padding: 0.12em;

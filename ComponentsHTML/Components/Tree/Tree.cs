@@ -84,6 +84,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// <returns>Returns the component type.</returns>
         public override ComponentType GetComponentType() { return ComponentType.Display; }
 
+        /// <inheritdoc/>
+        public override async Task IncludeStandardDisplayAsync() {
+            await Manager.AddOnManager.AddAddOnNamedAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, "github.com.grsmto.simplebar");
+            await base.IncludeStandardDisplayAsync();
+        }
+
         /// <summary>
         /// Called by the framework when the component needs to be rendered as HTML.
         /// </summary>
@@ -115,7 +121,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 dd = " ondragstart='YetaWF_ComponentsHTML.TreeComponent.onDragStart(event)' ondrop='YetaWF_ComponentsHTML.TreeComponent.onDrop(event)' ondragend='YetaWF_ComponentsHTML.TreeComponent.onDragEnd(event)' ondragover='YetaWF_ComponentsHTML.TreeComponent.onDragOver(event)'";
 
             hb.Append($@"
-<div id='{treeModel.Id}' class='yt_tree t_display'{dd}>
+<div id='{treeModel.Id}' class='yt_tree t_display'{dd} data-simplebar data-simplebar-auto-hide='false'>
     {headerHTML}
     {html}
 </div>");

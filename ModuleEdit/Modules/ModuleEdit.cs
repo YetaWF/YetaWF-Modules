@@ -12,6 +12,7 @@ using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
+using YetaWF.Core.Skins;
 using YetaWF.Core.Support;
 using YetaWF.DataProvider;
 
@@ -28,6 +29,7 @@ public class ModuleEditModule : ModuleDefinition {
         Title = this.__ResStr("modTitle", "Module Editing Features");
         Description = this.__ResStr("modSummary", "Implements editing features used in Site Edit Mode to edit module settings.");
         UsePartialFormCss = false;
+        PopupPage = SkinAccess.POPUP_VIEW_FIXED;
     }
 
     public override IModuleDefinitionIO GetDataProvider() { return new ModuleEditModuleDataProvider(); }

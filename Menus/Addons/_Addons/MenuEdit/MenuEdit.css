@@ -8,9 +8,6 @@
 .YetaWF_Menus_MenuEdit .t_view .t_treeview {
   height: 50em;
 }
-.YetaWF_Menus_MenuEdit .t_view .t_treeview .yt_tree {
-  overflow: auto;
-}
 .YetaWF_Menus_MenuEdit .t_details {
   float: left;
   width: 69%;

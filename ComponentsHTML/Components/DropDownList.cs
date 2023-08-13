@@ -108,7 +108,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         /// </summary>
         public static async Task IncludeExplicitAsync() { // this component is reusable so we need to explicitly include all js/css
             await Manager.AddOnManager.AddTemplateFromUIHintAsync(null, "DropDownList",  ComponentType.Edit);
+            await Manager.AddOnManager.AddAddOnNamedAsync(YetaWF.Modules.ComponentsHTML.AreaRegistration.CurrentPackage.AreaName, "github.com.grsmto.simplebar");
         }
+
         /// <inheritdoc/>
         public Task<string> RenderAsync(TYPE model) {
 
