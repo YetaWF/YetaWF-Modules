@@ -231,11 +231,16 @@ public class TinyBarModule : MenuModule {
                 Url = "/",
             });
             foreach (LanguageData lang in MultiString.Languages) {
+                string url = Manager.CurrentSite.HomePageUrl;
+                if (string.IsNullOrWhiteSpace(url)) url = "/";
+                QueryHelper qh = QueryHelper.FromUrl(url, out string urlOnly);
+                qh.Add(Globals.Link_Language, lang.Id);
+                url = qh.ToUrl(urlOnly);
                 langActions.New(new ModuleAction {
                     MenuText = lang.ShortName,
                     LinkText = lang.ShortName,
                     Tooltip = lang.Description,
-                    Url = "/" + lang.Id.ToString(),
+                    Url = url,
                 });
             }
         }

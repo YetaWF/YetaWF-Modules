@@ -257,11 +257,12 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
 
             string tableHTML = await RenderTableHTML(HtmlHelper, model, data, setup.StaticData, dictInfo, gridSavedSettings.Columns, FieldName, true, page * pageSize, pageSize);
 
-            string noSubmitClass = "";
+            string noSubmitClass = $" {Forms.CssFormNoSubmitContents}";
+            setup.NoSubmitContents = false;
             if (model.IsStatic) {
                 setup.NoSubmitContents = (from col in setup.Columns where col.OnlySubmitWhenChecked select col).FirstOrDefault() != null;
-                if (setup.NoSubmitContents)
-                    noSubmitClass = $" {Forms.CssFormNoSubmitContents}";
+                if (!setup.NoSubmitContents)
+                    noSubmitClass = string.Empty;
             }
 
             string cssTableStyle = "";
@@ -451,7 +452,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {Utility.JsonSerialize(setup)});");
                 cssHead = " style='visibility:collapse'";
 
             hb.Append($@"
-<thead{cssHead}>
+<thead{cssHead} class='{Forms.CssFormNoSubmitContents}'>
     <tr class='tg_header'>");
 
             int colIndex = 0;

@@ -13,6 +13,7 @@ using YetaWF.Core.Localize;
 using YetaWF.Core.Models;
 using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Packages;
+using YetaWF.Core.Site;
 using YetaWF.Core.Support;
 
 namespace YetaWF.Modules.UserSettings.DataProvider;
@@ -29,6 +30,9 @@ public class UserData {
     [StringLength(MaxTimeZone)]
     public string TimeZone { get; set; }
     public Formatting.TimeFormatEnum TimeFormat { get; set; }
+    [StringLength(SiteDefinition.MaxTheme)]
+    [Data_NewValue]
+    public string Theme { get; set; }
     [Data_NewValue]
     public Grid.GridActionsEnum GridActions { get; set; }
     [StringLength(LanguageData.MaxId)]
@@ -67,8 +71,12 @@ public class UserData {
         string timeZone = TimeZoneInfo.Local.Id;
         if (YetaWFManager.HaveManager && YetaWFManager.Manager.CurrentSite != null && !string.IsNullOrWhiteSpace(YetaWFManager.Manager.CurrentSite.TimeZone))
             timeZone = YetaWFManager.Manager.CurrentSite.TimeZone;
+        string? theme = YetaWF.Core.Localize.UserSettings.GetProperty<string?>("Theme");
+        if (theme == null && YetaWFManager.HaveManager && YetaWFManager.Manager.CurrentSite != null)
+            theme = YetaWFManager.Manager.CurrentSite.Theme;
         DateFormat = Formatting.DateFormatEnum.MMDDYYYY;
         TimeFormat = Formatting.TimeFormatEnum.HHMMAM;
+        Theme =  theme ?? SiteDefinition.DefaultTheme;
         LanguageId = MultiString.DefaultLanguage;
         TimeZone = timeZone;
         GridActions = DefaultGridActions;
@@ -111,7 +119,7 @@ public class UserSettingsAccess : IInitializeApplicationStartup, IUserSettings {
     }
 
     public object? GetProperty(string name, Type type) {
-        // get the user settings (for anonymous users create one)
+        // get the user settings
         object? userInfo = Manager.UserSettingsObject;
         if (userInfo == null) return null;
         // get the requested property
@@ -122,7 +130,7 @@ public class UserSettingsAccess : IInitializeApplicationStartup, IUserSettings {
     }
 
     public async Task SetPropertyAsync(string name, System.Type type, object? value) {
-        // set the user settings (for anonymous users create one)
+        // set the user settings
         UserData userInfo = (UserData)await ResolveUserAsync();
         // get the requested property
         PropertyInfo pi = ObjectSupport.GetProperty(userInfo.GetType(), name);
@@ -179,6 +187,7 @@ public class UserDataProvider : DataProviderImpl, IInstallableModel, IRemoveUser
         } else {
             Manager.SessionSettings.SiteSettings.SetValue<UserData>(KEY, data);
             Manager.SessionSettings.SiteSettings.Save();
+            Manager.UserSettingsObject = data;
         }
     }
     public async Task<bool> RemoveItemAsync() {

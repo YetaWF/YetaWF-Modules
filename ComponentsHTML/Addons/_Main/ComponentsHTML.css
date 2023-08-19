@@ -43,6 +43,11 @@ i.yic.yic_componentshtml_modmenuedit {
   display: none;
   z-index: 20000;
   overflow: hidden;
+  overflow-wrap: normal;
+  word-wrap: normal;
+  word-break: normal;
+}
+.yTooltip:not(.t_calc) {
   /* These are technically the same, but use both */
   overflow-wrap: break-word;
   word-wrap: break-word;

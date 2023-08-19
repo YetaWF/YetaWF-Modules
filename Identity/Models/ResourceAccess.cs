@@ -118,8 +118,11 @@ public class ResourceAccessDataProvider : IInitializeApplicationStartup, IResour
             throw new InternalError("No httpRequest");
 
         // check whether we have a logged on user
-        if (SiteDefinition.INITIAL_INSTALL || !Manager.CurrentContext.User.Identity.IsAuthenticated)
-        {
+        if (SiteDefinition.INITIAL_INSTALL) {
+            return;// no user logged in
+        }
+        if (!Manager.CurrentContext.User.Identity.IsAuthenticated) {
+            await UserSettings.UserSettingsAccess.ResolveUserAsync();
             return;// no user logged in
         }
         // get user info and save in Manager

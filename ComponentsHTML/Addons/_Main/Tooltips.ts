@@ -44,8 +44,8 @@ namespace YetaWF_ComponentsHTML {
                         return true;
                     var s = $YetaWF.getAttributeCond(elem, YConfigs.Basics.CssTooltip) || $YetaWF.getAttributeCond(elem, YConfigs.Basics.CssTooltipSpan) || $YetaWF.getAttributeCond(elem, "title");
                     if (s) {
-                        if ($YetaWF.isMobile() && ev.type === "click" && $YetaWF.elementClosestCond(elem, "a") != null)
-                            return true;// ignore anchor clicks for tooltips on mobile
+                        if (ev.type === "click" && $YetaWF.elementClosestCond(elem, "a") != null)
+                            return true;// ignore anchor clicks for tooltips
                         this.showTooltip(elem, s);
                         return true;
                     }
@@ -131,7 +131,7 @@ namespace YetaWF_ComponentsHTML {
             this.activeTooltipElem = elem;
 
             let tooltip = document.createElement("div");
-            tooltip.className = this.TOOLTIPCLASS;
+            tooltip.className = `${this.TOOLTIPCLASS} t_calc`;
             tooltip.appendChild(document.createTextNode(text));
             $YetaWF.setAttribute(tooltip, "role", "tooltip");
 
@@ -162,6 +162,7 @@ namespace YetaWF_ComponentsHTML {
             tooltip.style.display = "block";
             let tooltipRect = tooltip.getBoundingClientRect();
             tooltip.style.display = "none";
+            $YetaWF.elementRemoveClass(tooltip, "t_calc");
             let ttWidth = tooltipRect.width;
             let ttHeight = tooltipRect.height;
 
@@ -180,7 +181,9 @@ namespace YetaWF_ComponentsHTML {
                 ttLeft -= diff;
             }
 
-            tooltip.setAttribute("style", `top:${winYOffset + ttTop}px;left:${winXOffset + ttLeft}px;width:${ttWidth}px`);
+            tooltip.style.top = `${winYOffset + ttTop}px`;
+            tooltip.style.left = `${winXOffset + ttLeft}px`;
+            tooltip.style.width = `${ttWidth}px`;
             if (ComponentsHTMLHelper.isActiveFadeInOut(this.CancelObject)) {
                 ComponentsHTMLHelper.cancelFadeInOut(this.CancelObject);
                 tooltip.style.display = "block";

@@ -174,7 +174,7 @@ public class UserIdEditComponent : UserIdComponentBase, IYetaWFComponent<int> {
         [UIHint("IntValue"), ReadOnly]
         public int UserIdDisplay { get; set; }
 
-        [UIHint("Hidden")]
+        [UIHint("Hidden"), ReadOnly]
         public int UserId { get; set; }
 
         public AllEntry(UserDefinition user) {

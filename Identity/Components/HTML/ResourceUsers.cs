@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using YetaWF.Core;
+using YetaWF.Core.Addons;
 using YetaWF.Core.Components;
 using YetaWF.Core.DataProvider;
 using YetaWF.Core.Endpoints;
@@ -219,7 +220,7 @@ public class ResourceUsersEditComponent : ResourceUsersComponentBase, IYetaWFCom
 
             NewModel newModel = new NewModel();
             hb.Append($@"
-    <div class='t_newvalue'>
+    <div class='t_newvalue {Forms.CssFormNoSubmitContents}'>
         {await HtmlHelper.ForLabelAsync(newModel, nameof(newModel.NewValue))}
         {await HtmlHelper.ForEditAsync(newModel, nameof(newModel.NewValue))}
         <input name='btnAdd' type='button' class='y_button' value='Add' disabled='disabled'>

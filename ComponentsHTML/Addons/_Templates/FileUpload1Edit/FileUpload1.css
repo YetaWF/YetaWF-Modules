@@ -1,7 +1,7 @@
 @charset "UTF-8";
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 .yt_fileupload1 {
-  border: 1px dotted gray;
+  border: var(--panel-border);
   padding: 5px 0px 5px 5px;
   cursor: default;
   -webkit-user-select: none;

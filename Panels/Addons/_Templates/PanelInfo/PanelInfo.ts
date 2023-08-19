@@ -37,7 +37,7 @@ namespace YetaWF_Panels {
                     for (let header of headers)
                         this.hide(header, header.nextElementSibling as HTMLElement);
                     if (!activeShown)
-                        this.show(hActive, hActive.nextElementSibling as HTMLElement);
+                        this.show(hActive, contentActive);
                     return false;
                 });
             }
@@ -68,7 +68,9 @@ namespace YetaWF_Panels {
             $YetaWF.elementAddClass(tag, "t_active");
             $YetaWF.setAttribute(tag, "aria-hidden", "false");
 
-            $YetaWF.animateHeight(tag, true);
+            $YetaWF.animateHeight(tag, true, (): void => {
+                tag.style.height = "auto";
+            });
         }
 
         private isShown(tag: HTMLElement): boolean {

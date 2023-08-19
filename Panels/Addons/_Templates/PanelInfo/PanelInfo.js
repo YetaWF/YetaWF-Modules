@@ -43,7 +43,7 @@ var YetaWF_Panels;
                         _this.hide(header, header.nextElementSibling);
                     }
                     if (!activeShown)
-                        _this.show(hActive, hActive.nextElementSibling);
+                        _this.show(hActive, contentActive);
                     return false;
                 });
             }
@@ -70,7 +70,9 @@ var YetaWF_Panels;
             $YetaWF.elementRemoveClass(tag, "t_active");
             $YetaWF.elementAddClass(tag, "t_active");
             $YetaWF.setAttribute(tag, "aria-hidden", "false");
-            $YetaWF.animateHeight(tag, true);
+            $YetaWF.animateHeight(tag, true, function () {
+                tag.style.height = "auto";
+            });
         };
         PanelInfoComponent.prototype.isShown = function (tag) {
             return tag.style.display === "block" || tag.style.display === "";

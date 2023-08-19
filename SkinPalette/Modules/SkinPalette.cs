@@ -1632,15 +1632,13 @@ public class SkinPaletteModule : ModuleDefinition {
         public int GenBorderRadius { get; set; }
 
 
-
-
         [Category("Auto Gen"), Caption(""), Description("")]
         [UIHint("ModuleAction"), AdditionalMetadata("RenderAs", ModuleAction.RenderModeEnum.ButtonOnly), ReadOnly]
         public ModuleAction AutoGenerate { get; set; }
 
 
         public Model() {
-            Theme = Manager.CurrentSite.Theme;
+            Theme = UserSettings.GetProperty<string?>("Theme") ?? Manager.CurrentSite.Theme ?? SiteDefinition.DefaultTheme;
             Load = new ModuleAction {
                 LinkText = this.__ResStr("save", "Save"),
                 Mode = ModuleAction.ActionModeEnum.Any,
@@ -1681,10 +1679,10 @@ public class SkinPaletteModule : ModuleDefinition {
         await FileSystem.FileSystemProvider.WriteAllTextAsync(file, model.CSSVariables);
 
         if (newFile) {
-            // when a new theme is saved, activate it for the current site
-            Manager.CurrentSite.Theme = model.Theme;
+            // when a new theme is saved, activate it for the current user
+            await UserSettings.SetPropertyAsync("Theme", model.Theme);
             await Manager.CurrentSite.SaveAsync();
-            return await FormProcessedAsync(model, this.__ResStr("okUpdated", "Theme {0} successfully saved - The current site has been updated to use the new theme", model.Theme), ForceReload: true);
+            return await FormProcessedAsync(model, this.__ResStr("okUpdated", "Theme {0} successfully saved - Your user settings have been updated to use the new theme", model.Theme), ForceReload: true);
         } else
             return await FormProcessedAsync(model, this.__ResStr("ok", "Theme {0} successfully saved", model.Theme));
     }

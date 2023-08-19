@@ -13,6 +13,7 @@ using YetaWF.Core.Models.Attributes;
 using YetaWF.Core.Modules;
 using YetaWF.Core.Pages;
 using YetaWF.Core.Serializers;
+using YetaWF.Core.Site;
 using YetaWF.DataProvider;
 using YetaWF.Modules.UserSettings.DataProvider;
 
@@ -85,6 +86,10 @@ public class SettingsEditModule : ModuleDefinition {
         [Caption("Time Format"), Description("The desired time format when times are displayed on this website")]
         [UIHint("Enum"), Required]
         public Formatting.TimeFormatEnum TimeFormat { get; set; }
+
+        [Caption("Theme"), Description("The theme used for all pages of the site")]
+        [UIHint("Theme"), StringLength(SiteDefinition.MaxTheme), SelectionRequired]
+        public string? Theme { get; set; }
 
         [Caption("Grid Actions"), Description("The desired display method for available actions in grids")]
         [UIHint("Enum")]
@@ -165,14 +170,14 @@ public class SettingsEditModule : ModuleDefinition {
 
     [ExcludeDemoMode]
     public async Task<IResult> UpdateModuleAsync(EditModel model) {
-        using (UserDataProvider dataProvider = new UserDataProvider()) {
-            UserData data = await dataProvider.GetItemAsync();
+        using (UserDataProvider userDP = new UserDataProvider()) {
+            UserData data = await userDP.GetItemAsync();
             model.ShowDevInfo = IsAuthorized("Development Info");
             if (!ModelState.IsValid)
                 return await PartialViewAsync(model);
             data = model.GetData(data); // merge new data into original
             model.SetData(data); // and all the data back into model for final display
-            await dataProvider.UpdateItemAsync(data);
+            await userDP.UpdateItemAsync(data);
             return await FormProcessedAsync(model, this.__ResStr("okSaved", "Your settings have been successfully saved"), ForceReload: true);
         }
     }

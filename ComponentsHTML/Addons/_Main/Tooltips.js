@@ -36,8 +36,8 @@ var YetaWF_ComponentsHTML;
                         return true;
                     var s = $YetaWF.getAttributeCond(elem, YConfigs.Basics.CssTooltip) || $YetaWF.getAttributeCond(elem, YConfigs.Basics.CssTooltipSpan) || $YetaWF.getAttributeCond(elem, "title");
                     if (s) {
-                        if ($YetaWF.isMobile() && ev.type === "click" && $YetaWF.elementClosestCond(elem, "a") != null)
-                            return true; // ignore anchor clicks for tooltips on mobile
+                        if (ev.type === "click" && $YetaWF.elementClosestCond(elem, "a") != null)
+                            return true; // ignore anchor clicks for tooltips
                         _this.showTooltip(elem, s);
                         return true;
                     }
@@ -122,7 +122,7 @@ var YetaWF_ComponentsHTML;
             $YetaWF.elementAddClass(elem, this.TOOLTIPACTIVEELEMCLASS);
             this.activeTooltipElem = elem;
             var tooltip = document.createElement("div");
-            tooltip.className = this.TOOLTIPCLASS;
+            tooltip.className = "".concat(this.TOOLTIPCLASS, " t_calc");
             tooltip.appendChild(document.createTextNode(text));
             $YetaWF.setAttribute(tooltip, "role", "tooltip");
             var firstChild = document.body.firstChild;
@@ -149,6 +149,7 @@ var YetaWF_ComponentsHTML;
             tooltip.style.display = "block";
             var tooltipRect = tooltip.getBoundingClientRect();
             tooltip.style.display = "none";
+            $YetaWF.elementRemoveClass(tooltip, "t_calc");
             var ttWidth = tooltipRect.width;
             var ttHeight = tooltipRect.height;
             // check if it fits below
@@ -167,7 +168,9 @@ var YetaWF_ComponentsHTML;
                 var diff = (ttLeft + ttWidth + 35) - winWidth;
                 ttLeft -= diff;
             }
-            tooltip.setAttribute("style", "top:".concat(winYOffset + ttTop, "px;left:").concat(winXOffset + ttLeft, "px;width:").concat(ttWidth, "px"));
+            tooltip.style.top = "".concat(winYOffset + ttTop, "px");
+            tooltip.style.left = "".concat(winXOffset + ttLeft, "px");
+            tooltip.style.width = "".concat(ttWidth, "px");
             if (ComponentsHTMLHelper.isActiveFadeInOut(this.CancelObject)) {
                 ComponentsHTMLHelper.cancelFadeInOut(this.CancelObject);
                 tooltip.style.display = "block";

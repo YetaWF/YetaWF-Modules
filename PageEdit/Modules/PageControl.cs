@@ -488,7 +488,7 @@ public class PageControlModule : ModuleDefinition {
                 CurrentPageGuid = Manager.CurrentPage.PageGuid,
             },
             SkinSelectionModel = new SkinSelectionModel {
-                Theme = Manager.CurrentSite.Theme,
+                Theme = UserSettings.GetProperty<string?>("Theme") ?? Manager.CurrentSite.Theme ?? SiteDefinition.DefaultTheme,
             },
             LoginSiteSelectionModel = new LoginSiteSelectionModel(),
         };
@@ -575,22 +575,8 @@ public class PageControlModule : ModuleDefinition {
         if (!ModelState.IsValid)
             return await PartialViewAsync(model, ViewName: SkinSelectionView.ViewName);
 
-        SiteDefinition origSite = new SiteDefinition();
-        ObjectSupport.CopyData(Manager.CurrentSite, origSite);// make a copy of original site
-        SiteDefinition site = Manager.CurrentSite;// update new settings
-        site.Theme = model.Theme!;
-        ObjectSupport.ModelDisposition modelDisp = ObjectSupport.EvaluateModelChanges(origSite, site);
-        switch (modelDisp) {
-            default:
-            case ObjectSupport.ModelDisposition.None:
-                return await FormProcessedAsync(model, this.__ResStr("okSaved", "Site settings updated"));
-            case ObjectSupport.ModelDisposition.PageReload:
-                await site.SaveAsync();
-                return await FormProcessedAsync(model, this.__ResStr("okSaved", "Site settings updated"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage, ForceReload: true, ViewName: SkinSelectionView.ViewName);
-            case ObjectSupport.ModelDisposition.SiteRestart:
-                await site.SaveAsync();
-                return await FormProcessedAsync(model, this.__ResStr("okSavedRestart", "Site settings updated - These settings won't take effect until the site is restarted"), ViewName: SkinSelectionView.ViewName);
-        }
+        await UserSettings.SetPropertyAsync("Theme", model.Theme);
+        return await FormProcessedAsync(model, this.__ResStr("okSaved", "Theme setting updated"), OnClose: OnCloseEnum.ReloadPage, OnPopupClose: OnPopupCloseEnum.ReloadParentPage, ForceReload: true, ViewName: SkinSelectionView.ViewName);
     }
 
     [ExcludeDemoMode]

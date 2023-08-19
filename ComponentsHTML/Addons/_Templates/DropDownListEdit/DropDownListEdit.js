@@ -167,10 +167,14 @@ var YetaWF_ComponentsHTML;
                 this.Select.value = val;
                 this.clearSelectedPopupItem();
                 this.selectPopupItem();
-                if (this.selectedIndex >= 0)
-                    this.Input.innerText = this.Select.options[this.selectedIndex].text;
-                else
-                    this.Input.innerHTML = "&zwj;";
+                if (this.selectedIndex >= 0) {
+                    var text = this.Select.options[this.selectedIndex].text;
+                    if (text) {
+                        this.Input.innerText = text;
+                        return;
+                    }
+                }
+                this.Input.innerHTML = "&zwj;";
             },
             enumerable: false,
             configurable: true
@@ -190,7 +194,11 @@ var YetaWF_ComponentsHTML;
             this.Select.options[index].selected = true;
             this.clearSelectedPopupItem();
             this.selectPopupItem();
-            this.Input.innerText = this.Select.options[index].text;
+            var text = this.Select.options[index].text;
+            if (text)
+                this.Input.innerText = text;
+            else
+                this.Input.innerHTML = "&zwj;";
             if (event !== false && !this.isOpen)
                 this.sendChangeEvent();
         };

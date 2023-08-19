@@ -175,10 +175,14 @@ namespace YetaWF_ComponentsHTML {
 
             this.clearSelectedPopupItem();
             this.selectPopupItem();
-            if (this.selectedIndex >= 0)
-                this.Input.innerText = this.Select.options[this.selectedIndex].text;
-            else
-                this.Input.innerHTML = "&zwj;";
+            if (this.selectedIndex >= 0) {
+                const text = this.Select.options[this.selectedIndex].text;
+                if (text) {
+                    this.Input.innerText = text;
+                    return;
+                }
+            }
+            this.Input.innerHTML = "&zwj;";
         }
         get selectedIndex(): number {
             return this.Select.selectedIndex;
@@ -192,7 +196,11 @@ namespace YetaWF_ComponentsHTML {
 
             this.clearSelectedPopupItem();
             this.selectPopupItem();
-            this.Input.innerText = this.Select.options[index].text;
+            const text = this.Select.options[index].text;
+            if (text)
+                this.Input.innerText = text;
+            else
+                this.Input.innerHTML = "&zwj;";
 
             if (event !== false && !this.isOpen)
                 this.sendChangeEvent();
