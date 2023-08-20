@@ -1,8 +1,8 @@
 @charset "UTF-8";
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 .yt_image.t_display img {
-  border: var(--prop-border);
-  border-radius: var(--prop-border-radius);
+  border: var(--panel-border);
+  border-radius: var(--panel-border-radius);
   padding: 1em;
 }
 

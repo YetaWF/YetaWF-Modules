@@ -6,7 +6,7 @@
   text-align: left;
   padding-left: 20px;
   padding-right: 20px;
-  border-right: var(--prop-border);
+  border-right: var(--panel-border);
 }
 .yt_yetawf_devtests_scrolleritem .yt_image img {
   border: 0;

@@ -6,8 +6,8 @@
         margin-top:.5em;
     }
     img {
-        border: 1px solid #ccc;
-        border-radius: 3px;
+        border: var(--panel-border);
+        border-radius: var(--panel-border-radius);
         padding: 1em;
     }
 }

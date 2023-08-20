@@ -42,3 +42,5 @@ CurrencyConverter/Addons/_Main/ExchangeRates.js
 .ts.map
 *.map
 *.user
+Templates/Addons/_Main/Project/Addons/_Main/$projectname$.js
+Templates/Addons/_Main/SkinModule/Addons/_Skins/$skin$/Skin.css
