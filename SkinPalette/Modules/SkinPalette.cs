@@ -917,6 +917,14 @@ public class SkinPaletteModule : ModuleDefinition {
         [UIHint("Color"), StringLength(MaxColor), Required]
         public string DialogTitleClr { get; set; } = null!;
 
+        [Category("Dialog"), Caption("--dialog-title-border"), Description("Title Border")]
+        [UIHint("Text40"), StringLength(MaxBorder), Required]
+        public string DialogTitleBorder { get; set; } = null!;
+
+        [Category("Dialog"), Caption("--dialog-title-border-radius"), Description("Title Border Radius")]
+        [UIHint("Text40"), StringLength(MaxRadius), Required]
+        public string DialogTitleBorderRadius { get; set; } = null!;
+
         [Category("Dialog"), Caption("--dialog-title-font"), Description("Font")]
         [UIHint("Text40"), StringLength(MaxFont), Required]
         public string DialogTitleFont { get; set; } = null!;
@@ -924,6 +932,10 @@ public class SkinPaletteModule : ModuleDefinition {
         [Category("Dialog"), Caption("--dialog-line"), Description("Line")]
         [UIHint("Text40"), StringLength(MaxLine), Required]
         public string DialogLine { get; set; } = null!;
+
+        [Category("Dialog"), Caption("--dialog-line-padding"), Description("Line Padding")]
+        [UIHint("Text40"), StringLength(MaxPadding), Required]
+        public string DialogLinePadding { get; set; } = null!;
 
         [Category("Dialog"), Caption("--dialog-border"), Description("Border")]
         [UIHint("Text40"), StringLength(MaxBorder), Required]

@@ -224,15 +224,8 @@ public class TinyBarModule : MenuModule {
         // language selection
         List<ModuleAction> langActions = new List<ModuleAction>();
         if (MultiString.Languages.Count > 0) {
-            langActions.New(new ModuleAction {
-                MenuText = this.__ResStr("default", "(Site Default)"),
-                LinkText = this.__ResStr("default", "(Site Default)"),
-                Tooltip = this.__ResStr("defaultTT", "Use the site defined default language"),
-                Url = "/",
-            });
             foreach (LanguageData lang in MultiString.Languages) {
-                string url = Manager.CurrentSite.HomePageUrl;
-                if (string.IsNullOrWhiteSpace(url)) url = "/";
+                string url = "/";// changed client side
                 QueryHelper qh = QueryHelper.FromUrl(url, out string urlOnly);
                 qh.Add(Globals.Link_Language, lang.Id);
                 url = qh.ToUrl(urlOnly);

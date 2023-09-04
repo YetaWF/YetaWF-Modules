@@ -121,7 +121,7 @@
     }
     div.t_text {
         padding-top:1em;
-        border-top: 1px solid gray;
+        border-top: var(--panel-border);
     }
     .t_text .t_labels {
         display: none;
@@ -147,8 +147,11 @@
     .t_boxdeleted,
     .t_boxnotapproved {
         font-weight:bold;
-        color: yellow;
-        background-color: red;
+        color: var(--tst-warn-clr);
+        background-color: var(--tst-warn-bg);
+        border: var(--tst-border);
+        border-radius: var(--tst-border-radius);
+        padding: .5em;
         margin-bottom: .5em;
     }
     .t_deleted {

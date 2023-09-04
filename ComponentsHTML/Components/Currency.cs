@@ -1,6 +1,7 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using YetaWF.Core.Components;
 using YetaWF.Core.Localize;
@@ -90,7 +91,6 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
     /// </example>
     [UsesAdditional("ReadOnly", "bool", "false", "Defines whether the control is rendered read/only.")]
     [UsesAdditional("Disabled", "bool", "false", "Defines whether the control is disabled.")]
-    [UsesAdditional("Plain", "bool", "false", "Defines whether the number is shown using the defined locale.")]
     [UsesSibling("_PlaceHolder", "string", "Defines the placeholder text shown when control contents are empty.")]
     public class CurrencyEditComponent : CurrencyComponentBase, IYetaWFComponent<decimal?> {
 
@@ -122,20 +122,23 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             if (rdonly)
                 ro = " readonly='readonly'";
 
-            bool plain = PropData.GetAdditionalAttributeValue<bool>("Plain", false);
             TryGetSiblingProperty<string>($"{PropertyName}_PlaceHolder", out string? placeHolder);
 
+            CultureInfo cultureInfo = Manager.GetCultureInfo();
+            string decimalSeparator = cultureInfo.NumberFormat.CurrencyDecimalSeparator;
+            if (decimalSeparator.Length != 1)
+                decimalSeparator = ".";
             CurrencyISO4217.Currency currency = Manager.CurrentSite.CurrencyInfo;
 
             NumberSetup setup = new NumberSetup {
                 Min = 0,
                 Max = 999999999.99,
                 Step = 1,
-                Digits = Manager.CurrentSite.CurrencyDecimals,
-                Plain = plain,
+                Digits = currency.MinorUnit,
                 Locale = MultiString.ActiveLanguage,
                 Lead = currency.Lead,
                 Trail = currency.Trail,
+                DecimalSeparator = decimalSeparator
             };
             // handle min/max
             RangeAttribute? rangeAttr = PropData.TryGetAttribute<RangeAttribute>();

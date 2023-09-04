@@ -249,6 +249,9 @@ var YetaWF_ComponentsHTML;
                     $YetaWF.processClearDiv(this.Control);
                     this.Control.remove();
                 }
+                else {
+                    this.Control.style.display = "none";
+                }
                 return true;
             }
             return false;

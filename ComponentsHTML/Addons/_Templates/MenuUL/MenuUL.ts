@@ -297,6 +297,8 @@ namespace YetaWF_ComponentsHTML {
                 if (this.Setup.AutoRemove) {
                     $YetaWF.processClearDiv(this.Control);
                     this.Control.remove();
+                } else {
+                    this.Control.style.display = "none";
                 }
                 return true;
             }

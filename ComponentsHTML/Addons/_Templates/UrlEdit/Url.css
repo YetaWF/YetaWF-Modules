@@ -2,12 +2,16 @@
 /* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/ComponentsHTML#License */
 div.yt_url.t_edit {
   display: inline-block;
+  max-width: 100%;
 }
 div.yt_url.t_edit .t_link {
   margin-left: 0.5ch;
 }
 div.yt_url.t_edit .t_local,
-div.yt_url.t_edit .t_remote,
+div.yt_url.t_edit .t_remote {
+  max-width: 100%;
+  display: inline-block;
+}
 div.yt_url.t_edit .t_link {
   display: inline-block;
 }

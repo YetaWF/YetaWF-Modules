@@ -284,7 +284,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 string actions = await HtmlHelper.ForDisplayAsync(model, nameof(model.PanelHeaderActions), UIHint: "ModuleActions");
 
                 hb.Append($@"
-    <div class='yGridPanelTitle'>
+    <div class='yGridPanelTitle yNoFocusOnMe'>
          <h1>{Utility.HE(model.PanelHeaderTitle)}</h1>
          <div class='{Globals.CssModuleLinksContainer}'>
             {actions}
@@ -368,7 +368,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 using (Manager.StartNestedComponent(FieldName)) {
 
                     hb.Append($@"
-    <div id='{model.Id}_Pager' class='tg_pager {Forms.CssFormNoSubmitContents}'>
+    <div id='{model.Id}_Pager' class='tg_pager yNoFocusOnMe {Forms.CssFormNoSubmitContents}'>
         {await RenderPagerAsync(model, data, gridSavedSettings, dictInfo, setup)}
     </div>");
                 }
@@ -861,7 +861,7 @@ new YetaWF_ComponentsHTML.Grid('{model.Id}', {Utility.JsonSerialize(setup)});");
 
                 hb.Append($@"
     </tr>
-    <tr class='tg_filter'{filterStyle}>
+    <tr class='tg_filter yNoFocusOnMe'{filterStyle}>
         {filterhb.ToString()}
     </tr>
 </thead>");

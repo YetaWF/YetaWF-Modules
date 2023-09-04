@@ -88,6 +88,14 @@ namespace YetaWF_ComponentsHTML {
                     menu.open();
                     return true;
                 });
+                $YetaWF.registerEventHandler(editIcon, "mouseleave", null, (ev: MouseEvent): boolean => {
+                    // find the module's menu
+                    var menuDiv = $YetaWF.getElement1BySelector(".yModuleMenu", [modDiv]);
+                    let menu = YetaWF_ComponentsHTML.MenuULComponent.getControlFromTagCond<YetaWF_ComponentsHTML.MenuULComponent>(menuDiv, YetaWF_ComponentsHTML.MenuULComponent.SELECTOR);
+                    if (menu)
+                        menu.close();
+                    return true;
+                });
             }
         }
 

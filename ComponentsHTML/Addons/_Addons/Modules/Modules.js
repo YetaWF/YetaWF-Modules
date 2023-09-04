@@ -72,6 +72,14 @@ var YetaWF_ComponentsHTML;
                     menu.open();
                     return true;
                 });
+                $YetaWF.registerEventHandler(editIcon, "mouseleave", null, function (ev) {
+                    // find the module's menu
+                    var menuDiv = $YetaWF.getElement1BySelector(".yModuleMenu", [modDiv]);
+                    var menu = YetaWF_ComponentsHTML.MenuULComponent.getControlFromTagCond(menuDiv, YetaWF_ComponentsHTML.MenuULComponent.SELECTOR);
+                    if (menu)
+                        menu.close();
+                    return true;
+                });
             }
         };
         MenuHandler.registerModule = function (modDiv) {

@@ -27,8 +27,8 @@
   cursor: move;
   padding: 0.2em 0.5em 0.2em 1em;
   position: relative;
-  border: var(--dialog-border);
-  border-radius: var(--dialog-border-radius);
+  border: var(--dialog-title-border);
+  border-radius: var(--dialog-title-border-radius);
   font: var(--dialog-title-font);
 }
 #ypopup > .t_titlebar #ypopupTitle {

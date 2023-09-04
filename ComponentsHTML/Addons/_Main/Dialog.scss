@@ -25,8 +25,8 @@
         cursor: move;
         padding: .4em .5em .4em 1em;
         position: relative;
-        border: var(--dialog-border);
-        border-radius: var(--dialog-border-radius);
+        border: var(--dialog-title-border);
+        border-radius: var(--dialog-title-border-radius);
         font: var(--dialog-title-font);
         #yAlertTitle {
             flex: 1 1;
@@ -54,7 +54,7 @@
         overflow: auto;
     }
     .t_buttonpane {
-        padding: .5em .5em .4em .5em;
+        padding: var(--dialog-line-padding);//$$ .5em .5em .4em .5em;
         border-top: var(--dialog-line);
     }
     .t_buttons {

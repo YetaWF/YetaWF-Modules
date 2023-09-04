@@ -24,6 +24,8 @@ public class LogRecordDataProvider : YetaWF.Modules.LoggingDataProvider.DataProv
         Logger = logger?? throw new ArgumentNullException(nameof(logger));
         //$$$YetaWFLoggerProvider.IgnoredCategory = typeof(LogRecordDataProvider).FullName;
     }
+    // Needed for localization only
+    public LogRecordDataProvider() : base() { }
 
     // API
     // API

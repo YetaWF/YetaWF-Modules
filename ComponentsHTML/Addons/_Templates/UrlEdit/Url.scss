@@ -2,11 +2,15 @@
 
 div.yt_url.t_edit {
     display:inline-block;
+    max-width: 100%;
     .t_link {
         margin-left:.5ch;
     }
     .t_local,
-    .t_remote,
+    .t_remote {
+        max-width: 100%;
+        display: inline-block;
+    }
     .t_link {
         display: inline-block;
     }

@@ -93,7 +93,7 @@ var YetaWF_ComponentsHTML;
                     case "8":
                     case "9":
                         break;
-                    case ".":
+                    case _this.Setup.DecimalSeparator:
                         if (!_this.Setup.Digits) {
                             _this.flashError();
                             return false;
@@ -200,8 +200,9 @@ var YetaWF_ComponentsHTML;
                 val = Number(val.toFixed(this.Setup.Digits));
                 this.Value = val;
                 this.InputHidden.value = val.toString();
-                if (this.focused)
-                    this.InputControl.value = val.toString();
+                if (this.focused) {
+                    this.InputControl.value = val.toLocaleString(this.Setup.Locale, { style: "decimal", minimumFractionDigits: this.Setup.Digits, maximumFractionDigits: this.Setup.Digits, useGrouping: false });
+                }
                 else {
                     if (this.Setup.Currency && this.Setup.Locale) {
                         var v = val.toLocaleString(this.Setup.Locale, { style: "currency", currency: this.Setup.Currency });
@@ -213,10 +214,7 @@ var YetaWF_ComponentsHTML;
                     else {
                         var l = this.Setup.Lead ? "".concat(this.Setup.Lead, " ") : "";
                         var t = this.Setup.Trail ? " ".concat(this.Setup.Trail) : "";
-                        if (this.Setup.Plain)
-                            this.InputControl.value = "".concat(l).concat(val.toFixed(this.Setup.Digits)).concat(t);
-                        else
-                            this.InputControl.value = "".concat(l).concat(val.toLocaleString(this.Setup.Locale, { style: "decimal", minimumFractionDigits: this.Setup.Digits, maximumFractionDigits: this.Setup.Digits })).concat(t);
+                        this.InputControl.value = "".concat(l).concat(val.toLocaleString(this.Setup.Locale, { style: "decimal", minimumFractionDigits: this.Setup.Digits, maximumFractionDigits: this.Setup.Digits })).concat(t);
                     }
                 }
             },
@@ -226,6 +224,7 @@ var YetaWF_ComponentsHTML;
         NumberEditComponentBase.prototype.setInternalValue = function (val, updateIfValid) {
             if (typeof val === "string") {
                 if (val) {
+                    val = val.replace(",", "."); // a bit hacky so we can parse a decimal
                     val = Number(val);
                     if (isNaN(val))
                         val = null;
@@ -250,6 +249,7 @@ var YetaWF_ComponentsHTML;
             }
         };
         NumberEditComponentBase.prototype.isValid = function (text) {
+            text = text.replace(",", "."); // a bit hacky so we can parse a decimal
             var val = Number(text);
             if (isNaN(val))
                 return false;

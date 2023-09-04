@@ -1,0 +1,26 @@
+@charset "UTF-8";
+/* Copyright © 2023 Softel vdm, Inc. - https://yetawf.com/Documentation/YetaWF/Identity#License */
+.YetaWF_Identity_Need2FADisplay .yModuleContents {
+  width: 100%;
+  background: var(--body-bg);
+  position: fixed;
+  z-index: 1000;
+}
+.YetaWF_Identity_Need2FADisplay .yModuleContents .t_container {
+  padding: 1em;
+}
+.YetaWF_Identity_Need2FADisplay .yModuleContents .t_container .t_messagecontainer {
+  padding: 1em;
+  margin: 0;
+  border: var(--tst-border);
+  border-radius: var(--tst-border-radius);
+  color: var(--tst-error-clr);
+  background: var(--tst-error-bg);
+}
+.YetaWF_Identity_Need2FADisplay .yModuleContents .t_container .t_messagecontainer .t_message {
+  text-align: center;
+}
+.YetaWF_Identity_Need2FADisplay .yModuleContents .t_container .t_messagecontainer .t_message a {
+  color: var(--tst-error-clr);
+  text-decoration: underline;
+}

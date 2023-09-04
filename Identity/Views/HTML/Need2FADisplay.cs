@@ -22,14 +22,14 @@ public class Need2FADisplayView : YetaWFView, IYetaWFView<Need2FADisplayModule, 
         HtmlBuilder hb = new HtmlBuilder();
 
         hb.Append($@"
-<div class='t_message'>
-    {HE(this.__ResStr("need2FA", "Please set up Two-Step Authentication for full access to this site - "))}
-    {await model.SetupAction.RenderAsLinkAsync()}
+<div class='t_container'>
+    <div class='t_messagecontainer'>
+        <div class='t_message'>
+            {HE(this.__ResStr("need2FA", "Please set up Two-Step Authentication for full access to this site - "))}
+            {await model.SetupAction.RenderAsLinkAsync()}
+        </div>
+    </div>
 </div>");
-
-        Manager.ScriptManager.AddLast($@"
-var mod = $YetaWF.getElementById('{module.ModuleHtmlId}');
-document.body.insertBefore(mod, document.body.firstChild);");
 
         return hb.ToString();
     }

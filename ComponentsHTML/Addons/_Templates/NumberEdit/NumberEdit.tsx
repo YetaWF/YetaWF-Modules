@@ -23,8 +23,8 @@ namespace YetaWF_ComponentsHTML {
         Trail: string;
         Digits: number;
         Currency: string;
-        Plain: boolean;
         Locale: string;
+        DecimalSeparator: string;
     }
 
     export class NumberEditComponentBase extends YetaWF.ComponentBaseDataImpl {
@@ -118,7 +118,7 @@ namespace YetaWF_ComponentsHTML {
                     case "0": case "1": case "2": case "3": case "4":
                     case "5": case "6": case "7": case "8": case "9":
                         break;
-                    case ".":
+                    case this.Setup.DecimalSeparator:
                         if (!this.Setup.Digits) {
                             this.flashError();
                             return false;
@@ -222,9 +222,9 @@ namespace YetaWF_ComponentsHTML {
             val = Number(val.toFixed(this.Setup.Digits));
             this.Value = val;
             this.InputHidden.value = val.toString();
-            if (this.focused)
-                this.InputControl.value = val.toString();
-            else {
+            if (this.focused) {
+                this.InputControl.value = val.toLocaleString(this.Setup.Locale, { style: "decimal", minimumFractionDigits: this.Setup.Digits, maximumFractionDigits: this.Setup.Digits, useGrouping: false });
+            } else {
                 if (this.Setup.Currency && this.Setup.Locale) {
                     let v  = val.toLocaleString(this.Setup.Locale, { style: "currency", currency: this.Setup.Currency });
                     // special case for $US
@@ -234,16 +234,14 @@ namespace YetaWF_ComponentsHTML {
                 } else {
                     let l = this.Setup.Lead ? `${this.Setup.Lead} ` : "";
                     let t = this.Setup.Trail ? ` ${this.Setup.Trail}` : "";
-                    if (this.Setup.Plain)
-                        this.InputControl.value = `${l}${val.toFixed(this.Setup.Digits)}${t}`;
-                    else
-                        this.InputControl.value = `${l}${val.toLocaleString(this.Setup.Locale, { style: "decimal", minimumFractionDigits: this.Setup.Digits, maximumFractionDigits: this.Setup.Digits })}${t}`;
+                    this.InputControl.value = `${l}${val.toLocaleString(this.Setup.Locale, { style: "decimal", minimumFractionDigits: this.Setup.Digits, maximumFractionDigits: this.Setup.Digits })}${t}`;
                 }
             }
         }
         private setInternalValue(val: number|null|string, updateIfValid?: boolean): void {
             if (typeof val === "string") {
                 if (val) {
+                    val = val.replace(",", ".");// a bit hacky so we can parse a decimal
                     val = Number(val);
                     if (isNaN(val))
                         val = null;
@@ -265,6 +263,7 @@ namespace YetaWF_ComponentsHTML {
             }
         }
         private isValid(text: string): boolean {
+            text = text.replace(",", ".");// a bit hacky so we can parse a decimal
             let val = Number(text);
             if (isNaN(val))
                 return false;

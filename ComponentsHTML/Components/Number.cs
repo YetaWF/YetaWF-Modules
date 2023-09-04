@@ -13,9 +13,9 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
         public string? Lead { get; set; }
         public string? Trail { get; set; }
         public int Digits { get; set; }
-        public bool Plain { get; set; }
         public string? Currency { get; set; }
         public string? Locale { get; set; }
+        public string DecimalSeparator { get; set; } = null!;
     }
 
     /// <summary>

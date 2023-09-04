@@ -483,7 +483,10 @@ namespace YetaWF_SkinPalette {
             this.getColor("DialogTitleBg").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenBgShaded, 40) : this.Lighten(values.GenBgShaded, 40);
             this.getColor("DialogTitleClr").value = values.GenTheme === BasicThemeEnum.Light ? this.Darken(values.GenClrShaded, 40) : this.Lighten(values.GenClrShaded, 40);
             this.getInput("DialogTitleFont").value = values.GenClr;
-            this.getInput("DialogLine").value = values.GenBorderClr;
+            this.getInput("DialogTitleBorder").value = `${values.GenBorderWidth}px solid ${values.GenBorderClr}`;
+            this.getInput("DialogTitleBorderRadius").value = `${values.GenBorderRadius}px`;
+            this.getInput("DialogLine").value = `${values.GenBorderWidth}px solid ${values.GenBorderClr}`;
+            this.getInput("DialogLinePadding").value = "1em 0 1em 0";
             this.getInput("DialogBorder").value = `${values.GenBorderWidth}px solid ${values.GenBorderClr}`;
             this.getInput("DialogBorderRadius").value = `${values.GenBorderRadius}px`;
 
