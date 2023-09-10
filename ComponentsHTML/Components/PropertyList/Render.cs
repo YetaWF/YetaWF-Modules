@@ -20,7 +20,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (classData.Header.StartsWith("-"))
                     hb.Append(classData.Header.Substring(1));
                 else
-                    hb.Append(Utility.HE(classData.Header).Replace("\r\n", "<br>"));
+                    hb.Append(Utility.HE(classData.Header).Replace(ScriptBuilder.NL, "<br>"));
                 hb.Append("</div>");
             }
         }
@@ -30,7 +30,7 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
                 if (classData.Footer.StartsWith("-"))
                     hb.Append(classData.Footer.Substring(1));
                 else
-                    hb.Append(Utility.HE(classData.Footer).Replace("\r\n", "<br>"));
+                    hb.Append(Utility.HE(classData.Footer).Replace(ScriptBuilder.NL, "<br>"));
                 hb.Append("</div>");
             }
         }

@@ -31,7 +31,7 @@ public class TranslationWarningModule : ModuleDefinition {
         WantSearch = false;
         Print = false;
 
-        Warning = this.__ResStr("msgTranslation", "The currently selected language was machine translated and needs to be \"manually\" perfected. This demonstrates how YetaWF can support multiple languages, down to data stored in files, database tables and strings typically embedded in source code.");
+        Warning = this.__ResStr("msgTranslation", "All page content for the currently selected language was machine translated and needs to be \"manually\" perfected. This demonstrates how YetaWF can support multiple languages, down to data stored in files, database tables and strings typically embedded in source code.");
     }
 
     public override IModuleDefinitionIO GetDataProvider() { return new TranslationWarningModuleDataProvider(); }
