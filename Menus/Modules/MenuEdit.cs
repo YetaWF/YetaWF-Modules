@@ -235,6 +235,7 @@ public class MenuEditModule : ModuleDefinition {
                 RecordType = typeof(ModuleAction),
                 ShowHeader = false,
                 DragDrop = true,
+                MiniScroll = true,
                 JSONData = true,
             };
             ModEntry = new MenuEntry();

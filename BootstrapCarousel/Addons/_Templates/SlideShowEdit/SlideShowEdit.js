@@ -17,6 +17,15 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var YetaWF_BootstrapCarousel;
 (function (YetaWF_BootstrapCarousel) {
+    var CarouselAction;
+    (function (CarouselAction) {
+        CarouselAction[CarouselAction["Apply"] = 0] = "Apply";
+        CarouselAction[CarouselAction["MoveLeft"] = 1] = "MoveLeft";
+        CarouselAction[CarouselAction["MoveRight"] = 2] = "MoveRight";
+        CarouselAction[CarouselAction["Add"] = 3] = "Add";
+        CarouselAction[CarouselAction["Insert"] = 4] = "Insert";
+        CarouselAction[CarouselAction["Remove"] = 5] = "Remove";
+    })(CarouselAction || (CarouselAction = {}));
     var SlideShowEdit = /** @class */ (function (_super) {
         __extends(SlideShowEdit, _super);
         function SlideShowEdit(controlId) {
@@ -32,34 +41,34 @@ var YetaWF_BootstrapCarousel;
             _this.ButtonDelete = $YetaWF.getElement1BySelector("input.t_delete", [_this.Control]);
             // Apply button click
             $YetaWF.registerEventHandler(_this.Control, "click", "input.t_apply", function (ev) {
-                $YetaWF.Forms.submitTemplate(_this.Control, true, SlideShowEdit.TEMPLATENAME, YetaWF.PanelAction.Apply, _this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(_this.Control, true, SlideShowEdit.TEMPLATENAME, CarouselAction.Apply, _this.getPanelIndex().toString());
                 return false;
             });
             // << button click
             $YetaWF.registerEventHandler(_this.ButtonUp, "click", null, function (ev) {
-                $YetaWF.Forms.submitTemplate(_this.Control, true, SlideShowEdit.TEMPLATENAME, YetaWF.PanelAction.MoveLeft, _this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(_this.Control, true, SlideShowEdit.TEMPLATENAME, CarouselAction.MoveLeft, _this.getPanelIndex().toString());
                 return false;
             });
             // >> button click
             $YetaWF.registerEventHandler(_this.ButtonDown, "click", null, function (ev) {
-                $YetaWF.Forms.submitTemplate(_this.Control, true, SlideShowEdit.TEMPLATENAME, YetaWF.PanelAction.MoveRight, _this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(_this.Control, true, SlideShowEdit.TEMPLATENAME, CarouselAction.MoveRight, _this.getPanelIndex().toString());
                 return false;
             });
             // delete button click
             $YetaWF.registerEventHandler(_this.ButtonDelete, "click", null, function (ev) {
                 $YetaWF.alertYesNo(YLocs.YetaWF_BootstrapCarousel.RemoveConfirm, YLocs.YetaWF_BootstrapCarousel.RemoveTitle, function () {
-                    $YetaWF.Forms.submitTemplate(_this.Control, false, SlideShowEdit.TEMPLATENAME, YetaWF.PanelAction.Remove, _this.getPanelIndex().toString());
+                    $YetaWF.Forms.submitTemplate(_this.Control, false, SlideShowEdit.TEMPLATENAME, CarouselAction.Remove, _this.getPanelIndex().toString());
                 });
                 return false;
             });
             // Insert button click
             $YetaWF.registerEventHandler(_this.Control, "click", "input.t_ins", function (ev) {
-                $YetaWF.Forms.submitTemplate(_this.Control, true, SlideShowEdit.TEMPLATENAME, YetaWF.PanelAction.Insert, _this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(_this.Control, true, SlideShowEdit.TEMPLATENAME, CarouselAction.Insert, _this.getPanelIndex().toString());
                 return false;
             });
             // Add button click
             $YetaWF.registerEventHandler(_this.Control, "click", "input.t_add", function (ev) {
-                $YetaWF.Forms.submitTemplate(_this.Control, true, SlideShowEdit.TEMPLATENAME, YetaWF.PanelAction.Add, _this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(_this.Control, true, SlideShowEdit.TEMPLATENAME, CarouselAction.Add, _this.getPanelIndex().toString());
                 return false;
             });
             _this.Tabs.Control.addEventListener(YetaWF_ComponentsHTML.TabsComponent.EVENTSWITCHED, function (evt) {

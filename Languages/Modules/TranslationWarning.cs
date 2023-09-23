@@ -39,7 +39,7 @@ public class TranslationWarningModule : ModuleDefinition {
     public override SerializableList<AllowedRole> DefaultAllowedRoles { get { return AnonymousLevel_DefaultAllowedRoles; } }
 
     [Category("General"), Caption("Message"), Description("Defines the message that is shown when a non US English language is the current language")]
-    [UIHint("Text80"), StringLength(1000), Required]
+    [UIHint("MultiString80"), StringLength(1000), Required]
     public MultiString Warning { get; set; }
 
     public class DisplayModel { }

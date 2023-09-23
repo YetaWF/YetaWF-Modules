@@ -7,6 +7,15 @@ namespace YetaWF_Panels {
         RemoveStepTitle: string;
     }
 
+    enum StepAction {
+        Apply = 0,
+        MoveLeft = 1,
+        MoveRight = 2,
+        Add = 3,
+        Insert = 4,
+        Remove = 5,
+    }
+
     export class StepInfoEditComponent extends YetaWF.ComponentBaseDataImpl {
 
         public static readonly TEMPLATE: string = "yt_panels_stepinfo";
@@ -39,34 +48,34 @@ namespace YetaWF_Panels {
 
             // Apply button click
             $YetaWF.registerEventHandler(this.Apply, "click", null, (ev: MouseEvent): boolean => {
-                $YetaWF.Forms.submitTemplate(this.Control, true, StepInfoEditComponent.TEMPLATENAME, YetaWF.PanelAction.Apply, this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(this.Control, true, StepInfoEditComponent.TEMPLATENAME, StepAction.Apply, this.getPanelIndex().toString());
                 return false;
             });
             // << button click
             $YetaWF.registerEventHandler(this.Up, "click", null, (ev: MouseEvent): boolean => {
-                $YetaWF.Forms.submitTemplate(this.Control, true, StepInfoEditComponent.TEMPLATENAME, YetaWF.PanelAction.MoveLeft, this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(this.Control, true, StepInfoEditComponent.TEMPLATENAME, StepAction.MoveLeft, this.getPanelIndex().toString());
                 return false;
             });
             // >> button click
             $YetaWF.registerEventHandler(this.Down, "click", null, (ev: MouseEvent): boolean => {
-                $YetaWF.Forms.submitTemplate(this.Control, true, StepInfoEditComponent.TEMPLATENAME, YetaWF.PanelAction.MoveRight, this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(this.Control, true, StepInfoEditComponent.TEMPLATENAME, StepAction.MoveRight, this.getPanelIndex().toString());
                 return false;
             });
             // delete button click
             $YetaWF.registerEventHandler(this.Delete, "click", null, (ev: MouseEvent): boolean => {
                 $YetaWF.alertYesNo(YLocs.YetaWF_Panels.RemoveStepConfirm, YLocs.YetaWF_Panels.RemoveStepTitle, (): void => {
-                    $YetaWF.Forms.submitTemplate(this.Control, false, StepInfoEditComponent.TEMPLATENAME, YetaWF.PanelAction.Remove, this.getPanelIndex().toString());
+                    $YetaWF.Forms.submitTemplate(this.Control, false, StepInfoEditComponent.TEMPLATENAME, StepAction.Remove, this.getPanelIndex().toString());
                 });
                 return false;
             });
             // Insert button click
             $YetaWF.registerEventHandler(this.Insert, "click", null, (ev: MouseEvent): boolean => {
-                $YetaWF.Forms.submitTemplate(this.Control, true, StepInfoEditComponent.TEMPLATENAME, YetaWF.PanelAction.Insert, this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(this.Control, true, StepInfoEditComponent.TEMPLATENAME, StepAction.Insert, this.getPanelIndex().toString());
                 return false;
             });
             // Add button click
             $YetaWF.registerEventHandler(this.Add, "click", null, (ev: MouseEvent): boolean => {
-                $YetaWF.Forms.submitTemplate(this.Control, true, StepInfoEditComponent.TEMPLATENAME, YetaWF.PanelAction.Add, this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(this.Control, true, StepInfoEditComponent.TEMPLATENAME, StepAction.Add, this.getPanelIndex().toString());
                 return false;
             });
         }

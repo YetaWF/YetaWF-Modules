@@ -23,6 +23,14 @@ namespace YetaWF_BootstrapCarousel {
         RemoveConfirm: string;
         RemoveTitle: string;
     }
+    enum CarouselAction {
+        Apply = 0,
+        MoveLeft = 1,
+        MoveRight = 2,
+        Add = 3,
+        Insert = 4,
+        Remove = 5,
+    }
 
     export class SlideShowEdit extends YetaWF.ComponentBaseDataImpl {
 
@@ -50,34 +58,34 @@ namespace YetaWF_BootstrapCarousel {
 
             // Apply button click
             $YetaWF.registerEventHandler(this.Control, "click", "input.t_apply", (ev: MouseEvent): boolean => {
-                $YetaWF.Forms.submitTemplate(this.Control, true, SlideShowEdit.TEMPLATENAME, YetaWF.PanelAction.Apply, this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(this.Control, true, SlideShowEdit.TEMPLATENAME, CarouselAction.Apply, this.getPanelIndex().toString());
                 return false;
             });
             // << button click
             $YetaWF.registerEventHandler(this.ButtonUp, "click", null, (ev: MouseEvent): boolean => {
-                $YetaWF.Forms.submitTemplate(this.Control, true, SlideShowEdit.TEMPLATENAME, YetaWF.PanelAction.MoveLeft, this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(this.Control, true, SlideShowEdit.TEMPLATENAME, CarouselAction.MoveLeft, this.getPanelIndex().toString());
                 return false;
             });
             // >> button click
             $YetaWF.registerEventHandler(this.ButtonDown, "click", null, (ev: MouseEvent): boolean => {
-                $YetaWF.Forms.submitTemplate(this.Control, true, SlideShowEdit.TEMPLATENAME, YetaWF.PanelAction.MoveRight, this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(this.Control, true, SlideShowEdit.TEMPLATENAME, CarouselAction.MoveRight, this.getPanelIndex().toString());
                 return false;
             });
             // delete button click
             $YetaWF.registerEventHandler(this.ButtonDelete, "click", null, (ev: MouseEvent): boolean => {
                 $YetaWF.alertYesNo(YLocs.YetaWF_BootstrapCarousel.RemoveConfirm, YLocs.YetaWF_BootstrapCarousel.RemoveTitle, (): void => {
-                    $YetaWF.Forms.submitTemplate(this.Control, false, SlideShowEdit.TEMPLATENAME, YetaWF.PanelAction.Remove, this.getPanelIndex().toString());
+                    $YetaWF.Forms.submitTemplate(this.Control, false, SlideShowEdit.TEMPLATENAME, CarouselAction.Remove, this.getPanelIndex().toString());
                 });
                 return false;
             });
             // Insert button click
             $YetaWF.registerEventHandler(this.Control, "click", "input.t_ins", (ev: MouseEvent): boolean => {
-                $YetaWF.Forms.submitTemplate(this.Control, true, SlideShowEdit.TEMPLATENAME, YetaWF.PanelAction.Insert, this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(this.Control, true, SlideShowEdit.TEMPLATENAME, CarouselAction.Insert, this.getPanelIndex().toString());
                 return false;
             });
             // Add button click
             $YetaWF.registerEventHandler(this.Control, "click", "input.t_add", (ev: MouseEvent): boolean => {
-                $YetaWF.Forms.submitTemplate(this.Control, true, SlideShowEdit.TEMPLATENAME, YetaWF.PanelAction.Add, this.getPanelIndex().toString());
+                $YetaWF.Forms.submitTemplate(this.Control, true, SlideShowEdit.TEMPLATENAME, CarouselAction.Add, this.getPanelIndex().toString());
                 return false;
             });
             this.Tabs.Control.addEventListener(YetaWF_ComponentsHTML.TabsComponent.EVENTSWITCHED, (evt: Event): void => {

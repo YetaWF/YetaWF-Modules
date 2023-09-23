@@ -116,12 +116,16 @@ namespace YetaWF.Modules.ComponentsHTML.Components {
             string headerHTML = await GetHeaderAsync(treeModel, data, setup);
             string html = await RenderHTML(HtmlHelper, treeModel, data, setup);
 
-            string dd = "";
+            string dd = string.Empty;
             if (treeModel.DragDrop)
                 dd = " ondragstart='YetaWF_ComponentsHTML.TreeComponent.onDragStart(event)' ondrop='YetaWF_ComponentsHTML.TreeComponent.onDrop(event)' ondragend='YetaWF_ComponentsHTML.TreeComponent.onDragEnd(event)' ondragover='YetaWF_ComponentsHTML.TreeComponent.onDragOver(event)'";
 
+            string scroll = string.Empty;
+            if (treeModel.MiniScroll)
+                scroll = " data-simplebar data-simplebar-auto-hide='false'";
+
             hb.Append($@"
-<div id='{treeModel.Id}' class='yt_tree t_display'{dd} data-simplebar data-simplebar-auto-hide='false'>
+<div id='{treeModel.Id}' class='yt_tree t_display'{dd}{scroll}>
     {headerHTML}
     {html}
 </div>");

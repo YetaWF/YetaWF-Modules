@@ -15,6 +15,15 @@ public class StepInfo : ITemplateAction {
 
     public const string TemplateName = "YetaWF_Panels_StepInfo";
 
+    public enum StepAction {
+        Apply = 0,
+        MoveLeft = 1,
+        MoveRight = 2,
+        Add = 3,
+        Insert = 4,
+        Remove = 5,
+    }
+
     public class StepEntry {
 
         public const int MaxName = 80;
@@ -59,36 +68,36 @@ public class StepInfo : ITemplateAction {
 
     public bool ExecuteAction(int action, bool modelIsValid, object extraData) {
         bool processed = false;
-        PanelInfo.PanelAction stepAction = (PanelInfo.PanelAction)action;
+        StepAction stepAction = (StepAction)action;
         int panelIndex = Convert.ToInt32((string)extraData);
         switch (stepAction) {
-            case PanelInfo.PanelAction.Apply:
+            case StepAction.Apply:
                 if (modelIsValid)
                     processed = true;
                 break;
-            case PanelInfo.PanelAction.Insert:
+            case StepAction.Insert:
                 if (modelIsValid) {
                     InsertPanel(panelIndex);
                     processed = true;
                 }
                 break;
-            case PanelInfo.PanelAction.Add:
+            case StepAction.Add:
                 if (modelIsValid) {
                     AddPanel(panelIndex);
                     processed = true;
                 }
                 break;
-            case PanelInfo.PanelAction.Remove:
+            case StepAction.Remove:
                 RemovePanel(panelIndex);
                 processed = true;
                 break;
-            case PanelInfo.PanelAction.MoveLeft:
+            case StepAction.MoveLeft:
                 if (modelIsValid) {
                     MovePanelLeft(panelIndex);
                     processed = true;
                 }
                 break;
-            case PanelInfo.PanelAction.MoveRight:
+            case StepAction.MoveRight:
                 if (modelIsValid) {
                     MovePanelRight(panelIndex);
                     processed = true;
